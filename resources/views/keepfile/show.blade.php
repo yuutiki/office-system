@@ -12,7 +12,6 @@
 
         </div>
 
-
         <x-message :message="session('message')" />
 
     </x-slot>
