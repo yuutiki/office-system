@@ -19,7 +19,7 @@
         {{-- <x-input-error class="mb-4":messages="$errors->all()"/> --}}
 
     {{-- バリデーションエラーを画面表示する※componentsを利用しない記述 --}}
-        <div>  
+        {{-- <div>  
             @if ($errors->any())  
                 <ul>  
                     @foreach ($errors->all() as $error)  
@@ -27,7 +27,7 @@
                     @endforeach  
                 </ul>  
             @endif  
-        </div>
+        </div> --}}
 
         <x-message :message="session('message')"/>
 
@@ -48,37 +48,53 @@
 
             <div class="md:flex items-center mt-8">
                 <div class="w-full flex flex-col">
-                <label for="project_num" class="font-semibold text-gray-100 leading-none mt-4">プロジェクト№</label>
+                <label for="project_num" class="font-semibold text-gray-100 leading-none mt-4">プロジェクト№（必須）</label>
                 <input type="text" name="project_num" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="project_num" value="{{old('project_num')}}" placeholder="例）9999000100">
                 </div>
             </div>
+            @error('project_num')
+                <div class="text-red-500">{{$message}}</div>
+            @enderror
 
             <div class="w-full flex flex-col">
-                <label for="clientname" class="font-semibold text-gray-100 leading-none mt-4">客先名</label>
+                <label for="clientname" class="font-semibold text-gray-100 leading-none mt-4">客先名（必須）</label>
                 <input type="text" name="clientname" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="clientname" value="{{old('clientname')}}" placeholder="例）学校法人  〇〇大学">
             </div>
+            @error('clientname')
+                <div class="text-red-500">{{$message}}</div>
+            @enderror
 
             <div class="w-full flex flex-col">
-                <label for="purpose" class="font-semibold text-gray-100 leading-none mt-4">用途</label>
+                <label for="purpose" class="font-semibold text-gray-100 leading-none mt-4">用途（必須）</label>
                 <input type="text" name="purpose" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="purpose" value="{{old('purpose')}}" placeholder="例）バージョンアップ">
             </div>
+            @error('purpose')
+                <div class="text-red-500">{{$message}}</div>
+            @enderror
 
             <div class="w-full flex flex-col">
-                <label for="keep_at" class="font-semibold text-gray-100 leading-none mt-4">預託日</label>
+                <label for="keep_at" class="font-semibold text-gray-100 leading-none mt-4">預託日（必須）</label>
                 <input type="date" min="2000-01-01" max="2100-12-31" name="keep_at" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="keep_at" value="{{old('keep_at')}}">
             </div>
-            
+            @error('keep_at')
+                <div class="text-red-500">{{$message}}</div>
+            @enderror
 
             <div class="w-full flex flex-col">
-                <label for="return_at" class="font-semibold text-gray-100 leading-none mt-4">返却日</label>
+                <label for="return_at" class="font-semibold text-gray-100 leading-none mt-4">返却日（必須）</label>
                 <input type="date" min="2000-01-01" max="2100-12-31" name="return_at" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="return_at" value="{{old('return_at')}}">
             </div>
-
+            @error('return_at')
+                <div class="text-red-500">{{$message}}</div>
+            @enderror
             
             <div class="w-full flex flex-col">
                 <label for="memo" class="font-semibold text-gray-100 leading-none mt-4">備考</label>
                 <textarea name="memo" class="w-auto py-2 border border-gray-300 rounded-md mt-1 placeholder-gray-500" id="memo" value="{{old('memo')}}" cols="30" rows="10" placeholder="例）預託期限が来たため延長しました。"></textarea>
             </div>           
+            @error('memo')
+                <div class="text-red-500">{{$message}}</div>
+            @enderror
 
             {{-- <div class="w-full flex flex-col">
                 <label for="image" class="font-semibold text-gray-100 leading-none mt-4">画像 </label>

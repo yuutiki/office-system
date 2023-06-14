@@ -296,11 +296,11 @@ return [
     */
 
     'attributes' => [
-        'projectnumber' => 'プロジェクト№',
+        'project_num' => 'プロジェクト№',
         'clientname' => '顧客名',
-        'purpose' => '目的',
-        'keepdate' => '預託日',
-        'returndate' => '返却日',
+        'purpose' => '用途',
+        'keep_at' => '預託日',
+        'return_at' => '返却日',
         'memo' => '備考',
         "client_corporate_id" => "法人ID",
         "client_corporate_name" => "法人名称",

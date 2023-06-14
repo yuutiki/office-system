@@ -14,7 +14,7 @@
     </x-slot>
 
     {{-- 絞り込み検索 --}}
-    <div class="w-2/3 h-32 rounded-md mt-2 border-2 mx-auto dark:text-white">
+    <div class="w-3/4 h-32  mt-4 border-b-2 mx-auto dark:text-white">
         <form method="GET" action="{{ route('keepfile.index') }}">   
             <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
             <div class="relative mt-2 ml-2">
@@ -35,7 +35,7 @@
         </form>   
     </div>
 
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg ml-32 mr-32 mt-24">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg ml-32 mr-32 mt-8">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
 
             {{-- テーブルヘッダスタート --}}

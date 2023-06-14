@@ -17,6 +17,8 @@ use App\Http\Controllers\ClientController;//add
 |
 */
 
+
+
 Route::get('/', function () {
     return view('welcome');
 });
