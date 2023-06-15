@@ -27,7 +27,7 @@ class User extends Authenticatable
         'name_kana',
         'access_ip',
         'last_login_at',
-        'role',
+        'role_id',
         'employee_status'
     ];
 

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('employee_id')->length(6)->nullable()->comment('社員番号'); //追記
             $table->string('name');
-            $table->string('name_kana');
+            $table->string('name_kana')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

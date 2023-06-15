@@ -37,7 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/keepfile','\App\Http\Controllers\KeepfileController');
     Route::resource('/clientcorporate','\App\Http\Controllers\ClientCorporateController');
     Route::resource('/client','\App\Http\Controllers\ClientController');
-    Route::resource('/user', '\App\Http\Controllers\UserController')->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('/user', '\App\Http\Controllers\UserController');
 });
 
 require __DIR__.'/auth.php';

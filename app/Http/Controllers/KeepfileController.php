@@ -54,6 +54,10 @@ class KeepfileController extends Controller
             'memo'=>'max:255'
         ]);
 
+        //store時にクライアントのipを取得
+
+
+
         $keepfile=new keepfile();
         $keepfile->project_num=$request->project_num;
         $keepfile->clientname=$request->clientname;

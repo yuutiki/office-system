@@ -13,12 +13,12 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
-// class RegisteredUserController extends Controller
-// {
-//     public function create(): View
-//     {
-//         return view('auth.register');
-//     }
+class RegisteredUserController extends Controller
+{
+    // public function create(): View
+    // {
+    //     return view('auth.register');
+    // }
 
 
 
@@ -52,4 +52,4 @@ use Illuminate\View\View;
 
 //         return redirect(RouteServiceProvider::HOME);
 //     }
-// }
+}

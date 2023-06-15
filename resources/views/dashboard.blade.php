@@ -52,7 +52,7 @@
         <!-- 郵送依頼 - start -->
         <div>
             <a target="_blank" href="https://forms.office.com/r/P5ZnLFKaGY" class="group mb-2 block h-48 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
-                <img src="{{ asset('/assets/image/link.png') }}" loading="lazy" alt="Photo by Austin Wade" class="h-full w-full object-contain object-center transition duration-200 group-hover:scale-110" />
+                <img src="{{ asset('/assets/image/mail.png') }}" loading="lazy" alt="Photo by Austin Wade" class="h-full w-full object-contain object-center transition duration-200 group-hover:scale-110" />
             </a>
   
             <div class="flex flex-col">
@@ -89,7 +89,7 @@
         <!-- プロゲート - start -->
         <div>
             <a target="_blank" href="https://prog-8.com/dashboard" class="group mb-2 block h-48 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
-                <img src="https://images.unsplash.com/photo-1560269999-cef6ebd23ad3?auto=format&q=75&fit=crop&w=600&h=700" loading="lazy" alt="Photo by Austin Wade" class="h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
+                <img src="{{ asset('/assets/image/progate.png') }}" loading="lazy" alt="Photo by Austin Wade" class="h-full w-full object-contain object-center transition duration-200 group-hover:scale-110" />
             </a>
     
             <div class="flex flex-col">

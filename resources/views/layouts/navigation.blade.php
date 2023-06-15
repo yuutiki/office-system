@@ -59,7 +59,7 @@
                     <div class="hidden sm:flex sm:items-center sm:ml-6">
                         <x-dropdown width="48">
                             <x-slot name="trigger">
-                                <button class="inline-flex items-center  border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150" >
+                                <button class="inline-flex items-center border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150" >
                                     <div>
                                         {{ __('管理者機能') }}
                                     </div>
@@ -172,6 +172,21 @@
                 {{ __('預託管理') }}
             </x-responsive-nav-link>
         </div>
+
+        <!-- Responsive Settings Options -->
+        <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
+            <div class="mt-3 space-y-1">
+                <x-responsive-nav-link :href="route('user.index')">
+                    {{ __('ユーザ管理') }}
+                </x-responsive-nav-link>
+            </div>
+            <div class="mt-3 space-y-1">
+                <x-responsive-nav-link :href="route('profile.edit')">
+                    {{ __('マスタ管理') }}
+                </x-responsive-nav-link>
+            </div>
+        </div>
+
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
