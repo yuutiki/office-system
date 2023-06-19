@@ -17,7 +17,7 @@
 
 
 
-<div class="bg-dark py-6 sm:py-8 lg:py-12">
+<div class="bg-dark py-6 sm:py-8 lg:py-10">
     <div class="mx-auto max-w-screen-2xl px-4 md:px-8">
       <div class="mb-6 flex items-end justify-between gap-4">
         <h2 class="text-2xl font-bold dark:text-gray-100 lg:text-3xl">リンク</h2>
@@ -28,7 +28,7 @@
       <div class="grid gap-x-4 gap-y-6 sm:grid-cols-2 md:gap-x-6 lg:grid-cols-3 xl:grid-cols-5">
         <!-- 出退勤システム - start -->
         <div>
-          <a target="_blank" href="https://e-timecard.systemd.co.jp:18443/WebTimeCard/Auth/Login?ReturnUrl=%2FWebTimeCard%2FHome%2FList" class="group mb-2 block h-48 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
+          <a target="_blank" href="https://e-timecard.systemd.co.jp:18443/WebTimeCard/Auth/Login?ReturnUrl=%2FWebTimeCard%2FHome%2FList" class="group mb-2 block h-36 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
             <img src="{{ asset('/assets/image/tokei.png') }}" loading="lazy" alt="Photo by Austin Wade" class="object-contain h-full w-full  object-center transition duration-200 group-hover:scale-110" />
           </a>
   
@@ -40,7 +40,7 @@
   
         <!-- サイボウズ - start -->
         <div>
-            <a target="_blank" href="https://cybozu.systemd.co.jp/" class="group mb-2 block h-48 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
+            <a target="_blank" href="https://cybozu.systemd.co.jp/" class="group mb-2 block h-36 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
                 <img src="{{ asset('/assets/image/cybozu.png') }}" loading="lazy" alt="Photo by engin akyurt" class="h-full w-full object-contain object-center transition duration-200 group-hover:scale-110" />
             </a>
   
@@ -51,7 +51,7 @@
         <!-- サイボウズ - end -->
         <!-- 郵送依頼 - start -->
         <div>
-            <a target="_blank" href="https://forms.office.com/r/P5ZnLFKaGY" class="group mb-2 block h-48 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
+            <a target="_blank" href="https://forms.office.com/r/P5ZnLFKaGY" class="group mb-2 block h-36 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
                 <img src="{{ asset('/assets/image/mail.png') }}" loading="lazy" alt="Photo by Austin Wade" class="h-full w-full object-contain object-center transition duration-200 group-hover:scale-110" />
             </a>
   
@@ -60,11 +60,22 @@
             </div>
         </div>
         <!-- 郵送依頼 - end -->
+        <!-- どこキャビ - start -->
+        <div>
+            <a target="_blank" href="https://fwddoc.dococab.jp/fw/dfw?AGENT_DFW=https%3a%2f%2fb.dococab.jp%2fagt&path=%2fapp3%2fvbw%2findex.html&query=lf%3ddlv%252Frequest&tid=TID20230303161732393792A0-7fc9-e73fa880-agent_docab#dlv/request" class="group mb-2 block h-36 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
+                <img src="{{ asset('/assets/image/cabinet.png') }}" loading="lazy" alt="Photo by Austin Wade" class="h-full w-full object-contain object-center transition duration-200 group-hover:scale-110" />
+            </a>
+    
+            <div class="flex flex-col">
+                <a target="_blank" href="https://fwddoc.dococab.jp/fw/dfw?AGENT_DFW=https%3a%2f%2fb.dococab.jp%2fagt&path=%2fapp3%2fvbw%2findex.html&query=lf%3ddlv%252Frequest&tid=TID20230303161732393792A0-7fc9-e73fa880-agent_docab#dlv/request" class="text-lg font-bold dark:text-gray-100 transition duration-100 hover:text-gray-500 lg:text-xl">どこキャビ</a>
+            </div>
+        </div>
+        <!-- どこキャビ - end -->
 
   
         <!--制度変更情報 - start -->
         <div>
-            <a target="_blank" href="http://getsserver:50001/wordpress/" class="group mb-2 block h-48 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
+            <a target="_blank" href="http://getsserver:50001/wordpress/" class="group mb-2 block h-36 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
                 <img src="{{ asset('/assets/image/link.png') }}" loading="lazy" alt="Photo by Austin Wade" class="h-full w-full object-contain object-center transition duration-200 group-hover:scale-110" />
             </a>
   
@@ -76,7 +87,7 @@
         
         <!-- ナレッジスイート - start -->
         <div>
-            <a target="_blank" href="https://gridy.jp/home" class="group mb-2 block h-48 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
+            <a target="_blank" href="https://gridy.jp/home" class="group mb-2 block h-36 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
                 <img src="{{ asset('/assets/image/link.png') }}" loading="lazy" alt="Photo by Austin Wade" class="h-full w-full object-contain object-center transition duration-200 group-hover:scale-110" />
             </a>
     
@@ -88,7 +99,7 @@
 
         <!-- プロゲート - start -->
         <div>
-            <a target="_blank" href="https://prog-8.com/dashboard" class="group mb-2 block h-48 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
+            <a target="_blank" href="https://prog-8.com/dashboard" class="group mb-2 block h-36 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
                 <img src="{{ asset('/assets/image/progate.png') }}" loading="lazy" alt="Photo by Austin Wade" class="h-full w-full object-contain object-center transition duration-200 group-hover:scale-110" />
             </a>
     
@@ -100,7 +111,7 @@
 
         <!-- クラウドWiki - start -->
         <div>
-            <a target="_blank" href="http://cloudunyo/wordpress/" class="group mb-2 block h-48 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
+            <a target="_blank" href="http://cloudunyo/wordpress/" class="group mb-2 block h-36 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
                 <img src="https://images.unsplash.com/photo-1552668693-d0738e00eca8?auto=format&q=75&fit=crop&crop=top&w=600&h=700" loading="lazy" alt="Photo by Austin Wade" class="h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
             </a>
     
@@ -111,7 +122,7 @@
         <!-- product - end -->
         <!-- product - start -->
         <div>
-            <a target="_blank" href="http://www.ntrsupport.jp/setbox/" class="group mb-2 block h-48 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
+            <a target="_blank" href="http://www.ntrsupport.jp/setbox/" class="group mb-2 block h-36 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
                 <img src="https://images.unsplash.com/photo-1552668693-d0738e00eca8?auto=format&q=75&fit=crop&crop=top&w=600&h=700" loading="lazy" alt="Photo by Austin Wade" class="h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
             </a>
     
@@ -120,20 +131,10 @@
             </div>
         </div>
         <!-- product - end -->  
+
         <!-- product - start -->
         <div>
-            <a target="_blank" href="https://forms.office.com/r/P5ZnLFKaGY" class="group mb-2 block h-48 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
-                <img src="https://images.unsplash.com/photo-1552668693-d0738e00eca8?auto=format&q=75&fit=crop&crop=top&w=600&h=700" loading="lazy" alt="Photo by Austin Wade" class="h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
-            </a>
-    
-            <div class="flex flex-col">
-                <a target="_blank" href="https://forms.office.com/r/P5ZnLFKaGY" class="text-lg font-bold dark:text-gray-100 transition duration-100 hover:text-gray-500 lg:text-xl">#</a>
-            </div>
-        </div>
-        <!-- product - end -->
-        <!-- product - start -->
-        <div>
-            <a target="_blank" href="https://forms.office.com/r/P5ZnLFKaGY" class="group mb-2 block h-48 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
+            <a target="_blank" href="https://forms.office.com/r/P5ZnLFKaGY" class="group mb-2 block h-36 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
                 <img src="https://images.unsplash.com/photo-1552668693-d0738e00eca8?auto=format&q=75&fit=crop&crop=top&w=600&h=700" loading="lazy" alt="Photo by Austin Wade" class="h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
             </a>
     

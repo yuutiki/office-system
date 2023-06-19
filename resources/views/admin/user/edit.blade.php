@@ -3,10 +3,10 @@
 
 <x-app-layout>
 <x-slot name="header">
-    <h2 class="font-semibold text-xl text-gray-100 leading-tight">
+    <h2 class="font-semibold text-xl dark:text-gray-100 leading-tight">
         ユーザ編集
     </h2>
-
+    <x-message :message="session('message')"/>
     <div class="flex flex-row-reverse">
         <x-general-button class="mt-4" onclick="location.href='{{route('user.index', $user)}}'">
             戻る
@@ -27,7 +27,7 @@
         @endif  
     </div>
 
-    <x-message :message="session('message')"/>
+
 
 
 </x-slot>
@@ -47,28 +47,35 @@
             <input type="checkbox" name="is_finished" id="is_finished" value="1" class="sr-only peer">
         @endif
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-            <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">完了</span>
+            <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">有効</span>
         </label> 
 
         <div class="md:flex items-center mt-8">
             <div class="w-full flex flex-col">
-                <label for="name" class="font-semibold text-gray-100 leading-none mt-4">氏名</label>
+                <label for="employee_id" class="mt-4 font-semibold dark:text-gray-100 leading-none">社員番号</label>
+                <input type="text" name="employee_id" oninput="value = value.replace(/[^0-9]+/i,'');" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="employee_id" value="{{old('employee_id',$user->employee_id)}}" placeholder="例）000999">
+            </div>
+        </div>
+
+        <div class="md:flex items-center">
+            <div class="w-full flex flex-col">
+                <label for="name" class="mt-4 font-semibold dark:text-gray-100 leading-none">氏名</label>
                 <input type="text" name="name" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="name" value="{{old('name',$user->name)}}" placeholder="例）9999000100">
             </div>
         </div>
 
         <div class="w-full flex flex-col">
-            <label for="name_kana" class="font-semibold text-gray-100 leading-none mt-4">カナ氏名</label>
+            <label for="name_kana" class="mt-4 font-semibold dark:text-gray-100 leading-none">カナ氏名</label>
             <input type="text" name="name_kana" class="w-auto py-2 border border-gray-300 rounded-md mt-1 placeholder-gray-500" id="name_kana"  cols="30" rows="10" value="{{ old('name_kana',$user->name_kana)}}">
         </div>
 
         <div class="w-full flex flex-col">
-            <label for="email" class="font-semibold text-gray-100 leading-none mt-4">E-MAIL</label>
+            <label for="email" class="mt-4 font-semibold dark:text-gray-100 leading-none">E-MAIL</label>
             <input type="text" name="email" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="email" value="{{old('email',$user->email)}}" placeholder="例）学校法人  〇〇大学">
         </div>
 
         <div class="w-full flex flex-col">
-            <label for="role_id" class="font-semibold text-gray-100 leading-none mt-4">権限</label>
+            <label for="role_id" class="mt-4 font-semibold dark:text-gray-100 leading-none">権限</label>
             {{-- <input type="text" name="role_id" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="role_id" value="{{old('role_id',$user->role->role_name)}}" placeholder="例）バージョンアップ"> --}}
             <select name="role_id" class=" w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="role_id" value="{{old('role_id')}}">
                 @foreach($roles as $role)
@@ -77,25 +84,34 @@
             </select>
         </div>
 
-        <div class="bg-light px-3 py-2 mb-3 font-semibold text-gray-100" v-if="state == 'edit'">以下は省略可</div>
+        <div class="w-full flex flex-col">
+            <label for="employee_status_id" class="mt-4 font-semibold dark:text-gray-100 leading-none">雇用状態</label>
+            <select name="employee_status_id" class=" w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="employee_status_id" value="{{old('employee_status_id')}}">
+                @foreach($e_statuses as $e_status)
+                        <option value="{{ $e_status->id }}" @if($e_status->id == $user->employee_status_id) selected @endif>{{ $e_status->employee_status_name }}</option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="bg-light px-3 py-2 mb-3 font-semibold dark:text-gray-100" v-if="state == 'edit'">以下は省略可</div>
 
         <div class="w-full flex flex-col">
-            <label class="font-semibold text-gray-100 leading-none mt-4">パスワード</label>
-            <input type="password" name="password" class="form-control w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1">
+            <label class="mt-4 font-semibold dark:text-gray-100  leading-none">パスワード</label>
+            <input type="password" name="password" autocomplete="new-password" class="form-control w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1">
         </div>
 
         <div class="w-full flex flex-col">
-            <label class="font-semibold text-gray-100 leading-none mt-4">パスワード（確認）</label>
-            <input type="password" name="password" class="form-control w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1">
+            <label class="mt-4 font-semibold dark:text-gray-100 leading-none">パスワード（確認）</label>
+            <input type="password" name="password" autocomplete="new-password" class="form-control w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1">
         </div>
 
         {{-- <div class="w-full flex flex-col">
-            <label for="created_at" class="font-semibold text-gray-100 leading-none mt-4">作成日</label>
+            <label for="created_at" class="font-semibold dark:text-gray-100 leading-none mt-4">作成日</label>
             <input type="date" min="2000-01-01" max="2100-12-31" name="created_at" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="created_at" value="{{old('created_at',$user->created_at)}}">
         </div> --}}
 
         {{-- <div class="w-full flex flex-col">
-            <label for="return_at" class="font-semibold text-gray-100 leading-none mt-4">返却日</label>
+            <label for="return_at" class="font-semibold dark:text-gray-100 leading-none mt-4">返却日</label>
             <input type="date" min="2000-01-01" max="2100-12-31" name="return_at" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="return_at" value="{{old('return_at',$user->return_at)}}">
         </div> --}}
 
@@ -105,7 +121,7 @@
         
 
         {{-- <div class="w-full flex flex-col">
-            <label for="image" class="font-semibold text-gray-100 leading-none mt-4">画像 </label>
+            <label for="image" class="font-semibold dark:text-gray-100 leading-none mt-4">画像 </label>
             <div>
             <input id="image" type="file" name="image">
             </div>

@@ -23,12 +23,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'employee_num',
+        'employee_id',
         'name_kana',
         'access_ip',
         'last_login_at',
         'role_id',
-        'employee_status'
+        'employee_status_id'
     ];
 
     /**
@@ -55,7 +55,9 @@ class User extends Authenticatable
     //sort
     public $sortable = [
         'name',
-        'email'
+        'email',
+        'role_id',
+        'last_login_at'
     ];
 
 

@@ -21,6 +21,8 @@ class LogAuthenticated
      */
     public function handle(Authenticated $event): void
     {
-        //
+        //ログインしたら最終ログイン日時をDBに登録
+        $event->user->last_login_at = now();
+        $event->user->save();    
     }
 }

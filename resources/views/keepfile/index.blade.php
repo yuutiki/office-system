@@ -2,40 +2,73 @@
     <link rel="shortcut icon" href="{{ asset('/favicon-sales.ico') }}">
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-100 leading-tight">
-            預託情報の一覧
-        </h2>
-        <div class="flex flex-row-reverse">
-            <x-general-button class="mt-4" onclick="location.href='/keepfile/create'">
-                新規作成
-            </x-general-button>
+        <div class="flex justify-between">
+            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
+                預託一覧
+            </h2>
+            <div class=" flex justify-end ">
+                <x-general-button onclick="location.href='/keepfile/create'">
+                    新規作成
+                </x-general-button>
+                <x-message :message="session('message')" />
+            </div>
         </div>
-        <x-message :message="session('message')" />
     </x-slot>
 
     {{-- 絞り込み検索 --}}
-    <div class="w-3/4 h-32  mt-4 border-b-2 mx-auto dark:text-white">
-        <form method="GET" action="{{ route('keepfile.index') }}">   
-            <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-            <div class="relative mt-2 ml-2">
-                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+    <div class="w-5/6  mt-4 border-b-2 mx-auto h-auto dark:text-white">
+        <form method="GET" action="{{ route('keepfile.index') }}" id="keepfileform">
+            <div class="md:flex flex-wrap">
+                {{-- テキスト検索 start --}}
+                <div class="relative w-auto mt-2 ml-2">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                        <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                    <input type="search" name="search" value="@if (isset($search)) {{ $search }} @endif" class="w-full p-1.5 pl-10  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="プロジェクト№" >
                 </div>
-                <input type="search" name="search" value="@if (isset($search)) {{ $search }} @endif" class="block w-1/4 p-2 pl-10  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="顧客名" >
-                <button type="submit" class="absolute right-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">検索</button>
-            </div>
-            <label for="is_finished" class="block mt-2 mb-2 text-sm font-medium text-gray-900 dark:text-white"></label>
-                <select  name="finish" value="0" class=" w-20 ml-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option value="">完了フラグ</option>
+                <div class="relative w-auto mt-2 ml-2">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                        <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                    <input type="search" name="search" value="@if (isset($search)) {{ $search }} @endif" class="w-full p-1.5 pl-10  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="顧客名" >
+                </div>
+                {{-- テキスト検索 end --}}
+                {{-- セレクト検索 start --}}
+                <div class="flex-nowrap">
+                    <select  name="finish" value="0" class="mt-2 w-auto ml-2 py-1.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option value="">ステータス</option>
+                        @foreach($keepfiles as $keepfile)
+                            <option value="{{$keepfile->is_finished}}">{{$keepfile->is_finished}}</option>
+                        @endforeach
+                    </select>
+                    
+                    <select  name="finish" value="0" class="mt-2 w-auto ml-2 py-1.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option value="">担当者全て</option>
+                        @foreach($users as $s_user)
+                            <option value="{{$s_user->id}}">{{$s_user->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                {{-- セレクト検索 end --}}
+                {{-- 日付範囲検索 start --}}
+                <div class="relative w-auto mt-2 ml-2">
+                    <input type="date" name="day_from" value="@if (isset($search)) {{ $search }} @endif" class="w-full p-1.5 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="顧客名" >
+                </div>
+                <div class="relative w-auto mt-2 ml-2">
+                    <input type="date" name="day_to" value="@if (isset($search)) {{ $search }} @endif" class="w-full p-1.5  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="顧客名" >
+                </div>
 
-                    @foreach($keepfiles as $keepfile)
-                    <option value="{{$keepfile->is_finished}}">{{$keepfile->is_finished}}</option>
-                    @endforeach
-                </select>
-        </form>   
+                {{-- 日付範囲検索 end --}}
+
+            </div>
+        </form>
+    </div>
+    <div class="w-5/6 mt-4 ml-8 flex justify-end">
+        <button type="submit" form="keepfileform" class="px-6 py-1.5 font-medium text-sm rounded-lg text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">検索</button>
+        <button type="reset" form="keepfileform" class="ml-2 px-4 py-1.5 font-medium text-sm rounded-lg text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-red-700 hover:bg-red-800 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">リセット</button>
     </div>
 
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg ml-32 mr-32 mt-8">
+    <div class="w-5/6 relative overflow-x-auto shadow-md sm:rounded-lg ml-auto mr-auto mt-8">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
 
             {{-- テーブルヘッダスタート --}}
@@ -120,7 +153,7 @@
                         </td>
                         @if($keepfile->is_finished == "0")
                             <td class="px-2 py-4 text-fuchsia-300">
-                                {{ $remaining }}
+                                未返却
                             </td>
                         @else
                             <td class="px-2 py-4">
@@ -128,8 +161,11 @@
                             </td>
                         @endif
                         <td class="px-2 py-4">
-                            {{$keepfile->created_at->diffForHumans()}}
+                            {{ $remaining }}
                         </td>
+                        {{-- <td class="px-2 py-4">
+                            {{$keepfile->created_at->diffForHumans()}}
+                        </td> --}}
                         <td class="px-4 py-4 text-center">
                             <a href="{{route('keepfile.edit',$keepfile)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">編集</a>
                         </td>

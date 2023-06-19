@@ -17,5 +17,50 @@ export default {
         },
     },
 
+    theme: {
+        extend: {
+            animation: {
+                "fade-out-right": //animate-　＋　左記のclass名
+                    "fade-out-right 2s cubic-bezier(0.250, 0.460, 0.450, 0.940)2s   both",
+            },
+            keyframes: {
+                "fade-out-right": {
+                    "0%": {
+                        transform: "translateX(0)",
+                        opacity: "1",
+                    },
+                    to: {
+                        transform: "translateX(50px)",
+                        opacity: "0",
+                    },
+                },
+            },
+        },
+    },
+
     plugins: [forms],
 };
+
+
+// module.exports = {
+//     theme: {
+//         extend: {
+//             animation: {
+//                 "fade-out-right": //animate-　＋　左記のclass名
+//                     "fade-out-right 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940)   both",
+//             },
+//             keyframes: {
+//                 "fade-out-right": {
+//                     "0%": {
+//                         transform: "translateX(0)",
+//                         opacity: "1",
+//                     },
+//                     to: {
+//                         transform: "translateX(50px)",
+//                         opacity: "0",
+//                     },
+//                 },
+//             },
+//         },
+//     },
+// };

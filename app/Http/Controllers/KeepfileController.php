@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Keepfile;
+use App\Models\User;
 use Illuminate\Http\Request;
 use illuminate\pagination\paginator; //addページネーション用
 
@@ -15,9 +16,11 @@ class KeepfileController extends Controller
         //sortableとpaginateを組み合わせる際の記述＆ログインユーザが登録したものしか表示されない
         $keepfiles = keepfile::where('user_id', \Auth::user()->id)->sortable()->paginate(15); 
         $user = auth()->user();
+        $users = User::all();
         // $keepfiles = keepfile::orderBy('returndate','asc')->get();　//sortableを使わずに無理やり並べ替える際の記述
         $search = $request->input('search');
         $query = keepfile::query();
+        
 
         $remaining = Keepfile::Remaining();
         // dd($remaining);
@@ -34,7 +37,7 @@ class KeepfileController extends Controller
         $keepfiles = $query->paginate(20);
         }
         // return view('keepfile.index',compact('keepfiles','user','remaining'))->with(['keepfiles' => $keepfiles, 'search' => $search,]);
-        return view('keepfile.index',compact('keepfiles','user','remaining','search'));
+        return view('keepfile.index',compact('keepfiles','user','remaining','search','users'));
     }
 
 
@@ -68,7 +71,7 @@ class KeepfileController extends Controller
         $keepfile->is_finished=$request->is_finished;
         $keepfile->user_id=auth()->user()->id;
         $keepfile->save();
-        return redirect()->route('keepfile.create')->with('message','預託データを登録しました');
+        return redirect()->route('keepfile.create')->with('message','登録しました');
     }
 
     public function show($id)
@@ -105,7 +108,7 @@ class KeepfileController extends Controller
         $keepfile->is_finished=$request->is_finished;
         $keepfile->user_id=auth()->user()->id;
         $keepfile->save();
-        return redirect()->route('keepfile.show',$id)->with('message','預託データを更新しました');
+        return redirect()->route('keepfile.index',$id)->with('message','更新しました');
     }
 
     public function destroy(string $id)

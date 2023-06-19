@@ -66,4 +66,22 @@ class Keepfile extends Model
         return $dt;
 
     }
+
+    // public static function Remaining($x)
+    // {
+    //     $today = today();
+    //     $carbonReturn_at = new Carbon($x);
+    //     $keepfiles = Keepfile::get();
+    //     foreach($keepfiles as $keepfile)
+    //     {
+    //         $return_ats = array($keepfile->id => $keepfile->return_at);
+    //     }
+
+    //     return $reama = $today->diffIndays($carbonReturn_at);
+    // }
+
+
+
+    //     array_map("Remaining",$return_ats);
+    
 }
