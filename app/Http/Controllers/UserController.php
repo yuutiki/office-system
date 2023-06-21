@@ -33,7 +33,8 @@ class UserController extends Controller
         //もし社員番号があれば
         if(!empty($employee_num))
         {
-            $query->where('employee_id','like',"%{$employee_num}%");
+            // $query->where('employee_id','like',"%{$employee_num}%");
+            $query->where('employee_id','=',$employee_num);
         }
 
         //もしユーザ名があれば
@@ -51,18 +52,19 @@ class UserController extends Controller
         //もし権限があれば
         if(!empty($role1))
         {
-            $query->where('role_id','like',"%{$role1}%");
+            $query->where('role_id','=',$role1);
         }
 
         //もし在職状態があれば
         if(!empty($employee_status))
         {
-            $query->where('employee_status_id','like',"%{$employee_status}%");
+            $query->where('employee_status_id','=',$employee_status);
         }
 
         $users = $query->paginate($per_page);
+        $count = $users->count();
 
-        return view('admin.user.index',compact('roles','users','e_statuses','employee_num','user_name','role1','employee_status'));
+        return view('admin.user.index',compact('roles','users','e_statuses','employee_num','user_name','role1','employee_status','count'));
     }
 
 

@@ -3,17 +3,17 @@
 
 <x-app-layout>
 <x-slot name="header">
-    <h2 class="font-semibold text-xl dark:text-gray-100 leading-tight">
-        ユーザ編集
-    </h2>
-    <x-message :message="session('message')"/>
-    <div class="flex flex-row-reverse">
-        <x-general-button class="mt-4" onclick="location.href='{{route('user.index', $user)}}'">
-            戻る
-        </x-general-button>
+    <div class="flex justify-between">
+        <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
+            ユーザ編集
+        </h2>
+        <div class="flex justify-end">
+            <x-general-button onclick="location.href='{{route('user.index', $user)}}'">
+                戻る
+            </x-general-button>
+            <x-message :message="session('message')"/>
+        </div>
     </div>
-
-
     {{-- <x-input-error class="mb-4":messages="$errors->all()"/> --}}
 
 {{-- バリデーションエラーを画面表示する※componentsを利用しない記述 --}}
