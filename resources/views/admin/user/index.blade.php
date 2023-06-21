@@ -2,18 +2,17 @@
     <link rel="shortcut icon" href="{{ asset('/favicon-sales.ico') }}">
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
+        <div class="flex justify-between w-5/6">
             <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
                 ユーザ一覧
             </h2>
-            <div class="flex justify-end">
+            {{-- <div class="flex justify-end"> --}}
                 {{-- <x-general-button onclick="location.href='/user/create'">
                     新規作成
                 </x-general-button> --}}
                 <x-message :message="session('message')" />
-            </div>
+            {{-- </div> --}}
         </div>
-
     </x-slot>
     
     {{-- 絞り込み検索 start--}}

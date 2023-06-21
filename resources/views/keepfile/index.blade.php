@@ -2,15 +2,15 @@
     <link rel="shortcut icon" href="{{ asset('/favicon-sales.ico') }}">
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
+        <div class="flex justify-between w-5/6">
             <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
                 預託一覧
             </h2>
+            <x-message :message="session('message')" />
             <div class=" flex justify-end ">
-                <x-general-button onclick="location.href='/keepfile/create'">
+                {{-- <x-general-button onclick="location.href='/keepfile/create'">
                     新規作成
-                </x-general-button>
-                <x-message :message="session('message')" />
+                </x-general-button> --}}
             </div>
         </div>
     </x-slot>
@@ -74,61 +74,61 @@
         <button type="reset" form="keepfileform" class="ml-2 px-4 py-1.5 font-medium text-sm rounded-lg text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-red-700 hover:bg-red-800 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">リセット</button>
     </div>
 
-    <div class="w-5/6 relative overflow-x-auto shadow-md sm:rounded-lg ml-auto mr-auto mt-8">
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <div class="w-5/6 relative overflow-x-auto shadow-md sm:rounded-lg mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
+        <table class="w-full text-sm font-medium text-left text-gray-800 dark:text-gray-400">
 
-            {{-- テーブルヘッダスタート --}}
-            <thead class="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
+            {{-- テーブルヘッダ start --}}
+            <thead class="text-sm text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
                 <tr>
-                    <th scope="col" class="px-4 py-3">
+                    <th scope="col" class="px-4 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             @sortablelink('project_num','プロジェクト№')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                         </div>
                     </th>
-                    <th scope="col" class="px-1 py-3">
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             @sortablelink('clientname','顧客名')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg></a>
                         </div>
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             用途
                             {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
                         </div>
                     </th>
-                    <th scope="col" class="pl-4 py-3">
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             @sortablelink('keep_at','預託日')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                         </div>
                     </th>
-                    <th scope="col" class="px-1 py-3">
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             @sortablelink('return_at','返却日')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                         </div>
                     </th>
-                    <th scope="col" class="px-2 py-3">
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             @sortablelink('user_id','担当者')
                             <a href="#"><svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg></a>
                         </div>
                     </th>
-                    <th scope="col" class="px-2 py-3">
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             @sortablelink('is_finished','ステータス')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                         </div>
                     </th>
-                    <th scope="col" class="px-2 py-3">
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             作成日
                             {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
                         </div>
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <span class="sr-only">編集</span>
                     </th>
                 </tr>
@@ -139,40 +139,40 @@
             @foreach ($keepfiles as $keepfile)
                 <tbody>
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
-                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" class="pl-4 py-3 whitespace-nowrap font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$keepfile->project_num}}
                         </th>
-                        <td class="px-1 py-4">
+                        <td class="px-1 py-3 whitespace-nowrap">
                             {{$keepfile->clientname}}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-1 py-3 whitespace-nowrap">
                             {{$keepfile->purpose}}
                         </td>
-                        <td class="px-4 py-4">
+                        <td class="px-1 py-3 whitespace-nowrap">
                             {{$keepfile->keep_at}}
                         </td>
-                        <td class="px-1 py-4">
+                        <td class="px-1 py-3 whitespace-nowrap">
                             {{$keepfile->return_at}}
                         </td>
-                        <td class="px-2 py-4">
+                        <td class="px-1 py-3 whitespace-nowrap">
                             {{$keepfile->user->name}}
                         </td>
                         @if($keepfile->is_finished == "0")
-                            <td class="px-2 py-4 text-fuchsia-300">
+                            <td class="px-2 py-3 whitespace-nowrap text-fuchsia-300">
                                 未返却
                             </td>
                         @else
-                            <td class="px-2 py-4">
+                            <td class="px-2 py-3 whitespace-nowrap">
                                 返却済
                             </td>
                         @endif
-                        <td class="px-2 py-4">
+                        <td class="px-2 py-3 whitespace-nowrap">
                             {{ $remaining }}
                         </td>
-                        {{-- <td class="px-2 py-4">
+                        {{-- <td class="px-2 py-3 whitespace-nowrap">
                             {{$keepfile->created_at->diffForHumans()}}
                         </td> --}}
-                        <td class="px-4 py-4 text-center">
+                        <td class="px-1 py-3 whitespace-nowrap text-center">
                             <a href="{{route('keepfile.edit',$keepfile)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">編集</a>
                         </td>
                         </td>
@@ -182,12 +182,12 @@
             {{-- テーブルボディエンド --}}
 
         </table>
-
-        <div class="mt-8 mb-8">
+    </div>
+    <div class="w-5/6 mx-auto">
+        <div class="mt-2 mb-1">
             {{-- {{ $keepfiles->appends(request()->query())->links() }}  //デフォルトページネーション --}} 
             {{ $keepfiles->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
         </div> 
-
     </div>
 
 </x-app-layout>

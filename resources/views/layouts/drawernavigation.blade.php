@@ -98,15 +98,15 @@
                 </button>
                 <ul id="dropdown-admin" class="hidden py-2 space-y-2">
                     <li>
-                        <x-nav-link :href="route('clientcorporate.index')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')" class="flex w-full items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                             {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
-                            <span class="flex-1 ml-6 whitespace-nowrap">{{ __('法人一覧') }}</span>
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('ユーザ一覧') }}</span>
                         </x-nav-link>
                     </li>
                     <li>
                         <x-nav-link :href="route('clientcorporate.index')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                             {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
-                            <span class="flex-1 ml-6 whitespace-nowrap">{{ __('顧客一覧') }}</span>
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('マスタ管理') }}</span>
                         </x-nav-link>
                     </li>
                 </ul>
@@ -136,9 +136,17 @@
     <!-- drawer init and show -->
     <div class="flex justify-between">
         <div class="text-left">
-            <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" type="button" data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation" aria-controls="drawer-navigation" data-drawer-trigger="hover">
+            <div class="-mr-2 flex items-center sm:hidden">
+                <button  class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out type="button" data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation" aria-controls="drawer-navigation" data-drawer-trigger="hover"">
+                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            {{-- <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" type="button" data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation" aria-controls="drawer-navigation" data-drawer-trigger="hover">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-10" aria-hidden="true" fill="currentColor" viewBox="0 0 512 512"><g><g><path class="st0" d="M388.3,201.9h-196c-9.9,0-17.9-9-17.9-20s8-20,17.9-20h196c9.9,0,17.9,9,17.9,20S398.2,201.9,388.3,201.9z"/></g><circle class="st0" cx="131.2" cy="181.9" r="25.5"/><g><path class="st0" d="M388.3,276h-196c-9.9,0-17.9-9-17.9-20s8-20,17.9-20h196c9.9,0,17.9,9,17.9,20S398.2,276,388.3,276z"/></g><circle class="st0" cx="131.2" cy="256" r="25.5"/><g><path class="st0" d="M388.3,350.1h-196c-9.9,0-17.9-9-17.9-20s8-20,17.9-20h196c9.9,0,17.9,9,17.9,20S398.2,350.1,388.3,350.1z"/></g><circle class="st0" cx="131.2" cy="330.1" r="25.5"/></g></svg>
-            </button>
+            </button> --}}
         </div>
         <div class=" sm:flex sm:items-center sm:ml-6">
             <x-dropdown align="right" width="48">

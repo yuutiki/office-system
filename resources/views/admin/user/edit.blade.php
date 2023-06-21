@@ -39,7 +39,7 @@
         @method('patch')
 
 
-        <label class="relative inline-flex items-center cursor-pointer">
+        <label class="relative inline-flex items-center cursor-pointer mt-4">
         <input type="hidden" name="is_finished" id="is_finished" value="0">
         @if($user->is_finished === 1)
             <input type="checkbox" name="is_finished" id="is_finished" value="1" class="sr-only peer" checked="checked">
@@ -50,7 +50,7 @@
             <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">有効</span>
         </label> 
 
-        <div class="md:flex items-center mt-8">
+        <div class="md:flex items-center mt-4">
             <div class="w-full flex flex-col">
                 <label for="employee_id" class="mt-4 font-semibold dark:text-gray-100 leading-none">社員番号</label>
                 <input type="text" name="employee_id" oninput="value = value.replace(/[^0-9]+/i,'');" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="employee_id" value="{{old('employee_id',$user->employee_id)}}" placeholder="例）000999">
@@ -127,7 +127,7 @@
             </div>
         </div> --}}
 
-        <x-primary-button class="mt-4">
+        <x-primary-button class="mt-4 mb-4">
             変更を確定
         </x-primary-button>
         
