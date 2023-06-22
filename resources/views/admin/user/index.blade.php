@@ -1,5 +1,3 @@
-    {{-- favicon --}}
-    <link rel="shortcut icon" href="{{ asset('/favicon-sales.ico') }}">
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between w-5/6">
@@ -147,7 +145,7 @@
 
 
     <div class="w-5/6 relative overflow-x-auto shadow-md sm:rounded-lg mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
-        <table class="w-full text-sm font-medium text-left text-gray-800 dark:text-gray-400 ">
+        <table class="w-full text-sm font-medium text-left text-gray-800 dark:text-gray-400">
 
             {{-- テーブルヘッダ start --}}
             <thead class="text-sm text-gray-700 dark:bg-gray-700 dark:text-gray-100">
@@ -248,7 +246,6 @@
                                 <button type="submit" onClick="return confirm('本当に削除しますか？')" class=" font-medium text-red-600 dark:text-red-500 hover:underline">削除</button>
                             </form>
                         </td>
-
 
                     </tr>
                 </tbody>

@@ -1,5 +1,4 @@
-    {{-- favicon --}}
-    <link rel="shortcut icon" href="{{ asset('/favicon-sales.ico') }}">
+
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between w-5/6">
@@ -15,10 +14,7 @@
         </div>
     </x-slot>
 
-    
 
-
-  
   
 
     {{-- 絞り込み検索 --}}

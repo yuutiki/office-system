@@ -3,14 +3,8 @@
 
 
 <div class="fixed  pt-4 dark:bg-gray-800 bg-white h-screen w-12 overflow-x-hidden hover:w-52 whitespace-nowrap transition-all duration-500 ease-in-out z-50  invisible lg:visible">
-    <div class="flex w-full items-center ">
-        <svg id="Layer_1" style="enable-background:new 0 0 64 64;" class="w-12 flex-shrink-0" viewBox="0 0 64 64" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <style type="text/css">
-                .st0{fill:none;stroke:#939191;stroke-width:2;stroke-miterlimit:10;}
-                .st1{fill:none;stroke:#939191;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
-                .st2{fill:none;stroke:#939191;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:6,5;}
-            </style>
-            <g><rect class="st1" height="4" width="3" x="17" y="44"/><rect class="st1" height="20" width="6" x="29" y="32"/><rect class="st1" height="32" width="6" x="41" y="20"/><g><line class="st1" x1="12" x2="36" y1="36" y2="12"/><polyline class="st1" points="30,12 36,12 36,18"/></g></g><line class="st1" x1="12" x2="52" y1="52" y2="52"/></svg>
+    <div class="flex w-full items-center">
+        <img src="{{ asset('/assets/image/logo.svg') }}" loading="lazy" alt="Photo by engin akyurt" class="h-full w-10 ml-2 mt-1" />
         <h5 class="ml-5 text-base font-semibold text-gray-500  dark:text-gray-400">社内システム</h5>
     </div>
         <div class="py-4 pl-2">
