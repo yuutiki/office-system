@@ -40,9 +40,11 @@ class Keepfile extends Model
 
         // // プロジェクト№ハイフンつける
 
-    // $input_projectum = null;
-    // $output_projectum = null;
+    //初期値設定
+    // $input_projectnum = null;
+    // $output_projectnum = null;
 
+    // if(isset())
     // $input_postno = $_REQUEST["projectnumber"];
 
    	// /** 数字を半角に変換する */
@@ -50,6 +52,11 @@ class Keepfile extends Model
  
 	// /** 数字以外を削除する */
 	// $projectnum = preg_replace("/[^0-9]/", "", $postno);
+
+
+
+
+
 
 
     public static function Remaining()

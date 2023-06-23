@@ -52,7 +52,7 @@
                     {{-- 横並びセレクトボックス2つ　end --}}
                 </div>
             </form>
-            <div class="w-5/6 mb-2 ml-8 flex justify-start">
+            <div class="w-5/6 mt-2 mb-2 ml-8 flex justify-start">
                 <button type="submit" form="userform" class="w-20 px-6 py-1.5 font-medium text-sm rounded-lg text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">検索</button>
                 <button type="button" value="reset" form="userform" id="clear" class="w-20 ml-2 px-4 py-1.5 font-medium text-sm rounded-lg text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-red-700 hover:bg-red-800 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">リセット</button>
             </div>

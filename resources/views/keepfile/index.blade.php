@@ -135,7 +135,7 @@
             @foreach ($keepfiles as $keepfile)
                 <tbody>
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
-                        <th scope="row" class="pl-4 py-3 whitespace-nowrap font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" class="pl-4 py-3 whitespace-nowrap font-medium text-gray-900 dark:text-white">
                             {{$keepfile->project_num}}
                         </th>
                         <td class="px-1 py-3 whitespace-nowrap">
