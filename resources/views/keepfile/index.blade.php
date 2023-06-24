@@ -19,6 +19,7 @@
 
     {{-- 絞り込み検索 --}}
     <div class="w-5/6  mt-4 border-b-2 mx-auto h-auto dark:text-white">
+
         <form method="GET" action="{{ route('keepfile.index') }}" id="keepfileform">
             <div class="md:flex flex-wrap">
                 {{-- テキスト検索 start --}}
@@ -59,16 +60,44 @@
                 <div class="relative w-auto mt-2 ml-2">
                     <input type="date" name="day_to" value="@if (isset($search)){{ $search }}@endif" class="w-full p-1.5  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="顧客名" >
                 </div>
-
                 {{-- 日付範囲検索 end --}}
+                <div class="w-5/6 mt-2 ml-8 mb-2 flex justify-start">
+                    <button type="submit" form="keepfileform" class="px-6 py-1.5 font-medium text-sm rounded-lg text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">検索</button>
+                    <button type="button" value="reset" form="keepfileform" id="clear" class="ml-2 px-4 py-1.5 font-medium text-sm rounded-lg text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-red-700 hover:bg-red-800 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">リセット</button>
+                </div>
 
             </div>
         </form>
     </div>
-    <div class="w-5/6 mt-4 ml-8 flex justify-end">
-        <button type="submit" form="keepfileform" class="px-6 py-1.5 font-medium text-sm rounded-lg text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">検索</button>
-        <button type="reset" form="keepfileform" class="ml-2 px-4 py-1.5 font-medium text-sm rounded-lg text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-red-700 hover:bg-red-800 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">リセット</button>
-    </div>
+
+
+
+{{-- JQUERY --}}
+{{-- JQUERY --}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+$(function(){
+    $('#clear').click(function(){
+        $('#keepfileform input, #keepfileform select').each(function(){
+          //checkboxまたはradioボタンの時
+          if(this.type == 'checkbox' || this.type == 'radio'){
+            //一括でチェックを外す
+              this.checked = false;
+          }
+          //checkboxまたはradioボタン以外の時
+          else{
+            // val値を空にする
+            $(this).val('');
+          }
+        });
+    });
+});
+</script>
+{{-- JQUERY --}}
+{{-- JQUERY --}}
+
+
+
 
     <div class="w-5/6 relative overflow-x-auto shadow-md sm:rounded-lg mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
         <table class="w-full text-sm font-medium text-left text-gray-800 dark:text-gray-400">
@@ -120,7 +149,7 @@
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
-                            作成日
+                            残日数
                             {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
                         </div>
                     </th>
@@ -162,9 +191,16 @@
                                 返却済
                             </td>
                         @endif
-                        <td class="px-2 py-3 whitespace-nowrap">
-                            {{ $remaining }}
+
+                        @if($keepfile->remaining_days < 0)
+                        <td class="px-2 py-3 whitespace-nowrap text-fuchsia-300">
+                            期限超過
                         </td>
+                        @else
+                        <td class="px-2 py-3 whitespace-nowrap">
+                            {{ $keepfile->remaining_days }}日
+                        </td>
+                        @endif
                         {{-- <td class="px-2 py-3 whitespace-nowrap">
                             {{$keepfile->created_at->diffForHumans()}}
                         </td> --}}

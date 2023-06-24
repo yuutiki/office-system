@@ -20,10 +20,7 @@ class KeepfileController extends Controller
         // $keepfiles = keepfile::orderBy('returndate','asc')->get();　//sortableを使わずに無理やり並べ替える際の記述
         $search = $request->input('search');
         $query = keepfile::query();
-        
 
-        $remaining = Keepfile::Remaining();
-        // dd($remaining);
     
         if($search)
         {
@@ -37,7 +34,7 @@ class KeepfileController extends Controller
         $keepfiles = $query->paginate(20);
         }
         // return view('keepfile.index',compact('keepfiles','user','remaining'))->with(['keepfiles' => $keepfiles, 'search' => $search,]);
-        return view('keepfile.index',compact('keepfiles','user','remaining','search','users'));
+        return view('keepfile.index',compact('keepfiles','user','search','users'));
     }
 
 
@@ -57,9 +54,8 @@ class KeepfileController extends Controller
             'memo'=>'max:255'
         ]);
 
-        //store時にクライアントのipを取得
-
-
+    
+//store時にクライアントのipを取得
 
         $keepfile=new keepfile();
         $keepfile->project_num=$request->project_num;

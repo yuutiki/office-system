@@ -54,41 +54,11 @@ class Keepfile extends Model
 	// $projectnum = preg_replace("/[^0-9]/", "", $postno);
 
 
-
-
-
-
-
-    public static function Remaining()
+//アクセサを利用して預託データごとの返却期限までの残日数を算出
+    public function getRemainingDaysAttribute()
     {
-        $keepfiles = Keepfile::get();
-        $today = today();
-
-        foreach($keepfiles as $keepfile)
-        {
-            $return_at = $keepfile->return_at;
-        }
-        $carbonReturn_at = new Carbon($return_at);
-        $dt = $today->diffIndays($carbonReturn_at);
-        return $dt;
-
+        $returnDate = new Carbon($this->return_at);
+        $today = Carbon::today();
+        return $today->diffInDays($returnDate,false);
     }
-
-    // public static function Remaining($x)
-    // {
-    //     $today = today();
-    //     $carbonReturn_at = new Carbon($x);
-    //     $keepfiles = Keepfile::get();
-    //     foreach($keepfiles as $keepfile)
-    //     {
-    //         $return_ats = array($keepfile->id => $keepfile->return_at);
-    //     }
-
-    //     return $reama = $today->diffIndays($carbonReturn_at);
-    // }
-
-
-
-    //     array_map("Remaining",$return_ats);
-    
 }
