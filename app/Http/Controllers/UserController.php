@@ -36,6 +36,7 @@ class UserController extends Controller
             // $query->where('employee_id','like',"%{$employee_num}%");
             $query->where('employee_id','=',$employee_num);
         }
+        
 
         //もしユーザ名があれば
         if($user_name)

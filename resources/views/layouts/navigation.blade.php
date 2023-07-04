@@ -35,10 +35,10 @@
                             </x-slot>
 
                             <x-slot name="content">
-                                <x-dropdown-link :href="route('clientcorporate.index')">
+                                <x-dropdown-link :href="route('clientcorporation.index')">
                                     {{ __('法人一覧') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link :href="route('profile.edit')">
+                                <x-dropdown-link :href="route('client.index')">
                                     {{ __('顧客一覧') }}
                                 </x-dropdown-link>
                             </x-slot>

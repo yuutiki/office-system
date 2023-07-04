@@ -1,5 +1,3 @@
-    {{-- favicon --}}
-    <link rel="shortcut icon" href="{{ asset('/favicon-sales.ico') }}">
     <script src="../path/to/flowbite/dist/_atpicker.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js?ver=3.4.1"></script> 
 
@@ -16,19 +14,6 @@
                 <x-message :message="session('message')"/>
             </div>
         </div>
-        {{-- <x-input-error class="mb-4":messages="$errors->all()"/> --}}
-
-    {{-- バリデーションエラーを画面表示する※componentsを利用しない記述 --}}
-        {{-- <div>  
-            @if ($errors->any())  
-                <ul>  
-                    @foreach ($errors->all() as $error)  
-                        <li class="text-red-600">{{ $error }}</li>  
-                    @endforeach  
-                </ul>  
-            @endif  
-        </div> --}}
-
     </x-slot>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
