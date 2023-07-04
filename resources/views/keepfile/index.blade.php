@@ -11,7 +11,8 @@
                 </x-general-button> --}}
             </div>
         </div>
-    </x-slot>  
+    </x-slot>
+  
 
     {{-- 絞り込み検索 --}}
     <div class="w-5/6  mt-4 border-b-2 mx-auto h-auto dark:text-white">

@@ -41,16 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/clientcorporation','\App\Http\Controllers\ClientCorporationController');
     Route::resource('/client','\App\Http\Controllers\ClientController');
     Route::resource('/user', '\App\Http\Controllers\UserController');
-    // Route::get('/clientcorporation/search', [ClientController::class, 'searchClientCorporations'])->name('clientcorporation.search');
-    // Route::get('/clientcorporation/search', [ClientCorporationController::class, 'search'])->name('clientcorporation.search');
-    // Route::get('/client/create', [ClientController::class, 'create'])->name('client.create');
-    // Route::post('/client', [ClientController::class, 'store'])->name('client.store');
-    // Route::get('/clientcorporation/search', 'ClientCorporationController@search');
-    // Route::get('/corporations/search', [ClientCorporationController::class, 'search'])->name('corporations.search');
     Route::post('/clientcorporation/search', [ClientCorporationController::class, 'search'])->name('clientcorporation.search');
-
-       
-
 });
 
 require __DIR__.'/auth.php';

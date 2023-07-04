@@ -12,7 +12,7 @@ class ClientCorporationController extends Controller
     public function index()
     {
         //sortableとpaginateを組み合わせる際の記述
-        $clientcorporations = ClientCorporation::sortable()->paginate(15); 
+        $clientcorporations = ClientCorporation::sortable()->paginate(5); 
         return view('clientcorporation.index',compact('clientcorporations'));
     }
 
