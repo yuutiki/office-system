@@ -30,13 +30,12 @@
                     </div>
                 </header>
             @endif
-
+            
             <!-- Page Content -->
             <main>
                 {{ $slot }}
             </main>
         </div>
-        
         <footer class="bg-white dark:bg-gray-800">
             <div class="w-full mx-auto max-w-screen-xlflex justify-end">
                 <div class="text-sm text-right text-gray-500  dark:text-gray-400 px-2">

@@ -1,43 +1,23 @@
-    {{-- favicon --}}
-<link rel="shortcut icon" href="{{ asset('/favicon-sales.ico') }}">
-
 <x-app-layout>
-<x-slot name="header">
-    <h2 class="font-semibold text-xl text-gray-100 leading-tight">
-        預託情報の編集画面
-    </h2>
-
-    <div class="flex flex-row-reverse">
-        <x-general-button class="mt-4" onclick="location.href='{{route('keepfile.index', $keepfile)}}'">
-            戻る
-        </x-general-button>
-    </div>
-
-
-    {{-- <x-input-error class="mb-4":messages="$errors->all()"/> --}}
-
-{{-- バリデーションエラーを画面表示する※componentsを利用しない記述 --}}
-    <div>  
-        @if ($errors->any())  
-            <ul>  
-                @foreach ($errors->all() as $error)  
-                    <li class="text-red-600">{{ $error }}</li>  
-                @endforeach  
-            </ul>  
-        @endif  
-    </div>
-
-    <x-message :message="session('message')"/>
-
-
-</x-slot>
+    <x-slot name="header">
+        <div class="flex justify-between">
+            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
+                預託情報の編集
+            </h2>
+            <div class="flex justify-end">
+                <x-general-button onclick="location.href='{{route('keepfile.index', $keepfile)}}'">
+                    戻る
+                </x-general-button>
+                <x-message :message="session('message')"/>
+            </div>
+        </div>
+    </x-slot>
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="mx-4 sm:p-8">
     <form method="post" action="{{route('keepfile.update',$keepfile)}}" enctype="multipart/form-data">
         @csrf
         @method('patch')
-
 
         <label class="relative inline-flex items-center cursor-pointer">
         <input type="hidden" name="is_finished" id="is_finished" value="0">
@@ -95,7 +75,7 @@
             </div>
         </div> --}}
 
-        <x-primary-button class="mt-4">
+        <x-primary-button class="mt-4 mb-4">
             変更を確定
         </x-primary-button>
         
