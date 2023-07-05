@@ -162,9 +162,7 @@ $(function(){
     </div>
 
 
-
-
-    <div class="w-5/6 relative overflow-x-auto shadow-md sm:rounded-lg mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
+    <div class="w-5/6 relative overflow-x-auto shadow-md rounded-lg mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
         <table class="w-full text-sm font-medium text-left text-gray-800 dark:text-gray-400">
 
             {{-- テーブルヘッダ start --}}
@@ -226,8 +224,8 @@ $(function(){
             {{-- テーブルヘッダエンド --}}
 
             {{-- テーブルボディスタート --}}
-            @foreach ($keepfiles as $keepfile)
                 <tbody>
+                    @foreach ($keepfiles as $keepfile)
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
                         <th scope="row" class="pl-4 py-3 whitespace-nowrap font-medium text-gray-900 dark:text-white">
                             {{$keepfile->project_num}}
@@ -274,14 +272,13 @@ $(function(){
                         </td>
                         </td>
                     </tr>
+                    @endforeach
                 </tbody>
-            @endforeach
             {{-- テーブルボディエンド --}}
-
         </table>
     </div>
     <div class="w-5/6 mx-auto">
-        <div class="mt-2 mb-1">
+        <div class="mt-2">
             {{-- {{ $keepfiles->appends(request()->query())->links() }}  //デフォルトページネーション --}} 
             {{ $keepfiles->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
         </div> 

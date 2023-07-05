@@ -32,19 +32,19 @@
             @endif
             
             <!-- Page Content -->
-            <main>
+            <main class="h-full">
                 {{ $slot }}
             </main>
         </div>
-        <footer class="bg-white dark:bg-gray-800">
-            <div class="w-full mx-auto max-w-screen-xlflex justify-end">
-                <div class="text-sm text-right text-gray-500  dark:text-gray-400 px-2">
-                    © 2023 <a href="#" class="hover:underline">Yuu™</a>. All Rights Reserved.
-                </div>
-                <div class="text-sm text-right text-gray-500 dark:text-gray-400 px-2">
-                    Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
-                </div>
-            </div>
-        </footer>
     </body>
+    <footer class="bg-white dark:bg-gray-800">
+        <div class="w-full mx-auto max-w-screen-xlflex justify-end">
+            <div class="text-sm text-right text-gray-500  dark:text-gray-400 px-2">
+                © 2023 <a href="#" class="hover:underline">Yuu™</a>. All Rights Reserved.
+            </div>
+            <div class="text-sm text-right text-gray-500 dark:text-gray-400 px-2">
+                Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
+            </div>
+        </div>
+    </footer>
 </html>

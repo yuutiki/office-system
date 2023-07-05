@@ -12,7 +12,7 @@ class ClientController extends Controller
     public function index()
     {
         //sortableとpaginateを組み合わせる際の記述
-        $clients = Client::paginate(15); 
+        $clients = Client::sortable()->orderBy('client_num','asc')->paginate(15); 
         // $keepdatas = keepdata::orderBy('returndate','asc')->get();　//sortableを使わずに無理やり並べ替える際の記述
         // $keepdatas = keepdata::paginate(10); //paginate単体利用時の記述
         return view('client.index',compact('clients'));
@@ -25,15 +25,28 @@ class ClientController extends Controller
 
     public function store(Request $request)
     {
-        $client = new client();
-        $client->clientcorporation_num = $request->input('clientcorporation_num');
-        $client->clientcorporation_name = $request->input('clientcorporation_name');
-        $client->client_num=$request->client_num;
-        $client->client_name = $request->client_name;
-        $client->client_kana_name = $request->client_kana_name;
+        // フォームからの値を取得
+        $clientcorporationNum = $request->input('clientcorporation_num');
+        $clientName = $request->input('client_name');
+        $clientKanaName = $request->input('client_kana_name');
+
+        // 顧客法人を取得
+        $clientcorporation = ClientCorporation::where('clientcorporation_num', $clientcorporationNum)->first();
+
+        // 顧客番号を生成
+        $clientcorporationId = $clientcorporation->id;
+        $clientNumber = Client::generateClientNumber($clientcorporationId);
+
+        // 顧客を保存
+        $client = new Client([
+            'client_corporation_id' => $clientcorporationId,
+            'client_num' => $clientNumber,
+            'client_name' => $clientName,
+            'client_kana_name' => $clientKanaName,
+        ]);
         $client->save();
 
-        return redirect()->route('client.create')->with('success', '登録しました。');
+        return redirect()->route('client.create')->with('message', '登録しました');
     }
 
     public function show(Client $client)
@@ -47,13 +60,14 @@ class ClientController extends Controller
             'client_num'=>'required|min:2|max:2',
             'client_name'=>'required|max:1024',
             'client_kana_name'=>'required|max:1024',
-            'client_corporation_id'=>'required|max:1024'
+            'clientcorporation_id'=>'required|max:1024'
         ]);
 
         $client = new Client();
         $clientcorporattion = new ClientCorporation();
         // $var = client::with('client_corporate')->where('id',$id)->first();
         $id = 
+        $client->clientcorporation_num=$request->clientcorporation_num;
         $client->client_num=$request->client_num;
         $client->client_name = $request->client_name;
         $client->client_kana_name = $request->client_kana_name;

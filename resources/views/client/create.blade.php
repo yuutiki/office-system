@@ -22,7 +22,7 @@
             <div class="md:flex items-center mt-8">
                 <div class="w-full flex flex-col">
                     <label for="clientcorporation_num" class="font-semibold text-gray-100 leading-none mt-4">法人番号</label>
-                    <input type="text" name="clientcorporation_num" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_num" value="{{old('clientcorporation_num')}}" placeholder="法人番号を検索してください" disabled readonly>
+                    <input type="text" name="clientcorporation_num" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_num" value="{{old('clientcorporation_num')}}" placeholder="法人番号を検索してください" >
                 </div>
 
                 <!-- Modal toggle -->
@@ -35,22 +35,17 @@
                 <label for="clientcorporation_name" class="font-semibold text-gray-100 leading-none mt-4">法人名称</label>
                 <input type="text" name="clientcorporation_name" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_name" value="{{old('clientcorporation_name')}}" placeholder="法人名称を検索してください" disabled readonly>
             </div>
-
-
- 
             <!-- 法人検索ボタン -->
             <button type="button"  onclick="showModal()" class="md:ml-1 md:mt-9 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 法人検索
             </button>
 
-
-
-            <div class="md:flex items-center mt-8">
+            {{-- <div class="md:flex items-center mt-8">
                 <div class="w-full flex flex-col">
                 <label for="client_id" class="font-semibold text-gray-100 leading-none mt-4">顧客ID</label>
                 <input type="text" name="client_id" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="client_id" value="{{old('client_id')}}" placeholder="例）0001">
                 </div>
-            </div>
+            </div> --}}
 
             <div class="w-full flex flex-col">
                 <label for="client_name" class="font-semibold text-gray-100 leading-none mt-4">顧客名称</label>
@@ -58,8 +53,8 @@
             </div>
 
             <div class="w-full flex flex-col">
-                <label for="client_kana" class="font-semibold text-gray-100 leading-none mt-4">顧客カナ名称</label>
-                <input type="text" name="client_kana" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="client_kana" value="{{old('client_kana')}}" placeholder="例）ｶﾞｯｺｳﾎｳｼﾞﾝ ｶﾗｽﾏﾀﾞｲｶﾞｸ">
+                <label for="client_kana_name" class="font-semibold text-gray-100 leading-none mt-4">顧客カナ名称</label>
+                <input type="text" name="client_kana_name" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="client_kana_name" value="{{old('client_kana_name')}}" placeholder="例）ｶﾞｯｺｳﾎｳｼﾞﾝ ｶﾗｽﾏﾀﾞｲｶﾞｸ">
             </div>
             
             <div class="w-full flex flex-col">
@@ -75,53 +70,19 @@
 
 
 
-<!-- create.blade.php -->
-
-<!-- 顧客新規登録フォームのコード -->
-
-    <!-- 法人検索モーダル -->
-    <!-- モーダルのコンテンツ -->
-    {{-- <div id="corporationSearchModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center hidden">
-        <div class="bg-white w-1/2 p-6 rounded shadow-lg">
-        <!-- モーダルのコンテンツをここに追加 -->
-            <!-- 検索フォームのコード -->
-            <form action="{{ route('clientcorporation.search') }}" method="GET">
-                <!-- 検索条件入力フォーム -->
-                <div class="mb-4">
-                    <label for="corporationName" class="block mb-2">法人名称</label>
-                    <input type="text" name="corporationName" id="corporationName" class="form-input">
-                </div>
-                <div class="mb-4">
-                    <label for="corporationNumber" class="block mb-2">法人番号</label>
-                    <input type="text" name="corporationNumber" id="corporationNumber" class="form-input">
-                </div>
-                <!-- 検索ボタン -->
-                <div class="flex justify-end">
-                    <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="searchCorporation()">
-                        検索
-                    </button>
-                    <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="hideModal()">
-                        閉じる
-                    </button>
-                </div>
-            </form>
-            <div id="searchResultsContainer"></div>
-        </div>
-    </div> --}}
-
-
     <!-- Extra Large Modal -->
-    <div id="corporationSearchModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-        <div class="relative w-full max-w-7xl max-h-full">
+    <div id="corporationSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+    {{-- <div id="corporationSearchModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full justify-center items-center"> --}}
+        <div class=" w-70 max-h-full">
             <!-- Modal content -->
             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                 <!-- Modal header -->
                 <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
                     <h3 class="text-xl font-medium text-gray-900 dark:text-white">
-                        Extra Large modal
+                        法人検索画面
                     </h3>
                     <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <svg class="w-3 h-3"  onclick="hideModal()"xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                         </svg>
                         <span class="sr-only">Close modal</span>
@@ -130,19 +91,30 @@
                 <!-- Modal body -->
                 <form action="{{ route('clientcorporation.search') }}" method="GET">
                     <!-- 検索条件入力フォーム -->
-                    <div class="flex justify-start ml-5">
-                        <div class="mb-4">
+                    <div class="flex flex-wrap justify-start ml-5">
+                        <div class="w-full flex flex-col">
                             <label for="corporationName" class="font-semibold text-gray-100 leading-none mt-4">法人名称</label>
-                            <input type="text" name="corporationName" id="corporationName" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1">
+                            <input type="text" name="corporationName" id="corporationName" class="w-auto mt-1 mr-2 py-2 placeholder-gray-500 border border-gray-300 rounded-md">
                         </div>
-                        <div class="mb-4">
-                            <label for="corporationNumber" class="font-semibold text-gray-100 leading-none mt-4 ml-5">法人番号</label>
-                            <input type="text" name="corporationNumber" id="corporationNumber" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1">
+                        <div class="w-full flex flex-col">
+                            <label for="corporationNumber" class="font-semibold text-gray-100 leading-none mt-4">法人番号</label>
+                            <input type="text" name="corporationNumber" id="corporationNumber" class="w-auto mt-1 mr-2 py-2 placeholder-gray-500 border border-gray-300 rounded-md">
                         </div>
                     </div>
                 </form>
 
-                <div id="searchResultsContainer" class="text-white text-center mb-5"></div>
+                <table class="w-full mt-4 text-white mb-5 text-left ml-3">
+                    <thead>
+                      <tr>
+                        <th class="py-2">法人名称</th>
+                        <th class="py-2">法人番号</th>
+                        <th class="py-2"></th>
+                      </tr>
+                    </thead>
+                    <tbody id="searchResultsContainer" class="">
+                      <!-- 検索結果がここに追加されます -->
+                    </tbody>
+                  </table>
                 
                 <!-- Modal footer -->
                 <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
@@ -156,6 +128,9 @@
             </div>
         </div>
     </div>
+
+
+      
 
 
 
@@ -204,13 +179,13 @@
                 searchResultsContainer.innerHTML = '';
 
                 data.forEach(result => {
-                const resultElement = document.createElement('div');
+                const resultElement = document.createElement('tr');
                 resultElement.innerHTML = `
-                    <div>
-                    <span>${result.clientcorporation_name}</span>
-                    <span>${result.clientcorporation_num}</span>
-                    <button type="button" onclick="setCorporation('${result.clientcorporation_name}', '${result.clientcorporation_num}')">選択</button>
-                    </div>
+                    <td class="py-2">${result.clientcorporation_name}</td>
+                    <td class="py-2">${result.clientcorporation_num}</td>
+                    <td class="py-2">
+                    <button type="button" onclick="setCorporation('${result.clientcorporation_name}', '${result.clientcorporation_num}')" class="font-bold text-blue-500 hover:underline">選択</button>
+                    </td>
                 `;
                 searchResultsContainer.appendChild(resultElement);
                 });
