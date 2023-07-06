@@ -13,6 +13,8 @@
         </div>
     </x-slot>
 
+    <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div class="mx-4 sm:p-8">
@@ -22,7 +24,7 @@
             <div class="md:flex items-center mt-8">
                 <div class="w-full flex flex-col">
                     <label for="clientcorporation_num" class="font-semibold text-gray-100 leading-none mt-4">法人番号</label>
-                    <input type="text" name="clientcorporation_num" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_num" value="{{old('clientcorporation_num')}}" placeholder="法人番号を検索してください" >
+                    <input type="text" name="clientcorporation_num" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_num" value="{{old('clientcorporation_num')}}" placeholder="法人番号を検索してください" readonly>
                 </div>
 
                 <!-- Modal toggle -->
@@ -33,7 +35,7 @@
            
             <div class="w-full flex flex-col">
                 <label for="clientcorporation_name" class="font-semibold text-gray-100 leading-none mt-4">法人名称</label>
-                <input type="text" name="clientcorporation_name" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_name" value="{{old('clientcorporation_name')}}" placeholder="法人名称を検索してください" disabled readonly>
+                <input type="text" name="clientcorporation_name" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_name" value="{{old('clientcorporation_name')}}" placeholder="法人名称を検索してください" readonly>
             </div>
             <!-- 法人検索ボタン -->
             <button type="button"  onclick="showModal()" class="md:ml-1 md:mt-9 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -73,7 +75,7 @@
     <!-- Extra Large Modal -->
     <div id="corporationSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden">
     {{-- <div id="corporationSearchModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full justify-center items-center"> --}}
-        <div class=" w-70 max-h-full">
+        <div class=" w-4/5  max-h-full">
             <!-- Modal content -->
             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                 <!-- Modal header -->
@@ -91,7 +93,7 @@
                 <!-- Modal body -->
                 <form action="{{ route('clientcorporation.search') }}" method="GET">
                     <!-- 検索条件入力フォーム -->
-                    <div class="flex flex-wrap justify-start ml-5">
+                    <div class="flex flex-wrap justify-start mx-5">
                         <div class="w-full flex flex-col">
                             <label for="corporationName" class="font-semibold text-gray-100 leading-none mt-4">法人名称</label>
                             <input type="text" name="corporationName" id="corporationName" class="w-auto mt-1 mr-2 py-2 placeholder-gray-500 border border-gray-300 rounded-md">
@@ -102,19 +104,20 @@
                         </div>
                     </div>
                 </form>
-
-                <table class="w-full mt-4 text-white mb-5 text-left ml-3">
-                    <thead>
-                      <tr>
-                        <th class="py-2">法人名称</th>
-                        <th class="py-2">法人番号</th>
-                        <th class="py-2"></th>
-                      </tr>
-                    </thead>
-                    <tbody id="searchResultsContainer" class="">
-                      <!-- 検索結果がここに追加されます -->
-                    </tbody>
-                  </table>
+                <div class=" max-h-80 overflow-y-auto overflow-x-hidden">
+                    <table class="w-full mt-4 text-white mb-5 text-left ml-3 mr-5 text-sm">
+                        <thead>
+                        <tr>
+                            <th class="py-2">法人名称</th>
+                            <th class="py-2">法人番号</th>
+                            <th class="py-2"></th>
+                        </tr>
+                        </thead>
+                        <tbody id="searchResultsContainer" class="">
+                        <!-- 検索結果がここに追加されます -->
+                        </tbody>
+                    </table>
+                </div>
                 
                 <!-- Modal footer -->
                 <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
@@ -144,20 +147,26 @@
     <script>
         // モーダルを表示するための関数
         function showModal() {
-        // モーダルの要素を取得
-        const modal = document.getElementById('corporationSearchModal');
+            // モーダルの要素を取得
+            const modal = document.getElementById('corporationSearchModal');
+            //背後の操作不可を有効
+            const overlay = document.getElementById('overlay').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
 
-        // モーダルを表示するためのクラスを追加
-        modal.classList.remove('hidden');
+            // モーダルを表示するためのクラスを追加
+            modal.classList.remove('hidden');
         }
 
         // モーダルを非表示にするための関数
         function hideModal() {
-        // モーダルの要素を取得
-        const modal = document.getElementById('corporationSearchModal');
+            // モーダルの要素を取得
+            const modal = document.getElementById('corporationSearchModal');
+            //背後の操作不可を解除
+            const overlay = document.getElementById('overlay').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
 
-        // モーダルを非表示にするためのクラスを削除
-        modal.classList.add('hidden');
+            // モーダルを非表示にするためのクラスを削除
+            modal.classList.add('hidden');
         }
 
         // 検索ボタンを押した時の処理
@@ -184,7 +193,7 @@
                     <td class="py-2">${result.clientcorporation_name}</td>
                     <td class="py-2">${result.clientcorporation_num}</td>
                     <td class="py-2">
-                    <button type="button" onclick="setCorporation('${result.clientcorporation_name}', '${result.clientcorporation_num}')" class="font-bold text-blue-500 hover:underline">選択</button>
+                    <button type="button" onclick="setCorporation('${result.clientcorporation_name}', '${result.clientcorporation_num}')" class="font-bold text-blue-500 hover:underline"  tabindex="-1">選択</button>
                     </td>
                 `;
                 searchResultsContainer.appendChild(resultElement);

@@ -25,7 +25,7 @@ class ClientCorporation extends Model
         'clientcorporation_kana_name'
     ];
 
-    public function storeWithTransaction($data)
+    public function storeWithTransaction($data)//法人番号自動採番ロジック
     {
         //DB::transactionメソッドを使用してトランザクションを開始
         return DB::transaction(function () use ($data)
@@ -46,25 +46,22 @@ class ClientCorporation extends Model
             {
                 return false;
             }
-
         });
 
     }
     
+    public function clients()//relation
+    {
+        return $this->hasMany(client::class);
+    }
 
-        //relation
-        public function clients()
-        {
-            return $this->hasMany(client::class);
-        }
-    
-        // public function employee_status()
-        // {
-        //     return $this->belongsTo(Employee_status::class);
-        // }
-    
-        // public function keepfiles()
-        // {
-        //     return $this->belongsToMany(Keepfile::class);
-        // }
+    // public function employee_status()
+    // {
+    //     return $this->belongsTo(Employee_status::class);
+    // }
+
+    // public function keepfiles()
+    // {
+    //     return $this->belongsToMany(Keepfile::class);
+    // }
 }

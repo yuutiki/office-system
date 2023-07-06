@@ -99,7 +99,7 @@ return [
     'password'             => '正しいパスワードを指定してください。',
     'present'              => ':attributeが存在していません。',
     'regex'                => ':attributeに正しい形式を指定してください。',
-    'required'             => ':attributeは必ず指定してください。',
+    'required'             => ':attributeは必ず入力してください。',
     'required_if'          => ':otherが:valueの場合、:attributeも指定してください。',
     'required_unless'      => ':otherが:valuesでない場合、:attributeを指定してください。',
     'required_with'        => ':valuesを指定する場合は、:attributeも指定してください。',
@@ -124,6 +124,7 @@ return [
     'uploaded'             => ':attributeのアップロードに失敗しました。',
     'url'                  => ':attributeに正しい形式を指定してください。',
     'uuid'                 => ':attributeに有効なUUIDを指定してください。',
+
 
     // 'accepted' => 'The :attribute field must be accepted.',
     // 'accepted_if' => 'The :attribute field must be accepted when :other is :value.',
@@ -302,9 +303,9 @@ return [
         'keep_at' => '預託日',
         'return_at' => '返却日',
         'memo' => '備考',
-        "client_corporate_id" => "法人ID",
-        "client_corporate_name" => "法人名称",
-        "client_corporate_kana" => "法人カナ名称"
+        "clientcorporation_num" => "法人番号",
+        "clientcorporation_name" => "法人名称",
+        "clientcorporation_kana_name" => "法人カナ名称"
     ],
 
 ];

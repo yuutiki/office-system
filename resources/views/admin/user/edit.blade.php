@@ -1,6 +1,3 @@
-    {{-- favicon --}}
-<link rel="shortcut icon" href="{{ asset('/favicon-sales.ico') }}">
-
 <x-app-layout>
 <x-slot name="header">
     <div class="flex justify-between">
