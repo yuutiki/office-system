@@ -52,7 +52,7 @@ class ClientCorporation extends Model
     
     public function clients()//relation
     {
-        return $this->hasMany(client::class);
+        return $this->hasMany(Client::class);
     }
 
     // public function employee_status()

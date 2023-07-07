@@ -9,12 +9,10 @@ use Illuminate\pagination\paginator;//add
 
 class ClientController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        //sortableとpaginateを組み合わせる際の記述
-        $clients = Client::sortable()->orderBy('client_num','asc')->paginate(15); 
-        // $keepdatas = keepdata::orderBy('returndate','asc')->get();　//sortableを使わずに無理やり並べ替える際の記述
-        // $keepdatas = keepdata::paginate(10); //paginate単体利用時の記述
+        $clients = Client::with(['clientCorporation'])->sortable()->orderBy('client_num','asc')->paginate(15); 
+
         return view('client.index',compact('clients'));
     }
 

@@ -258,7 +258,7 @@ $(function(){
         <div class="mt-1 mb-1 ml-2">
         {{-- {{ $keepdatas->appends(request()->query())->links() }}   --}}
         {{ $clientcorporations->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
-        </div>         
+        </div>
     </div>
 
 </x-app-layout>

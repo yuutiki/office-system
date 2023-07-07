@@ -238,10 +238,11 @@ $(function(){
                             {{$client->client_num}}
                         </th>
                         <td class="px-1 py-4">
-                            {{$client->client_name}}
+                            {{$client->clientCorporation->clientcorporation_name}}
                         </td>
                         <td class="px-1 py-4">
                             {{$client->client_name}}
+
                         </td>
                         {{-- <td class="px-6 py-4">
                             {{$client->client_corporate_kana}}

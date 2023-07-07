@@ -109,6 +109,8 @@ class KeepfileController extends Controller
 
     public function destroy(string $id)
     {
-        //
+        $keepfile = keepfile::find($id);
+        $keepfile->delete();
+        return redirect()->route('keepfile.index')->with('message', '削除しました');
     }
 }

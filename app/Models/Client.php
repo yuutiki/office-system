@@ -65,7 +65,7 @@ class Client extends Model
 
 
     //relation
-    public function clientcorporation()
+    public function clientCorporation()
     {
         return $this->belongsTo(ClientCorporation::class);
     }
