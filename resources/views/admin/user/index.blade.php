@@ -144,7 +144,7 @@
 
 
 
-    <div class="w-5/6 relative overflow-x-auto shadow-md sm:rounded-lg mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
+    <div class="w-5/6 relative overflow-x-auto shadow-md rounded-lg mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
         <table class="w-full text-sm font-medium text-left text-gray-800 dark:text-gray-400">
 
             {{-- テーブルヘッダ start --}}
@@ -208,57 +208,50 @@
             {{-- テーブルヘッダ end --}}
 
             {{-- テーブルボディスタート --}}
-            @foreach ($users as $user)
-                <tbody>
-                    <tr class="bg-white border-b dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 dark:text-white dark:border-gray-700">
-                        <td class="pl-6 py-3 whitespace-nowrap mr-2">
-                            {{$user->employee_id}}
-                        </td>
-                        <td  class="px-1 py-3 whitespace-nowrap mr-2">
-                            {{$user->name}}
-                        </td>
-                        <td class="px-1 py-3 whitespace-nowrap mr-2">
-                            {{$user->email}}
-                        </td>
-                        <td class="px-1 py-3 whitespace-nowrap mr-2">
-                            {{$user->role->role_name}}
-                        </td>
-                        <td class="px-1 py-3 whitespace-nowrap mr-2">
-                            {{$user->last_login_at}}
-                        </td>
-                        <td class="px-1 py-3 whitespace-nowrap mr-2">
-                            {{$user->employee_status->employee_status_num}}:
-                            {{$user->employee_status->employee_status_name}}
-                        </td>
-                        <td class="px-1 py-3 whitespace-nowrap mr-2">
-                            {{$user->created_at->diffForHumans()}}
-                        </td>
+            <tbody>
+                @foreach ($users as $user)
+                <tr class="bg-white border-b dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 dark:text-white dark:border-gray-700">
+                    <td class="pl-6 py-3 whitespace-nowrap mr-2">
+                        {{$user->employee_id}}
+                    </td>
+                    <td  class="px-1 py-3 whitespace-nowrap mr-2">
+                        {{$user->name}}
+                    </td>
+                    <td class="px-1 py-3 whitespace-nowrap mr-2">
+                        {{$user->email}}
+                    </td>
+                    <td class="px-1 py-3 whitespace-nowrap mr-2">
+                        {{$user->role->role_name}}
+                    </td>
+                    <td class="px-1 py-3 whitespace-nowrap mr-2">
+                        {{$user->last_login_at}}
+                    </td>
+                    <td class="px-1 py-3 whitespace-nowrap mr-2">
+                        {{$user->employee_status->employee_status_num}}:
+                        {{$user->employee_status->employee_status_name}}
+                    </td>
+                    <td class="px-1 py-3 whitespace-nowrap mr-2">
+                        {{$user->created_at->diffForHumans()}}
+                    </td>
 
-                        <td class="py-3 text-center mr-2">
-                            <a href="{{route('user.edit',$user)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">編集</a>
-                        </td>
+                    <td class="py-3 text-center mr-2">
+                        <a href="{{route('user.edit',$user)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">編集</a>
+                    </td>
 
-
-                        <td class="py-3">
-                            <form action="{{route('user.destroy',$user)}}" method="POST" class="text-center m-auto">
-                                @csrf
-                                @method('delete')
-                                <button type="submit" onClick="return confirm('本当に削除しますか？')" class=" font-medium text-red-600 dark:text-red-500 hover:underline">削除</button>
-                            </form>
-                        </td>
-
-                    </tr>
-                </tbody>
-            @endforeach
-            {{-- テーブルボディエンド --}}
-
+                    <td class="py-3">
+                        <form action="{{route('user.destroy',$user)}}" method="POST" class="text-center m-auto">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" onClick="return confirm('本当に削除しますか？')" class=" font-medium text-red-600 dark:text-red-500 hover:underline">削除</button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
         </table> 
-    </div>
-    <div class="w-5/6 mx-auto">
-        <div class="mt-2 mb-1">
+        <div class="mt-8 mb-8">
             {{-- {{ $users->appends(request()->query())->links() }}  //デフォルトページネーション --}} 
             {{ $users->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
         </div>
     </div>
-
 </x-app-layout>
