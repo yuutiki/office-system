@@ -286,4 +286,5 @@ $(function(){
         {{ $clients->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
         </div> 
     </div>
+    
 </x-app-layout>

@@ -282,13 +282,13 @@ $(function(){
                 </tbody>
             {{-- テーブルボディエンド --}}
         </table>
-    </div>
-    <div class="w-5/6 mx-auto">
-        <div class="mt-2">
+        <div class="mt-8 mb-8">
             {{-- {{ $keepfiles->appends(request()->query())->links() }}  //デフォルトページネーション --}} 
             {{ $keepfiles->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
         </div> 
     </div>
+
+
   
 
 </x-app-layout>
