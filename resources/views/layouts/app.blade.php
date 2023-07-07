@@ -32,7 +32,7 @@
             @endif
             
             <!-- Page Content -->
-            <main class="h-full">
+            <main class="h-auto">
                 {{ $slot }}
             </main>
         </div>
