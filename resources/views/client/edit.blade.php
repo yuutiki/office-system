@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
-                顧客登録
+                顧客編集
             </h2>
             <div class="flex justify-end">
                 <x-general-button onclick="location.href='{{route('client.index')}}'">
@@ -160,7 +160,7 @@
                     <li class="mr-2" role="presentation">
                         <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">基本情報</button>
                     </li>
-                    {{-- <li class="mr-2" role="presentation">
+                    <li class="mr-2" role="presentation">
                         <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">契約情報</button>
                     </li>
                     <li class="mr-2" role="presentation">
@@ -168,7 +168,7 @@
                     </li>
                     <li role="presentation">
                         <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts" aria-selected="false">環境情報</button>
-                    </li> --}}
+                    </li>
                 </ul>
             </div>
             <div id="myTabContent">
@@ -296,6 +296,12 @@
             </div>
 
 
+            
+
+
+            
+
+
             <x-primary-button class="mt-4">
                 新規登録する
             </x-primary-button>
@@ -341,16 +347,16 @@
                     </div>
                 </form>
                 <div class=" max-h-80 overflow-y-auto overflow-x-hidden">
-                    <table class="w-full mt-4 text-white mb-5 text-left text-sm">
+                    <table class="w-full mt-4 text-white mb-5 text-left ml-3 mr-5 text-sm">
                         <thead>
                         <tr>
+                            <th class="py-1.5">法人名称</th>
+                            <th class="py-1.5">法人番号</th>
                             <th class="py-1.5"></th>
-                            <th class="py-1.5 ml-2">法人名称</th>
-                            <th class="py-1.5 whitespace-nowrap">法人番号</th>
                         </tr>
                         </thead>
-                        <tbody class="" id="searchResultsContainer">                          
-                                <!-- 検索結果がここに追加されます -->
+                        <tbody id="searchResultsContainer" class="">
+                        <!-- 検索結果がここに追加されます -->
                         </tbody>
                     </table>
                 </div>
@@ -367,6 +373,16 @@
             </div>
         </div>
     </div>
+
+
+      
+
+
+
+
+
+
+
 
 
     
@@ -415,13 +431,12 @@
 
                 data.forEach(result => {
                 const resultElement = document.createElement('tr');
-                resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
                 resultElement.innerHTML = `
-                    <td class="py-2 ml-1">
-                        <button type="button" onclick="setCorporation('${result.clientcorporation_name}', '${result.clientcorporation_num}')" class="font-bold text-blue-500 hover:underline whitespace-nowrap" tabindex="-1">選択</button>
+                    <td class="py-2">${result.clientcorporation_name}</td>
+                    <td class="py-2">${result.clientcorporation_num}</td>
+                    <td class="py-2">
+                    <button type="button" onclick="setCorporation('${result.clientcorporation_name}', '${result.clientcorporation_num}')" class="font-bold text-blue-500 hover:underline"  tabindex="-1">選択</button>
                     </td>
-                    <td class="py-2 ml-2">${result.clientcorporation_name}</td>
-                    <td class="py-2 ml-2">${result.clientcorporation_num}</td>
                 `;
                 searchResultsContainer.appendChild(resultElement);
                 });

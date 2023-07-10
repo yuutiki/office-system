@@ -241,7 +241,7 @@ $(function(){
                 <tbody>
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
                         <td class="px-4 py-4 text-center">
-                            <a href="{{route('client.create',$client)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">編集</a>
+                            <a href="{{route('client.edit',$client)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">編集</a>
                         </td>
                         <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$client->client_num}}
