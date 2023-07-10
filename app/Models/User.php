@@ -76,4 +76,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Keepfile::class);
     }
+
+    public function clients()
+    {
+        return $this->hasmany(Client::class);
+    }
 }

@@ -15,7 +15,7 @@ class ClientCorporationController extends Controller
 {
     public function index(Request $request)//検索用にrequestを受取る
     {
-        $per_page = 50; // １ページごとの表示件数
+        $per_page = 25; // １ページごとの表示件数
 
         //検索フォームに入力された値を取得
         $clientcorporation_num = $request->input('clientcorporation_num');

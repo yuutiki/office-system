@@ -8,9 +8,6 @@ use App\Models\Employee_status;
 
 class EmployeeStatusSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         Employee_status::create([

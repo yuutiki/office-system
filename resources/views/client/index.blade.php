@@ -38,7 +38,7 @@
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                             </div>
-                            <input type="search" name="search" value="@if (isset($search)){{ $search }}@endif" class="w-full p-1.5 pl-10  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="プロジェクト№" >
+                            <input type="search" name="search" value="@if (isset($search)){{ $search }}@endif" class="w-full p-1.5 pl-10  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="顧客番号" >
                         </div>
                         <div class="relative w-auto mt-2 ml-2">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -48,13 +48,12 @@
                         </div>
                         {{-- テキスト検索 end --}}
                         {{-- セレクト検索 start --}}
-                            
-                            {{-- <select  name="finish" value="0" class="mt-2 w-auto ml-2 py-1.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <select  name="user_id" value="0" class="mt-2 w-auto ml-2 py-1.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option value="">担当者全て</option>
-                                @foreach($users as $s_user)
-                                    <option value="{{$s_user->id}}">{{$s_user->name}}</option>
+                                @foreach($users as $user)
+                                    <option value="{{$user->id}}">{{$user->name}}</option>
                                 @endforeach
-                            </select> --}}
+                            </select>
                         </div>
                         {{-- セレクト検索 end --}}
                         {{-- 日付範囲検索 start --}}
@@ -111,9 +110,9 @@ $(function(){
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
         </button>
-        {{-- <div class="float-left font-medium dark:text-white">
+        <div class="float-left font-medium dark:text-white">
             {{ $count }}件
-        </div> --}}
+        </div>
     </div>
     <!-- Dropdown menu -->
     <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
@@ -175,6 +174,9 @@ $(function(){
             {{-- テーブルヘッダ start --}}
             <thead class="text-sm text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
                 <tr>
+                    <th scope="col" class="px-6 py-3 whitespace-nowrap">
+                        <span class="sr-only">編集</span>
+                    </th>
                     <th scope="col" class="px-4 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             @sortablelink('client_num','顧客番号')
@@ -213,7 +215,13 @@ $(function(){
                     </th> --}}
                     <th scope="col" class="px-2 py-3 whitespace-nowrap">
                         <div class="flex items-center">
-                            作成日
+                            営業担当
+                            {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
+                        </div>
+                    </th>
+                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
+                        <div class="flex items-center">
+                            取引種別
                             {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
                         </div>
                     </th>
@@ -223,9 +231,7 @@ $(function(){
                             {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
                         </div>
                     </th>
-                    <th scope="col" class="px-6 py-3 whitespace-nowrap">
-                        <span class="sr-only">編集</span>
-                    </th>
+
                     <th scope="col" class="px-6 py-3 whitespace-nowrap">
                         <span class="sr-only">顧客追加</span>
                     </th>
@@ -234,6 +240,9 @@ $(function(){
             @foreach ($clients as $client)
                 <tbody>
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
+                        <td class="px-4 py-4 text-center">
+                            <a href="{{route('client.create',$client)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">編集</a>
+                        </td>
                         <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$client->client_num}}
                         </th>
@@ -247,13 +256,13 @@ $(function(){
                         {{-- <td class="px-6 py-4">
                             {{$client->client_corporate_kana}}
                         </td> --}}
-                        {{-- <td class="px-4 py-4">
-                            {{$keepdata->keepdate}}
+                        <td class="px-4 py-4">
+                            {{$client->user->name}}
                         </td>
                         <td class="px-1 py-4">
-                            {{$keepdata->returndate}}
+                            {{$client->tradestatus->name}}
                         </td>
-                        <td class="px-2 py-4">
+                        {{-- <td class="px-2 py-4">
                             {{$keepdata->user->name}}
                         </td>
                         @if($keepdata->status_flag == "0")
@@ -265,17 +274,15 @@ $(function(){
                                 返却済
                             </td>
                         @endif --}}
-                        <td class="px-2 py-4">
+                        {{-- <td class="px-2 py-4">
                             {{$client->created_at->format('y-m-d')}}
-                        </td>
+                        </td> --}}
                         <td class="px-2 py-4">
                             {{$client->updated_at->format('y-m-d')}}
                         </td>
+
                         <td class="px-4 py-4 text-center">
-                            <a href="{{route('client.create',$client)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">編集</a>
-                        </td>
-                        <td class="px-4 py-4 text-center">
-                            <a href="{{route('client.create',$client)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">顧客追加</a>
+                            <a href="{{route('client.create',$client)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">削除</a>
                         </td>
                     </tr>
                 </tbody>

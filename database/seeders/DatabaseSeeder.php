@@ -13,6 +13,12 @@ class DatabaseSeeder extends Seeder
         $this->call(EmployeeStatusSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(T_KeepfileSeeder::class);
+        $this->call(DepartmentSeeder::class);
+        $this->call(InstallationTypeSeeder::class);
+        $this->call(TradeStatusSeeder::class);
+        $this->call(ClientTypeSeeder::class);
+        $this->call(PrefectureSeeder::class);
+
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

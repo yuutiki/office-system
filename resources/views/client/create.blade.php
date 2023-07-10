@@ -21,54 +21,187 @@
         <form method="post" action="{{route('client.store')}}" enctype="multipart/form-data">
             @csrf
 
-            <div class="md:flex items-center mt-8">
-                <div class="w-full flex flex-col">
-                    <label for="clientcorporation_num" class="font-semibold text-gray-100 leading-none mt-4">法人番号</label>
-                    <input type="text" name="clientcorporation_num" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_num" value="{{old('clientcorporation_num')}}" placeholder="法人番号を検索してください" readonly>
+            <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+                <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
+                    <li class="mr-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">基本情報</button>
+                    </li>
+                    <li class="mr-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">契約情報</button>
+                    </li>
+                    <li class="mr-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">導入システム</button>
+                    </li>
+                    <li role="presentation">
+                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts" aria-selected="false">環境情報</button>
+                    </li>
+                </ul>
+            </div>
+            <div id="myTabContent">
+                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <!-- 法人検索ボタン -->
+                    <button type="button"  onclick="showModal()" class="md:ml-1 md:mt-1 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        法人検索
+                    </button>
+                    <div class="md:flex items-center mt-1">
+                        <div class="w-full flex flex-col">
+                            <label for="clientcorporation_num" class="font-semibold text-gray-100 leading-none mt-4">法人番号</label>
+                            <input type="text" name="clientcorporation_num" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_num" value="{{old('clientcorporation_num')}}" placeholder="法人検索してください" readonly>
+                        </div>
+        
+                        <!-- Modal toggle -->
+                        {{-- <button id="openModal" data-modal-target="extralarge-modal" data-modal-toggle="extralarge-modal" class="md:ml-1 md:mt-9 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                            法人検索
+                        </button> --}}
+                    </div>
+                   
+                    <div class="w-full flex flex-col">
+                        <label for="clientcorporation_name" class="font-semibold text-gray-100 leading-none mt-4">法人名称</label>
+                        <input type="text" name="clientcorporation_name" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_name" value="{{old('clientcorporation_name')}}" placeholder="法人検索してください" readonly>
+                    </div>
+
+                    <div class="w-full flex flex-col">
+                        <label for="client_name" class="font-semibold text-gray-100 leading-none mt-4">顧客名称</label>
+                        <input type="text" name="client_name" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="client_name" value="{{old('client_name')}}" placeholder="例）烏丸大学">
+                    </div>
+        
+                    <div class="w-full flex flex-col">
+                        <label for="client_kana_name" class="font-semibold text-gray-100 leading-none mt-4">顧客カナ名称</label>
+                        <input type="text" name="client_kana_name" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="client_kana_name" value="{{old('client_kana_name')}}" placeholder="例）カラスマダイガク">
+                    </div>
+                    
+                    <div class="w-full flex flex-col">
+                        <label for="memo" class="font-semibold text-gray-100 leading-none mt-4">備考</label>
+                        <textarea name="memo" class="w-auto py-2 border border-gray-300 rounded-md mt-1 placeholder-gray-500" id="memo" value="{{old('memo')}}" cols="30" rows="5"></textarea>
+                    </div>
+
+                    <div class="w-full flex flex-col">
+                        <label for="client_name" class="font-semibold text-gray-100 leading-none mt-4">商流</label>
+                        <input type="text" name="client_name" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="client_name" value="{{old('client_name')}}" placeholder="">
+                    </div>
+
+                    <div class="w-full flex flex-col">
+                        <label for="client_name" class="font-semibold text-gray-100 leading-none mt-4">郵便番号</label>
+                        <input type="text" name="client_name" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="client_name" value="{{old('client_name')}}" placeholder="">
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <label for="client_name" class="font-semibold text-gray-100 leading-none mt-4">都道府県</label>
+                        <input type="text" name="client_name" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="client_name" value="{{old('client_name')}}" placeholder="">
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <label for="client_name" class="font-semibold text-gray-100 leading-none mt-4">住所1</label>
+                        <input type="text" name="client_name" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="client_name" value="{{old('client_name')}}" placeholder="">
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <label for="client_name" class="font-semibold text-gray-100 leading-none mt-4">住所2</label>
+                        <input type="text" name="client_name" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="client_name" value="{{old('client_name')}}" placeholder="">
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <label for="client_name" class="font-semibold text-gray-100 leading-none mt-4">住所3</label>
+                        <input type="text" name="client_name" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="client_name" value="{{old('client_name')}}" placeholder="">
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <label for="client_name" class="font-semibold text-gray-100 leading-none mt-4">代表TEL</label>
+                        <input type="text" name="client_name" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="client_name" value="{{old('client_name')}}" placeholder="">
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <label for="client_name" class="font-semibold text-gray-100 leading-none mt-4">学生数</label>
+                        <input type="text" name="client_name" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="client_name" value="{{old('client_name')}}">
+                    </div>
+
+                    <label for="department" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">管轄事業部</label>
+                    <select id="department" name="department" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected value="">未選択</option>
+                        @foreach($departments as $department)
+                        <option value="{{ $department->prefix_code }}">{{ $department->department_name }}</option>
+                        @endforeach
+                    </select>
+                    @error('department')
+                    <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+        
+                    <label for="user_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">営業担当</label>
+                    <select id="user_id" name="user_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected value="">未選択</option>
+                        @foreach($users as $user)
+                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('user')
+                    <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+                    <label for="trade_status_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">取引状態</label>
+                    <select id="trade_status_id" name="trade_status_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected value="">未選択</option>
+                        @foreach($tradeStatuses as $tradeStatus)
+                        <option value="{{ $tradeStatus->id }}">{{ $tradeStatus->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('trade_status_id')
+                    <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+                    <label for="installation_type_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">設置種別</label>
+                    <select id="installation_type_id" name="installation_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected value="">未選択</option>
+                        @foreach($installationTypes as $installationType)
+                        <option value="{{ $installationType->id }}">{{ $installationType->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('installation_type_id')
+                    <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+                    <label for="client_type_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">顧客種別</label>
+                    <select id="client_type_id" name="client_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected value="">未選択</option>
+                        @foreach($clientTypes as $clientType)
+                        <option value="{{ $clientType->id }}">{{ $clientType->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('client_type_id')
+                    <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+
                 </div>
-
-                <!-- Modal toggle -->
-                {{-- <button id="openModal" data-modal-target="extralarge-modal" data-modal-toggle="extralarge-modal" class="md:ml-1 md:mt-9 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                    法人検索
-                </button> --}}
-            </div>
-           
-            <div class="w-full flex flex-col">
-                <label for="clientcorporation_name" class="font-semibold text-gray-100 leading-none mt-4">法人名称</label>
-                <input type="text" name="clientcorporation_name" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_name" value="{{old('clientcorporation_name')}}" placeholder="法人名称を検索してください" readonly>
-            </div>
-            <!-- 法人検索ボタン -->
-            <button type="button"  onclick="showModal()" class="md:ml-1 md:mt-9 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                法人検索
-            </button>
-
-            {{-- <div class="md:flex items-center mt-8">
-                <div class="w-full flex flex-col">
-                <label for="client_id" class="font-semibold text-gray-100 leading-none mt-4">顧客ID</label>
-                <input type="text" name="client_id" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="client_id" value="{{old('client_id')}}" placeholder="例）0001">
+                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                    <p class="text-sm text-gray-500 dark:text-gray-400">請求区分、契約日、解約日、契約金額、サポートページID、PW、暗号、契約備考、契約書添付、契約履歴</p>
                 </div>
-            </div> --}}
+                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                    <p class="text-sm text-gray-500 dark:text-gray-400">バージョン、リビジョン、初期導入日、前回VUP日、クライアントライセンス、カスタマイズ区分、備考、システムはテーブル表示か？</p>
+                </div>
+                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
+                    <p class="text-sm text-gray-500 dark:text-gray-400">インフラ区分（オンプレ、クラウド、クラウドサービス）</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Windows Server</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">SQL Server</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">SQL インスタンス名：SQLSERVER2019</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">SQL ユーザ名：sa</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">SQL パスワード：※※※※</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">セキュリティソフト</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">リモート種別：（RDP直、RDP（VPN）、NTR）</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">VPN方法：FortiClient</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">フォルダ構成</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">バックアップ情報</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">備考</p>
 
-            <div class="w-full flex flex-col">
-                <label for="client_name" class="font-semibold text-gray-100 leading-none mt-4">顧客名称</label>
-                <input type="text" name="client_name" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="client_name" value="{{old('client_name')}}" placeholder="例）学校顧客 烏丸大学">
+
+                </div>
             </div>
 
-            <div class="w-full flex flex-col">
-                <label for="client_kana_name" class="font-semibold text-gray-100 leading-none mt-4">顧客カナ名称</label>
-                <input type="text" name="client_kana_name" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="client_kana_name" value="{{old('client_kana_name')}}" placeholder="例）ｶﾞｯｺｳﾎｳｼﾞﾝ ｶﾗｽﾏﾀﾞｲｶﾞｸ">
-            </div>
+
             
-            <div class="w-full flex flex-col">
-                <label for="memo" class="font-semibold text-gray-100 leading-none mt-4">備考</label>
-                <textarea name="memo" class="w-auto py-2 border border-gray-300 rounded-md mt-1 placeholder-gray-500" id="memo" value="{{old('memo')}}" cols="30" rows="10" placeholder="例）配下の学校"></textarea>
-            </div>
+
+
+            
+
+
             <x-primary-button class="mt-4">
                 新規登録する
-            </x-primary-button>           
+            </x-primary-button>
         </form>
     </div>
 </div>
+
+
+
 
 
 
