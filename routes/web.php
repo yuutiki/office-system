@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/clientcorporation','\App\Http\Controllers\ClientCorporationController');
     Route::resource('/client','\App\Http\Controllers\ClientController');
     Route::resource('/user', '\App\Http\Controllers\UserController');
+    // Route::resource('/dashboard', '\App\Http\Controllers\DashboardController');
     Route::post('/clientcorporation/search', [ClientCorporationController::class, 'search'])->name('clientcorporation.search');
     Route::post('/clientcorporation/upload', [ClientCorporationController::class, 'upload'])->name('clientcorporation.upload');
 });

@@ -241,48 +241,48 @@ $(function(){
                 <tbody>
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
                         <td class="px-4 py-4 text-center">
-                            <a href="{{route('client.edit',$client)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">編集</a>
+                            <a href="{{route('client.edit',$client)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline whitespace-nowrap">編集</a>
                         </td>
                         <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$client->client_num}}
                         </th>
-                        <td class="px-1 py-4">
+                        <td class="px-1 py-4 whitespace-nowrap">
                             {{$client->clientCorporation->clientcorporation_name}}
                         </td>
-                        <td class="px-1 py-4">
+                        <td class="px-1 py-4 whitespace-nowrap">
                             {{$client->client_name}}
 
                         </td>
-                        {{-- <td class="px-6 py-4">
+                        {{-- <td class="px-6 py-4 whitespace-nowrap">
                             {{$client->client_corporate_kana}}
                         </td> --}}
-                        <td class="px-4 py-4">
+                        <td class="px-4 py-4 whitespace-nowrap">
                             {{$client->user->name}}
                         </td>
-                        <td class="px-1 py-4">
+                        <td class="px-1 py-4 whitespace-nowrap">
                             {{$client->tradestatus->name}}
                         </td>
-                        {{-- <td class="px-2 py-4">
+                        {{-- <td class="px-2 py-4 whitespace-nowrap">
                             {{$keepdata->user->name}}
                         </td>
                         @if($keepdata->status_flag == "0")
-                            <td class="px-2 py-4 text-fuchsia-300">
+                            <td class="px-2 py-4 whitespace-nowrap text-fuchsia-300">
                                 未返却
                             </td>
                         @else
-                            <td class="px-2 py-4">
+                            <td class="px-2 py-4 whitespace-nowrap">
                                 返却済
                             </td>
                         @endif --}}
-                        {{-- <td class="px-2 py-4">
+                        {{-- <td class="px-2 py-4 whitespace-nowrap">
                             {{$client->created_at->format('y-m-d')}}
                         </td> --}}
-                        <td class="px-2 py-4">
+                        <td class="px-2 py-4 whitespace-nowrap">
                             {{$client->updated_at->format('y-m-d')}}
                         </td>
 
                         <td class="px-4 py-4 text-center">
-                            <a href="{{route('client.create',$client)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">削除</a>
+                            <a href="{{route('client.create',$client)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline whitespace-nowrap">削除</a>
                         </td>
                     </tr>
                 </tbody>

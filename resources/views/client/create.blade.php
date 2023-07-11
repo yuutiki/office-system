@@ -179,26 +179,31 @@
 
 
 
-                    <div class="w-full flex flex-col">
-                        <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">郵便番号</label>
-                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code')}}" placeholder="">
+
+                    {{-- <script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script> --}}
+                    <div class="h-adr">
+                        {{-- <span class="p-country-name" style="display:none;">Japan</span> --}}
+                        <div class="w-full flex flex-col">
+                            <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password p-postal-code">郵便番号</label>
+                            <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code')}}" placeholder="">
+                        </div>
+                        <div class="w-full flex flex-col">
+                            <label for="head_prefecture" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4 ">都道府県</label>
+                            <input type="text" name="head_prefecture" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1 p-region" id="head_prefecture" value="{{old('head_prefecture')}}" placeholder="">
+                        </div>
+                        <div class="w-full flex flex-col">
+                            <label for="head_addre1" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">本部所在地</label>
+                            <input type="text" name="head_addre1" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1 p-locality p-street-address p-extended-address" id="head_addre1" value="{{old('head_addre1')}}" placeholder="">
+                        </div>
                     </div>
-                    <div class="w-full flex flex-col">
-                        <label for="head_prefecture" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">都道府県</label>
-                        <input type="text" name="head_prefecture" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_prefecture" value="{{old('head_prefecture')}}" placeholder="">
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="head_address1" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">住所1</label>
-                        <input type="text" name="head_address1" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_address1" value="{{old('head_address1')}}" placeholder="">
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="head_address2" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">住所2</label>
-                        <input type="text" name="head_address2" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_address2" value="{{old('head_address2')}}" placeholder="">
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="head_address3" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">住所3</label>
-                        <input type="text" name="head_address3" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_address3" value="{{old('head_address3')}}" placeholder="">
-                    </div>
+                    {{-- <div class="w-full flex flex-col">
+                        <label for="head_addre2" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4"></label>
+                        <input type="text" name="head_addre2" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_addre2" value="{{old('head_addre2')}}" placeholder="">
+                    </div> --}}
+                    {{-- <div class="w-full flex flex-col">
+                        <label for="head_addre3" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4"></label>
+                        <input type="text" name="head_addre3" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_addre3" value="{{old('head_addre3')}}" placeholder="">
+                    </div> --}}
                     <div class="w-full flex flex-col">
                         <label for="head_tel" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-8">代表TEL</label>
                         <input type="text" name="head_tel" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_tel" value="{{old('head_tel')}}" placeholder="">
@@ -344,8 +349,8 @@
                     <table class="w-full mt-4 text-white mb-5 text-left text-sm">
                         <thead>
                         <tr>
-                            <th class="py-1.5"></th>
-                            <th class="py-1.5 ml-2">法人名称</th>
+                            {{-- <th class="py-1.5"></th> --}}
+                            <th class="py-1.5 pl-5">法人名称</th>
                             <th class="py-1.5 whitespace-nowrap">法人番号</th>
                         </tr>
                         </thead>
@@ -417,10 +422,7 @@
                 const resultElement = document.createElement('tr');
                 resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
                 resultElement.innerHTML = `
-                    <td class="py-2 ml-1">
-                        <button type="button" onclick="setCorporation('${result.clientcorporation_name}', '${result.clientcorporation_num}')" class="font-bold text-blue-500 hover:underline whitespace-nowrap" tabindex="-1">選択</button>
-                    </td>
-                    <td class="py-2 ml-2">${result.clientcorporation_name}</td>
+                    <td class="py-2 pl-5 cursor-pointer" onclick="setCorporation('${result.clientcorporation_name}', '${result.clientcorporation_num}')">${result.clientcorporation_name}</td>
                     <td class="py-2 ml-2">${result.clientcorporation_num}</td>
                 `;
                 searchResultsContainer.appendChild(resultElement);
@@ -439,3 +441,10 @@
     </script>
  
 </x-app-layout>
+
+
+{{-- <td class="py-2 ml-1">
+    <button type="button" onclick="setCorporation('${result.clientcorporation_name}', '${result.clientcorporation_num}')" class="font-bold text-blue-500 hover:underline whitespace-nowrap" tabindex="-1">選択</button>
+</td>
+<td class="py-2 ml-2">${result.clientcorporation_name}</td>
+<td class="py-2 ml-2">${result.clientcorporation_num}</td> --}}

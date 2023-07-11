@@ -65,9 +65,9 @@ class ClientController extends Controller
             $client->client_num = $clientNumber;// 採番した顧客番号をセット
             $client->head_post_code = $request->head_post_code;
             $client->head_prefecture = $request->head_prefecture;
-            $client->head_address1 = $request->head_address1;
-            $client->head_address2 = $request->head_address2;
-            $client->head_address3 = $request->head_address3;
+            $client->head_address1 = $request->head_addre1;
+            $client->head_address2 = $request->head_addre2;
+            $client->head_address3 = $request->head_addre3;
             $client->head_tel = $request->head_tel;
             $client->students = $request->students;
             $client->distribution = $request->distribution;
@@ -149,7 +149,7 @@ class ClientController extends Controller
         return view('client.edit',compact('departments','users','tradeStatuses','clientTypes','installationTypes','client'));
     }
 
-    public function update(Request $request, Client $client)
+    public function update(Request $request, string $id)
     {
                 // $inputs=$request->validate([
         //     'client_num'=>'required|min:2|max:2',
@@ -158,17 +158,32 @@ class ClientController extends Controller
         //     'client_corporation_id'=>'required|max:1024'
         // ]);
 
-        $client = new Client();
+        $client=Client::find($id);
+
+        // $client = new Client();
         $clientcorporattion = new ClientCorporation();
-        // $var = client::with('client_corporate')->where('id',$id)->first();
-        $id = 
-        $client->clientcorporation_num=$request->clientcorporation_num;
+        // $var = client::with('client_corporation')->where('id',$id)->first();
+        // $id = 
+        // $client->clientcorporation_num=$request->clientcorporation_num;
         $client->client_num=$request->client_num;
         $client->client_name = $request->client_name;
         $client->client_kana_name = $request->client_kana_name;
-        $client->clientcorporattion_id = ClientCorporation::select('client_corporate_id')->where('id',$id)->first();
+        $client->head_post_code = $request->head_post_code;
+        $client->head_prefecture = $request->head_prefecture;
+        $client->head_address1 = $request->head_addre1;
+        
+        $client->head_address2 = $request->head_addre2;
+        $client->head_address3 = $request->head_addre3;
+        $client->head_tel = $request->head_tel;
+        $client->students = $request->students;
+        $client->distribution = $request->distribution;
+        $client->client_type_id = $request->client_type_id;
+        $client->installation_type_id = $request->installation_type_id;
+        $client->trade_status_id = $request->trade_status_id;
+        $client->user_id = $request->user_id;
+        // $client->clientcorporattion_id = ClientCorporation::select('client_corporate_id')->where('id',$id)->first();
         $client->save();
-        return redirect()->route('client.create')->with('val',$val,'message', '変更しました');
+        return redirect()->route('client.create')->with('message', '変更しました');
     }
 
     public function destroy(Client $client)

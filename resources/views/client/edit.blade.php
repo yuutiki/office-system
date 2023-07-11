@@ -18,58 +18,34 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div class="mx-4 sm:p-8">
-        <form method="post" action="{{route('client.store')}}" enctype="multipart/form-data" autocomplete="new-password">
+        <form method="post" action="{{route('client.update',$client)}}" enctype="multipart/form-data" autocomplete="new-password">
             @csrf
-
-            <!-- 法人検索ボタン -->
-            <button type="button"  onclick="showModal()" class="md:ml-1 md:mt-1 mt-1 mb-2 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                法人検索
-            </button>
-
-
-            {{-- <div class="md:flex flex-wrap md:justify-between">
-                <div class="md:w-2/5 flex flex-col">
-                    <label for="clientcorporation_num" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">法人番号</label>
-                    <input type="text" name="clientcorporation_num" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_num" value="{{old('clientcorporation_num')}}" placeholder="法人検索してください" readonly>
-                </div>
-                
-                <div class="md:w-2/5 flex flex-col">
-                    <label for="clientcorporation_name" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">法人名称</label>
-                    <input type="text" name="clientcorporation_name" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_name" value="{{old('clientcorporation_name')}}" placeholder="法人検索してください" readonly>
-                </div>
+            @method('patch')
+            
+            <div class="">
+                <label for="client_num" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">顧客番号</label>
+                <input type="text" name="client_num" class="w-full py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="client_num" value="{{old('client_num',$client->client_num)}}" readonly>
             </div>
-
-            <div class="md:flex flex-wrap md:justify-between md:mt-2">
-                <div class="md:w-2/5 flex flex-col">
-                    <label for="client_name" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">顧客名称</label>
-                    <input type="text" name="client_name" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_name" value="{{old('client_name')}}" placeholder="例）烏丸大学">
-                </div>
-
-                <div class="md:w-2/5 flex flex-col">
-                    <label for="client_kana_name" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">顧客カナ名称</label>
-                    <input type="text" name="client_kana_name" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_kana_name" value="{{old('client_kana_name')}}" placeholder="例）カラスマダイガク">
-                </div>
-            </div> --}}
 
             <div class="grid gap-4 mb-4 sm:grid-cols-2">
                 <div class="">
                     <label for="clientcorporation_num" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人番号</label>
-                    <input type="text" name="clientcorporation_num" class="w-full py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_num" value="{{old('clientcorporation_num')}}" placeholder="法人検索してください" readonly>
+                    <input type="text" name="clientcorporation_num" class="w-full py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_num" value="{{old('clientcorporation_num',$client->clientcorporation->clientcorporation_num)}}" placeholder="法人検索してください" readonly>
                 </div>
                 
                 <div class="">
                     <label for="clientcorporation_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人名称</label>
-                    <input type="text" name="clientcorporation_name" class="w-full py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_name" value="{{old('clientcorporation_name')}}" placeholder="法人検索してください" readonly>
+                    <input type="text" name="clientcorporation_name" class="w-full py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_name" value="{{old('clientcorporation_name',$client->clientcorporation->clientcorporation_name)}}" placeholder="法人検索してください" readonly>
                 </div>
             
                 <div class="">
                     <label for="client_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客名称</label>
-                    <input type="text" name="client_name" class="w-full py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_name" value="{{old('client_name')}}" placeholder="例）烏丸大学">
+                    <input type="text" name="client_name" class="w-full py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_name" value="{{old('client_name',$client->client_name)}}" placeholder="例）烏丸大学">
                 </div>
 
                 <div class="">
                     <label for="client_kana_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客カナ名称</label>
-                    <input type="text" name="client_kana_name" class="w-full py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_kana_name" value="{{old('client_kana_name')}}" placeholder="例）カラスマダイガク">
+                    <input type="text" name="client_kana_name" class="w-full py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_kana_name" value="{{old('client_kana_name',$client->client_kana_name)}}" placeholder="例）カラスマダイガク">
                 </div>
             </div>
 
@@ -78,10 +54,10 @@
 
                 <div>
                     <label for="department" class="font-semibold  text-gray-900 dark:text-white leading-none mt-4">管轄事業部</label>
-                    <select id="department" name="department" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <select id="department" name="department" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected value="">未選択</option>
                         @foreach($departments as $department)
-                        <option value="{{ $department->prefix_code }}">{{ $department->department_name }}</option>
+                        <option value="{{ $department->prefix_code }}" @if( $department->prefix_code == $client->department_name ) selected @endif>{{ $department->department_name }}</option>
                         @endforeach
                     </select>
                     @error('department')
@@ -94,7 +70,7 @@
                     <select id="user_id" name="user_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected value="">未選択</option>
                         @foreach($users as $user)
-                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        <option value="{{ $user->id }}" @if( $user->id == $client->user_id) selected @endif>{{ $user->name }}</option>
                         @endforeach
                     </select>
                     @error('user')
@@ -107,7 +83,7 @@
                     <select id="trade_status_id" name="trade_status_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected value="">未選択</option>
                         @foreach($tradeStatuses as $tradeStatus)
-                        <option value="{{ $tradeStatus->id }}">{{ $tradeStatus->name }}</option>
+                        <option value="{{ $tradeStatus->id }}" @if( $tradeStatus->id == $client->trade_status_id) selected @endif>{{ $tradeStatus->name }}</option>
                         @endforeach
                     </select>
                     @error('trade_status_id')
@@ -120,7 +96,7 @@
                     <select id="installation_type_id" name="installation_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected value="">未選択</option>
                         @foreach($installationTypes as $installationType)
-                        <option value="{{ $installationType->id }}">{{ $installationType->name }}</option>
+                        <option value="{{ $installationType->id }}" @if( $installationType->id == $client->installation_type_id) selected @endif>{{ $installationType->name }}</option>
                         @endforeach
                     </select>
                     @error('installation_type_id')
@@ -133,7 +109,7 @@
                     <select id="client_type_id" name="client_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected value="">未選択</option>
                         @foreach($clientTypes as $clientType)
-                        <option value="{{ $clientType->id }}">{{ $clientType->name }}</option>
+                        <option value="{{ $clientType->id }}" @if( $clientType->id == $client->client_type_id) selected @endif>{{ $clientType->name }}</option>
                         @endforeach
                     </select>
                     @error('client_type_id')
@@ -144,21 +120,11 @@
             </div>
 
 
-
-
-
-
-
-
-
-
-
-            
-
+            {{-- タブヘッダStart --}}
             <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
                 <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
                     <li class="mr-2" role="presentation">
-                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">基本情報</button>
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="basic-tab" data-tabs-target="#basic" type="button" role="tab" aria-controls="basic" aria-selected="false">基本情報</button>
                     </li>
                     <li class="mr-2" role="presentation">
                         <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">契約情報</button>
@@ -171,112 +137,126 @@
                     </li>
                 </ul>
             </div>
+            {{-- タブコンテンツStart --}}
             <div id="myTabContent">
-                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 
-                    
-
-
-
-
+                {{-- 1つ目のタブコンテンツStart --}}
+                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="basic" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="w-full flex flex-col">
                         <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">郵便番号</label>
-                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code')}}" placeholder="">
+                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="head_prefecture" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">都道府県</label>
-                        <input type="text" name="head_prefecture" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_prefecture" value="{{old('head_prefecture')}}" placeholder="">
+                        <input type="text" name="head_prefecture" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_prefecture" value="{{old('head_prefecture',$client->head_prefecture)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="head_address1" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">住所1</label>
-                        <input type="text" name="head_address1" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_address1" value="{{old('head_address1')}}" placeholder="">
+                        <label for="head_addre1" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">本部所在地</label>
+                        <input type="text" name="head_addre1" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_addre1" value="{{old('head_addre1',$client->head_address1)}}" placeholder="">
+                    </div>
+                    {{-- <div class="w-full flex flex-col">
+                        <label for="head_addre2" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">住所2</label>
+                        <input type="text" name="head_addre2" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_addre2" value="{{old('head_addre2',$client->head_addre2)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="head_address2" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">住所2</label>
-                        <input type="text" name="head_address2" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_address2" value="{{old('head_address2')}}" placeholder="">
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="head_address3" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">住所3</label>
-                        <input type="text" name="head_address3" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_address3" value="{{old('head_address3')}}" placeholder="">
-                    </div>
+                        <label for="head_addre3" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">住所3</label>
+                        <input type="text" name="head_addre3" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_addre3" value="{{old('head_addre3',$client->head_addre3)}}" placeholder="">
+                    </div> --}}
                     <div class="w-full flex flex-col">
                         <label for="head_tel" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-8">代表TEL</label>
-                        <input type="text" name="head_tel" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_tel" value="{{old('head_tel')}}" placeholder="">
+                        <input type="text" name="head_tel" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_tel" value="{{old('head_tel',$client->head_tel)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="students" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">学生数</label>
-                        <input type="text" name="students" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="students" value="{{old('students')}}">
+                        <input type="text" name="students" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="students" value="{{old('students',$client->students)}}">
                     </div>
 
                     <div class="w-full flex flex-col">
                         <label for="distribution" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">商流</label>
-                        <input type="text" name="distribution" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="distribution" value="{{old('distribution')}}" placeholder="">
+                        <input type="text" name="distribution" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="distribution" value="{{old('distribution',$client->distribution)}}" placeholder="">
                     </div>
-
-                    {{-- <label for="department" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">管轄事業部</label>
-                    <select id="department" name="department" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected value="">未選択</option>
-                        @foreach($departments as $department)
-                        <option value="{{ $department->prefix_code }}">{{ $department->department_name }}</option>
-                        @endforeach
-                    </select>
-                    @error('department')
-                    <div class="text-red-500">{{ $message }}</div>
-                    @enderror
-        
-                    <label for="user_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">営業担当</label>
-                    <select id="user_id" name="user_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected value="">未選択</option>
-                        @foreach($users as $user)
-                        <option value="{{ $user->id }}">{{ $user->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('user')
-                    <div class="text-red-500">{{ $message }}</div>
-                    @enderror
-                    <label for="trade_status_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">取引状態</label>
-                    <select id="trade_status_id" name="trade_status_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected value="">未選択</option>
-                        @foreach($tradeStatuses as $tradeStatus)
-                        <option value="{{ $tradeStatus->id }}">{{ $tradeStatus->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('trade_status_id')
-                    <div class="text-red-500">{{ $message }}</div>
-                    @enderror
-                    <label for="installation_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">設置種別</label>
-                    <select id="installation_type_id" name="installation_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected value="">未選択</option>
-                        @foreach($installationTypes as $installationType)
-                        <option value="{{ $installationType->id }}">{{ $installationType->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('installation_type_id')
-                    <div class="text-red-500">{{ $message }}</div>
-                    @enderror
-                    <label for="client_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">顧客種別</label>
-                    <select id="client_type_id" name="client_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected value="">未選択</option>
-                        @foreach($clientTypes as $clientType)
-                        <option value="{{ $clientType->id }}">{{ $clientType->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('client_type_id')
-                    <div class="text-red-500">{{ $message }}</div>
-                    @enderror --}}
 
                     <div class="w-full flex flex-col">
                         <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">備考</label>
                         <textarea name="memo" class="w-auto py-1.5 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="memo" value="{{old('memo')}}" cols="30" rows="5"></textarea>
                     </div>
-
+                    <x-primary-button class="mt-4">
+                        編集を確定する
+                    </x-primary-button>
+                </form>
                 </div>
+                {{-- 1つ目のタブコンテンツEnd --}}
+
+                {{-- 2つ目のタブコンテンツStart --}}
                 <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
                     <p class="text-sm text-gray-500 dark:text-gray-400">請求区分、契約日、解約日、契約金額、サポートページID、PW、暗号、契約備考、契約書添付、契約履歴</p>
+                    <div class="w-full flex flex-col">
+                        <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約番号</label>
+                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約先区分</label>
+                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">更新月</label>
+                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約種別</label>
+                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約日</label>
+                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">解約日</label>
+                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約金額</label>
+                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">SPログイン名</label>
+                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">SPパスワード</label>
+                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">SPパスワード（読み方）</label>
+                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">SPパスワード</label>
+                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">契約備考</label>
+                        <textarea name="memo" class="w-auto py-1.5 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="memo" value="{{old('memo')}}" cols="30" rows="5"></textarea>
+                    </div>
+
+                    <div class="w-full flex flex-col">
+                        <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-8" autocomplete="new-password">請求区分</label>
+                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">請求備考</label>
+                        <textarea name="memo" class="w-auto py-1.5 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="memo" value="{{old('memo')}}" cols="30" rows="5"></textarea>
+                    </div>
                 </div>
+                {{-- 2つ目のタブコンテンツEnd --}}
+
+                {{-- 3つ目のタブコンテンツStart --}}
                 <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="settings" role="tabpanel" aria-labelledby="settings-tab">
                     <p class="text-sm text-gray-500 dark:text-gray-400">バージョン、リビジョン、初期導入日、前回VUP日、クライアントライセンス、カスタマイズ区分、備考、システムはテーブル表示か？</p>
                 </div>
+                {{-- 3つ目のタブコンテンツEnd --}}
+
+                {{-- 4つ目のタブコンテンツStart --}}
                 <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
                     <p class="text-sm text-gray-500 dark:text-gray-400">インフラ区分（オンプレ、クラウド、クラウドサービス）</p>
                     <p class="text-sm text-gray-500 dark:text-gray-400">Windows Server</p>
@@ -290,22 +270,12 @@
                     <p class="text-sm text-gray-500 dark:text-gray-400">フォルダ構成</p>
                     <p class="text-sm text-gray-500 dark:text-gray-400">バックアップ情報</p>
                     <p class="text-sm text-gray-500 dark:text-gray-400">備考</p>
-
-
                 </div>
+                {{-- 4つ目のタブコンテンツEnd --}}
+
             </div>
 
 
-            
-
-
-            
-
-
-            <x-primary-button class="mt-4">
-                新規登録する
-            </x-primary-button>
-        </form>
     </div>
 </div>
 
