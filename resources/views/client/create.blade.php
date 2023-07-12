@@ -77,6 +77,31 @@
             <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-2">
 
                 <div>
+                    <label for="installation_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">設置種別</label>
+                    <select id="installation_type_id" name="installation_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected value="">未選択</option>
+                        @foreach($installationTypes as $installationType)
+                        <option value="{{ $installationType->id }}">{{ $installationType->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('installation_type_id')
+                    <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="client_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">顧客種別</label>
+                    <select id="client_type_id" name="client_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected value="">未選択</option>
+                        @foreach($clientTypes as $clientType)
+                        <option value="{{ $clientType->id }}">{{ $clientType->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('client_type_id')
+                    <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div>
                     <label for="department" class="font-semibold  text-gray-900 dark:text-white leading-none mt-4">管轄事業部</label>
                     <select id="department" name="department" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected value="">未選択</option>
@@ -114,33 +139,6 @@
                     <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
-
-                <div>
-                    <label for="installation_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">設置種別</label>
-                    <select id="installation_type_id" name="installation_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected value="">未選択</option>
-                        @foreach($installationTypes as $installationType)
-                        <option value="{{ $installationType->id }}">{{ $installationType->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('installation_type_id')
-                    <div class="text-red-500">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div>
-                    <label for="client_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">顧客種別</label>
-                    <select id="client_type_id" name="client_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected value="">未選択</option>
-                        @foreach($clientTypes as $clientType)
-                        <option value="{{ $clientType->id }}">{{ $clientType->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('client_type_id')
-                    <div class="text-red-500">{{ $message }}</div>
-                    @enderror
-                </div>
-
             </div>
 
 

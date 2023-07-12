@@ -7,12 +7,12 @@
             顧客一覧
         </h2>
         <div class="flex flex-row-reverse">
-            <x-general-button class="mt-4 mx-2" onclick="location.href='/client/create'">
+            {{-- <x-general-button class="mt-4 mx-2" onclick="location.href='/client/create'">
                 顧客追加
-            </x-general-button>
-            <x-general-button class="mt-4" onclick="location.href='/client/create'">
+            </x-general-button> --}}
+            {{-- <x-general-button class="mt-4" onclick="location.href='/client/create'">
                 法人追加
-            </x-general-button>
+            </x-general-button> --}}
         </div>
         <x-message :message="session('message')" />
     </x-slot>
@@ -21,86 +21,89 @@
 
     <div id="accordion-color" data-accordion="collapse" data-active-classes="bg-blue-100 dark:bg-gray-800 text-blue-600 dark:text-white">
         <h2 id="accordion-color-heading-1">
-          <button type="button" class="flex items-center justify-between w-5/6 p-2 mt-4 mx-auto font-medium text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-md focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800" data-accordion-target="#accordion-color-body-1" aria-expanded="false" aria-controls="accordion-color-body-1">
-            <span>検索</span>
-            <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
-            </svg>
-          </button>
+            <button type="button" class="dark:bg-gray-700 flex items-center justify-between w-5/6 p-2 mt-4 mx-auto font-medium text-left text-gray-500 border border-gray-200 rounded-t-xl focus:ring-1 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800" data-accordion-target="#accordion-color-body-1" aria-expanded="false" aria-controls="accordion-color-body-1">
+                <span>検索</span>
+                <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                </svg>
+            </button>
         </h2>
-        <div id="accordion-color-body-1" class="hidden" aria-labelledby="accordion-color-heading-1">
-            {{-- 絞り込み検索 --}}
-            <div class="w-5/6  border-b-2 border-x-2 mx-auto h-auto dark:text-white">
-                <form method="GET" action="{{ route('keepfile.index') }}" id="keepfileform">
+        <div id="accordion-color-body-1" class="hidden" aria-labelledby="accordion-color-heading-1" >
+        {{-- 絞り込み検索 --}}
+            <div class="w-5/6 border border-t-0 mx-auto h-auto dark:text-white">
+                <form method="GET" action="{{ route('clientcorporation.index') }}" id="clientcorporationform">
+                    @csrf
                     <div class="md:flex flex-wrap">
                         {{-- テキスト検索 start --}}
-                        <div class="relative w-auto mt-2 ml-2">
+                        <div class="relative w-auto mt-2 mx-2">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                             </div>
-                            <input type="search" name="search" value="@if (isset($search)){{ $search }}@endif" class="w-full p-1.5 pl-10  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="顧客番号" >
+                            <input type="search" name="clientcorporation_num" value="@if (isset($clientcorporation_num)){{ $clientcorporation_num }}@endif" class="w-full p-1.5 pl-10  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="法人番号" >
                         </div>
-                        <div class="relative w-auto mt-2 ml-2">
+                        <div class="relative w-auto mt-2 mx-2">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                             </div>
-                            <input type="search" name="search" value="@if (isset($search)){{ $search }}@endif" class="w-full p-1.5 pl-10  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="顧客名" >
+                            <input type="search" name="clientcorporation_name" value="@if (isset($clientcorporation_name)){{ $clientcorporation_name }}@endif" class="w-full p-1.5 pl-10  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="法人名称" >
+                        </div>
+                        <div class="relative w-auto mt-2 mx-2">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                            </div>
+                            <input type="search" name="clientcorporation_kana_name" value="@if (isset($clientcorporation_kana_name)){{ $clientcorporation_kana_name }}@endif" class="w-full p-1.5 pl-10  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="法人カナ名称" >
                         </div>
                         {{-- テキスト検索 end --}}
                         {{-- セレクト検索 start --}}
-                            <select  name="user_id" value="0" class="mt-2 w-auto ml-2 py-1.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="">担当者全て</option>
-                                @foreach($users as $user)
-                                    <option value="{{$user->id}}">{{$user->name}}</option>
+                        {{-- <div class="flex-nowrap">
+                            <select  name="finish" value="0" class="mt-2 w-auto ml-2 py-1.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="">ステータス</option>
+                                @foreach($keepfiles as $keepfile)
+                                    <option value="{{$keepfile->is_finished}}">{{$keepfile->is_finished}}</option>
                                 @endforeach
                             </select>
-                        </div>
+                            
+                            <select  name="finish" value="0" class="mt-2 w-auto ml-2 py-1.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="">担当者全て</option>
+                                @foreach($users as $s_user)
+                                    <option value="{{$s_user->id}}">{{$s_user->name}}</option>
+                                @endforeach
+                            </select>
+                        </div> --}}
                         {{-- セレクト検索 end --}}
-                        {{-- 日付範囲検索 start --}}
-                        <div class="relative w-auto mt-2 ml-2">
-                            <input type="date" name="day_from" value="@if (isset($search)){{ $search }}@endif" class="w-full p-1.5 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="顧客名" >
-                        </div>
-                        <div class="relative w-auto mt-2 ml-2">
-                            <input type="date" name="day_to" value="@if (isset($search)){{ $search }}@endif" class="w-full p-1.5  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="顧客名" >
-                        </div>
-                        {{-- 日付範囲検索 end --}}
                         <div class="w-5/6 mt-2 ml-8 mb-2 flex justify-start">
-                            <button type="submit" form="keepfileform" class="px-6 py-1.5 font-medium text-sm rounded-lg text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">検索</button>
-                            <button type="button" value="reset" form="keepfileform" id="clear" class="ml-2 px-4 py-1.5 font-medium text-sm rounded-lg text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-red-700 hover:bg-red-800 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">リセット</button>
+                            <button type="submit" form="clientcorporationform" class="px-6 py-1.5 font-medium text-sm rounded-lg text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">検索</button>
+                            <button type="button" value="reset" form="clientcorporationform" id="clear" class="ml-2 px-4 py-1.5 font-medium text-sm rounded-lg text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-red-700 hover:bg-red-800 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">リセット</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
-  
-
-
-
-
-
-{{-- JQUERY --}}
-{{-- JQUERY --}}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>
-$(function(){
-    $('#clear').click(function(){
-        $('#keepfileform input, #keepfileform select').each(function(){
-          //checkboxまたはradioボタンの時
-          if(this.type == 'checkbox' || this.type == 'radio'){
-            //一括でチェックを外す
-              this.checked = false;
-          }
-          //checkboxまたはradioボタン以外の時
-          else{
-            // val値を空にする
-            $(this).val('');
-          }
+    </div>
+      
+    {{-- JQUERY --}}
+    {{-- JQUERY --}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+    $(function(){
+        $('#clear').click(function(){
+            $('#clientcorporationform input, #clientcorporationform select').each(function(){
+              //checkboxまたはradioボタンの時
+              if(this.type == 'checkbox' || this.type == 'radio'){
+                //一括でチェックを外す
+                  this.checked = false;
+              }
+              //checkboxまたはradioボタン以外の時
+              else{
+                // val値を空にする
+                $(this).val('');
+              }
+            });
         });
     });
-});
-</script>
-{{-- JQUERY --}}
-{{-- JQUERY --}}
+    </script>
+    {{-- JQUERY --}}
+    {{-- JQUERY --}}
 
     <!-- Dropdown bottoun -->
     <div class="w-5/6 text-right mt-2 mx-auto ">

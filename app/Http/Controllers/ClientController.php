@@ -160,10 +160,7 @@ class ClientController extends Controller
 
         $client=Client::find($id);
 
-        // $client = new Client();
         $clientcorporattion = new ClientCorporation();
-        // $var = client::with('client_corporation')->where('id',$id)->first();
-        // $id = 
         // $client->clientcorporation_num=$request->clientcorporation_num;
         $client->client_num=$request->client_num;
         $client->client_name = $request->client_name;

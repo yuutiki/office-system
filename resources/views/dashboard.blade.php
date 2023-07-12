@@ -131,7 +131,7 @@
                             顧客数（アクティブ）
                           </h5>
                           <span class="font-semibold text-xl text-blueGray-700">
-                            656
+                            {{ $clientCount }}
                           </span>
                         </div>
                         <div class="relative w-auto pl-4 flex-initial">

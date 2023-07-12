@@ -9,10 +9,14 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $client = Client::where('trade_status_id','=','1');
+
+        $clientCount = 0; // 仮の初期値
+        $client = Client::where('trade_status_id','=','1')->get();
         $clientCount = $client->count();
 
-        return view('dashboard',compact('clientCount'));
+        return view('dashboard', [
+            'clientCount' => $clientCount
+        ]);
     }
 
     public function create()

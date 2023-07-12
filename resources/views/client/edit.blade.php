@@ -23,29 +23,34 @@
             @method('patch')
             
             <div class="">
-                <label for="client_num" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">顧客番号</label>
-                <input type="text" name="client_num" class="w-full py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="client_num" value="{{old('client_num',$client->client_num)}}" readonly>
+                <label for="client_num" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4 mt-2">顧客番号</label>
+                <input type="text" name="client_num" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="client_num" value="{{old('client_num',$client->client_num)}}" readonly>
             </div>
 
             <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                <div class="">
+                {{-- <div class="">
                     <label for="clientcorporation_num" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人番号</label>
-                    <input type="text" name="clientcorporation_num" class="w-full py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_num" value="{{old('clientcorporation_num',$client->clientcorporation->clientcorporation_num)}}" placeholder="法人検索してください" readonly>
-                </div>
-                
+                    <input type="text" name="clientcorporation_num" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_num" value="{{old('clientcorporation_num',$client->clientcorporation->clientcorporation_num)}}" placeholder="法人検索してください" readonly>
+                </div> --}}
+
                 <div class="">
-                    <label for="clientcorporation_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人名称</label>
-                    <input type="text" name="clientcorporation_name" class="w-full py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_name" value="{{old('clientcorporation_name',$client->clientcorporation->clientcorporation_name)}}" placeholder="法人検索してください" readonly>
+                    <label for="clientcorporation_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4 mt-2">法人名称</label>
+                    <input type="text" name="clientcorporation_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_name" value="{{old('clientcorporation_name',$client->clientcorporation->clientcorporation_name)}}" readonly>
+                </div>
+
+                <div class="">
+                    <label for="clientcorporation_kana_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人カナ名称</label>
+                    <input type="text" name="clientcorporation_kana_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_kana_name" value="{{old('clientcorporation_kana_name',$client->clientcorporation->clientcorporation_kana_name)}}" readonly>
                 </div>
             
                 <div class="">
                     <label for="client_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客名称</label>
-                    <input type="text" name="client_name" class="w-full py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_name" value="{{old('client_name',$client->client_name)}}" placeholder="例）烏丸大学">
+                    <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_name" value="{{old('client_name',$client->client_name)}}" placeholder="例）烏丸大学">
                 </div>
 
                 <div class="">
                     <label for="client_kana_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客カナ名称</label>
-                    <input type="text" name="client_kana_name" class="w-full py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_kana_name" value="{{old('client_kana_name',$client->client_kana_name)}}" placeholder="例）カラスマダイガク">
+                    <input type="text" name="client_kana_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_kana_name" value="{{old('client_kana_name',$client->client_kana_name)}}" placeholder="例）カラスマダイガク">
                 </div>
             </div>
 
@@ -144,41 +149,44 @@
                 <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="basic" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="w-full flex flex-col">
                         <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">郵便番号</label>
-                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
+                        <input type="text" name="head_post_code" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="head_prefecture" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">都道府県</label>
-                        <input type="text" name="head_prefecture" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_prefecture" value="{{old('head_prefecture',$client->head_prefecture)}}" placeholder="">
+                        <input type="text" name="head_prefecture" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_prefecture" value="{{old('head_prefecture',$client->head_prefecture)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="head_addre1" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">本部所在地</label>
-                        <input type="text" name="head_addre1" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_addre1" value="{{old('head_addre1',$client->head_address1)}}" placeholder="">
+                        <input type="text" name="head_addre1" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_addre1" value="{{old('head_addre1',$client->head_address1)}}" placeholder="">
                     </div>
                     {{-- <div class="w-full flex flex-col">
                         <label for="head_addre2" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">住所2</label>
-                        <input type="text" name="head_addre2" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_addre2" value="{{old('head_addre2',$client->head_addre2)}}" placeholder="">
+                        <input type="text" name="head_addre2" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_addre2" value="{{old('head_addre2',$client->head_addre2)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="head_addre3" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">住所3</label>
-                        <input type="text" name="head_addre3" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_addre3" value="{{old('head_addre3',$client->head_addre3)}}" placeholder="">
+                        <input type="text" name="head_addre3" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_addre3" value="{{old('head_addre3',$client->head_addre3)}}" placeholder="">
                     </div> --}}
                     <div class="w-full flex flex-col">
-                        <label for="head_tel" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-8">代表TEL</label>
-                        <input type="text" name="head_tel" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_tel" value="{{old('head_tel',$client->head_tel)}}" placeholder="">
+                        <label for="head_tel" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">代表TEL</label>
+                        <input type="text" name="head_tel" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_tel" value="{{old('head_tel',$client->head_tel)}}" placeholder="">
                     </div>
+
+                    <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
+
                     <div class="w-full flex flex-col">
                         <label for="students" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">学生数</label>
-                        <input type="text" name="students" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="students" value="{{old('students',$client->students)}}">
+                        <input type="text" name="students" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="students" value="{{old('students',$client->students)}}">
                     </div>
 
                     <div class="w-full flex flex-col">
                         <label for="distribution" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">商流</label>
-                        <input type="text" name="distribution" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="distribution" value="{{old('distribution',$client->distribution)}}" placeholder="">
+                        <input type="text" name="distribution" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="distribution" value="{{old('distribution',$client->distribution)}}" placeholder="">
                     </div>
 
                     <div class="w-full flex flex-col">
                         <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">備考</label>
-                        <textarea name="memo" class="w-auto py-1.5 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="memo" value="{{old('memo')}}" cols="30" rows="5"></textarea>
+                        <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="memo" value="{{old('memo')}}" cols="30" rows="5"></textarea>
                     </div>
                     <x-primary-button class="mt-4">
                         編集を確定する
@@ -192,60 +200,60 @@
                     <p class="text-sm text-gray-500 dark:text-gray-400">請求区分、契約日、解約日、契約金額、サポートページID、PW、暗号、契約備考、契約書添付、契約履歴</p>
                     <div class="w-full flex flex-col">
                         <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約番号</label>
-                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
+                        <input type="text" name="head_post_code" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約先区分</label>
-                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
+                        <input type="text" name="head_post_code" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">更新月</label>
-                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
+                        <input type="text" name="head_post_code" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約種別</label>
-                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
+                        <input type="text" name="head_post_code" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約日</label>
-                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
+                        <input type="text" name="head_post_code" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">解約日</label>
-                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
+                        <input type="text" name="head_post_code" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約金額</label>
-                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
+                        <input type="text" name="head_post_code" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">SPログイン名</label>
-                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
+                        <input type="text" name="head_post_code" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">SPパスワード</label>
-                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
+                        <input type="text" name="head_post_code" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">SPパスワード（読み方）</label>
-                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
+                        <input type="text" name="head_post_code" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">SPパスワード</label>
-                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
+                        <input type="text" name="head_post_code" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">契約備考</label>
-                        <textarea name="memo" class="w-auto py-1.5 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="memo" value="{{old('memo')}}" cols="30" rows="5"></textarea>
+                        <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="memo" value="{{old('memo')}}" cols="30" rows="5"></textarea>
                     </div>
 
                     <div class="w-full flex flex-col">
                         <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-8" autocomplete="new-password">請求区分</label>
-                        <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
+                        <input type="text" name="head_post_code" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">請求備考</label>
-                        <textarea name="memo" class="w-auto py-1.5 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="memo" value="{{old('memo')}}" cols="30" rows="5"></textarea>
+                        <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="memo" value="{{old('memo')}}" cols="30" rows="5"></textarea>
                     </div>
                 </div>
                 {{-- 2つ目のタブコンテンツEnd --}}
@@ -308,11 +316,11 @@
                     <div class="flex flex-wrap justify-start mx-5">
                         <div class="w-full flex flex-col">
                             <label for="corporationName" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">法人名称</label>
-                            <input type="text" name="corporationName" id="corporationName" class="w-auto mt-1 mr-2 py-1.5 placeholder-gray-400 border border-gray-300 rounded-md">
+                            <input type="text" name="corporationName" id="corporationName" class="w-auto mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded-md">
                         </div>
                         <div class="w-full flex flex-col">
                             <label for="corporationNumber" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">法人番号</label>
-                            <input type="text" name="corporationNumber" id="corporationNumber" class="w-auto mt-1 mr-2 py-1.5 placeholder-gray-400 border border-gray-300 rounded-md">
+                            <input type="text" name="corporationNumber" id="corporationNumber" class="w-auto mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded-md">
                         </div>
                     </div>
                 </form>
@@ -320,9 +328,9 @@
                     <table class="w-full mt-4 text-white mb-5 text-left ml-3 mr-5 text-sm">
                         <thead>
                         <tr>
-                            <th class="py-1.5">法人名称</th>
-                            <th class="py-1.5">法人番号</th>
-                            <th class="py-1.5"></th>
+                            <th class="py-1">法人名称</th>
+                            <th class="py-1">法人番号</th>
+                            <th class="py-1"></th>
                         </tr>
                         </thead>
                         <tbody id="searchResultsContainer" class="">

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KeepfileController; //add
 use App\Http\Controllers\ClientCorporationController;//add
 use App\Http\Controllers\ClientController;//add
+use App\Http\Controllers\DashboardController;//add
 
 use App\Http\Livewire\ClientCorporationSearchModal;
 use App\Http\Livewire\ClientForm;
@@ -26,9 +27,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -41,9 +42,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('/clientcorporation','\App\Http\Controllers\ClientCorporationController');
     Route::resource('/client','\App\Http\Controllers\ClientController');
     Route::resource('/user', '\App\Http\Controllers\UserController');
-    // Route::resource('/dashboard', '\App\Http\Controllers\DashboardController');
     Route::post('/clientcorporation/search', [ClientCorporationController::class, 'search'])->name('clientcorporation.search');
     Route::post('/clientcorporation/upload', [ClientCorporationController::class, 'upload'])->name('clientcorporation.upload');
 });
+
+// Route::resource('/dashboard', '\App\Http\Controllers\DashboardController')->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard',  [DashboardController::class, 'index'])->name('dashboard')->middleware(['auth', 'verified']);
 
 require __DIR__.'/auth.php';
