@@ -8,6 +8,7 @@ use App\Models\Department;//add
 use App\Models\InstallationType;//add
 use App\Models\ClientType;//add
 use App\Models\TradeStatus;//add
+use App\Models\Prefecture;//add
 use Illuminate\Http\Request;
 use App\Models\ClientCorporation;//add
 use Illuminate\pagination\paginator;//add
@@ -29,12 +30,13 @@ class ClientController extends Controller
     public function create()
     {
         $users = User::all();
-        $tradeStatuses = TradeStatus::all();
-        $clientTypes = ClientType::all();
-        $installationTypes = InstallationType::all();
-        $departments = Department::all();
+        $installationTypes = InstallationType::all(); //設置種別
+        $tradeStatuses = TradeStatus::all(); //取引状態
+        $clientTypes = ClientType::all(); //顧客種別
+        $departments = Department::all(); //管轄事業部
+        $prefectures = Prefecture::all(); //都道府県
 
-        return view('client.create',compact('departments','users','tradeStatuses','clientTypes','installationTypes'));
+        return view('client.create',compact('departments','users','tradeStatuses','clientTypes','installationTypes','prefectures'));
     }
 
     public function store(Request $request)

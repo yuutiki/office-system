@@ -143,16 +143,6 @@
 
 
 
-
-
-
-
-
-
-
-
-            
-
             <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
                 <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
                     <li class="mr-2" role="presentation">
@@ -178,17 +168,24 @@
 
 
 
-                    {{-- <script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script> --}}
                     <div class="h-adr">
-                        {{-- <span class="p-country-name" style="display:none;">Japan</span> --}}
+                        <span class="p-country-name" style="display:none;">Japan</span>
                         <div class="w-full flex flex-col">
                             <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password p-postal-code">郵便番号</label>
-                            <input type="text" name="head_post_code" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code')}}" placeholder="">
+                            <input type="text" name="head_post_code" class="w-32 py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="input-yubinbango-head_post_code" value="{{old('head_post_code')}}" placeholder="">
                         </div>
                         <div class="w-full flex flex-col">
                             <label for="head_prefecture" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4 ">都道府県</label>
-                            <input type="text" name="head_prefecture" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1 p-region" id="head_prefecture" value="{{old('head_prefecture')}}" placeholder="">
+                            <select id="trade_status_id" name="trade_status_id" class="block w-32 p-1.5 text-sm mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected value="">未選択</option>
+                                @foreach($prefectures as $prefecture)
+                                    <option value="{{ $prefecture->id }}">{{ $prefecture->code }}:{{ $prefecture->name }}</option>
+                                @endforeach
+                        </select>
+                            {{-- <input type="text" name="head_prefecture" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1 p-region" id="head_prefecture" value="{{old('head_prefecture')}}" placeholder=""> --}}
                         </div>
+
+                        
                         <div class="w-full flex flex-col">
                             <label for="head_addre1" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">本部所在地</label>
                             <input type="text" name="head_addre1" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1 p-locality p-street-address p-extended-address" id="head_addre1" value="{{old('head_addre1')}}" placeholder="">
@@ -272,6 +269,10 @@
                         <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">備考</label>
                         <textarea name="memo" class="w-auto py-1.5 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="memo" value="{{old('memo')}}" cols="30" rows="5"></textarea>
                     </div>
+                    <x-primary-button class="mt-4">
+                        新規登録する
+                    </x-primary-button>
+                </form>
 
                 </div>
                 <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
@@ -293,16 +294,8 @@
                     <p class="text-sm text-gray-500 dark:text-gray-400">フォルダ構成</p>
                     <p class="text-sm text-gray-500 dark:text-gray-400">バックアップ情報</p>
                     <p class="text-sm text-gray-500 dark:text-gray-400">備考</p>
-
-
                 </div>
             </div>
-
-
-            <x-primary-button class="mt-4">
-                新規登録する
-            </x-primary-button>
-        </form>
     </div>
 </div>
 
