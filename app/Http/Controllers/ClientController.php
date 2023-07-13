@@ -185,8 +185,10 @@ class ClientController extends Controller
         return redirect()->route('client.create')->with('message', '変更しました');
     }
 
-    public function destroy(Client $client)
+    public function destroy(string $id)
     {
-        //
+        $client = Client::find($id);
+        $client->delete();
+        return redirect()->route('client.index')->with('message', '削除しました');
     }
 }

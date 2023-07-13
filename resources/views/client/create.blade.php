@@ -18,7 +18,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div class="mx-4 sm:p-8">
-        <form method="post" action="{{route('client.store')}}" enctype="multipart/form-data" autocomplete="new-password">
+        <form id="basic" method="post" action="{{route('client.store')}}" enctype="multipart/form-data" autocomplete="new-password">
             @csrf
 
             <!-- 法人検索ボタン -->
@@ -176,7 +176,7 @@
                         </div>
                         <div class="w-full flex flex-col">
                             <label for="head_prefecture" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4 ">都道府県</label>
-                            <select id="trade_status_id" name="trade_status_id" class="block w-32 p-1.5 text-sm mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <select id="head_prefecture" name="head_prefecture" class="block w-32 p-1.5 text-sm mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 @foreach($prefectures as $prefecture)
                                     <option value="{{ $prefecture->id }}">{{ $prefecture->code }}:{{ $prefecture->name }}</option>
@@ -269,7 +269,7 @@
                         <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">備考</label>
                         <textarea name="memo" class="w-auto py-1.5 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="memo" value="{{old('memo')}}" cols="30" rows="5"></textarea>
                     </div>
-                    <x-primary-button class="mt-4">
+                    <x-primary-button form-id="basic" class="mt-4">
                         新規登録する
                     </x-primary-button>
                 </form>
