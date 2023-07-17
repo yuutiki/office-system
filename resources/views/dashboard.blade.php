@@ -45,7 +45,6 @@
 
 
 
-
   <body class="text-blueGray-700 antialiased">
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root">
@@ -193,7 +192,7 @@
                           </span>
                         </div>
                         <div class="relative w-auto pl-4 flex-initial">
-                          <div class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-lightBlue-500">
+                          <div class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-blue-400 ">
                             <i class="fas fa-percent"></i>
                           </div>
                         </div>

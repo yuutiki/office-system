@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ClientCorporation;//add
 use App\Models\Client;
 use App\Models\User;
 use App\Models\Department;//add
@@ -10,7 +11,6 @@ use App\Models\ClientType;//add
 use App\Models\TradeStatus;//add
 use App\Models\Prefecture;//add
 use Illuminate\Http\Request;
-use App\Models\ClientCorporation;//add
 use Illuminate\pagination\paginator;//add
 use Illuminate\Support\Facades\DB;//add
 use Illuminate\Support\Str;//add
@@ -190,5 +190,19 @@ class ClientController extends Controller
         $client = Client::find($id);
         $client->delete();
         return redirect()->route('client.index')->with('message', '削除しました');
+    }
+
+    //モーダル用の非同期検索ロジック
+    public function search(Request $request)
+    {
+        $clientName = $request->input('clientName');
+        $clientNumber = $request->input('clientNumber');
+
+        // 検索条件に基づいて法人データを取得
+        $clients = Client::where('client_name', 'LIKE', '%' . $clientName . '%')
+            ->where('client_num', 'LIKE', '%' . $clientNumber . '%')
+            ->get();
+
+        return response()->json($clients);
     }
 }

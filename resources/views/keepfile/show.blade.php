@@ -24,7 +24,7 @@
                 <div class="bg-white w-full  rounded-2xl px-10 py-8 shadow-lg hover:shadow-2xl transition duration-500">
                     <div class="mt-4">
                         <h1 class="text-lg text-gray-700 font-semibold">
-                            {{ $keepfile->projectnumber }}
+                            {{ $keepfile->project_num }}
                             {{-- <a href="{{route('keepfile.edit', $keepfile)}}">
                                 <x-primary-button class="bg-teal-700 float-right">編集</x-primary-button>
                             </a> --}}
@@ -34,7 +34,7 @@
                         </h1>
                         <hr class="w-full">
                         <div class="mt-4 text-gtay-600 font-semibold">ステータス</div>
-                        @if($keepfile->status_flag == "0")
+                        @if($keepfile->is_finished == "0")
                         <p class="ml-4 text-gray-600 py-1 whitespace-pre-line">未返却</p>
                         @else
                         <p class="ml-4 text-gray-600 py-1 whitespace-pre-line">返却済</p>
@@ -44,9 +44,9 @@
                         <div class="mt-4 text-gtay-600 font-semibold">用途</div>
                         <p class="ml-4 text-gray-600 py-1 whitespace-pre-line">{{$keepfile->purpose}}</p>
                         <div class="mt-4 text-gtay-600 font-semibold">預託日</div>
-                        <p class="ml-4 text-gray-600 py-1 whitespace-pre-line">{{$keepfile->keepdate}}</p>
+                        <p class="ml-4 text-gray-600 py-1 whitespace-pre-line">{{$keepfile->keep_at}}</p>
                         <div class="mt-4 text-gtay-600 font-semibold">返却日</div>
-                        <p class="ml-4 text-gray-600 py-1 whitespace-pre-line">{{$keepfile->returndate}}</p>
+                        <p class="ml-4 text-gray-600 py-1 whitespace-pre-line">{{$keepfile->return_at}}</p>
                         <div class="mt-4 text-gtay-600 font-semibold">備考</div>
                         <p class="ml-4 text-gray-600 py-1 whitespace-pre-line">{{$keepfile->memo}}</p>
                         <div class="text-sm font-semibold flex flex-row-reverse">

@@ -72,13 +72,37 @@ class User extends Authenticatable
         return $this->belongsTo(Employee_status::class);
     }
 
+    //預託データに関するリレーション
     public function keepfiles()
     {
         return $this->belongsToMany(Keepfile::class);
     }
 
+    //担当顧客に関するリレーション
     public function clients()
     {
         return $this->hasmany(Client::class);
     }
+
+    // 中間テーブルreport_to_recipientsを介して報告先(受信者)が報告内容とリレーションok
+    public function recipients()
+    {
+        return $this->belongsToMany(Report::class, 'report_to_recipients', 'recipient_id', 'report_id')
+            ->withTimestamps();
+    }
+
+    //営業報告に対するリレーション(報告者としての)ok
+    public function reports()
+    {
+        return $this->hasMany(Report::class, 'user_id');
+    }
+
+    //営業報告のコメントに対するリレーションok
+    public function comments()
+    {
+        return $this->hasMany(Comment::class,'user_id');
+    }
+
+
+
 }

@@ -87,4 +87,9 @@ class Client extends Model
     {
         return $this->belongsTo(TradeStatus::class);
     }
+
+    public function reports()
+    {
+        return $this->hasmay(Report::class);
+    }
 }

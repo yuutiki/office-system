@@ -6,6 +6,7 @@ use App\Http\Controllers\KeepfileController; //add
 use App\Http\Controllers\ClientCorporationController;//add
 use App\Http\Controllers\ClientController;//add
 use App\Http\Controllers\DashboardController;//add
+use App\Http\Controllers\CommentController;//add
 
 use App\Http\Livewire\ClientCorporationSearchModal;
 use App\Http\Livewire\ClientForm;
@@ -42,8 +43,14 @@ Route::middleware('auth')->group(function () {
     Route::resource('/clientcorporation','\App\Http\Controllers\ClientCorporationController');
     Route::resource('/client','\App\Http\Controllers\ClientController');
     Route::resource('/user', '\App\Http\Controllers\UserController');
+    Route::resource('/report', '\App\Http\Controllers\ReportController');
+    // Route::resource('/comment', '\App\Http\Controllers\CommentController');
     Route::post('/clientcorporation/search', [ClientCorporationController::class, 'search'])->name('clientcorporation.search');
     Route::post('/clientcorporation/upload', [ClientCorporationController::class, 'upload'])->name('clientcorporation.upload');
+    Route::post('/client/search', [ClientController::class, 'search'])->name('client.search');
+    Route::get('/report/{report_id}/comment', [CommentController::class, 'show'])->name('comment.show');
+    Route::post('/report/{report_id}/comment', [CommentController::class, 'store'])->name('comment.store');
+
 });
 
 // Route::resource('/dashboard', '\App\Http\Controllers\DashboardController')->middleware(['auth', 'verified'])->name('dashboard');

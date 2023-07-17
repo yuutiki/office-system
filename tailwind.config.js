@@ -28,6 +28,12 @@ export default {
             animation: {
                 "fade-out-right": //animate-　＋　左記のclass名
                     "fade-out-right 2s cubic-bezier(0.250, 0.460, 0.450, 0.940)2s   both",
+                "slide-in-top": 
+                    "slide-in-top 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000)   both",
+                "slide-out-top": 
+                    "slide-out-top 1s cubic-bezier(0.600, -0.080, 0.735, 0.045) 1.5s  both",
+
+
             },
             keyframes: {
                 "fade-out-right": {
@@ -40,6 +46,27 @@ export default {
                         opacity: "0",
                     },
                 },
+                "slide-in-top": {
+                    "0%": {
+                        transform: "translateY(-1000px)",
+                        opacity: "0"
+                    },
+                    to: {
+                        transform: "translateY(0)",
+                        opacity: "1"
+                    },
+                },
+                "slide-out-top": {
+                    "0%": {
+                        transform: "translateY(0)",
+                        opacity: "1"
+                    },
+                    to: {
+                        transform: "translateY(-1000px)",
+                        opacity: "0"
+                    }
+                }
+    
             },
         },
     },
@@ -69,3 +96,29 @@ export default {
 //         },
 //     },
 // };
+
+
+
+//tailwind.config.js 
+//FreeBSD-licensed CSS animation by Animista 
+// module.exports = {
+//     theme: {
+//         extend: {
+//             animation: {
+//                 "slide-out-top": "slide-out-top 1s cubic-bezier(0.600, -0.280, 0.735, 0.045) 1.5s  both"
+//             },
+//             keyframes: {
+//                 "slide-out-top": {
+//                     "0%": {
+//                         transform: "translateY(0)",
+//                         opacity: "1"
+//                     },
+//                     to: {
+//                         transform: "translateY(-1000px)",
+//                         opacity: "0"
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
