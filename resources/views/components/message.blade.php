@@ -1,10 +1,10 @@
 @if(isset($message))
 <div class="fixed top-10 left-0 flex items-center justify-center w-screen">
-    <div id="alert-3" class="fixed flex justify-center w-1/4 p-4 text-green-600 rounded-lg bg-green-200 dark:bg-white-800 dark:text-green-400 animate-slide-in-top animate-slide-out-top" role="alert">
+    <div id="alert-3" class="fixed flex justify-center md:w-1/4 w-3/4 p-4 text-green-600 rounded-lg bg-green-200 dark:bg-white-800 dark:text-green-400 animate-slide-in-top animate-slide-out-top" role="alert">
         <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
             <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
         </svg>
-        <div class="ml-3 text-sm font-medium ">
+        <div class="ml-3 text-sm font-medium whitespace-nowrap">
             {{$message}}
         </div>
             <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700" data-dismiss-target="#alert-3" aria-label="Close">

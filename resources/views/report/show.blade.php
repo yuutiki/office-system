@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between">
-            <h2 class="font-semibold text-xs text-xl text-gray-900 dark:text-white">
+            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
                 営業報告確認
             </h2>
             <div class="flex justify-end">

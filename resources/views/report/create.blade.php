@@ -102,6 +102,12 @@
                         </select>
                     </div>
 
+                    
+                    <div class="w-full flex flex-col">
+                        <label for="client_representative" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">顧客担当者（代表）</label>
+                        <input type="text" name="client_representative" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_representative" value="{{old('client_representative')}}" placeholder="">
+                    </div>
+
                     <div class="w-full flex flex-col">
                         <label for="content" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">報告内容</label>
                         <textarea name="content" class="w-auto py-1.5 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="content" value="{{old('content')}}" cols="30" rows="5"></textarea>
