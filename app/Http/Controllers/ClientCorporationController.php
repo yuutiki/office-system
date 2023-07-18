@@ -23,7 +23,7 @@ class ClientCorporationController extends Controller
         $clientcorporation_kana_name = $request->input('clientcorporation_kana_name');
 
         //検索Query
-        $query = ClientCorporation::query();
+        $query = ClientCorporation::query()->withCount('clients');
 
         //もし法人番号がセットされていれば
         if(!empty($clientcorporation_num))
@@ -115,9 +115,12 @@ class ClientCorporationController extends Controller
         return redirect()->route('clientcorporation.edit',$id)->with('message','更新しました');
     }
 
-    public function destroy(ClientCorporation $clientCorporation)
+    public function destroy(string $id)
     {
-        //
+        $clientCorporation = ClientCorporation::find($id);
+        $clientCorporation->delete();
+
+        return redirect()->route('clientcorporation.index')->with('message','削除しました');
     }
 
     //モーダル用の非同期検索ロジック
@@ -163,6 +166,7 @@ class ClientCorporationController extends Controller
             $clientCorporation->clientcorporation_num = $row[0];
             $clientCorporation->clientcorporation_name = $row[1];
             $clientCorporation->clientcorporation_kana_name = $row[2];
+            $clientCorporation->clientcorporation_abbreviation_name = $row[3];
             $clientCorporation->save();
         });
 

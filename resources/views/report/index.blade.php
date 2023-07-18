@@ -108,7 +108,7 @@
             </svg>
         </button>
         <div class="float-left font-medium dark:text-white">
-            {{-- {{ $count }}件 --}}
+            {{ $count }}件
         </div>
     </div>
     <!-- Dropdown menu -->
@@ -245,7 +245,9 @@
                         </td>
 
                         <td class="px-4 py-4 text-center">
-                            <a href="{{route('report.create',$report)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline whitespace-nowrap">削除</a>
+                            <a href="{{route('report.create',$report)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline whitespace-nowrap">
+                                編集
+                            </a>
                         </td>
                         <td class="py-3">
                             <button data-modal-target="deleteModal-{{$report->id}}" data-modal-toggle="deleteModal-{{$report->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">

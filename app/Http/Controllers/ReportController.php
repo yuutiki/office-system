@@ -17,11 +17,11 @@ class ReportController extends Controller
     {
         $per_page = 25;
         $reports = Report::sortable()->paginate($per_page);
-
+        $count = $reports->count();
         $user = User::all();
 
 
-        return view('report.index',compact('reports' , 'user'));
+        return view('report.index',compact('reports' , 'user' , 'count'));
     }
 
     public function create()

@@ -224,8 +224,14 @@ $(function(){
                             {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
                         </div>
                     </th>
+                    <th scope="col" class="px-2 py-3 w-auto">
+                        <div class="flex items-center whitespace-nowrap">
+                            顧客数
+                            {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
+                        </div>
+                    </th>
                     <th scope="col" class="px-6 py-3 w-auto">
-                        <span class="sr-only">編集</span>
+                        <span class="sr-only">削除</span>
                     </th>
 
                 </tr>
@@ -248,11 +254,49 @@ $(function(){
                         <td class="px-2 py-4 whitespace-nowrap">
                             {{$clientcorporation->updated_at->format('y-m-d')}}
                         </td>
-                        <td class="px-4 py-4 whitespace-nowrap text-center">
+                        <td class="px-2 py-4 whitespace-nowrap">
+                            {{$clientcorporation->clients_count}}
+                        </td>
+                        {{-- <td class="px-4 py-4 whitespace-nowrap text-center">
                             <a href="{{route('client.create',$clientcorporation)}}" class="font-medium text-red-500 dark:text-red-500 hover:underline">削除</a>
+                        </td> --}}
+                        <td class="py-3">
+                            <button data-modal-target="deleteModal-{{$clientcorporation->id}}" data-modal-toggle="deleteModal-{{$clientcorporation->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
+                                削除
+                            </button>
                         </td>
                     </tr>
                 </tbody>
+                {{-- 削除確認モーダル画面 Start --}}
+                <div id="deleteModal-{{$clientcorporation->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                    <div class="relative w-full max-w-md max-h-full">
+                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                            <button data-modal-hide="deleteModal-{{$clientcorporation->id}}" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                </svg>
+                            </button>
+                            <div class="p-6 text-center">
+                                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                </svg>
+                                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
+
+                                <form action="{{route('clientcorporation.destroy',$clientcorporation->id)}}" method="POST" class="text-center m-auto">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" data-modal-hide="deleteModal-{{$clientcorporation->id}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                                        削除
+                                    </button>
+                                </form>
+                                <button data-modal-hide="deleteModal-{{$clientcorporation->id}}" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                    やっぱやめます
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{-- 削除確認モーダル画面 End --}}
             @endforeach
         </table>
         <div class="mt-1 mb-1 ml-2">

@@ -54,14 +54,4 @@ class ClientCorporation extends Model
     {
         return $this->hasMany(Client::class);
     }
-
-    // public function employee_status()
-    // {
-    //     return $this->belongsTo(Employee_status::class);
-    // }
-
-    // public function keepfiles()
-    // {
-    //     return $this->belongsToMany(Keepfile::class);
-    // }
 }
