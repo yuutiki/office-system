@@ -6,6 +6,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use App\Observers\GlobalObserver;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -46,8 +47,8 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\LogPasswordReset',
         ],
 
-        'eloquent.creating: *' => [GlobalObserver::class],
-        'eloquent.updating: *' => [GlobalObserver::class],
+        'eloquent.creating: *' => [GlobalObserver::class,],
+        'eloquent.updating: *' => [GlobalObserver::class,],
     
     ];
 

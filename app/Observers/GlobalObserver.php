@@ -3,10 +3,11 @@
 namespace App\Observers;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 
 class GlobalObserver
 {
-    public function creating($model)
+    public function __invoke($model)
     {
         if (method_exists($model, 'getCreatedByColumn')) {
             $createdByColumn = $model->getCreatedByColumn();

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;//add
 use Illuminate\Support\Facades\DB;//add
+use App\Observers\GlobalObserver;
 
 
 class ClientCorporation extends Model
@@ -18,6 +19,7 @@ class ClientCorporation extends Model
         'clientcorporation_name',
         'clientcorporation_kana_name',
         'clientcorporation_abbreviation_name',
+        'memo',
     ];
 
     public $sortable = [

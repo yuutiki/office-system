@@ -94,6 +94,7 @@ class ClientCorporationController extends Controller
         $clientcorporation->clientcorporation_name = $request->clientcorporation_name;
         $clientcorporation->clientcorporation_kana_name = $request->clientcorporation_kana_name;
         $clientcorporation->clientcorporation_abbreviation_name = $request->clientcorporation_abbreviation_name;
+        $clientcorporation->memo = $request->memo;
         $clientcorporation->save();
 
         // サブミット制御用キーを一定時間だけキャッシュに保存
@@ -127,6 +128,8 @@ class ClientCorporationController extends Controller
 
         $clientCorporation->clientcorporation_name = $request->clientcorporation_name;
         $clientCorporation->clientcorporation_kana_name = $request->clientcorporation_kana_name;
+        $clientCorporation->clientcorporation_abbreviation_name = $request->clientcorporation_abbreviation_name;
+        $clientCorporation->memo = $request->memo;
 
         $clientCorporation->save();
         return redirect()->route('clientcorporation.edit',$id)->with('message','更新しました');
