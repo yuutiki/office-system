@@ -300,7 +300,7 @@
                 {{-- 削除確認モーダル画面 End --}}
             @endforeach
         </table>
-        <div class="mt-8 mb-8">
+        <div class="mt-2 mb-2 px-4">
         {{-- {{ $keepdatas->appends(request()->query())->links() }}   --}}
         {{ $clients->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
         </div> 
