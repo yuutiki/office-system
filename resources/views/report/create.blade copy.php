@@ -18,7 +18,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div class="mx-4 sm:p-8">
-        <form id="reoportForm" method="post" action="{{route('report.store')}}" enctype="multipart/form-data">
+        <form id="reportForm" method="post" action="{{route('report.store')}}" enctype="multipart/form-data">
             @csrf
 
             <!-- 顧客検索ボタン -->

@@ -192,12 +192,6 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg></a>
                         </div>
                     </th>
-                    {{-- {{-- <th scope="col" class="pl-4 py-3 whitespace-nowrap">
-                        <div class="flex items-center">
-                            @sortablelink('keepdate','預託日')
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
-                        </div>
-                    </th> --}}
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             @sortablelink('client_name','顧客名称')
@@ -205,12 +199,6 @@
                         </div>
                     </th>
                     {{-- <th scope="col" class="px-2 py-3 whitespace-nowrap">
-                        <div class="flex items-center">
-                            @sortablelink('user_id','担当者')
-                            <a href="#"><svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg></a>
-                        </div>
-                    </th>
-                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             @sortablelink('status_flag','ステータス')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
@@ -234,9 +222,8 @@
                             {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
                         </div>
                     </th>
-
                     <th scope="col" class="px-6 py-3 whitespace-nowrap">
-                        <span class="sr-only">顧客追加</span>
+                        <span class="sr-only">削除</span>
                     </th>
                 </tr>
             </thead>
@@ -254,21 +241,14 @@
                         </td>
                         <td class="px-1 py-4 whitespace-nowrap">
                             {{$client->client_name}}
-
                         </td>
-                        {{-- <td class="px-6 py-4 whitespace-nowrap">
-                            {{$client->client_corporate_kana}}
-                        </td> --}}
                         <td class="px-4 py-4 whitespace-nowrap">
                             {{$client->user->name}}
                         </td>
                         <td class="px-1 py-4 whitespace-nowrap">
                             {{$client->tradestatus->name}}
                         </td>
-                        {{-- <td class="px-2 py-4 whitespace-nowrap">
-                            {{$keepdata->user->name}}
-                        </td>
-                        @if($keepdata->status_flag == "0")
+                        {{-- @if($keepdata->status_flag == "0")
                             <td class="px-2 py-4 whitespace-nowrap text-fuchsia-300">
                                 未返却
                             </td>
@@ -277,15 +257,8 @@
                                 返却済
                             </td>
                         @endif --}}
-                        {{-- <td class="px-2 py-4 whitespace-nowrap">
-                            {{$client->created_at->format('y-m-d')}}
-                        </td> --}}
                         <td class="px-2 py-4 whitespace-nowrap">
                             {{$client->updated_at->format('y-m-d')}}
-                        </td>
-
-                        <td class="px-4 py-4 text-center">
-                            <a href="{{route('client.create',$client)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline whitespace-nowrap">削除</a>
                         </td>
                         <td class="py-3">
                             <button data-modal-target="deleteModal-{{$client->id}}" data-modal-toggle="deleteModal-{{$client->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
@@ -332,5 +305,4 @@
         {{ $clients->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
         </div> 
     </div>
-
 </x-app-layout>

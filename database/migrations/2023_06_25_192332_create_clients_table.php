@@ -28,6 +28,8 @@ return new class extends Migration
             $table->unsignedBigInteger('client_type_id')->nullable()->comment('顧客種別');//add Client_typesテーブル参照
             $table->unsignedBigInteger('trade_status_id')->comment('取引状態');//add Trade_statusesテーブル参照
             $table->foreignId('client_corporation_id')->comment('法人ID'); //add ClientCorporationsテーブル参照
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
 
             $table->foreign('client_corporation_id')->references('id')->on('client_corporations')->onDelete('cascade');

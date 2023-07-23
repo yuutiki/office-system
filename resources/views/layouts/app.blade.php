@@ -17,6 +17,14 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
+        <script>
+            // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+            if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark')
+            }
+        </script>
 
     </head>
     <body class="font-sans antialiased">
@@ -25,7 +33,7 @@
 
             <!-- Page Heading -->
             @if (isset($header))
-                <header class="bg-white dark:bg-gray-800 shadow mt-12">
+                <header class="bg-gray-300  dark:bg-gray-800 shadow mt-12">
                     <div class=" w-5/6 mx-auto py-4 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
@@ -37,15 +45,17 @@
                 {{ $slot }}
             </main>
         </div>
+        <footer class="bg-white dark:bg-gray-800">
+            <div class="w-full mx-auto max-w-screen-xlflex justify-end">
+                <div class="text-sm text-right text-gray-500  dark:text-gray-400 px-2" tabindex="-1">
+                    © 2023 <a href="#" class="hover:underline" tabindex="-1">Yuu™</a>. All Rights Reserved.
+                </div>
+                <div class="text-sm text-right text-gray-500 dark:text-gray-400 px-2">
+                    Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
+                </div>
+            </div>
+        </footer>
+        <script src="{{ asset('/assets/js/darkmodeswitcher.js') }}"></script>
+        <script src="{{ asset('/assets/js/allinputenterdisable.js') }}"></script>
     </body>
-    <footer class="bg-white dark:bg-gray-800">
-        <div class="w-full mx-auto max-w-screen-xlflex justify-end">
-            <div class="text-sm text-right text-gray-500  dark:text-gray-400 px-2">
-                © 2023 <a href="#" class="hover:underline">Yuu™</a>. All Rights Reserved.
-            </div>
-            <div class="text-sm text-right text-gray-500 dark:text-gray-400 px-2">
-                Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
-            </div>
-        </div>
-    </footer>
 </html>

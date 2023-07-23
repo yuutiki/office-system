@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
-                法人登録
+                法人編集
             </h2>
             <div class="flex justify-end">
                 <x-general-button onclick="location.href='{{route('clientcorporation.index')}}'">
@@ -21,32 +21,41 @@
             @csrf
             @method('patch')
 
-            <div class="md:flex items-center mt-8">
+            <div class="md:flex items-center mt-2">
                 <div class="w-full flex flex-col">
-                    <label for="clientcorporation_num" class="font-semibold text-gray-100 leading-none mt-4">法人番号</label>
-                    <input type="text" name="clientcorporation_num" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="clientcorporation_num" value="{{old('clientcorporation_num',$clientcorporation->clientcorporation_num)}}" readonly>
+                    <label for="clientcorporation_num" class="font-semibold dark:text-gray-100 leading-none mt-4">法人番号</label>
+                    <input type="text" name="clientcorporation_num" class="w-auto py-1 bg-gray-400 cursor-not-allowed  placeholder-gray-400 border border-gray-300 rounded-sm mt-1" id="clientcorporation_num" value="{{old('clientcorporation_num',$clientcorporation->clientcorporation_num)}}" readonly>
                 </div>
             </div>
 
             <div class="w-full flex flex-col">
-                <label for="clientcorporation_name" class="font-semibold text-gray-100 leading-none mt-4">法人名称</label>
-                <input type="text" name="clientcorporation_name" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="clientcorporation_name" value="{{old('clientcorporation_name',$clientcorporation->clientcorporation_name)}}" placeholder="例）学校法人 烏丸大学">
+                <label for="clientcorporation_name" class="font-semibold dark:text-gray-100 leading-none mt-4">法人名称</label>
+                <input type="text" name="clientcorporation_name" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-sm mt-1" id="clientcorporation_name" value="{{old('clientcorporation_name',$clientcorporation->clientcorporation_name)}}" placeholder="学校法人 烏丸学園">
             </div>
             @error('clientcorporation_name')
                 <div class="text-red-500">{{$message}}</div>
             @enderror
 
+            
             <div class="w-full flex flex-col">
-                <label for="clientcorporation_kana_name" class="font-semibold text-gray-100 leading-none mt-4">法人カナ名称</label>
-                <input type="text" name="clientcorporation_kana_name" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="clientcorporation_kana_name" value="{{old('clientcorporation_kana_name',$clientcorporation->clientcorporation_kana_name)}}" placeholder="例）ガッコウホウジンカラスマダイガク">
+                <label for="clientcorporation_abbreviation_name" class="font-semibold dark:text-gray-100 leading-none mt-4">法人略称</label>
+                <input type="text" name="clientcorporation_abbreviation_name" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-sm mt-1" id="clientcorporation_abbreviation_name" value="{{old('clientcorporation_abbreviation_name',$clientcorporation->clientcorporation_abbreviation_name)}}" placeholder="烏丸学園">
+            </div>
+            @error('clientcorporation_abbreviation_name')
+                <div class="text-red-500">{{$message}}</div>
+            @enderror
+
+            <div class="w-full flex flex-col">
+                <label for="clientcorporation_kana_name" class="font-semibold dark:text-gray-100 leading-none mt-4">法人カナ名称</label>
+                <input type="text" name="clientcorporation_kana_name" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-sm mt-1" id="clientcorporation_kana_name" value="{{old('clientcorporation_kana_name',$clientcorporation->clientcorporation_kana_name)}}" placeholder="ガッコウホウジン カラスマガクエン">
             </div>
             @error('clientcorporation_kana_name')
                 <div class="text-red-500">{{$message}}</div>
             @enderror
             
             <div class="w-full flex flex-col">
-                <label for="memo" class="font-semibold text-gray-100 leading-none mt-4">備考</label>
-                <textarea name="memo" class="w-auto py-2 border border-gray-300 rounded-md mt-1 placeholder-gray-500" id="memo" value="{{old('memo')}}" cols="30" rows="10" placeholder="例）配下の学校"></textarea>
+                <label for="memo" class="font-semibold dark:text-gray-100 leading-none mt-4">備考</label>
+                <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded-sm mt-1 placeholder-gray-400" id="memo" value="{{old('memo')}}" cols="30" rows="5" placeholder="法人に関する備考..."></textarea>
             </div>
             @error('memo')
                 <div class="text-red-500">{{$message}}</div>

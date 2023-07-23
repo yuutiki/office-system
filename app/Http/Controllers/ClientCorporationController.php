@@ -10,6 +10,7 @@ use Goodby\CSV\Import\Standard\Lexer;
 use Goodby\CSV\Import\Standard\Interpreter;
 use Goodby\CSV\Import\Standard\LexerConfig;
 use Goodby\CSV\Import\Standard\InterpreterConfig;
+use Illuminate\Support\Facades\Cache;
 
 class ClientCorporationController extends Controller
 {
@@ -63,10 +64,19 @@ class ClientCorporationController extends Controller
 
     public function store(Request $request)
     {
+        // サブミットの制御用キーを生成
+        $submitKey = 'submit_' . md5($request->url() . serialize($request->all()));
+
+        // 重複サブミットのチェック
+        if (Cache::has($submitKey)) {
+            return redirect()->back()->with('error', '連続して登録することはできません。');
+        }
+
         $inputs=$request->validate([
             'clientcorporation_num'=>'|min:6|max:6|unique:client_corporations',
             'clientcorporation_name'=>'required|max:1024',
-            'clientcorporation_kana_name'=>'required|max:1024'
+            'clientcorporation_kana_name'=>'required|max:1024',
+            'clientcorporation_abbreviation_name'=>'required|max:1024'
         ]);
 
         $data = $request->except('clientcorporation_num');
@@ -75,7 +85,7 @@ class ClientCorporationController extends Controller
         $result = $clientcorporation->storeWithTransaction($data);
 
         if ($result) {
-            return redirect()->route('clientcorporation.index')->with('success', '登録しました');
+            return redirect()->route('clientcorporation.index')->with('message', '登録しました');
         } else {
             return back()->with('error', '登録に失敗しました。');
         }
@@ -83,7 +93,12 @@ class ClientCorporationController extends Controller
         // $clientcorporation->clientcorporation_num=$request->clientcorporation_num;
         $clientcorporation->clientcorporation_name = $request->clientcorporation_name;
         $clientcorporation->clientcorporation_kana_name = $request->clientcorporation_kana_name;
+        $clientcorporation->clientcorporation_abbreviation_name = $request->clientcorporation_abbreviation_name;
         $clientcorporation->save();
+
+        // サブミット制御用キーを一定時間だけキャッシュに保存
+        Cache::put($submitKey, true, 5); // 5分間の制御としています
+
         return redirect()->route('clientcorporation.create')->with('message', '登録しました');
     }
 
@@ -105,7 +120,9 @@ class ClientCorporationController extends Controller
         $inputs=$request->validate([
             // 'clientcorporation_num'=>'|min:6|max:6|unique:client_corporations',
             'clientcorporation_name'=>'required|max:1024',
-            'clientcorporation_kana_name'=>'required|max:1024'
+            // 'clientcorporation_name'=>'required|max:1024|regex:/\s/',
+            'clientcorporation_kana_name'=>'required|max:1024',
+            'clientcorporation_abbreviation_name'=>'required|max:1024',
         ]);
 
         $clientCorporation->clientcorporation_name = $request->clientcorporation_name;
@@ -170,9 +187,7 @@ class ClientCorporationController extends Controller
             $clientCorporation->save();
         });
 
-
         $lexer->parse($csvPath, $interpreter);
     }
-
 
 }

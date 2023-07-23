@@ -201,11 +201,12 @@
                     </div> --}}
                     <div class="w-full flex flex-col">
                         <label for="head_tel" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-8">代表TEL</label>
-                        <input type="text" name="head_tel" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_tel" value="{{old('head_tel')}}" placeholder="">
+                        <input type="tel" name="head_tel" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="11" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_tel" value="{{old('head_tel')}}" placeholder="">
                     </div>
+
                     <div class="w-full flex flex-col">
                         <label for="students" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">学生数</label>
-                        <input type="text" name="students" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="students" value="{{old('students')}}">
+                        <input type="number" name="students" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="students" value="{{old('students')}}">
                     </div>
 
                     <div class="w-full flex flex-col">
@@ -413,7 +414,7 @@
                 const resultElement = document.createElement('tr');
                 resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
                 resultElement.innerHTML = `
-                    <td class="py-2 pl-5 cursor-pointer" onclick="setCorporation('${result.clientcorporation_name}', '${result.clientcorporation_num}')">${result.clientcorporation_name}</td>
+                    <td class="py-2 pl-5 cursor-pointer" onclick="setCorporation('${result.clientcorporation_name}', '${result.clientcorporation_num}')">${result.clientcorporation_abbreviation_name}</td>
                     <td class="py-2 ml-2">${result.clientcorporation_num}</td>
                 `;
                 searchResultsContainer.appendChild(resultElement);

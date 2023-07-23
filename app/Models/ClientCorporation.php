@@ -17,6 +17,7 @@ class ClientCorporation extends Model
         'clientcorporation_num',
         'clientcorporation_name',
         'clientcorporation_kana_name',
+        'clientcorporation_abbreviation_name',
     ];
 
     public $sortable = [
@@ -47,7 +48,31 @@ class ClientCorporation extends Model
                 return false;
             }
         });
+    }
 
+    //GrobalObserverを利用して登録する
+    public function getCreatedByColumn()
+    {
+        return 'created_by';
+    }
+
+    public function getUpdatedByColumn()
+    {
+        return 'updated_by';
+    }
+
+    // 法人正式名称のsetter（Mutator）を定義
+    public function setClientcorporationNameAttribute($value)
+    {
+        // 全角スペースを半角スペースに変換して設定
+        $this->attributes['clientcorporation_name'] = mb_convert_kana($value, 's');
+    }
+
+    // 法人正式カナ名称のsetter（Mutator）を定義
+    public function setClientcorporationKanaNameAttribute($value)
+    {
+        // 全角スペースを半角スペースに変換して設定
+        $this->attributes['clientcorporation_kana_name'] = mb_convert_kana($value, 'KVs');
     }
     
     public function clients()//relation

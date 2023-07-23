@@ -45,6 +45,9 @@ class EventServiceProvider extends ServiceProvider
         'Illuminate\Auth\Events\PasswordReset' => [
             'App\Listeners\LogPasswordReset',
         ],
+
+        'eloquent.creating: *' => [GlobalObserver::class],
+        'eloquent.updating: *' => [GlobalObserver::class],
     
     ];
 

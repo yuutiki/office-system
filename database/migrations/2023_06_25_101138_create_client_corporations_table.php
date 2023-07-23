@@ -14,6 +14,9 @@ return new class extends Migration
             $table->string('clientcorporation_name')->comment('法人名称');
             $table->string('clientcorporation_kana_name')->comment('法人カナ名称');
             $table->string('clientcorporation_abbreviation_name')->comment('法人略称');
+            $table->text('memo')->nullable()->commebt('法人メモ');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }
