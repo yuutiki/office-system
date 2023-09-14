@@ -27,19 +27,19 @@
 
                         <div class="flex justify-normal mb-2 flex-wrap">
                             <div class="">
-                                <div class="mt-3 text-gtay-600 font-semibold text-xs whitespace-nowrap">顧客番号</div>
+                                <div class="mt-3 text-blue-400 font-semibold text-xs whitespace-nowrap">顧客番号</div>
                                 <p class="text-gray-600 dark:text-white whitespace-nowrap text-sm">{{$report->client->client_num}}</p>
                             </div>
                             <div class="mx-6">
-                                <div class="mt-3 text-gtay-600 font-semibold text-xs whitespace-nowrap">顧客名称</div>
+                                <div class="mt-3 text-blue-400 font-semibold text-xs whitespace-nowrap">顧客名称</div>
                                 <p class="text-gray-600 dark:text-white whitespace-nowrap text-sm">{{$report->client->client_name}}</p>
                             </div>
                             <div class="mx-6">
-                                <div class="mt-3 text-gtay-600 font-semibold text-xs whitespace-nowrap">取引状態</div>
+                                <div class="mt-3 text-blue-400 font-semibold text-xs whitespace-nowrap">取引状態</div>
                                 <p class="text-gray-600 dark:text-white whitespace-nowrap text-sm">{{$report->client->tradeStatus->name}}</p>
                             </div>
                             <div class="mx-6">
-                                <div class="mt-3 text-gtay-600 font-semibold text-xs whitespace-nowrap">顧客担当者</div>
+                                <div class="mt-3 text-blue-400 font-semibold text-xs whitespace-nowrap">顧客担当者</div>
                                 <p class="text-gray-600 dark:text-white whitespace-nowrap text-sm">{{$report->client_representative}}</p>
                             </div>
                         </div>
@@ -49,24 +49,26 @@
 
                         <div class="flex">
                             <div>
-                                <div class="mt-1 text-gtay-600 font-semibold text-xs whitespace-nowrap">対応日付</div>
+                                <div class="mt-1 text-blue-400 font-semibold text-xs whitespace-nowrap">対応日付</div>
                                 <p class="text-gray-600 dark:text-white whitespace-nowrap text-sm">{{$report->contact_at}}</p>
                             </div>
                             
                             <div class="ml-8">
-                                <div class="mt-1 text-gtay-600 font-semibold text-xs whitespace-nowrap">対応形式</div>
+                                <div class="mt-1 text-blue-400 font-semibold text-xs whitespace-nowrap">対応形式</div>
                                 <p class="text-gray-600 dark:text-white whitespace-nowrap text-sm">{{$report->contact_type}}</p>
                             </div>
                         </div>
 
                         <div>
-                            <div class="mt-3 text-gtay-600 font-semibold text-xs whitespace-nowrap">報告内容</div>
-                            <p class="text-gray-600 dark:text-white text-sm dark:border-gray-400  border-2 rounded-md p-1 mt-1">{!! nl2br(e($report->content)) !!}</p>
+                            <div class="mt-3 text-blue-400 font-semibold text-xs whitespace-nowrap">報告内容</div>
+                            <hr class="mb-1">
+                            <p class="text-gray-600 dark:text-white text-sm px-1">{!! nl2br(e($report->content)) !!}</p>
                         </div>
                         
                         <div class="mb-4">
-                            <div class="mt-3 text-gtay-600 font-semibold text-xs whitespace-nowrap text-red-600 dark:text-red-500">特記事項</div>
-                            <p class="text-gray-600 dark:text-white text-sm dark:border-gray-400 border-2 rounded-md p-1 mt-1">{!! nl2br(e($report->notice)) !!}</p>
+                            <div class="mt-3 text-blue-400 font-semibold text-xs whitespace-nowrap">特記事項</div>
+                            <hr class="mb-1">
+                            <p class="text-gray-600 dark:text-white text-sm px-1">{!! nl2br(e($report->notice)) !!}</p>
                         </div> 
 
                         <div class="font-semibold text-xs whitespace-nowrap flex flex-row-reverse">
@@ -77,14 +79,14 @@
         {{-- </div> --}}
     </div>
 
-    <div class="md:ml-14  mt-8">
+    <div class="md:w-4/6 flex justify-center  md:mx-auto mt-8">
         <div class="w-full mx-auto">
             <h3 class="mt-8 ml-2 text-lg font-semibold dark:text-white">コメント</h3>
             <hr class="my-2">
     
             @foreach ($report->comments as $comment)
                 <div class="bg-white shadow-md rounded-md overflow-hidden mt-4">
-                    <div class="px-4 py-1 bg-gray-100 flex justify-between">
+                    <div class="px-4 py-1 bg-gray-300 flex justify-between">
                         <strong class="text-blue-700">{{ $comment->user->name }}</strong>
                         <div>{{ $comment->created_at }}</div>
                     </div>
