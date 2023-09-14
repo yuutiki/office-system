@@ -5,8 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KeepfileController; //add
 use App\Http\Controllers\ClientCorporationController;//add
 use App\Http\Controllers\ClientController;//add
-use App\Http\Controllers\DashboardController;//add
+// use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Dashboard\DashboardController;//add
 use App\Http\Controllers\CommentController;//add
+use App\Http\Controllers\ReportController;//add
 
 use App\Http\Livewire\ClientCorporationSearchModal;
 use App\Http\Livewire\ClientForm;
@@ -50,6 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/client/search', [ClientController::class, 'search'])->name('client.search');
     Route::get('/report/{report_id}/comment', [CommentController::class, 'show'])->name('comment.show');
     Route::post('/report/{report_id}/comment', [CommentController::class, 'store'])->name('comment.store');
+    Route::get('/report/{report_id}/client', [ReportController::class, 'showFromClient'])->name('report.showFromClient');
 
 });
 

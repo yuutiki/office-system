@@ -77,7 +77,7 @@
             @enderror
 
             <x-primary-button class="mt-4 mb-4" form-id="corporationForm">
-                変更を確定
+                法人を登録
             </x-primary-button>        
         </form>
 

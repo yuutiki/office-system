@@ -10,6 +10,7 @@ use App\Models\InstallationType;//add
 use App\Models\ClientType;//add
 use App\Models\TradeStatus;//add
 use App\Models\Prefecture;//add
+use App\Models\Report;//add
 use Illuminate\Http\Request;
 use Illuminate\pagination\paginator;//add
 use Illuminate\Support\Facades\DB;//add
@@ -141,14 +142,15 @@ class ClientController extends Controller
 
     public function edit(string $id)
     {
-
         $users = User::all();
         $tradeStatuses = TradeStatus::all();
         $clientTypes = ClientType::all();
         $installationTypes = InstallationType::all();
         $departments = Department::all();
         $client = Client::find($id);
-        return view('client.edit',compact('departments','users','tradeStatuses','clientTypes','installationTypes','client'));
+
+        $reports = Report::where('client_id',$id)->get();
+        return view('client.edit',compact('departments','users','tradeStatuses','clientTypes','installationTypes','client','reports'));
     }
 
     public function update(Request $request, string $id)

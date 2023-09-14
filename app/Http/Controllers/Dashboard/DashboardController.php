@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+// namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dashboard;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Client;
 
@@ -9,7 +11,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-
         $clientCount = 0; // 仮の初期値
         $client = Client::where('trade_status_id','=','1')->get();
         $clientCount = $client->count();

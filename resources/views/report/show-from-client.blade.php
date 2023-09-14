@@ -2,16 +2,26 @@
     <x-slot name="header">
         <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
-                営業報告確認
+                営業報告確認aa
             </h2>
             <div class="flex justify-end">
-                <x-general-button onclick="location.href='{{route('report.index')}}'">
+                <x-general-button onclick="goBack()">
                     戻る
                 </x-general-button>
                 <x-message :message="session('message')"/>
             </div>
         </div>
     </x-slot>
+
+    <script>
+            // let activetab = tabs.getActiveTab();
+            // consol.log(Activetab);
+        function goBack() {
+            window.history.back();
+
+            // show(reports-tab);
+        }
+    </script>
 
     <div class="md:w-4/6 flex justify-center md:mx-auto mt-8 ">
         {{-- <div class="mx-4 sm:p-8"> --}}
@@ -77,18 +87,18 @@
         {{-- </div> --}}
     </div>
 
-    <div class="md:ml-14  mt-8">
+    <div class="container max-w-7xl mx-auto mt-8">
         <div class="w-full mx-auto">
             <h3 class="mt-8 ml-2 text-lg font-semibold dark:text-white">コメント</h3>
             <hr class="my-2">
     
             @foreach ($report->comments as $comment)
                 <div class="bg-white shadow-md rounded-md overflow-hidden mt-4">
-                    <div class="px-4 py-1 bg-gray-100 flex justify-between">
+                    <div class="px-4 py-3 bg-gray-100 flex justify-between">
                         <strong class="text-blue-700">{{ $comment->user->name }}</strong>
                         <div>{{ $comment->created_at }}</div>
                     </div>
-                    <div class="px-4 py-2">
+                    <div class="px-4 py-3">
                         <p class="text-gray-800">{{ $comment->content }}</p>
                     </div>
                 </div>

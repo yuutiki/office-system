@@ -20,7 +20,6 @@ class ReportController extends Controller
         $count = $reports->count();
         $user = User::all();
 
-
         return view('report.index',compact('reports' , 'user' , 'count'));
     }
 
@@ -73,6 +72,14 @@ class ReportController extends Controller
         $report = Report::find($id);
         $comments = $report->comments;
         return view('report.show',compact('report'));
+    }
+
+    // 顧客情報から飛ぶ画面
+    public function showFromClient($id)
+    {
+        $report = Report::find($id);
+        $comments = $report->comments;
+        return view('report.show-from-client',compact('report'));
     }
 
     public function edit(report $report)

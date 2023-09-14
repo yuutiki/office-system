@@ -132,19 +132,13 @@
                         <button class="inline-block p-4 border-b-2 rounded-t-lg" id="basic-tab" data-tabs-target="#basic" type="button" role="tab" aria-controls="basic" aria-selected="false">基本情報</button>
                     </li>
                     <li class="mr-2" role="presentation">
-                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">契約関連</button>
+                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">契約情報</button>
                     </li>
                     <li class="mr-2" role="presentation">
                         <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">導入システム</button>
                     </li>
-                    <li class="mr-2" role="presentation">
+                    <li role="presentation">
                         <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts" aria-selected="false">環境情報</button>
-                    </li>
-                    <li class="mr-2" role="presentation">
-                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="reports-tab" data-tabs-target="#reports" type="button" role="tab" aria-controls="reports" aria-selected="false">営業報告</button>
-                    </li>
-                    <li class="mr-2" role="presentation">
-                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="support-tab" data-tabs-target="#support" type="button" role="tab" aria-controls="support" aria-selected="false">サポート履歴</button>
                     </li>
                 </ul>
             </div>
@@ -266,186 +260,44 @@
 
                 {{-- 3つ目のタブコンテンツStart --}}
                 <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">バージョン,初期導入日、前回VUP日</p>
-
-                    <div class="w-full flex flex-col">
-                        <label for="" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">主バージョン</label>
-                        <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="" value="{{old('',"V10.1")}}" placeholder="">
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">クライアントライセンス</label>
-                        <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="" value="{{old('',"オープン")}}" placeholder="">
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">導入備考</label>
-                        <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="memo" value="{{old('memo')}}" cols="30" rows="3">ログイン画面にCUSあり注意</textarea>
-                    </div>
-
-
-                    <div class="w-full relative overflow-x-auto shadow-md rounded-lg mx-auto mt-4 boeder-2 bg-gray-300 dark:bg-gray-700">
-                        <table class="w-full text-sm font-medium text-left text-gray-800 dark:text-gray-400">
-                
-                            {{-- テーブルヘッダ start --}}
-                            <thead class="text-sm text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
-                                <tr>
-                                    <th scope="col" class="px-6 py-2 whitespace-nowrap">
-                                        <span class="sr-only">編集</span>
-                                    </th>
-                                    <th scope="col" class="px-4 py-2 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            シリーズ
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
-                                        </div>
-                                    </th>
-                                    <th scope="col" class="px-1 py-2 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            導入システム名称
-                                        </div>
-                                    </th>
-                                    <th scope="col" class="px-1 py-2 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            バージョン
-                                        </div>
-                                    </th>
-                                    <th scope="col" class="px-2 py-2 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            数量
-                                        </div>
-                                    </th>
-                                    <th scope="col" class="px-2 py-2 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            CUS
-                                        </div>
-                                    </th>
-                                    <th scope="col" class="px-2 py-2 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            契約区分
-                                        </div>
-                                    </th>
-                                    <th scope="col" class="px-2 py-2 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            購入区分
-                                        </div>
-                                    </th>
-                                    <th scope="col" class="px-2 py-2 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            導入備考
-                                        </div>
-                                    </th>
-                                    <th scope="col" class="px-2 py-2 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            契約備考
-                                        </div>
-                                    </th>
-                                    <th scope="col" class="py-2 whitespace-nowrap">
-                                        {{-- <button class="rounded-md bg-blue-400 px-3 py-1">追加</button> --}}
-                                        <button type="button" class=" bg-blue-400 flex items-center justify-center px-3 py-1 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
-                                            <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                              <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                                            </svg>
-                                            製品追加
-                                        </button>
-                                    </th>
-                                </tr>
-                            </thead>
-                                <tbody>
-                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
-                                        <td class="px-4 py-1 text-center">
-                                            <a href="{{route('client.edit',$client)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline whitespace-nowrap">編集</a>
-                                        </td>
-                                        <th scope="row" class="pl-4 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            .NET
-                                        </th>
-                                        <td class="px-1 py-1 whitespace-nowrap">
-                                            学籍教務情報システム
-                                        </td>
-                                        <td class="px-1 py-1 whitespace-nowrap">
-                                            v10.1
-                                        </td>
-                                        <td class="px-4 py-1 whitespace-nowrap">
-                                            1
-                                        </td>
-                                        <td class="px-2 py-1 whitespace-nowrap">
-                                            有り
-                                        </td>
-                                        <td class="px-1 py-1 whitespace-nowrap">
-                                            契約済み
-                                        </td>
-                                        <td class="px-2 py-1 whitespace-nowrap">
-                                            買い取り
-                                        </td>
-                                        <td class="px-2 py-1 whitespace-nowrap">
-                                            あああああ。。。。。
-                                        </td>
-                                        <td class="px-2 py-1 whitespace-nowrap">
-                                            いいいいいい・・・・・
-                                        </td>
-                                        <td class="py-3">
-                                            {{-- <button>削除</button> --}}
-                                            {{-- <button data-modal-target="deleteModal-{{$client->id}}" data-modal-toggle="deleteModal-{{$client->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
-                                                削除
-                                            </button> --}}
-                                        </td>
-                                    </tr>
-                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
-                                        <td class="px-4 py-1 text-center">
-                                            <a href="{{route('client.edit',$client)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline whitespace-nowrap">編集</a>
-                                        </td>
-                                        <th scope="row" class="pl-4 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            .NET
-                                        </th>
-                                        <td class="px-1 py-1 whitespace-nowrap">
-                                            大学入学共通テストサブシステム
-                                        </td>
-                                        <td class="px-1 py-1 whitespace-nowrap">
-                                            v10.1
-                                        </td>
-                                        <td class="px-4 py-1 whitespace-nowrap">
-                                            1
-                                        </td>
-                                        <td class="px-2 py-1 whitespace-nowrap">
-                                            有り
-                                        </td>
-                                        <td class="px-1 py-1 whitespace-nowrap">
-                                            契約済み
-                                        </td>
-                                        <td class="px-2 py-1 whitespace-nowrap">
-                                            買い取り
-                                        </td>
-                                        <td class="px-2 py-1 whitespace-nowrap">
-                                            あああああ。。。。。
-                                        </td>
-                                        <td class="px-2 py-1 whitespace-nowrap">
-                                            いいいいいい・・・・・
-                                        </td>
-                                        <td class="py-3">
-                                            {{-- <button>削除</button> --}}
-                                            {{-- <button data-modal-target="deleteModal-{{$client->id}}" data-modal-toggle="deleteModal-{{$client->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
-                                                削除
-                                            </button> --}}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                                {{-- 削除確認モーダル画面 Start --}}
-                                {{-- 削除確認モーダル画面 End --}}
-                            {{-- @endforeach --}}
-                        </table>
-                        <div class="mt-2 mb-2 px-4">
-                            {{-- {{ $clients->withQueryString()->links('vendor.pagination.custum-tailwind') }}   --}}
-                        </div> 
-                    </div> 
+                    <p class="text-sm text-gray-500 dark:text-gray-400">バージョン、リビジョン、初期導入日、前回VUP日、クライアントライセンス、カスタマイズ区分、備考、システムはテーブル表示か？</p>
                     
+<form>
+    <div class="flex">
+        <label for="search-dropdown" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Your Email</label>
+        <button id="dropdown-button" data-dropdown-toggle="dropdown" class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 dark:border-gray-700 dark:text-white rounded-l-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800" type="button">All categories <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+  </svg></button>
+        <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdown-button">
+            <li>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Shopping</a>
+            </li>
+            <li>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Images</a>
+            </li>
+            <li>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">News</a>
+            </li>
+            <li>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Finance</a>
+            </li>
+            </ul>
+        </div>
+        <div class="relative w-full">
+            <input type="search" id="search-dropdown" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-100 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Search" required>
+            {{-- <button type="submit" class="absolute top-0 right-0 p-2.5 h-full text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+  </svg></button> --}}
+        </div>
+    </div>
+</form>
+
                 </div>
                 {{-- 3つ目のタブコンテンツEnd --}}
 
                 {{-- 4つ目のタブコンテンツStart --}}
-
                 <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
-                    <div class="w-full flex flex-col">
-                        <label for="" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">主バージョン</label>
-                        <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="" value="{{old('',"V10.1")}}" placeholder="">
-                    </div>
-
                     <p class="text-sm text-gray-500 dark:text-gray-400">インフラ区分（オンプレ、クラウド、クラウドサービス）</p>
                     <p class="text-sm text-gray-500 dark:text-gray-400">Windows Server</p>
                     <p class="text-sm text-gray-500 dark:text-gray-400">SQL Server</p>
@@ -458,148 +310,8 @@
                     <p class="text-sm text-gray-500 dark:text-gray-400">フォルダ構成</p>
                     <p class="text-sm text-gray-500 dark:text-gray-400">バックアップ情報</p>
                     <p class="text-sm text-gray-500 dark:text-gray-400">備考</p>
-
                 </div>
                 {{-- 4つ目のタブコンテンツEnd --}}
-
-                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="reports" role="tabpanel" aria-labelledby="reports-tab">
-                    <span class="text-white">この顧客の営業報告の内容が表示されます。ここから営業報告を登録することもできます。</span>
-                        {{-- テーブル表示 --}}
-    <div class="w-full relative overflow-x-auto shadow-md rounded-lg mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
-        <table class="w-full text-sm font-medium text-left text-gray-800 dark:text-gray-400">
-
-            {{-- テーブルヘッダ start --}}
-            <thead class="text-sm text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
-                <tr>
-                    <th scope="col" class="px-6 py-3 whitespace-nowrap">
-                        <span class="sr-only">参照</span>
-                    </th>
-                    <th scope="col" class="px-4 py-3 whitespace-nowrap">
-                        <div class="flex items-center">
-                            顧客番号
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
-                        </div>
-                    </th>
-                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
-                        <div class="flex items-center">
-                            顧客名称
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg></a>
-                        </div>
-                    </th>
-                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
-                        <div class="flex items-center">
-                            対応日付
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
-                        </div>
-                    </th>
-                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
-                        <div class="flex items-center">
-                            報告区分
-                            {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
-                        </div>
-                    </th>
-                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
-                        <div class="flex items-center">
-                            タイトル
-                            {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
-                        </div>
-                    </th>
-                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
-                        <div class="flex items-center">
-                            報告者
-                            {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
-                        </div>
-                    </th>
-                    <th scope="col" class="px-6 py-3 whitespace-nowrap">
-                        <span class="sr-only">編集</span>
-                    </th>
-                </tr>
-            </thead>
-            @foreach ($reports as $report)
-                <tbody>
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
-                        <td class="px-4 py-4 text-center">
-{{-- report.showを作成して変更 --}}
-                            <a href="{{route('report.showFromClient',$report)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline whitespace-nowrap">参照</a>
-                        </td>
-                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{$report->client->client_num}}
-                        </th>
-                        <td class="px-1 py-4 whitespace-nowrap">
-                            {{$report->client->client_name}}
-                        </td>
-                        <td class="px-1 py-4 whitespace-nowrap">
-                            {{$report->contact_at}}
-                        </td>
-                        <td class="px-1 py-4 whitespace-nowrap">
-                            {{$report->type}}
-                        </td>
-                        <td class="px-1 py-4 whitespace-nowrap">
-                            {{$report->title}}
-                        </td>
-                        <td class="px-4 py-4 whitespace-nowrap">
-                            {{$report->reporter->name}}
-                        </td>
-                        <td class="px-2 py-4 whitespace-nowrap">
-                            {{$report->updated_at->format('y-m-d')}}
-                        </td>
-
-                        <td class="px-4 py-4 text-center">
-                            <a href="{{route('report.create',$report)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline whitespace-nowrap">
-                                編集
-                            </a>
-                        </td>
-                        <td class="py-3">
-                            <button data-modal-target="deleteModal-{{$report->id}}" data-modal-toggle="deleteModal-{{$report->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
-                                削除
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-                {{-- 削除確認モーダル画面 Start --}}
-                <div id="deleteModal-{{$report->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                    <div class="relative w-full max-w-md max-h-full">
-                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                            <button data-modal-hide="deleteModal-{{$report->id}}" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                                </svg>
-                                <span class="sr-only">Close modal</span>
-                            </button>
-                            <div class="p-6 text-center">
-                                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                                </svg>
-                                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
-
-                                <form action="{{route('report.destroy',$report->id)}}" method="POST" class="text-center m-auto">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" data-modal-hide="deleteModal-{{$report->id}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
-                                        削除
-                                    </button>
-                                </form>
-                                <button data-modal-hide="deleteModal-{{$report->id}}" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                                    やっぱやめます
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {{-- 削除確認モーダル画面 End --}}
-            @endforeach
-        </table>
-        <div class="mt-2 mb-2 px-4">
-        {{-- {{ $keepdatas->appends(request()->query())->links() }}   --}}
-        {{-- {{ $reports->withQueryString()->links('vendor.pagination.custum-tailwind') }}   --}}
-        </div> 
-    </div>
-                    
-                </div>
-                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="support" role="tabpanel" aria-labelledby="support-tab">
-                    <span class="text-white">この顧客のサポート問い合わせ情報の内容が表示されます。ここからサポート情報  を登録することもできます。</span>
-                </div>
-
 
             </div>
 
