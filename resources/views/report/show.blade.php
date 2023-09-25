@@ -13,72 +13,63 @@
         </div>
     </x-slot>
 
+    {{-- 営業報告参照 --}}
     <div class="md:w-4/6 flex justify-center md:mx-auto mt-8 ">
-        {{-- <div class="mx-4 sm:p-8"> --}}
-            {{-- <div class="px-10 mt-4"> --}}
-                <div class="bg-white dark:bg-gray-600 dark:text-white w-full  rounded-md px-10 sm:px-4 py-4 shadow-lg hover:shadow-2xl transition duration-500">
-                        <p class="text-lg text-gray-700 dark:text-white font-semibold inline-flex whitespace-nowrap">
-                            {{ $report->type }}
-                        </p>
-                        <p class="text-lg text-gray-700 dark:text-white font-semibold inline-flex whitespace-nowrap">
-                            ：{{ $report->title }}
-                        </p>
-                        <hr class="w-full">
+        <div class="bg-white dark:bg-gray-600 dark:text-white w-full  rounded-md px-10 sm:px-4 py-4 shadow-lg hover:shadow-2xl transition duration-500">
+            <p class="text-lg text-gray-700 dark:text-white font-semibold inline-flex whitespace-nowrap">
+                {{ $report->type }}
+            </p>
+            <p class="text-lg text-gray-700 dark:text-white font-semibold inline-flex whitespace-nowrap">
+                ：{{ $report->title }}
+            </p>
+            <hr class="w-full">
 
-                        <div class="flex justify-normal mb-2 flex-wrap">
-                            <div class="">
-                                <div class="mt-3 text-blue-400 font-semibold text-xs whitespace-nowrap">顧客番号</div>
-                                <p class="text-gray-600 dark:text-white whitespace-nowrap text-sm">{{$report->client->client_num}}</p>
-                            </div>
-                            <div class="mx-6">
-                                <div class="mt-3 text-blue-400 font-semibold text-xs whitespace-nowrap">顧客名称</div>
-                                <p class="text-gray-600 dark:text-white whitespace-nowrap text-sm">{{$report->client->client_name}}</p>
-                            </div>
-                            <div class="mx-6">
-                                <div class="mt-3 text-blue-400 font-semibold text-xs whitespace-nowrap">取引状態</div>
-                                <p class="text-gray-600 dark:text-white whitespace-nowrap text-sm">{{$report->client->tradeStatus->name}}</p>
-                            </div>
-                            <div class="mx-6">
-                                <div class="mt-3 text-blue-400 font-semibold text-xs whitespace-nowrap">顧客担当者</div>
-                                <p class="text-gray-600 dark:text-white whitespace-nowrap text-sm">{{$report->client_representative}}</p>
-                            </div>
-                        </div>
-
-
-                        <hr class="my-2">
-
-                        <div class="flex">
-                            <div>
-                                <div class="mt-1 text-blue-400 font-semibold text-xs whitespace-nowrap">対応日付</div>
-                                <p class="text-gray-600 dark:text-white whitespace-nowrap text-sm">{{$report->contact_at}}</p>
-                            </div>
-                            
-                            <div class="ml-8">
-                                <div class="mt-1 text-blue-400 font-semibold text-xs whitespace-nowrap">対応形式</div>
-                                <p class="text-gray-600 dark:text-white whitespace-nowrap text-sm">{{$report->contact_type}}</p>
-                            </div>
-                        </div>
-
-                        <div>
-                            <div class="mt-3 text-blue-400 font-semibold text-xs whitespace-nowrap">報告内容</div>
-                            <hr class="mb-1">
-                            <p class="text-gray-600 dark:text-white text-sm px-1">{!! nl2br(e($report->content)) !!}</p>
-                        </div>
-                        
-                        <div class="mb-4">
-                            <div class="mt-3 text-blue-400 font-semibold text-xs whitespace-nowrap">特記事項</div>
-                            <hr class="mb-1">
-                            <p class="text-gray-600 dark:text-white text-sm px-1">{!! nl2br(e($report->notice)) !!}</p>
-                        </div> 
-
-                        <div class="font-semibold text-xs whitespace-nowrap flex flex-row-reverse">
-                            <p> {{ $report->reporter->name }} • {{$report->created_at->diffForHumans()}}</p>
-                        </div>
+            <div class="flex justify-normal mb-2 flex-wrap">
+                <div class="">
+                    <div class="mt-3 text-blue-400 font-semibold text-xs whitespace-nowrap">顧客番号</div>
+                    <p class="text-gray-600 dark:text-white whitespace-nowrap text-sm">{{$report->client->client_num}}</p>
                 </div>
-            {{-- </div> --}}
-        {{-- </div> --}}
+                <div class="mx-6">
+                    <div class="mt-3 text-blue-400 font-semibold text-xs whitespace-nowrap">顧客名称</div>
+                    <p class="text-gray-600 dark:text-white whitespace-nowrap text-sm">{{$report->client->client_name}}</p>
+                </div>
+                <div class="mx-6">
+                    <div class="mt-3 text-blue-400 font-semibold text-xs whitespace-nowrap">取引状態</div>
+                    <p class="text-gray-600 dark:text-white whitespace-nowrap text-sm">{{$report->client->tradeStatus->name}}</p>
+                </div>
+                <div class="mx-6">
+                    <div class="mt-3 text-blue-400 font-semibold text-xs whitespace-nowrap">顧客担当者</div>
+                    <p class="text-gray-600 dark:text-white whitespace-nowrap text-sm">{{$report->client_representative}}</p>
+                </div>
+            </div>
+            <hr class="my-2">
+            <div class="flex">
+                <div>
+                    <div class="mt-1 text-blue-400 font-semibold text-xs whitespace-nowrap">対応日付</div>
+                    <p class="text-gray-600 dark:text-white whitespace-nowrap text-sm">{{$report->contact_at}}</p>
+                </div>
+                <div class="ml-8">
+                    <div class="mt-1 text-blue-400 font-semibold text-xs whitespace-nowrap">対応形式</div>
+                    <p class="text-gray-600 dark:text-white whitespace-nowrap text-sm">{{$report->contact_type}}</p>
+                </div>
+            </div>
+            <div>
+                <div class="mt-3 text-blue-400 font-semibold text-xs whitespace-nowrap">報告内容</div>
+                <hr class="mb-1">
+                <p class="text-gray-600 dark:text-white text-sm px-1">{!! nl2br(e($report->content)) !!}</p>
+            </div>
+            <div class="mb-4">
+                <div class="mt-3 text-blue-400 font-semibold text-xs whitespace-nowrap">特記事項</div>
+                <hr class="mb-1">
+                <p class="text-gray-600 dark:text-white text-sm px-1">{!! nl2br(e($report->notice)) !!}</p>
+            </div> 
+            <div class="font-semibold text-xs whitespace-nowrap flex flex-row-reverse">
+                <p> {{ $report->reporter->name }} • {{$report->created_at->diffForHumans()}}</p>
+            </div>
+        </div>
     </div>
 
+    {{-- コメント参照 --}}
     <div class="md:w-4/6 flex justify-center  md:mx-auto mt-8">
         <div class="w-full mx-auto">
             <h3 class="mt-8 ml-2 text-lg font-semibold dark:text-white">コメント</h3>
@@ -91,12 +82,14 @@
                         <div>{{ $comment->created_at }}</div>
                     </div>
                     <div class="px-4 py-2">
-                        <p class="text-gray-800">{{ $comment->content }}</p>
+                        {{-- <p class="text-gray-800">{{ $comment->content }}</p> --}}
+                        <p class="text-gray-800">{!!nl2br(e($comment->content))!!}</p>
                     </div>
                 </div>
             @endforeach
     
             {{-- <div class="bg-white shadow-md rounded-md overflow-hidden mt-4"> --}}
+                {{-- コメント入力 --}}
                 <div class="py-3 mt-8">
                     <form method="POST" action="{{ route('comment.store', $report->id) }}">
                         @csrf

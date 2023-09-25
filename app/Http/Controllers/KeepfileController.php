@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Keepfile;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use illuminate\pagination\paginator; //addページネーション用
 
 
@@ -15,7 +16,7 @@ class KeepfileController extends Controller
     {
         //sortableとpaginateを組み合わせる際の記述＆ログインユーザが登録したものしか表示されない
         $per_page = 15;
-        $keepfiles = keepfile::where('user_id', \Auth::user()->id)->sortable()->paginate($per_page); 
+        $keepfiles = Keepfile::where('user_id', Auth::user()->id)->sortable()->paginate($per_page); 
         $user = auth()->user();
         $users = User::all();
         // $keepfiles = keepfile::orderBy('returndate','asc')->get();　//sortableを使わずに無理やり並べ替える際の記述

@@ -28,27 +28,49 @@ class ClientCorporation extends Model
         'clientcorporation_kana_name'
     ];
 
-    public function storeWithTransaction($data)//法人番号自動採番ロジック
+    // バリデーションルール
+    public static $rules = [
+        'clientcorporation_num' => 'size:6',
+        'clientcorporation_name' => 'required|max:1024',
+        'clientcorporation_kana_name' => 'required|max:1024',
+        'clientcorporation_abbreviation_name' => 'required|max:1024',
+    ];
+
+    // index画面の検索ロジック
+    public function scopeFilter($query, $filters)
     {
-        //DB::transactionメソッドを使用してトランザクションを開始
-        return DB::transaction(function () use ($data)
-        {
-            //本メソッド内で法人情報を作成し、法人番号を採番
-            $lastCorporation = ClientCorporation::orderBy('id', 'desc')->first();
+        if (isset($filters['clientcorporation_num'])) {
+            $query->where('clientcorporation_num', 'like', '%' . $filters['clientcorporation_num']);
+        }
+
+        if (isset($filters['clientcorporation_name'])) {
+            $spaceConversion = mb_convert_kana($filters['clientcorporation_name'], 's'); //全角スペース⇒半角スペースへ変換
+            $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+
+            foreach ($wordArraySearched as $value) {
+                $query->where('clientcorporation_name', 'like', '%' . $value . '%');
+                }
+        }
+
+        if (isset($filters['clientcorporation_kana_name'])) {
+            $query->where('clientcorporation_kana_name', 'like', '%' . $filters['clientcorporation_kana_name'] . '%');
+        }
+    }
+
+    public static function storeWithTransaction(array $data)
+    {
+        return DB::transaction(function () use ($data) {
+            // ロックをかけて最後の法人情報を取得
+            $lastCorporation = ClientCorporation::lockForUpdate()->orderBy('id', 'desc')->first();
             $lastNumber = $lastCorporation ? $lastCorporation->clientcorporation_num : '000000';
             $newNumber = str_pad((int) $lastNumber + 1, 6, '0', STR_PAD_LEFT);
 
             $data['clientcorporation_num'] = $newNumber;
+
+            // データ登録
             $corporation = ClientCorporation::create($data);
 
-            if ($corporation)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return $corporation;
         });
     }
 

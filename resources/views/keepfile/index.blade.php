@@ -227,8 +227,10 @@ $(function(){
                 <tbody>
                     @foreach ($keepfiles as $keepfile)
                     <tr class="bg-white border-b  dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
-                        <td class="px-1 py-3 pr-2 whitespace-nowrap text-center">
-                            <a href="{{route('keepfile.edit',$keepfile)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">編集</a>
+                        <td class="px-4 py-2 whitespace-nowrap">
+                            <button onclick="location.href='{{route('keepfile.edit',$keepfile)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                                編集
+                            </button>
                         </td>
                         <th scope="row" class="pl-4 py-3 whitespace-nowrap font-medium text-gray-900 dark:text-white">
                             {{$keepfile->project_num}}

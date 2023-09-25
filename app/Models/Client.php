@@ -21,6 +21,7 @@ class Client extends Model
         'client_type_id',
         'trade_status_id',
         'installation_type_id',
+        'head_post_code',
         'memo',
     ];
 
@@ -31,6 +32,27 @@ class Client extends Model
         'client_kana_name',
         'client_corporation_id'
     ];
+
+    //郵便番号のフォーマット変換を行うメソッド
+    public static function formatPostCode($postCode)
+    {
+        if (!isset($postCode)) {
+            return null;
+        }
+
+        $postCode = mb_convert_kana($postCode, "n"); // 半角変換
+        $postCode = preg_replace("/[^0-9]/", "", $postCode); // 数字以外を削除
+
+        if (mb_strlen($postCode) != 7) {
+            return "郵便番号の桁数が正しくありません";
+        }
+
+        $postCode_01 = substr($postCode, 0, 3);
+        $postCode_02 = substr($postCode, -4, 4);
+        $formattedPostCode = "{$postCode_01}-{$postCode_02}";
+
+        return $formattedPostCode;
+    }
 
     // public static function generateClientNumber($clientcorporationId)
     // {
@@ -90,6 +112,6 @@ class Client extends Model
 
     public function reports()
     {
-        return $this->hasmay(Report::class);
+        return $this->hasmany(Report::class);
     }
 }

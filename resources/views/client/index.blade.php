@@ -1,23 +1,10 @@
-    {{-- favicon --}}
-    <link rel="shortcut icon" href="{{ asset('/favicon-sales.ico') }}">
-
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-100 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-900 dark:text-white leading-tight">
             顧客一覧
         </h2>
-        <div class="flex flex-row-reverse">
-            {{-- <x-general-button class="mt-4 mx-2" onclick="location.href='/client/create'">
-                顧客追加
-            </x-general-button> --}}
-            {{-- <x-general-button class="mt-4" onclick="location.href='/client/create'">
-                法人追加
-            </x-general-button> --}}
-        </div>
         <x-message :message="session('message')" />
     </x-slot>
-
-
 
     <div id="accordion-color" data-accordion="collapse" data-active-classes="bg-blue-100 dark:bg-gray-800 text-blue-600 dark:text-white">
         <h2 id="accordion-color-heading-1">
@@ -230,8 +217,10 @@
             @foreach ($clients as $client)
                 <tbody>
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
-                        <td class="px-4 py-4 text-center">
-                            <a href="{{route('client.edit',$client)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline whitespace-nowrap">編集</a>
+                        <td class="px-4 py-2 whitespace-nowrap">
+                            <button onclick="location.href='{{route('client.edit',$client)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                                編集
+                            </button>
                         </td>
                         <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$client->client_num}}

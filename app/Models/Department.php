@@ -9,5 +9,10 @@ class Department extends Model
 {
     use HasFactory;
 
+    //relation
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
     
 }

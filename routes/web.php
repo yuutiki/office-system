@@ -9,9 +9,11 @@ use App\Http\Controllers\ClientController;//add
 use App\Http\Controllers\Dashboard\DashboardController;//add
 use App\Http\Controllers\CommentController;//add
 use App\Http\Controllers\ReportController;//add
+use App\Http\Controllers\ProductController;//add
 
 use App\Http\Livewire\ClientCorporationSearchModal;
 use App\Http\Livewire\ClientForm;
+use App\Models\Product;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +48,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('/client','\App\Http\Controllers\ClientController');
     Route::resource('/user', '\App\Http\Controllers\UserController');
     Route::resource('/report', '\App\Http\Controllers\ReportController');
+    Route::resource('/product', '\App\Http\Controllers\ProductController');
+    Route::resource('/support', '\App\Http\Controllers\SupportController');
     // Route::resource('/comment', '\App\Http\Controllers\CommentController');
     Route::post('/clientcorporation/search', [ClientCorporationController::class, 'search'])->name('clientcorporation.search');
     Route::post('/clientcorporation/upload', [ClientCorporationController::class, 'upload'])->name('clientcorporation.upload');
@@ -53,6 +57,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/report/{report_id}/comment', [CommentController::class, 'show'])->name('comment.show');
     Route::post('/report/{report_id}/comment', [CommentController::class, 'store'])->name('comment.store');
     Route::get('/report/{report_id}/client', [ReportController::class, 'showFromClient'])->name('report.showFromClient');
+    Route::post('/product/upload', [ProductController::class, 'upload'])->name('product.upload');
 
 });
 

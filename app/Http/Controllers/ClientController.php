@@ -47,9 +47,13 @@ class ClientController extends Controller
             'department' => 'required',
         ]);
 
+
         // フォームからの値を変数に格納
         $clientcorporationNum = $request->input('clientcorporation_num');
         $prefix_code = $request->input('department');
+
+        $inputPost = $request->head_post_code;
+        $formattedPost = Client::formatPostCode($inputPost);
 
         // clientcorporation_numからclientcorporation_idを取得する
         $clientcorporation = ClientCorporation::where('clientcorporation_num', $clientcorporationNum)->first();
@@ -66,7 +70,7 @@ class ClientController extends Controller
             $client->client_name = $request->client_name;
             $client->client_kana_name = $request->client_kana_name;
             $client->client_num = $clientNumber;// 採番した顧客番号をセット
-            $client->head_post_code = $request->head_post_code;
+            $client->head_post_code = $formattedPost;
             $client->head_prefecture = $request->head_prefecture;
             $client->head_address1 = $request->head_addre1;
             $client->head_address2 = $request->head_addre2;
@@ -148,9 +152,11 @@ class ClientController extends Controller
         $installationTypes = InstallationType::all();
         $departments = Department::all();
         $client = Client::find($id);
+        $prefectures = Prefecture::all(); //都道府県
+
 
         $reports = Report::where('client_id',$id)->get();
-        return view('client.edit',compact('departments','users','tradeStatuses','clientTypes','installationTypes','client','reports'));
+        return view('client.edit',compact('departments','users','tradeStatuses','clientTypes','installationTypes','client','reports','prefectures'));
     }
 
     public function update(Request $request, string $id)
@@ -164,9 +170,9 @@ class ClientController extends Controller
 
         $client=Client::find($id);
 
-        $clientcorporattion = new ClientCorporation();
+        $clientcorporation = new ClientCorporation();
         // $client->clientcorporation_num=$request->clientcorporation_num;
-        $client->client_num=$request->client_num;
+        $client->client_num = $request->client_num;
         $client->client_name = $request->client_name;
         $client->client_kana_name = $request->client_kana_name;
         $client->head_post_code = $request->head_post_code;
@@ -184,7 +190,7 @@ class ClientController extends Controller
         $client->user_id = $request->user_id;
         // $client->clientcorporattion_id = ClientCorporation::select('client_corporate_id')->where('id',$id)->first();
         $client->save();
-        return redirect()->route('client.create')->with('message', '変更しました');
+        return redirect()->route('client.edit',$id)->with('message', '変更しました');
     }
 
     public function destroy(string $id)
@@ -199,10 +205,12 @@ class ClientController extends Controller
     {
         $clientName = $request->input('clientName');
         $clientNumber = $request->input('clientNumber');
+        $clientDepartment = $request->input('departmentCode');
 
-        // 検索条件に基づいて法人データを取得
+        // 検索条件に基づいて顧客データを取得
         $clients = Client::where('client_name', 'LIKE', '%' . $clientName . '%')
             ->where('client_num', 'LIKE', '%' . $clientNumber . '%')
+            ->where('department_name', 'LIKE', '%' . $clientDepartment . '%')
             ->get();
 
         return response()->json($clients);

@@ -28,7 +28,7 @@
 
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+        <div class="min-h-screen bg-blue-100 dark:bg-gray-900">
             @include('layouts.drawernavigation')
 
             <!-- Page Heading -->
@@ -55,7 +55,20 @@
                 </div>
             </div>
         </footer>
+        {{-- ダークモードスイッチャー --}}
         <script src="{{ asset('/assets/js/darkmodeswitcher.js') }}"></script>
+        {{-- inputのEnter無効化 --}}
         <script src="{{ asset('/assets/js/allinputenterdisable.js') }}"></script>
+        {{-- JQUERY --}}
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+        {{-- カナ補完 --}}
+        <script type="text/javascript" src="{{ asset('/assets/js/jquery.autoKana.js') }}"></script>
+        {{-- 住所補完 --}}
+        <script type="text/javascript" src="{{ asset('/assets/js/jquery.zip2addr.js') }}"></script>
+        <script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
     </body>
 </html>
+
+
+
+

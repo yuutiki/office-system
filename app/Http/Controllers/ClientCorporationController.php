@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\ClientCorporation;
 use Illuminate\Http\Request;
-use App\Models\Client; //add
-use illuminate\pagination\paginator; //add
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+// use App\Models\Client; //add
+// use Goodby\CSV\Import\Standard\InterpreterConfig;
+// use illuminate\pagination\paginator; //add
 use Goodby\CSV\Import\Standard\Lexer;
 use Goodby\CSV\Import\Standard\Interpreter;
 use Goodby\CSV\Import\Standard\LexerConfig;
-use Goodby\CSV\Import\Standard\InterpreterConfig;
-use Illuminate\Support\Facades\Cache;
+
 
 class ClientCorporationController extends Controller
 {
@@ -18,43 +21,19 @@ class ClientCorporationController extends Controller
     {
         $per_page = 25; // １ページごとの表示件数
 
-        //検索フォームに入力された値を取得
-        $clientcorporation_num = $request->input('clientcorporation_num');
-        $clientcorporation_name = $request->input('clientcorporation_name');
-        $clientcorporation_kana_name = $request->input('clientcorporation_kana_name');
+        //検索フォームから検索条件を取得し変数に格納
+        $filters = $request->only(['clientcorporation_num', 'clientcorporation_name', 'clientcorporation_kana_name']);
 
-        //検索Query
-        $query = ClientCorporation::query()->withCount('clients');
+        //上記で$filters変数に格納した検索条件をModelに渡し、検索処理を行う。結果を$clientcorporationsに詰める。
+        $clientcorporations = ClientCorporation::filter($filters) 
+            ->withCount('clients')
+            ->sortable()
+            ->paginate($per_page);
 
-        //もし法人番号がセットされていれば
-        if(!empty($clientcorporation_num))
-        {
-            $query->where('clientcorporation_num','like',"%{$clientcorporation_num}");
-            // $query->where('clientcorporation_num','=',$clientcorporation_num);
-        }
+        $count = $clientcorporations->total(); // 検索結果の件数を取得
 
-        //もし法人名称がセットされていれば
-        if(!empty($clientcorporation_name))
-        {
-            $spaceConversion = mb_convert_kana($clientcorporation_name, 's'); //全角スペース⇒半角スペースへ変換
-            $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
-
-            foreach($wordArraySearched as $value) 
-            {
-                $query->where('clientcorporation_name', 'like', "%{$clientcorporation_name}%");
-            }
-        }
-        
-        //もし法人カナ名称がセットされていれば
-        if(!empty($clientcorporation_kana_name))
-        {
-            $query->where('clientcorporation_kana_name','like',"%{$clientcorporation_kana_name}%");
-        }
-
-        $count = $query->count(); // 検索結果の総数を取得
-        $clientcorporations = $query->sortable()->paginate($per_page);
-
-        return view('clientcorporation.index',compact('clientcorporations','clientcorporation_num','clientcorporation_name','clientcorporation_kana_name','count'));
+        return view('clientcorporation.index', compact('clientcorporations', 'count') + $filters);
+        // $filtersの中には('clientcorporation_num','clientcorporation_name','clientcorporation_kana_name')が入ってる
     }
 
     public function create()
@@ -72,35 +51,25 @@ class ClientCorporationController extends Controller
             return redirect()->back()->with('error', '連続して登録することはできません。');
         }
 
-        $inputs=$request->validate([
-            'clientcorporation_num'=>'|min:6|max:6|unique:client_corporations',
-            'clientcorporation_name'=>'required|max:1024',
-            'clientcorporation_kana_name'=>'required|max:1024',
-            'clientcorporation_abbreviation_name'=>'required|max:1024'
-        ]);
+        // バリデーションの実行(Model)
+        $validator = Validator::make($request->all(), ClientCorporation::$rules);
 
-        $data = $request->except('clientcorporation_num');
+        if ($validator->fails()) {
+            // バリデーションエラーが発生した場合
+            session()->flash('error', '入力内容にエラーがあります。');
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
-        $clientcorporation = new ClientCorporation();
-        $result = $clientcorporation->storeWithTransaction($data);
+        // データ保存(Model)
+        $result = ClientCorporation::storeWithTransaction($request->except('clientcorporation_num'));
 
         if ($result) {
-            return redirect()->route('clientcorporation.index')->with('message', '登録しました');
+            // サブミット制御用キーを一定時間だけキャッシュに保存
+            Cache::put($submitKey, true, 5); // 5分間の制御としています
+            return redirect()->route('clientcorporation.index')->with('success', '登録しました');
         } else {
             return back()->with('error', '登録に失敗しました。');
         }
-
-        // $clientcorporation->clientcorporation_num=$request->clientcorporation_num;
-        $clientcorporation->clientcorporation_name = $request->clientcorporation_name;
-        $clientcorporation->clientcorporation_kana_name = $request->clientcorporation_kana_name;
-        $clientcorporation->clientcorporation_abbreviation_name = $request->clientcorporation_abbreviation_name;
-        $clientcorporation->memo = $request->memo;
-        $clientcorporation->save();
-
-        // サブミット制御用キーを一定時間だけキャッシュに保存
-        Cache::put($submitKey, true, 5); // 5分間の制御としています
-
-        return redirect()->route('clientcorporation.create')->with('message', '登録しました');
     }
 
     public function show(ClientCorporation $clientCorporation)
@@ -118,21 +87,26 @@ class ClientCorporationController extends Controller
     {
         $clientCorporation = ClientCorporation::find($id);
 
-        $inputs=$request->validate([
-            // 'clientcorporation_num'=>'|min:6|max:6|unique:client_corporations',
-            'clientcorporation_name'=>'required|max:1024',
-            // 'clientcorporation_name'=>'required|max:1024|regex:/\s/',
-            'clientcorporation_kana_name'=>'required|max:1024',
-            'clientcorporation_abbreviation_name'=>'required|max:1024',
-        ]);
+        // バリデーションの実行(Model)
+        $validator = Validator::make($request->all(), ClientCorporation::$rules);
 
-        $clientCorporation->clientcorporation_name = $request->clientcorporation_name;
-        $clientCorporation->clientcorporation_kana_name = $request->clientcorporation_kana_name;
-        $clientCorporation->clientcorporation_abbreviation_name = $request->clientcorporation_abbreviation_name;
-        $clientCorporation->memo = $request->memo;
+        if ($validator->fails()) {
+            // バリデーションエラーが発生した場合
+            session()->flash('error', '入力内容にエラーがあります。');
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
-        $clientCorporation->save();
-        return redirect()->route('clientcorporation.edit',$id)->with('message','更新しました');
+        $clientCorporation->fill($request->all())->save();
+
+        // $clientCorporation->clientcorporation_name = $request->clientcorporation_name;
+        // $clientCorporation->clientcorporation_kana_name = $request->clientcorporation_kana_name;
+        // $clientCorporation->clientcorporation_abbreviation_name = $request->clientcorporation_abbreviation_name;
+        // $clientCorporation->memo = $request->memo;
+        // $clientCorporation->save();
+
+        session()->flash('success', '正常に更新されました。');
+
+        return redirect()->route('clientcorporation.edit',$id)->with('success','更新しました');
     }
 
     public function destroy(string $id)
@@ -140,7 +114,7 @@ class ClientCorporationController extends Controller
         $clientCorporation = ClientCorporation::find($id);
         $clientCorporation->delete();
 
-        return redirect()->route('clientcorporation.index')->with('message','削除しました');
+        return redirect()->route('clientcorporation.index')->with('success','削除しました');
     }
 
     //モーダル用の非同期検索ロジック
@@ -173,9 +147,12 @@ class ClientCorporationController extends Controller
 
     private function parseCSVAndSaveToDatabase($csvPath)
     {
+        // CSVファイルの文字コードを自動判定
+        $fromCharset = mb_detect_encoding(file_get_contents($csvPath), 'UTF-8, Shift_JIS, EUC-JP, JIS, SJIS-win', true);
+        
         $config = new LexerConfig();
-        $config->setToCharset("UTF-8");
-        $config->setFromCharset("sjis-win");
+        $config->setFromCharset($fromCharset);
+
         $config->setIgnoreHeaderLine(true); // ヘッダを無視する設定
         $lexer = new Lexer($config);
         $interpreter = new Interpreter();

@@ -3,18 +3,12 @@
         <h2 class="font-semibold text-xl text-gray-100 leading-tight">
             預託情報の個別表示
         </h2>
-
         <div tubindex="0" class="flex flex-row-reverse">
             <x-general-button class="mt-4" onclick="location.href='{{route('keepfile.index', $keepfile)}}'">
                 一覧へ
             </x-general-button>
-
-
         </div>
-
-
         <x-message :message="session('message')" />
-
     </x-slot>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -34,11 +28,13 @@
                         </h1>
                         <hr class="w-full">
                         <div class="mt-4 text-gtay-600 font-semibold">ステータス</div>
+                        
                         @if($keepfile->is_finished == "0")
-                        <p class="ml-4 text-gray-600 py-1 whitespace-pre-line">未返却</p>
+                            <p class="ml-4 text-gray-600 py-1 whitespace-pre-line">未返却</p>
                         @else
-                        <p class="ml-4 text-gray-600 py-1 whitespace-pre-line">返却済</p>
+                            <p class="ml-4 text-gray-600 py-1 whitespace-pre-line">返却済</p>
                         @endif
+                        
                         <div class="mt-4 text-gtay-600 font-semibold">顧客名</div>
                         <p class="ml-4 text-gray-600 py-1 whitespace-pre-line">{{$keepfile->clientname}}</p>
                         <div class="mt-4 text-gtay-600 font-semibold">用途</div>
