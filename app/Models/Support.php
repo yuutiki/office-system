@@ -67,9 +67,22 @@ class Support extends Model
         'updated_by'
     ];
 
-    public static function generateRequestNumber($clientNum)
+    // バリデーションルール
+    public static $rules = [
+        'client_num' => 'required|size:10',
+        'f_received_at' =>  'required',
+        'f_title' => 'required|max:500',
+        'f_support_type_id' => 'required',
+        'f_support_time_id' => 'required',
+        'f_user_id' => 'required',
+        'f_product_series_id' => 'required',
+        'f_product_version_id' => 'required',
+        'f_product_category_id' => 'required',
+    ];
+
+    public static function generateRequestNumber($clientId)
     {
-        $lastRequest = Support::where('client_num', 'like', "$clientNum")
+        $lastRequest = Support::where('client_id', 'like', "$clientId")
             ->orderBy('request_num', 'desc')
             ->first();
 

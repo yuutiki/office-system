@@ -114,4 +114,8 @@ class Client extends Model
     {
         return $this->hasmany(Report::class);
     }
+    public function supports()
+    {
+        return $this->hasmany(Support::class);
+    }
 }

@@ -12,7 +12,9 @@ use App\Models\ProductVersion;
 use App\Models\Support;
 use App\Models\SupportTime;
 use App\Models\SupportType;
+use App\Models\TradeStatus;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
 class SupportController extends Controller
@@ -55,17 +57,15 @@ class SupportController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'client_num' => 'required',
-            'f_received_at' =>  'required',
-            'f_title' => 'required',
-            'f_support_type_id' => 'required',
-            'f_support_time_id' => 'required',
-            'f_user_id' => 'required',
-            'f_product_series_id' => 'required',
-            'f_product_version_id' => 'required',
-            'f_product_category_id' => 'required',
-        ]);
+
+        // バリデーションの実行(Model)
+        $validator = Validator::make($request->all(), Support::$rules);
+
+        if ($validator->fails()) {
+            // バリデーションエラーが発生した場合
+            session()->flash('error', '入力内容にエラーがあります。');
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         // フォームからの値を変数に格納
         $clientNum = $request->input('client_num');
@@ -75,7 +75,7 @@ class SupportController extends Controller
         $clientId = $client->id;
 
         //問合せ連番を採番
-        $requestNumber = Support::generateRequestNumber($clientNum);
+        $requestNumber = Support::generateRequestNumber($clientId);
 
         // サポート履歴データを保存
         $support = new Support();
@@ -102,9 +102,7 @@ class SupportController extends Controller
         $support->is_faq_target = $request->has('f_is_faq_target') ? 1 : 0;
         $support->save();
 
-
         return redirect()->route('support.index')->with('message', '登録しました');
-
     }
 
     public function show(Support $support)
@@ -112,14 +110,51 @@ class SupportController extends Controller
         //
     }
 
-    public function edit(Support $support)
+    public function edit(string $id)
     {
-        //
+        // $clients = Client::all();
+        $users = User::all();
+        $tradeStatuses = TradeStatus::all();
+        $clientTypes = ClientType::all();
+        $installationTypes = InstallationType::all();
+        $departments = Department::all();
+        $productSeriess = ProductSeries::all();  //製品シリーズ
+        $productVersions = ProductVersion::all();  //製品バージョン
+        $productCategories = ProductCategory::all();  // 製品系統
+        $supportTypes = SupportType::all(); //サポート種別
+        $supportTimes = SupportTime::all(); //サポート所要時間
+
+        $support = Support::find($id);
+
+        return view('support.edit',compact('users','tradeStatuses','clientTypes','installationTypes','departments','support','productSeriess','productVersions','productCategories','supportTypes','supportTimes'));
     }
 
-    public function update(Request $request, Support $support)
+    public function update(Request $request, string $id)
     {
-        //
+
+        $support = Support::find($id);
+        $support->received_at = $request->f_received_at;
+        $support->title = $request->f_title;
+        $support->request_content = $request->f_request_content;
+        $support->response_content = $request->f_response_content;
+        $support->internal_message = $request->f_internal_message;
+        $support->internal_memo1 = $request->f_internal_memo1;
+        $support->support_type_id = $request->f_support_type_id;
+        $support->support_time_id = $request->f_support_time_id;
+        $support->user_id = $request->f_user_id;// 受付対応者
+        $support->client_user_department = $request->f_client_user_department;
+        $support->client_user_kana_name = $request->f_client_user_kana_name;
+        $support->product_series_id = $request->f_product_series_id;
+        $support->product_version_id = $request->f_product_version_id;
+        $support->product_category_id = $request->f_product_category_id;
+        $support->is_finished = $request->f_is_finished;
+        $support->is_disclosured = $request->f_is_disclosured;
+        $support->is_confirmed = $request->f_is_confirmed;
+        $support->is_troubled = $request->f_is_troubled;
+        $support->is_faq_target = $request->f_is_faq_target;
+        $support->save();
+
+        return redirect()->route('support.edit',$id)->with('success', '変更しました');
     }
 
     public function destroy(Support $support)

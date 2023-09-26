@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('supports', function (Blueprint $table) {
             $table->id();
             $table->foreignId('client_id')->comment('顧客ID'); //clientsテーブル参照
-            $table->string('request_num',4)->unique()->comment('問合せ連番');
+            $table->string('request_num',4)->comment('問合せ連番');
             $table->date('received_at')->comment('受付日');
             $table->string('title',100)->comment('タイトル');
             $table->text('request_content')->nullable()->comment('内容');

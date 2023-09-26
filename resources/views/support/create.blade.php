@@ -31,19 +31,23 @@
                     <label for="client_num" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客番号</label>
                     <input type="text" name="client_num" class="w-full py-1 placeholder-red-500 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="client_num" value="{{old('client_num')}}" placeholder="顧客を検索してください" readonly>
                 </div>
+
                 <div class="">
                     <label for="client_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客名称</label>
-                    <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_name" value="{{old('client_name')}}" placeholder="例）烏丸大学" readonly>
+                    <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="client_name" value="{{old('client_name')}}" placeholder="例）烏丸大学" readonly>
                 </div>
+                @error('client_num')
+                <div class="text-red-500">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-2">
                 <div>
                     <label for="installation_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">設置種別</label>
-                    <select id="installation_type_id" name="installation_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled>
-                        <option selected value="">未選択</option>
+                    <select id="installation_type_id" name="installation_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed pointer-events-none">
+                        <option value="">未選択</option>
                         @foreach($installationTypes as $installationType)
-                        <option value="{{ $installationType->id }}">{{ $installationType->name }}</option>
+                        <option value="{{ $installationType->id }}" {{ old('installation_type_id') == $installationType->id ? 'selected' : '' }} >{{ $installationType->name }}</option>
                         @endforeach
                     </select>
                     @error('installation_type_id')
@@ -52,10 +56,10 @@
                 </div>
                 <div>
                     <label for="client_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">顧客種別</label>
-                    <select id="client_type_id" name="client_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled>
+                    <select id="client_type_id" name="client_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed pointer-events-none">
                         <option selected value="">未選択</option>
                         @foreach($clientTypes as $clientType)
-                        <option value="{{ $clientType->id }}">{{ $clientType->name }}</option>
+                        <option value="{{ $clientType->id }}" {{ old('client_type_id') == $clientType->id ? 'selected' : '' }}>{{ $clientType->name }}</option>
                         @endforeach
                     </select>
                     @error('client_type_id')
@@ -64,10 +68,10 @@
                 </div>
                 <div>
                     <label for="department" class="font-semibold  text-gray-900 dark:text-white leading-none mt-4">管轄事業部</label>
-                    <select id="department" name="department" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled>
+                    <select id="department" name="department" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed pointer-events-none">
                         <option selected value="">未選択</option>
                         @foreach($departments as $department)
-                        <option value="{{ $department->prefix_code }}">{{ $department->department_name }}</option>
+                        <option value="{{ $department->prefix_code }}" {{ old('department') == $department->prefix_code ? 'selected' : '' }}>{{ $department->department_name }}</option>
                         @endforeach
                     </select>
                     @error('department')
@@ -76,10 +80,10 @@
                 </div>
                 <div>
                     <label for="user_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">営業担当</label>
-                    <select id="user_id" name="user_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled>
+                    <select id="user_id" name="user_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed pointer-events-none">
                         <option selected value="">未選択</option>
                         @foreach($users as $user)
-                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
                         @endforeach
                     </select>
                     @error('user')
@@ -109,9 +113,21 @@
                     <div class="grid gap-2 mb-4 sm:grid-cols-6">
                         <div class="">
                             <label for="f_received_at" class="font-semibold text-sm  dark:text-gray-100 text-gray-900 leading-none mt-4">受付日</label>
-                            <input type="date" name="f_received_at" class="block w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="f_received_at" value="{{old('f_received_at')}}" placeholder="">
+                            <input type="date" min="2000-01-01" max="2100-12-31" name="f_received_at" class="block w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="f_received_at" value="{{ old('f_received_at', now()->format('Y-m-d')) }}" placeholder="">
                             @error('f_received_at')
                             <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="">
+                            <label for="f_user_id" class="font-semibold text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">受付対応者</label>
+                            <select id="f_user_id" name="f_user_id" class="block w-full py-1.5 border bg-gray-50 rounded-md mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected value="">未選択</option>
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}" @if($user->id == Auth::user()->id) selected @endif>{{ $user->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('f_user_id')
+                                <div class="text-red-500">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="">
@@ -153,18 +169,7 @@
                                 <div class="text-red-500">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="">
-                            <label for="f_user_id" class="font-semibold text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">受付対応者</label>
-                            <select id="f_user_id" name="f_user_id" class="block w-full py-1.5 border bg-gray-50 rounded-md mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option selected value="">未選択</option>
-                                @foreach($users as $user)
-                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('f_user_id')
-                                <div class="text-red-500">{{ $message }}</div>
-                            @enderror
-                        </div>
+
                         <div class="">
                             <label for="f_product_series_id" class="font-semibold text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">シリーズ</label>
                             <select id="f_product_series_id" name="f_product_series_id" class="block w-full py-1.5 border bg-gray-50 rounded-md mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -243,7 +248,7 @@
                     <ul class=" mt-4 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                         <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                             <div class="flex items-center pl-3">
-                                <input id="f_is_finished" name="f_is_finished" type="checkbox" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                <input id="f_is_finished" name="f_is_finished" type="checkbox" value="1" {{ old('f_is_finished') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                 <label for="f_is_finished" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">対応完了済</label>
                             </div>
                             @error('f_is_finished')
@@ -252,7 +257,7 @@
                         </li>
                         <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                             <div class="flex items-center pl-3">
-                                <input id="f_is_faq_target" name="f_is_faq_target" type="checkbox" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                <input id="f_is_faq_target" name="f_is_faq_target" type="checkbox" value="1" {{ old('f_is_faq_target') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                 <label for="f_is_faq_target" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">FAQ対象</label>
                             </div>
                             @error('f_is_faq_target')
@@ -261,7 +266,7 @@
                         </li>
                         <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                             <div class="flex items-center pl-3">
-                                <input id="f_is_disclosured" name="f_is_disclosured" type="checkbox" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                <input id="f_is_disclosured" name="f_is_disclosured" type="checkbox" value="1" {{ old('f_is_disclosured') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                 <label for="f_is_disclosured" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">顧客開示</label>
                             </div>
                             @error('f_is_disclosured')
@@ -270,7 +275,7 @@
                         </li>
                         <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                             <div class="flex items-center pl-3">
-                                <input id="f_is_troubled" name="f_is_troubled" type="checkbox" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                <input id="f_is_troubled" name="f_is_troubled" type="checkbox" value="1" {{ old('f_is_troubled') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                 <label for="f_is_troubled" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">トラブル</label>
                             </div>
                             @error('f_is_troubled')
@@ -279,7 +284,7 @@
                         </li>
                         <li class="w-full dark:border-gray-600">
                             <div class="flex items-center pl-3">
-                                <input id="f_is_confirmed" name="f_is_confirmed" type="checkbox" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                <input id="f_is_confirmed" name="f_is_confirmed" type="checkbox" value="1" {{ old('f_is_confirmed') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                 <label for="f_is_confirmed" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">上長確認済</label>
                             </div>
                             @error('f_is_confirmed')
