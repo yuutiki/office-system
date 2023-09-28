@@ -6,6 +6,9 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Client;
+use App\Models\Support;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -15,9 +18,20 @@ class DashboardController extends Controller
         $client = Client::where('trade_status_id','=','1')->get();
         $clientCount = $client->count();
 
-        return view('dashboard', [
-            'clientCount' => $clientCount
-        ]);
+        $user = Auth::user();
+        $receivedAtArray = [];
+        if($user){
+            $mySupports=Support::where('user_id', $user->id)
+                        ->orderBy('received_at', 'desc')
+                        ->take(5)
+                        ->get();
+
+            foreach($mySupports as $mySupport){
+                $receivedAtArray[] = Carbon::parse($mySupport->received_at);
+            }
+        }
+
+        return view('dashboard',compact('clientCount','mySupports','receivedAtArray'));
     }
 
     public function create()

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;//add
 use Kyslik\ColumnSortable\Sortable;//add
+use Illuminate\Support\Str;//add
+
 
 class Client extends Model
 {
@@ -33,6 +35,18 @@ class Client extends Model
         'client_corporation_id'
     ];
 
+    //バリデーションルールを設定
+    public static $rules = [
+        'client_num' => 'size:10',
+        'client_name' => 'required|max:20',
+        'client_kana_name' => 'required|max:50',
+        'user_id' => 'required',
+        'client_type_id' => 'required',
+        'trade_status_id' => 'required',
+        'installation_type_id' => 'required',
+        'department' => 'required',
+    ];
+
     //郵便番号のフォーマット変換を行うメソッド
     public static function formatPostCode($postCode)
     {
@@ -52,6 +66,25 @@ class Client extends Model
         $formattedPostCode = "{$postCode_01}-{$postCode_02}";
 
         return $formattedPostCode;
+    }
+
+
+
+    public static function generateClientNumber($clientcorporationNum, $prefix_code)
+    {
+        $suffix = strtoupper(Str::substr($prefix_code, 0, 1));
+        $lastClient = Client::where('client_num', 'like', "$clientcorporationNum-$suffix%")
+            ->orderBy('client_num', 'desc')
+            ->first();
+
+        if ($lastClient) {
+            $lastSerialNumber = (int) Str::substr($lastClient->client_num, -2);
+            $newSerialNumber = str_pad($lastSerialNumber + 1, 2, '0', STR_PAD_LEFT);
+        } else {
+            $newSerialNumber = '01';
+        }
+
+        return "$clientcorporationNum-$suffix$newSerialNumber";
     }
 
     // public static function generateClientNumber($clientcorporationId)

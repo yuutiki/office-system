@@ -89,7 +89,7 @@ class KeepfileController extends Controller
         ]);
 
     
-//store時にクライアントのipを取得
+    //store時にクライアントのipを取得
 
         $keepfile=new keepfile();
         $keepfile->project_num=$request->project_num;

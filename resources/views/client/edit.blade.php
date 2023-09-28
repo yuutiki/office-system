@@ -25,32 +25,42 @@
             <div class="">
                 <label for="client_num" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4 mt-2">顧客番号</label>
                 <input type="text" name="client_num" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="client_num" value="{{old('client_num',$client->client_num)}}" readonly>
+                    @error('client_num')
+                        <div class="text-red-500">{{ $message }}</div>
+                    @enderror            
             </div>
 
             <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                {{-- <div class="">
-                    <label for="clientcorporation_num" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人番号</label>
-                    <input type="text" name="clientcorporation_num" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_num" value="{{old('clientcorporation_num',$client->clientcorporation->clientcorporation_num)}}" placeholder="法人検索してください" readonly>
-                </div> --}}
-
                 <div class="">
                     <label for="clientcorporation_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4 mt-2">法人名称</label>
                     <input type="text" name="clientcorporation_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_name" value="{{old('clientcorporation_name',$client->clientcorporation->clientcorporation_name)}}" readonly>
+                    @error('clientcorporation_name')
+                        <div class="text-red-500">{{ $message }}</div>
+                    @enderror                
                 </div>
 
                 <div class="">
                     <label for="clientcorporation_kana_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人カナ名称</label>
                     <input type="text" name="clientcorporation_kana_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_kana_name" value="{{old('clientcorporation_kana_name',$client->clientcorporation->clientcorporation_kana_name)}}" readonly>
+                    @error('clientcorporation_kana_name')
+                        <div class="text-red-500">{{ $message }}</div>
+                    @enderror                
                 </div>
             
                 <div class="">
                     <label for="client_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客名称</label>
                     <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_name" value="{{old('client_name',$client->client_name)}}" placeholder="例）烏丸大学">
+                    @error('client_name')
+                        <div class="text-red-500">{{ $message }}</div>
+                    @enderror                
                 </div>
 
                 <div class="">
                     <label for="client_kana_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客カナ名称</label>
                     <input type="text" name="client_kana_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_kana_name" value="{{old('client_kana_name',$client->client_kana_name)}}" placeholder="例）カラスマダイガク">
+                    @error('client_kana_name')
+                        <div class="text-red-500">{{ $message }}</div>
+                    @enderror                
                 </div>
             </div>
 
@@ -62,11 +72,11 @@
                     <select id="department" name="department" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected value="">未選択</option>
                         @foreach($departments as $department)
-                        <option value="{{ $department->prefix_code }}" @if( $department->prefix_code == $client->department_name ) selected @endif>{{ $department->department_name }}</option>
+                            <option value="{{ $department->prefix_code }}" @if( $department->prefix_code == $client->department_name ) selected @endif>{{ $department->department_name }}</option>
                         @endforeach
                     </select>
                     @error('department')
-                    <div class="text-red-500">{{ $message }}</div>
+                        <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
 
@@ -75,11 +85,11 @@
                     <select id="user_id" name="user_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected value="">未選択</option>
                         @foreach($users as $user)
-                        <option value="{{ $user->id }}" @if( $user->id == $client->user_id) selected @endif>{{ $user->name }}</option>
+                            <option value="{{ $user->id }}" @if( $user->id == $client->user_id) selected @endif>{{ $user->name }}</option>
                         @endforeach
                     </select>
-                    @error('user')
-                    <div class="text-red-500">{{ $message }}</div>
+                    @error('user_id')
+                        <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
 
@@ -155,22 +165,23 @@
                 <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="basic" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="w-full flex flex-col">
                         <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">郵便番号</label>
-                        <input type="text" name="head_post_code" class="w-32 py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="" onKeyUp="AjaxZip3.zip2addr(this,'','head_prefecture','head_addre1');">
+                        <input type="text" name="head_post_code" class="w-32 py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="" onKeyUp="AjaxZip3.zip2addr(this,'','head_prefecture','head_addre1');">
                     </div>
 
-
-                    <div class="w-full flex flex-col">
-                        <label for="head_prefecture" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4 ">都道府県</label>
-                        <select id="head_prefecture" name="head_prefecture" class="block w-32 p-1.5 text-sm mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option selected value="">未選択</option>
-                            @foreach($prefectures as $prefecture)
-                                <option value="{{ $prefecture->id }}" @if( $prefecture->id == $client->head_prefecture ) selected @endif>{{ $prefecture->code }}:{{ $prefecture->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="head_addre1" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">本部所在地</label>
-                        <input type="text" name="head_addre1" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_addre1" value="{{old('head_addre1',$client->head_address1)}}" placeholder="">
+                    <div class="md:flex">
+                        <div class="w-auto flex flex-col">
+                            <label for="head_prefecture" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4 ">都道府県</label>
+                            <select id="head_prefecture" name="head_prefecture" class="block w-32 py-1.5  text-sm mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected value="">未選択</option>
+                                @foreach($prefectures as $prefecture)
+                                    <option value="{{ $prefecture->id }}" @if( $prefecture->id == $client->head_prefecture ) selected @endif>{{ $prefecture->code }}:{{ $prefecture->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="w-full flex flex-col ml-4">
+                            <label for="head_addre1" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">本部所在地</label>
+                            <input type="text" name="head_addre1" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_addre1" value="{{old('head_addre1',$client->head_address1)}}" placeholder="">
+                        </div>
                     </div>
                     {{-- <div class="w-full flex flex-col">
                         <label for="head_addre2" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">住所2</label>
@@ -181,15 +192,15 @@
                         <input type="text" name="head_addre3" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_addre3" value="{{old('head_addre3',$client->head_addre3)}}" placeholder="">
                     </div> --}}
                     <div class="w-full flex flex-col">
-                        <label for="head_tel" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">代表TEL</label>
-                        <input type="text" name="head_tel" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_tel" value="{{old('head_tel',$client->head_tel)}}" placeholder="">
+                        <label for="head_tel" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">代表TEL(ハイフン有)</label>
+                        <input type="text" name="head_tel" class="w-32 py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_tel" value="{{old('head_tel',$client->head_tel)}}" placeholder="">
                     </div>
 
                     <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
 
                     <div class="w-full flex flex-col">
                         <label for="students" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">学生数</label>
-                        <input type="text" name="students" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="students" value="{{old('students',$client->students)}}">
+                        <input type="number" min="0" name="students" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="students" value="{{old('students',$client->students)}}">
                     </div>
 
                     <div class="w-full flex flex-col">
@@ -444,23 +455,194 @@
                 {{-- 4つ目のタブコンテンツStart --}}
 
                 <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
-                    <div class="w-full flex flex-col">
-                        <label for="" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">主バージョン</label>
-                        <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="" value="{{old('',"V10.1")}}" placeholder="">
-                    </div>
+                    <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-2">
+                        <div>
+                            <label for="test1" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">インフラ区分</label>
+                            <select id="test1" name="test1" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected value="">未選択</option>
+                                <option selected value="">物理</option>
+                                <option selected value="">物理（仮想）</option>
+                                <option selected value="">クラウド（AWS）</option>
+                                <option selected value="">クラウド（Azure）</option>
+                                <option selected value="">クラウド（GCP）</option>
+                                <option selected value="">クラウド（SDPF）</option>
+                                <option selected value="">クラウド（さくら）</option>
+                                <option selected value="">クラウド（その他）</option>
+                                <option selected value="">クラウドサービス</option>
+                            </select>
+                            @error('test1')
+                            <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                        </div>
 
-                    <p class="text-sm text-gray-500 dark:text-gray-400">インフラ区分（オンプレ、クラウド、クラウドサービス）</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Windows Server</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">SQL Server</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">SQL インスタンス名：SQLSERVER2019</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">SQL ユーザ名：sa</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">SQL パスワード：※※※※</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">セキュリティソフト</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">リモート種別：（RDP直、RDP（VPN）、NTR）</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">VPN方法：FortiClient</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">フォルダ構成</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">バックアップ情報</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">備考</p>
+                        <div>
+                            <label for="test2" class="font-semibold  text-gray-900 dark:text-white leading-none mt-4">Windows Server</label>
+                            <select id="test2" name="test2" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected value="">未選択</option>
+                                <option selected value="">2008R2</option>
+                                <option selected value="">2012</option>
+                                <option selected value="">2019</option>
+                                <option selected value="">2022</option>
+                            </select>
+                            @error('test2')
+                            <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                        </div>
+        
+                        <div>
+                            <label for="test3" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">SQL Server</label>
+                            <select id="test3" name="test3" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected value="">未選択</option>
+                                <option selected value="">2008R2</option>
+                                <option selected value="">2012</option>
+                                <option selected value="">2019</option>
+                                <option selected value="">2022</option>
+                            </select>
+                            @error('test3')
+                            <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                        </div>
+        
+                        <div>
+                            <label for="test4" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">セキュリティソフト</label>
+                            <select id="test4" name="test4" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected value="">WindowsDifenser</option>
+                                <option selected value="">Norton</option>
+                                <option selected value="">ウィルスバスター</option>
+                                <option selected value="">カスペルスキー</option>
+                            </select>
+                            @error('test4')
+                            <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                        </div>
+        
+                        <div>
+                            <label for="test5" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">設置種別</label>
+                            <select id="test5" name="test5" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected value="">未選択</option>
+                                <option selected value="">未選択</option>
+                                <option selected value="">未選択</option>
+                                <option selected value="">未選択</option>
+                            </select>
+                            @error('test5')
+                            <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="w-full flex flex-col">
+                            <label for="" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">SQL サーバ名</label>
+                            <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="" value="{{old('',"DBサーバ名")}}" placeholder="">
+                        </div>       
+
+                        <div class="w-full flex flex-col">
+                            <label for="" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">SQL インスタンス名</label>
+                            <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="" value="{{old('',"SQLSERVER2019")}}" placeholder="">
+                        </div>
+                        <div class="w-full flex flex-col">
+                            <label for="" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">SQL ユーザ名</label>
+                            <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="" value="{{old('',"sa")}}" placeholder="">
+                        </div>
+                        <div class="w-full flex flex-col">
+                            <label for="" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">SQL パスワード</label>
+                            <input type="password" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="" value="{{old('',"V10.1")}}" placeholder="">
+                        </div>
+                        <div>
+                            <label for="test6" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">IIS Ver</label>
+                            <select id="test6" name="test6" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected value="">なし</option>
+                                <option selected value="">5.0</option>
+                                <option selected value="">6.0</option>
+                                <option selected value="">7.0</option>
+                                <option selected value="">7.5</option>
+                                <option selected value="">8.0</option>
+                                <option selected value="">8.5</option>
+                                <option selected value="">10</option>
+                            </select>
+                            @error('test6')
+                            <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div>
+                            <label for="test7" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">IIS TCPポート</label>
+                            <select id="test7" name="test7" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected value="">未使用</option>
+                                <option selected value="">80使用</option>
+                            </select>
+                            @error('test7')
+                            <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div>
+                            <label for="test8" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">IIS SSLポート</label>
+                            <select id="test8" name="test8" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected value="">未使用</option>
+                                <option selected value="">443使用</option>
+                            </select>
+                            @error('test8')
+                            <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div>
+                            <label for="test9" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">IIS 共有サービス</label>
+                            <select id="test9" name="test9" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected value="">なし</option>
+                                <option selected value="">.campus</option>
+                            </select>
+                            @error('test9')
+                            <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="w-full flex flex-col">
+                            <label for="" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">接続タイムアウト値</label>
+                            <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="" value="{{old('',"120秒")}}" placeholder="">
+                        </div>
+                        <div class="w-full flex flex-col">
+                            <label for="" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">プロセスリサイクル値</label>
+                            <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="" value="{{old('',"1740分")}}" placeholder="">
+                        </div>
+
+                        <div>
+                            <label for="test10" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">リモート種別</label>
+                            <select id="test10" name="test10" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected value="">禁止</option>
+                                <option selected value="">RDP直</option>
+                                <option selected value="">RDP（VPN）</option>
+                                <option selected value="">NTR</option>
+                            </select>
+                            @error('test10')
+                            <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div>
+                            <label for="test11" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">VPN方法</label>
+                            <select id="test11" name="test11" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected value="">なし</option>
+                                <option selected value="">FortiClient</option>
+                                <option selected value="">GlobalProtect</option>
+                                <option selected value="">F5VPN</option>
+                                <option selected value="">OpenVPN</option>
+                            </select>
+                            @error('test11')
+                            <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <label for="test14" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">サーバ構成</label>
+                        <textarea name="test14" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="test14" value="{{old('test14')}}" cols="30" rows="5"></textarea>
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <label for="test14" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">フォルダ構成</label>
+                        <textarea name="test14" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="test14" value="{{old('test14')}}" cols="30" rows="5"></textarea>
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <label for="test14" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">バックアップ情報</label>
+                        <textarea name="test14" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="test14" value="{{old('test14')}}" cols="30" rows="5"></textarea>
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <label for="test14" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">環境備考</label>
+                        <textarea name="test14" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="test14" value="{{old('test14')}}" cols="30" rows="5"></textarea>
+                    </div>
 
                 </div>
                 {{-- 4つ目のタブコンテンツEnd --}}
@@ -597,22 +779,13 @@
         {{-- {{ $reports->withQueryString()->links('vendor.pagination.custum-tailwind') }}   --}}
         </div> 
     </div>
-                    
-                </div>
-                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="support" role="tabpanel" aria-labelledby="support-tab">
-                    <span class="text-white">この顧客のサポート問い合わせ情報の内容が表示されます。ここからサポート情報  を登録することもできます。</span>
-                </div>
-
-
+        </div>
+            <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="support" role="tabpanel" aria-labelledby="support-tab">
+                <span class="text-white">この顧客のサポート問い合わせ情報の内容が表示されます。ここからサポート情報  を登録することもできます。</span>
             </div>
-
-
+        </div>
     </div>
 </div>
-
-
-
-
 
 
     <!-- Extra Large Modal -->
@@ -674,18 +847,6 @@
             </div>
         </div>
     </div>
-
-
-      
-
-
-
-
-
-
-
-
-
     
     <script>
         // モーダルを表示するための関数
@@ -753,5 +914,12 @@
             hideModal();
             }
     </script>
+
+        {{-- カナ補完 --}}
+<script>
+    $(function() {
+        $.fn.autoKana('input[name="client_name"]', 'input[name="client_kana_name"]', {katakana: true});
+    });
+</script>
  
 </x-app-layout>

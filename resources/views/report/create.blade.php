@@ -5,7 +5,8 @@
                 営業報告登録
             </h2>
             <div class="flex justify-end">
-                <x-general-button onclick="location.href='{{route('report.index')}}'">
+                <x-general-button onClick="history.back()">
+                    {{-- <x-general-button onclick="location.href='{{route('report.index')}}'"> --}}
                     戻る
                 </x-general-button>
                 <x-message :message="session('message')"/>
@@ -70,17 +71,17 @@
                         <label for="type" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">報告種別</label>
                         <select id="type" name="type" class="block w-48 p-1.5 text-sm mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option selected value="">未選択</option>
-                                <option value="新規受注報告">新規受注報告</option>
-                                <option value="新規失注報告">新規失注報告</option>
-                                <option value="既存解約報告">既存解約報告</option>
-                                <option value="営業活動報告">営業活動報告</option>
+                            <option value="営業活動報告">営業活動報告</option>
+                            <option value="新規受注報告">新規受注報告</option>
+                            <option value="新規失注報告">新規失注報告</option>
+                            <option value="既存解約報告">既存解約報告</option>
                         </select>
                     </div>
 
 {{-- 初期値で今日の日付突っ込む --}}
                     <div class="w-full flex flex-col">
                         <label for="contact_at" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">対応日付</label>
-                        <input type="date" name="contact_at" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1 p-locality p-street-address p-extended-address" id="contact_at" value="{{old('contact_at')}}" placeholder="">
+                        <input type="date" min="2000-01-01" max="2100-12-31" name="contact_at" class="w-auto py-1.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1 p-locality p-street-address p-extended-address" id="contact_at" value="{{ old('contact_at', now()->format('Y-m-d')) }}" placeholder="">
                     </div>
 
                     <div class="w-full flex flex-col">
@@ -92,13 +93,13 @@
                         <label for="contact_type" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">対応形式</label>
                         <select id="contact_type" name="contact_type" class="block w-48 p-1.5 text-sm mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option selected value="">未選択</option>
-                                <option value="オンライン">オンライン</option>
-                                <option value="現地訪問">現地訪問</option>
-                                <option value="来社対応">来社対応</option>
-                                <option value="電話対応">電話対応</option>
-                                <option value="メール対応">メール対応</option>
-                                <option value="資料送付">資料送付</option>
-                                <option value="その他">その他</option>
+                            <option value="オンライン">オンライン</option>
+                            <option value="現地訪問">現地訪問</option>
+                            <option value="来社対応">来社対応</option>
+                            <option value="電話対応">電話対応</option>
+                            <option value="メール対応">メール対応</option>
+                            <option value="資料送付">資料送付</option>
+                            <option value="その他">その他</option>
                         </select>
                     </div>
 

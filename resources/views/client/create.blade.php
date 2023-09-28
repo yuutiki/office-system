@@ -31,21 +31,33 @@
                 <div class="">
                     <label for="clientcorporation_num" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人番号</label>
                     <input type="text" name="clientcorporation_num" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_num" value="{{old('clientcorporation_num')}}" placeholder="法人検索してください" readonly>
+                    @error('clientcorporation_num')
+                        <div class="text-red-500">{{ $message }}</div>
+                    @enderror
                 </div>
                 
                 <div class="">
                     <label for="clientcorporation_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人名称</label>
                     <input type="text" name="clientcorporation_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_name" value="{{old('clientcorporation_name')}}" placeholder="法人検索してください" readonly>
+                    @error('clientcorporation_name')
+                        <div class="text-red-500">{{ $message }}</div>
+                    @enderror
                 </div>
             
                 <div class="">
                     <label for="client_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客名称</label>
                     <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_name" value="{{old('client_name')}}" placeholder="例）烏丸大学">
+                    @error('client_name')
+                        <div class="text-red-500">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="">
                     <label for="client_kana_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客カナ名称</label>
                     <input type="text" name="client_kana_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_kana_name" value="{{old('client_kana_name')}}" placeholder="例）カラスマダイガク">
+                    @error('client_kana_name')
+                        <div class="text-red-500">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
 
@@ -55,61 +67,61 @@
                 <div>
                     <label for="installation_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">設置種別</label>
                     <select id="installation_type_id" name="installation_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected value="">未選択</option>
+                        <option value="">未選択</option>
                         @foreach($installationTypes as $installationType)
-                        <option value="{{ $installationType->id }}">{{ $installationType->name }}</option>
+                            <option value="{{ $installationType->id }}" @if($installationType->id == old('installation_type_id')) selected @endif>{{ $installationType->name }}</option>
                         @endforeach
                     </select>
                     @error('installation_type_id')
-                    <div class="text-red-500">{{ $message }}</div>
+                        <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
                 <div>
                     <label for="client_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">顧客種別</label>
                     <select id="client_type_id" name="client_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected value="">未選択</option>
+                        <option value="">未選択</option>
                         @foreach($clientTypes as $clientType)
-                        <option value="{{ $clientType->id }}">{{ $clientType->name }}</option>
+                            <option value="{{ $installationType->id }}" @if($installationType->id == old('client_type_id')) selected @endif>{{ $clientType->name }}</option>
                         @endforeach
                     </select>
                     @error('client_type_id')
-                    <div class="text-red-500">{{ $message }}</div>
+                        <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
                 <div>
                     <label for="department" class="font-semibold  text-gray-900 dark:text-white leading-none mt-4">管轄事業部</label>
                     <select id="department" name="department" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected value="">未選択</option>
+                        <option value="">未選択</option>
                         @foreach($departments as $department)
-                        <option value="{{ $department->prefix_code }}">{{ $department->department_name }}</option>
+                        <option value="{{ $installationType->id }}" @if($installationType->id == old('department')) selected @endif>{{ $department->department_name }}</option>
                         @endforeach
                     </select>
                     @error('department')
-                    <div class="text-red-500">{{ $message }}</div>
+                        <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
                 <div>
                     <label for="user_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">営業担当</label>
                     <select id="user_id" name="user_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected value="">未選択</option>
+                        <option value="">未選択</option>
                         @foreach($users as $user)
-                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        <option value="{{ $installationType->id }}" @if($installationType->id == old('user_id')) selected @endif>{{ $user->name }}</option>
                         @endforeach
                     </select>
-                    @error('user')
-                    <div class="text-red-500">{{ $message }}</div>
+                    @error('user_id')
+                        <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
                 <div>
                     <label for="trade_status_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">取引状態</label>
                     <select id="trade_status_id" name="trade_status_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected value="">未選択</option>
+                        <option value="">未選択</option>
                         @foreach($tradeStatuses as $tradeStatus)
-                        <option value="{{ $tradeStatus->id }}">{{ $tradeStatus->name }}</option>
+                        <option value="{{ $installationType->id }}" @if($installationType->id == old('trade_status_id')) selected @endif>{{ $tradeStatus->name }}</option>
                         @endforeach
                     </select>
                     @error('trade_status_id')
-                    <div class="text-red-500">{{ $message }}</div>
+                        <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
@@ -156,7 +168,7 @@
                         </div>
 
                         <div class="w-full flex flex-col">
-                            <label for="head_tel" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-8">代表TEL</label>
+                            <label for="head_tel" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-8">代表TEL（ハイフン有）</label>
                             <input type="tel" name="head_tel" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="11" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_tel" value="{{old('head_tel')}}" placeholder="">
                         </div>
 

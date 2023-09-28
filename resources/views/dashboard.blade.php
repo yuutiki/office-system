@@ -65,8 +65,7 @@
                 id="user-dropdown">
                 <a
                   href="#pablo"
-                  class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-                  >Action</a>
+                  class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700">Action</a>
                 <a
                   href="#pablo"
                   class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700">
@@ -74,14 +73,12 @@
                 </a>
                 <a
                   href="#pablo"
-                  class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-                  >Something else here
+                  class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700">Something else here
                 </a>
                 <div class="h-0 my-2 border border-solid border-blueGray-100"></div>
                 <a
                   href="#pablo"
-                  class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-                  >Seprated link
+                  class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700">Seprated link
                 </a>
               </div>
             </ul>
@@ -217,14 +214,12 @@
           <div class="flex flex-wrap">
             <div class="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
               <div
-                class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-blueGray-800"
-              >
+                class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-black">
                 <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
                   <div class="flex flex-wrap items-center">
                     <div class="relative w-full max-w-full flex-grow flex-1">
                       <h6
-                        class="uppercase text-blueGray-100 mb-1 text-xs font-semibold text-white"
-                      >
+                        class="uppercase text-blueGray-100 mb-1 text-xs font-semibold text-white">
                         Overview
                       </h6>
                       <h2 class="text-white text-xl font-semibold">
@@ -243,14 +238,11 @@
             </div>
             <div class="w-full xl:w-4/12 px-4">
               <div
-                class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded"
-              >
+                class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
                 <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
                   <div class="flex flex-wrap items-center">
                     <div class="relative w-full max-w-full flex-grow flex-1">
-                      <h6
-                        class="uppercase text-blueGray-400 mb-1 text-xs font-semibold"
-                      >
+                      <h6 class="uppercase text-blueGray-400 mb-1 text-xs font-semibold">
                         Performance
                       </h6>
                       <h2 class="text-blueGray-700 text-xl font-semibold">
@@ -270,7 +262,7 @@
           </div>
           <div class="flex flex-wrap mt-4">
             <div class="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
-              <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+              <div class="relative flex flex-col min-w-0 break-words dark:bg-slate-700 bg-white text-black w-full mb-6 shadow-lg rounded dark:text-white">
                 <div class="rounded-t mb-0 px-4 py-3 border-0">
                   <div class="flex flex-wrap items-center">
                     <div class="relative w-full px-4 max-w-full flex-grow flex-1">
@@ -279,149 +271,83 @@
                       </h3>
                     </div>
                     <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
-                      <button
-                        class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
-                        type="button"
-                        style="transition:all .15s ease"
-                      >
-                        See all
+                      <button type="button" class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1" onclick="location.href='/support'">
+                      See all
                       </button>
                     </div>
                   </div>
                 </div>
-                <div class="block w-full overflow-x-auto">
+                <div class="block w-full overflow-x-auto font-medium">
                   <!-- Projects table -->
                   <table class="items-center w-full bg-transparent border-collapse">
                     <thead>
                       <tr>
-                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-sm  uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                           顧客名称
                         </th>
-                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                          問い合せタイトル
+                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                          タイトル
                         </th>
-                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                           完了フラグ
                         </th>
-                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                          区分
+                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                          種別
                         </th>
-                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                          問い合せ日時
+                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                          対応者
+                        </th>
+                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                          受付日時
                         </th>
                       </tr>
                     </thead>
+                    @foreach ($mySupports as $mySupport)                        
                     <tbody>
                       <tr>
-                        <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                          白梅学園大学
+                        <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-3 text-left">
+                          {{ $mySupport->client->client_name }}
                         </th>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          GPA計算方法について
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-3">
+                          {{ $mySupport->title }}
                         </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          完了
+                        @if ($mySupport->is_finished == "0")
+                          <td class="border-t-0 px-6 text-red-400 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-3">
+                            対応中
+                          </td>                          
+                        @else
+                          <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-3">
+                            完了
+                          </td>
+                        @endif
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-3">
+                          {{ $mySupport->supportType->type_name }}
                         </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          通常
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-3">
+                          {{ $mySupport->user->name }}
                         </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          <i class="fas fa-arrow-up text-emerald-500 mr-4"></i>
-                          昨日
-                        </td>
-                      </tr>
-                      <tr>
-                        <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                          東京薬科大学
-                        </th>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          コンカー連携の不具合
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          対応中
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          不具合（緊急）
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          <i class="fas fa-arrow-down text-orange-500 mr-4"></i>
-                          2日前
-                        </td>
-                      </tr>
-                      <tr>
-                        <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                          帝京平成大学
-                        </th>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          インボイス対応について
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          完了
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          通常
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          <i class="fas fa-arrow-down text-orange-500 mr-4"></i>
-                          7日前
-                        </td>
-                      </tr>
-                      <tr>
-                        <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                          津田塾大学
-                        </th>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          共済掛率の変更について
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          納品調整中
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          制度変更
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          <i class="fas fa-arrow-up text-emerald-500 mr-4"></i>
-                          10日前
-                        </td>
-                      </tr>
-                      <tr>
-                        <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                          日本赤十字看護大学
-                        </th>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          シラバスのPDF化について
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          完了
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          通常
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          <i class="fas fa-arrow-down text-red-500 mr-4"></i>
-                          21日前
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-3">
+                          <i class="fas fa-arrow-up text-emerald-500"></i>
+                          {{ \Carbon\Carbon::parse($mySupport->received_at)->diffForHumans() }}
                         </td>
                       </tr>
                     </tbody>
+                    @endforeach
                   </table>
                 </div>
               </div>
             </div>
             <div class="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
-              <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+              <div class="relative flex flex-col min-w-0 break-words dark:bg-slate-700 dark:text-white text-black bg-white w-full mb-6 shadow-lg rounded">
                 <div class="rounded-t mb-0 px-4 py-3 border-0">
                   <div class="flex flex-wrap items-center">
                     <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-                      <h3 class="font-semibold text-base text-blueGray-700">
+                      <h3 class="font-semibold text-base dark:text-white">
                         直近の案件リスト（当月・次月）
                       </h3>
                     </div>
                     <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
-                      <button
-                        class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
-                        type="button"
-                        style="transition:all .15s ease"
-                      >
+                      <button type="button" class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 transition-all">
                         See all
                       </button>
                     </div>
@@ -429,7 +355,7 @@
                 </div>
                 <div class="block w-full overflow-x-auto">
                   <!-- Projects table -->
-                  <table class="items-center w-full bg-transparent border-collapse">
+                  <table class="items-center w-full bg-transparent border-collapse dark:text-white">
                     <thead>
                       <tr>
                         <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
@@ -555,11 +481,7 @@
                       </h3>
                     </div>
                     <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
-                      <button
-                        class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
-                        type="button"
-                        style="transition:all .15s ease"
-                      >
+                      <button type="button" class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 transition-all">
                         See all
                       </button>
                     </div>
@@ -578,8 +500,7 @@
                         </th>
                         <th
                           class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-                          style="min-width:140px"
-                        ></th>
+                          style="min-width:140px"></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -597,8 +518,7 @@
                               <div class="overflow-hidden h-2 text-xs flex rounded bg-red-200">
                                 <div
                                   style="width:60%"
-                                  class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
-                                ></div>
+                                  class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"></div>
                               </div>
                             </div>
                           </div>
@@ -618,8 +538,7 @@
                               <div class="overflow-hidden h-2 text-xs flex rounded bg-emerald-200">
                                 <div
                                   style="width:70%"
-                                  class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-emerald-500"
-                                ></div>
+                                  class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-emerald-500"></div>
                               </div>
                             </div>
                           </div>
@@ -639,8 +558,7 @@
                               <div class="overflow-hidden h-2 text-xs flex rounded bg-purple-200">
                                 <div
                                   style="width:80%"
-                                  class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-500"
-                                ></div>
+                                  class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-500"></div>
                               </div>
                             </div>
                           </div>
@@ -657,11 +575,10 @@
                           <div class="flex items-center">
                             <span class="mr-2">75%</span>
                             <div class="relative w-full">
-                              <div class="overflow-hidden h-2 text-xs flex rounded bg-lightBlue-200">
+                              <div class="overflow-hidden h-2 text-xs flex rounded bg-sky-200">
                                 <div
                                   style="width:75%"
-                                  class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-lightBlue-500"
-                                ></div>
+                                  class="shadow-none flex flex-col text-center whitespace-nowrap text-stone-500  justify-center bg-sky-500"></div>
                               </div>
                             </div>
                           </div>
@@ -681,8 +598,7 @@
                               <div class="overflow-hidden h-2 text-xs flex rounded bg-orange-200">
                                 <div
                                   style="width:30%"
-                                  class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-emerald-500"
-                                ></div>
+                                  class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-orange-500"></div>
                               </div>
                             </div>
                           </div>
@@ -855,8 +771,7 @@
 
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"
-      charset="utf-8"
-    ></script>
+      charset="utf-8"></script>
     <script src="https://unpkg.com/@popperjs/core@2.9.1/dist/umd/popper.min.js" charset="utf-8"></script>
     <script type="text/javascript">
       /* Sidebar - Side navigation menu on mobile/responsive mode */
