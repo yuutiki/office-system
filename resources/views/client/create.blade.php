@@ -81,7 +81,7 @@
                     <select id="client_type_id" name="client_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option value="">未選択</option>
                         @foreach($clientTypes as $clientType)
-                            <option value="{{ $installationType->id }}" @if($installationType->id == old('client_type_id')) selected @endif>{{ $clientType->name }}</option>
+                            <option value="{{ $clientType->id }}" @if($clientType->id == old('client_type_id')) selected @endif>{{ $clientType->name }}</option>
                         @endforeach
                     </select>
                     @error('client_type_id')
@@ -93,7 +93,7 @@
                     <select id="department" name="department" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option value="">未選択</option>
                         @foreach($departments as $department)
-                        <option value="{{ $installationType->id }}" @if($installationType->id == old('department')) selected @endif>{{ $department->department_name }}</option>
+                        <option value="{{ $department->id }}" @if($department->id == old('department')) selected @endif>{{ $department->department_name }}</option>
                         @endforeach
                     </select>
                     @error('department')
@@ -105,7 +105,7 @@
                     <select id="user_id" name="user_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option value="">未選択</option>
                         @foreach($users as $user)
-                        <option value="{{ $installationType->id }}" @if($installationType->id == old('user_id')) selected @endif>{{ $user->name }}</option>
+                        <option value="{{ $user->id }}" @if($user->id == old('user_id')) selected @endif>{{ $user->name }}</option>
                         @endforeach
                     </select>
                     @error('user_id')
@@ -117,7 +117,7 @@
                     <select id="trade_status_id" name="trade_status_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option value="">未選択</option>
                         @foreach($tradeStatuses as $tradeStatus)
-                        <option value="{{ $installationType->id }}" @if($installationType->id == old('trade_status_id')) selected @endif>{{ $tradeStatus->name }}</option>
+                        <option value="{{ $tradeStatus->id }}" @if($tradeStatus->id == old('trade_status_id')) selected @endif>{{ $tradeStatus->name }}</option>
                         @endforeach
                     </select>
                     @error('trade_status_id')
