@@ -16,7 +16,7 @@ class ReportController extends Controller
     public function index()
     {
         $per_page = 25;
-        $reports = Report::sortable()->paginate($per_page);
+        $reports = Report::with('client')->sortable()->paginate($per_page);
         $count = $reports->count();
         $user = User::all();
 
