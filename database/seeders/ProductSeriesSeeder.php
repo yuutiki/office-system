@@ -22,6 +22,12 @@ class ProductSeriesSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now()
         ]);
+        ProductSeries::create([
+            'series_code' => '99',
+            'series_name' => '共通',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
         // ProductSeries::create([
         //     'series_code' => '03',
         //     'series_name' => 'CPWindows',

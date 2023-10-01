@@ -55,12 +55,12 @@ class ClientController extends Controller
 
         ////以下にバリデーションを通過した場合の処理を記述////
 
+        $inputPost = $request->head_post_code;
+        $formattedPost = Client::formatPostCode($inputPost);
+
         // フォームからの値を変数に格納
         $clientcorporationNum = $request->input('clientcorporation_num');
         $prefix_code = $request->input('department');
-
-        $inputPost = $request->head_post_code;
-        $formattedPost = Client::formatPostCode($inputPost);
 
         // clientcorporation_numからclientcorporation_idを取得する
         $clientcorporation = ClientCorporation::where('clientcorporation_num', $clientcorporationNum)->first();

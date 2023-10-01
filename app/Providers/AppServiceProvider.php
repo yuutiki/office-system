@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\View\Composers\LinkComposer;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use Livewire\Livewire;
+// use Livewire\Livewire;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,6 +22,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
+        // View::composer('layouts.drawernavigation', LinkComposer::class);
     }
 }
