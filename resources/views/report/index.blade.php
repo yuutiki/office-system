@@ -220,7 +220,7 @@
                             </button>
                         </td>
                         <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{$report->client->client_num}}
+                            {{-- {{$report->client->client_num}} --}}
                         </th>
                         <td class="px-1 py-4 whitespace-nowrap">
                             {{$report->client->client_name}}

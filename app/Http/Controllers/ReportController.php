@@ -6,7 +6,7 @@ use App\Models\Report;
 use App\Models\User;//add
 use App\Models\Client;//add
 use App\Models\Comment;//add
-use Illuminate\pagination\paginator;//add
+use Illuminate\Pagination\Paginator;//add
 
 use Illuminate\Http\Request;
 
