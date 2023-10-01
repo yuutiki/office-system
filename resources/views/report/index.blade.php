@@ -1,6 +1,3 @@
-    {{-- favicon --}}
-    <link rel="shortcut icon" href="{{ asset('/favicon-sales.ico') }}">
-
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-100 leading-tight">
@@ -10,8 +7,6 @@
         </div>
         <x-message :message="session('message')" />
     </x-slot>
-
-
 
     <div id="accordion-color" data-accordion="collapse" data-active-classes="bg-blue-100 dark:bg-gray-800 text-blue-600 dark:text-white">
         <h2 id="accordion-color-heading-1">
@@ -293,7 +288,6 @@
             @endforeach
         </table>
         <div class="mt-2 mb-2 px-4">
-        {{-- {{ $keepdatas->appends(request()->query())->links() }}   --}}
         {{ $reports->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
         </div> 
     </div>

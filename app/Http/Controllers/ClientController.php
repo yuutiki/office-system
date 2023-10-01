@@ -136,6 +136,7 @@ class ClientController extends Controller
         $client->head_tel = $request->head_tel;
         $client->students = $request->students;
         $client->distribution = $request->distribution;
+        $client->department_name = $request->department;
         $client->client_type_id = $request->client_type_id;
         $client->installation_type_id = $request->installation_type_id;
         $client->trade_status_id = $request->trade_status_id;
