@@ -96,7 +96,7 @@ class ReportController extends Controller
     {
         $report = Report::find($id);
         $report->delete();
-        return redirect()->route('report.index')->with('message', '削除しました');
+        return redirect()->back()->with('message', '削除しました');
     }
 
     //ユーザが報告先を選択した際に実行されるメソッド

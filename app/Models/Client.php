@@ -151,4 +151,9 @@ class Client extends Model
     {
         return $this->hasmany(Support::class);
     }
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'client_products', 'client_id', 'product_id');
+    }
+
 }

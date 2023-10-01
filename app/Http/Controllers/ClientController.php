@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ClientCorporation;//add
 use App\Models\Client;
+use App\Models\ClientProduct;
 use App\Models\User;
 use App\Models\Department;//add
 use App\Models\InstallationType;//add
@@ -11,6 +12,7 @@ use App\Models\ClientType;//add
 use App\Models\TradeStatus;//add
 use App\Models\Prefecture;//add
 use App\Models\Report;//add
+use App\Models\Support;
 use Illuminate\Http\Request;
 use Illuminate\pagination\paginator;//add
 use Illuminate\Support\Facades\DB;//add
@@ -106,8 +108,10 @@ class ClientController extends Controller
         $client = Client::find($id);
         $prefectures = Prefecture::all(); //都道府県
 
+        $clientProducts = ClientProduct::where('client_id',$id)->get();
         $reports = Report::where('client_id',$id)->get();
-        return view('client.edit',compact('departments','users','tradeStatuses','clientTypes','installationTypes','client','reports','prefectures'));
+        $supports = Support::where('client_id',$id)->get();
+        return view('client.edit',compact('departments','users','tradeStatuses','clientTypes','installationTypes','client','reports','prefectures','supports','clientProducts'));
     }
 
     public function update(Request $request, string $id)
@@ -157,10 +161,15 @@ class ClientController extends Controller
         $clientDepartment = $request->input('departmentCode');
 
         // 検索条件に基づいて顧客データを取得
-        $clients = Client::where('client_name', 'LIKE', '%' . $clientName . '%')
-            ->where('client_num', 'LIKE', '%' . $clientNumber . '%')
-            ->where('department_name', 'LIKE', '%' . $clientDepartment . '%')
-            ->get();
+        // $clients = Client::where('client_name', 'LIKE', '%' . $clientName . '%')
+        //     ->where('client_num', 'LIKE', '%' . $clientNumber . '%')
+        //     ->where('department_name', 'LIKE', '%' . $clientDepartment . '%')
+        //     ->get();
+        $query = Client::query()
+        ->where('client_name', 'LIKE', '%' . $clientName . '%')
+        ->where('client_num', 'LIKE', '%' . $clientNumber . '%')
+        ->where('department_name', 'LIKE', '%' . $clientDepartment . '%');
+        $clients = $query->with('products')->get();
 
         return response()->json($clients);
     }

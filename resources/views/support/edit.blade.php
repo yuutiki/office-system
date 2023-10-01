@@ -5,13 +5,18 @@
                 サポート履歴編集
             </h2>
             <div class="flex justify-end">
-                <x-general-button onclick="location.href='{{route('support.index')}}'">
+                <x-general-button onclick="goBack()">
                     戻る
                 </x-general-button>
                 <x-message :message="session('message')"/>
             </div>
         </div>
     </x-slot>
+<script>
+    function goBack() {
+        window.history.back(2);
+    }
+</script>
 
     <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
 
@@ -465,5 +470,6 @@
 
             hideModal();
             }
+
     </script> 
 </x-app-layout>

@@ -286,15 +286,6 @@
                         <label for="" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">主バージョン</label>
                         <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="" value="{{old('',"V10.1")}}" placeholder="">
                     </div>
-                    <div class="w-full flex flex-col">
-                        <label for="" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">クライアントライセンス</label>
-                        <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="" value="{{old('',"オープン")}}" placeholder="">
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">導入備考</label>
-                        <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="memo" value="{{old('memo')}}" cols="30" rows="3">ログイン画面にCUSあり注意</textarea>
-                    </div>
-
 
                     <div class="w-full relative overflow-x-auto shadow-md rounded-lg mx-auto mt-4 boeder-2 bg-gray-300 dark:bg-gray-700">
                         <table class="w-full text-sm font-medium text-left text-gray-800 dark:text-gray-400">
@@ -308,17 +299,21 @@
                                     <th scope="col" class="px-4 py-2 whitespace-nowrap">
                                         <div class="flex items-center">
                                             シリーズ
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
-                                        </div>
-                                    </th>
-                                    <th scope="col" class="px-1 py-2 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            導入システム名称
                                         </div>
                                     </th>
                                     <th scope="col" class="px-1 py-2 whitespace-nowrap">
                                         <div class="flex items-center">
                                             バージョン
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="px-2 py-2 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            内訳種別
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="px-1 py-2 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            導入システム名称
                                         </div>
                                     </th>
                                     <th scope="col" class="px-2 py-2 whitespace-nowrap">
@@ -337,20 +332,11 @@
                                         </div>
                                     </th>
                                     <th scope="col" class="px-2 py-2 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            購入区分
-                                        </div>
-                                    </th>
-                                    <th scope="col" class="px-2 py-2 whitespace-nowrap">
-                                        <div class="flex items-center">
+                                        <div class="flex items-center  w-1">
                                             導入備考
                                         </div>
                                     </th>
-                                    <th scope="col" class="px-2 py-2 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            契約備考
-                                        </div>
-                                    </th>
+
                                     <th scope="col" class="py-2 whitespace-nowrap">
                                         {{-- <button class="rounded-md bg-blue-400 px-3 py-1">追加</button> --}}
                                         <button type="button" class=" bg-blue-400 flex items-center justify-center px-3 py-1 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
@@ -363,36 +349,49 @@
                                 </tr>
                             </thead>
                                 <tbody>
+                                    @foreach ($clientProducts as $clientProduct)
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
                                         <td class="px-4 py-1 text-center">
                                             <a href="{{route('client.edit',$client)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline whitespace-nowrap">編集</a>
                                         </td>
                                         <th scope="row" class="pl-4 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            .NET
+                                            {{ $clientProduct->product->productSeries->series_name }}
                                         </th>
                                         <td class="px-1 py-1 whitespace-nowrap">
-                                            学籍教務情報システム
+                                            {{ $clientProduct->productVersion->version_name }}
+                                        </td>
+                                        <td class="px-2 py-1 whitespace-nowrap">
+                                            {{ $clientProduct->product->productSplitType->split_type_name }}
                                         </td>
                                         <td class="px-1 py-1 whitespace-nowrap">
-                                            v10.1
+                                            {{ $clientProduct->product->product_short_name }}
                                         </td>
                                         <td class="px-4 py-1 whitespace-nowrap">
-                                            1
+                                            {{ $clientProduct->quantity }}個
                                         </td>
+                                        @if($clientProduct->is_customized == "1")
+                                            <td class="px-2 py-1 whitespace-nowrap text-red-400">
+                                                有り
+                                            </td>
+                                        @else
+                                            <td class="px-2 py-1 whitespace-nowrap">
+                                                -
+                                            </td>
+                                        @endif
+
+                                        @if ($clientProduct->is_contracted == "1")
+                                            <td class="px-2 py-1 whitespace-nowrap">
+                                                契約済
+                                            </td>
+                                        @else
+                                            <td class="px-2 py-1 whitespace-nowrap text-red-400">
+                                                未契約
+                                            </td>
+                                        @endif
                                         <td class="px-2 py-1 whitespace-nowrap">
-                                            有り
-                                        </td>
-                                        <td class="px-1 py-1 whitespace-nowrap">
-                                            契約済み
-                                        </td>
-                                        <td class="px-2 py-1 whitespace-nowrap">
-                                            買い取り
-                                        </td>
-                                        <td class="px-2 py-1 whitespace-nowrap">
-                                            あああああ。。。。。
-                                        </td>
-                                        <td class="px-2 py-1 whitespace-nowrap">
-                                            いいいいいい・・・・・
+                                            <div class="whitespace-nowrap overflow-ellipsis w-6/12 overflow-hidden">
+                                            {{ $clientProduct->install_memo }}
+                                            </div>
                                         </td>
                                         <td class="py-3">
                                             {{-- <button>削除</button> --}}
@@ -401,44 +400,8 @@
                                             </button> --}}
                                         </td>
                                     </tr>
-                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
-                                        <td class="px-4 py-1 text-center">
-                                            <a href="{{route('client.edit',$client)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline whitespace-nowrap">編集</a>
-                                        </td>
-                                        <th scope="row" class="pl-4 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            .NET
-                                        </th>
-                                        <td class="px-1 py-1 whitespace-nowrap">
-                                            大学入学共通テストサブシステム
-                                        </td>
-                                        <td class="px-1 py-1 whitespace-nowrap">
-                                            v10.1
-                                        </td>
-                                        <td class="px-4 py-1 whitespace-nowrap">
-                                            1
-                                        </td>
-                                        <td class="px-2 py-1 whitespace-nowrap">
-                                            有り
-                                        </td>
-                                        <td class="px-1 py-1 whitespace-nowrap">
-                                            契約済み
-                                        </td>
-                                        <td class="px-2 py-1 whitespace-nowrap">
-                                            買い取り
-                                        </td>
-                                        <td class="px-2 py-1 whitespace-nowrap">
-                                            あああああ。。。。。
-                                        </td>
-                                        <td class="px-2 py-1 whitespace-nowrap">
-                                            いいいいいい・・・・・
-                                        </td>
-                                        <td class="py-3">
-                                            {{-- <button>削除</button> --}}
-                                            {{-- <button data-modal-target="deleteModal-{{$client->id}}" data-modal-toggle="deleteModal-{{$client->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
-                                                削除
-                                            </button> --}}
-                                        </td>
-                                    </tr>
+                                    @endforeach
+
                                 </tbody>
                                 {{-- 削除確認モーダル画面 Start --}}
                                 {{-- 削除確認モーダル画面 End --}}
@@ -453,7 +416,6 @@
                 {{-- 3つ目のタブコンテンツEnd --}}
 
                 {{-- 4つ目のタブコンテンツStart --}}
-
                 <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
                     <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-2">
                         <div>
@@ -647,142 +609,300 @@
                 </div>
                 {{-- 4つ目のタブコンテンツEnd --}}
 
+                {{-- 5つ目のタブコンテンツStart --}}
                 <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="reports" role="tabpanel" aria-labelledby="reports-tab">
                     <span class="text-white">この顧客の営業報告の内容が表示されます。ここから営業報告を登録することもできます。</span>
-                        {{-- テーブル表示 --}}
-    <div class="w-full relative overflow-x-auto shadow-md rounded-lg mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
-        <table class="w-full text-sm font-medium text-left text-gray-800 dark:text-gray-400">
+                    {{-- テーブル表示 --}}
+                    <div class="w-full relative overflow-x-auto shadow-md rounded-lg mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
+                        <table class="w-full text-sm font-medium text-left text-gray-800 dark:text-gray-400">
 
-            {{-- テーブルヘッダ start --}}
-            <thead class="text-sm text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
-                <tr>
-                    <th scope="col" class="px-6 py-3 whitespace-nowrap">
-                        <span class="sr-only">参照</span>
-                    </th>
-                    <th scope="col" class="px-4 py-3 whitespace-nowrap">
-                        <div class="flex items-center">
-                            顧客番号
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
-                        </div>
-                    </th>
-                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
-                        <div class="flex items-center">
-                            顧客名称
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg></a>
-                        </div>
-                    </th>
-                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
-                        <div class="flex items-center">
-                            対応日付
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
-                        </div>
-                    </th>
-                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
-                        <div class="flex items-center">
-                            報告区分
-                            {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
-                        </div>
-                    </th>
-                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
-                        <div class="flex items-center">
-                            タイトル
-                            {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
-                        </div>
-                    </th>
-                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
-                        <div class="flex items-center">
-                            報告者
-                            {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
-                        </div>
-                    </th>
-                    <th scope="col" class="px-6 py-3 whitespace-nowrap">
-                        <span class="sr-only">編集</span>
-                    </th>
-                </tr>
-            </thead>
-            @foreach ($reports as $report)
-                <tbody>
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
-                        <td class="px-4 py-4 text-center">
-{{-- report.showを作成して変更 --}}
-                            <a href="{{route('report.showFromClient',$report)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline whitespace-nowrap">参照</a>
-                        </td>
-                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{$report->client->client_num}}
-                        </th>
-                        <td class="px-1 py-4 whitespace-nowrap">
-                            {{$report->client->client_name}}
-                        </td>
-                        <td class="px-1 py-4 whitespace-nowrap">
-                            {{$report->contact_at}}
-                        </td>
-                        <td class="px-1 py-4 whitespace-nowrap">
-                            {{$report->type}}
-                        </td>
-                        <td class="px-1 py-4 whitespace-nowrap">
-                            {{$report->title}}
-                        </td>
-                        <td class="px-4 py-4 whitespace-nowrap">
-                            {{$report->reporter->name}}
-                        </td>
-                        <td class="px-2 py-4 whitespace-nowrap">
-                            {{$report->updated_at->format('y-m-d')}}
-                        </td>
+                            {{-- テーブルヘッダ start --}}
+                            <thead class="text-sm text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 whitespace-nowrap">
+                                        <span class="sr-only">参照</span>
+                                    </th>
+                                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            対応日付
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            報告区分
+                                            {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            タイトル
+                                            {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            報告者
+                                            {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            更新日付
+                                            {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <button type="button" onclick="location.href='{{route('report.create')}}'" class=" bg-blue-400 flex items-center justify-center px-3 py-1 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
+                                                <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                  <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                                                </svg>
+                                                追加
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 whitespace-nowrap">
+                                        <span class="sr-only">編集</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            @foreach ($reports as $report)
+                                <tbody>
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
+                                        <td class="px-4 py-4 text-center">
+                                     {{-- report.showを作成して変更 --}}
+                                            <a href="{{route('report.showFromClient',$report)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline whitespace-nowrap">参照</a>
+                                        </td>
+                                        <td class="px-1 py-4 whitespace-nowrap">
+                                            {{$report->contact_at}}
+                                        </td>
+                                        <td class="px-1 py-4 whitespace-nowrap">
+                                            {{$report->type}}
+                                        </td>
+                                        <td class="px-1 py-4 whitespace-nowrap">
+                                            {{$report->title}}
+                                        </td>
+                                        <td class="px-4 py-4 whitespace-nowrap">
+                                            {{$report->reporter->name}}
+                                        </td>
+                                        <td class="px-2 py-4 whitespace-nowrap">
+                                            {{$report->updated_at->format('y-m-d')}}
+                                        </td>
 
-                        <td class="px-4 py-4 text-center">
-                            <a href="{{route('report.create',$report)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline whitespace-nowrap">
-                                編集
-                            </a>
-                        </td>
-                        <td class="py-3">
-                            <button data-modal-target="deleteModal-{{$report->id}}" data-modal-toggle="deleteModal-{{$report->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
-                                削除
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-                {{-- 削除確認モーダル画面 Start --}}
-                <div id="deleteModal-{{$report->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                    <div class="relative w-full max-w-md max-h-full">
-                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                            <button data-modal-hide="deleteModal-{{$report->id}}" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                                </svg>
-                                <span class="sr-only">Close modal</span>
-                            </button>
-                            <div class="p-6 text-center">
-                                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                                </svg>
-                                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
+                                        <td class="px-4 py-4 text-center">
+                                            <a href="{{route('report.create',$report)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline whitespace-nowrap">
+                                                編集
+                                            </a>
+                                        </td>
+                                        <td class="py-3">
+                                            <button data-modal-target="deleteModal-{{$report->id}}" data-modal-toggle="deleteModal-{{$report->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
+                                                削除
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                {{-- 削除確認モーダル画面 Start --}}
+                                <div id="deleteModal-{{$report->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                    <div class="relative w-full max-w-md max-h-full">
+                                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                            <button data-modal-hide="deleteModal-{{$report->id}}" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                                </svg>
+                                                <span class="sr-only">Close modal</span>
+                                            </button>
+                                            <div class="p-6 text-center">
+                                                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                                </svg>
+                                                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
 
-                                <form action="{{route('report.destroy',$report->id)}}" method="POST" class="text-center m-auto">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" data-modal-hide="deleteModal-{{$report->id}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
-                                        削除
-                                    </button>
-                                </form>
-                                <button data-modal-hide="deleteModal-{{$report->id}}" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                                    やっぱやめます
-                                </button>
-                            </div>
-                        </div>
+                                                <form action="{{route('report.destroy',$report->id)}}" method="POST" class="text-center m-auto">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button type="submit" data-modal-hide="deleteModal-{{$report->id}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                                                        削除
+                                                    </button>
+                                                </form>
+                                                <button data-modal-hide="deleteModal-{{$report->id}}" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                                    やっぱやめます
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- 削除確認モーダル画面 End --}}
+                            @endforeach
+                        </table>
+                        <div class="mt-2 mb-2 px-4">
+                        </div> 
                     </div>
                 </div>
-                {{-- 削除確認モーダル画面 End --}}
-            @endforeach
-        </table>
-        <div class="mt-2 mb-2 px-4">
-        {{-- {{ $keepdatas->appends(request()->query())->links() }}   --}}
-        {{-- {{ $reports->withQueryString()->links('vendor.pagination.custum-tailwind') }}   --}}
-        </div> 
-    </div>
-        </div>
-            <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="support" role="tabpanel" aria-labelledby="support-tab">
-                <span class="text-white">この顧客のサポート問い合わせ情報の内容が表示されます。ここからサポート情報  を登録することもできます。</span>
-            </div>
+                {{-- 5つ目のタブコンテンツEnd --}}
+
+                {{-- 6つ目のタブコンテンツStart --}}
+                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="support" role="tabpanel" aria-labelledby="support-tab">
+                    <span class="text-white">この顧客のサポート問い合わせ情報の内容が表示されます。ここからサポート情報  を登録することもできます。</span>
+                    <div class="w-full relative overflow-x-auto shadow-md rounded-lg mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
+                        <table class="w-full text-sm font-medium text-left text-gray-800 dark:text-gray-400">
+                
+                            {{-- テーブルヘッダ start --}}
+                            <thead class="text-sm text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 whitespace-nowrap">
+                                        <span class="sr-only">編集</span>
+                                    </th>
+                                    <th scope="col" class="px-4 py-3 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            @sortablelink('received_at','受付日')
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="px-4 py-3 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            @sortablelink('support_type_id','種別')
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="px-4 py-3 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            @sortablelink('title','表題')
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
+                                        </div>
+                                    </th>
+            
+                                    <th scope="col" class="px-4 py-3 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            @sortablelink('user_id','受付対応者')
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
+                                        </div>
+                                    </th>
+                
+                                    <th scope="col" class="px-4 py-3 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            @sortablelink('product_series_id','シリーズ')
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="px-4 py-3 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            @sortablelink('product_version_id','バージョン')
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="px-4 py-3 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            @sortablelink('product_category_id','系統')
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
+                                        </div>
+                                    </th>
+                                    {{-- <th scope="col" class="px-2 py-3 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            @sortablelink('status_flag','ステータス')
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
+                                        </div>
+                                    </th> --}}
+                                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            更新日
+                                            {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 whitespace-nowrap">
+                                        <span class="sr-only">削除</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            @foreach ($supports as $support)
+                                <tbody>
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
+                                        <td class="px-4 py-2 whitespace-nowrap">
+                                            <button onclick="location.href='{{route('support.edit',$support)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                                                編集
+                                            </button>
+                                        </td>
+                                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {{$support->received_at}}
+                                        </th>
+                                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {{$support->supportType->type_name}}
+                                        </th>
+                                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {{$support->title}}
+                                        </th>
+                                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {{$support->user->name}}
+                                        </th>
+                                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {{$support->productSeries->series_name}}
+                                        </th>
+                                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {{$support->productVersion->version_name}}
+                                        </th>
+                                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {{$support->productCategory->category_name}}
+                                        </th>
+                                        
+                                        {{-- @if($keepdata->status_flag == "0")
+                                            <td class="px-2 py-4 whitespace-nowrap text-fuchsia-300">
+                                                未返却
+                                            </td>
+                                        @else
+                                            <td class="px-2 py-4 whitespace-nowrap">
+                                                返却済
+                                            </td>
+                                        @endif --}}
+                                        <td class="px-2 py-4 whitespace-nowrap">
+                                            {{$support->updated_at->format('y-m-d')}}
+                                        </td>
+                                        <td class="py-3">
+                                            <button data-modal-target="deleteModal-{{$support->id}}" data-modal-toggle="deleteModal-{{$support->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
+                                                削除
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                {{-- 削除確認モーダル画面 Start --}}
+                                <div id="deleteModal-{{$support->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                    <div class="relative w-full max-w-md max-h-full">
+                                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                            <button data-modal-hide="deleteModal-{{$support->id}}" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                                </svg>
+                                                <span class="sr-only">Close modal</span>
+                                            </button>
+                                            <div class="p-6 text-center">
+                                                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                                </svg>
+                                                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
+                
+                                                <form action="{{route('support.destroy',$support->id)}}" method="POST" class="text-center m-auto">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button type="submit" data-modal-hide="deleteModal-{{$support->id}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                                                        削除
+                                                    </button>
+                                                </form>
+                                                <button data-modal-hide="deleteModal-{{$support->id}}" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                                    やっぱやめます
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- 削除確認モーダル画面 End --}}
+                            @endforeach
+                        </table>
+                        <div class="mt-2 mb-2 px-4">
+                        {{-- {{ $keepdatas->appends(request()->query())->links() }}   --}}
+                        {{-- {{ $supports->withQueryString()->links('vendor.pagination.custum-tailwind') }}   --}}
+                        </div> 
+                    </div>
+                </div>
+                {{-- 6つ目のタブコンテンツEnd --}}
         </div>
     </div>
 </div>
@@ -913,6 +1033,7 @@
 
             hideModal();
             }
+
     </script>
 
         {{-- カナ補完 --}}
