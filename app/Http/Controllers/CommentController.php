@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Report;//add
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CommentController extends Controller
 {
@@ -20,6 +21,15 @@ class CommentController extends Controller
 
     public function store(Request $request , $reportId)
     {
+        // バリデーションの実行(Model)
+        $validator = Validator::make($request->all(), Comment::$rules);
+
+        if ($validator->fails()) {
+            // バリデーションエラーが発生した場合
+            session()->flash('error', '入力内容にエラーがあります。');
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         $report = Report::find($reportId);
 
         $comment = new Comment();
@@ -28,7 +38,7 @@ class CommentController extends Controller
         $comment->content = $request->input('content');
         $comment->save();
 
-        return redirect()->back()->with('message','コメントが投稿されました');
+        return redirect()->back()->with('success','コメントが投稿されました');
     }
 
 

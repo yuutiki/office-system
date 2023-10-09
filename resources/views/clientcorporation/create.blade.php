@@ -25,10 +25,10 @@
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
                 <div class="w-full flex flex-col">
-                    <label for="clientcorporation_abbreviation_name" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">法人略称</label>
-                    <input type="text" name="clientcorporation_abbreviation_name" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="clientcorporation_abbreviation_name" value="{{old('clientcorporation_abbreviation_name')}}" placeholder="烏丸学園">
+                    <label for="clientcorporation_short_name" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">法人略称</label>
+                    <input type="text" name="clientcorporation_short_name" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="clientcorporation_short_name" value="{{old('clientcorporation_short_name')}}" placeholder="烏丸学園">
                 </div>
-                @error('clientcorporation_abbreviation_name')
+                @error('clientcorporation_short_name')
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
                 <div class="w-full flex flex-col">

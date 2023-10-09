@@ -62,18 +62,23 @@ class ClientController extends Controller
         $clientcorporationNum = $request->input('clientcorporation_num');
         $prefix_code = $request->input('department');
 
+        $clientNumber = Client::generateClientNumber($clientcorporationNum, $prefix_code);
+
+
         // clientcorporation_numからclientcorporation_idを取得する
         $clientcorporation = ClientCorporation::where('clientcorporation_num', $clientcorporationNum)->first();
         $clientcorporationId = $clientcorporation->id;
 
-        $clientNumber = Client::generateClientNumber($clientcorporationNum, $prefix_code);
+        $department = Department::where('prefix_code', $prefix_code)->first();
+        $departmentId = $department->id;
+
 
         // 顧客データを保存
         $client = new Client();
         $client->client_num = $clientNumber;// 採番した顧客番号をセット
 
         $client->client_corporation_id = $clientcorporationId;
-        $client->department_name = $request->department;
+        $client->department_name = $departmentId;
         $client->client_name = $request->client_name;
         $client->client_kana_name = $request->client_kana_name;
         $client->head_post_code = $formattedPost;//変換後の郵便番号をセット
@@ -125,7 +130,7 @@ class ClientController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $client=Client::find($id);
+        $client = Client::find($id);
 
         $client->client_num = $request->client_num;
         $client->client_name = $request->client_name;
@@ -143,7 +148,7 @@ class ClientController extends Controller
         $client->user_id = $request->user_id;
         $client->save();
 
-        return redirect()->route('client.edit',$id)->with('success', '変更しました');
+        return redirect()->route('client.edit', $id)->with('success', '変更しました');
     }
 
     public function destroy(string $id)

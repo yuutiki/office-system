@@ -11,6 +11,10 @@ class Report extends Model
     use HasFactory;
     use Sortable;//add
 
+    public static $rulesEdit = [
+        'title' => 'required|max:255',
+        'content' => 'required',
+    ];
 
     // 報告に関連する報告者（投稿者）のリレーションok
     public function reporter()

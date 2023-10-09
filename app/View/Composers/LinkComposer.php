@@ -2,7 +2,7 @@
 
 namespace App\View\Composers;
 
-use App\Models\Link;
+use App\Models\Link; //add
 use Illuminate\View\View;
 
 /**
@@ -17,6 +17,9 @@ class LinkComposer
      * @param View $view
      * @return void
      */
+
+     //すべて（もしくは一部）のViewで利用するデータを取得し$viewにわたす。
+     //で、どのViewにわたすかは　App/Providers/ViewComposerServiceProvider.php　に記載している。
     public function compose(View $view)
     {
         $links = Link::orderBy('display_order')->get();

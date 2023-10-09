@@ -67,7 +67,7 @@
                     <select id="department" name="department" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected value="">未選択</option>
                         @foreach($departments as $department)
-                            <option value="{{ $department->prefix_code }}" @selected( $department->prefix_code == $client->department_name )>{{ $department->department_name }}</option>
+                            <option value="{{ $department->id }}" @selected( $department->id == $client->department_name )>{{ $department->department_name }}</option>
                         @endforeach
                     </select>
                     @error('department')
@@ -186,11 +186,11 @@
                         <input type="text" name="head_tel" class="w-32 py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_tel" value="{{old('head_tel',$client->head_tel)}}" placeholder="">
                     </div>
 
-                    <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
+                    <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
 
                     <div class="w-full flex flex-col">
                         <label for="students" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">学生数</label>
-                        <input type="number" min="0" name="students" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="students" value="{{old('students',$client->students)}}">
+                        <input type="number" min="0" name="students" class="w-1/2 py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="students" value="{{old('students',$client->students)}}">
                     </div>
 
                     <div class="w-full flex flex-col">
@@ -322,15 +322,14 @@
                                         </div>
                                     </th>
                                     <th scope="col" class="px-2 py-2 whitespace-nowrap">
-                                        <div class="flex items-center  w-1">
+                                        <div class="flex items-center">
                                             導入備考
                                         </div>
                                     </th>
-
-                                    <th scope="col" class="py-2 whitespace-nowrap">
+                                    <th scope="col" class="px-2 py-2 whitespace-nowrap">
                                         {{-- <button class="rounded-md bg-blue-400 px-3 py-1">追加</button> --}}
                                         <button type="button" class=" bg-blue-400 flex items-center justify-center px-3 py-1 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
-                                            <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                            <svg class="h-3.5 w-3.5 mr-1" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                               <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                                             </svg>
                                             製品追加
@@ -636,13 +635,12 @@
                                             {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
                                         </div>
                                     </th>
-                                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
+                                    {{-- <th scope="col" class="px-2 py-3 whitespace-nowrap">
                                         <div class="flex items-center">
                                             更新日付
-                                            {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
                                         </div>
-                                    </th>
-                                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
+                                    </th> --}}
+                                    <th scope="col" class="px-2 py-1 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <button type="button" onclick="location.href='{{route('report.create')}}'" class=" bg-blue-400 flex items-center justify-center px-3 py-1 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                                                 <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -676,10 +674,9 @@
                                         <td class="px-4 py-4 whitespace-nowrap">
                                             {{$report->reporter->name}}
                                         </td>
-                                        <td class="px-2 py-4 whitespace-nowrap">
+                                        {{-- <td class="px-2 py-4 whitespace-nowrap">
                                             {{$report->updated_at->format('y-m-d')}}
-                                        </td>
-
+                                        </td> --}}
                                         <td class="px-4 py-4 text-center">
                                             <a href="{{route('report.create',$report)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline whitespace-nowrap">
                                                 編集
@@ -757,8 +754,7 @@
                                     </th>
                                     <th scope="col" class="px-4 py-3 whitespace-nowrap">
                                         <div class="flex items-center">
-                                            @sortablelink('title','表題')
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
+                                            表題
                                         </div>
                                     </th>
             
@@ -793,12 +789,11 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                                         </div>
                                     </th> --}}
-                                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
+                                    {{-- <th scope="col" class="px-2 py-3 whitespace-nowrap">
                                         <div class="flex items-center">
                                             更新日
-                                            {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
                                         </div>
-                                    </th>
+                                    </th> --}}
                                     <th scope="col" class="px-6 py-3 whitespace-nowrap">
                                         <span class="sr-only">削除</span>
                                     </th>
@@ -843,9 +838,9 @@
                                                 返却済
                                             </td>
                                         @endif --}}
-                                        <td class="px-2 py-4 whitespace-nowrap">
+                                        {{-- <td class="px-2 py-4 whitespace-nowrap">
                                             {{$support->updated_at->format('y-m-d')}}
-                                        </td>
+                                        </td> --}}
                                         <td class="py-3">
                                             <button data-modal-target="deleteModal-{{$support->id}}" data-modal-toggle="deleteModal-{{$support->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
                                                 削除
@@ -1023,6 +1018,23 @@
 
             hideModal();
             }
+
+// タブがクリックされたときにアクティブなタブ情報をローカルストレージに保存
+document.addEventListener('click', function(event) {
+    if (event.target.matches('[role="tabpanel"]')) {
+        const tabId = event.target.getAttribute('aria-controls');
+        localStorage.setItem('activeTab', tabId);
+    }
+});
+
+// ページが読み込まれたときにローカルストレージからアクティブなタブ情報を取得
+document.addEventListener('DOMContentLoaded', function() {
+    const activeTabId = localStorage.getItem('activeTab');
+    if (activeTabId) {
+        // アクティブなタブ情報がローカルストレージにある場合、それを使用してアクティブなタブを設定
+        tabs.show(activeTabId); // "tabs" は前のコードで作成した Tabs オブジェクト
+    }
+});
 
         // カナ補完
         $(function() {

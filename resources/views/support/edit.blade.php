@@ -5,18 +5,13 @@
                 サポート履歴編集
             </h2>
             <div class="flex justify-end">
-                <x-general-button onclick="goBack()">
+                <x-general-button onclick="location.href='{{ session()->get('previous_url') }}'">
                     戻る
                 </x-general-button>
                 <x-message :message="session('message')"/>
             </div>
         </div>
     </x-slot>
-<script>
-    function goBack() {
-        window.history.back(2);
-    }
-</script>
 
     <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
 
@@ -470,6 +465,16 @@
 
             hideModal();
             }
+
+            const textareaResponseContent = document.getElementById('f_response_content');
+
+            //自動伸縮するtextarea
+            textareaResponseContent.addEventListener('input', function() {
+                // テキストエリアの高さを自動調整
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight + 2) + 'px';
+            });
+
 
     </script> 
 </x-app-layout>

@@ -18,6 +18,8 @@ return new class extends Migration
             $table->text('memo',500)->nullable()->comment('備考');
             $table->boolean('is_finished')->nullable()->default(false)->comment('完了フラグ');
             $table->foreignId('user_id')->nullable()->comment('登録者');
+            $table->foreignId('created_by')->nullable(true)->comment('作成者');
+            $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->timestamps();
         });
     }

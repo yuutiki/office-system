@@ -46,7 +46,7 @@
             </main>
         </div>
         <footer class="bg-white dark:bg-gray-800">
-            <div class="w-full mx-auto max-w-screen-xlflex justify-end">
+            <div class="w-full mx-auto justify-end">
                 <div class="text-sm text-right text-gray-500  dark:text-gray-400 px-2" tabindex="-1">
                     © 2023 <a href="#" class="hover:underline" tabindex="-1">Yuu™</a>. All Rights Reserved.
                 </div>

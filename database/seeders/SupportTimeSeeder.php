@@ -11,6 +11,24 @@ class SupportTimeSeeder extends Seeder
     public function run(): void
     {
         SupportTime::create([
+            'time_code' => '07',
+            'time_name' => '5分程度',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        SupportTime::create([
+            'time_code' => '08',
+            'time_name' => '10分程度',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        SupportTime::create([
+            'time_code' => '09',
+            'time_name' => '20分程度',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        SupportTime::create([
             'time_code' => '10',
             'time_name' => '30分程度',
             'created_at' => now(),

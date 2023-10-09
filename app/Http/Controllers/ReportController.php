@@ -9,7 +9,7 @@ use App\Models\Comment;//add
 use Illuminate\Pagination\Paginator;//add
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Validator;
 
 class ReportController extends Controller
 {
@@ -64,7 +64,7 @@ class ReportController extends Controller
         $report->recipients()->attach($selectedRecipientsId);
 
 
-        return redirect()->route('report.index')->with('message','報告を新規作成しました');
+        return redirect()->route('report.index')->with('success','正常に登録しました');
     }
 
     public function show($id)
@@ -82,14 +82,37 @@ class ReportController extends Controller
         return view('report.show-from-client',compact('report'));
     }
 
-    public function edit(report $report)
+    public function edit(string $id)
     {
-        //
+        $report = Report::find($id);
+        $users = User::all();
+        return view('report.edit',compact('users', 'report'));
     }
 
-    public function update(Request $request, report $report)
+    public function update(Request $request, string $id)
     {
-        //
+        $validator = Validator::make($request->all(),Report::$rulesEdit);
+        if ($validator->fails()) {
+            session()->flash('error', '入力内容にエラーがあります。');
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $report = Report::find($id);
+        $report->contact_at = $request->input('contact_at');
+        $report->type = $request->input('type');
+        $report->title = $request->input('title');
+        $report->contact_type = $request->input('contact_type');
+        $report->content = $request->input('content');
+        $report->notice = $request->input('notice');
+        $report->client_representative = $request->input('client_representative');
+        $report->user_id = auth()->id();//ログインユーザのIDを取得
+        $report->save();
+
+        // 選択された報告先ユーザを中間テーブルに登録
+        $selectedRecipientsId = $request->input('selectedRecipientsId');
+        $report->recipients()->attach($selectedRecipientsId);
+
+        return redirect()->route('report.edit', $id)->with('success','正常に更新しました');
     }
 
     public function destroy(string $id)

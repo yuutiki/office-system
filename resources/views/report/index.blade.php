@@ -72,7 +72,6 @@
       
     {{-- JQUERY --}}
     {{-- JQUERY --}}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>
     $(function(){
         $('#clear').click(function(){
@@ -166,10 +165,15 @@
             {{-- テーブルヘッダ start --}}
             <thead class="text-sm text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
                 <tr>
-                    <th scope="col" class="px-6 py-3 whitespace-nowrap">
+                    <th scope="col" class="pl-4 py-3 w-auto">
+                        <div class="flex items-center whitespace-nowrap">
+                            №
+                        </div>
+                    </th>
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <span class="sr-only">参照</span>
                     </th>
-                    <th scope="col" class="px-4 py-3 whitespace-nowrap">
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             @sortablelink('client_num','顧客番号')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
@@ -187,26 +191,29 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                         </div>
                     </th>
-                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             @sortablelink('type','報告区分')
                             {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
                         </div>
                     </th>
-                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             @sortablelink('title','タイトル')
                             {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
                         </div>
                     </th>
-                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             @sortablelink('user_id','報告者')
                             {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
                         </div>
                     </th>
-                    <th scope="col" class="px-6 py-3 whitespace-nowrap">
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <span class="sr-only">編集</span>
+                    </th>
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                        <span class="sr-only">削除</span>
                     </th>
                 </tr>
             </thead>
@@ -214,42 +221,61 @@
                 <tbody>
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
 {{-- report.showを作成して変更 --}}
-                        <td class="px-4 py-2 whitespace-nowrap">
-                            <button onclick="location.href='{{route('report.show',$report)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                                参照
+                        <td class="pl-4 py-2 whitespace-nowrap">
+                            {{ $loop->iteration }}
+                        </td>
+                        <td class="px-1 py-2 whitespace-nowrap">
+                            <button onclick="location.href='{{route('report.show',$report)}}'"  class="block whitespace-nowrap text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
+                                <div class="flex">
+                                    <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 14">
+                                        <g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                          <path d="M10 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                                          <path d="M10 13c4.97 0 9-2.686 9-6s-4.03-6-9-6-9 2.686-9 6 4.03 6 9 6Z"/>
+                                        </g>
+                                      </svg>
+                                    <span class="text-ms">コメント</span>
+                                </div>
                             </button>
                         </td>
-                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$report->client->client_num}}
-                        </th>
-                        <td class="px-1 py-4 whitespace-nowrap">
+                        </td>
+                        <td class="px-1 py-2 whitespace-nowrap">
                             {{$report->client->client_name}}
                         </td>
-                        <td class="px-1 py-4 whitespace-nowrap">
+                        <td class="px-1 py-2 whitespace-nowrap">
                             {{$report->contact_at}}
                         </td>
-                        <td class="px-1 py-4 whitespace-nowrap">
+                        <td class="px-1 py-2 whitespace-nowrap">
                             {{$report->type}}
                         </td>
-                        <td class="px-1 py-4 whitespace-nowrap">
+                        <td class="px-1 py-2 whitespace-nowrap">
                             {{$report->title}}
                         </td>
-                        <td class="px-4 py-4 whitespace-nowrap">
+                        <td class="px-1 py-2 whitespace-nowrap">
                             {{$report->reporter->name}}
                         </td>
-                        <td class="px-2 py-4 whitespace-nowrap">
+                        {{-- <td class="px-2 py-2 whitespace-nowrap">
                             {{$report->updated_at->format('y-m-d')}}
-                        </td>
-
-                        <td class="px-4 py-2 whitespace-nowrap">
-                            <button onclick="location.href='{{route('report.create',$report)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                                編集
+                        </td> --}}
+                        <td class="px-1 py-2 whitespace-nowrap">
+                            <button onclick="location.href='{{route('report.edit',$report)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                                <div class="flex">
+                                    <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
+                                    </svg>
+                                    <span class="text-ms">編集</span>
+                                </div>
                             </button>
                         </td>
-
-                        <td class="py-3">
-                            <button data-modal-target="deleteModal-{{$report->id}}" data-modal-toggle="deleteModal-{{$report->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
-                                削除
+                        <td class="px-1 py-2">
+                            <button data-modal-target="deleteModal-{{$report->id}}" data-modal-toggle="deleteModal-{{$report->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
+                                <div class="flex">
+                                    <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z"/>
+                                    </svg>
+                                    <span class="text-ms ">削除</span>
+                                </div>
                             </button>
                         </td>
                     </tr>
@@ -291,5 +317,4 @@
         {{ $reports->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
         </div> 
     </div>
-
 </x-app-layout>

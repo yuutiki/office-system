@@ -80,13 +80,24 @@
                     <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
-                <div>
+                {{-- <div>
                     <label for="product_split_type_id" class="font-semibold  text-gray-900 dark:text-white leading-none mt-4">製品内訳種別</label>
                     <select id="product_split_type_id" name="product_split_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected value="">未選択</option>
                         @foreach($productSplitTypes as $productSplitType)
                         <option value="{{ $productSplitType->id }}">{{ $productSplitType->split_type_code }}：{{ $productSplitType->split_type_name }}</option>
                         @endforeach
+                    </select>
+                    @error('product_split_type_id')
+                    <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+                </div> --}}
+
+                {{-- Ajax通信でデータ取得 --}}
+                <div class="form-group">
+                    <label for="product_split_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">製品内訳種別</label>
+                    <select id="product_split_type_id" name="product_split_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option value="">選択してください</option>
                     </select>
                     @error('product_split_type_id')
                     <div class="text-red-500">{{ $message }}</div>
@@ -124,6 +135,7 @@
                     <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
+
             </div>
 
 {{-- カラム追加と改行を表現できるようにする --}}
@@ -148,4 +160,33 @@
         </form>
     </div>
 </div>
+
+
+
+<script>
+
+    //製品種別から製品内訳種別を引っ張るためのAJAX通信
+    $(document).ready(function() {
+        $('#product_type_id').on('change', function() {
+            var productTypeId = $(this).val();
+            if (productTypeId) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/get-split-types/' + productTypeId,
+                    success: function(data) {
+                        $('#product_split_type_id').empty();
+                        $('#product_split_type_id').append('<option value="">選択してください</option>');
+                        $.each(data, function(key, value) {
+                            $('#product_split_type_id').append('<option value="' + value.id + '">' + value.split_type_code + "：" + value.split_type_name + '</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#product_split_type_id').empty();
+                $('#product_split_type_id').append('<option value="">選択してください</option>');
+            }
+        });
+    });
+
+</script>
 </x-app-layout>

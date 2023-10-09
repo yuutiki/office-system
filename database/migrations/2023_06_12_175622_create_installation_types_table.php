@@ -11,6 +11,8 @@ return new class extends Migration
         Schema::create('installation_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->foreignId('created_by')->nullable(true)->comment('作成者');
+            $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->timestamps();
         });
     }

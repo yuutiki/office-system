@@ -24,7 +24,7 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $per_page = 500;
+        $per_page = 100;
         $users = User::all();
         $productSeriess = ProductSeries::all();
         $productTypes = ProductType::all();
@@ -41,7 +41,8 @@ class ProductController extends Controller
         $productSplitType = $request->product_split_type; 
 
         //検索Query
-        $query = Product::query();
+        // $query = Product::query();
+        $query = Product::with(['department', 'productSplitType', 'productSeries'])->sortable()->orderBy('product_code', 'asc');
 
         if(!empty($productCode))
         {
@@ -60,9 +61,8 @@ class ProductController extends Controller
         }
 
         $count = $query->count(); // 検索結果の総数を取得
-        $products = $query->with(['department','productSplitType','productSeries'])->sortable()->orderBy('product_code','asc')->paginate($per_page);
-
-        // $products = Product::with(['department','productSplitType','productSeries'])->sortable()->orderBy('product_code','asc')->paginate($per_page); 
+        // $products = $query->with(['department','productSplitType','productSeries'])->sortable()->orderBy('product_code','asc')->paginate($per_page);
+        $products = $query->paginate($per_page);
 
         return view('product.index',compact('products','count','users','productCode','productName','productSeriess','productTypes','productSplitTypes','departments'));
     }
@@ -309,5 +309,10 @@ class ProductController extends Controller
     });
 
     $lexer->parse($csvPath, $interpreter);
+}
+public function getSplitTypes($productTypeId)
+{
+    $splitTypes = ProductSplitType::where('product_type_id', $productTypeId)->get();
+    return response()->json($splitTypes);
 }
 }

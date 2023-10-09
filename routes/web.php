@@ -62,6 +62,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/report/{report_id}/client', [ReportController::class, 'showFromClient'])->name('report.showFromClient');
     Route::post('/product/upload', [ProductController::class, 'upload'])->name('product.upload');
 
+
+    // Route::get('/product-selection', 'ProductController@index');
+    Route::get('/get-split-types/{productTypeId}', [ProductController::class, 'getSplitTypes'])->name('product.getSplitTypes');
+
 });
 
 // Route::resource('/dashboard', '\App\Http\Controllers\DashboardController')->middleware(['auth', 'verified'])->name('dashboard');

@@ -6,9 +6,12 @@
         <h2 class="font-semibold text-xl text-gray-100 leading-tight">
             サポート履歴一覧
         </h2>
-        <div class="flex flex-row-reverse">
+        <div class="flex justify-end">
+            <x-general-button onclick="location.href='{{ session()->get('previous_url') }}'">
+                戻る
+            </x-general-button>
+            <x-message :message="session('message')"/>
         </div>
-        <x-message :message="session('message')" />
     </x-slot>
 
 
@@ -171,6 +174,11 @@
             {{-- テーブルヘッダ start --}}
             <thead class="text-sm text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
                 <tr>
+                    <th scope="col" class="pl-4 py-3 w-auto">
+                        <div class="flex items-center whitespace-nowrap">
+                            №
+                        </div>
+                    </th>
                     <th scope="col" class="px-6 py-3 whitespace-nowrap">
                         <span class="sr-only">編集</span>
                     </th>
@@ -256,57 +264,70 @@
             @foreach ($supports as $support)
                 <tbody>
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
-                        <td class="px-4 py-2 whitespace-nowrap">
-                            <button onclick="location.href='{{route('support.edit',$support)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                                編集
+                        <td class="pl-4 py-2 whitespace-nowrap">
+                            {{ $loop->iteration }}
+                        </td>
+                        <td class="pl-4 py-2 whitespace-nowrap">
+                            <button onclick="location.href='{{route('support.edit',$support)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                                <div class="flex">
+                                    <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
+                                    </svg>
+                                    <span class="text-ms">編集</span>
+                                </div>
                             </button>
                         </td>
-                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" class="pl-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$support->received_at}}
                         </th>
-                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" class="pl-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$support->supportType->type_name}}
                         </th>
-                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" class="pl-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$support->title}}
                         </th>
-                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" class="pl-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$support->client->client_num}}
                         </th>
-                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" class="pl-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$support->client->client_name}}
                         </th>
-                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" class="pl-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$support->user->name}}
                         </th>
-                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" class="pl-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$support->productSeries->series_name}}
                         </th>
-                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" class="pl-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$support->productVersion->version_name}}
                         </th>
-                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" class="pl-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$support->productCategory->category_name}}
                         </th>
-                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" class="pl-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$support->client->user->name}}
                         </th>
                         
                         {{-- @if($keepdata->status_flag == "0")
-                            <td class="px-2 py-4 whitespace-nowrap text-fuchsia-300">
+                            <td class="px-2 py-2 whitespace-nowrap text-fuchsia-300">
                                 未返却
                             </td>
                         @else
-                            <td class="px-2 py-4 whitespace-nowrap">
+                            <td class="px-2 py-2 whitespace-nowrap">
                                 返却済
                             </td>
                         @endif --}}
-                        <td class="px-2 py-4 whitespace-nowrap">
+                        <td class="px-2 py-2 whitespace-nowrap">
                             {{$support->updated_at->format('y-m-d')}}
                         </td>
-                        <td class="py-3">
-                            <button data-modal-target="deleteModal-{{$support->id}}" data-modal-toggle="deleteModal-{{$support->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
-                                削除
+                        <td class="px-1 py-2">
+                            <button data-modal-target="deleteModal-{{$support->id}}" data-modal-toggle="deleteModal-{{$support->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
+                                <div class="flex">
+                                    <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z"/>
+                                    </svg>
+                                    <span class="text-ms ">削除</span>
+                                </div>
                             </button>
                         </td>
                     </tr>

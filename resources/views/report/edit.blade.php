@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
-                営業報告登録
+                営業報告更新
             </h2>
             <div class="flex justify-end">
                 <x-general-button onClick="history.back()">
@@ -14,185 +14,126 @@
         </div>
     </x-slot>
 
-    <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
+    <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden">
+    </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div class="mx-4 sm:p-8">
-        <form id="reoportForm" method="post" action="{{route('report.store')}}" enctype="multipart/form-data">
-            @csrf
+            <form id="reoportForm" method="post" action="{{route('report.update', $report)}}" enctype="multipart/form-data">
+                @csrf
+                @method('patch')
 
-            <!-- 顧客検索ボタン -->
-            <button type="button"  onclick="showModal()" class="md:ml-1 md:mt-1 mt-1 mb-2 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                顧客検索
-            </button>
-
-            <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                <div class="">
-                    <label for="client_num" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客番号</label>
-                    <input type="text" name="client_num" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="client_num" value="{{old('client_num')}}" placeholder="法人検索してください" readonly>
-                </div>     
-                <div class="">
-                    <label for="client_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客名称</label>
-                    <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_name" value="{{old('client_name')}}" placeholder="例）烏丸大学">
-                </div>
-            </div>
-
-
-            <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-2">
-
-                {{-- <div>
-                    <label for="user_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">営業担当</label>
-                    <select id="user_id" name="user_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected value="">未選択</option>
-                        @foreach($users as $user)
-                        <option value="{{ $user->id }}">{{ $user->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('user')
-                    <div class="text-red-500">{{ $message }}</div>
-                    @enderror
-                </div> --}}
-            </div>
-
-
-
-            <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
-                <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
-                    <li class="mr-2" role="presentation">
-                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">営業報告</button>
-                    </li>
-                </ul>
-            </div>
-            <div id="myTabContent">
-                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-
-                    <div class="w-full flex flex-col">
-                        <label for="type" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">報告種別</label>
-                        <select id="type" name="type" class="block w-48 py-1 mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option selected value="">未選択</option>
-                            <option value="営業活動報告">営業活動報告</option>
-                            <option value="新規受注報告">新規受注報告</option>
-                            <option value="新規失注報告">新規失注報告</option>
-                            <option value="既存解約報告">既存解約報告</option>
-                        </select>
-                    </div>
-
-            <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-1">
-
-                    <div class="w-full flex flex-col">
-                        <label for="contact_at" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">対応日付</label>
-                        <input type="date" min="2000-01-01" max="2100-12-31" name="contact_at" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 p-locality p-street-address p-extended-address" id="contact_at" value="{{ old('contact_at', now()->format('Y-m-d')) }}" placeholder="">
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="contact_type" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">対応形式</label>
-                        <select id="contact_type" name="contact_type" class="w-auto py-1 mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option selected value="">未選択</option>
-                            <option value="オンライン">オンライン</option>
-                            <option value="現地訪問">現地訪問</option>
-                            <option value="来社対応">来社対応</option>
-                            <option value="電話対応">電話対応</option>
-                            <option value="メール対応">メール対応</option>
-                            <option value="資料送付">資料送付</option>
-                            <option value="その他">その他</option>
-                        </select>
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="client_representative" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">顧客担当者</label>
-                        <input type="text" name="client_representative" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_representative" value="{{old('client_representative')}}" placeholder="">
+                <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                    <div class="">
+                        <label for="client_num" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客番号</label>
+                        <input type="text" name="client_num" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="client_num" value="{{old('client_num', $report->client->client_num)}}" placeholder="法人検索してください" readonly>
+                    </div>     
+                    <div class="">
+                        <label for="client_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客名称</label>
+                        <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="client_name" value="{{old('client_name', $report->client->client_name)}}" readonly>
                     </div>
                 </div>
 
-                    <div class="w-full flex flex-col">
-                        <label for="title" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">報告タイトル</label>
-                        <input type="text" name="title" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="title" value="{{old('title')}}" placeholder="">
-                    </div>
-
-                    {{-- <div class="w-full flex flex-col">
-                        <label for="content" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">報告内容</label>
-                        <textarea name="content" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="content" value="{{old('content')}}" cols="30" rows="5"></textarea>
+                <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-2">
+                    {{-- <div>
+                        <label for="user_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">営業担当</label>
+                        <select id="user_id" name="user_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option selected value="">未選択</option>
+                            @foreach($users as $user)
+                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('user')
+                        <div class="text-red-500">{{ $message }}</div>
+                        @enderror
                     </div> --}}
+                </div>
 
-                    <div class="relative mb-4 mt-4">
-                        <label for="content" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">報告内容</label>
-                        
-                        <textarea name="content" id="auto-resize-textarea-content"  class="resize-none block w-full py-1 border focus:outline-none focus:ring focus:border-blue-300 rounded-md mt-1" value="{{old('notice')}}" rows="5"></textarea>
-                        {{-- <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                            <span id="char-count" class="text-sm text-gray-400"></span>
-                        </div> --}}
-                    </div>
+                <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+                    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
+                        <li class="mr-2" role="presentation">
+                            <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">営業報告</button>
+                        </li>
+                    </ul>
+                </div>
+                <div id="myTabContent">
+                    <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="w-full flex flex-col">
+                            <label for="type" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">報告種別</label>
+                            <select id="type" name="type" class="block w-48 py-1 mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected value="">未選択</option>
+                                <option value="営業活動報告">営業活動報告</option>
+                                <option value="新規受注報告">新規受注報告</option>
+                                <option value="新規失注報告">新規失注報告</option>
+                                <option value="既存解約報告">既存解約報告</option>
+                            </select>
+                        </div>
 
-                    {{-- <div class="w-full flex flex-col relative">
-                        <label for="notice" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">特記事項</label>
-                        <textarea name="notice" class="absolute w-full h-full overflow-hidden block resize-none mb-4  py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="notice" value="{{old('notice')}}" cols="30" rows="5"></textarea>
-                    </div> --}}
-
-
-                    <div class="relative mb-4 mt-4">
-                        <label for="notice" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">特記事項</label>
-                        
-                        <textarea name="notice" id="auto-resize-textarea-notice"  class="resize-none  block w-full py-1 border focus:outline-none focus:ring focus:border-blue-300 rounded-md mt-1" value="{{old('notice')}}" rows="5"></textarea>
-                        {{-- <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                            <span id="char-count" class="text-sm text-gray-400"></span>
-                        </div> --}}
-                    </div>
-<script>
-                    const textareaContent = document.getElementById('auto-resize-textarea-content');
-                    const charCountContent = document.getElementById('char-count');
-                    
-                    textareaContent.addEventListener('input', function() {
-                        // テキストエリアの高さを自動調整
-                        this.style.height = 'auto';
-                        this.style.height = (this.scrollHeight + 2) + 'px';
-                    
-                        // 文字数をカウント
-                        // const textLength = this.value.length;
-                        // charCountContent.textContent = textLength + '文字';
-                    });
-
-                    const textareaNotice = document.getElementById('auto-resize-textarea-notice');
-                    const charCountNotice = document.getElementById('char-count');
-                    
-                    textareaNotice.addEventListener('input', function() {
-                        // テキストエリアの高さを自動調整
-                        this.style.height = 'auto';
-                        this.style.height = (this.scrollHeight + 2) + 'px';
-                    
-                        // 文字数をカウント
-                        const textLength = this.value.length;
-                        charCountNotice.textContent = textLength + '文字';
-                    });
-
-</script>
+                        <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-1">
+                            <div class="w-full flex flex-col">
+                                <label for="contact_at" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">対応日付</label>
+                                <input type="date" min="2000-01-01" max="2100-12-31" name="contact_at" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 p-locality p-street-address p-extended-address" id="contact_at" value="{{ old('contact_at', now()->format('Y-m-d')) }}" placeholder="">
+                            </div>
+                            <div class="w-full flex flex-col">
+                                <label for="contact_type" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">対応形式</label>
+                                <select id="contact_type" name="contact_type" class="w-auto py-1 mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option selected value="">未選択</option>
+                                    <option value="オンライン">オンライン</option>
+                                    <option value="現地訪問">現地訪問</option>
+                                    <option value="来社対応">来社対応</option>
+                                    <option value="電話対応">電話対応</option>
+                                    <option value="メール対応">メール対応</option>
+                                    <option value="資料送付">資料送付</option>
+                                    <option value="その他">その他</option>
+                                </select>
+                            </div>
+                            <div class="w-full flex flex-col">
+                                <label for="client_representative" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">顧客担当者</label>
+                                <input type="text" name="client_representative" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_representative" value="{{old('client_representative', $report->client_representative)}}" placeholder="">
+                            </div>
+                        </div>
+                        <div class="w-full flex flex-col">
+                            <label for="title" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">報告タイトル</label>
+                            <input type="text" name="title" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="title" value="{{old('title', $report->title)}}" placeholder="">
+                        </div>
+                        <div class="relative mb-4 mt-4">
+                            <label for="content" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">報告内容</label>                       
+                            <textarea name="content" id="auto-resize-textarea-content"  class="resize-none block w-full py-1 border focus:outline-none focus:ring focus:border-blue-300 rounded-md mt-1" rows="5">{{old('content', $report->content)}}</textarea>
+                        </div>
+                        <div class="relative mb-4 mt-4">
+                            <label for="notice" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">特記事項</label>
+                            <textarea name="notice" id="auto-resize-textarea-notice"  class="resize-none  block w-full py-1 border focus:outline-none focus:ring focus:border-blue-300 rounded-md mt-1" rows="5">{{old('notice', $report->notice)}}</textarea>
+                        </div>
                                         
 
-                <!-- ユーザ検索フォーム -->
-                <input type="text" id="userSearch" class="border border-gray-300 rounded px-3 py-1 w-full mb-2" placeholder="ユーザを検索...">
+                        <!-- ユーザ検索フォーム -->
+                        <input type="text" id="userSearch" class="border border-gray-300 rounded px-3 py-1 w-full mb-2" placeholder="ユーザを検索...">
 
-                <!-- ユーザ検索結果のリスト -->
-                <ul id="userList" class="border border-gray-300 rounded px-3 py-2 h-60 overflow-y-scroll dark:text-white">
-                    @foreach($users as $user)
-                    <li data-user-id="{{ $user->id }}">
-                        <label>
-                            <input type="checkbox" class="mr-2"  name="selectedRecipientsId[]" value="{{ $user->id }}">
-                            {{ $user->name }}
-                        </label>
-                    </li>
-                    @endforeach
-                </ul>
+                        <!-- ユーザ検索結果のリスト -->
+                        <ul id="userList" class="border border-gray-300 rounded px-3 py-2 h-60 overflow-y-scroll dark:text-white">
+                            @foreach($users as $user)
+                            <li data-user-id="{{ $user->id }}">
+                                <label>
+                                    <input type="checkbox" class="mr-2"  name="selectedRecipientsId[]" value="{{ $user->id }}">
+                                    {{ $user->name }}
+                                </label>
+                            </li>
+                            @endforeach
+                        </ul>
 
-                <!-- 選択済みユーザーのリスト -->
-                <ul id="selectedUserList" class="border border-gray-300 rounded px-3 py-2 h-60 overflow-y-scroll dark:text-white">
-                    <!-- ここに選択済みユーザーが追加されます -->
-                </ul>
-
+                        <!-- 選択済みユーザーのリスト -->
+                        <ul id="selectedUserList" class="border border-gray-300 rounded px-3 py-2 h-60 overflow-y-scroll dark:text-white">
+                            <!-- ここに選択済みユーザーが追加されます -->
+                        </ul>
+                    </div>
                 </div>
-                    <x-primary-button form-id="reportForm" class="mt-4">
-                        新規登録する
-                    </x-primary-button>
-        </form>
+                <x-primary-button form-id="reportForm" class="mt-4">
+                    更新を確定する
+                </x-primary-button> 
+            </form>
+        </div>
     </div>
-</div>
 
 
     <!-- Extra Large Modal -->
@@ -253,6 +194,29 @@
             </div>
         </div>
     </div>
+
+    <script>
+        const textareaContent = document.getElementById('auto-resize-textarea-content');
+        textareaContent.addEventListener('input', function() {
+            // テキストエリアの高さを自動調整
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight + 2) + 'px';
+        });
+
+        const textareaNotice = document.getElementById('auto-resize-textarea-notice');
+        const charCountNotice = document.getElementById('char-count');
+        
+        textareaNotice.addEventListener('input', function() {
+            // テキストエリアの高さを自動調整
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight + 2) + 'px';
+        
+            // 文字数をカウント
+            const textLength = this.value.length;
+            charCountNotice.textContent = textLength + '文字';
+        });
+
+</script>
 
 
     
@@ -439,10 +403,4 @@
       // ...
     });
   </script> --}}
-  
-  
-  
-
-
- 
 </x-app-layout>

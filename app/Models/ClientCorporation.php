@@ -18,7 +18,7 @@ class ClientCorporation extends Model
         'clientcorporation_num',
         'clientcorporation_name',
         'clientcorporation_kana_name',
-        'clientcorporation_abbreviation_name',
+        'clientcorporation_short_name',
         'memo',
     ];
 
@@ -33,7 +33,7 @@ class ClientCorporation extends Model
         'clientcorporation_num' => 'size:6',
         'clientcorporation_name' => 'required|max:1024',
         'clientcorporation_kana_name' => 'required|max:1024',
-        'clientcorporation_abbreviation_name' => 'required|max:1024',
+        'clientcorporation_short_name' => 'required|max:1024',
     ];
 
     // index画面の検索ロジック

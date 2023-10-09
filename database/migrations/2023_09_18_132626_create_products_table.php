@@ -24,10 +24,10 @@ return new class extends Migration
             $table->string('product_short_name',50)->comment('製品略称');
             $table->boolean('is_stop_selling')->default(0)->comment('販売停止フラグ');
             $table->boolean('is_listed')->default(0)->comment('一覧表示対象フラグ');// 顧客の導入・契約一覧に表示するシステムかどうか
-            $table->text('product_memo1')->nullable()->comment('製品備考1');
-            $table->text('product_memo2')->nullable()->comment('製品備考2');
-            $table->foreignId('crated_by')->nullable()->comment('作成者');
-            $table->foreignId('updated_by')->nullable()->comment('更新者');
+            $table->text('product_memo1')->nullable(true)->comment('製品備考1');
+            $table->text('product_memo2')->nullable(true)->comment('製品備考2');
+            $table->foreignId('created_by')->nullable(true)->comment('作成者');
+            $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->timestamps();
         });
     }

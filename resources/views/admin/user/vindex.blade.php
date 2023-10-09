@@ -1,16 +1,8 @@
-    {{-- favicon --}}
-    <link rel="shortcut icon" href="{{ asset('/favicon-sales.ico') }}">
-
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-100 leading-tight">
             ユーザ一覧（管理者機能）
         </h2>
-        {{-- <div class="flex flex-row-reverse">
-            <x-general-button class="mt-4" @click="changeState('create')">
-                新規作成
-            </x-general-button>
-        </div> --}}
         <x-message :message="session('message')" />
     </x-slot>
 
@@ -18,7 +10,6 @@
         <!-- 一覧表示するブロック ① -->
         <div v-if="state=='index'">
 
-            
             <div class="mb-3 text-right mr-32 mt-24">
                 <x-primary-button class="mt-4" @click="changeState('create')">
                     ユーザ追加

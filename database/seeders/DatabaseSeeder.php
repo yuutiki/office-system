@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\AccountingPeriod;
 use App\Models\ProductCategory;
 use App\Models\ProductSplitType;
 use App\Models\ProductSeries;
@@ -33,6 +34,9 @@ class DatabaseSeeder extends Seeder
         $this->call(SupportTimeSeeder::class);
         $this->call(ProductCategorySeeder::class);
         $this->call(LinkSeeder::class);
+        $this->call(CompanySeeder::class);
+        $this->call(DivisionSeeder::class);
+        $this->call(AccountingPeriod::class);
 
         // \App\Models\User::factory(10)->create();
 

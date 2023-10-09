@@ -100,7 +100,7 @@ class ClientCorporationController extends Controller
 
         // $clientCorporation->clientcorporation_name = $request->clientcorporation_name;
         // $clientCorporation->clientcorporation_kana_name = $request->clientcorporation_kana_name;
-        // $clientCorporation->clientcorporation_abbreviation_name = $request->clientcorporation_abbreviation_name;
+        // $clientCorporation->clientcorporation_short_name = $request->clientcorporation_short_name;
         // $clientCorporation->memo = $request->memo;
         // $clientCorporation->save();
 
@@ -163,7 +163,7 @@ class ClientCorporationController extends Controller
             $clientCorporation->clientcorporation_num = $row[0];
             $clientCorporation->clientcorporation_name = $row[1];
             $clientCorporation->clientcorporation_kana_name = $row[2];
-            $clientCorporation->clientcorporation_abbreviation_name = $row[3];
+            $clientCorporation->clientcorporation_short_name = $row[3];
             $clientCorporation->save();
         });
 

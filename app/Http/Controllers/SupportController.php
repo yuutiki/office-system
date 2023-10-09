@@ -43,7 +43,7 @@ class SupportController extends Controller
     {
         $users = User::all();  //受付対応者用
         $productSeriess = ProductSeries::all();  //製品シリーズ
-        $productVersions = ProductVersion::all();  //製品バージョン
+        $productVersions = ProductVersion::orderby('version_code','desc')->get();  //製品バージョン
         $productCategories = ProductCategory::all();  // 製品系統
         $supportTypes = SupportType::all(); //サポート種別
         $supportTimes = SupportTime::all(); //サポート所要時間
@@ -102,6 +102,7 @@ class SupportController extends Controller
         $support->is_faq_target = $request->has('f_is_faq_target') ? 1 : 0;
         $support->save();
 
+
         return redirect()->route('support.index')->with('message', '登録しました');
     }
 
@@ -125,6 +126,10 @@ class SupportController extends Controller
         $supportTimes = SupportTime::all(); //サポート所要時間
 
         $support = Support::find($id);
+
+
+        session()->put('previous_url', url()->previous());
+
 
         return view('support.edit',compact('users','tradeStatuses','clientTypes','installationTypes','departments','support','productSeriess','productVersions','productCategories','supportTypes','supportTimes'));
     }
@@ -154,7 +159,9 @@ class SupportController extends Controller
         $support->is_faq_target = $request->f_is_faq_target;
         $support->save();
 
-        return redirect()->route('support.edit',$id)->with('success', '変更しました');
+
+
+        return redirect()->route('support.index')->with('success', '変更しました');
     }
 
     public function destroy(Support $support)

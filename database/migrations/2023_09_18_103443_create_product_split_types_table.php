@@ -13,8 +13,8 @@ return new class extends Migration
             $table->string('split_type_code',4)->unique()->comment('製品内訳種別コード');
             $table->string('split_type_name',20)->comment('製品内訳種別名称');
             $table->foreignId('product_type_id')->comment('製品種別コード'); //product_typesテーブル参照
-            $table->foreignId('crated_by')->nullable()->comment('作成者'); //usersテーブル参照
-            $table->foreignId('updated_by')->nullable()->comment('更新者'); //usersテーブル参照
+            $table->foreignId('created_by')->nullable(true)->comment('作成者');
+            $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->timestamps();
         });
     }

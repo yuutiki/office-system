@@ -3,9 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Validation\Rule as ValidationRule;
 use Laravel\Sanctum\HasApiTokens;
 use Kyslik\ColumnSortable\Sortable;//add
 
@@ -23,8 +25,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'employee_id',
-        'name_kana',
+        'employee_num',
+        'kana_name',
         'access_ip',
         'last_login_at',
         'role_id',
@@ -58,6 +60,14 @@ class User extends Authenticatable
         'email',
         'role_id',
         'last_login_at'
+    ];
+
+    
+
+    public static $rules = [
+        'company_id' => 'required',
+        'department_id' => 'required',
+        'division_id' => 'required',
     ];
 
 
@@ -101,6 +111,19 @@ class User extends Authenticatable
     public function comments()
     {
         return $this->hasMany(Comment::class,'user_id');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+    public function division()
+    {
+        return $this->belongsTo(Division::class);
     }
 
 

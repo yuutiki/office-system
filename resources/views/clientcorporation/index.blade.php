@@ -201,15 +201,18 @@
         </div>
     </div>
 
-
-
     <div class="w-5/6 relative overflow-x-auto shadow-md rounded-lg mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
         <table class="w-full text-sm font-medium text-left text-gray-800 dark:text-gray-400">
 
             {{-- テーブルヘッダ start --}}
             <thead class="text-sm text-gray-700 bg-gray-300 dark:bg-gray-700 dark:text-gray-100">
                 <tr>
-                    <th scope="col" class="px-4 py-3 w-auto">
+                    <th scope="col" class="pl-4 py-3 w-auto">
+                        <div class="flex items-center whitespace-nowrap">
+                            №
+                        </div>
+                    </th>
+                    <th scope="col" class="px-1 py-3 w-auto">
                         <span class="sr-only">編集</span>
                     </th>
                     <th scope="col" class="px-1 py-3 w-auto">
@@ -224,22 +227,17 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg></a>
                         </div>
                     </th>
-                    <th scope="col" class="px-2 py-3 w-auto">
+                    <th scope="col" class="px-1 py-3 w-auto">
                         <div class="flex items-center whitespace-nowrap">
-                            作成日
+                            最終更新日
                         </div>
                     </th>
-                    <th scope="col" class="px-2 py-3 w-auto">
-                        <div class="flex items-center whitespace-nowrap">
-                            更新日
-                        </div>
-                    </th>
-                    <th scope="col" class="px-2 py-3 w-auto">
+                    <th scope="col" class="px-1 py-3 w-auto">
                         <div class="flex items-center whitespace-nowrap">
                             顧客数
                         </div>
                     </th>
-                    <th scope="col" class="px-4 py-3 w-auto">
+                    <th scope="col" class="px-2 py-3 w-auto">
                         <span class="sr-only">削除</span>
                     </th>
                 </tr>
@@ -247,29 +245,39 @@
             @foreach ($clientcorporations as $clientcorporation)
                 <tbody>
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-600 hover:bg-blue-100 dark:text-white">
-                        <td class="px-4 py-2 whitespace-nowrap">
-                            <button onclick="location.href='{{route('clientcorporation.edit',$clientcorporation)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                                編集
+                        <td class="pl-4 py-2 whitespace-nowrap">
+                            {{ $loop->iteration }}
+                        </td>
+                        <td class="pl-1 py-2 whitespace-nowrap">
+                            <button onclick="location.href='{{route('clientcorporation.edit',$clientcorporation)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                                <div class="flex">
+                                    <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
+                                    </svg>
+                                    <span class="text-ms">参照</span>
+                                </div>
                             </button>
                         </td>
-                        <th scope="row" class="pl-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <td class="pl-1 py-2 whitespace-nowrap">
                             {{$clientcorporation->clientcorporation_num}}
-                        </th>
+                        </td>
                         <td class="px-1 py-2 whitespace-nowrap">
                             {{$clientcorporation->clientcorporation_name}}
                         </td>
-                        <td class="px-2 py-2 whitespace-nowrap">
-                            {{$clientcorporation->created_at->format('y-m-d')}}
-                        </td>
-                        <td class="px-2 py-2 whitespace-nowrap">
+                        <td class="px-1 py-2 whitespace-nowrap">
                             {{$clientcorporation->updated_at->format('y-m-d')}}
                         </td>
-                        <td class="px-2 py-2 whitespace-nowrap">
+                        <td class="px-1 py-2 whitespace-nowrap">
                             {{$clientcorporation->clients_count}}
                         </td>
-                        <td class="px-4 py-2">
-                            <button data-modal-target="deleteModal-{{$clientcorporation->id}}" data-modal-toggle="deleteModal-{{$clientcorporation->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
-                                削除
+                        <td class="py-2">
+                            <button data-modal-target="deleteModal-{{$clientcorporation->id}}" data-modal-toggle="deleteModal-{{$clientcorporation->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
+                                <div class="flex">
+                                    <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z"/>
+                                    </svg>
+                                    <span class="text-ms ">削除</span>
+                                </div>
                             </button>
                         </td>
                     </tr>

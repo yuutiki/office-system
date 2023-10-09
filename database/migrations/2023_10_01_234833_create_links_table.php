@@ -10,10 +10,10 @@ return new class extends Migration
     {
         Schema::create('links', function (Blueprint $table) {
             $table->id();
-            $table->string('display_name')->nullable(false)->comment('表示名');
-            $table->unsignedInteger('display_order')->nullable(false)->comment('表示順');
-            $table->string('url')->nullable(false)->comment('URL');
-            $table->foreignId('crated_by')->nullable(true)->comment('作成者');
+            $table->string('display_name')->comment('表示名');
+            $table->unsignedInteger('display_order')->comment('表示順');
+            $table->string('url')->comment('URL');
+            $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->timestamps();
         });

@@ -4,63 +4,68 @@
             <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
                 ユーザ一覧
             </h2>
-            {{-- <div class="flex justify-end"> --}}
-                {{-- <x-general-button onclick="location.href='/user/create'">
-                    新規作成
-                </x-general-button> --}}
-                <x-message :message="session('message')" />
-            {{-- </div> --}}
+            <x-message :message="session('message')" />
         </div>
     </x-slot>
-    
-    {{-- 絞り込み検索 start--}}
-        <div class="w-5/6 h-auto mt-4 border-b-2 mx-auto dark:text-white">
-            <form method="GET" action="{{ route('user.index') }}" id="userform">
-                @csrf
-                <div class="md:flex flex-wrap">
-                    {{-- 　start --}}
-                    <div class="relative w-auto ml-2 mt-2">
-                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                        </div>
-                        <input type="search" name="employee_num" value="@if (isset($employee_num)){{$employee_num}}@endif" oninput="value = value.replace(/[^0-9]+/i,'');" class=" block w-full py-1.5 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="社員番号" >
-                    </div>
 
-                    <div class="relative w-auto ml-2 mt-2">
-                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+
+    <div id="accordion-color" data-accordion="collapse" data-active-classes="bg-blue-100 dark:bg-gray-800 text-blue-600 dark:text-white">
+        <h2 id="accordion-color-heading-1">
+            <button type="button" class="bg-gray-300 dark:bg-gray-700 flex items-center justify-between w-5/6 p-2 mt-4 mx-auto font-medium text-left text-gray-900 border border-gray-200 rounded-t-xl focus:ring-1 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-500 dark:hover:bg-gray-800" data-accordion-target="#accordion-color-body-1" aria-expanded="false" aria-controls="accordion-color-body-1">
+                <span>検索</span>
+                <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                </svg>
+            </button>
+        </h2>
+        <div id="accordion-color-body-1" class="hidden" aria-labelledby="accordion-color-heading-1">
+            <div class="w-5/6 border border-t-0 mx-auto h-auto dark:text-white rounded-b-md border-gray-400 bg-white dark:bg-gray-400 shadow-md">
+                <form method="GET" action="{{ route('user.index') }}" id="userform">
+                    @csrf
+                    <div class="md:flex flex-wrap">
+                        {{-- 　テキスト検索start --}}
+                        <div class="relative w-auto ml-2 mt-2">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                            </div>
+                            <input type="search" name="employee_num" value="@if (isset($employee_num)){{$employee_num}}@endif" oninput="value = value.replace(/[^0-9]+/i,'');" class=" block w-full py-1.5 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="社員番号" >
                         </div>
-                        <input type="search" name="user_name" value="@if (isset($user_name)){{$user_name}}@endif" class="block w-full py-1.5 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="氏名" >    
+
+                        <div class="relative w-auto ml-2 mt-2">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                            </div>
+                            <input type="search" name="user_name" value="@if (isset($user_name)){{$user_name}}@endif" class="block w-full py-1.5 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="氏名" >    
+                        </div>
+                        {{-- 　テキストend --}}
+                        {{-- 横並びセレクトボックス2つ　start --}}
+                        <div class="flex-nowrap">
+                            <select  name="role1" class="mt-2 w-auto ml-2 py-1.5 text-sm rounded-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="">権限全て</option>
+                                @foreach($roles as $role)
+                                    <option value="{{$role->id}}" @if($role->id == $role1) selected @endif>{{$role->role_name}}</option>
+                                @endforeach
+                            </select>
+                        
+                            <select  name="employee_status" class="mt-2 w-auto ml-2 py-1.5 text-sm rounded-lg bg-gray-50 border dark:bg-gray-700  text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 dark:placeholder-gray-400 focus:ring-blue-500 dark:focus:ring-blue-500 focus:border-blue-500 dark:focus:border-blue-500">
+                                <option value="">状況全て</option>
+                                @foreach($e_statuses as $e_statuse)
+                                    <option value="{{$e_statuse->id}}"@if($e_statuse->id == $employee_status) selected @endif>{{$e_statuse->employee_status_name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        {{-- 横並びセレクトボックス2つ　end --}}
                     </div>
-                    {{-- 　end --}}
-                    {{-- 横並びセレクトボックス2つ　start --}}
-                    <div class="flex-nowrap">
-                        <select  name="role1" class="mt-2 w-auto ml-2 py-1.5 text-sm rounded-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option value="">権限全て</option>
-                            @foreach($roles as $role)
-                                <option value="{{$role->id}}" @if($role->id == $role1) selected @endif>{{$role->role_name}}</option>
-                            @endforeach
-                        </select>
-                    
-                        <select  name="employee_status" class="mt-2 w-auto ml-2 py-1.5 text-sm rounded-lg bg-gray-50 border dark:bg-gray-700  text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 dark:placeholder-gray-400 focus:ring-blue-500 dark:focus:ring-blue-500 focus:border-blue-500 dark:focus:border-blue-500">
-                            <option value="">状況全て</option>
-                            @foreach($e_statuses as $e_statuse)
-                                <option value="{{$e_statuse->id}}"@if($e_statuse->id == $employee_status) selected @endif>{{$e_statuse->employee_status_name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    {{-- 横並びセレクトボックス2つ　end --}}
+                </form>
+                <div class="w-5/6 mt-2 mb-2 ml-8 flex justify-start">
+                    <button type="submit" form="userform" class="w-20 px-6 py-1.5 font-medium text-sm rounded-lg text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">検索</button>
+                    <button type="button" value="reset" form="userform" id="clear" class="w-20 ml-2 px-4 py-1.5 font-medium text-sm rounded-lg text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-red-700 hover:bg-red-800 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">リセット</button>
                 </div>
-            </form>
-            <div class="w-5/6 mt-2 mb-2 ml-8 flex justify-start">
-                <button type="submit" form="userform" class="w-20 px-6 py-1.5 font-medium text-sm rounded-lg text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">検索</button>
-                <button type="button" value="reset" form="userform" id="clear" class="w-20 ml-2 px-4 py-1.5 font-medium text-sm rounded-lg text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-red-700 hover:bg-red-800 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">リセット</button>
             </div>
         </div>
+    </div>
 
 {{-- JQUERY --}}
-{{-- JQUERY --}}
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script>
         $(function(){
             $('#clear').click(function(){
@@ -80,8 +85,6 @@
         });
         </script>
 {{-- JQUERY --}}
-{{-- JQUERY --}}
-
 
     {{-- 絞り込み検索 end--}}
 
@@ -94,7 +97,7 @@
             </svg>
         </button>
         <div class="float-left font-medium dark:text-white">
-           ユーザ数 {{ $count }}件
+            {{ $count }}件
         </div>
     </div>
     <!-- Dropdown menu -->
@@ -140,16 +143,15 @@
         </div>
     </div>
 
-
-
-
-
     <div class="w-5/6 relative overflow-x-auto shadow-md rounded-lg mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
         <table class="w-full text-sm font-medium text-left text-gray-800 dark:text-gray-400">
 
             {{-- テーブルヘッダ start --}}
             <thead class="text-sm text-gray-700 dark:bg-gray-700 dark:text-gray-100">
                 <tr>
+                    <th scope="col" class="px-6 py-3">
+                        <span class="sr-only">編集</span>
+                    </th>
                     <th scope="col" class="pl-6 py-3 w-auto">
                         <div class="flex items-center whitespace-nowrap mr-3">
                             @sortablelink('employee_id','社員番号')
@@ -198,9 +200,6 @@
                         </div>
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        <span class="sr-only">編集</span>
-                    </th>
-                    <th scope="col" class="px-6 py-3">
                         <span class="sr-only">削除</span>
                     </th>
                 </tr>
@@ -211,8 +210,18 @@
             <tbody>
                 @foreach ($users as $user)
                 <tr class="bg-white border-b dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 dark:text-white dark:border-gray-700">
+                    <td class="px-4 py-2 whitespace-nowrap">
+                        <button onclick="location.href='{{route('user.edit',$user)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                            <div class="flex">
+                                <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
+                                </svg>
+                                <span class="text-ms">参照</span>
+                            </div>
+                        </button>
+                    </td>
                     <td class="pl-6 py-3 whitespace-nowrap mr-2">
-                        {{$user->employee_id}}
+                        {{$user->employee_num}}
                     </td>
                     <td  class="px-1 py-3 whitespace-nowrap mr-2">
                         {{$user->name}}
@@ -234,23 +243,55 @@
                         {{$user->created_at->diffForHumans()}}
                     </td>
 
-                    <td class="py-3 text-center mr-2">
-                        <a href="{{route('user.edit',$user)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">編集</a>
-                    </td>
-
-                    <td class="py-3">
-                        <form action="{{route('user.destroy',$user)}}" method="POST" class="text-center m-auto">
-                            @csrf
-                            @method('delete')
-                            <button type="submit" onClick="return confirm('本当に削除しますか？')" class=" font-medium text-red-600 dark:text-red-500 hover:underline">削除</button>
-                        </form>
+                    {{-- <td class="py-3">
+                        <button data-modal-target="deleteModal-{{$user->id}}" data-modal-toggle="deleteModal-{{$user->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
+                            削除
+                        </button>
+                    </td> --}}
+                    <td class="py-2">
+                        <button data-modal-target="deleteModal-{{$user->id}}" data-modal-toggle="deleteModal-{{$user->id}}"  class="block whitespace-nowrap px-2 py-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-md text-sm  text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
+                            <div class="flex">
+                                <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z"/>
+                                </svg>
+                                <span class="text-ms ">削除</span>
+                            </div>
+                        </button>
                     </td>
                 </tr>
-                @endforeach
             </tbody>
+            {{-- 削除確認モーダル画面 Start --}}
+            <div id="deleteModal-{{$user->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                <div class="relative w-full max-w-md max-h-full">
+                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                        <button data-modal-hide="deleteModal-{{$user->id}}" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                            </svg>
+                        </button>
+                        <div class="p-6 text-center">
+                            <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                            </svg>
+                            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
+                            <form action="{{route('user.destroy',$user->id)}}" method="POST" class="text-center m-auto">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" data-modal-hide="deleteModal-{{$user->id}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                                    削除
+                                </button>
+                            </form>
+                            <button data-modal-hide="deleteModal-{{$user->id}}" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                やっぱやめます
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{-- 削除確認モーダル画面 End --}}
+            @endforeach
         </table> 
-        <div class="mt-8 mb-8">
-            {{-- {{ $users->appends(request()->query())->links() }}  //デフォルトページネーション --}} 
+        <div class="mt-2 mb-2 px-4">
             {{ $users->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
         </div>
     </div>

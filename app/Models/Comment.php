@@ -14,6 +14,10 @@ class Comment extends Model
         'report_id',
         'user_id'
     ];
+
+    public static $rules = [
+        'content' => 'required',
+    ];
     
     // コメントに関連する報告のリレーションok
     public function report()

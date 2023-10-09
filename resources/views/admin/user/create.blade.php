@@ -1,6 +1,3 @@
-    <script src="../path/to/flowbite/dist/_atpicker.js"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js?ver=3.4.1"></script> 
-
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between">
@@ -17,119 +14,169 @@
     </x-slot>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
         <div class="mx-4 sm:p-8">
-        <form method="post" action="{{route('user.store')}}" enctype="multipart/form-data">
-            @csrf
-            <label class="relative inline-flex items-center cursor-pointer">
-                <input type="hidden" name="is_finished" id="is_finished" value="0">
-                <input type="checkbox" name="is_finished" id="is_finished" value="1" class="sr-only peer">
-                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">有効</span>
-            </label>
+            <form method="post" action="{{route('user.store')}}" enctype="multipart/form-data">
+                @csrf
+                <label class="relative inline-flex items-center cursor-pointer mt-2">
+                    <input type="hidden" name="is_finished" id="is_finished" value="0">
+                    <input type="checkbox" name="is_finished" id="is_finished" value="1" class="sr-only peer">
+                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                    <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">有効</span>
+                </label>
 
-            <div class="md:flex items-center mt-8">
+                <div class="mt-2 p-4 sm:p-4 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                    <div class="grid gap-4 mb-4 md:grid-cols-3 ">
+                        <div class="md:flex items-center">
+                            <div class="w-full flex flex-col">
+                            <label for="employee_num" class="font-semibold dark:text-gray-100 leading-none mt-2">社員番号</label>
+                            <input type="text" name="employee_num" class="w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="employee_num" value="{{old('employee_num')}}" placeholder="例）000999">
+                            </div>
+                        </div>
+                        @error('employee_num')
+                            <div class="text-red-500">{{$message}}</div>
+                        @enderror
+                        <div class="w-full flex flex-col">
+                            <label for="employee_status_id" class="font-semibold dark:text-gray-100 leading-none mt-2">雇用状態</label>
+                            <select name="employee_status_id" class=" w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="employee_status_id" value="{{old('employee_status_id')}}">
+                                @foreach($e_statuses as $e_status)
+                                <option value="{{ $e_status->id }}">{{ $e_status->employee_status_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @error('employee_status_id')
+                            <div class="text-red-500">{{$message}}</div>
+                        @enderror
+                        <div class="w-full flex flex-col">
+                            <label for="role_id" class="font-semibold dark:text-gray-100 leading-none mt-2">権限</label>
+                            <select name="role_id" class=" w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="role_id" value="{{old('role_id')}}">
+                                @foreach($roles as $role)
+                                <option value="{{ $role->id }}">{{ $role->role_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @error('role_id')
+                            <div class="text-red-500">{{$message}}</div>
+                        @enderror
+                    </div>
+                    <div class="grid gap-4 mb-4 md:grid-cols-2">
+
+                        <div class="md:flex items-center">
+                            <div class="w-full flex flex-col">
+                            <label for="name" class="font-semibold dark:text-gray-100 leading-none mt-2">氏名</label>
+                            <input type="text" name="name" class="w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="name" value="{{old('name')}}" placeholder="例）田中 太郎">
+                            </div>
+                        </div>
+                        @error('name')
+                            <div class="text-red-500">{{$message}}</div>
+                        @enderror
+                        <div class="w-full flex flex-col">
+                            <label for="kana_name" class="font-semibold dark:text-gray-100 leading-none mt-2">カナ氏名</label>
+                            <input type="text" name="kana_name" class="w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="kana_name" value="{{old('kana_name')}}" placeholder="例）タナカ タロウ">
+                        </div>
+                        @error('kana_name')
+                            <div class="text-red-500">{{$message}}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="mt-4 p-4 sm:p-4 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                    <div class="grid gap-4 mb-4 md:grid-cols-3">
+                        <div class="w-full flex flex-col">
+                            <label for="ext_phone" class="font-semibold dark:text-gray-100 leading-none mt-2">外線番号</label>
+                            <input type="text" name="ext_phone" class="w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="ext_phone" value="{{old('ext_phone')}}" placeholder="例）999-9999-9999">
+                        </div>
+                        @error('ext_phone')
+                            <div class="text-red-500">{{$message}}</div>
+                        @enderror
+                        <div class="w-full flex flex-col">
+                            <label for="int_phone" class="font-semibold dark:text-gray-100 leading-none mt-2">内線番号</label>
+                            <input type="text" name="int_phone" class="w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="int_phone" value="{{old('int_phone')}}" placeholder="例）999">
+                        </div>
+                        @error('int_phone')
+                            <div class="text-red-500">{{$message}}</div>
+                        @enderror
+                        <div class="w-full flex flex-col">
+                            <label for="email" class="font-semibold dark:text-gray-100 leading-none mt-2">E-MAIL</label>
+                            <input type="text" name="email" class="w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="email" value="{{old('email')}}" placeholder="例）test＠gmail.com">
+                        </div>
+                        @error('email')
+                            <div class="text-red-500">{{$message}}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="mt-4 p-4 sm:p-4 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                    <div class="grid gap-4 mb-4 md:grid-cols-3 ">
+                        <div class="w-full flex flex-col">
+                            <label for="company_id" class="font-semibold dark:text-gray-100 leading-none mt-2">会社</label>
+                            <select name="company_id" class=" w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="company_id" value="{{old('company_id')}}">
+                                @foreach($companies as $company)
+                                <option value="{{ $company->id }}">{{ $company->company_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @error('company_id')
+                            <div class="text-red-500">{{$message}}</div>
+                        @enderror
+
+                        <div class="w-full flex flex-col">
+                            <label for="department_id" class="font-semibold dark:text-gray-100 leading-none mt-2">事業部</label>
+                            <select name="department_id" class=" w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="department_id" value="{{old('department_id')}}">
+                                @foreach($departments as $department)
+                                <option value="{{ $department->id }}">{{ $department->department_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @error('department_id')
+                            <div class="text-red-500">{{$message}}</div>
+                        @enderror
+
+                        <div class="w-full flex flex-col">
+                            <label for="division_id" class="font-semibold dark:text-gray-100 leading-none mt-2">部署</label>
+                            <select name="division_id" class=" w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="division_id" value="{{old('division_id')}}">
+                                @foreach($divisions as $division)
+                                <option value="{{ $division->id }}">{{ $division->division_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @error('division_id')
+                            <div class="text-red-500">{{$message}}</div>
+                        @enderror
+                    </div>
+                </div>
+
+
+
                 <div class="w-full flex flex-col">
-                <label for="employee_id" class="font-semibold dark:text-gray-100 leading-none mt-4">社員番号</label>
-                <input type="text" name="employee_id" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="employee_id" value="{{old('employee_id')}}" placeholder="例）000999">
+                    <label class="font-semibold dark:text-gray-100 leading-none mt-2">パスワード</label>
+                    <input type="password" name="password" autocomplete="new-password" class="form-control w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="password" value="{{old('password')}}">
                 </div>
-            </div>
-            <div class="md:flex items-center">
+                @error('password')
+                    <div class="text-red-500">{{$message}}</div>
+                @enderror
+
                 <div class="w-full flex flex-col">
-                <label for="name" class="font-semibold dark:text-gray-100 leading-none mt-4">氏名（必須）</label>
-                <input type="text" name="name" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="name" value="{{old('name')}}" placeholder="例）田中 太郎">
+                    <label class="font-semibold dark:text-gray-100 leading-none mt-2">パスワード（確認）</label>
+                    <input type="password" name="password_confirmation" autocomplete="new-password" class="form-control w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="password" value="{{old('password')}}">
                 </div>
-            </div>
-            @error('name')
-                <div class="text-red-500">{{$message}}</div>
-            @enderror
 
-            <div class="w-full flex flex-col">
-                <label for="name_kana" class="font-semibold dark:text-gray-100 leading-none mt-4">カナ氏名（必須）</label>
-                <input type="text" name="name_kana" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="name_kana" value="{{old('name_kana')}}">
-            </div>
-            @error('name_kana')
-                <div class="text-red-500">{{$message}}</div>
-            @enderror
-
-            <div class="w-full flex flex-col">
-                <label for="email" class="font-semibold dark:text-gray-100 leading-none mt-4">E-MAIL（必須）</label>
-                <input type="text" name="email" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="email" value="{{old('email')}}" placeholder="例）test＠gmail.com">
-            </div>
-            @error('email')
-                <div class="text-red-500">{{$message}}</div>
-            @enderror
-
-            <div class="w-full flex flex-col">
-                <label for="role_id" class="font-semibold dark:text-gray-100 leading-none mt-4">権限（必須）</label>
-                {{-- <input type="text" name="role_id" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="role_id" value="{{old('role_id')}}" placeholder=""> --}}
-                <select name="role_id" class=" w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="role_id" value="{{old('role_id')}}">
-                    @foreach($roles as $role)
-                    <option value="{{ $role->id }}">{{ $role->role_name }}</option>
-                    @endforeach
-                </select>
-            </div>
-            @error('role_id')
-                <div class="text-red-500">{{$message}}</div>
-            @enderror
-
-            <div class="w-full flex flex-col">
-                <label for="employee_status_id" class="font-semibold dark:text-gray-100 leading-none mt-4">雇用状態（必須）</label>
-                {{-- <input type="text" name="role_id" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="role_id" value="{{old('role_id')}}" placeholder=""> --}}
-                <select name="employee_status_id" class=" w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="employee_status_id" value="{{old('employee_status_id')}}">
-                    @foreach($e_statuses as $e_status)
-                    <option value="{{ $e_status->id }}">{{ $e_status->employee_status_name }}</option>
-                    @endforeach
-                </select>
-            </div>
-            @error('employee_status_id')
-                <div class="text-red-500">{{$message}}</div>
-            @enderror
-
-            <div class="w-full flex flex-col">
-                <label class="font-semibold dark:text-gray-100 leading-none mt-4">パスワード</label>
-                <input type="password" name="password" autocomplete="new-password" class="form-control w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="password" value="{{old('password')}}">
-            </div>
-            @error('password')
-            <div class="text-red-500">{{$message}}</div>
-            @enderror
-
-            <div class="w-full flex flex-col">
-                <label class="font-semibold dark:text-gray-100 leading-none mt-4">パスワード（確認）</label>
-                <input type="password" name="password" autocomplete="new-password" class="form-control w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="password" value="{{old('password')}}">
-            </div>
-
-
-            {{-- <div class="w-full flex flex-col">
-                <label for="return_at" class="font-semibold dark:text-gray-100 leading-none mt-4">作成日（必須）</label>
-                <input type="date" min="2000-01-01" max="2100-12-31" name="return_at" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="return_at" value="{{old('return_at')}}">
-            </div>
-            @error('return_at')
-                <div class="text-red-500">{{$message}}</div>
-            @enderror --}}
-            
-            {{-- <div class="w-full flex flex-col">
-                <label for="memo" class="font-semibold dark:text-gray-100 leading-none mt-4">備考</label>
-                <textarea name="memo" class="w-auto py-2 border border-gray-300 rounded-md mt-1 placeholder-gray-500" id="memo" value="{{old('memo')}}" cols="30" rows="10" placeholder="例）預託期限が来たため延長しました。"></textarea>
-            </div>           
-            @error('memo')
-                <div class="text-red-500">{{$message}}</div>
-            @enderror --}}
-
-            {{-- <div class="w-full flex flex-col">
-                <label for="image" class="font-semibold dark:text-gray-100 leading-none mt-4">画像 </label>
-                <div>
-                <input id="image" type="file" name="image">
-                </div>
-            </div> --}}
-
-            <x-primary-button class="mt-4">
-                新規登録する
-            </x-primary-button>
-            
-        </form>
+                {{-- <div class="w-full flex flex-col">
+                    <label for="image" class="font-semibold dark:text-gray-100 leading-none mt-2">画像 </label>
+                    <div>
+                    <input id="image" type="file" name="image">
+                    </div>
+                </div> --}}
+                <x-primary-button class="mt-2 mb-2">
+                    新規登録する
+                </x-primary-button>
+            </form>
+        </div>
     </div>
-</div>
 
-
+    {{-- カナ補完 --}}
+    <script>
+        $(function() {
+            $.fn.autoKana('input[name="name"]', 'input[name="kana_name"]', {katakana: true});
+        });
+    </script>
 </x-app-layout>

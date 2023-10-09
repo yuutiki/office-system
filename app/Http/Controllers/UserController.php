@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
+use App\Models\Department;
+use App\Models\Division;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Employee_status;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
@@ -16,8 +20,11 @@ class UserController extends Controller
     public function index(Request $request)//検索用にrequestを受取る
     {
         $per_page = 50; // １ページごとの表示件数
-        $users = User::with(['role'])->sortable()->paginate($per_page);
+        $users = User::with(['role','company','department','division'])->sortable()->paginate($per_page);
         $roles = Role::all();
+        $companies = Company::all();
+        $departments = Department::all();
+        $divisions = Division::all();
         $e_statuses = Employee_status::all();
 
 
@@ -33,10 +40,9 @@ class UserController extends Controller
         //もし社員番号があれば
         if(!empty($employee_num))
         {
-            // $query->where('employee_id','like',"%{$employee_num}%");
-            $query->where('employee_id','=',$employee_num);
+            // $query->where('employee_num','like',"%{$employee_num}%");
+            $query->where('employee_num','=',$employee_num);
         }
-        
 
         //もしユーザ名があれば
         if($user_name)
@@ -63,47 +69,48 @@ class UserController extends Controller
         }
 
         $users = $query->paginate($per_page);
-        $count = $users->count();
+        $count = $users->total();
 
-        return view('admin.user.index',compact('roles','users','e_statuses','employee_num','user_name','role1','employee_status','count'));
+        return view('admin.user.index',compact('roles','users','e_statuses','employee_num','user_name','role1','employee_status','count','companies','departments','divisions'));
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public function create()
     {
+        $companies = Company::all();
+        $departments = Department::all();
+        $divisions = Division::all();
         $roles = Role::orderBy('id','desc')->get();
         $e_statuses = Employee_status::orderBy('id','asc')->get();
-        return view('admin.user.create',compact('roles','e_statuses'));
+
+        return view('admin.user.create',compact('roles','e_statuses','companies','departments','divisions'));
     }
 
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(),User::$rules);
+
+        if ($validator->fails()) {
+            // バリデーションエラーが発生した場合
+            session()->flash('error', '入力内容にエラーがあります。');
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         $user = new User();
-        $user->employee_id = $request->employee_id;
+        $user->employee_num = $request->employee_num;
         $user->name = $request->name;
-        $user->name_kana = $request->name_kana;
+        $user->kana_name = $request->kana_name;
         $user->email = $request->email;
+        $user->int_phone = $request->int_phone;
+        $user->ext_phone = $request->ext_phone;
         $user->role_id = $request->role_id;
+        $user->company_id = $request->company_id;
+        $user->department_id = $request->department_id;
+        $user->division_id = $request->division_id;
         $user->employee_status_id = $request->employee_status_id;
         $user->password = bcrypt($request->password);
         $user->save();
-        return redirect()->route('user.create')->with('message','登録しました');
+        return redirect()->route('user.create')->with('success','登録しました');
     }
 
     public function show($id)
@@ -117,19 +124,47 @@ class UserController extends Controller
         $user=user::find($id);
         $roles = Role::with('users')->get();
         $e_statuses = Employee_status::with('users')->get();
+        $companies = Company::all();
+        $departments = Department::all();
+        $divisions = Division::all();
+        $e_statuses = Employee_status::all();
         $user_role = $user->role_id;
         $user_e_status = $user->employee_status_id;
-        return view('admin.user.edit',compact('user','roles','user_role','e_statuses','user_e_status'));
+        return view('admin.user.edit',compact('user','roles','user_role','e_statuses','user_e_status','companies','departments','divisions'));
     }
 
     public function update(Request $request, $id)
     {
+        // パスワードが入力されたかどうかをチェック
+        $passwordIsProvided = !empty($request['password']);
+
+        // バリデーションルールを初期化
+        $rules = User::$rules;
+
+        // パスワードが入力された場合、パスワードのバリデーションルールを追加
+        if ($passwordIsProvided) {
+            $rules['password'] = 'required|string|min:8|confirmed';
+        }
+        
+        $validator = Validator::make($request->all(),$rules);
+
+        if ($validator->fails()) {
+            // バリデーションエラーが発生した場合
+            session()->flash('error', '入力内容にエラーがあります。');
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         $user=user::find($id);
-        $user->employee_id = $request->employee_id;
+        $user->employee_num = $request->employee_num;
         $user->name = $request->name;
-        $user->name_kana = $request->name_kana;
+        $user->kana_name = $request->kana_name;
         $user->email = $request->email;
+        $user->int_phone = $request->int_phone;
+        $user->ext_phone = $request->ext_phone;
         $user->role_id = $request->role_id;
+        $user->company_id = $request->company_id;
+        $user->department_id = $request->department_id;
+        $user->division_id = $request->division_id;
         $user->employee_status_id = $request->employee_status_id;
         $user->access_ip = $request->ip();
 
@@ -139,7 +174,7 @@ class UserController extends Controller
         }
 
         $user->save();
-        return redirect()->route('user.index',$id)->with('message','更新しました');
+        return redirect()->route('user.index',$id)->with('success','更新しました');
     }
 
     public function destroy(string $id)
