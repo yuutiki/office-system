@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
         $this->call(LinkSeeder::class);
         $this->call(CompanySeeder::class);
         $this->call(DivisionSeeder::class);
-        $this->call(AccountingPeriod::class);
+        $this->call(AccountingPeriodSeeder::class);
 
         // \App\Models\User::factory(10)->create();
 

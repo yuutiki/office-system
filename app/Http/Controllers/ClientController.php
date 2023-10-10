@@ -78,7 +78,7 @@ class ClientController extends Controller
         $client->client_num = $clientNumber;// 採番した顧客番号をセット
 
         $client->client_corporation_id = $clientcorporationId;
-        $client->department_name = $departmentId;
+        $client->department_id = $departmentId;
         $client->client_name = $request->client_name;
         $client->client_kana_name = $request->client_kana_name;
         $client->head_post_code = $formattedPost;//変換後の郵便番号をセット
@@ -141,7 +141,7 @@ class ClientController extends Controller
         $client->head_tel = $request->head_tel;
         $client->students = $request->students;
         $client->distribution = $request->distribution;
-        $client->department_name = $request->department;
+        $client->department_id = $request->department;
         $client->client_type_id = $request->client_type_id;
         $client->installation_type_id = $request->installation_type_id;
         $client->trade_status_id = $request->trade_status_id;
@@ -169,12 +169,12 @@ class ClientController extends Controller
         // 検索条件に基づいて顧客データを取得
         // $clients = Client::where('client_name', 'LIKE', '%' . $clientName . '%')
         //     ->where('client_num', 'LIKE', '%' . $clientNumber . '%')
-        //     ->where('department_name', 'LIKE', '%' . $clientDepartment . '%')
+        //     ->where('department_id', 'LIKE', '%' . $clientDepartment . '%')
         //     ->get();
         $query = Client::query()
         ->where('client_name', 'LIKE', '%' . $clientName . '%')
         ->where('client_num', 'LIKE', '%' . $clientNumber . '%')
-        ->where('department_name', 'LIKE', '%' . $clientDepartment . '%');
+        ->where('department_id', 'LIKE', '%' . $clientDepartment . '%');
         $clients = $query->with('products')->get();
 
         return response()->json($clients);
