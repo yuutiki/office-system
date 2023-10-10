@@ -158,7 +158,7 @@ class Client extends Model
 
     public function department()
     {
-        return $this->belongsTo(Department::class, 'department_name');
+        return $this->belongsTo(Department::class);
     }
 
 }
