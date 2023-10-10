@@ -91,7 +91,7 @@ class ClientController extends Controller
         $client->installation_type_id = $request->installation_type_id;
         $client->trade_status_id = $request->trade_status_id;
         $client->is_enduser = $request->is_enduser;
-        $client->is_suplier = $request->is_suplier;
+        $client->is_supplier = $request->is_supplier;
         $client->is_dealer = $request->is_dealer;
         $client->is_lease = $request->is_lease;
         $client->is_other_partner = $request->is_other_partner;
