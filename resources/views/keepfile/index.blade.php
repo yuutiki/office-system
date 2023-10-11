@@ -251,7 +251,7 @@ $(function(){
                             {{$keepfile->user->name}}
                         </td>
                         @if($keepfile->is_finished == "0")
-                            <td class="px-1 py-3 whitespace-nowrap text-fuchsia-300   ">
+                            <td class="px-1 py-3 whitespace-nowrap text-fuchsia-300">
                                 未返却
                             </td>
                         @else

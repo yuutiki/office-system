@@ -34,7 +34,7 @@ class SupportController extends Controller
         $query = Support::query();
 
         $count = $query->count(); // 検索結果の総数を取得
-        $supports = $query->sortable()->paginate($per_page);
+        $supports = $query->orderby('received_at','desc')->sortable()->paginate($per_page);
 
         return view('support.index',compact('users','productSeriess','productVersions','productCategories','supportTypes','supportTimes','clients','count','supports'));
     }

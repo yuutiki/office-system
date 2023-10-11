@@ -7,13 +7,17 @@ use App\Models\Department;
 use App\Models\Division;
 use App\Models\User;
 use App\Models\Role;
-use App\Models\Employee_status;
+use App\Models\EmployeeStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules;
+
+use Goodby\CSV\Import\Standard\Lexer;
+use Goodby\CSV\Import\Standard\Interpreter;
+use Goodby\CSV\Import\Standard\LexerConfig;
 
 class UserController extends Controller
 {
@@ -25,7 +29,7 @@ class UserController extends Controller
         $companies = Company::all();
         $departments = Department::all();
         $divisions = Division::all();
-        $e_statuses = Employee_status::all();
+        $e_statuses = EmployeeStatus::all();
 
 
         //検索フォームに入力された値を取得
@@ -81,7 +85,7 @@ class UserController extends Controller
         $departments = Department::all();
         $divisions = Division::all();
         $roles = Role::orderBy('id','desc')->get();
-        $e_statuses = Employee_status::orderBy('id','asc')->get();
+        $e_statuses = EmployeeStatus::orderBy('id','asc')->get();
 
         return view('admin.user.create',compact('roles','e_statuses','companies','departments','divisions'));
     }
@@ -108,9 +112,10 @@ class UserController extends Controller
         $user->department_id = $request->department_id;
         $user->division_id = $request->division_id;
         $user->employee_status_id = $request->employee_status_id;
+        $user->is_enabled = $request->is_enabled;
         $user->password = bcrypt($request->password);
         $user->save();
-        return redirect()->route('user.create')->with('success','登録しました');
+        return redirect()->route('user.index')->with('success','登録しました');
     }
 
     public function show($id)
@@ -123,11 +128,11 @@ class UserController extends Controller
     {
         $user=user::find($id);
         $roles = Role::with('users')->get();
-        $e_statuses = Employee_status::with('users')->get();
+        $e_statuses = EmployeeStatus::with('users')->get();
         $companies = Company::all();
         $departments = Department::all();
         $divisions = Division::all();
-        $e_statuses = Employee_status::all();
+        $e_statuses = EmployeeStatus::all();
         $user_role = $user->role_id;
         $user_e_status = $user->employee_status_id;
         return view('admin.user.edit',compact('user','roles','user_role','e_statuses','user_e_status','companies','departments','divisions'));
@@ -166,6 +171,7 @@ class UserController extends Controller
         $user->department_id = $request->department_id;
         $user->division_id = $request->division_id;
         $user->employee_status_id = $request->employee_status_id;
+        $user->is_enabled = $request->is_enabled;
         $user->access_ip = $request->ip();
 
         if($request->filled('password'))
@@ -182,5 +188,79 @@ class UserController extends Controller
         $user = user::find($id);
         $user->delete();
         return redirect()->route('user.index')->with('message', '削除しました');
+    }
+
+    public function upload(Request $request)
+    {
+        $csvFile = $request->file('csv_input');
+        
+        // CSVファイルの一時保存先パス
+        $csvPath = $csvFile->getRealPath();
+        
+        // CSVデータのパースとデータベースへの登録処理
+        $this->parseCSVAndSaveToDatabase($csvPath);
+
+        // 成功時のリダイレクトやメッセージを追加するなどの処理を行う
+        return redirect()->back()->with('success', 'CSVファイルをアップロードしました。');
+    }
+
+    private function parseCSVAndSaveToDatabase($csvPath)
+    {
+        // CSVファイルの文字コードを自動判定
+        $fromCharset = mb_detect_encoding(file_get_contents($csvPath), 'UTF-8, Shift_JIS, EUC-JP, JIS, SJIS-win', true);
+        
+        $config = new LexerConfig();
+        $config->setFromCharset($fromCharset);
+
+        $config->setIgnoreHeaderLine(true); // ヘッダを無視する設定
+        $lexer = new Lexer($config);
+        $interpreter = new Interpreter();
+
+         // CSV行をパースした際に実行する処理を定義
+        $interpreter->addObserver(function (array $row) {
+            $user = new User();
+            $user->employee_num = $row[0];
+            $user->name = $row[1];
+            $user->kana_name = $row[2];
+            $user->email = $row[3];
+            $user->ext_phone = $row[4];
+            $user->int_phone = $row[5];
+            $user->password = bcrypt($row[6]);
+
+
+
+            $user->company_id = $row[7];
+            
+            
+            $user->department_id = $row[8];
+            
+            
+            
+            $divisionCode = $row[9];
+            $division = Division::where('division_code', $divisionCode)->first();
+            if ($division) {
+                $user->division_id = $division->id;
+            } else {
+                // divisionが見つからない場合のエラーハンドリング
+            }
+            $roleNum = $row[10];
+            $role = Role::where('role_num', $roleNum)->first();
+            if ($role) {
+                $user->role_id = $role->id;
+            } else {
+                // divisionが見つからない場合のエラーハンドリング
+            }
+            $employeeStatusNum = $row[11];
+            $employee_status = EmployeeStatus::where('employee_status_num', $employeeStatusNum)->first();
+            if ($employee_status) {
+                $user->employee_status_id = $employee_status->id;
+            } else {
+                // divisionが見つからない場合のエラーハンドリング
+            }
+            $user->is_enabled = $row[12];
+            $user->save();
+        });
+
+        $lexer->parse($csvPath, $interpreter);
     }
 }

@@ -16,5 +16,6 @@ return [
     'failed' => 'ユーザ情報が登録されていません。',
     'password' => 'ログイン情報が間違っています。',
     'throttle' => 'ログインに続けて失敗しています。:seconds秒後に再度お試しください。',
+    'Your account is not active.' =>  '無効なアカウントです。',
 
 ];

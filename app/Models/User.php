@@ -79,7 +79,7 @@ class User extends Authenticatable
 
     public function employee_status()
     {
-        return $this->belongsTo(Employee_status::class);
+        return $this->belongsTo(Employeestatus::class);
     }
 
     //預託データに関するリレーション

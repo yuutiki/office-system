@@ -6,8 +6,10 @@ namespace App\Providers;
 // use App\View\Composers\LinkComposer;
 // use Illuminate\Support\ServiceProvider;
 // use App\Observers\GlobalObserver;
+
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Database\Eloquent\Model;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,8 +26,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // ClientCorporation::observe(GlobalObserver::class);
-
         $this->registerPolicies();
 
         // 「システム管理者」だけに適用
@@ -47,5 +47,14 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('general', function ($user) {
             return ($user->role_id <= 4);
         });
-    }
+
+
+        Model::creating(function ($model) {
+            $model->created_by = auth()->user()->id;
+        });
+
+        Model::updating(function ($model) {
+            $model->updated_by = auth()->user()->id;
+        });
+        }
 }

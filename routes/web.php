@@ -10,6 +10,7 @@ use App\Http\Controllers\Dashboard\DashboardController;//add
 use App\Http\Controllers\CommentController;//add
 use App\Http\Controllers\ReportController;//add
 use App\Http\Controllers\ProductController;//add
+use App\Http\Controllers\UserController;//add
 
 use App\Http\Livewire\ClientCorporationSearchModal;
 use App\Http\Livewire\ClientForm;
@@ -56,6 +57,7 @@ Route::middleware('auth')->group(function () {
     // Route::resource('/comment', '\App\Http\Controllers\CommentController');
     Route::post('/clientcorporation/search', [ClientCorporationController::class, 'search'])->name('clientcorporation.search');
     Route::post('/clientcorporation/upload', [ClientCorporationController::class, 'upload'])->name('clientcorporation.upload');
+    Route::post('/user/upload', [UserController::class, 'upload'])->name('user.upload');
     Route::post('/client/search', [ClientController::class, 'search'])->name('client.search');
     Route::get('/report/{report_id}/comment', [CommentController::class, 'show'])->name('comment.show');
     Route::post('/report/{report_id}/comment', [CommentController::class, 'store'])->name('comment.store');

@@ -134,10 +134,17 @@
                 </div>
                 <!-- Modal body -->
                 <div class="p-6 space-y-6 mr-20 mt-4">
-                    <form class="flex items-center ">
-                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input"></label>
-                        <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
+                    <form action="{{ route('user.upload') }}" method="POST" enctype="multipart/form-data" class="flex items-center" id="csv_form1">
+                        @csrf
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="csv_input"></label>
+                        <input name="csv_input" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="csv_input_help" id="csv_input_file" type="file">
                     </form>
+                </div>
+                <!-- Modal footer -->
+                <div class="flex justify-end p-3 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <button type="submit" form="csv_form1"  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        アップロード
+                    </button>
                 </div>
             </div>
         </div>
@@ -149,10 +156,15 @@
             {{-- テーブルヘッダ start --}}
             <thead class="text-sm text-gray-700 dark:bg-gray-700 dark:text-gray-100">
                 <tr>
+                    <th scope="col" class="pl-4 py-3 w-auto">
+                        <div class="flex items-center whitespace-nowrap">
+                            №
+                        </div>
+                    </th>
                     <th scope="col" class="px-6 py-3">
                         <span class="sr-only">編集</span>
                     </th>
-                    <th scope="col" class="pl-6 py-3 w-auto">
+                    <th scope="col" class="pl-2 py-3 w-auto">
                         <div class="flex items-center whitespace-nowrap mr-3">
                             @sortablelink('employee_id','社員番号')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
@@ -192,13 +204,18 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                         </div>
                     </th>
-                    <th scope="col" class="px-1 py-3">
+                    {{-- <th scope="col" class="px-1 py-3">
                         <div class="flex items-center whitespace-nowrap mr-3">
                             <div class="flex items-center ">
                             作成日
-                            {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
                         </div>
-                    </th>
+                    </th> --}}
+                    <th scope="col" class="px-1 py-3">
+                        <div class="flex items-center whitespace-nowrap mr-3">
+                            <div class="flex items-center ">
+                            有効フラグ
+                        </div>
+                    </th>                    
                     <th scope="col" class="px-6 py-3">
                         <span class="sr-only">削除</span>
                     </th>
@@ -210,6 +227,9 @@
             <tbody>
                 @foreach ($users as $user)
                 <tr class="bg-white border-b dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 dark:text-white dark:border-gray-700">
+                    <td class="pl-4 py-2 whitespace-nowrap">
+                        {{ $loop->iteration }}
+                    </td>
                     <td class="px-4 py-2 whitespace-nowrap">
                         <button onclick="location.href='{{route('user.edit',$user)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
                             <div class="flex">
@@ -220,7 +240,7 @@
                             </div>
                         </button>
                     </td>
-                    <td class="pl-6 py-3 whitespace-nowrap mr-2">
+                    <td class="pl-2 py-3 whitespace-nowrap mr-2">
                         {{$user->employee_num}}
                     </td>
                     <td  class="px-1 py-3 whitespace-nowrap mr-2">
@@ -239,10 +259,18 @@
                         {{$user->employee_status->employee_status_num}}:
                         {{$user->employee_status->employee_status_name}}
                     </td>
-                    <td class="px-1 py-3 whitespace-nowrap mr-2">
+                    {{-- <td class="px-1 py-3 whitespace-nowrap mr-2">
                         {{$user->created_at->diffForHumans()}}
-                    </td>
-
+                    </td> --}}
+                    @if($user->is_enabled == '1')
+                        <td class="px-1 py-3 whitespace-nowrap mr-2">
+                            有効
+                        </td>
+                    @else
+                        <td class="px-1 py-3 whitespace-nowrap mr-2 text-fuchsia-300">
+                            無効
+                        </td>
+                    @endif
                     {{-- <td class="py-3">
                         <button data-modal-target="deleteModal-{{$user->id}}" data-modal-toggle="deleteModal-{{$user->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
                             削除

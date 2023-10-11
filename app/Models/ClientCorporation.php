@@ -20,6 +20,7 @@ class ClientCorporation extends Model
         'clientcorporation_kana_name',
         'clientcorporation_short_name',
         'memo',
+        'user_id',
     ];
 
     public $sortable = [
@@ -75,15 +76,15 @@ class ClientCorporation extends Model
     }
 
     //GrobalObserverを利用して登録する
-    public function getCreatedByColumn()
-    {
-        return 'created_by';
-    }
+    // public function getCreatedByColumn()
+    // {
+    //     return 'created_by';
+    // }
 
-    public function getUpdatedByColumn()
-    {
-        return 'updated_by';
-    }
+    // public function getUpdatedByColumn()
+    // {
+    //     return 'updated_by';
+    // }
 
     // 法人正式名称のsetter（Mutator）を定義
     public function setClientcorporationNameAttribute($value)
