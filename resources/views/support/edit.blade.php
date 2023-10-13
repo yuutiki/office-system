@@ -68,7 +68,7 @@
                     <select id="department" name="department" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled>
                         <option selected value="">未選択</option>
                         @foreach($departments as $department)
-                        <option value="{{ $department->prefix_code }}" @if($department->prefix_code == $support->client->department_name) selected @endif >{{ $department->department_name }}</option>
+                        <option value="{{ $department->id }}" @if($department->id == $support->client->department_id) selected @endif >{{ $department->department_name }}</option>
                         @endforeach
                     </select>
                     @error('department')
@@ -446,7 +446,7 @@
                 const resultElement = document.createElement('tr');
                 resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
                 resultElement.innerHTML = `
-                    <td class="py-2 pl-5 cursor-pointer" onclick="setClient('${result.client_name}', '${result.client_num}', '${result.installation_type_id}', '${result.department_name}', '${result.client_type_id}', '${result.user_id}')">${result.client_name}</td>
+                    <td class="py-2 pl-5 cursor-pointer" onclick="setClient('${result.client_name}', '${result.client_num}', '${result.installation_type_id}', '${result.department_id}', '${result.client_type_id}', '${result.user_id}')">${result.client_name}</td>
                     <td class="py-2 ml-2">${result.client_num}</td>
                     <td class="py-2 ml-2">${result.department_name}</td>
                 `;

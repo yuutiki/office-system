@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ClientType;
+use App\Models\Project;
 use Illuminate\Http\Request;
 
-class ClientTypeController extends Controller
+class ProjectController extends Controller
 {
     public function index()
     {
-
+        //
     }
 
     public function create()
     {
-        //
+        return view('project.create');
     }
 
     public function store(Request $request)
@@ -22,22 +22,22 @@ class ClientTypeController extends Controller
         //
     }
 
-    public function show(ClientType $clientType)
+    public function show(Project $project)
     {
         //
     }
 
-    public function edit(ClientType $clientType)
+    public function edit(Project $project)
     {
         //
     }
 
-    public function update(Request $request, ClientType $clientType)
+    public function update(Request $request, Project $project)
     {
         //
     }
 
-    public function destroy(ClientType $clientType)
+    public function destroy(Project $project)
     {
         //
     }

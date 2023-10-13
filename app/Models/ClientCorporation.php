@@ -20,7 +20,8 @@ class ClientCorporation extends Model
         'clientcorporation_kana_name',
         'clientcorporation_short_name',
         'memo',
-        'user_id',
+        'created_by',
+        'updated_by',
     ];
 
     public $sortable = [
@@ -36,6 +37,15 @@ class ClientCorporation extends Model
         'clientcorporation_kana_name' => 'required|max:1024',
         'clientcorporation_short_name' => 'required|max:1024',
     ];
+
+    //GlobalObserverに定義されている作成者と更新者を登録するメソッド
+    //なお、値を更新せずにupdateをかけても更新者は更新されない。
+    protected static function boot()
+    {
+        parent::boot();
+
+        self::observe(GlobalObserver::class);
+    }
 
     // index画面の検索ロジック
     public function scopeFilter($query, $filters)
@@ -58,6 +68,8 @@ class ClientCorporation extends Model
         }
     }
 
+
+
     public static function storeWithTransaction(array $data)
     {
         return DB::transaction(function () use ($data) {
@@ -75,16 +87,11 @@ class ClientCorporation extends Model
         });
     }
 
-    //GrobalObserverを利用して登録する
-    // public function getCreatedByColumn()
-    // {
-    //     return 'created_by';
-    // }
+    
 
-    // public function getUpdatedByColumn()
-    // {
-    //     return 'updated_by';
-    // }
+
+
+    
 
     // 法人正式名称のsetter（Mutator）を定義
     public function setClientcorporationNameAttribute($value)

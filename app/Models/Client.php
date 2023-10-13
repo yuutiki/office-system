@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Observers\GlobalObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;//add
@@ -25,6 +26,8 @@ class Client extends Model
         'installation_type_id',
         'head_post_code',
         'memo',
+        'created_by',
+        'updated_by',
     ];
 
     //ソート用に使うカラムを指定
@@ -46,6 +49,15 @@ class Client extends Model
         'installation_type_id' => 'required',
         'department' => 'required',
     ];
+
+    //GlobalObserverに定義されている作成者と更新者を登録するメソッド
+    //なお、値を更新せずにupdateをかけても更新者は更新されない。
+    protected static function boot()
+    {
+        parent::boot();
+
+        self::observe(GlobalObserver::class);
+    }
 
     //郵便番号のフォーマット変換を行うメソッド
     public static function formatPostCode($postCode)

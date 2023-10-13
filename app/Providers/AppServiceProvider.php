@@ -5,8 +5,9 @@ namespace App\Providers;
 // use Illuminate\Support\Facades\View;
 // use App\View\Composers\LinkComposer;
 // use Illuminate\Support\ServiceProvider;
-// use App\Observers\GlobalObserver;
+use App\Observers\GlobalObserver;
 
+use App\Models\ClientCorporation;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Database\Eloquent\Model;
@@ -56,5 +57,7 @@ class AppServiceProvider extends ServiceProvider
         Model::updating(function ($model) {
             $model->updated_by = auth()->user()->id;
         });
-        }
+
+        // ClientCorporation::observe(GlobalObserver::class);
+    }
 }

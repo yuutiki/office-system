@@ -51,9 +51,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('/report', '\App\Http\Controllers\ReportController');
     Route::resource('/product', '\App\Http\Controllers\ProductController');
     Route::resource('/support', '\App\Http\Controllers\SupportController');
+    Route::resource('/project', '\App\Http\Controllers\ProjectController');
 
     //マスタ系
-    Route::resource('/master', '\App\Http\Controllers\ClientTypeController');
+    Route::resource('/masters', '\App\Http\Controllers\MasterController');
     // Route::resource('/comment', '\App\Http\Controllers\CommentController');
     Route::post('/clientcorporation/search', [ClientCorporationController::class, 'search'])->name('clientcorporation.search');
     Route::post('/clientcorporation/upload', [ClientCorporationController::class, 'upload'])->name('clientcorporation.upload');

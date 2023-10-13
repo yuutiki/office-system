@@ -77,6 +77,7 @@ class ClientController extends Controller
         $client = new Client();
         $client->client_num = $clientNumber;// 採番した顧客番号をセット
 
+
         $client->client_corporation_id = $clientcorporationId;
         $client->department_id = $departmentId;
         $client->client_name = $request->client_name;
@@ -90,6 +91,7 @@ class ClientController extends Controller
         $client->client_type_id = $request->client_type_id;
         $client->installation_type_id = $request->installation_type_id;
         $client->trade_status_id = $request->trade_status_id;
+        $client->user_id = $request->user_id;
         $client->is_enduser = $request->has('is_enduser') ? 1 : 0;
         $client->is_supplier = $request->has('is_supplier') ? 1 : 0;
         $client->is_dealer = $request->has('is_dealer') ? 1 : 0;
