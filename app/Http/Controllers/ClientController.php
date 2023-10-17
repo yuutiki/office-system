@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ClientStoreRequest;
 use App\Models\ClientCorporation;//add
 use App\Models\Client;
 use App\Models\ClientProduct;
@@ -42,18 +43,9 @@ class ClientController extends Controller
         return view('client.create',compact('departments','users','tradeStatuses','clientTypes','installationTypes','prefectures'));
     }
 
-    public function store(Request $request)
+    public function store(ClientStoreRequest $request)
     {
-        // バリデーションの実行(Model)
-        $validator = Validator::make($request->all(), Client::$rules);
-
-        if ($validator->fails()) {
-            // バリデーションエラーが発生した場合
-            session()->flash('error', '入力内容にエラーがあります。');
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        ////以下にバリデーションを通過した場合の処理を記述////
+        ////以下にFormRequestのバリデーションを通過した場合の処理を記述////
 
         $inputPost = $request->head_post_code;
         $formattedPost = Client::formatPostCode($inputPost);
@@ -99,7 +91,7 @@ class ClientController extends Controller
         $client->is_other_partner = $request->has('is_other_partner') ? 1 : 0;
         $client->save();
 
-        return redirect()->route('client.index')->with('success', '登録しました');
+        return redirect()->route('client.index')->with('success', '正常に登録しました');
     }
 
 
@@ -125,16 +117,8 @@ class ClientController extends Controller
         return view('client.edit',compact('departments','users','tradeStatuses','clientTypes','installationTypes','client','reports','prefectures','supports','clientProducts'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(ClientStoreRequest $request, string $id)
     {
-        // バリデーションの実行(Model)
-        $validator = Validator::make($request->all(), Client::$rules);
-
-        if ($validator->fails()) {
-            // バリデーションエラーが発生した場合
-            session()->flash('error', '入力内容にエラーがあります。');
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
 
         $client = Client::find($id);
 
@@ -159,7 +143,7 @@ class ClientController extends Controller
         $client->is_other_partner = $request->has('is_other_partner') ? 1 : 0;
         $client->save();
 
-        return redirect()->route('client.edit', $id)->with('success', '変更しました');
+        return redirect()->route('client.edit', $id)->with('success', '正常に変更しました');
     }
 
     public function destroy(string $id)

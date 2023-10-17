@@ -48,15 +48,15 @@
         </div>
 
         <div>
-            <x-input-label for="name" :value="__('電話番号')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', '070-2307-7176')" required autofocus disabled />
-            <x-input-error class="mt-2" :messages="$errors->get('Tel')" />
+            <x-input-label for="ext_phone" :value="__('外線番号')" />
+            <x-text-input id="ext_phone" name="ext_phone" type="text" class="mt-1 block w-full" :value="old('ext_phone', $user->ext_phone)" required autofocus disabled />
+            <x-input-error class="mt-2" :messages="$errors->get('ext_phone')" />
         </div>
 
         <div>
-            <x-input-label for="name" :value="__('内線番号')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', '416')" required autofocus disabled />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+            <x-input-label for="int_phone" :value="__('内線番号')" />
+            <x-text-input id="int_phone" name="int_phone" type="text" class="mt-1 block w-full" :value="old('int_phone', $user->int_phone)" required autofocus disabled />
+            <x-input-error class="mt-2" :messages="$errors->get('int_phone')" />
         </div>
 
         {{-- <div class="flex items-center gap-4">

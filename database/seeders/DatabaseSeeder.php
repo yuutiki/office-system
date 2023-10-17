@@ -4,12 +4,6 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\AccountingPeriod;
-use App\Models\ProductCategory;
-use App\Models\ProductSplitType;
-use App\Models\ProductSeries;
-use App\Models\ProductType;
-use App\Models\ProductVersion;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -37,6 +31,8 @@ class DatabaseSeeder extends Seeder
         $this->call(CompanySeeder::class);
         $this->call(DivisionSeeder::class);
         $this->call(AccountingPeriodSeeder::class);
+        $this->call(SalesStageSeeder::class);
+        $this->call(DistributionTypeSeeder::class);
 
         // \App\Models\User::factory(10)->create();
 

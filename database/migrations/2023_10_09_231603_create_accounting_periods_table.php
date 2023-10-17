@@ -13,6 +13,8 @@ return new class extends Migration
             $table->string('period_name');
             $table->date('period_start_at');
             $table->date('period_end_at');
+            $table->foreignId('created_by')->nullable(true)->comment('作成者');
+            $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->timestamps();
         });
     }

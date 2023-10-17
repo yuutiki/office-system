@@ -42,8 +42,9 @@
             <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
             <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
         </button>
+
         {{-- 通知ボックス --}}
-        <button type="button" class="relative flex items-end h-10 p-2.5 my-auto text-sm rounded-sm font-medium px-3 mr-2 text-right text-white focus:ring-2 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none" tabindex="-1">
+        <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider" class="relative flex items-end h-10 p-2.5 my-auto text-sm rounded-sm font-medium px-3 mr-2 text-right text-white focus:ring-2 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none" tabindex="-1" type="button">
             {{-- <svg class="w-4 h-4 my-auto text-gray-600 dark:text-white focus:text-green-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 10h3.439a.991.991 0 0 1 .908.6 3.978 3.978 0 0 0 7.306 0 .99.99 0 0 1 .908-.6H17M1 10v6a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-6M1 10l2-9h12l2 9M6 4h6M5 7h8"/>
             </svg> --}}
@@ -56,6 +57,29 @@
                 20
             </div>
         </button>
+        
+        <!-- 通知ボックスDropdown -->
+        <div id="dropdownDivider" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-auto dark:bg-gray-700 dark:divide-gray-600">
+            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDividerButton">
+              <li class="flex justify-between hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                <a href="#" class="block px-4 py-2">未読の営業報告があります</a>
+                <div class="px-4 py-2">3日前</div>
+              </li>
+              <li class="flex justify-between hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                <a href="#" class="block px-4 py-2">未読のサポート履歴があります</a>
+                <div class="px-4 py-2">7日前</div>
+              </li>
+              <li class="flex justify-between hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                <a href="#" class="block px-4 py-2">◯◯さんがメンションしました</a>
+                <div class="px-4 py-2">8日前</div>
+            </li>
+            </ul>
+            <div class="py-1">
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">すべてのメッセージを見る</a>
+            </div>
+        </div>
+
+
         {{-- ユーザ設定 --}}
         <div class=" sm:flex sm:items-center sm:ml-6">
             <x-dropdown align="right" width="48">
@@ -228,6 +252,12 @@
                         </x-nav-link>
                     </li>
                     <li>
+                        <x-nav-link :href="route('link.index')" :active="request()->routeIs('link.index')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                            {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
+                            <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('所属別リンク管理') }}</span>
+                        </x-nav-link>
+                    </li>
+                    <li>
                         <x-nav-link :href="route('masters.index')" :active="request()->routeIs('masters.index')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                             {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
                             <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('マスタ管理') }}</span>
@@ -372,6 +402,11 @@
                         <li>
                             <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('ユーザ管理') }}</span>
+                            </x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link :href="route('link.index')" :active="request()->routeIs('link.index')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('所属別リンク管理') }}</span>
                             </x-nav-link>
                         </li>
                         <li>

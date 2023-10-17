@@ -53,7 +53,6 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-
     //sort
     public $sortable = [
         'name',
@@ -62,14 +61,15 @@ class User extends Authenticatable
         'last_login_at'
     ];
 
-    
-
     public static $rules = [
         'company_id' => 'required',
         'department_id' => 'required',
         'division_id' => 'required',
     ];
 
+    public static $uploadRules = [
+        'csv_input' => 'required|file|mimes:csv,txt',
+    ];
 
     //relation
     public function role()

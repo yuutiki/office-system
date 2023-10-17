@@ -192,6 +192,15 @@ class UserController extends Controller
 
     public function upload(Request $request)
     {
+        
+        $csvValidator = Validator::make($request->all(),User::$uploadRules);
+
+        if ($csvValidator->fails()) {
+            // バリデーションエラーが発生した場合
+            session()->flash('error', 'CSVファイルを添付してください');
+            return redirect()->back()->withErrors($csvValidator)->withInput();
+        }
+
         $csvFile = $request->file('csv_input');
         
         // CSVファイルの一時保存先パス

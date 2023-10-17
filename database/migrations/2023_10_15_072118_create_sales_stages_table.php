@@ -8,12 +8,10 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('links', function (Blueprint $table) {
+        Schema::create('sales_stages', function (Blueprint $table) {
             $table->id();
-            $table->string('display_name')->comment('表示名');
-            $table->unsignedInteger('display_order')->comment('表示順');
-            $table->string('url')->comment('URL');
-            $table->foreignId('department_id')->comment('事業部ID');
+            $table->string('sales_stage_code',2)->unique()->comment('営業段階コード');
+            $table->string('sales_stage_name',20)->comment('営業段階名称');
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->timestamps();
@@ -22,6 +20,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('links');
+        Schema::dropIfExists('sales_stages');
     }
 };

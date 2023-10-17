@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AccountingPeriod;
+use App\Models\DistributionType;
 use App\Models\Project;
+use App\Models\SalesStage;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -14,7 +17,10 @@ class ProjectController extends Controller
 
     public function create()
     {
-        return view('project.create');
+        $salesStages = SalesStage::all();
+        $distributionTypes = DistributionType::all();
+        $accountingPeriods = AccountingPeriod::all();
+        return view('project.create',compact('accountingPeriods','salesStages','distributionTypes'));
     }
 
     public function store(Request $request)

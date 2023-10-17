@@ -226,7 +226,7 @@
                         </td>
                         <td class="px-1 py-2 whitespace-nowrap">
                             <button onclick="location.href='{{route('report.show',$report)}}'"  class="block whitespace-nowrap text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
-                                <div class="flex">
+                                <div class="flex items-center">
                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 14">
                                         <g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                                           <path d="M10 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>

@@ -76,14 +76,14 @@
 
                 <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-2">
                     <div>
-                        <label for="trade_status_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">営業段階</label>
-                        <select id="trade_status_id" name="trade_status_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <label for="sales_stage_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">営業段階</label>
+                        <select id="sales_stage_id" name="sales_stage_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">未選択</option>
-                            {{-- @foreach($tradeStatuses as $tradeStatus)
-                            <option value="{{ $tradeStatus->id }}" @if($tradeStatus->id == old('trade_status_id')) selected @endif>{{ $tradeStatus->name }}</option>
-                            @endforeach --}}
+                            @foreach($salesStages as $salesStage)
+                            <option value="{{ $salesStage->id }}" @if($salesStage->id == old('sales_stage_id')) selected @endif>{{ $salesStage->sales_stage_name }}</option>
+                            @endforeach
                         </select>
-                        @error('trade_status_id')
+                        @error('sales_stage_id')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
@@ -123,13 +123,13 @@
                         <li class="mr-2" role="presentation">
                             <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">基本情報</button>
                         </li>
-                        {{-- <li class="mr-2" role="presentation">
-                            <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">契約情報</button>
-                        </li>
                         <li class="mr-2" role="presentation">
-                            <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">導入システム</button>
+                            <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">受注情報</button>
                         </li>
-                        <li role="presentation">
+                        {{-- <li class="mr-2" role="presentation">
+                            <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">導入システム</button>
+                        </li> --}}
+                        {{-- <li role="presentation">
                             <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts" aria-selected="false">環境情報</button>
                         </li> --}}
                     </ul>
@@ -156,150 +156,201 @@
                             </div> --}}
 
 
+                            <div class="grid gap-2 mb-4 sm:grid-cols-4">
+                                <div class="">
+                                    <label for="distribution_type_id" class="block font-semibold text-gray-900 dark:text-white leading-none mt-4">商流</label>
+                                    <select id="distribution_type_id" name="distribution_type_id" class="block mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option value="">未選択</option>
+                                        @foreach($distributionTypes as $distributionType)
+                                        <option value="{{ $distributionType->id }}" @selected($distributionType->id == old('distribution_type_id'))>{{ $distributionType->distribution_type_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('distribution_type_id')
+                                        <div class="text-red-500">{{ $message }}</div>
+                                    @enderror
+                                </div>
 
-                            <div class="w-full flex flex-col">
-                                <label for="distribution" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">商流</label>
-                                <input type="text" name="distribution" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="distribution" value="{{old('distribution')}}" placeholder="">
-                            </div>
+                                <div class="w-full flex flex-col">
+                                    <label for="distribution" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">請求先法人</label>
+                                    <input type="text" name="distribution" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 mb-8" id="distribution" value="{{old('distribution')}}" placeholder="">
+                                </div>
 
-                            <div class="w-full flex flex-col">
-                                <label for="distribution" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">請求先法人</label>
-                                <input type="text" name="distribution" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 mb-8" id="distribution" value="{{old('distribution')}}" placeholder="">
+                                <div class="w-full flex flex-col">
+                                    <label for="start_date" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">計上開始月</label>
+                                    <input type="month" min="1900-01" max="2100-12" name="start_date" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" required>
+                                </div>
+                                <div class="w-full flex flex-col">
+                                    <label for="end_date" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">計上終了月</label>
+                                    <input type="month" min="1900-01" max="2100-12"  name="end_date" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" required>
+                                </div>
+                                <div class="w-full flex flex-col">
+                                    <label for="total_revenue" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">案件全体金額（税抜）</label>
+                                    <input type="number" name="total_revenue" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="total_revenue" value="" placeholder="">
+                                </div>
                             </div>
 
 
 
                             <div class="grid gap-2 mb-4 sm:grid-cols-4">
                                 <div class="">
-                                    <label for="trade_status_id" class="block font-semibold text-gray-900 dark:text-white leading-none mt-4">計上期</label>
-                                    <select id="trade_status_id" name="trade_status_id" class="block mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <label for="accounting_period_1" class="block font-semibold text-gray-900 dark:text-white leading-none mt-4">計上期</label>
+                                    <select id="accounting_period_1" name="accounting_period_1" class="block mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option value="">未選択</option>
-                                        {{-- @foreach($tradeStatuses as $tradeStatus)
-                                        <option value="{{ $tradeStatus->id }}" @if($tradeStatus->id == old('trade_status_id')) selected @endif>{{ $tradeStatus->name }}</option>
-                                        @endforeach --}}
+                                        @foreach($accountingPeriods as $accountingPeriod)
+                                        <option value="{{ $accountingPeriod->id }}" @selected($accountingPeriod->id == old('accounting_period_1'))>{{ $accountingPeriod->period_name }}</option>
+                                        @endforeach
                                     </select>
-                                    @error('trade_status_id')
+                                    @error('accounting_period_1')
                                         <div class="text-red-500">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="w-full flex flex-col">
+                                {{-- <div class="w-full flex flex-col">
                                     <label for="distribution" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">当期案件金額（税抜）</label>
                                     <input type="number" name="distribution" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="distribution" value="" placeholder="">
-                                </div>
-                                <div class="w-full flex flex-col">
+                                </div> --}}
+                                {{-- <div class="w-full flex flex-col">
                                     <label for="distribution" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">当期消費税額</label>
                                     <input type="number" name="distribution" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="distribution" value="" placeholder="">
                                 </div>
                                 <div class="w-full flex flex-col">
                                     <label for="distribution" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">当期案件金額（税込）</label>
                                     <input type="number" name="distribution" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="distribution" value="" placeholder="">
-                                </div>
+                                </div> --}}
                             </div>
 
                             <div class="grid gap-2 mb-1 sm:grid-cols-6 p-4 border rounded-md">
                                 <div class="w-full flex flex-col">
-                                    <label for="month" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">11月</label>
-                                    <input type="number" name="month" class="w-auto p-0.5  placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="month" value="" placeholder="">
+                                    <label for="revenue_distribution_set1[0]" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">11月</label>
+                                    <input type="number" name="revenue_distribution_set1[0]" class="w-auto py-0.5  placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="revenue_distribution_set1[0]" value="" placeholder="">
                                 </div>
                                 <div class="w-full flex flex-col">
-                                    <label for="month" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">12月</label>
-                                    <input type="number" name="month" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="month" value="" placeholder="">
+                                    <label for="revenue_distribution_set1[1]" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">12月</label>
+                                    <input type="number" name="revenue_distribution_set1[1]" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="revenue_distribution_set1[1]" value="" placeholder="">
                                 </div>
                                 <div class="w-full flex flex-col">
-                                    <label for="month" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">1月</label>
-                                    <input type="number" name="month" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="month" value="" placeholder="">
+                                    <label for="revenue_distribution_set1[2]" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">1月</label>
+                                    <input type="number" name="revenue_distribution_set1[2]" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="revenue_distribution_set1[2]" value="" placeholder="">
                                 </div>
                                 <div class="w-full flex flex-col">
-                                    <label for="month" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">2月</label>
-                                    <input type="number" name="month" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="month" value="" placeholder="">
+                                    <label for="revenue_distribution_set1[3]" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">2月</label>
+                                    <input type="number" name="revenue_distribution_set1[3]" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="revenue_distribution_set1[3]" value="" placeholder="">
                                 </div>
                                 <div class="w-full flex flex-col">
-                                    <label for="month" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">3月</label>
-                                    <input type="number" name="month" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="month" value="" placeholder="">
+                                    <label for="revenue_distribution_set1[4]" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">3月</label>
+                                    <input type="number" name="revenue_distribution_set1[4]" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="revenue_distribution_set1[4]" value="" placeholder="">
                                 </div>
                                 <div class="w-full flex flex-col">
-                                    <label for="month" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">4月</label>
-                                    <input type="number" name="month" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="month" value="" placeholder="">
+                                    <label for="revenue_distribution_set1[5]" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">4月</label>
+                                    <input type="number" name="revenue_distribution_set1[5]" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="revenue_distribution_set1[5]" value="" placeholder="">
                                 </div>
                                 <div class="w-full flex flex-col">
-                                    <label for="month" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">5月</label>
-                                    <input type="number" name="month" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="month" value="" placeholder="">
+                                    <label for="revenue_distribution_set1[6]" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">5月</label>
+                                    <input type="number" name="revenue_distribution_set1[6]" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="revenue_distribution_set1[6]" value="" placeholder="">
                                 </div>
                                 <div class="w-full flex flex-col">
-                                    <label for="month" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">6月</label>
-                                    <input type="number" name="month" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="month" value="" placeholder="">
+                                    <label for="revenue_distribution_set1[7]" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">6月</label>
+                                    <input type="number" name="revenue_distribution_set1[7]" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="revenue_distribution_set1[7]" value="" placeholder="">
                                 </div>
                                 <div class="w-full flex flex-col">
-                                    <label for="month" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">7月</label>
-                                    <input type="number" name="month" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="month" value="" placeholder="">
+                                    <label for="revenue_distribution_set1[8]" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">7月</label>
+                                    <input type="number" name="revenue_distribution_set1[8]" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="revenue_distribution_set1[8]" value="" placeholder="">
                                 </div>
                                 <div class="w-full flex flex-col">
-                                    <label for="month" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">8月</label>
-                                    <input type="number" name="month" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="month" value="" placeholder="">
+                                    <label for="revenue_distribution_set1[9]" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">8月</label>
+                                    <input type="number" name="revenue_distribution_set1[9]" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="revenue_distribution_set1[9]" value="" placeholder="">
                                 </div>
                                 <div class="w-full flex flex-col">
-                                    <label for="month" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">9月</label>
-                                    <input type="number" name="month" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="month" value="" placeholder="">
+                                    <label for="revenue_distribution_set1[10]" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">9月</label>
+                                    <input type="number" name="revenue_distribution_set1[10]" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="revenue_distribution_set1[10]" value="" placeholder="">
                                 </div>
                                 <div class="w-full flex flex-col">
-                                    <label for="month" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">10月</label>
-                                    <input type="number" name="month" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="month" value="" placeholder="">
+                                    <label for="revenue_distribution_set1[11]" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">10月</label>
+                                    <input type="number" name="revenue_distribution_set1[11]" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="revenue_distribution_set1[11]" value="" placeholder="">
                                 </div>
+                            </div>
+
+
+                            <div class="grid gap-2 mb-4 sm:grid-cols-4">
+                                <div class="">
+                                    <label for="accounting_period_2" class="block font-semibold text-gray-900 dark:text-white leading-none mt-4">計上期</label>
+                                    <select id="accounting_period_2" name="accounting_period_2" class="block mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option value="">未選択</option>
+                                        @foreach($accountingPeriods as $accountingPeriod)
+                                        <option value="{{ $accountingPeriod->id }}" @selected($accountingPeriod->id == old('accounting_period_2'))>{{ $accountingPeriod->period_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('accounting_period_2')
+                                        <div class="text-red-500">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                {{-- <div class="w-full flex flex-col">
+                                    <label for="total_revenue" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">当期案件金額（税抜）</label>
+                                    <input type="number" name="total_revenue" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="total_revenue" value="" placeholder="">
+                                </div> --}}
+                                {{-- <div class="w-full flex flex-col">
+                                    <label for="distribution" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">当期消費税額</label>
+                                    <input type="number" name="distribution" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="distribution" value="" placeholder="">
+                                </div>
+                                <div class="w-full flex flex-col">
+                                    <label for="distribution" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">当期案件金額（税込）</label>
+                                    <input type="number" name="distribution" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="distribution" value="" placeholder="">
+                                </div> --}}
                             </div>
 
                             <div class="grid gap-2 mb-1 sm:grid-cols-6 p-4 border rounded-md">
                                 <div class="w-full flex flex-col">
-                                    <label for="month" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">11月</label>
-                                    <input type="number" name="month" class="w-auto p-0.5  placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="month" value="" placeholder="">
+                                    <label for="revenue_distribution_set2[0]" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">11月</label>
+                                    <input type="number" name="revenue_distribution_set2[0]" class="w-auto py-0.5  placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="revenue_distribution_set2[0]" value="" placeholder="">
                                 </div>
                                 <div class="w-full flex flex-col">
-                                    <label for="month" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">12月</label>
-                                    <input type="number" name="month" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="month" value="" placeholder="">
+                                    <label for="revenue_distribution_set2[1]" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">12月</label>
+                                    <input type="number" name="revenue_distribution_set2[1]" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="revenue_distribution_set2[1]" value="" placeholder="">
                                 </div>
                                 <div class="w-full flex flex-col">
-                                    <label for="month" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">1月</label>
-                                    <input type="number" name="month" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="month" value="" placeholder="">
+                                    <label for="revenue_distribution_set2[2]" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">1月</label>
+                                    <input type="number" name="revenue_distribution_set2[2]" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="revenue_distribution_set2[2]" value="" placeholder="">
                                 </div>
                                 <div class="w-full flex flex-col">
-                                    <label for="month" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">2月</label>
-                                    <input type="number" name="month" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="month" value="" placeholder="">
+                                    <label for="revenue_distribution_set2[3]" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">2月</label>
+                                    <input type="number" name="revenue_distribution_set2[3]" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="revenue_distribution_set2[3]" value="" placeholder="">
                                 </div>
                                 <div class="w-full flex flex-col">
-                                    <label for="month" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">3月</label>
-                                    <input type="number" name="month" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="month" value="" placeholder="">
+                                    <label for="revenue_distribution_set2[4]" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">3月</label>
+                                    <input type="number" name="revenue_distribution_set2[4]" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="revenue_distribution_set2[4]" value="" placeholder="">
                                 </div>
                                 <div class="w-full flex flex-col">
-                                    <label for="month" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">4月</label>
-                                    <input type="number" name="month" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="month" value="" placeholder="">
+                                    <label for="revenue_distribution_set2[5]" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">4月</label>
+                                    <input type="number" name="revenue_distribution_set2[5]" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="revenue_distribution_set2[5]" value="" placeholder="">
                                 </div>
                                 <div class="w-full flex flex-col">
-                                    <label for="month" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">5月</label>
-                                    <input type="number" name="month" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="month" value="" placeholder="">
+                                    <label for="revenue_distribution_set2[6]" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">5月</label>
+                                    <input type="number" name="revenue_distribution_set2[6]" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="revenue_distribution_set2[6]" value="" placeholder="">
                                 </div>
                                 <div class="w-full flex flex-col">
-                                    <label for="month" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">6月</label>
-                                    <input type="number" name="month" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="month" value="" placeholder="">
+                                    <label for="revenue_distribution_set2[7]" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">6月</label>
+                                    <input type="number" name="revenue_distribution_set2[7]" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="revenue_distribution_set2[7]" value="" placeholder="">
                                 </div>
                                 <div class="w-full flex flex-col">
-                                    <label for="month" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">7月</label>
-                                    <input type="number" name="month" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="month" value="" placeholder="">
+                                    <label for="revenue_distribution_set2[8]" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">7月</label>
+                                    <input type="number" name="revenue_distribution_set2[8]" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="revenue_distribution_set2[8]" value="" placeholder="">
                                 </div>
                                 <div class="w-full flex flex-col">
-                                    <label for="month" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">8月</label>
-                                    <input type="number" name="month" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="month" value="" placeholder="">
+                                    <label for="revenue_distribution_set2[9]" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">8月</label>
+                                    <input type="number" name="revenue_distribution_set2[9]" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="revenue_distribution_set2[9]" value="" placeholder="">
                                 </div>
                                 <div class="w-full flex flex-col">
-                                    <label for="month" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">9月</label>
-                                    <input type="number" name="month" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="month" value="" placeholder="">
+                                    <label for="revenue_distribution_set2[10]" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">9月</label>
+                                    <input type="number" name="revenue_distribution_set2[10]" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="revenue_distribution_set2[10]" value="" placeholder="">
                                 </div>
                                 <div class="w-full flex flex-col">
-                                    <label for="month" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">10月</label>
-                                    <input type="number" name="month" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="month" value="" placeholder="">
+                                    <label for="revenue_distribution_set2[11]" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">10月</label>
+                                    <input type="number" name="revenue_distribution_set2[11]" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="revenue_distribution_set2[11]" value="" placeholder="">
                                 </div>
                             </div>
 
 
-                            <span class="block mt-8 text-white font-semibold">プロジェクト全体損益</span>
+
+                            {{-- <span class="block mt-8 text-white font-semibold">プロジェクト全体損益</span>
                             <div class="grid gap-16 sm:grid-cols-2 px-4 pt-1 pb-4 border rounded-md">
                                 <div>
                                     <div class="w-full flex flex-col">
@@ -345,7 +396,7 @@
                                         <input type="number" name="students" class="w-auto py-0.5 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="students" value="{{old('students')}}" readonly>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
 
 
@@ -354,39 +405,7 @@
                                 <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">プロジェクト備考</label>
                                 <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="memo" value="{{old('memo')}}" cols="30" rows="5"></textarea>
                             </div>
-                            <ul class=" mt-4 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                    <div class="flex items-center pl-3">
-                                        <input id="is_enduser" name="is_enduser" type="checkbox" value="1" {{ old('is_enduser') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        <label for="is_enduser" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">契約書取得</label>
-                                    </div>
-                                    @error('is_enduser')
-                                     <div class="text-red-500">{{ $message }}</div>
-                                    @enderror
-                                </li>
-                                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                    <div class="flex items-center pl-3">
-                                        <input id="is_dealer" name="is_dealer" type="checkbox" value="1" {{ old('is_dealer') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        <label for="is_dealer" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">注文書取得</label>
-                                    </div>
-                                    @error('is_dealer')
-                                     <div class="text-red-500">{{ $message }}</div>
-                                    @enderror
-                                </li>
-                                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                    <div class="flex items-center pl-3">
-                                        <input id="is_supplier" name="is_supplier" type="checkbox" value="1" {{ old('is_supplier') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        <label for="is_supplier" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">検収書取得</label>
-                                    </div>
-                                    @error('is_supplier')
-                                     <div class="text-red-500">{{ $message }}</div>
-                                    @enderror
-                                </li>
-                            </ul>
-                            <div class="w-full flex flex-col">
-                                <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">証票備考</label>
-                                <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="memo" value="{{old('memo')}}" cols="30" rows="2"></textarea>
-                            </div>
+
 
                             <div class="grid gap-4 my-4 sm:grid-cols-4">
                                 <div>
@@ -438,14 +457,45 @@
                                     @enderror
                                 </div>
                             </div>
-
                             <x-primary-button class="mt-4">
                                 新規登録する
                             </x-primary-button>
             </form>
                     </div>
                     <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-                        {{-- content --}}
+                        <ul class=" mt-4 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <div class="flex items-center pl-3">
+                                    <input id="is_enduser" name="is_enduser" type="checkbox" value="1" {{ old('is_enduser') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                    <label for="is_enduser" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">契約書取得</label>
+                                </div>
+                                @error('is_enduser')
+                                 <div class="text-red-500">{{ $message }}</div>
+                                @enderror
+                            </li>
+                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <div class="flex items-center pl-3">
+                                    <input id="is_dealer" name="is_dealer" type="checkbox" value="1" {{ old('is_dealer') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                    <label for="is_dealer" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">注文書取得</label>
+                                </div>
+                                @error('is_dealer')
+                                 <div class="text-red-500">{{ $message }}</div>
+                                @enderror
+                            </li>
+                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <div class="flex items-center pl-3">
+                                    <input id="is_supplier" name="is_supplier" type="checkbox" value="1" {{ old('is_supplier') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                    <label for="is_supplier" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">検収書取得</label>
+                                </div>
+                                @error('is_supplier')
+                                 <div class="text-red-500">{{ $message }}</div>
+                                @enderror
+                            </li>
+                        </ul>
+                        <div class="w-full flex flex-col">
+                            <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">証票備考</label>
+                            <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="memo" value="{{old('memo')}}" cols="30" rows="2"></textarea>
+                        </div>
                     </div>
                     <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="settings" role="tabpanel" aria-labelledby="settings-tab">
                         {{-- content --}}

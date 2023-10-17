@@ -4,9 +4,9 @@
             {{ __('Belonging department') }}
         </h2>
 
-        {{-- <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('Ensure your account is using a long, random password to stay secure.') }}
-        </p> --}}
+        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+            {{ __("Please contact your administrator if you need to change any of the information below.") }}
+        </p>
     </header>
 
     <form method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">
@@ -14,9 +14,19 @@
         @method('put')
 
         <div>
-            <x-input-label for="department" :value="__('所属部署')" />
-            <x-text-input id="department" name="department" type="text" class="mt-1 block w-full" />
+            <x-input-label for="company" :value="__('所属1')" />
+            <x-text-input id="company" name="company" type="text" class="mt-1 block w-full" :value="old('company', $user->company->company_name)" disabled/>
+            {{-- <x-input-error :messages="$errors->updatePassword->get('company')" class="mt-2" /> --}}
+        </div>
+        <div>
+            <x-input-label for="department" :value="__('所属2')" />
+            <x-text-input id="department" name="department" type="text" class="mt-1 block w-full" :value="old('department', $user->department->department_name)" disabled/>
             {{-- <x-input-error :messages="$errors->updatePassword->get('department')" class="mt-2" /> --}}
+        </div>
+        <div>
+            <x-input-label for="division" :value="__('所属3')" />
+            <x-text-input id="division" name="division" type="text" class="mt-1 block w-full" :value="old('division', $user->division->division_name)" disabled/>
+            {{-- <x-input-error :messages="$errors->updatePassword->get('division')" class="mt-2" /> --}}
         </div>
 
         {{-- <div>
