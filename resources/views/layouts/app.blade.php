@@ -12,7 +12,22 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         {{-- favicon --}}
         <link rel="shortcut icon" href="{{ asset('/favicon.ico') }}">
-
+        <link rel="manifest" href="/manifest.json">
+        <!-- Add this to your app.blade.php layout -->
+        <link rel="manifest" href="/manifest.json">
+        {{-- PWA化 --}}
+        <script>
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                    navigator.serviceWorker.register('/assets/js/service-worker.js')
+                        .then(function(registration) {
+                            console.log('Service Worker registered with scope:', registration.scope);
+                        }).catch(function(error) {
+                            console.log('Service Worker registration failed:', error);
+                        });
+                });
+            }
+        </script>
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

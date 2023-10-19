@@ -91,7 +91,7 @@ class KeepfileController extends Controller
         $keepfile->is_finished=$request->is_finished;
         $keepfile->user_id=auth()->user()->id;
         $keepfile->save();
-        return redirect()->route('keepfile.index')->with('success','登録しました');
+        return redirect()->route('keepfile.index')->with('success','正常に登録しました');
     }
 
     public function show($id)
@@ -110,7 +110,7 @@ class KeepfileController extends Controller
     {
         $keepfile=keepfile::find($id);
 
-        $inputs=$request->validate([
+        $request->validate([
             'project_num'=>'required|max:13',
             'clientname'=>'required|max:255',
             'purpose'=>'required|max:255',
@@ -119,22 +119,22 @@ class KeepfileController extends Controller
             'memo'=>'max:255'
         ]);
 
-        $keepfile->project_num=$inputs['project_num'];
-        $keepfile->clientname=$inputs['clientname'];
-        $keepfile->purpose=$inputs['purpose'];
-        $keepfile->keep_at=$inputs['keep_at'];
-        $keepfile->return_at=$inputs['return_at'];
-        $keepfile->memo=$inputs['memo'];
-        $keepfile->is_finished=$request->is_finished;
-        $keepfile->user_id=auth()->user()->id;
+        $keepfile->project_num = $request->project_num;
+        $keepfile->clientname = $request->clientname;
+        $keepfile->purpose = $request->purpose;
+        $keepfile->keep_at = $request->keep_at;
+        $keepfile->return_at = $request->return_at;
+        $keepfile->memo = $request->memo;
+        $keepfile->is_finished = $request->is_finished;
+        $keepfile->user_id = auth()->user()->id;
         $keepfile->save();
-        return redirect()->route('keepfile.index',$id)->with('message','更新しました');
+        return redirect()->route('keepfile.index',$id)->with('success','正常に更新しました');
     }
 
     public function destroy(string $id)
     {
         $keepfile = keepfile::find($id);
         $keepfile->delete();
-        return redirect()->route('keepfile.index')->with('message', '削除しました');
+        return redirect()->route('keepfile.index')->with('success', '正常に削除しました');
     }
 }
