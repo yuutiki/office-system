@@ -5,11 +5,6 @@
                 預託一覧
             </h2>
             <x-message :message="session('message')" />
-            <div class=" flex justify-end ">
-                {{-- <x-general-button onclick="location.href='/keepfile/create'">
-                    新規作成
-                </x-general-button> --}}
-            </div>
         </div>
     </x-slot>
 
@@ -43,11 +38,11 @@
                         {{-- テキスト検索 end --}}
                         {{-- セレクト検索 start --}}
                         <div class="flex-nowrap">
-                            <select  name="is_finished" class="mt-2 w-auto ml-2 py-1.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            {{-- <select  name="is_finished" class="mt-2 w-auto ml-2 py-1.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option value=""{{ request('is_finished') == '' ? 'selected':'' }}>ステータス全て</option>
                                 <option value="0"{{ request('is_finished') == '0' ? 'selected':'' }}>未返却</option>
                                 <option value="1"{{ request('is_finished') == '1' ? 'selected':'' }}>返却済</option>
-                            </select>
+                            </select> --}}
                             
                             <select  name="user_id" class="mt-2 w-auto ml-2 py-1.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option value=""{{ request('user_id') == '' ? 'selected':'' }}>担当者全て</option>
@@ -69,19 +64,17 @@
                             <button type="submit" form="keepfileform" class="px-6 py-1.5 font-medium text-sm rounded-lg text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">検索</button>
                             <button type="button" value="reset" form="keepfileform" id="clear" class="ml-2 px-4 py-1.5 font-medium text-sm rounded-lg text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-red-700 hover:bg-red-800 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">リセット</button>
                         </div>
+                        <!-- チェックボックスで未返却のみ表示するかの選択 -->
+                        <div class="form-check">
+                            <input type="checkbox" name="unreturned_only" value="1" {{ request()->input('unreturned_only') === '1' ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <label for="unreturned_only" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">返却済みも含む</label>
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
   
-
-
-
-
-
 {{-- JQUERY --}}
-{{-- JQUERY --}}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
 $(function(){
     $('#clear').click(function(){
@@ -101,7 +94,6 @@ $(function(){
 });
 </script>
 {{-- JQUERY --}}
-{{-- JQUERY --}}
 
     <!-- Dropdown bottoun -->
     <div class="w-5/6 text-right mt-2 mx-auto ">
@@ -111,25 +103,23 @@ $(function(){
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
         </button>
-        {{-- <div class="float-left font-medium dark:text-white">
+        <div class="float-left font-medium dark:text-white">
             {{ $count }}件
-        </div> --}}
+        </div>
     </div>
     <!-- Dropdown menu -->
     <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
         <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
             <li>
-                <!-- Modal toggle start-->
-                <button data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="text-left pl-8 py-2 w-full font-medium text-sm text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800" type="button">
+                <li>
+                    <a href="/keepfile/create" class="block text-left pl-8 py-2 font-medium text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                        手動登録
+                    </a>
+                </li>
+                <!-- モーダルボタン-->
+                {{-- <button data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="text-left pl-8 py-2 w-full font-medium text-sm text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800" type="button">
                     CSV一括登録
-                </button>
-                <!-- Modal toggle end-->
-            </li>
-
-            <li>
-                <a href="/keepfile/create" class="block text-left pl-8 py-2 font-medium text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                    手動登録
-                </a>
+                </button> --}}
             </li>
         </ul>
     </div>
@@ -167,6 +157,11 @@ $(function(){
             {{-- テーブルヘッダ start --}}
             <thead class="text-sm text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
                 <tr>
+                    <th scope="col" class="pl-4 py-3 w-auto">
+                        <div class="flex items-center whitespace-nowrap">
+                            №
+                        </div>
+                    </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <span class="sr-only">編集</span>
                     </th>
@@ -218,7 +213,9 @@ $(function(){
                             {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
                         </div>
                     </th>
-
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                        <span class="sr-only">削除</span>
+                    </th>
                 </tr>
             </thead>
             {{-- テーブルヘッダエンド --}}
@@ -227,55 +224,64 @@ $(function(){
                 <tbody>
                     @foreach ($keepfiles as $keepfile)
                     <tr class="bg-white border-b  dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
-                        <td class="px-4 py-2 whitespace-nowrap">
-                            <button onclick="location.href='{{route('keepfile.edit',$keepfile)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                                編集
+                        <td class="pl-4 py-2 whitespace-nowrap">
+                            {{ $loop->iteration }}
+                        </td>
+                        <td class="pl-4 py-2 whitespace-nowrap">
+                            <button onclick="location.href='{{route('keepfile.edit',$keepfile)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                                <div class="flex">
+                                    <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
+                                    </svg>
+                                    <span class="text-ms">編集</span>
+                                </div>
                             </button>
                         </td>
-                        <th scope="row" class="pl-4 py-3 whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                        <th scope="row" class="pl-4 py-2 whitespace-nowrap font-medium text-gray-900 dark:text-white">
                             {{$keepfile->project_num}}
                         </th>
-                        <td class="px-1 py-3 whitespace-nowrap">
+                        <td class="px-1 py-2 whitespace-nowrap">
                             {{$keepfile->clientname}}
                         </td>
-                        <td class="px-1 py-3 whitespace-nowrap">
+                        <td class="px-1 py-2 whitespace-nowrap">
                             {{$keepfile->purpose}}
                         </td>
-                        <td class="px-1 py-3 whitespace-nowrap">
+                        <td class="px-1 py-2 whitespace-nowrap">
                             {{$keepfile->keep_at}}
                         </td>
-                        <td class="px-1 py-3 whitespace-nowrap">
+                        <td class="px-1 py-2 whitespace-nowrap">
                             {{$keepfile->return_at}}
                         </td>
-                        <td class="px-1 py-3 whitespace-nowrap">
+                        <td class="px-1 py-2 whitespace-nowrap">
                             {{$keepfile->user->name}}
                         </td>
                         @if($keepfile->is_finished == "0")
-                            <td class="px-1 py-3 whitespace-nowrap text-fuchsia-300">
+                            <td class="px-1 py-2 whitespace-nowrap text-fuchsia-300">
                                 未返却
                             </td>
                         @else
-                            <td class="px-1 py-3 whitespace-nowrap">
+                            <td class="px-1 py-2 whitespace-nowrap">
                                 返却済
                             </td>
                         @endif
 
                         @if($keepfile->remaining_days < 0)
-                        <td class="px-1 py-3 whitespace-nowrap text-fuchsia-300">
+                        <td class="px-1 py-2 whitespace-nowrap text-fuchsia-300">
                             期限超過
                         </td>
                         @else
-                        <td class="px-1 py-3 whitespace-nowrap">
+                        <td class="px-1 py-2 whitespace-nowrap">
                             {{ $keepfile->remaining_days }}日
                         </td>
                         @endif
-                        {{-- <td class="px-2 py-3 whitespace-nowrap">
-                            {{$keepfile->created_at->diffForHumans()}}
-                        </td> --}}
-
-                        <td class="py-3">
-                            <button data-modal-target="deleteModal-{{$keepfile->id}}" data-modal-toggle="deleteModal-{{$keepfile->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
-                                削除
+                        <td class="px-1 py-2">
+                            <button data-modal-target="deleteModal-{{$keepfile->id}}" data-modal-toggle="deleteModal-{{$keepfile->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
+                                <div class="flex">
+                                    <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z"/>
+                                    </svg>
+                                    <span class="text-ms ">削除</span>
+                                </div>
                             </button>
                         </td>
                     </tr>

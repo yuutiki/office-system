@@ -14,61 +14,51 @@ class KeepfileController extends Controller
 {
     public function index(Request $request)
     {
-        //sortableとpaginateを組み合わせる際の記述＆ログインユーザが登録したものしか表示されない
         $per_page = 15;
-        $keepfiles = Keepfile::where('user_id', Auth::user()->id)->sortable()->paginate($per_page); 
         $user = auth()->user();
         $users = User::all();
-        // $keepfiles = keepfile::orderBy('returndate','asc')->get();　//sortableを使わずに無理やり並べ替える際の記述
-
-        //検索フォームの値を取得する
+        
+        // フィルタリングクエリを作成
+        $query = Keepfile::where('user_id', $user->id)->sortable()->with('user');
+    
+        // 検索フォームの値を取得する
         $projectNum = $request->input('project_num');
         $clientName = $request->input('clientname');
-        $isFinished = $request->input('is_finished');
         $userId = $request->input('user_id');
         $dayFrom = $request->input('day_from');
         $dayTo = $request->input('day_to');
-
-        //検索Query
-        $query = keepfile::query();
-
-        if(!empty($projectNum))
-        {
-            $query->where('project_num','like',"%{$projectNum}");
+    
+        if (!empty($projectNum)) {
+            $query->where('project_num', 'like', "%{$projectNum}");
         }
-
-        if(!empty($clientName))
-        {
+    
+        if (!empty($clientName)) {
             $spaceConversion = mb_convert_kana($clientName, 's');
             $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
-
-            foreach($wordArraySearched as $value) 
-            {
+    
+            foreach ($wordArraySearched as $value) {
                 $query->where('clientname', 'like', '%'.$value.'%');
             }
         }
-
-        if ($isFinished === '0') {
-            $query->where('is_finished', '=', 0);
-        } elseif ($isFinished === '1') {
-            $query->where('is_finished', '=', 1);
+    
+        if (!empty($userId)) {
+            $query->where('user_id', 'like', "%{$userId}%");
         }
-        
-
-        if(!empty($userId))
-        {
-            $query->where('user_id','like',"%{$userId}%");
-        }
-
-        if(!empty($dayFrom && $dayTo))
-        {
+    
+        if (!empty($dayFrom) && !empty($dayTo)) {
             $query->whereBetween('return_at', [$dayFrom, $dayTo]);
         }
-
-        $count = $query->count(); // 検索結果の総数を取得
-        $keepfiles = $query->sortable()->paginate($per_page);
-
-        return view('keepfile.index',compact('keepfiles','user','users','count','projectNum','clientName','isFinished','userId','dayFrom','dayTo'));
+    
+        // 未返却のみのフィルタリング
+        if (!$request->has('unreturned_only')) {
+            $query->where('is_finished', 0);
+        }
+    
+        // 検索結果を取得
+        $keepfiles = $query->orderby('return_at', 'asc')->paginate($per_page);
+        $count = $keepfiles->total();
+    
+        return view('keepfile.index', compact('keepfiles', 'user', 'users', 'count', 'projectNum', 'clientName', 'userId', 'dayFrom', 'dayTo'));
     }
 
 
@@ -101,7 +91,7 @@ class KeepfileController extends Controller
         $keepfile->is_finished=$request->is_finished;
         $keepfile->user_id=auth()->user()->id;
         $keepfile->save();
-        return redirect()->route('keepfile.create')->with('message','登録しました');
+        return redirect()->route('keepfile.index')->with('success','登録しました');
     }
 
     public function show($id)

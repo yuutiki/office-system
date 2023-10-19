@@ -30,11 +30,11 @@
             <div class="grid gap-4 mb-4 sm:grid-cols-2">
                 <div class="">
                     <label for="client_num" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客番号</label>
-                    <input type="text" name="client_num" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="client_num" value="{{old('client_num')}}" placeholder="法人検索してください" readonly>
+                    <input type="text" name="client_num" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="client_num" value="{{old('client_num')}}" placeholder="顧客検索してください" readonly>
                 </div>     
                 <div class="">
                     <label for="client_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客名称</label>
-                    <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_name" value="{{old('client_name')}}" placeholder="例）烏丸大学">
+                    <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="client_name" value="{{old('client_name')}}">
                 </div>
             </div>
 
@@ -215,14 +215,23 @@
                 <!-- Modal body -->
                 <form action="{{ route('clientcorporation.search') }}" method="GET">
                     <!-- 検索条件入力フォーム -->
-                    <div class="flex flex-wrap justify-start mx-5">
-                        <div class="w-full flex flex-col">
+                    <div class="grid gap-2 mb-4 sm:grid-cols-3">
+                        <div class="w-full flex flex-col mx-2">
                             <label for="clientName" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">顧客名称</label>
-                            <input type="text" name="clientName" id="clientName" class="w-auto mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded-md">
+                            <input type="text" name="clientName" id="clientName" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded-md">
                         </div>
-                        <div class="w-full flex flex-col">
+                        <div class="w-full flex flex-col mx-2">
                             <label for="clientNumber" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">顧客番号</label>
-                            <input type="text" name="clientNumber" id="clientNumber" class="w-auto mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded-md">
+                            <input type="text" name="clientNumber" id="clientNumber" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded-md">
+                        </div>
+                        <div class="w-full flex flex-col mx-2">
+                            <label for="departmentCode" class="font-semibold  dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
+                            <select id="departmentCode" name="departmentCode" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-md focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected value="">未選択</option>
+                                @foreach($departments as $department)
+                                <option value="{{ $department->prefix_code }}">{{ $department->department_name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </form>

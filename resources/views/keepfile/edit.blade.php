@@ -37,28 +37,30 @@
         <div class="md:flex items-center mt-8">
             <div class="w-full flex flex-col">
                 <label for="project_num" class="font-semibold text-gray-100 leading-none mt-4">プロジェクト№</label>
-                <input type="text" name="project_num" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="project_num" value="{{old('project_num',$keepfile->project_num)}}" placeholder="例）9999000100">
+                <input type="text" name="project_num" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="project_num" value="{{old('project_num',$keepfile->project_num)}}" placeholder="例）9999000100"  required>
             </div>
         </div>
 
         <div class="w-full flex flex-col">
             <label for="clientname" class="font-semibold text-gray-100 leading-none mt-4">客先名</label>
-            <input type="text" name="clientname" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="clientname" value="{{old('clientname',$keepfile->clientname)}}" placeholder="例）学校法人  〇〇大学">
+            <input type="text" name="clientname" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="clientname" value="{{old('clientname',$keepfile->clientname)}}" placeholder="例）学校法人  〇〇大学" required>
         </div>
 
         <div class="w-full flex flex-col">
             <label for="purpose" class="font-semibold text-gray-100 leading-none mt-4">用途</label>
-            <input type="text" name="purpose" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="purpose" value="{{old('purpose',$keepfile->purpose)}}" placeholder="例）バージョンアップ">
+            <input type="text" name="purpose" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="purpose" value="{{old('purpose',$keepfile->purpose)}}" placeholder="例）バージョンアップ" required>
         </div>
 
-        <div class="w-full flex flex-col">
-            <label for="keep_at" class="font-semibold text-gray-100 leading-none mt-4">預託日</label>
-            <input type="date" min="2000-01-01" max="2100-12-31" name="keep_at" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="keep_at" value="{{old('keep_at',$keepfile->keep_at)}}">
-        </div>
+        <div class="grid gap-4 sm:grid-cols-2">
+            <div class="w-full flex flex-col">
+                <label for="keep_at" class="font-semibold text-gray-100 leading-none mt-4">預託日</label>
+                <input type="date" min="2000-01-01" max="2100-12-31" name="keep_at" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="keep_at" value="{{old('keep_at',$keepfile->keep_at)}}" required>
+            </div>
 
-        <div class="w-full flex flex-col">
-            <label for="return_at" class="font-semibold text-gray-100 leading-none mt-4">返却日</label>
-            <input type="date" min="2000-01-01" max="2100-12-31" name="return_at" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="return_at" value="{{old('return_at',$keepfile->return_at)}}">
+            <div class="w-full flex flex-col">
+                <label for="return_at" class="font-semibold text-gray-100 leading-none mt-4">返却日</label>
+                <input type="date" min="2000-01-01" max="2100-12-31" name="return_at" class="w-auto py-2 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="return_at" value="{{old('return_at',$keepfile->return_at)}}" required>
+            </div>
         </div>
 
         

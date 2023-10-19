@@ -54,25 +54,20 @@
             </svg>
             <span class="sr-only">Notifications</span>
             <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-gray-300 rounded-full -top-1 -right-2 dark:border-gray-900">
-                20
+                {{ count($unreadNotifications) }}
             </div>
         </button>
         
         <!-- 通知ボックスDropdown -->
         <div id="dropdownDivider" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-auto dark:bg-gray-700 dark:divide-gray-600">
             <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDividerButton">
-              <li class="flex justify-between hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                <a href="#" class="block px-4 py-2">未読の営業報告があります</a>
-                <div class="px-4 py-2">3日前</div>
-              </li>
-              <li class="flex justify-between hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                <a href="#" class="block px-4 py-2">未読のサポート履歴があります</a>
-                <div class="px-4 py-2">7日前</div>
-              </li>
-              <li class="flex justify-between hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                <a href="#" class="block px-4 py-2">◯◯さんがメンションしました</a>
-                <div class="px-4 py-2">8日前</div>
-            </li>
+                @foreach ($unreadNotifications  as $notification)
+                <li class="flex justify-between hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                    <a href="{{ $notification->data['notification_data']['action_url'] }}" class="block px-4 py-2">{{ $notification->data['notification_data']['message'] }}</a>
+                    <div class="px-4 py-2">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</div>
+                </li>
+                @endforeach
+
             </ul>
             <div class="py-1">
               <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">すべてのメッセージを見る</a>

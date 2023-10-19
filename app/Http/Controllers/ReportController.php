@@ -6,6 +6,9 @@ use App\Models\Report;
 use App\Models\User;//add
 use App\Models\Client;//add
 use App\Models\Comment;//add
+use App\Models\Department;
+use App\Notifications\AppNotification;
+use App\Services\NotificationService;
 use Illuminate\Pagination\Paginator;//add
 
 use Illuminate\Http\Request;
@@ -13,6 +16,13 @@ use Illuminate\Support\Facades\Validator;
 
 class ReportController extends Controller
 {
+    protected $notificationService;
+
+    public function __construct(NotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
+
     public function index()
     {
         $per_page = 25;
@@ -25,8 +35,9 @@ class ReportController extends Controller
 
     public function create()
     {
+        $departments = Department::all();
         $users = User::all();
-        return view('report.create',compact('users'));
+        return view('report.create',compact('users','departments'));
     }
 
     public function store(Request $request)
@@ -59,9 +70,22 @@ class ReportController extends Controller
         $report->save();
 
 
-        // 選択された報告先ユーザを中間テーブルに登録
-        $selectedRecipientsId = $request->input('selectedRecipientsId');
-        $report->recipients()->attach($selectedRecipientsId);
+        // 通知の内容を設定
+        $notificationData = [
+            'action_url' => route('report.show', ['report' => $report->id]), // 例: 日報を表示するURL
+            'message' => '新しい日報が登録されました。',
+            // 他の通知に関する情報をここで設定
+        ];
+
+        // 日報を登録したユーザーに通知を送信
+        $user = auth()->user(); // ログイン中のユーザーを取得
+
+        // 通知の作成
+        $notification = new AppNotification($report, $notificationData); // $report を通知データとして渡す
+
+        // 通知の送信
+        $this->notificationService->sendNotification($user, $notification);
+  
 
 
         return redirect()->route('report.index')->with('success','正常に登録しました');

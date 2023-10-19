@@ -7,9 +7,9 @@
             サポート履歴一覧
         </h2>
         <div class="flex justify-end">
-            <x-general-button onclick="location.href='{{ session()->get('previous_url') }}'">
+            {{-- <x-general-button onclick="location.href='{{ session()->get('previous_url') }}'">
                 戻る
-            </x-general-button>
+            </x-general-button> --}}
             <x-message :message="session('message')"/>
         </div>
     </x-slot>

@@ -427,7 +427,7 @@
                 resultElement.innerHTML = `
                     <td class="py-2 pl-5 cursor-pointer" onclick="setClient('${result.client_name}', '${result.client_num}', '${result.installation_type_id}', '${result.department_id}', '${result.client_type_id}', '${result.user_id}')">${result.client_name}</td>
                     <td class="py-2 ml-2">${result.client_num}</td>
-                    <td class="py-2 ml-2">${result.department_id}</td>
+                    <td class="py-2 ml-2">${result.department_name}</td>
                 `;
                 searchResultsContainer.appendChild(resultElement);
                 });

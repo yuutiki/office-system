@@ -168,9 +168,9 @@ class ClientController extends Controller
         //     ->get();
         $query = Client::query()
         ->where('client_name', 'LIKE', '%' . $clientName . '%')
-        ->where('client_num', 'LIKE', '%' . $clientNumber . '%')
-        ->where('department_id', 'LIKE', '%' . $clientDepartment . '%');
-        $clients = $query->with('products')->get();
+        ->Where('client_num', 'LIKE', '%' . $clientNumber . '%')
+        ->Where('department_id', 'LIKE', '%' . $clientDepartment . '%');
+        $clients = $query->with('products','department')->get();
 
         return response()->json($clients);
     }
