@@ -201,14 +201,14 @@
                     <span class="flex-1 pt-1 ml-3 whitespace-nowrap">{{ __('工数管理') }}</span>
                 </x-nav-link>
             </li>
-            <li>
+            {{-- <li>
                 <x-nav-link :href="route('dashboard')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                     <svg class="flex-shrink-0 w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"fill="none" viewBox="0 0 17 18">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 12v5m5-9v9m5-5v5m5-9v9M1 7l5-6 5 6 5-6"/>
                     </svg>
                     <span class="flex-1 pt-1 ml-3 whitespace-nowrap">{{ __('分析画面') }}</span>
                 </x-nav-link>
-            </li>
+            </li> --}}
             <li>
                 <x-nav-link :href="route('keepfile.index')" :active="request()->routeIs('keepfile.index')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                     <svg class="flex-shrink-0 w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 19 19">
@@ -363,14 +363,14 @@
                         <span class="flex-1 pt-1 ml-3 whitespace-nowrap">{{ __('工数管理') }}</span>
                     </x-nav-link>
                 </li>
-                <li>
+                {{-- <li>
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                         <svg class="flex-shrink-0 w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"fill="none" viewBox="0 0 17 18">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 12v5m5-9v9m5-5v5m5-9v9M1 7l5-6 5 6 5-6"/>
                         </svg>
                         <span class="flex-1 pt-1 ml-3 whitespace-nowrap">{{ __('分析画面') }}</span>
                     </x-nav-link>
-                </li>
+                </li> --}}
                 <li>
                     <x-nav-link :href="route('keepfile.index')" :active="request()->routeIs('keepfile.index')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                         <svg class="flex-shrink-0 w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 19 19">
