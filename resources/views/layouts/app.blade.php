@@ -14,7 +14,12 @@
         <link rel="shortcut icon" href="{{ asset('/favicon.ico') }}">
         <link rel="manifest" href="/manifest.json">
         <!-- Add this to your app.blade.php layout -->
+
+        {{-- Windows/Android用マニフェスト --}}
         <link rel="manifest" href="/manifest.json">
+        {{-- IOS用マニフェスト --}}
+        <link rel="manifest" href="manifest.webmanifest" />
+        <script async src="https://cdn.jsdelivr.net/npm/pwacompat" crossorigin="anonymous"></script>
         {{-- PWA化 --}}
         <script>
             if ('serviceWorker' in navigator) {
