@@ -69,7 +69,7 @@
                         <select id="installation_type_id" name="installation_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">未選択</option>
                             @foreach($installationTypes as $installationType)
-                                <option value="{{ $installationType->id }}" @if($installationType->id == old('installation_type_id')) selected @endif>{{ $installationType->name }}</option>
+                                <option value="{{ $installationType->id }}" @selected($installationType->id == old('installation_type_id'))>{{ $installationType->name }}</option>
                             @endforeach
                         </select>
                         @error('installation_type_id')
@@ -81,20 +81,31 @@
                         <select id="client_type_id" name="client_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">未選択</option>
                             @foreach($clientTypes as $clientType)
-                                <option value="{{ $clientType->id }}" @if($clientType->id == old('client_type_id')) selected @endif>{{ $clientType->name }}</option>
+                                <option value="{{ $clientType->id }}" @selected($clientType->id == old('client_type_id'))>{{ $clientType->name }}</option>
                             @endforeach
                         </select>
                         @error('client_type_id')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
-
+                    <div>
+                        <label for="trade_status_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">取引状態</label>
+                        <select id="trade_status_id" name="trade_status_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option value="">未選択</option>
+                            @foreach($tradeStatuses as $tradeStatus)
+                            <option value="{{ $tradeStatus->id }}" @selected($tradeStatus->id == old('trade_status_id'))>{{ $tradeStatus->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('trade_status_id')
+                            <div class="text-red-500">{{ $message }}</div>
+                        @enderror
+                    </div>
                     <div>
                         <label for="department" class="font-semibold  text-gray-900 dark:text-white leading-none mt-4">管轄事業部</label>
                         <select id="department" name="department" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">未選択</option>
                             @foreach($departments as $department)
-                            <option value="{{ $department->prefix_code }}" @if($department->prefix_code == old('department')) selected @endif>{{ $department->department_name }}</option>
+                            <option value="{{ $department->id }}" @selected($department->id == old('department', Auth::user()->department->id))>{{ $department->department_name }}</option>
                             @endforeach
                         </select>
                         @error('department')
@@ -106,25 +117,14 @@
                         <select id="user_id" name="user_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">未選択</option>
                             @foreach($users as $user)
-                            <option value="{{ $user->id }}" @if($user->id == old('user_id')) selected @endif>{{ $user->name }}</option>
+                            <option value="{{ $user->id }}" @selected($user->id == old('user_id', Auth::user()->id))>{{ $user->name }}</option>
                             @endforeach
                         </select>
                         @error('user_id')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div>
-                        <label for="trade_status_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">取引状態</label>
-                        <select id="trade_status_id" name="trade_status_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option value="">未選択</option>
-                            @foreach($tradeStatuses as $tradeStatus)
-                            <option value="{{ $tradeStatus->id }}" @if($tradeStatus->id == old('trade_status_id')) selected @endif>{{ $tradeStatus->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('trade_status_id')
-                            <div class="text-red-500">{{ $message }}</div>
-                        @enderror
-                    </div>
+
                 </div>
 
 

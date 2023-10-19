@@ -32,7 +32,7 @@ class LinkComposer
             $userAttributes = auth()->check() ? auth()->user()->department_id : null;
             
             // Userの属性と同じ値を持つLinkを取得
-            $links = Link::where('department_id', $userAttributes)->orderBy('display_order')->get();
+            $links = Link::where('department_id', $userAttributes)->orderBy('display_order', 'asc')->get();
         }
         $view->with('links', $links);
     }

@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
             'role_id' => 1,
             'employee_status_id'=> 1,
             'company_id'=> 1,
-            'department_id'=> 2,
+            'department_id'=> 1,
             'division_id'=> 2,
             'created_at' => now(),
             'updated_at' => now()

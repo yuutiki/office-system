@@ -257,18 +257,6 @@
                         <td class="px-1 py-2 whitespace-nowrap">
                             {{$client->department->department_name}}
                         </td>
-                        {{-- @if($keepdata->status_flag == "0")
-                            <td class="px-2 py-2 whitespace-nowrap text-fuchsia-300">
-                                未返却
-                            </td>
-                        @else
-                            <td class="px-2 py-2 whitespace-nowrap">
-                                返却済
-                            </td>
-                        @endif --}}
-                        {{-- <td class="px-1 py-4 whitespace-nowrap">
-                            {{$client->updated_at->format('y-m-d')}}
-                        </td> --}}
                         <td class="px-1 py-2">
                             <button data-modal-target="deleteModal-{{$client->id}}" data-modal-toggle="deleteModal-{{$client->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
                                 <div class="flex">

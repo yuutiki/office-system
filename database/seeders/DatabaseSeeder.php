@@ -33,6 +33,8 @@ class DatabaseSeeder extends Seeder
         $this->call(AccountingPeriodSeeder::class);
         $this->call(SalesStageSeeder::class);
         $this->call(DistributionTypeSeeder::class);
+        $this->call(ContactTypeSeeder::class);
+        $this->call(ReportTypeSeeder::class);
 
         // \App\Models\User::factory(10)->create();
 

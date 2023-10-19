@@ -6,7 +6,9 @@ use App\Models\Report;
 use App\Models\User;//add
 use App\Models\Client;//add
 use App\Models\Comment;//add
+use App\Models\ContactType;
 use App\Models\Department;
+use App\Models\ReportType;
 use App\Notifications\AppNotification;
 use App\Services\NotificationService;
 use Illuminate\Pagination\Paginator;//add
@@ -36,8 +38,10 @@ class ReportController extends Controller
     public function create()
     {
         $departments = Department::all();
+        $reportTypes = ReportType::all();
+        $contactTypes = ContactType::all();
         $users = User::all();
-        return view('report.create',compact('users','departments'));
+        return view('report.create',compact('users','departments', 'reportTypes', 'contactTypes'));
     }
 
     public function store(Request $request)
@@ -78,13 +82,14 @@ class ReportController extends Controller
         ];
 
         // 日報を登録したユーザーに通知を送信
-        $user = auth()->user(); // ログイン中のユーザーを取得
+        $userIds = $request->input('selectedRecipientsId',[]);
+        $users = User::whereIn('id', $userIds)->get();
 
         // 通知の作成
         $notification = new AppNotification($report, $notificationData); // $report を通知データとして渡す
 
         // 通知の送信
-        $this->notificationService->sendNotification($user, $notification);
+        $this->notificationService->sendNotification($users, $notification);
   
 
 
@@ -109,8 +114,10 @@ class ReportController extends Controller
     public function edit(string $id)
     {
         $report = Report::find($id);
+        $reportTypes = ReportType::all();
+        $contactTypes = ContactType::all();
         $users = User::all();
-        return view('report.edit',compact('users', 'report'));
+        return view('report.edit',compact('users', 'report', 'reportTypes', 'contactTypes'));
     }
 
     public function update(Request $request, string $id)

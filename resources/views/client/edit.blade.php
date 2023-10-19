@@ -24,7 +24,7 @@
             
             <div class="">
                 <label for="client_num" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4 mt-2">顧客番号</label>
-                <input type="text" name="client_num" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="client_num" value="{{old('client_num',$client->client_num)}}" readonly>
+                <input type="text" name="client_num" class="w-full py-1 mt-1 bg-gray-400 border border-gray-300 rounded-md" id="client_num" value="{{old('client_num',$client->client_num)}}" readonly>
                     @error('client_num')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror            
@@ -33,28 +33,28 @@
             <div class="grid gap-4 mb-4 sm:grid-cols-2">
                 <div class="">
                     <label for="clientcorporation_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4 mt-2">法人名称</label>
-                    <input type="text" name="clientcorporation_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_name" value="{{old('clientcorporation_name',$client->clientcorporation->clientcorporation_name)}}" readonly>
+                    <input type="text" name="clientcorporation_name" class="w-full py-1 mt-1 bg-gray-400 border border-gray-300 rounded-md" id="clientcorporation_name" value="{{old('clientcorporation_name',$client->clientcorporation->clientcorporation_name)}}" readonly>
                     @error('clientcorporation_name')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror                
                 </div>
                 <div class="">
                     <label for="clientcorporation_kana_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人カナ名称</label>
-                    <input type="text" name="clientcorporation_kana_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_kana_name" value="{{old('clientcorporation_kana_name',$client->clientcorporation->clientcorporation_kana_name)}}" readonly>
+                    <input type="text" name="clientcorporation_kana_name" class="w-full py-1 mt-1 bg-gray-400 border border-gray-300 rounded-md" id="clientcorporation_kana_name" value="{{old('clientcorporation_kana_name',$client->clientcorporation->clientcorporation_kana_name)}}" readonly>
                     @error('clientcorporation_kana_name')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror                
                 </div>
                 <div class="">
                     <label for="client_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客名称</label>
-                    <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_name" value="{{old('client_name',$client->client_name)}}" placeholder="例）烏丸大学">
+                    <input type="text" name="client_name" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded-md" id="client_name" value="{{old('client_name',$client->client_name)}}" placeholder="例）烏丸大学">
                     @error('client_name')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror                
                 </div>
                 <div class="">
                     <label for="client_kana_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客カナ名称</label>
-                    <input type="text" name="client_kana_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_kana_name" value="{{old('client_kana_name',$client->client_kana_name)}}" placeholder="例）カラスマダイガク">
+                    <input type="text" name="client_kana_name" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded-md" id="client_kana_name" value="{{old('client_kana_name',$client->client_kana_name)}}" placeholder="例）カラスマダイガク">
                     @error('client_kana_name')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror                
@@ -62,42 +62,7 @@
             </div>
 
             <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-2">
-                <div>
-                    <label for="department" class="font-semibold  text-gray-900 dark:text-white leading-none mt-4">管轄事業部</label>
-                    <select id="department" name="department" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected value="">未選択</option>
-                        @foreach($departments as $department)
-                            <option value="{{ $department->id }}" @selected( $department->id == $client->department_id )>{{ $department->department_name }}</option>
-                        @endforeach
-                    </select>
-                    @error('department')
-                        <div class="text-red-500">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div>
-                    <label for="user_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">営業担当</label>
-                    <select id="user_id" name="user_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected value="">未選択</option>
-                        @foreach($users as $user)
-                            <option value="{{ $user->id }}" @selected( $user->id == $client->user_id)>{{ $user->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('user_id')
-                        <div class="text-red-500">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div>
-                    <label for="trade_status_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">取引状態</label>
-                    <select id="trade_status_id" name="trade_status_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected value="">未選択</option>
-                        @foreach($tradeStatuses as $tradeStatus)
-                        <option value="{{ $tradeStatus->id }}" @selected( $tradeStatus->id == $client->trade_status_id )>{{ $tradeStatus->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('trade_status_id')
-                    <div class="text-red-500">{{ $message }}</div>
-                    @enderror
-                </div>
+
                 <div>
                     <label for="installation_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">設置種別</label>
                     <select id="installation_type_id" name="installation_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -120,6 +85,42 @@
                     </select>
                     @error('client_type_id')
                     <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div>
+                    <label for="trade_status_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">取引状態</label>
+                    <select id="trade_status_id" name="trade_status_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected value="">未選択</option>
+                        @foreach($tradeStatuses as $tradeStatus)
+                        <option value="{{ $tradeStatus->id }}" @selected( $tradeStatus->id == $client->trade_status_id )>{{ $tradeStatus->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('trade_status_id')
+                    <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div>
+                    <label for="department" class="font-semibold  text-gray-900 dark:text-white leading-none mt-4">管轄事業部</label>
+                    <select id="department" name="department" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected value="">未選択</option>
+                        @foreach($departments as $department)
+                            <option value="{{ $department->id }}" @selected( $department->id == $client->department_id )>{{ $department->department_name }}</option>
+                        @endforeach
+                    </select>
+                    @error('department')
+                        <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div>
+                    <label for="user_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">営業担当</label>
+                    <select id="user_id" name="user_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected value="">未選択</option>
+                        @foreach($users as $user)
+                            <option value="{{ $user->id }}" @selected( $user->id == $client->user_id)>{{ $user->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('user_id')
+                        <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
@@ -399,7 +400,7 @@
                                             <svg class="h-3.5 w-3.5 mr-1" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                               <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                                             </svg>
-                                            製品追加
+                                            追加
                                         </button>
                                     </th>
                                 </tr>
@@ -675,10 +676,10 @@
                             {{-- テーブルヘッダ start --}}
                             <thead class="text-sm text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 whitespace-nowrap">
+                                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
                                         <span class="sr-only">参照</span>
                                     </th>
-                                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
                                         <div class="flex items-center">
                                             対応日付
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
@@ -687,71 +688,77 @@
                                     <th scope="col" class="px-2 py-3 whitespace-nowrap">
                                         <div class="flex items-center">
                                             報告区分
-                                            {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
                                         </div>
                                     </th>
                                     <th scope="col" class="px-2 py-3 whitespace-nowrap">
                                         <div class="flex items-center">
                                             タイトル
-                                            {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
                                         </div>
                                     </th>
                                     <th scope="col" class="px-2 py-3 whitespace-nowrap">
                                         <div class="flex items-center">
                                             報告者
-                                            {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
                                         </div>
                                     </th>
-                                    {{-- <th scope="col" class="px-2 py-3 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            更新日付
-                                        </div>
-                                    </th> --}}
+                                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
+                                        <span class="sr-only">編集</span>
+                                    </th>
                                     <th scope="col" class="px-2 py-1 whitespace-nowrap">
                                         <div class="flex items-center">
-                                            <button type="button" onclick="location.href='{{route('report.create')}}'" class=" bg-blue-400 flex items-center justify-center px-3 py-1 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
-                                                <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                            <button type="button" onclick="location.href='{{route('report.create')}}'" class=" bg-blue-400 flex items-center justify-center px-2 py-1 text-sm font-medium text-white rounded-md bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none m-auto">
+                                                <svg class="h-3.5 w-3.5 mr-0.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                                   <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                                                 </svg>
                                                 追加
                                             </button>
                                         </div>
                                     </th>
-                                    <th scope="col" class="px-6 py-3 whitespace-nowrap">
-                                        <span class="sr-only">編集</span>
-                                    </th>
                                 </tr>
                             </thead>
                             @foreach ($reports as $report)
                                 <tbody>
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
-                                        <td class="px-4 py-4 text-center">
+                                        <td class="px-2 py-2 text-center">
                                      {{-- report.showを作成して変更 --}}
-                                            <a href="{{route('report.showFromClient',$report)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline whitespace-nowrap">参照</a>
+                                            <button onclick="location.href='{{route('report.showFromClient',$report)}}'"  class="block whitespace-nowrap text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 m-auto" type="button">
+                                                <div class="flex">
+                                                    <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
+                                                    </svg>
+                                                    <span class="text-ms">参照</span>
+                                                </div>
+                                            </button>
                                         </td>
-                                        <td class="px-1 py-4 whitespace-nowrap">
+                                        <td class="px-2 py-2 whitespace-nowrap">
                                             {{$report->contact_at}}
                                         </td>
-                                        <td class="px-1 py-4 whitespace-nowrap">
+                                        <td class="px-2 py-2 whitespace-nowrap">
                                             {{$report->type}}
                                         </td>
-                                        <td class="px-1 py-4 whitespace-nowrap">
+                                        <td class="px-2 py-2 whitespace-nowrap">
                                             {{$report->title}}
                                         </td>
-                                        <td class="px-4 py-4 whitespace-nowrap">
+                                        <td class="px-2 py-2 whitespace-nowrap">
                                             {{$report->reporter->name}}
                                         </td>
-                                        {{-- <td class="px-2 py-4 whitespace-nowrap">
-                                            {{$report->updated_at->format('y-m-d')}}
-                                        </td> --}}
-                                        <td class="px-4 py-4 text-center">
-                                            <a href="{{route('report.create',$report)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline whitespace-nowrap">
-                                                編集
-                                            </a>
+                                        <td class="px-2 py-2 text-center">
+                                            <button onclick="location.href='{{route('report.edit',$report)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
+                                                <div class="flex">
+                                                    <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
+                                                    </svg>
+                                                    <span class="text-ms">編集</span>
+                                                </div>
+                                            </button>
                                         </td>
-                                        <td class="py-3">
-                                            <button data-modal-target="deleteModal-{{$report->id}}" data-modal-toggle="deleteModal-{{$report->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
-                                                削除
+                                        <td class="px-2 py-2">
+                                            <button data-modal-target="deleteModal-{{$report->id}}" data-modal-toggle="deleteModal-{{$report->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 m-auto" type="button">
+                                                <div class="flex">
+                                                    <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z"/>
+                                                    </svg>
+                                                    <span class="text-ms ">削除</span>
+                                                </div>
                                             </button>
                                         </td>
                                     </tr>
@@ -797,120 +804,111 @@
 
                 {{-- 6つ目のタブコンテンツStart --}}
                 <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="support" role="tabpanel" aria-labelledby="support-tab">
-                    <span class="text-white">この顧客のサポート問い合わせ情報の内容が表示されます。ここからサポート情報  を登録することもできます。</span>
+                    <span class="text-white">この顧客のサポート問い合わせ情報の内容が表示されます。ここからサポート情報を登録することもできます。</span>
                     <div class="w-full relative overflow-x-auto shadow-md rounded-lg mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
                         <table class="w-full text-sm font-medium text-left text-gray-800 dark:text-gray-400">
                 
                             {{-- テーブルヘッダ start --}}
                             <thead class="text-sm text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 whitespace-nowrap">
+                                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
                                         <span class="sr-only">編集</span>
                                     </th>
-                                    <th scope="col" class="px-4 py-3 whitespace-nowrap">
+                                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
                                         <div class="flex items-center">
                                             @sortablelink('received_at','受付日')
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                                         </div>
                                     </th>
-                                    <th scope="col" class="px-4 py-3 whitespace-nowrap">
+                                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
                                         <div class="flex items-center">
                                             @sortablelink('support_type_id','種別')
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                                         </div>
                                     </th>
-                                    <th scope="col" class="px-4 py-3 whitespace-nowrap">
+                                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
                                         <div class="flex items-center">
                                             表題
                                         </div>
                                     </th>
-            
-                                    <th scope="col" class="px-4 py-3 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            @sortablelink('user_id','受付対応者')
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
-                                        </div>
-                                    </th>
-                
-                                    <th scope="col" class="px-4 py-3 whitespace-nowrap">
+                                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
                                         <div class="flex items-center">
                                             @sortablelink('product_series_id','シリーズ')
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                                         </div>
                                     </th>
-                                    <th scope="col" class="px-4 py-3 whitespace-nowrap">
+                                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
                                         <div class="flex items-center">
                                             @sortablelink('product_version_id','バージョン')
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                                         </div>
                                     </th>
-                                    <th scope="col" class="px-4 py-3 whitespace-nowrap">
+                                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
                                         <div class="flex items-center">
                                             @sortablelink('product_category_id','系統')
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                                         </div>
                                     </th>
-                                    {{-- <th scope="col" class="px-2 py-3 whitespace-nowrap">
+                                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
                                         <div class="flex items-center">
-                                            @sortablelink('status_flag','ステータス')
+                                            @sortablelink('user_id','受付対応者')
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                                         </div>
-                                    </th> --}}
-                                    {{-- <th scope="col" class="px-2 py-3 whitespace-nowrap">
+                                    </th>
+                                    <th scope="col" class="px-2 py-1 whitespace-nowrap">
                                         <div class="flex items-center">
-                                            更新日
+                                            <button type="button" onclick="location.href='{{route('support.create')}}'" class=" bg-blue-400 flex items-center justify-center px-2 py-1 text-sm font-medium text-white rounded-md bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none m-auto">
+                                                <svg class="h-3.5 w-3.5 mr-0.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                  <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                                                </svg>
+                                                追加
+                                            </button>
                                         </div>
-                                    </th> --}}
-                                    <th scope="col" class="px-6 py-3 whitespace-nowrap">
-                                        <span class="sr-only">削除</span>
                                     </th>
                                 </tr>
                             </thead>
                             @foreach ($supports as $support)
                                 <tbody>
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
-                                        <td class="px-4 py-2 whitespace-nowrap">
-                                            <button onclick="location.href='{{route('support.edit',$support)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                                                編集
+                                        <td class="px-2 py-2 whitespace-nowrap">
+                                            <button onclick="location.href='{{route('support.edit',$support)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md  text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
+                                                <div class="flex">
+                                                    <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
+                                                    </svg>
+                                                    <span class="text-ms">編集</span>
+                                                </div>
                                             </button>
                                         </td>
-                                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        <th scope="row" class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {{$support->received_at}}
                                         </th>
-                                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        <th scope="row" class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {{$support->supportType->type_name}}
                                         </th>
-                                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        <th scope="row" class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {{$support->title}}
                                         </th>
-                                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{$support->user->name}}
-                                        </th>
-                                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        <th scope="row" class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {{$support->productSeries->series_name}}
                                         </th>
-                                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        <th scope="row" class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {{$support->productVersion->version_name}}
                                         </th>
-                                        <th scope="row" class="pl-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        <th scope="row" class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {{$support->productCategory->category_name}}
                                         </th>
-                                        
-                                        {{-- @if($keepdata->status_flag == "0")
-                                            <td class="px-2 py-4 whitespace-nowrap text-fuchsia-300">
-                                                未返却
-                                            </td>
-                                        @else
-                                            <td class="px-2 py-4 whitespace-nowrap">
-                                                返却済
-                                            </td>
-                                        @endif --}}
-                                        {{-- <td class="px-2 py-4 whitespace-nowrap">
-                                            {{$support->updated_at->format('y-m-d')}}
-                                        </td> --}}
-                                        <td class="py-3">
-                                            <button data-modal-target="deleteModal-{{$support->id}}" data-modal-toggle="deleteModal-{{$support->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
-                                                削除
+                                        <th scope="row" class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {{$support->user->name}}
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            <button data-modal-target="deleteModal-{{$support->id}}" data-modal-toggle="deleteModal-{{$support->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 m-auto" type="button">
+                                                <div class="flex">
+                                                    <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z"/>
+                                                    </svg>
+                                                    <span class="text-ms ">削除</span>
+                                                </div>
                                             </button>
                                         </td>
                                     </tr>

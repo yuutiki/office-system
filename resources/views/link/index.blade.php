@@ -215,6 +215,16 @@
                             </div>
                         </button>
                     </td>
+                    <td class="px-4 py-2 whitespace-nowrap">
+                        <button id="updateProductButton" data-modal-toggle="updateModal-{{$link->id}}" class="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" type="button">
+                            <div class="flex">
+                                <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
+                                </svg>
+                                <span class="text-ms">更新</span>
+                            </div>
+                        </button>
+                    </td>
                     <td class="pl-2 py-3 whitespace-nowrap mr-2">
                         {{$link->display_name}}
                     </td>
@@ -268,6 +278,86 @@
                 </div>
             </div>
             {{-- 削除確認モーダル画面 End --}}
+
+
+            <!-- 更新モーダル　Start -->
+            <div id="updateModal-{{$link->id}}" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
+                <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+                    <!-- Modal content -->
+                    <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+                        <!-- Modal header -->
+                        <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                                リンク更新
+                            </h3>
+                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="updateProductModal">
+                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                <span class="sr-only">Close modal</span>
+                            </button>
+                        </div>
+                        <!-- Modal body -->
+                        <form action="#">
+                            <div class="grid gap-4 mb-4 sm:grid-cols-1">
+                                <div class="md:flex items-center">
+                                    <div class="w-full flex flex-col">
+                                        <label for="display_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">表示名</label>
+                                        <input type="text" name="display_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" id="display_name" value="{{old('display_name',$link->display_name)}}">
+                                    </div>
+                                </div>
+                                @error('display_name')
+                                    <div class="text-red-500">{{$message}}</div>
+                                @enderror
+                            </div>
+                            <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                                <div>
+                                    <div class="w-full flex flex-col">
+                                        <label for="department_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">事業部</label>
+                                        <select name="department_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" id="department_id" value="{{old('department_id')}}">
+                                            @foreach($departments as $department)
+                                            <option value="{{ $department->id }}"  @selected($department->id == $link->department_id)>{{ $department->department_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    @error('department_id')
+                                        <div class="text-red-500">{{$message}}</div>
+                                    @enderror
+                                </div>
+                                <div>
+                                    <div class="md:flex items-center">
+                                        <div class="w-full flex flex-col">
+                                        <label for="display_order" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">表示順</label>
+                                        <input type="number" name="display_order" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" id="display_order" value="{{old('display_order',$link->display_order)}}">
+                                        </div>
+                                    </div>
+                                    @error('display_order')
+                                        <div class="text-red-500">{{$message}}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div>
+                                <div class="sm:col-span-2">
+                                    <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">URL</label>
+                                    <textarea id="description" rows="5" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">{{old('url',$link->url)}}</textarea>                    
+                                </div>
+                                @error('url')
+                                    <div class="text-red-500">{{$message}}</div>
+                                @enderror
+                            </div>
+                            <div class="flex items-center space-x-4 mt-2">
+                                <button type="submit" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    更新
+                                </button>
+                                <button type="button" class="text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
+                                    <svg class="mr-1 -ml-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                                    削除
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- 更新モーダル　End -->
+
             @endforeach
         </table> 
         <div class="mt-2 mb-2 px-4">

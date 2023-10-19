@@ -52,7 +52,9 @@ class ClientController extends Controller
 
         // フォームからの値を変数に格納
         $clientcorporationNum = $request->input('clientcorporation_num');
-        $prefix_code = $request->input('department');
+        $departmentId = $request->input('department');
+        $getdepartment = Department::where('id', $departmentId)->first();
+        $prefix_code = $getdepartment->prefix_code;
 
         $clientNumber = Client::generateClientNumber($clientcorporationNum, $prefix_code);
 
@@ -159,7 +161,7 @@ class ClientController extends Controller
     {
         $clientName = $request->input('clientName');
         $clientNumber = $request->input('clientNumber');
-        $clientDepartment = $request->input('departmentCode');
+        $clientDepartment = $request->input('departmentId');
 
         // 検索条件に基づいて顧客データを取得
         // $clients = Client::where('client_name', 'LIKE', '%' . $clientName . '%')

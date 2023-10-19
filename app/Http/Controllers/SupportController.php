@@ -51,7 +51,6 @@ class SupportController extends Controller
         $clientTypes = ClientType::all();
         $departments = Department::all();
 
-
         return view('support.create',compact('users','productSeriess','productVersions','productCategories','supportTypes','supportTimes','installationTypes','clientTypes','departments'));
     }
 

@@ -206,8 +206,8 @@
                     <h3 class="text-xl font-medium text-gray-900 dark:text-white">
                         顧客検索画面
                     </h3>
-                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                        <svg class="w-3 h-3"  onclick="hideModal()"xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <button type="button" onclick="hideModal()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                        <svg class="w-3 h-3"xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                         </svg>
                     </button>
@@ -225,11 +225,13 @@
                             <input type="text" name="clientNumber" id="clientNumber" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded-md">
                         </div>
                         <div class="w-full flex flex-col mx-2">
-                            <label for="departmentCode" class="font-semibold  dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
-                            <select id="departmentCode" name="departmentCode" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-md focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <label for="departmentId" class="font-semibold  dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
+                            <select id="departmentId" name="departmentId" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-md focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 @foreach($departments as $department)
-                                <option value="{{ $department->prefix_code }}">{{ $department->department_name }}</option>
+                                <option value="{{ $department->id }}" @selected($department->id == Auth::user()->department->id)>
+                                    {{ $department->department_name }}
+                                </option>
                                 @endforeach
                             </select>
                         </div>
@@ -242,6 +244,7 @@
                             {{-- <th class="py-1"></th> --}}
                             <th class="py-1 pl-5">顧客名称</th>
                             <th class="py-1 whitespace-nowrap">顧客番号</th>
+                            <th class="py-1 whitespace-nowrap">管轄事業部</th>
                         </tr>
                         </thead>
                         <tbody class="" id="searchResultsContainer">                          
@@ -294,6 +297,7 @@
         function searchClient() {
             const clientName = document.getElementById('clientName').value;
             const clientNumber = document.getElementById('clientNumber').value;
+            const departmentId = document.getElementById('departmentId').value;
 
             fetch('/client/search', {
                 method: 'POST',
@@ -301,7 +305,7 @@
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
-                body: JSON.stringify({ clientName, clientNumber })
+                body: JSON.stringify({ clientName, clientNumber, departmentId })
             })
             .then(response => response.json())
             .then(data => {
@@ -314,6 +318,7 @@
                 resultElement.innerHTML = `
                     <td class="py-2 pl-5 cursor-pointer" onclick="setCorporation('${result.client_name}', '${result.client_num}')">${result.client_name}</td>
                     <td class="py-2 ml-2">${result.client_num}</td>
+                    <td class="py-2 ml-2">${result.department.department_name}</td>
                 `;
                 searchResultsContainer.appendChild(resultElement);
                 });
