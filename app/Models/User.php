@@ -14,7 +14,7 @@ use Kyslik\ColumnSortable\Sortable;//add
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable,Sortable;
+    use HasApiTokens, HasFactory, Notifiable, Sortable;
 
     /**
      * The attributes that are mass assignable.
@@ -70,6 +70,8 @@ class User extends Authenticatable
     public static $uploadRules = [
         'csv_input' => 'required|file|mimes:csv,txt',
     ];
+
+    
 
     //relation
     public function role()

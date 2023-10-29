@@ -34,7 +34,7 @@
                 </div>     
                 <div class="">
                     <label for="client_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客名称</label>
-                    <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="client_name" value="{{old('client_name')}}">
+                    <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="client_name" value="{{old('client_name')}}" readonly>
                 </div>
             </div>
 
@@ -68,13 +68,12 @@
                 <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 
                     <div class="w-full flex flex-col">
-                        <label for="type" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">報告種別</label>
-                        <select id="type" name="type" class="block w-48 py-1 mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option selected value="">未選択</option>
-                            <option value="営業活動報告">営業活動報告</option>
-                            <option value="新規受注報告">新規受注報告</option>
-                            <option value="新規失注報告">新規失注報告</option>
-                            <option value="既存解約報告">既存解約報告</option>
+                        <label for="report_type_id" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">報告種別</label>
+                        <select id="report_type_id" name="report_type_id" class="block w-48 py-1 mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option value="">未選択</option>
+                            @foreach ($reportTypes as $reportType)
+                                <option value="{{ $reportType->id }}" @selected($reportType->id == old('report_type_id'))>{{ $reportType->report_type_name }}</option>
+                            @endforeach
                         </select>
                     </div>
 
@@ -85,16 +84,12 @@
                         <input type="date" min="2000-01-01" max="2100-12-31" name="contact_at" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 p-locality p-street-address p-extended-address" id="contact_at" value="{{ old('contact_at', now()->format('Y-m-d')) }}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="contact_type" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">対応形式</label>
-                        <select id="contact_type" name="contact_type" class="w-auto py-1 mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option selected value="">未選択</option>
-                            <option value="オンライン">オンライン</option>
-                            <option value="現地訪問">現地訪問</option>
-                            <option value="来社対応">来社対応</option>
-                            <option value="電話対応">電話対応</option>
-                            <option value="メール対応">メール対応</option>
-                            <option value="資料送付">資料送付</option>
-                            <option value="その他">その他</option>
+                        <label for="contact_type_id" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">対応形式</label>
+                        <select id="contact_type_id" name="contact_type_id" class="w-auto py-1 mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option value="">未選択</option>
+                            @foreach ($contactTypes as $contactType)
+                                <option value="{{ $contactType->id }}" @selected($contactType->id == old('contact_type_id'))>{{ $contactType->contact_type_name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="w-full flex flex-col">
@@ -104,8 +99,8 @@
                 </div>
 
                     <div class="w-full flex flex-col">
-                        <label for="title" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">報告タイトル</label>
-                        <input type="text" name="title" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="title" value="{{old('title')}}" placeholder="">
+                        <label for="report_title" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">報告タイトル</label>
+                        <input type="text" name="report_title" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="report_title" value="{{old('report_title')}}" placeholder="">
                     </div>
 
                     {{-- <div class="w-full flex flex-col">
@@ -114,9 +109,9 @@
                     </div> --}}
 
                     <div class="relative mb-4 mt-4">
-                        <label for="content" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">報告内容</label>
+                        <label for="report_content" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">報告内容</label>
                         
-                        <textarea name="content" id="auto-resize-textarea-content"  class="resize-none block w-full py-1 border focus:outline-none focus:ring focus:border-blue-300 rounded-md mt-1" value="{{old('notice')}}" rows="5"></textarea>
+                        <textarea name="report_content" id="auto-resize-textarea-content"  class="resize-none block w-full py-1 border focus:outline-none focus:ring focus:border-blue-300 rounded-md mt-1" value="{{old('report_content')}}" rows="5"></textarea>
                         {{-- <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                             <span id="char-count" class="text-sm text-gray-400"></span>
                         </div> --}}
@@ -129,9 +124,9 @@
 
 
                     <div class="relative mb-4 mt-4">
-                        <label for="notice" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">特記事項</label>
+                        <label for="report_notice" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">特記事項</label>
                         
-                        <textarea name="notice" id="auto-resize-textarea-notice"  class="resize-none  block w-full py-1 border focus:outline-none focus:ring focus:border-blue-300 rounded-md mt-1" value="{{old('notice')}}" rows="5"></textarea>
+                        <textarea name="report_notice" id="auto-resize-textarea-notice"  class="resize-none  block w-full py-1 border focus:outline-none focus:ring focus:border-blue-300 rounded-md mt-1" value="{{old('report_notice')}}" rows="5"></textarea>
                         {{-- <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                             <span id="char-count" class="text-sm text-gray-400"></span>
                         </div> --}}
@@ -196,11 +191,11 @@
 
 
     <!-- Extra Large Modal -->
-    <div id="clientSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+    <div id="clientSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden animate-slide-in-top">
     {{-- <div id="clientSearchModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full justify-center items-center"> --}}
-        <div class=" w-4/5  max-h-full">
+        <div class="max-h-full w-full max-w-2xl">
             <!-- Modal content -->
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-700">
                 <!-- Modal header -->
                 <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
                     <h3 class="text-xl font-medium text-gray-900 dark:text-white">

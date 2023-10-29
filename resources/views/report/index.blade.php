@@ -241,7 +241,7 @@
                             {{$report->contact_at}}
                         </td>
                         <td class="px-1 py-2 whitespace-nowrap">
-                            {{$report->type}}
+                            {{$report->reportType->report_type_name}}
                         </td>
                         <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$report->client->client_num}}
@@ -251,7 +251,7 @@
                         </td>
 
                         <td class="px-1 py-2 whitespace-nowrap">
-                            {{$report->title}}
+                            {{$report->report_title}}
                         </td>
                         <td class="px-1 py-2 whitespace-nowrap">
                             {{$report->reporter->name}}

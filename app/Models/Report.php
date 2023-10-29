@@ -12,8 +12,8 @@ class Report extends Model
     use Sortable;//add
 
     public static $rulesEdit = [
-        'title' => 'required|max:255',
-        'content' => 'required',
+        'report_title' => 'required|max:255',
+        'report_content' => 'required',
     ];
 
     // 報告に関連する報告者（投稿者）のリレーションok
@@ -39,5 +39,14 @@ class Report extends Model
     public function client()
     {
         return $this->belongsTo(Client::class);
+    }
+
+    public function reportType()
+    {
+        return $this->belongsTo(ReportType::class);
+    }
+    public function contactType()
+    {
+        return $this->belongsTo(ContactType::class);
     }
 }

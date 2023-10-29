@@ -296,7 +296,9 @@
                             </button>
                         </div>
                         <!-- Modal body -->
-                        <form action="#">
+                        <form method="POST" action="{{ route('link.update', $link->id) }}">
+                            @csrf
+                            @method('PUT')
                             <div class="grid gap-4 mb-4 sm:grid-cols-1">
                                 <div class="md:flex items-center">
                                     <div class="w-full flex flex-col">
@@ -337,7 +339,7 @@
                             <div>
                                 <div class="sm:col-span-2">
                                     <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">URL</label>
-                                    <textarea id="description" rows="5" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">{{old('url',$link->url)}}</textarea>                    
+                                    <textarea id="description" name="url" rows="5" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">{{old('url',$link->url)}}</textarea>                    
                                 </div>
                                 @error('url')
                                     <div class="text-red-500">{{$message}}</div>
@@ -352,6 +354,7 @@
                                     削除
                                 </button>
                             </div>
+                            <div id="errorMessages"></div>
                         </form>
                     </div>
                 </div>
@@ -386,5 +389,47 @@
                 uploadForm.submit();
             });
         });
+    </script>
+
+    <script>
+        // public/js/modal.js
+// public/js/modal.js
+
+// ...
+
+
+
+$(document).ready(function () {
+    $('#openModalButton').click(function () {
+        $('#myModal').css('display', 'block');
+    });
+    $('#myForm').on('submit', function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('updateLink', $link->id) }}", // ルートを指定
+            data: $(this).serialize(),
+            success: function (data) {
+                // 成功時の処理
+                $('#updateModal-{{$link->id}}').css('display', 'none');
+            },
+            error: function (response) {
+                if (response.status === 422) {
+                    // バリデーションエラーがある場合
+                    var errors = response.responseJSON.errors;
+                    var errorHtml = '<ul>';
+                    $.each(errors, function (key, value) {
+                        errorHtml += '<li>' + value + '</li>';
+                    });
+                    errorHtml += '</ul>';
+                    $('#errorMessages').html(errorHtml);
+                }
+            }
+            });
+    });
+    
+});
+
     </script>
 </x-app-layout>

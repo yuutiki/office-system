@@ -8,6 +8,7 @@ use App\Http\Controllers\ClientController;//add
 // use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Dashboard\DashboardController;//add
 use App\Http\Controllers\CommentController;//add
+use App\Http\Controllers\LinkController;
 use App\Http\Controllers\ReportController;//add
 use App\Http\Controllers\ProductController;//add
 use App\Http\Controllers\UserController;//add
@@ -30,7 +31,7 @@ use App\Models\Product;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 // Route::get('/dashboard', function () {
@@ -65,6 +66,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/report/{report_id}/comment', [CommentController::class, 'store'])->name('comment.store');
     Route::get('/report/{report_id}/client', [ReportController::class, 'showFromClient'])->name('report.showFromClient');
     Route::post('/product/upload', [ProductController::class, 'upload'])->name('product.upload');
+    Route::post('/client-product/store', [ClientProductController::class, 'store']);
+    // routes/web.php
+
+    
+
+    Route::post('/update-link/{link}', [LinkController::class, 'mordalupdate'])->name('updateLink');
+
+
+
 
 
     // Route::get('/product-selection', 'ProductController@index');

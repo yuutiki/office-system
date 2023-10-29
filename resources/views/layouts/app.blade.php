@@ -12,7 +12,6 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         {{-- favicon --}}
         <link rel="shortcut icon" href="{{ asset('/favicon.ico') }}">
-        <link rel="manifest" href="/manifest.json">
         <!-- Add this to your app.blade.php layout -->
 
         {{-- Windows/Android用マニフェスト --}}
@@ -20,7 +19,7 @@
         {{-- IOS用マニフェスト --}}
         <link rel="manifest" href="manifest.webmanifest" />
         <script async src="https://cdn.jsdelivr.net/npm/pwacompat" crossorigin="anonymous"></script>
-        {{-- PWA化 --}}
+        {{-- serviceworkerの読み込み --}}
         <script>
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function() {
@@ -34,6 +33,7 @@
             }
         </script>
         <!-- Scripts -->
+        
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
@@ -45,7 +45,8 @@
                 document.documentElement.classList.remove('dark')
             }
         </script>
-
+        {{-- ApexCharts  --}}
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-blue-100 dark:bg-gray-900 ">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\Link;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class LinkController extends Controller
 {
@@ -60,5 +61,38 @@ class LinkController extends Controller
         $link->delete();
 
         return redirect()->route('link.index')->with('success', '正常に削除しました');
+    }
+
+    public function mordalupdate(Request $request, Link $link)
+    {
+    // バリデーションのルールを設定
+    $rules = [
+        'display_name' => 'required',
+        'department_id' => 'required',
+        'display_order' => 'required|numeric',
+        'url' => 'required|url',
+    ];
+
+    $validator = Validator::make($request->all(), $rules);
+
+    if ($validator->fails()) {
+        // バリデーションエラーがある場合
+        return redirect()->back()->withErrors($validator)->withInput();
+    }
+
+    // バリデーションを通過した場合、データを更新
+    $validatedData = $request->validated();
+    $link->update($validatedData);
+
+        // バリデーションを通過した場合、データを処理
+        // ここにデータの保存や処理のコードを追加
+        // $link = new Link;
+        // $link->fill($request->all());
+        // モデルを保存
+        // $link->save();
+
+
+
+
     }
 }

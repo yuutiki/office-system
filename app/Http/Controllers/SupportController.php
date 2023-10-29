@@ -14,11 +14,22 @@ use App\Models\SupportTime;
 use App\Models\SupportType;
 use App\Models\TradeStatus;
 use App\Models\User;
+use App\Notifications\AppNotification;
+use App\Services\NotificationService;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SupportController extends Controller
 {
+
+    protected $notificationService;
+
+    public function __construct(NotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
+
     public function index(Request $request)
     {
         $per_page = 500;
@@ -100,6 +111,24 @@ class SupportController extends Controller
         $support->is_troubled = $request->has('f_is_troubled') ? 1 : 0;
         $support->is_faq_target = $request->has('f_is_faq_target') ? 1 : 0;
         $support->save();
+
+
+        // 通知の内容を設定
+        $notificationData = [
+            'action_url' => route('support.edit', ['support' => $support->id]), // 例: サポート履歴を表示するURL
+            'message' => '新しいサポート履歴が登録されました。',
+            // 他の通知に関する情報をここで設定
+        ];
+
+        // 日報を登録したユーザーに通知を送信
+        $user = $support->client->user_id;
+        $userEigyou = User::find($user);
+
+        // 通知の作成
+        $notification = new AppNotification($support, $notificationData); // $support を通知データとして渡す
+
+        // 通知の送信
+        $this->notificationService->sendNotification($userEigyou, $notification);
 
 
         return redirect()->route('support.index')->with('message', '登録しました');

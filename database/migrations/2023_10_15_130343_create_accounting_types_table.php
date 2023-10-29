@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('accounting_types', function (Blueprint $table) {
             $table->id();
+            $table->string('accounting_type_code',2)->unique()->comment('計上種別コード');
+            $table->string('accounting_type_name',20)->comment('計上種別名称');
+            $table->foreignId('created_by')->nullable(true)->comment('作成者');
+            $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+
     public function down(): void
     {
         Schema::dropIfExists('accounting_types');

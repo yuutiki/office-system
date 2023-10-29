@@ -12,6 +12,7 @@ use App\Models\ReportType;
 use App\Notifications\AppNotification;
 use App\Services\NotificationService;
 use Illuminate\Pagination\Paginator;//add
+use Illuminate\Notifications\DatabaseNotification;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -46,12 +47,12 @@ class ReportController extends Controller
 
     public function store(Request $request)
     {
-        $rules = [
-            'title' => 'required|max:255',
-            'content' => 'required',
-        ];
+        // $rules = [
+        //     'title' => 'required|max:255',
+        //     'content' => 'required',
+        // ];
 
-        $request->validate($rules);
+        // $request->validate($rules);
 
         // フォームからの値を変数に格納
         $clientNum = $request->input('client_num');
@@ -63,11 +64,11 @@ class ReportController extends Controller
         $report = new Report();
         $report->client_id = $clientId;
         $report->contact_at = $request->input('contact_at');
-        $report->type = $request->input('type');
-        $report->title = $request->input('title');
-        $report->contact_type = $request->input('contact_type');
-        $report->content = $request->input('content');
-        $report->notice = $request->input('notice');
+        $report->contact_type_id = $request->input('contact_type_id');
+        $report->report_type_id = $request->input('report_type_id');
+        $report->report_title = $request->input('report_title');
+        $report->report_content = $request->input('report_content');
+        $report->report_notice = $request->input('report_notice');
         $report->client_representative = $request->input('client_representative');
         $report->user_id = auth()->id();//ログインユーザのIDを取得
 
@@ -117,6 +118,18 @@ class ReportController extends Controller
         $reportTypes = ReportType::all();
         $contactTypes = ContactType::all();
         $users = User::all();
+
+        // 通知を取得
+        // $notificationId = $report->notification_id; // 通知IDを取得する方法は、データベース設計に依存します
+
+        // 通知を既読にマーク
+        // $notification = auth()->user()->notifications()->find($notificationId);
+
+
+        // if ($notification) {
+        //     $notification->markAsRead();
+        // }
+        
         return view('report.edit',compact('users', 'report', 'reportTypes', 'contactTypes'));
     }
 
@@ -130,11 +143,11 @@ class ReportController extends Controller
 
         $report = Report::find($id);
         $report->contact_at = $request->input('contact_at');
-        $report->type = $request->input('type');
-        $report->title = $request->input('title');
-        $report->contact_type = $request->input('contact_type');
-        $report->content = $request->input('content');
-        $report->notice = $request->input('notice');
+        $report->contact_type_id = $request->input('contact_type_id');
+        $report->report_type_id = $request->input('report_type_id');
+        $report->report_title = $request->input('report_title');
+        $report->report_content = $request->input('report_content');
+        $report->report_notice = $request->input('report_notice');
         $report->client_representative = $request->input('client_representative');
         $report->user_id = auth()->id();//ログインユーザのIDを取得
         $report->save();
