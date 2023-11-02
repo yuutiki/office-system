@@ -6,6 +6,7 @@ use App\Models\Department;
 use App\Models\Link;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
 
 class LinkController extends Controller
 {
@@ -49,7 +50,24 @@ class LinkController extends Controller
 
     public function update(Request $request, Link $link)
     {
+        $rules = [
+            'display_name' => 'required',
+            'department_id' => 'required',
+            'display_order' => 'required|numeric',
+            'url' => 'required|url',
+        ];
+    
+        $validator = Validator::make($request->all(), $rules);
+    
+        if ($validator->fails()) {
+            // バリデーションエラーがある場合
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        
         $link->fill($request->all())->save();
+
+        // セッションから Modal ID を削除
+        Session::forget('openedModalId');
 
         return redirect()->route('link.index')->with('success', '正常に更新しました');
 
@@ -91,8 +109,15 @@ class LinkController extends Controller
         // モデルを保存
         // $link->save();
 
-
-
-
     }
+
+    public function saveModalId(Request $request)
+{
+    $modalId = $request->input('savemodalId');
+
+    // セッションにモーダルIDを保存
+    session(['openedModalId' => $modalId]);
+
+    return response()->json(['message' => 'Modal ID saved successfully']);
+}
 }

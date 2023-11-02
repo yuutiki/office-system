@@ -72,6 +72,7 @@ Route::middleware('auth')->group(function () {
     
 
     Route::post('/update-link/{link}', [LinkController::class, 'mordalupdate'])->name('updateLink');
+    Route::post('/save-modal-id', [LinkController::class, 'saveModalId'])->name('save.modal.id');
 
 
 

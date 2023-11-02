@@ -290,7 +290,7 @@
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                                 リンク更新
                             </h3>
-                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="updateProductModal">
+                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="updateModal-{{$link->id}}">
                                 <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                 <span class="sr-only">Close modal</span>
                             </button>
@@ -368,6 +368,7 @@
         </div>
     </div>
 
+    
     <script>
         document.addEventListener('DOMContentLoaded', function () {
         const uploadForm = document.getElementById('csv_form1');
@@ -389,6 +390,61 @@
                 uploadForm.submit();
             });
         });
+
+
+    const updateButton = document.getElementById('updateProductButton');
+    const csrfToken = "{{ csrf_token() }}";
+
+    // ボタンがクリックされたときの処理
+    updateButton.addEventListener('click', function () {
+    // ボタンのdata属性からモーダルIDを取得
+    const savemodalId = updateButton.getAttribute('data-modal-toggle');
+            // モーダルIDをセッションに保存するAjaxリクエスト
+        fetch('{{ route('save.modal.id') }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken, // CSRFトークンが必要な場合、適切な値に置き換えてください
+        },
+        body: JSON.stringify({ savemodalId }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.message);
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+            const modalId = '{{ session("openedModalId") }}';
+            if (modalId) {
+            // モーダルが存在する場合、JavaScriptを使用してモーダルを再表示
+            const modal = new Modal(document.getElementById(modalId));
+            modal.show();
+            }
+        });
+    
+    // const savemodalId = 'updateModal-' + <?= $link->id ?>; // モーダルのIDを取得
+    // // モーダルを開く処理（ここで実際のモーダル表示のコードがあると仮定）
+    // document.addEventListener("DOMContentLoaded", function() {
+    // const modal = new Modal(document.getElementById(savemodalId));
+    // modal.show();
+    // });
+
+    // const csrfToken = "{{ csrf_token() }}";
+    // // サーバーサイドのコントローラメソッドにモーダルIDを送信
+    // fetch('{{ route('save.modal.id') }}', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //         'X-CSRF-TOKEN': csrfToken, // CSRFトークンが必要な場合、適切な値に置き換えてください
+    //     },
+    //     body: JSON.stringify({ savemodalId }),
+    // })
+    // .then(response => response.json())
+    // .then(data => {
+    //     console.log(data.message);
+    // });
+
     </script>
 
     <script>
@@ -399,37 +455,37 @@
 
 
 
-$(document).ready(function () {
-    $('#openModalButton').click(function () {
-        $('#myModal').css('display', 'block');
-    });
-    $('#myForm').on('submit', function (e) {
-        e.preventDefault();
+// $(document).ready(function () {
+//     $('#openModalButton').click(function () {
+//         $('#myModal').css('display', 'block');
+//     });
+//     $('#myForm').on('submit', function (e) {
+//         e.preventDefault();
 
-        $.ajax({
-            type: 'POST',
-            url: "{{ route('updateLink', $link->id) }}", // ルートを指定
-            data: $(this).serialize(),
-            success: function (data) {
-                // 成功時の処理
-                $('#updateModal-{{$link->id}}').css('display', 'none');
-            },
-            error: function (response) {
-                if (response.status === 422) {
-                    // バリデーションエラーがある場合
-                    var errors = response.responseJSON.errors;
-                    var errorHtml = '<ul>';
-                    $.each(errors, function (key, value) {
-                        errorHtml += '<li>' + value + '</li>';
-                    });
-                    errorHtml += '</ul>';
-                    $('#errorMessages').html(errorHtml);
-                }
-            }
-            });
-    });
+//         $.ajax({
+//             type: 'POST',
+//             url: "{{ route('updateLink', $link->id) }}", // ルートを指定
+//             data: $(this).serialize(),
+//             success: function (data) {
+//                 // 成功時の処理
+//                 $('#updateModal-{{$link->id}}').css('display', 'none');
+//             },
+//             error: function (response) {
+//                 if (response.status === 422) {
+//                     // バリデーションエラーがある場合
+//                     var errors = response.responseJSON.errors;
+//                     var errorHtml = '<ul>';
+//                     $.each(errors, function (key, value) {
+//                         errorHtml += '<li>' + value + '</li>';
+//                     });
+//                     errorHtml += '</ul>';
+//                     $('#errorMessages').html(errorHtml);
+//                 }
+//             }
+//             });
+//     });
     
-});
+// });
 
     </script>
 </x-app-layout>
