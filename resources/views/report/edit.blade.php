@@ -5,9 +5,9 @@
                 営業報告更新
             </h2>
             <div class="flex justify-end">
-                <x-general-button onClick="history.back()">
+                <x-general-button onClick="location.href='{{route('report.index')}}'">
                     {{-- <x-general-button onclick="location.href='{{route('report.index')}}'"> --}}
-                    戻る
+                    報告一覧へ
                 </x-general-button>
                 <x-message :message="session('message')"/>
             </div>
@@ -191,26 +191,30 @@
     </div>
 
     <script>
-        const textareaContent = document.getElementById('auto-resize-textarea-content');
+        const textareaContent = document.getElementById('auto-resize-textarea-report_content');
         textareaContent.addEventListener('input', function() {
             // テキストエリアの高さを自動調整
             this.style.height = 'auto';
             this.style.height = (this.scrollHeight + 2) + 'px';
         });
 
-        const textareaNotice = document.getElementById('auto-resize-textarea-notice');
-        const charCountNotice = document.getElementById('char-count');
-        
+        const textareaNotice = document.getElementById('auto-resize-textarea-report_notice');
         textareaNotice.addEventListener('input', function() {
             // テキストエリアの高さを自動調整
             this.style.height = 'auto';
             this.style.height = (this.scrollHeight + 2) + 'px';
-        
-            // 文字数をカウント
-            const textLength = this.value.length;
-            charCountNotice.textContent = textLength + '文字';
         });
 
+        textareaContent.addEventListener('mouseover', function() {
+            // テキストエリアの高さを自動調整
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight + 2) + 'px';
+        });
+        textareaNotice.addEventListener('mouseover', function() {
+            // テキストエリアの高さを自動調整
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight + 2) + 'px';
+        });
 </script>
 
 

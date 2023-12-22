@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/support', '\App\Http\Controllers\SupportController');
     Route::resource('/project', '\App\Http\Controllers\ProjectController');
     Route::resource('/link', '\App\Http\Controllers\LinkController');
+    Route::resource('/client-product' , '\App\Http\Controllers\ClientProductController');
 
     //マスタ系
     Route::resource('/masters', '\App\Http\Controllers\MasterController');
@@ -62,11 +63,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/clientcorporation/upload', [ClientCorporationController::class, 'upload'])->name('clientcorporation.upload');
     Route::post('/user/upload', [UserController::class, 'upload'])->name('user.upload');
     Route::post('/client/search', [ClientController::class, 'search'])->name('client.search');
+    Route::post('/product/search', [ProductController::class, 'search'])->name('product.search');
     Route::get('/report/{report_id}/comment', [CommentController::class, 'show'])->name('comment.show');
     Route::post('/report/{report_id}/comment', [CommentController::class, 'store'])->name('comment.store');
     Route::get('/report/{report_id}/client', [ReportController::class, 'showFromClient'])->name('report.showFromClient');
     Route::post('/product/upload', [ProductController::class, 'upload'])->name('product.upload');
-    Route::post('/client-product/store', [ClientProductController::class, 'store']);
+    // Route::post('/client-product/store', [ClientProductController::class, 'store']);
     // routes/web.php
 
     
@@ -74,8 +76,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/update-link/{link}', [LinkController::class, 'mordalupdate'])->name('updateLink');
     Route::post('/save-modal-id', [LinkController::class, 'saveModalId'])->name('save.modal.id');
 
-
-
+    //顧客編集画面のアクティブタブを取得
+    Route::post('/updateActiveTab',  [ClientController::class, 'updateActiveTab']);
 
 
     // Route::get('/product-selection', 'ProductController@index');

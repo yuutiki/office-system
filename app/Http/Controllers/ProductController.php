@@ -315,4 +315,25 @@ public function getSplitTypes($productTypeId)
     $splitTypes = ProductSplitType::where('product_type_id', $productTypeId)->get();
     return response()->json($splitTypes);
 }
+
+
+    //モーダル用の非同期検索ロジック
+    public function search(Request $request)
+    {
+        $product_name = $request->input('productName');
+        $product_series_id = $request->input('productSeriesId');
+        $product_split_type_id = $request->input('productSplitTypeId');
+
+        $query = Product::query()->orderBy('product_split_type_id','asc')
+        ->where('is_listed', '=',  '1')
+        ->where('product_name', 'LIKE', '%' . $product_name . '%')
+        ->Where('product_series_id', 'LIKE', '%' . $product_series_id . '%');
+        // $product_split_type_id が選択されている場合のみ検索条件に追加
+        if ($product_split_type_id !== null) {
+            $query->where('product_split_type_id', '=', $product_split_type_id);
+        }
+        $products = $query->with('productSplitType','department','productSeries')->get();
+
+        return response()->json($products);
+    }
 }

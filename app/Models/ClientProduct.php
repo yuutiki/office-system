@@ -9,8 +9,17 @@ class ClientProduct extends Model
 {
     use HasFactory;
 
-    protected $table = 'client_products';
-
+    protected $fillable = [
+        'client_id',
+        'product_id',
+        'quantity',
+        'product_version_id',
+        'is_customized',
+        'is_contracted',
+        'install_memo',
+        'created_by',
+        'updated_by',
+    ];
     // 他のモデルとのリレーションを定義
     public function product()
     {

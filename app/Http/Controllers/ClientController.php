@@ -17,6 +17,7 @@ use App\Models\Support;
 use Illuminate\Http\Request;
 use Illuminate\pagination\paginator;//add
 use Illuminate\Support\Facades\DB;//add
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class ClientController extends Controller
@@ -113,9 +114,14 @@ class ClientController extends Controller
         $client = Client::find($id);
         $prefectures = Prefecture::all(); //都道府県
 
-        $clientProducts = ClientProduct::where('client_id',$id)->get();
+        $clientProducts = ClientProduct::where('client_id',$id)->orderBy('product_id','asc')->get();
         $reports = Report::where('client_id',$id)->get();
         $supports = Support::where('client_id',$id)->get();
+        // client_numとclient_nameをセッションに保存
+        Session::put('selected_client_num', $client->client_num);
+        Session::put('selected_client_name', $client->client_name);
+        Session::put('selected_client_id', $client->id);
+
         return view('client.edit',compact('departments','users','tradeStatuses','clientTypes','installationTypes','client','reports','prefectures','supports','clientProducts'));
     }
 
@@ -175,5 +181,12 @@ class ClientController extends Controller
         $clients = $query->with('products','department')->get();
 
         return response()->json($clients);
+    }
+
+    public function updateActiveTab(Request $request)
+    {
+        $activeTabId = $request->input('activeTabId');
+        Session::put('active_tab', $activeTabId);
+        return response()->json(['message' => 'アクティブなタブが更新されました']);
     }
 }

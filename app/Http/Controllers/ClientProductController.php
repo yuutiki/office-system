@@ -3,7 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\ClientProduct;
+use App\Models\Client;
+use App\Models\Department;
+use App\Models\Product;
+use App\Models\ProductSeries;
+use App\Models\ProductSplitType;
+use App\Models\ProductVersion;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class ClientProductController extends Controller
 {
@@ -14,26 +22,65 @@ class ClientProductController extends Controller
 
     public function create()
     {
-        //
+        $users = User::all();
+        $departments = Department::all(); //管轄事業部
+        $productSeries = ProductSeries::all();
+        $productVersions = ProductVersion::orderby('version_code','desc')->get();
+        $productSplitTypes = ProductSplitType::all();
+
+        // セッションからclient_numとclient_nameを取得
+        $clientNum = Session::get('selected_client_num');
+        $clientName = Session::get('selected_client_name');
+        $clientId = Session::get('selected_client_id');
+
+        return view('client-product.create',compact('departments','users','productSeries','productVersions','productSplitTypes','clientNum','clientName','clientId'));
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'client_id' => 'required|exists:clients,id',
-            'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:0|max:99',
             'product_version_id' => 'required|exists:product_versions,id',
             'is_customized' => 'boolean',
             'is_contracted' => 'boolean',
-            'install_memo' => 'string',
-            'created_by' => 'nullable|exists:users,id',
-            'updated_by' => 'nullable|exists:users,id',
         ]);
+
+        // client_numからclient_idを取得する
+        $client = Client::where('client_num', $request->client_num)->first();
+        $clientId = $client->id;
+
+        // product_nameからproduct_idを取得する
+        $product = Product::where('product_code', $request->product_code)->first();
+        $productId = $product->id;
     
-        $clientProduct = ClientProduct::create($data);
-    
-        return "データを中間テーブルに挿入しました。";
+        // ボタンの値によって処理を振り分け
+        if ($request->input('action') === 'save_and_continue') {
+            // 「続けて登録」の処理
+            $clientProduct = new ClientProduct();
+            $clientProduct->client_id = $clientId;
+            $clientProduct->product_id = $productId;
+            $clientProduct->quantity = $request->quantity;
+            $clientProduct->product_version_id = $request->product_version_id;
+            $clientProduct->is_customized = $request->is_customized;
+            $clientProduct->is_contracted = $request->is_contracted;
+            $clientProduct->install_memo = $request->install_memo;
+            $clientProduct->save();
+
+            // フォームの入力画面にリダイレクト
+            return redirect()->route('client-product.create')->with('success', '登録が完了しました');
+        } else {
+            $clientProduct = new ClientProduct();
+            $clientProduct->client_id = $clientId;
+            $clientProduct->product_id = $productId;
+            $clientProduct->quantity = $request->quantity;
+            $clientProduct->product_version_id = $request->product_version_id;
+            $clientProduct->is_customized = $request->is_customized;
+            $clientProduct->is_contracted = $request->is_contracted;
+            $clientProduct->install_memo = $request->install_memo;
+            $clientProduct->save();
+
+            return redirect()->route('client.index')->with('success', '正常に登録しました');    
+        }
     }
 
     public function show(ClientProduct $clientProduct)

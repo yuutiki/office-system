@@ -342,14 +342,14 @@
 
                 {{-- 3つ目のタブコンテンツ(導入システム)Start --}}
                 <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-                    <span class="text-white">この顧客のサポート問い合わせ情報の内容が表示されます。ここからサポート情報を登録することもできます。</span>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">バージョン,初期導入日、前回VUP日</p>
 
-                    {{-- <div class="w-full flex flex-col">
+                    <div class="w-full flex flex-col">
                         <label for="" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">主バージョン</label>
                         <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="" value="{{old('',"V10.1")}}" placeholder="">
-                    </div> --}}
+                    </div>
 
-                    <div class="w-full relative overflow-x-auto shadow-md rounded-lg mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
+                    <div class="w-full relative overflow-x-auto shadow-md rounded-lg mx-auto mt-4 boeder-2 bg-gray-300 dark:bg-gray-700">
                         <table class="w-full text-sm font-medium text-left text-gray-800 dark:text-gray-400">
                 
                             {{-- テーブルヘッダ start --}}
@@ -406,13 +406,7 @@
                                             </svg>
                                             追加
                                         </button> --}}
-                                        {{-- <button id="storeProductButton" data-modal-toggle="storeProduct" class="bg-blue-400 flex items-center justify-center px-2 py-1 text-sm font-medium text-white rounded-md bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" type="button">
-                                            <svg class="h-3.5 w-3.5 mr-0.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                                            </svg>
-                                            <span class="text-ms">追加</span>
-                                        </button> --}}
-                                        <button onclick="location.href='{{route('client-product.create')}}'" class="bg-blue-400 flex items-center justify-center px-2 py-1 text-sm font-medium text-white rounded-md bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" type="button">
+                                        <button id="storeProductButton" data-modal-toggle="storeProduct" class="bg-blue-400 flex items-center justify-center px-2 py-1 text-sm font-medium text-white rounded-md bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" type="button">
                                             <svg class="h-3.5 w-3.5 mr-0.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                                 <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                                             </svg>
@@ -424,54 +418,44 @@
                                 <tbody>
                                     @foreach ($clientProducts as $clientProduct)
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
-                                        {{-- <td class="px-4 py-2 text-center">
+                                        <td class="px-4 py-1 text-center">
                                             <a href="{{route('client.edit',$client)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline whitespace-nowrap">編集</a>
-                                        </td> --}}
-                                        <td class="px-2 py-2 text-center">
-                                            <button onclick="location.href='{{route('client.edit',$client)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
-                                                <div class="flex">
-                                                    <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
-                                                    </svg>
-                                                    <span class="text-ms">編集</span>
-                                                </div>
-                                            </button>
                                         </td>
-                                        <th scope="row" class="pl-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        <th scope="row" class="pl-4 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {{ $clientProduct->product->productSeries->series_name }}
                                         </th>
-                                        <td class="px-1 py-2 whitespace-nowrap">
+                                        <td class="px-1 py-1 whitespace-nowrap">
                                             {{ $clientProduct->productVersion->version_name }}
                                         </td>
-                                        <td class="px-2 py-2 whitespace-nowrap">
+                                        <td class="px-2 py-1 whitespace-nowrap">
                                             {{ $clientProduct->product->productSplitType->split_type_name }}
                                         </td>
-                                        <td class="px-1 py-2 whitespace-nowrap">
+                                        <td class="px-1 py-1 whitespace-nowrap">
                                             {{ $clientProduct->product->product_short_name }}
                                         </td>
-                                        <td class="px-4 py-2 whitespace-nowrap">
-                                            {{ $clientProduct->quantity }}
+                                        <td class="px-4 py-1 whitespace-nowrap">
+                                            {{ $clientProduct->quantity }}個
                                         </td>
                                         @if($clientProduct->is_customized == "1")
-                                            <td class="px-2 py-2 whitespace-nowrap text-red-400">
+                                            <td class="px-2 py-1 whitespace-nowrap text-red-400">
                                                 有り
                                             </td>
                                         @else
-                                            <td class="px-2 py-2 whitespace-nowrap">
+                                            <td class="px-2 py-1 whitespace-nowrap">
                                                 -
                                             </td>
                                         @endif
 
                                         @if ($clientProduct->is_contracted == "1")
-                                            <td class="px-2 py-2 whitespace-nowrap">
+                                            <td class="px-2 py-1 whitespace-nowrap">
                                                 契約済
                                             </td>
                                         @else
-                                            <td class="px-2 py-2 whitespace-nowrap text-red-400">
+                                            <td class="px-2 py-1 whitespace-nowrap text-red-400">
                                                 未契約
                                             </td>
                                         @endif
-                                        <td class="px-2 py-2 whitespace-nowrap">
+                                        <td class="px-2 py-1 whitespace-nowrap">
                                             <div class="whitespace-nowrap overflow-ellipsis w-6/12 overflow-hidden">
                                             {{ $clientProduct->install_memo }}
                                             </div>

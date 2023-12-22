@@ -90,9 +90,9 @@
                     <div>
                         <label for="trade_status_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">プロジェクト種別</label>
                         <select id="trade_status_id" name="trade_status_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option value="">通常</option>
-                            <option value="">継続C</option>
-                            <option value="">継続S</option>
+                            <option value="">フロー</option>
+                            <option value="">ストック（契約）</option>
+                            <option value="">ストック（物販）</option>
                             {{-- @foreach($tradeStatuses as $tradeStatus)
                             <option value="{{ $tradeStatus->id }}" @if($tradeStatus->id == old('trade_status_id')) selected @endif>{{ $tradeStatus->name }}</option>
                             @endforeach --}}
@@ -126,9 +126,9 @@
                         <li class="mr-2" role="presentation">
                             <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">受注情報</button>
                         </li>
-                        {{-- <li class="mr-2" role="presentation">
-                            <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">導入システム</button>
-                        </li> --}}
+                        <li class="mr-2" role="presentation">
+                            <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">経費情報</button>
+                        </li>
                         {{-- <li role="presentation">
                             <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts" aria-selected="false">環境情報</button>
                         </li> --}}
@@ -463,6 +463,116 @@
             </form>
                     </div>
                     <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                        <div class="grid gap-2 mb-4 sm:grid-cols-4">
+                            <div>
+                                <label for="trade_status_id" class="block font-semibold text-gray-900 dark:text-white leading-none mt-4">受注区分</label>
+                                <select id="trade_status_id" name="trade_status_id" class="bg-gray-50 border block mt-1 border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option value="">未選択</option>
+                                    <option value="">社外受注</option>
+                                    <option value="">社内受注</option>
+                                    {{-- @foreach($tradeStatuses as $tradeStatus)
+                                    <option value="{{ $tradeStatus->id }}" @if($tradeStatus->id == old('trade_status_id')) selected @endif>{{ $tradeStatus->name }}</option>
+                                    @endforeach --}}
+                                </select>
+                                @error('trade_status_id')
+                                    <div class="text-red-500">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="w-full flex flex-col">
+                                <label for="start_date" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">受注日</label>
+                                <input type="date" min="1900-01-01" max="2100-12-31" name="start_date" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" required>
+                            </div>
+                            <div class="w-full flex flex-col">
+                                <label for="start_date" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">納品予定日</label>
+                                <input type="date" min="1900-01-01" max="2100-12-31" name="start_date" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" required>
+                            </div>
+                            <div class="w-full flex flex-col">
+                                <label for="end_date" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">入金予定日</label>
+                                <input type="date" min="1900-01-01" max="2100-12-31" name="end_date" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" required>
+                            </div>
+                            <div class="w-full flex flex-col">
+                                <label for="distribution" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">請求先法人№</label>
+                                <input type="text" name="distribution" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 mb-8" id="distribution" value="{{old('distribution')}}" placeholder="">
+                            </div>
+                            <div class="w-full flex flex-col">
+                                <label for="distribution" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">請求先法人</label>
+                                <input type="text" name="distribution" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 mb-8" id="distribution" value="{{old('distribution')}}" placeholder="">
+                            </div>
+                            <div class="w-full flex flex-col">
+                                <label for="distribution" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">請求先 名称</label>
+                                <input type="text" name="distribution" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 mb-8" id="distribution" value="{{old('distribution')}}" placeholder="">
+                            </div>
+                            <div class="w-full flex flex-col">
+                                <label for="distribution" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">請求先 部署名称</label>
+                                <input type="text" name="distribution" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 mb-8" id="distribution" value="{{old('distribution')}}" placeholder="">
+                            </div>
+                            <div class="w-full flex flex-col">
+                                <label for="distribution" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">請求先 担当者名称</label>
+                                <input type="text" name="distribution" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 mb-8" id="distribution" value="{{old('distribution')}}" placeholder="">
+                            </div>
+                            <div class="w-full flex flex-col">
+                                <label for="distribution" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">請求先 郵便番号</label>
+                                <input type="text" name="distribution" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 mb-8" id="distribution" value="{{old('distribution')}}" placeholder="">
+                            </div>
+                            <div class="w-full flex flex-col">
+                                <label for="distribution" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">請求先 住所</label>
+                                <input type="text" name="distribution" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 mb-8" id="distribution" value="{{old('distribution')}}" placeholder="">
+                            </div>
+                            <div>
+                                <label for="trade_status_id" class="block font-semibold text-gray-900 dark:text-white leading-none mt-4">敬称</label>
+                                <select id="trade_status_id" name="trade_status_id" class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option value="">未選択</option>
+                                    <option value="">御中</option>
+                                    <option value="">様</option>
+                                    {{-- @foreach($tradeStatuses as $tradeStatus)
+                                    <option value="{{ $tradeStatus->id }}" @if($tradeStatus->id == old('trade_status_id')) selected @endif>{{ $tradeStatus->name }}</option>
+                                    @endforeach --}}
+                                </select>
+                                @error('trade_status_id')
+                                    <div class="text-red-500">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="grid gap-2 mb-1 sm:grid-cols-5">
+                            <div>
+                                <label for="trade_status_id" class="block font-semibold text-gray-900 dark:text-white leading-none mt-1">入金銀行</label>
+                                <select id="trade_status_id" name="trade_status_id" class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option value="">未選択</option>
+                                    <option value="">みずほ銀行</option>
+                                    <option value="">三井住友銀行</option>
+                                    {{-- @foreach($tradeStatuses as $tradeStatus)
+                                    <option value="{{ $tradeStatus->id }}" @if($tradeStatus->id == old('trade_status_id')) selected @endif>{{ $tradeStatus->name }}</option>
+                                    @endforeach --}}
+                                </select>
+                                @error('trade_status_id')
+                                    <div class="text-red-500">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="w-full flex flex-col">
+                                <label for="start_date" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">入金日</label>
+                                <input type="date" min="1900-01-01" max="2100-12-31" name="start_date" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" required>
+                            </div>
+                            <div class="w-full flex flex-col">
+                                <label for="distribution" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">入金額</label>
+                                <input type="text" name="distribution" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 mb-1" id="distribution" value="{{old('distribution')}}" placeholder="">
+                            </div>
+                            <div class="w-full flex flex-col">
+                                <label for="distribution" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">手数料</label>
+                                <input type="text" name="distribution" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 mb-1" id="distribution" value="{{old('distribution')}}" placeholder="">
+                            </div>
+
+                            <div class="w-full flex flex-col">
+                                <label for="distribution" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">遅延理由</label>
+                                <input type="text" name="distribution" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 mb-1" id="distribution" value="{{old('distribution')}}" placeholder="">
+                            </div>
+
+                        </div>
+                        <div class="w-full flex flex-col">
+                            <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">入金備考</label>
+                            <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded-md mt-1 mb-8 placeholder-gray-400" id="memo" value="{{old('memo')}}" cols="30" rows="2"></textarea>
+                        </div>
+
+
                         <ul class=" mt-4 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                             <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                 <div class="flex items-center pl-3">

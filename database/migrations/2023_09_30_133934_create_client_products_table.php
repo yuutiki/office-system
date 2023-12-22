@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('product_version_id')->comment('バージョン');//バージョンtableを参照
             $table->boolean('is_customized')->comment('CUSフラグ');
             $table->boolean('is_contracted')->comment('契約フラグ');
-            $table->text('install_memo')->comment('導入メモ');
+            $table->text('install_memo')->nullable(true)->comment('導入メモ');
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->timestamps();

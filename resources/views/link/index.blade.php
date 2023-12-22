@@ -216,7 +216,7 @@
                         </button>
                     </td>
                     <td class="px-4 py-2 whitespace-nowrap">
-                        <button id="updateProductButton" data-modal-toggle="updateModal-{{$link->id}}" class="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" type="button">
+                        <button id="updateProductButton" data-modal-target="updateModal-{{$link->id}}" data-modal-show="updateModal-{{$link->id}}" class="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" type="button">
                             <div class="flex">
                                 <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
@@ -238,7 +238,7 @@
                         {{$link->display_order}}
                     </td>
                     <td class="py-2">
-                        <button data-modal-target="deleteModal-{{$link->id}}" data-modal-toggle="deleteModal-{{$link->id}}"  class="block whitespace-nowrap px-2 py-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-md text-sm  text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
+                        <button data-modal-target="deleteModal-{{$link->id}}" data-modal-show="deleteModal-{{$link->id}}"  class="block whitespace-nowrap px-2 py-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-md text-sm  text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
                             <div class="flex">
                                 <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z"/>
@@ -290,7 +290,7 @@
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                                 リンク更新
                             </h3>
-                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="updateModal-{{$link->id}}">
+                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="updateModal-{{$link->id}}">
                                 <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                 <span class="sr-only">Close modal</span>
                             </button>
@@ -354,7 +354,6 @@
                                     削除
                                 </button>
                             </div>
-                            <div id="errorMessages"></div>
                         </form>
                     </div>
                 </div>
@@ -368,7 +367,6 @@
         </div>
     </div>
 
-    
     <script>
         document.addEventListener('DOMContentLoaded', function () {
         const uploadForm = document.getElementById('csv_form1');
@@ -392,34 +390,47 @@
         });
 
 
+                // モーダルを非表示にするための関数
+                function hideModal() {
+            // モーダルの要素を取得
+            const modal = document.getElementById('corporationSearchModal');
+            //背後の操作不可を解除
+            const overlay = document.getElementById('overlay').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+
+            // モーダルを非表示にするためのクラスを削除
+            modal.classList.add('hidden');
+        }
+
     const updateButton = document.getElementById('updateProductButton');
     const csrfToken = "{{ csrf_token() }}";
 
-    // ボタンがクリックされたときの処理
+
+
     updateButton.addEventListener('click', function () {
-    // ボタンのdata属性からモーダルIDを取得
-    const savemodalId = updateButton.getAttribute('data-modal-toggle');
-            // モーダルIDをセッションに保存するAjaxリクエスト
-        fetch('{{ route('save.modal.id') }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken, // CSRFトークンが必要な場合、適切な値に置き換えてください
-        },
-        body: JSON.stringify({ savemodalId }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data.message);
+        const modalTarget = updateButton.getAttribute('data-modal-target');
+        const savemodalId = updateButton.getAttribute('data-modal-show');
+                // モーダルIDをセッションに保存するAjaxリクエスト
+            fetch('{{ route('save.modal.id') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken, // CSRFトークンが必要な場合、適切な値に置き換えてください
+            },
+            body: JSON.stringify({ savemodalId, modalTarget }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+            });
         });
-    });
 
     document.addEventListener("DOMContentLoaded", function() {
             const modalId = '{{ session("openedModalId") }}';
             if (modalId) {
             // モーダルが存在する場合、JavaScriptを使用してモーダルを再表示
             const modal = new Modal(document.getElementById(modalId));
-            modal.show();
+            modal.toggle();
             }
         });
     
