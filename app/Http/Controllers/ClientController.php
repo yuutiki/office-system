@@ -81,6 +81,7 @@ class ClientController extends Controller
         $client->head_prefecture = $request->head_prefecture;
         $client->head_address1 = $request->head_addre1;
         $client->head_tel = $request->head_tel;
+        $client->head_fax = $request->head_fax;
         $client->students = $request->students;
         $client->distribution = $request->distribution;
         $client->client_type_id = $request->client_type_id;
@@ -137,6 +138,7 @@ class ClientController extends Controller
         $client->head_prefecture = $request->head_prefecture;
         $client->head_address1 = $request->head_addre1;
         $client->head_tel = $request->head_tel;
+        $client->head_fax = $request->head_fax;
         $client->students = $request->students;
         $client->distribution = $request->distribution;
         $client->department_id = $request->department;
@@ -178,7 +180,7 @@ class ClientController extends Controller
         ->where('client_name', 'LIKE', '%' . $clientName . '%')
         ->Where('client_num', 'LIKE', '%' . $clientNumber . '%')
         ->Where('department_id', 'LIKE', '%' . $clientDepartment . '%');
-        $clients = $query->with('products','department')->get();
+        $clients = $query->with('products','department','clientCorporation')->get();
 
         return response()->json($clients);
     }

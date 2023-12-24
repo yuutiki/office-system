@@ -19,6 +19,7 @@ use App\Services\NotificationService;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class SupportController extends Controller
 {
@@ -62,7 +63,10 @@ class SupportController extends Controller
         $clientTypes = ClientType::all();
         $departments = Department::all();
 
-        return view('support.create',compact('users','productSeriess','productVersions','productCategories','supportTypes','supportTimes','installationTypes','clientTypes','departments'));
+        $clientNum = Session::get('selected_client_num');
+        $clientName = Session::get('selected_client_name');
+
+        return view('support.create',compact('users','productSeriess','productVersions','productCategories','supportTypes','supportTimes','installationTypes','clientTypes','departments','clientNum','clientName'));
     }
 
     public function store(Request $request)

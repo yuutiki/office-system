@@ -29,12 +29,12 @@
             <div class="grid gap-4 mb-4 sm:grid-cols-2">
                 <div class="">
                     <label for="client_num" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客番号</label>
-                    <input type="text" name="client_num" class="w-full py-1 placeholder-red-800 bg-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="client_num" value="{{old('client_num')}}" placeholder="顧客を検索してください" readonly>
+                    <input type="text" name="client_num" class="w-full py-1 placeholder-red-800 bg-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="client_num" value="{{$clientNum}}" placeholder="顧客を検索してください" readonly>
                 </div>
 
                 <div class="">
                     <label for="client_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客名称</label>
-                    <input type="text" name="client_name" class="w-full py-1 placeholder-red-800 bg-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="client_name" value="{{old('client_name')}}" placeholder="顧客を検索してください" readonly>
+                    <input type="text" name="client_name" class="w-full py-1 placeholder-red-800 bg-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="client_name" value="{{$clientName}}" placeholder="顧客を検索してください" readonly>
                 </div>
                 @error('client_num')
                 <div class="text-red-500">{{ $message }}</div>

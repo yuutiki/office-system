@@ -13,6 +13,7 @@ use App\Notifications\AppNotification;
 use App\Services\NotificationService;
 use Illuminate\Pagination\Paginator;//add
 use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Support\Facades\Session;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -42,7 +43,12 @@ class ReportController extends Controller
         $reportTypes = ReportType::all();
         $contactTypes = ContactType::all();
         $users = User::all();
-        return view('report.create',compact('users','departments', 'reportTypes', 'contactTypes'));
+
+        $clientNum = Session::get('selected_client_num');
+        $clientName = Session::get('selected_client_name');
+        // $clientId = Session::get('selected_client_id');
+
+        return view('report.create',compact('users','departments', 'reportTypes', 'contactTypes', 'clientNum', 'clientName'));
     }
 
     public function store(Request $request)
@@ -73,6 +79,10 @@ class ReportController extends Controller
         $report->user_id = auth()->id();//ログインユーザのIDを取得
 
         $report->save();
+
+        $request->session()->forget('selected_client_num');
+        $request->session()->forget('selected_client_name');
+
 
 
         // 通知の内容を設定

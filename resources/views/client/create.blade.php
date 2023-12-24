@@ -167,7 +167,12 @@
 
                             <div class="w-full flex flex-col">
                                 <label for="head_tel" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-8">代表TEL（ハイフン有）</label>
-                                <input type="tel" name="head_tel" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="11" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_tel" value="{{old('head_tel')}}" placeholder="">
+                                <input type="tel" name="head_tel" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="12" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_tel" value="{{old('head_tel')}}" placeholder="">
+                            </div>
+
+                            <div class="w-full flex flex-col">
+                                <label for="head_fax" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-8">代表FAX（ハイフン有）</label>
+                                <input type="tel" name="head_fax" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="12" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_fax" value="{{old('head_fax')}}" placeholder="">
                             </div>
 
                             <div class="w-full flex flex-col">

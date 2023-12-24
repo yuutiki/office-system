@@ -186,9 +186,15 @@
                             <input type="text" name="head_addre1" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_addre1" value="{{old('head_addre1',$client->head_address1)}}" placeholder="">
                         </div>
                     </div>
+
                     <div class="w-full flex flex-col">
                         <label for="head_tel" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">代表TEL(ハイフン有)</label>
-                        <input type="text" name="head_tel" class="w-32 py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_tel" value="{{old('head_tel',$client->head_tel)}}" placeholder="">
+                        <input type="text" name="head_tel" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="12" id="head_tel" value="{{old('head_tel',$client->head_tel)}}" class="w-32 py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" placeholder="">
+                    </div>
+
+                    <div class="w-full flex flex-col">
+                        <label for="head_fax" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-8">代表FAX（ハイフン有）</label>
+                        <input type="tel" name="head_fax" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="12" id="head_fax" value="{{old('head_fax',$client->head_fax)}}" class="w-32 py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1"  placeholder="">
                     </div>
 
                     <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
@@ -205,7 +211,7 @@
 
                     <div class="w-full flex flex-col">
                         <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">備考</label>
-                        <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="memo" value="{{old('memo')}}" cols="30" rows="5"></textarea>
+                        <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="memo" value="{{old('memo')}}" cols="30" rows="5">{{old('memo', $client->memo)}}</textarea>
                     </div>
                     <ul class=" mt-4 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                         <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
@@ -424,9 +430,6 @@
                                 <tbody>
                                     @foreach ($clientProducts as $clientProduct)
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
-                                        {{-- <td class="px-4 py-2 text-center">
-                                            <a href="{{route('client.edit',$client)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline whitespace-nowrap">編集</a>
-                                        </td> --}}
                                         <td class="px-2 py-2 text-center">
                                             <button onclick="location.href='{{route('client.edit',$client)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
                                                 <div class="flex">
@@ -494,143 +497,6 @@
                             {{-- {{ $clients->withQueryString()->links('vendor.pagination.custum-tailwind') }}   --}}
                         </div> 
                     </div> 
-                    <!-- Main modal -->
-                    <div id="storeProduct" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full animate-slide-in-top">
-                        {{-- <div id="storeProduct" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full animate-slide-in-top animate-slide-out-top"> --}}
-                        <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
-                            <!-- Modal content -->
-                            <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-                                <!-- Modal header -->
-                                <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                        導入システム追加
-                                    </h3>
-                                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="storeProduct">
-                                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                        <span class="sr-only">Close modal</span>
-                                    </button>
-                                </div>
-                                <!-- Modal body -->
-                                <form action="#">
-                                    <button id="searchProductButton" data-modal-toggle="searchProduct" class="bg-blue-400 flex items-center justify-center px-2 py-1 text-sm font-medium text-white rounded-md bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" type="button">
-                                        <svg class="h-3.5 w-3.5 mr-0.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                                        </svg>
-                                        <span class="text-ms">製品検索</span>
-                                    </button>
-                                    <div class="grid gap-4 mb-4 sm:grid-cols-2 mt-2">
-                                        <div>
-                                            <label for="category" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">シリーズ</label>
-                                            <select id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                                <option selected="">.NET</option>
-                                                <option value="TV">Smart</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label for="category" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">内訳種別</label>
-                                            <select id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                                <option selected="">パッケージ</option>
-                                                <option value="TV">Cloud Lite</option>
-                                                <option value="PC">Cloud LitePlus</option>
-                                                <option value="GA">Cloud Standard</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                        <div>
-                                            <label for="name" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">システム名称</label>
-                                            <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="">
-                                        </div>
-                                    <div class="grid gap-4 mb-4 sm:grid-cols-4 mt-2">
-                                        <div>
-                                            <label for="category" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">バージョン</label>
-                                            <select id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                                <option selected="">10.2sp1</option>
-                                                <option value="TV">10.2</option>
-                                                <option value="PC">10.1</option>
-                                                <option value="GA">10.0</option>
-                                                <option value="PH">9.0sp1</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label for="category" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">CUSフラグ</label>
-                                            <select id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                                <option selected="">未選択</option>
-                                                <option selected="">標準</option>
-                                                <option value="TV">CUS</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label for="category" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">契約区分</label>
-                                            <select id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                                <option selected="">未選択</option>
-                                                <option value="TV">契約済</option>
-                                                <option value="PC">未契約</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label for="price" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">数量</label>
-                                            <input type="number" min="1" name="price" id="price" value="1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="">
-                                        </div>
-                                        <div class="sm:col-span-4">
-                                            <label for="description" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">備考</label>
-                                            <textarea id="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Write product description here"></textarea>                    
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                        <svg class="mr-1 -ml-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                                        登録
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Main modal -->
-                    <div id="searchProduct" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full animate-slide-in-top">
-                        <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
-                            <!-- Modal content -->
-                            <div class="relative p-4 bg-blue-400  rounded-lg dark:bg-gray-800 sm:p-5 shadow-xl ">
-                                <!-- Modal header -->
-                                <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                        製品検索
-                                    </h3>
-                                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="searchProduct">
-                                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                        <span class="sr-only">Close modal</span>
-                                    </button>
-                                </div>
-                                <!-- Modal body -->
-                                <form action="#">
-                                    <div class="grid gap-4 mb-4 sm:grid-cols-3">
-                                        <div>
-                                            <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">シリーズ</label>
-                                            <select id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                                <option selected="">.NET</option>
-                                                <option value="TV">Smart</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">内訳種別</label>
-                                            <select id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                                <option selected="">パッケージ</option>
-                                                <option value="TV">Cloud Lite</option>
-                                                <option value="PC">Cloud LitePlus</option>
-                                                <option value="GA">Cloud Standard</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">製品名称</label>
-                                            <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="製品名称">
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                        <svg class="mr-1 -ml-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                                        検索
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 {{-- 3つ目のタブコンテンツEnd --}}
 

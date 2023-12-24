@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ReportTypeSeeder::class);
         $this->call(ProjectTypeSeeder::class);
         $this->call(AccountingTypeSeeder::class);
-        $this->call(T_ProjectSeeder::class);
+        // $this->call(T_ProjectSeeder::class);
 
         // \App\Models\User::factory(10)->create();
 
