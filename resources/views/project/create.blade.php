@@ -61,7 +61,7 @@
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="">
+                    <div class="col-span-2">
                         <label for="project_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">プロジェクト名称</label>
                         <input type="text" name="project_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="project_name" value="{{old('project_name')}}" placeholder="">
                         @error('project_name')
@@ -163,24 +163,39 @@
                         <div class="grid gap-2 mb-4 sm:grid-cols-5">
                             <div class="w-full flex flex-col">
                                 <label for="proposed_order_date" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-2">受注予定月</label>
-                                <input type="month" min="1900-01" max="2100-12" name="proposed_order_date" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" required>
+                                <input type="month" min="1900-01" max="2100-12" name="proposed_order_date" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1">
                             </div>
+                            @error('proposed_order_date')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
                             <div class="w-full flex flex-col">
                                 <label for="proposed_delivery_date" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-2">納品予定月</label>
-                                <input type="month" min="1900-01" max="2100-12"  name="proposed_delivery_date" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" required>
+                                <input type="month" min="1900-01" max="2100-12"  name="proposed_delivery_date" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1">
                             </div>
+                            @error('proposed_delivery_date')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
                             <div class="w-full flex flex-col">
                                 <label for="proposed_accounting_date" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-2">検収/計上予定月</label>
-                                <input type="month" min="1900-01" max="2100-12"  name="proposed_accounting_date" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" required>
+                                <input type="month" min="1900-01" max="2100-12"  name="proposed_accounting_date" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1">
                             </div>
+                            @error('proposed_accounting_date')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
                             <div class="w-full flex flex-col">
                                 <label for="proposed_payment_date" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-2">入金予定月</label>
-                                <input type="month" min="1900-01" max="2100-12"  name="proposed_payment_date" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" required>
+                                <input type="month" min="1900-01" max="2100-12"  name="proposed_payment_date" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1">
                             </div>
+                            @error('proposed_payment_date')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="w-full flex flex-col">
                             <label for="project_memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">プロジェクト備考</label>
                             <textarea name="project_memo" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="project_memo" value="{{old('project_memo')}}" cols="30" rows="5"></textarea>
+                            @error('project_memo')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="grid gap-4 my-4 sm:grid-cols-4">
                             <div>
@@ -232,7 +247,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <x-primary-button class="mt-4">
+                        <x-primary-button class="mt-4" form="form1">
                             新規登録する
                         </x-primary-button>
                     </div>

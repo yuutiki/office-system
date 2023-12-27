@@ -29,7 +29,7 @@ return new class extends Migration
             $table->foreignId('department_id')->comment('事業部ID'); 
             $table->foreignId('division_id')->comment('部署ID'); 
             $table->string('profile_image')->nullable(true)->default('default.png')->comment('プロフ画像');
-            $table->timestamps();
+            $table->datetimes();
         });
     }
 

@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('series_name',20)->comment('製品シリーズ名称');
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
-            $table->timestamps();
+            $table->datetimes();
         });
     }
 

@@ -12,10 +12,12 @@ use App\Http\Controllers\LinkController;
 use App\Http\Controllers\ReportController;//add
 use App\Http\Controllers\ProductController;//add
 use App\Http\Controllers\UserController;//add
+use App\Http\Controllers\ProjectRevenueController;//add
 
 use App\Http\Livewire\ClientCorporationSearchModal;
 use App\Http\Livewire\ClientForm;
 use App\Models\Product;
+use App\Models\ProjectRevenue;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,6 +71,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/report/{report_id}/comment', [CommentController::class, 'store'])->name('comment.store');
     Route::get('/report/{report_id}/client', [ReportController::class, 'showFromClient'])->name('report.showFromClient');
     Route::post('/product/upload', [ProductController::class, 'upload'])->name('product.upload');
+    Route::post('/bulk-insert-revenues', [ProjectRevenueController::class, 'bulkInsert'])->name('projectrevenue.bulkInsert');
     // Route::post('/client-product/store', [ClientProductController::class, 'store']);
     // routes/web.php
 

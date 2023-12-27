@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('report_notice')->nullable()->comment('特記事項');
             $table->string('client_representative')->nullable()->comment('顧客担当者');
             $table->unsignedBigInteger('user_id')->nullable()->comment('報告者ID');//Userテーブルを参照
-            $table->timestamps();
+            $table->datetimes();
         });
     }
 

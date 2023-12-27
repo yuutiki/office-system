@@ -83,7 +83,8 @@
                     <select id="user_id" name="user_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed pointer-events-none" readonly>
                         <option selected value="">未選択</option>
                         @foreach($users as $user)
-                        <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
+                        {{-- <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>{{ $user->name }}</option> --}}
+                        <option value="{{ $user->id }}" @selected($user->id == old('user_id'))>{{ $user->name }}</option>
                         @endforeach
                     </select>
                     @error('user')
@@ -150,7 +151,7 @@
                             <select id="f_support_type_id" name="f_support_type_id" class="block w-full py-1.5 border bg-gray-50 rounded-md mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 @foreach($supportTypes as $supportType)
-                                    <option value="{{ $supportType->id }}">{{ $supportType->type_name }}</option>
+                                    <option value="{{ $supportType->id }}" @selected($supportType->id == old('f_support_type_id'))>{{ $supportType->type_name }}</option>
                                 @endforeach
                             </select>
                             @error('f_support_type_id')
@@ -162,7 +163,7 @@
                             <select id="f_support_time_id" name="f_support_time_id" class="block w-full py-1.5 border bg-gray-50 rounded-md mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 @foreach($supportTimes as $supportTime)
-                                    <option value="{{ $supportTime->id }}">{{ $supportTime->time_name }}</option>
+                                    <option value="{{ $supportTime->id }}" @selected($supportTime->id == old('f_support_time_id'))>{{ $supportTime->time_name }}</option>
                                 @endforeach
                             </select>
                             @error('f_support_time_id')
@@ -175,7 +176,7 @@
                             <select id="f_product_series_id" name="f_product_series_id" class="block w-full py-1.5 border bg-gray-50 rounded-md mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 @foreach($productSeriess as $productSeries)
-                                    <option value="{{ $productSeries->id }}">{{ $productSeries->series_name }}</option>
+                                    <option value="{{ $productSeries->id }}" @selected($productSeries->id == old('f_product_series_id'))>{{ $productSeries->series_name }}</option>
                                 @endforeach
                             </select>
                             @error('f_product_series_id')
@@ -187,7 +188,7 @@
                             <select id="f_product_version_id" name="f_product_version_id" class="block w-full py-1.5 border bg-gray-50 rounded-md mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 @foreach($productVersions as $productVersion)
-                                    <option value="{{ $productVersion->id }}">{{ $productVersion->version_name }}</option>
+                                    <option value="{{ $productVersion->id }}" @selected($productVersion->id == old('f_product_version_id'))>{{ $productVersion->version_name }}</option>
                                 @endforeach
                             </select>
                             @error('f_product_version_id')
@@ -199,7 +200,7 @@
                             <select id="f_product_category_id" name="f_product_category_id" class="block w-full py-1.5 border bg-gray-50 rounded-md mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 @foreach($productCategories as $productCategory)
-                                    <option value="{{ $productCategory->id }}">{{ $productCategory->category_name }}</option>
+                                    <option value="{{ $productCategory->id }}" @selected($productCategory->id == old('f_product_category_id'))>{{ $productCategory->category_name }}</option>
                                 @endforeach
                             </select>
                             @error('f_product_category_id')

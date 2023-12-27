@@ -33,7 +33,7 @@ return new class extends Migration
             $table->boolean('is_faq_target')->default(0)->comment('FAQ対象フラグ');
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
-            $table->timestamps();
+            $table->datetimes();
         });
     }
 

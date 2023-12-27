@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('install_memo')->nullable(true)->comment('導入メモ');
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
-            $table->timestamps();
+            $table->datetimes();
 
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');

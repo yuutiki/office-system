@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('company_eng_name',100)->nullable(true)->comment('会社英名称');
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
-            $table->timestamps();
+            $table->datetimes();
         });
     }
 

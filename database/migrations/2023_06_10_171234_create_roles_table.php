@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('role_name',20)->comment('権限名称');
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
-            $table->timestamps();
+            $table->datetimes();
         });
     }
 

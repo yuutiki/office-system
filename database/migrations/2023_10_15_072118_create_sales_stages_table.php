@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('sales_stage_name',20)->comment('営業段階名称');
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
-            $table->timestamps();
+            $table->datetimes();
         });
     }
 

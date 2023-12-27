@@ -15,7 +15,7 @@ return new class extends Migration
             $table->foreignId('product_type_id')->comment('製品種別コード'); //product_typesテーブル参照
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
-            $table->timestamps();
+            $table->datetimes();
         });
     }
 

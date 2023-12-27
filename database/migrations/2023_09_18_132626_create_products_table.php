@@ -28,7 +28,7 @@ return new class extends Migration
             $table->text('product_memo2')->nullable(true)->comment('製品備考2');
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
-            $table->timestamps();
+            $table->datetimes();
         });
     }
 

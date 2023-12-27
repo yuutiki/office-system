@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('department_id')->comment('事業部ID');
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
-            $table->timestamps();
+            $table->datetimes();
         });
     }
 

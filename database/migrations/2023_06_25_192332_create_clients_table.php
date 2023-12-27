@@ -35,7 +35,7 @@ return new class extends Migration
             $table->boolean('is_other_partner')->comment('その他協業フラグ');
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
-            $table->timestamps();
+            $table->datetimes();
         });
     }
 

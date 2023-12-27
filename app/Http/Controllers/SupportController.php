@@ -116,6 +116,9 @@ class SupportController extends Controller
         $support->is_faq_target = $request->has('f_is_faq_target') ? 1 : 0;
         $support->save();
 
+        $request->session()->forget('selected_client_num');
+        $request->session()->forget('selected_client_name');
+
 
         // 通知の内容を設定
         $notificationData = [
@@ -196,9 +199,15 @@ class SupportController extends Controller
         return redirect()->route('support.index')->with('success', '変更しました');
     }
 
-    public function destroy(Support $support)
+    public function destroy(string $id)
     {
-        //
+        $support = Support::find($id);
+        // $projectId = $projectRevenue->project->id;
+        $support->delete();
+
+        // return redirect()->route('project.edit', $projectId)->with('message', '削除しました');
+        return redirect()->back()->with('success', '正常に削除しました');
+
     }
 
     //モーダル用の非同期検索ロジック

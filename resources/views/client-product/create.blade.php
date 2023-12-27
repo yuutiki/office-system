@@ -89,15 +89,16 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div hidden>
+                                <label for="product_code" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">製品コード</label>
+                                <input type="text" name="product_code" id="product_code" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 cursor-not-allowed" placeholder="Type product code" readonly>
+                            </div>
+                            <div class="col-span-2">
+                                <label for="product_name" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">製品名称</label>
+                                <input type="text" name="product_name" id="product_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 cursor-not-allowed" placeholder="製品検索をしてください" inert>
+                            </div>
                         </div>
-                        <div hidden>
-                            <label for="product_code" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">製品コード</label>
-                            <input type="text" name="product_code" id="product_code" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 cursor-not-allowed" placeholder="Type product code" readonly>
-                        </div>
-                        <div>
-                            <label for="product_name" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">製品名称</label>
-                            <input type="text" name="product_name" id="product_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 cursor-not-allowed" placeholder="製品検索をしてください" inert>
-                        </div>
+
                         <div class="grid gap-4 mb-4 sm:grid-cols-4 mt-8">
                             <div>
                                 <label for="product_version_id" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">バージョン</label>

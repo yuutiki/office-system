@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProjectStoreRequest;
 use App\Models\AccountingPeriod;
 use App\Models\AccountingType;
 use App\Models\Client;
@@ -22,7 +23,7 @@ class ProjectController extends Controller
     public function index()
     {
         $per_page = 25;
-        $projects = Project::with('salesStage','accountingType','accountUser','projectRevenues',)->sortable()->paginate($per_page);
+        $projects = Project::with('salesStage','accountingType','accountUser',)->sortable()->paginate($per_page);
         $count = $projects->count();
         $user = User::all();
 
@@ -73,7 +74,7 @@ class ProjectController extends Controller
         return view('project.create',compact('accountingPeriods','salesStages','distributionTypes','departments','companies','divisions','projectTypes','accountingTypes','users'));
     }
 
-    public function store(Request $request)
+    public function store(ProjectStoreRequest $request)
     {
         ////以下にFormRequestのバリデーションを通過した場合の処理を記述////
 
@@ -176,7 +177,43 @@ class ProjectController extends Controller
 
     public function update(Request $request, Project $project)
     {
-        //
+            //// FormRequestのバリデーションを通過した場合の処理を記述 ////
+
+    // フォームからの値を変数に格納
+    $clientNum = $request->input('client_num');
+
+    // client_numからclient_idを取得する
+    $client = Client::where('client_num', $clientNum)->first();
+    $clientId = $client->id;
+
+    // リクエストから 'YYYY-MM' 形式の月を取得
+    // $proposedOrderMonth = $request->input('proposed_order_date');
+    // $proposedDeliveryMonth = $request->input('proposed_delivery_date');
+    // $proposedAccountingMonth = $request->input('proposed_accounting_date');
+    // $proposedPaymentMonth = $request->input('proposed_payment_date');
+
+    // PJ基本データを更新
+    $project->client_id = $clientId;
+    $project->project_name = $request->project_name;
+    $project->sales_stage_id = $request->sales_stage_id;
+    $project->project_type_id = $request->project_type_id;
+    $project->accounting_type_id = $request->accounting_type_id;
+    $project->distribution_type_id = $request->distribution_type_id;
+    $project->billing_corporation_id = $request->billing_corporation_id;
+    $project->proposed_order_date = Carbon::parse($request->proposed_order_date . '-01');
+    $project->proposed_delivery_date = Carbon::parse($request->proposed_delivery_date . '-01');
+    $project->proposed_accounting_date = Carbon::parse($request->proposed_accounting_date . '-01');
+    $project->proposed_payment_date = Carbon::parse($request->proposed_payment_date . '-01');
+    $project->project_memo = $request->project_memo;
+    $project->account_company_id = $request->account_company_id;
+    $project->account_department_id = $request->account_department_id;
+    $project->account_division_id = $request->account_division_id;
+    $project->account_user_id = $request->account_user_id;
+    $project->save();
+
+    // project.editに後で変更する
+    return redirect()->route('project.index')->with('success', '正常に更新しました');
+
     }
 
     public function destroy(Project $project)

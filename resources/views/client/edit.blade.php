@@ -146,7 +146,7 @@
                     </li>
                     <li class="mr-2" role="presentation">
                         <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts" aria-selected="false">
-                            契約情報
+                            環境情報
                         </button>
                     </li>
                     <li class="mr-2" role="presentation">
@@ -166,22 +166,21 @@
 
                 {{-- 1つ目のタブコンテンツStart --}}
                 <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="basic" role="tabpanel" aria-labelledby="profile-tab">
-                    <div class="w-full flex flex-col">
-                        <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">郵便番号</label>
-                        <input type="text" name="head_post_code" class="w-32 py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="" onKeyUp="AjaxZip3.zip2addr(this,'','head_prefecture','head_addre1');">
-                    </div>
-
-                    <div class="md:flex">
-                        <div class="w-auto flex flex-col">
+                    <div class="grid gap-4 mb-4 sm:grid-cols-5 mt-2">
+                        <div class="">
+                            <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">郵便番号</label>
+                            <input type="text" name="head_post_code" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="" onKeyUp="AjaxZip3.zip2addr(this,'','head_prefecture','head_addre1');">
+                        </div>
+                        <div class="">
                             <label for="head_prefecture" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4 ">都道府県</label>
-                            <select id="head_prefecture" name="head_prefecture" class="block w-32 py-1.5  text-sm mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <select id="head_prefecture" name="head_prefecture" class="w-full py-1.5  text-sm mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 @foreach($prefectures as $prefecture)
                                     <option value="{{ $prefecture->id }}" @if( $prefecture->id == $client->head_prefecture ) selected @endif>{{ $prefecture->prefecture_code }}:{{ $prefecture->prefecture_name }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="w-full flex flex-col ml-4">
+                        <div class="col-span-3">
                             <label for="head_addre1" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">本部所在地</label>
                             <input type="text" name="head_addre1" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_addre1" value="{{old('head_addre1',$client->head_address1)}}" placeholder="">
                         </div>
