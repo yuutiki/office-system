@@ -23,7 +23,7 @@ class ProjectStoreRequest extends FormRequest
     {
         return [
             'project_name' => 'required|max:100',
-            'client_id' => 'required',
+            'client_num' => 'required',
             'project_name' => 'required|max:100',
             'sales_stage_id' => 'required',
             'project_type_id' => 'required',
