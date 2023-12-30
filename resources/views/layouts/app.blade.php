@@ -87,6 +87,9 @@
         {{-- 住所補完 --}}
         <script type="text/javascript" src="{{ asset('/assets/js/jquery.zip2addr.js') }}"></script>
         <script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
+        {{-- ショートカット --}}
+        <script type="text/javascript" src="{{ asset('/assets/js/shortcut.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('/assets/js/main.js') }}"></script>
     </body>
 </html>
 

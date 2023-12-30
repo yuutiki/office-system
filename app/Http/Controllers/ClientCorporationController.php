@@ -133,6 +133,12 @@ class ClientCorporationController extends Controller
 
     public function upload(Request $request)
     {
+        // ファイルがアップロードされているかチェック
+        if (!$request->hasFile('csv_input')) {
+        // エラーメッセージをセットしてリダイレクト
+        return redirect()->back()->with('error', 'アップロードするCSVファイルが選択されていません。');
+        }
+
         $csvFile = $request->file('csv_input');
         
         // CSVファイルの一時保存先パス

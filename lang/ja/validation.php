@@ -99,7 +99,7 @@ return [
     'password'             => '正しいパスワードを指定してください。',
     'present'              => ':attributeが存在していません。',
     'regex'                => ':attributeに正しい形式を指定してください。',
-    'required'             => ':attributeは必ず入力してください。',
+    'required'             => ':attributeは必須入力です。',
     'required_if'          => ':otherが:valueの場合、:attributeも指定してください。',
     'required_unless'      => ':otherが:valuesでない場合、:attributeを指定してください。',
     'required_with'        => ':valuesを指定する場合は、:attributeも指定してください。',
@@ -305,7 +305,21 @@ return [
         'memo' => '備考',
         "clientcorporation_num" => "法人番号",
         "clientcorporation_name" => "法人名称",
-        "clientcorporation_kana_name" => "法人カナ名称"
+        "clientcorporation_kana_name" => "法人カナ名称",
+        "client_num" => "法人番号",
+        "client_name" => "法人名称",
+        "installation_type_id" => "設置種別",
+        "trade_status_id" => "取引状態",
+        "client_type_id" => "顧客種別",
+        "client_num" => "法人番号",
+        "client_num" => "法人番号",
+        "client_num" => "法人番号",
+        "client_num" => "法人番号",
+        "client_num" => "法人番号",
+        "client_num" => "法人番号",
+        "client_num" => "法人番号",
+        "client_num" => "法人番号",
+        "client_kana_name" => "法人カナ名称"
     ],
 
 ];

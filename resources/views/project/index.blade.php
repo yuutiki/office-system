@@ -104,7 +104,7 @@
             {{ $count }}件
         </div>
         <div class="float-left font-medium dark:text-white ml-4">
-            {{ $totalAmountSet1 + $totalAmountSet2 }}円
+            {{ number_format($totalAmount) }}円
         </div>
         
     </div>

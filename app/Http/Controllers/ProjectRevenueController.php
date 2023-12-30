@@ -90,13 +90,26 @@ class ProjectRevenueController extends Controller
             ];
         }
 
-
-
         // Model内で定義した bulkInsert メソッドを呼び出し
         ProjectRevenue::bulkInsert($projectRevenuesData);
 
         // 成功したらリダイレクトやレスポンスを返す
         return redirect()->route('project.edit',$request->Insert_modalproject_id)->with('success', '正常に登録しました');
+    }
 
+    public function bulkDelete(Request $request)
+    {
+        $selectedIds = $request->input('selected_ids');
+
+        // $selectedIds には削除対象のレコードのIDが配列として格納されています
+
+        if (!empty($selectedIds)) {
+            // Eloquent モデルの delete メソッドを使用して一括削除
+            ProjectRevenue::whereIn('id', $selectedIds)->delete();
+
+            return redirect()->back()->with('success', '選択されたレコードを一括削除しました');
+        } else {
+            return redirect()->back()->with('error', '削除するレコードが選択されていません');
+        }
     }
 }

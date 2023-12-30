@@ -32,28 +32,28 @@
 
             <div class="grid gap-3 mb-2 sm:grid-cols-2">
                 <div class="">
-                    <label for="clientcorporation_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2 mt-2">法人名称</label>
+                    <label for="clientcorporation_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2 mt-2">法人名称</label>
                     <input type="text" name="clientcorporation_name" class="w-full py-1 mt-1 bg-gray-400 border border-gray-300 rounded-md" id="clientcorporation_name" value="{{old('clientcorporation_name',$client->clientcorporation->clientcorporation_name)}}" readonly>
                     @error('clientcorporation_name')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror                
                 </div>
                 <div class="hidden md:inline-block">
-                    <label for="clientcorporation_kana_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2 ">法人カナ名称</label>
+                    <label for="clientcorporation_kana_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">法人カナ名称</label>
                     <input type="text" name="clientcorporation_kana_name" class="w-full py-1 mt-1 bg-gray-400 border border-gray-300 rounded-md" id="clientcorporation_kana_name" value="{{old('clientcorporation_kana_name',$client->clientcorporation->clientcorporation_kana_name)}}" readonly>
                     @error('clientcorporation_kana_name')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror                
                 </div>
                 <div class="">
-                    <label for="client_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none">顧客名称</label>
+                    <label for="client_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2 mt-2">顧客名称</label>
                     <input type="text" name="client_name" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded-md" id="client_name" value="{{old('client_name',$client->client_name)}}" placeholder="例）烏丸大学">
                     @error('client_name')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror                
                 </div>
                 <div class="hidden md:inline-block">
-                    <label for="client_kana_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none">顧客カナ名称</label>
+                    <label for="client_kana_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客カナ名称</label>
                     <input type="text" name="client_kana_name" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded-md" id="client_kana_name" value="{{old('client_kana_name',$client->client_kana_name)}}" placeholder="例）カラスマダイガク">
                     @error('client_kana_name')
                         <div class="text-red-500">{{ $message }}</div>
@@ -140,13 +140,13 @@
                         </button>
                     </li>
                     <li class="mr-2" role="presentation">
-                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">
-                            導入システム
+                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts" aria-selected="false">
+                            環境情報
                         </button>
                     </li>
                     <li class="mr-2" role="presentation">
-                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts" aria-selected="false">
-                            環境情報
+                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">
+                            導入システム
                         </button>
                     </li>
                     <li class="mr-2" role="presentation">
@@ -181,36 +181,65 @@
                             </select>
                         </div>
                         <div class="col-span-3">
-                            <label for="head_addre1" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">本部所在地</label>
-                            <input type="text" name="head_addre1" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="head_addre1" value="{{old('head_addre1',$client->head_address1)}}" placeholder="">
+                            <label for="head_addre1" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">代表所在地</label>
+                            <input type="text" name="head_addre1" id="head_addre1" value="{{old('head_addre1',$client->head_address1)}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded-md" placeholder="">
                         </div>
-                    </div>
-
-                    <div class="w-full flex flex-col">
-                        <label for="head_tel" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">代表TEL(ハイフン有)</label>
-                        <input type="text" name="head_tel" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="12" id="head_tel" value="{{old('head_tel',$client->head_tel)}}" class="w-32 py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" placeholder="">
-                    </div>
-
-                    <div class="w-full flex flex-col">
-                        <label for="head_fax" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-8">代表FAX（ハイフン有）</label>
-                        <input type="tel" name="head_fax" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="12" id="head_fax" value="{{old('head_fax',$client->head_fax)}}" class="w-32 py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1"  placeholder="">
+                        <div class="">
+                            <label for="head_tel" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">代表TEL（-）</label>
+                            <input type="text" name="head_tel" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_tel" value="{{old('head_tel',$client->head_tel)}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded-md" placeholder="">
+                        </div>
+    
+                        <div class="">
+                            <label for="head_fax" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">代表FAX（-）</label>
+                            <input type="tel" name="head_fax" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_fax" value="{{old('head_fax',$client->head_fax)}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded-md"  placeholder="">
+                        </div>
                     </div>
 
                     <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
 
-                    <div class="w-full flex flex-col">
-                        <label for="students" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">学生数</label>
-                        <input type="number" min="0" name="students" class="w-1/2 py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="students" value="{{old('students',$client->students)}}">
+                    <div class="grid gap-4 mb-1 sm:grid-cols-5 mt-1">
+                        <div class="w-full flex flex-col">
+                            <label for="students" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">規模（学生数/従業員数）</label>
+                            <input type="number" min="0" name="students" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="students" value="{{old('students',$client->students)}}">
+                        </div>
+                    </div>
+                    <div class="grid gap-4 mb-1 sm:grid-cols-5 mt-1">
+                        <div class="w-full flex flex-col">
+                            <label for="distribution" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">商流</label>
+                            <select id="distribution_type_id" name="distribution_type_id" class="w-full mt-1 block p-1.5 text-sm bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected value="">未選択</option>
+                                @foreach($distributionTypes as $distributionType)
+                                <option value="{{ $distributionType->id }}" @selected( $distributionType->id == $client->distribution)>{{ $distributionType->distribution_type_name }}</option>
+                                @endforeach
+                            </select>
+                            @error('distribution_type_id')
+                            <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
 
-                    <div class="w-full flex flex-col">
-                        <label for="distribution" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">商流</label>
-                        <input type="text" name="distribution" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="distribution" value="{{old('distribution',$client->distribution)}}" placeholder="">
+                    <button type="button"  onclick="showCorporationModal()" class="md:mt-10 mt-6 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        法人検索
+                    </button>
+                    <div class="grid gap-4 mt-1 mb-4 sm:grid-cols-5">
+
+                        <div class="w-full flex flex-col hidden">
+                            <label for="billing_corporation_id" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">請求先法人ID</label>
+                            <input form="updateForm" type="text" name="billing_corporation_id" class="w-auto py-1 border border-gray-300 rounded-md mt-1 mb-2" id="billing_corporation_id" value="{{old('billing_corporation_id',$client->billing_corporation_id)}}" placeholder="">
+                        </div>
+                        <div class="w-full flex flex-col">
+                            <label for="billing_corporation_num" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">請求先法人№</label>
+                            <input type="text" name="billing_corporation_num" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded-md mt-1" id="billing_corporation_num" value="{{old('billing_corporation_num',$client->clientcorporation->clientcorporation_num)}}" disabled>
+                        </div>
+                        <div class="w-full flex flex-col col-span-3">
+                            <label for="billing_corporation_name" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">請求先法人名称</label>
+                            <input type="text" name="billing_corporation_name" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded-md mt-1 mb-2" id="billing_corporation_name" value="{{old('billing_corporation_name',$client->clientcorporation->clientcorporation_name)}}" disabled>
+                        </div>
                     </div>
 
                     <div class="w-full flex flex-col">
                         <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">備考</label>
-                        <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="memo" value="{{old('memo')}}" cols="30" rows="5">{{old('memo', $client->memo)}}</textarea>
+                        <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="auto-resize-textarea-client_memo" value="{{old('memo')}}" cols="30" rows="5">{{old('memo', $client->memo)}}</textarea>
                     </div>
                     <ul class=" mt-4 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                         <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
@@ -279,8 +308,8 @@
                             @enderror
                         </li>
                     </ul>
-                    <x-primary-button class="mt-4">
-                        編集を確定する
+                    <x-primary-button class="mt-4" id="saveButton">
+                        編集を確定する(s)
                     </x-primary-button>
                 </form>
                 </div>
@@ -290,57 +319,57 @@
                 <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
                     <p class="text-sm text-gray-500 dark:text-gray-400">請求区分、契約日、解約日、契約金額、サポートページID、PW、暗号、契約備考、契約書添付、契約履歴</p>
                     <div class="w-full flex flex-col">
-                        <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約番号</label>
-                        <input type="text" name="memo" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="memo" value="{{old('memo',$client->memo)}}" placeholder="">
+                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約番号</label>
+                        <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約先区分</label>
-                        <input type="text" name="memo" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="memo" value="{{old('memo',$client->memo)}}" placeholder="">
+                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約先区分</label>
+                        <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">更新月</label>
-                        <input type="text" name="memo" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="memo" value="{{old('memo',$client->memo)}}" placeholder="">
+                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">更新月</label>
+                        <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約種別</label>
-                        <input type="text" name="memo" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="memo" value="{{old('memo',$client->memo)}}" placeholder="">
+                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約種別</label>
+                        <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約日</label>
-                        <input type="text" name="memo" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="memo" value="{{old('memo',$client->memo)}}" placeholder="">
+                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約日</label>
+                        <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">解約日</label>
-                        <input type="text" name="memo" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="memo" value="{{old('memo',$client->memo)}}" placeholder="">
+                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">解約日</label>
+                        <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約金額</label>
-                        <input type="text" name="memo" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="memo" value="{{old('memo',$client->memo)}}" placeholder="">
+                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約金額</label>
+                        <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">SPログイン名</label>
-                        <input type="text" name="memo" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="memo" value="{{old('memo',$client->memo)}}" placeholder="">
+                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">SPログイン名</label>
+                        <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">SPパスワード</label>
-                        <input type="text" name="memo" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="memo" value="{{old('memo',$client->memo)}}" placeholder="">
+                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">SPパスワード</label>
+                        <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">SPパスワード（読み方）</label>
-                        <input type="text" name="memo" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="memo" value="{{old('memo',$client->memo)}}" placeholder="">
+                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">SPパスワード（読み方）</label>
+                        <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">契約備考</label>
-                        <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="memo" value="{{old('memo')}}" cols="30" rows="5"></textarea>
+                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">契約備考</label>
+                        <textarea name="non" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="non" value="{{old('non')}}" cols="30" rows="5"></textarea>
                     </div>
 
                     <div class="w-full flex flex-col">
-                        <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-8" autocomplete="new-password">請求区分</label>
-                        <input type="text" name="memo" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="memo" value="{{old('memo',$client->memo)}}" placeholder="">
+                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-8" autocomplete="new-password">請求区分</label>
+                        <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">請求備考</label>
-                        <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="memo" value="{{old('memo')}}" cols="30" rows="5"></textarea>
+                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">請求備考</label>
+                        <textarea name="non" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="non" value="{{old('non')}}" cols="30" rows="5"></textarea>
                     </div>
                 </div>
                 {{-- 2つ目のタブコンテンツEnd --}}
@@ -1045,7 +1074,24 @@
             </div>
         </div>
     </div>
-    
+
+
+
+
+
+<script>
+    const textareaContent = document.getElementById('auto-resize-textarea-client_memo');
+    textareaContent.addEventListener('input', function() {
+        // テキストエリアの高さを自動調整
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight + 2) + 'px';
+    });
+    textareaContent.addEventListener('mouseover', function() {
+        // テキストエリアの高さを自動調整
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight + 2) + 'px';
+    });
+</script>
     <script>
         // モーダルを表示するための関数
         function showModal() {
@@ -1128,11 +1174,6 @@
 //         tabs.show(activeTabId); // "tabs" は前のコードで作成した Tabs オブジェクト
 //     }
 // });
-
-        // カナ補完
-        $(function() {
-            $.fn.autoKana('input[name="client_name"]', 'input[name="client_kana_name"]', {katakana: true});
-        });
 
 // タブ制御スクリプト
 

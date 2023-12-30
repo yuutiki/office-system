@@ -58,17 +58,10 @@
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
                 
-                <x-primary-button class="mt-4 mb-4" form-id="corporationForm">
+                <x-primary-button class="mt-4 mb-4" form-id="corporationForm" id="saveButton">
                     法人を登録
                 </x-primary-button>
             </form>
         </div>
     </div>
-
-    {{-- カナ補完 --}}
-    <script>
-        $(function() {
-            $.fn.autoKana('input[name="clientcorporation_name"]', 'input[name="clientcorporation_kana_name"]', {katakana: true});
-        });
-    </script>
 </x-app-layout>

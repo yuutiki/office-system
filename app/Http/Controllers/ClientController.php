@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Department;//add
 use App\Models\InstallationType;//add
 use App\Models\ClientType;//add
+use App\Models\DistributionType;
 use App\Models\TradeStatus;//add
 use App\Models\Prefecture;//add
 use App\Models\Report;//add
@@ -19,6 +20,9 @@ use Illuminate\pagination\paginator;//add
 use Illuminate\Support\Facades\DB;//add
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Goodby\CSV\Import\Standard\Lexer;
+use Goodby\CSV\Import\Standard\Interpreter;
+use Goodby\CSV\Import\Standard\LexerConfig;
 
 class ClientController extends Controller
 {
@@ -40,8 +44,10 @@ class ClientController extends Controller
         $clientTypes = ClientType::all(); //顧客種別
         $departments = Department::all(); //管轄事業部
         $prefectures = Prefecture::all(); //都道府県
+        $distributionTypes = DistributionType::all();
 
-        return view('client.create',compact('departments','users','tradeStatuses','clientTypes','installationTypes','prefectures'));
+
+        return view('client.create',compact('departments','users','tradeStatuses','clientTypes','installationTypes','prefectures','distributionTypes'));
     }
 
     public function store(ClientStoreRequest $request)
@@ -88,6 +94,8 @@ class ClientController extends Controller
         $client->installation_type_id = $request->installation_type_id;
         $client->trade_status_id = $request->trade_status_id;
         $client->user_id = $request->user_id;
+        $client->memo = $request->memo;
+        $client->distribution_id = $request->distribution_id;
         $client->is_enduser = $request->has('is_enduser') ? 1 : 0;
         $client->is_supplier = $request->has('is_supplier') ? 1 : 0;
         $client->is_dealer = $request->has('is_dealer') ? 1 : 0;
@@ -114,6 +122,7 @@ class ClientController extends Controller
         $departments = Department::all();
         $client = Client::find($id);
         $prefectures = Prefecture::all(); //都道府県
+        $distributionTypes = DistributionType::all();
 
         $clientProducts = ClientProduct::where('client_id',$id)->orderBy('product_id','asc')->get();
         $reports = Report::where('client_id',$id)->get();
@@ -123,7 +132,7 @@ class ClientController extends Controller
         Session::put('selected_client_name', $client->client_name);
         Session::put('selected_client_id', $client->id);
 
-        return view('client.edit',compact('departments','users','tradeStatuses','clientTypes','installationTypes','client','reports','prefectures','supports','clientProducts'));
+        return view('client.edit',compact('departments','users','tradeStatuses','clientTypes','installationTypes','client','reports','prefectures','supports','clientProducts','distributionTypes'));
     }
 
     public function update(ClientStoreRequest $request, string $id)
@@ -140,12 +149,13 @@ class ClientController extends Controller
         $client->head_tel = $request->head_tel;
         $client->head_fax = $request->head_fax;
         $client->students = $request->students;
-        $client->distribution = $request->distribution;
+        $client->distribution = $request->distribution_type_id;
         $client->department_id = $request->department;
         $client->client_type_id = $request->client_type_id;
         $client->installation_type_id = $request->installation_type_id;
         $client->trade_status_id = $request->trade_status_id;
         $client->user_id = $request->user_id;
+        $client->memo = $request->memo;
         $client->is_enduser = $request->has('is_enduser') ? 1 : 0;
         $client->is_supplier = $request->has('is_supplier') ? 1 : 0;
         $client->is_dealer = $request->has('is_dealer') ? 1 : 0;
@@ -191,4 +201,97 @@ class ClientController extends Controller
         Session::put('active_tab', $activeTabId);
         return response()->json(['message' => 'アクティブなタブが更新されました']);
     }
+
+
+
+
+
+    public function upload(Request $request)
+    {
+        // ファイルがアップロードされているかチェック
+        if (!$request->hasFile('csv_input')) {
+        // エラーメッセージをセットしてリダイレクト
+        return redirect()->back()->with('error', 'アップロードするCSVファイルが選択されていません。');
+        }
+
+        $csvFile = $request->file('csv_input');
+        
+        // CSVファイルの一時保存先パス
+        $csvPath = $csvFile->getRealPath();
+        
+        // CSVデータのパースとデータベースへの登録処理
+        $this->parseCSVAndSaveToDatabase($csvPath);
+
+        // 成功時のリダイレクトやメッセージを追加するなどの処理を行う
+        return redirect()->back()->with('success', 'CSVファイルをアップロードしました。');
+    }
+
+    private function parseCSVAndSaveToDatabase($csvPath)
+    {
+        // CSVファイルの文字コードを自動判定
+        $fromCharset = mb_detect_encoding(file_get_contents($csvPath), 'UTF-8, Shift_JIS, EUC-JP, JIS, SJIS-win', true);
+        
+        $config = new LexerConfig();
+        $config->setFromCharset($fromCharset);
+
+        $config->setIgnoreHeaderLine(true); // ヘッダを無視する設定
+        $lexer = new Lexer($config);
+        $interpreter = new Interpreter();
+
+         // CSV行をパースした際に実行する処理を定義
+        $interpreter->addObserver(function (array $row) {
+            $client = new Client();
+
+            $clientcorporationNum = $row[0];
+                $clientCorporation = ClientCorporation::where('clientcorporation_num', $clientcorporationNum)->first();
+                if ($clientCorporation) {
+                    $client->client_corporation_id = $clientCorporation->id;
+                } else {
+                    // divisionが見つからない場合のエラーハンドリング
+                }
+            $departmentCode = $row[1];
+                $department = Department::where('department_code', $departmentCode)->first();
+                if ($department) {
+                    $client->department_id = $department->id;
+                } else {
+                    // divisionが見つからない場合のエラーハンドリング
+                }
+
+            
+            $departmentPrefixCode = $department->prefix_code;
+            $clientcorporationNum = $clientCorporation->clientcorporation_num;
+            $clientNumber = Client::generateClientNumber($clientcorporationNum, $departmentPrefixCode);
+            $client->client_num = $clientNumber;
+
+            $client->client_name = $row[2];
+            $client->client_kana_name = $row[3];
+
+            $client->installation_type_id = $row[4];
+            $client->client_type_id = $row[5];
+            $client->trade_status_id = $row[6];
+            $client->user_id = $row[7];
+            
+            $client->head_tel = $row[8];
+            $client->head_fax = $row[9];
+            $client->students = $row[10];
+
+            $client->is_enduser = $row[11];
+            $client->is_supplier = $row[12];
+            $client->is_dealer = $row[13];
+            $client->is_lease = $row[14];
+            $client->is_other_partner = $row[15];
+            $client->is_closed = $row[16];
+            $client->save();
+        });
+
+        $lexer->parse($csvPath, $interpreter);
+    }
 }
+
+// client_num
+// memo
+// distribution
+// distribution_id
+// head_post_code
+// head_prefecture
+// head_address1  

@@ -53,16 +53,10 @@
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
 
-                <x-primary-button class="mt-4 mb-4">
+                <x-primary-button class="mt-4 mb-4"  id="saveButton">
                     変更を確定
                 </x-primary-button>
             </form>
         </div>
     </div>
-    {{-- カナ補完 --}}
-    <script>
-        $(function() {
-            $.fn.autoKana('input[name="clientcorporation_name"]', 'input[name="clientcorporation_kana_name"]', {katakana: true});
-        });
-    </script>
 </x-app-layout>

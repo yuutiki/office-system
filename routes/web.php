@@ -63,19 +63,23 @@ Route::middleware('auth')->group(function () {
     Route::resource('/masters', '\App\Http\Controllers\MasterController');
     // Route::resource('/comment', '\App\Http\Controllers\CommentController');
     Route::post('/clientcorporation/search', [ClientCorporationController::class, 'search'])->name('clientcorporation.search');
-    Route::post('/clientcorporation/upload', [ClientCorporationController::class, 'upload'])->name('clientcorporation.upload');
-    Route::post('/user/upload', [UserController::class, 'upload'])->name('user.upload');
     Route::post('/client/search', [ClientController::class, 'search'])->name('client.search');
     Route::post('/product/search', [ProductController::class, 'search'])->name('product.search');
     Route::get('/report/{report_id}/comment', [CommentController::class, 'show'])->name('comment.show');
     Route::post('/report/{report_id}/comment', [CommentController::class, 'store'])->name('comment.store');
     Route::get('/report/{report_id}/client', [ReportController::class, 'showFromClient'])->name('report.showFromClient');
-    Route::post('/product/upload', [ProductController::class, 'upload'])->name('product.upload');
     Route::post('/bulk-insert-revenues', [ProjectRevenueController::class, 'bulkInsert'])->name('projectrevenue.bulkInsert');
-    // Route::post('/client-product/store', [ClientProductController::class, 'store']);
-    // routes/web.php
+    Route::delete('/bulk-delete-revenues', [ProjectRevenueController::class, 'bulkDelete'])->name('projectrevenue.bulkDelete');
 
-    
+// CSVアップロード系
+    Route::post('/clientcorporation/upload', [ClientCorporationController::class, 'upload'])->name('clientcorporation.upload');
+    Route::post('/client/upload', [ClientController::class, 'upload'])->name('client.upload');
+    Route::post('/user/upload', [UserController::class, 'upload'])->name('user.upload');
+    Route::post('/product/upload', [ProductController::class, 'upload'])->name('product.upload');
+
+
+
+
 
     Route::post('/update-link/{link}', [LinkController::class, 'mordalupdate'])->name('updateLink');
     Route::post('/save-modal-id', [LinkController::class, 'saveModalId'])->name('save.modal.id');

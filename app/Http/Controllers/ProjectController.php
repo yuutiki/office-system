@@ -23,41 +23,29 @@ class ProjectController extends Controller
     public function index()
     {
         $per_page = 25;
-        $projects = Project::with('salesStage','accountingType','accountUser',)->sortable()->paginate($per_page);
+        $projects = Project::with('salesStage','accountingType','accountUser','projectRevenues',)->sortable()->paginate($per_page);
         $count = $projects->count();
         $user = User::all();
 
         // 初期化
-        $totalAmountSet1 = 0;
-        $totalAmountSet2 = 0;
-        $projectRevenue = 0;
-            // 合計金額を計算
-            
-        // foreach ($projects as $project) {
-        //     $project->projectRevenue += $project->projectRevenues->revenue;
-        //     }
-        //     $project->totalAmount = $totalAmountSet1 + $totalAmountSet2;
-
-        // }
+        $totalAmount = 0;
 
         foreach ($projects as $project) {
-            $project->totalAmountSet1 = 0;
-            $project->totalAmountSet2 = 0;
-            for ($month = 0; $month < 12; $month++) {
-                $project->totalAmountSet1 += $project->{"revenue_distribution_set1_" . $month};
-                $project->totalAmountSet2 += $project->{"revenue_distribution_set2_" . $month};
+            $project->totalAmount = 0;
+    
+            foreach ($project->projectRevenues as $revenue) {
+                // 各収益を加算
+                $project->totalAmount += $revenue->revenue;
             }
-            $project->totalAmount = $totalAmountSet1 + $totalAmountSet2;
-
-            // 合計金額を累積計算
-            $totalAmountSet1 += $project->totalAmountSet1;
-            $totalAmountSet2 += $project->totalAmountSet2;
+    
+            // 合計金額を全体の合計に加算
+            $totalAmount += $project->totalAmount;
         }
 
         $salesStages = SalesStage::all();
         $distributionTypes = DistributionType::all();
         $accountingPeriods = AccountingPeriod::all();
-        return view('project.index',compact('accountingPeriods','salesStages','distributionTypes','count','projects','totalAmountSet1','totalAmountSet2'));
+        return view('project.index',compact('accountingPeriods','salesStages','distributionTypes','count','projects','totalAmount'));
     }
 
     public function create()
@@ -114,8 +102,8 @@ class ProjectController extends Controller
         $project->account_user_id = $request->account_user_id;
         $project->save();
 
-// project.editに後で変更する
-        return redirect()->route('project.index')->with('success', '正常に登録しました');
+        // 新規作成後、編集画面にリダイレクト
+        return redirect()->route('project.edit', ['project' => $project->id])->with('success', '正常に登録し編集画面に遷移しました');
     }
 
     public function show(Project $project)

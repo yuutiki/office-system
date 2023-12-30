@@ -212,6 +212,9 @@
                                     <td class="px-2 py-2 whitespace-nowrap">
                                         {{number_format($projectRevenue['revenue']->revenue)}}
                                     </td>
+                                    <td class="px-2 py-2">
+                                        
+                                    </td>
                                     <td class="px-2 py-2 text-center">
                                         <button onclick="location.href='{{route('project.edit',$project)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
                                             <div class="flex">
@@ -232,9 +235,7 @@
                                             </div>
                                         </button>
                                     </td> --}}
-                                    <td class="px-2 py-2">
-                                        
-                                    </td>
+
                                     <td class="px-2 py-2">
                                         <button data-modal-target="deleteModal-{{$projectRevenue['revenue']->id}}" data-modal-toggle="deleteModal-{{$projectRevenue['revenue']->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 m-auto" type="button">
                                             <div class="flex">
@@ -265,10 +266,10 @@
                                                         <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
 
                                                         <div class="flex justify-center items-center">
-                                                            <form action="{{route('projectrevenue.destroy',$projectRevenue['revenue']->id)}}" method="POST" class="text-center m-auto flex justify-center ">
+                                                            <form action="{{route('projectrevenue.destroy',$projectRevenue['revenue']->id)}}" method="POST" class="">
                                                                 @csrf
                                                                 @method('delete')
-                                                                <button type="submit" data-modal-hide="deleteModal-{{$projectRevenue['revenue']->id}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm  items-center px-5 py-2.5 text-center">
+                                                                <button type="submit" data-modal-hide="deleteModal-{{$projectRevenue['revenue']->id}}" class="mr-3 text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm  items-center px-5 py-2.5 text-center">
                                                                     削除
                                                                 </button>
                                                             </form>
@@ -380,7 +381,7 @@
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="project_memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">プロジェクト備考</label>
-                        <textarea form="updateForm" name="project_memo" class="w-auto py-1 border border-gray-300 rounded-md mt-1" id="project_memo" value="{{old('project_memo',$project->project_memo)}}" cols="30" rows="5">{{old('project_memo',$project->project_memo)}}</textarea>
+                        <textarea form="updateForm" name="project_memo" class="w-auto py-1 border border-gray-300 rounded-md mt-1" id="auto-resize-textarea-project_content" value="{{old('project_memo',$project->project_memo)}}" cols="30" rows="5">{{old('project_memo',$project->project_memo)}}</textarea>
                     </div>
                     <div class="grid gap-4 my-4 sm:grid-cols-4">
                         <div>
@@ -435,7 +436,7 @@
                     <form id="updateForm" method="post" action="{{route('project.update', $project)}}" enctype="multipart/form-data" autocomplete="new-password">
                         @csrf
                         @method('patch')
-                        <x-primary-button class="mt-4" form="updateForm">
+                        <x-primary-button class="mt-4" form="updateForm" id="saveButton">
                             新規登録する
                         </x-primary-button>
                     </form>
@@ -622,7 +623,7 @@
                                     <div class="w-full flex flex-col">
                                         <div class="w-full flex flex-col">
                                             <label for="revenue_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">売上年月</label>
-                                            <input type="month" name="revenue_date" id="revenue_date" value="{{old('revenue_date')}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
+                                            <input type="month" name="revenue_date" id="revenue_date" min="2000-01" max="2100-12" value="{{old('revenue_date')}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
                                         </div>
                                     </div>
                                     @error('department_id')
@@ -685,7 +686,7 @@
                                     <div class="w-full flex flex-col">
                                         <div class="w-full flex flex-col">
                                             <label for="start_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">売上開始年月</label>
-                                            <input type="month" name="start_date" id="start_date" value="{{old('start_date')}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
+                                            <input type="month" name="start_date" id="start_date" min="2000-01" max="2100-12" value="{{old('start_date')}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
                                         </div>
                                     </div>
                                     @error('department_id')
@@ -696,7 +697,7 @@
                                     <div class="w-full flex flex-col">
                                         <div class="w-full flex flex-col">
                                             <label for="end_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">売上終了年月</label>
-                                            <input type="month" name="end_date" id="end_date" value="{{old('end_date')}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
+                                            <input type="month" name="end_date" id="end_date" min="2000-01" max="2100-12" value="{{old('end_date')}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
                                         </div>
                                     </div>
                                     @error('department_id')
@@ -859,5 +860,18 @@
             document.getElementById('billing_corporation_name').value = name;
             hideCorporationModal();
         }
+    </script>
+    <script>
+        const textareaContent = document.getElementById('auto-resize-textarea-project_content');
+        textareaContent.addEventListener('input', function() {
+            // テキストエリアの高さを自動調整
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight + 2) + 'px';
+        });
+        textareaContent.addEventListener('mouseover', function() {
+            // テキストエリアの高さを自動調整
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight + 2) + 'px';
+        });
     </script>
 </x-app-layout>

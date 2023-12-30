@@ -336,4 +336,5 @@ public function getSplitTypes($productTypeId)
 
         return response()->json($products);
     }
+    
 }

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('department_id')->comment('管轄事業部ID');//Departmentテーブル参照
             $table->text('memo',1000)->nullable(true)->comment('備考');
             $table->string('distribution',100)->nullable(true)->default('直販')->comment('商流');
-            $table->foreignId('distribution_id')->nullable(true)->comment('ディーラ名称');//同じClientテーブルから取得
+            $table->foreignId('distribution_id')->nullable(true)->comment('ディーラID');//同じClientテーブルから取得
             $table->string('head_post_code',80)->nullable(true)->comment('本店郵便番号');
             $table->string('head_prefecture',80)->nullable(true)->comment('本店都道府県');
             $table->string('head_address1',80)->nullable(true)->comment('本店住所1');
@@ -33,6 +33,7 @@ return new class extends Migration
             $table->boolean('is_dealer')->comment('ディーラフラグ');
             $table->boolean('is_lease')->comment('リース会社フラグ');
             $table->boolean('is_other_partner')->comment('その他協業フラグ');
+            $table->boolean('is_closed')->comment('閉校フラグ');
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->datetimes();

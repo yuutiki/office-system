@@ -215,7 +215,7 @@
             this.style.height = 'auto';
             this.style.height = (this.scrollHeight + 2) + 'px';
         });
-</script>
+    </script>
 
 
     

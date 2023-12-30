@@ -26,6 +26,7 @@ return new class extends Migration
             $table->foreignId('product_series_id')->comment('対象システムシリーズID'); //product_seriesテーブル参照
             $table->foreignId('product_version_id')->comment('対象システムバージョンID'); //product_versionsテーブル参照
             $table->foreignId('product_category_id')->comment('対象システム系統ID'); //product_categoriesテーブル参照
+            $table->string('redmine',10)->nullable(true)->comment('redmine番号');
             $table->boolean('is_finished')->default(0)->comment('対応完了フラグ'); 
             $table->boolean('is_disclosured')->default(0)->comment('顧客開示フラグ');
             $table->boolean('is_confirmed')->default(0)->comment('上長確認済フラグ');
