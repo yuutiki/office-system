@@ -50,12 +50,12 @@ class ClientCorporation extends Model
     // index画面の検索ロジック
     public function scopeFilter($query, $filters)
     {
-        if (isset($filters['clientcorporation_num'])) {
-            $query->where('clientcorporation_num', 'like', '%' . $filters['clientcorporation_num']);
+        if (isset($filters['s_clientcorporation_num'])) {
+            $query->where('clientcorporation_num', 'like', '%' . $filters['s_clientcorporation_num']);
         }
 
-        if (isset($filters['clientcorporation_name'])) {
-            $spaceConversion = mb_convert_kana($filters['clientcorporation_name'], 's'); //全角スペース⇒半角スペースへ変換
+        if (isset($filters['s_clientcorporation_name'])) {
+            $spaceConversion = mb_convert_kana($filters['s_clientcorporation_name'], 's'); //全角スペース⇒半角スペースへ変換
             $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
 
             foreach ($wordArraySearched as $value) {
@@ -63,8 +63,8 @@ class ClientCorporation extends Model
                 }
         }
 
-        if (isset($filters['clientcorporation_kana_name'])) {
-            $query->where('clientcorporation_kana_name', 'like', '%' . $filters['clientcorporation_kana_name'] . '%');
+        if (isset($filters['s_clientcorporation_kana_name'])) {
+            $query->where('clientcorporation_kana_name', 'like', '%' . $filters['s_clientcorporation_kana_name'] . '%');
         }
     }
 

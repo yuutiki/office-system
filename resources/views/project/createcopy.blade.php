@@ -412,9 +412,6 @@
                                     <label for="trade_status_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">計上所属1</label>
                                     <select id="trade_status_id" name="trade_status_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option value="">未選択</option>
-                                        {{-- @foreach($tradeStatuses as $tradeStatus)
-                                        <option value="{{ $tradeStatus->id }}" @if($tradeStatus->id == old('trade_status_id')) selected @endif>{{ $tradeStatus->name }}</option>
-                                        @endforeach --}}
                                     </select>
                                     @error('trade_status_id')
                                         <div class="text-red-500">{{ $message }}</div>
@@ -424,9 +421,6 @@
                                     <label for="trade_status_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">計上所属2</label>
                                     <select id="trade_status_id" name="trade_status_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option value="">未選択</option>
-                                        {{-- @foreach($tradeStatuses as $tradeStatus)
-                                        <option value="{{ $tradeStatus->id }}" @if($tradeStatus->id == old('trade_status_id')) selected @endif>{{ $tradeStatus->name }}</option>
-                                        @endforeach --}}
                                     </select>
                                     @error('trade_status_id')
                                         <div class="text-red-500">{{ $message }}</div>
@@ -436,9 +430,6 @@
                                     <label for="trade_status_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">計上所属3</label>
                                     <select id="trade_status_id" name="trade_status_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option value="">未選択</option>
-                                        {{-- @foreach($tradeStatuses as $tradeStatus)
-                                        <option value="{{ $tradeStatus->id }}" @if($tradeStatus->id == old('trade_status_id')) selected @endif>{{ $tradeStatus->name }}</option>
-                                        @endforeach --}}
                                     </select>
                                     @error('trade_status_id')
                                         <div class="text-red-500">{{ $message }}</div>
@@ -448,9 +439,6 @@
                                     <label for="trade_status_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">計上担当者</label>
                                     <select id="trade_status_id" name="trade_status_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option value="">未選択</option>
-                                        {{-- @foreach($tradeStatuses as $tradeStatus)
-                                        <option value="{{ $tradeStatus->id }}" @if($tradeStatus->id == old('trade_status_id')) selected @endif>{{ $tradeStatus->name }}</option>
-                                        @endforeach --}}
                                     </select>
                                     @error('trade_status_id')
                                         <div class="text-red-500">{{ $message }}</div>
@@ -758,19 +746,5 @@
             hideModal();
             }
     </script>
-
-    {{-- カナ補完 --}}
-<script>
-    $(function() {
-        $.fn.autoKana('input[name="client_name"]', 'input[name="client_kana_name"]', {katakana: true});
-    });
-</script>
  
 </x-app-layout>
-
-
-{{-- <td class="py-2 ml-1">
-    <button type="button" onclick="setCorporation('${result.clientcorporation_name}', '${result.clientcorporation_num}')" class="font-bold text-blue-500 hover:underline whitespace-nowrap" tabindex="-1">選択</button>
-</td>
-<td class="py-2 ml-2">${result.clientcorporation_name}</td>
-<td class="py-2 ml-2">${result.clientcorporation_num}</td> --}}

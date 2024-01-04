@@ -119,7 +119,7 @@
 <nav X-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
 
 {{-- デスクトップ画面用 --}}
-<div class="fixed mt-10 pt-4 dark:bg-gray-800 bg-gray-300 h-screen w-12 overflow-x-hidden hover:w-52 whitespace-nowrap transition-all duration-500 ease-in-out z-40  invisible lg:visible border-r border-gray-200 dark:border-gray-700">
+<div id="accordion-collapse" data-accordion="collapse" class="fixed mt-10 pt-4 dark:bg-gray-800 bg-gray-300 h-screen w-12 overflow-x-hidden hover:w-52 whitespace-nowrap transition-all duration-500 ease-in-out z-40  invisible lg:visible border-r border-gray-200 dark:border-gray-700">
 
         <div class="py-4 pl-2">
         <ul class="space-y-2 font-medium">
@@ -130,71 +130,77 @@
                 </x-nav-link>
             </li>
             <li>
-                <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
-                    {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
+                <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#accordion-body-1" aria-expanded="false" aria-controls="accordion-body-1">
                     <svg class="flex-shrink-0 w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
                         <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z"/>
                     </svg>
                     <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('取引先管理') }}</span>
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                    <svg data-accordion-icon class="w-3 h-3 mr-1 rotate-270 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6" >
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                    </svg>
                 </button>
-                <ul id="dropdown-example" class="hidden py-2 space-y-2">
+                <ul  class="hidden py-2 space-y-2" id="accordion-body-1" aria-labelledby="accordion-heading-1">
                     <li>
-                        <x-nav-link :href="route('clientcorporation.index')" :active="request()->routeIs('clientcorporation.index')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                            <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('法人一覧') }}</span>
+                        <x-nav-link :href="route('clientcorporation.index')" :active="request()->routeIs('clientcorporation.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                            <span class="flex-1  ml-10 whitespace-nowrap">{{ __('法人一覧') }}</span>
                         </x-nav-link>
                     </li>
                     <li>
-                        <x-nav-link :href="route('client.index')" :active="request()->routeIs('client.index')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                            <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('顧客一覧') }}</span>
+                        <x-nav-link :href="route('client.index')" :active="request()->routeIs('client.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('顧客一覧') }}</span>
                         </x-nav-link>
                     </li>
                 </ul>
             </li>
             <li>
-                <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" aria-controls="dropdown-support" data-collapse-toggle="dropdown-support">
+                <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#accordion-body-2" aria-expanded="false" aria-controls="accordion-body-2">
                     <svg class="flex-shrink-0 w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.079 4.839a3 3 0 0 0-4.255.1M11 18h1.083A3.916 3.916 0 0 0 16 14.083V7A6 6 0 1 0 4 7v7m7 4v-1a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1Zm-7-4V8H3a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h1Zm12-6h1a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-1V8Z"/>
                     </svg>
                     <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('サポート管理') }}</span>
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    <svg data-accordion-icon class="w-3 h-3 mr-1 rotate-270 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6" >
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
                     </svg>
                 </button>
-                <ul id="dropdown-support" class="hidden py-2 space-y-2">
+                <ul  class="hidden py-2 space-y-2" id="accordion-body-2" aria-labelledby="accordion-heading-2">
                     <li>
-                        <x-nav-link :href="route('support.index')" :active="request()->routeIs('support.index')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                            <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('サポート履歴') }}</span>
+                        <x-nav-link :href="route('support.index')" :active="request()->routeIs('support.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('サポート履歴') }}</span>
                         </x-nav-link>
                     </li>
                     <li>
-                        <x-nav-link :href="route('client.index')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                            <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('契約一覧') }}</span>
+                        <x-nav-link :href="route('client.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('契約一覧') }}</span>
                         </x-nav-link>
                     </li>
                 </ul>
             </li>
 
             <li>
-                <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" aria-controls="dropdown-project" data-collapse-toggle="dropdown-project">
+                <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#accordion-body-3" aria-expanded="false" aria-controls="accordion-body-3">
                     <svg class="flex-shrink-0 w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M19.728 10.686c-2.38 2.256-6.153 3.381-9.875 3.381-3.722 0-7.4-1.126-9.571-3.371L0 10.437V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-7.6l-.272.286Z"/>
                         <path d="m.135 7.847 1.542 1.417c3.6 3.712 12.747 3.7 16.635.01L19.605 7.9A.98.98 0 0 1 20 7.652V6a2 2 0 0 0-2-2h-3V3a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v1H2a2 2 0 0 0-2 2v1.765c.047.024.092.051.135.082ZM10 10.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5ZM7 3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1H7V3Z"/>
                     </svg>
                     <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('プロジェクト管理') }}</span>
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    <svg data-accordion-icon class="w-3 h-3 mr-1 rotate-270 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6" >
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
                     </svg>
                 </button>
-                <ul id="dropdown-project" class="hidden py-2 space-y-2">
+                <ul  class="hidden py-2 space-y-2" id="accordion-body-3" aria-labelledby="accordion-heading-3">
                     <li>
-                        <x-nav-link :href="route('project.index')" :active="request()->routeIs('project.index')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                            <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('プロジェクト情報') }}</span>
+                        <x-nav-link :href="route('project.index')" :active="request()->routeIs('project.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('プロジェクト一覧') }}</span>
                         </x-nav-link>
                     </li>
+                    {{-- <li>
+                        <x-nav-link :href="route('client.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('受注情報一覧') }}</span>
+                        </x-nav-link>
+                    </li> --}}
                     <li>
-                        <x-nav-link :href="route('client.index')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                            <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('受発注情報') }}</span>
+                        <x-nav-link :href="route('client.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('発注情報一覧') }}</span>
                         </x-nav-link>
                     </li>
                 </ul>
@@ -254,7 +260,7 @@
             </li> --}}
             <li>
                 @can('adminOrAbobe')
-                <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-example" data-collapse-toggle="dropdown-admin" tabindex="-1">
+                <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#accordion-body-90" aria-expanded="false" aria-controls="accordion-body-90">
                     <svg class="flex-shrink-0 w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                         <g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                           <path d="M19 11V9a1 1 0 0 0-1-1h-.757l-.707-1.707.535-.536a1 1 0 0 0 0-1.414l-1.414-1.414a1 1 0 0 0-1.414 0l-.536.535L12 2.757V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v.757l-1.707.707-.536-.535a1 1 0 0 0-1.414 0L2.929 4.343a1 1 0 0 0 0 1.414l.536.536L2.757 8H2a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h.757l.707 1.707-.535.536a1 1 0 0 0 0 1.414l1.414 1.414a1 1 0 0 0 1.414 0l.536-.535L8 17.243V18a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-.757l1.707-.708.536.536a1 1 0 0 0 1.414 0l1.414-1.414a1 1 0 0 0 0-1.414l-.535-.536.707-1.707H18a1 1 0 0 0 1-1Z"/>
@@ -262,39 +268,41 @@
                         </g>
                     </svg>
                     <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('管理者機能') }}</span>
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                    <svg data-accordion-icon class="w-3 h-3 mr-1 rotate-270 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6" >
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                    </svg>
                 </button>
-                <ul id="dropdown-admin" class="hidden py-2 space-y-2">
+                <ul  class="hidden py-2 space-y-2" id="accordion-body-90" aria-labelledby="accordion-heading-90">
                     <li>
-                        <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                             {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
-                            <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('ユーザ管理') }}</span>
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('ユーザ管理') }}</span>
                         </x-nav-link>
                     </li>
                     <li>
-                        <x-nav-link :href="route('link.index')" :active="request()->routeIs('link.index')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <x-nav-link :href="route('link.index')" :active="request()->routeIs('link.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                             {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
-                            <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('所属別リンク管理') }}</span>
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('所属別リンク管理') }}</span>
                         </x-nav-link>
                     </li>
                     <li>
-                        <x-nav-link :href="route('masters.index')" :active="request()->routeIs('masters.index')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <x-nav-link :href="route('masters.index')" :active="request()->routeIs('masters.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                             {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
-                            <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('マスタ管理') }}</span>
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('マスタ管理') }}</span>
                         </x-nav-link>
                     </li>
                     <li>
-                        <x-nav-link :href="route('product.index')" :active="request()->routeIs('product.index')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <x-nav-link :href="route('product.index')" :active="request()->routeIs('product.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                             {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
-                            <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('製品管理') }}</span>
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('製品管理') }}</span>
                         </x-nav-link>
                     </li>  
                     @endcan
                     @can('systemAdmin')
                     <li>
-                        <x-nav-link :href="url('/log-viewer')" :active="request()->routeIs('log-viewer')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <x-nav-link :href="url('/log-viewer')" :active="request()->routeIs('log-viewer')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                             {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
-                            <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('ログ調査') }}</span>
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('ログ調査') }}</span>
                         </x-nav-link>
                     </li>
                     @endcan
@@ -364,13 +372,33 @@
                     </ul>
                 </li>
                 <li>
-                    <x-nav-link :href="route('project.index')" :active="request()->routeIs('project.index')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" aria-controls="dropdown-sm-project" data-collapse-toggle="dropdown-sm-project">
                         <svg class="flex-shrink-0 w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M19.728 10.686c-2.38 2.256-6.153 3.381-9.875 3.381-3.722 0-7.4-1.126-9.571-3.371L0 10.437V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-7.6l-.272.286Z"/>
                             <path d="m.135 7.847 1.542 1.417c3.6 3.712 12.747 3.7 16.635.01L19.605 7.9A.98.98 0 0 1 20 7.652V6a2 2 0 0 0-2-2h-3V3a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v1H2a2 2 0 0 0-2 2v1.765c.047.024.092.051.135.082ZM10 10.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5ZM7 3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1H7V3Z"/>
                         </svg>
-                        <span class="flex-1 pt-1 ml-3 whitespace-nowrap">{{ __('プロジェクト管理') }}</span>
-                    </x-nav-link>
+                        <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('プロジェクト管理') }}</span>
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                    <ul id="dropdown-sm-project" class="hidden py-2 space-y-2">
+                        <li>
+                            <x-nav-link :href="route('project.index')" :active="request()->routeIs('project.index')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('プロジェクト一覧') }}</span>
+                            </x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link :href="route('client.index')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('受注情報一覧') }}</span>
+                            </x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link :href="route('client.index')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('発注情報一覧') }}</span>
+                            </x-nav-link>
+                        </li>
+                    </ul>
                 </li>
                 <li>
                     <x-nav-link :href="route('report.index')" :active="request()->routeIs('report.index')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">

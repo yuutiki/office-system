@@ -22,7 +22,7 @@ class ClientCorporationController extends Controller
         $per_page = 25; // １ページごとの表示件数
 
         //検索フォームから検索条件を取得し変数に格納
-        $filters = $request->only(['clientcorporation_num', 'clientcorporation_name', 'clientcorporation_kana_name']);
+        $filters = $request->only(['s_clientcorporation_num', 's_clientcorporation_name', 's_clientcorporation_kana_name']);
 
         //上記で$filters変数に格納した検索条件をModelに渡し、検索処理を行う。結果を$clientcorporationsに詰める。
         $clientcorporations = ClientCorporation::filter($filters) 

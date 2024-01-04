@@ -10,6 +10,7 @@ use App\Models\Company;
 use App\Models\Department;
 use App\Models\DistributionType;
 use App\Models\Division;
+use App\Models\Prefecture;
 use App\Models\Project;
 use App\Models\ProjectRevenue;
 use App\Models\ProjectType;
@@ -23,9 +24,9 @@ class ProjectController extends Controller
     public function index()
     {
         $per_page = 25;
-        $projects = Project::with('salesStage','accountingType','accountUser','projectRevenues',)->sortable()->paginate($per_page);
+        $projects = Project::with('salesStage','accountingType','accountUser','projectRevenues',)->sortable()->orderBy('project_num','asc')->paginate($per_page);
         $count = $projects->count();
-        $user = User::all();
+        $users = User::all();
 
         // 初期化
         $totalAmount = 0;
@@ -43,9 +44,10 @@ class ProjectController extends Controller
         }
 
         $salesStages = SalesStage::all();
+        $projectTypes = ProjectType::all();
         $distributionTypes = DistributionType::all();
         $accountingPeriods = AccountingPeriod::all();
-        return view('project.index',compact('accountingPeriods','salesStages','distributionTypes','count','projects','totalAmount'));
+        return view('project.index',compact('accountingPeriods','salesStages','distributionTypes','count','projects','totalAmount','users','projectTypes'));
     }
 
     public function create()
@@ -59,7 +61,9 @@ class ProjectController extends Controller
         $accountingPeriods = AccountingPeriod::all();
         $projectTypes = ProjectType::all();
         $accountingTypes = AccountingType::all();
-        return view('project.create',compact('accountingPeriods','salesStages','distributionTypes','departments','companies','divisions','projectTypes','accountingTypes','users'));
+        $prefectures = Prefecture::all(); //都道府県
+
+        return view('project.create',compact('accountingPeriods','salesStages','distributionTypes','departments','companies','divisions','projectTypes','accountingTypes','users','prefectures'));
     }
 
     public function store(ProjectStoreRequest $request)
@@ -124,6 +128,7 @@ class ProjectController extends Controller
         $accountingPeriods = AccountingPeriod::all();
         $projectTypes = ProjectType::all();
         $accountingTypes = AccountingType::all();
+        $prefectures = Prefecture::all(); //都道府県
 
 
 
@@ -159,7 +164,7 @@ class ProjectController extends Controller
                 'formatRevenueDate' => $targetDate->format('Y-m'),
             ];
         }
-        return view('project.edit',compact('project','projectRevenues','accountingPeriods','salesStages','distributionTypes','departments','companies','divisions','projectTypes','accountingTypes','users','revenuesWithPeriod','totalRevenue'));
+        return view('project.edit',compact('project','projectRevenues','accountingPeriods','salesStages','distributionTypes','departments','companies','divisions','projectTypes','accountingTypes','users','revenuesWithPeriod','totalRevenue','prefectures'));
         
     }
 

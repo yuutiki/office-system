@@ -47,6 +47,9 @@
         </script>
         {{-- ApexCharts  --}}
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-blue-100 dark:bg-gray-900 ">

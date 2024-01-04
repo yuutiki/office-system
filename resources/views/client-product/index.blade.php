@@ -67,30 +67,6 @@
             </div>
         </div>
     </div>
-      
-    {{-- JQUERY --}}
-    {{-- JQUERY --}}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script>
-    $(function(){
-        $('#clear').click(function(){
-            $('#clientcorporationform input, #clientcorporationform select').each(function(){
-              //checkboxまたはradioボタンの時
-              if(this.type == 'checkbox' || this.type == 'radio'){
-                //一括でチェックを外す
-                  this.checked = false;
-              }
-              //checkboxまたはradioボタン以外の時
-              else{
-                // val値を空にする
-                $(this).val('');
-              }
-            });
-        });
-    });
-    </script>
-    {{-- JQUERY --}}
-    {{-- JQUERY --}}
 
     <!-- Dropdown bottoun -->
     <div class="w-5/6 text-right mt-2 mx-auto ">

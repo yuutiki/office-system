@@ -25,12 +25,17 @@ class ProjectRevenueController extends Controller
         $projectRevenue = new ProjectRevenue;
         $projectRevenue->project_id = $request->modalproject_id;
         $projectRevenue->revenue_year_month = Carbon::parse($request->revenue_date . '-01');
-        $projectRevenue->revenue = $request->revenue_amount;
+        $numericValue = filter_var($request->revenue_amount, FILTER_SANITIZE_NUMBER_INT);
+        $projectRevenue->revenue = $numericValue;
 
         // モデルを保存
-        $projectRevenue->save();
+        if (is_numeric($numericValue)) {
+            $projectRevenue->save();
+            return redirect()->route('project.edit',$request->modalproject_id)->with('success', '正常に登録しました');
+        }else {
+            return redirect()->back()->with('error', 'Invalid numeric input');
+        }
 
-        return redirect()->route('project.edit',$request->modalproject_id)->with('success', '正常に登録しました');
     }
 
     public function show(ProjectRevenue $projectRevenue)
@@ -43,9 +48,25 @@ class ProjectRevenueController extends Controller
         //
     }
 
-    public function update(Request $request, ProjectRevenue $projectRevenue)
+    public function update(Request $request, $id)
     {
-        //
+        // リクエストデータを使って既存のLinkモデルを取得
+        $projectRevenue = ProjectRevenue::findOrFail($id);
+        
+        // プロジェクトID、収益の年月、収益の金額を更新
+        $projectRevenue->project_id = $request->modalproject_id;
+        $projectRevenue->revenue_year_month = Carbon::parse($request->revenue_date . '-01');
+        $numericValue = filter_var($request->revenue_amount, FILTER_SANITIZE_NUMBER_INT);
+        $projectRevenue->revenue = $numericValue;
+
+        // モデルを保存
+        if (is_numeric($numericValue)) {
+            $projectRevenue->save();
+            return redirect()->route('project.edit', $request->modalproject_id)->with('success', '正常に更新しました');
+        } else {
+            return redirect()->back()->with('error', 'Invalid numeric input');
+        }
+
     }
 
     public function destroy(string $id)
@@ -61,7 +82,8 @@ class ProjectRevenueController extends Controller
     public function bulkInsert(Request $request)
     {
         $projectId = $request->input('Insert_modalproject_id');
-        $totalAmount = $request->input('total_amount');
+        $numericTotalValue = filter_var($request->total_amount, FILTER_SANITIZE_NUMBER_INT);
+        $totalAmount = $numericTotalValue;
         $startDate = Carbon::parse($request->input('start_date'));
         $endDate = Carbon::parse($request->input('end_date'));
 

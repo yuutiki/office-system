@@ -57,19 +57,19 @@
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                             </div>
-                            <input type="search" name="clientcorporation_num" value="@if (isset($clientcorporation_num)){{ $clientcorporation_num }}@endif" class="w-full p-1.5 pl-10  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="法人番号" >
+                            <input type="search" name="s_clientcorporation_num" value="@if (isset($clientcorporation_num)){{ $clientcorporation_num }}@endif" class="w-full p-1.5 pl-10  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="法人番号" >
                         </div>
                         <div class="relative w-auto mt-2 mx-2">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                             </div>
-                            <input type="search" name="clientcorporation_name" value="@if (isset($clientcorporation_name)){{ $clientcorporation_name }}@endif" class="w-full p-1.5 pl-10  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="法人名称" >
+                            <input type="search" name="s_clientcorporation_name" value="@if (isset($clientcorporation_name)){{ $clientcorporation_name }}@endif" class="w-full p-1.5 pl-10  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="法人名称" >
                         </div>
                         <div class="relative w-auto mt-2 mx-2">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                             </div>
-                            <input type="search" name="clientcorporation_kana_name" value="@if (isset($clientcorporation_kana_name)){{ $clientcorporation_kana_name }}@endif" class="w-full p-1.5 pl-10  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="法人カナ名称" >
+                            <input type="search" name="s_clientcorporation_kana_name" value="@if (isset($clientcorporation_kana_name)){{ $clientcorporation_kana_name }}@endif" class="w-full p-1.5 pl-10  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="法人カナ名称" >
                         </div>
                         <div class="w-5/6 mt-2 ml-8 mb-2 flex justify-start">
                             <button type="submit" form="clientcorporationform" id="searchButton" class="px-6 py-1.5 font-medium text-sm rounded-lg text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">検索</button>
@@ -79,27 +79,6 @@
                 </form>
             </div>
     
-    {{-- JQUERY --}}
-    <script>
-        $(function(){
-            $('#clear').click(function(){
-                $('#clientcorporationform input, #clientcorporationform select').each(function(){
-                //checkboxまたはradioボタンの時
-                if(this.type == 'checkbox' || this.type == 'radio'){
-                    //一括でチェックを外す
-                    this.checked = false;
-                }
-                //checkboxまたはradioボタン以外の時
-                else{
-                    // val値を空にする
-                    $(this).val('');
-                }
-                });
-            });
-        });
-    </script>
-    {{-- JQUERY --}}
-
     <!-- Dropdown bottoun -->
     <div class="w-5/6 text-right mt-2 mx-auto ">
         <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
@@ -300,7 +279,7 @@
                             {{$clientcorporation->clients_count}}
                         </td>
                         <td class="py-2">
-                            <button data-modal-target="deleteModal-{{$clientcorporation->id}}" data-modal-toggle="deleteModal-{{$clientcorporation->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
+                            <button data-modal-target="deleteModal-{{$clientcorporation->id}}" data-modal-toggle="deleteModal-{{$clientcorporation->id}}" tabindex="-1" class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
                                 <div class="flex">
                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z"/>
@@ -363,6 +342,5 @@
                 uploadForm.submit();
             });
         });
-
     </script>
 </x-app-layout>

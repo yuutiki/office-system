@@ -58,6 +58,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/link', '\App\Http\Controllers\LinkController');
     Route::resource('/client-product' , '\App\Http\Controllers\ClientProductController');
     Route::resource('/projectrevenue' , '\App\Http\Controllers\ProjectRevenueController');
+    Route::resource('/estimate' , '\App\Http\Controllers\EstimateController');
 
     //マスタ系
     Route::resource('/masters', '\App\Http\Controllers\MasterController');

@@ -21,13 +21,9 @@
         <form method="post" action="{{route('client.update',$client)}}" enctype="multipart/form-data" autocomplete="new-password">
             @csrf
             @method('patch')
-            
-            <div class="">
-                <label for="client_num" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4 mt-2">顧客番号</label>
-                <input type="text" name="client_num" class="w-full py-1 mt-1 bg-gray-400 border border-gray-300 rounded-md" id="client_num" value="{{old('client_num',$client->client_num)}}" readonly>
-                    @error('client_num')
-                        <div class="text-red-500">{{ $message }}</div>
-                    @enderror            
+            <div class="relative z-0">
+                <input type="text" id="client_num" value="{{old('client_num',$client->client_num)}}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
+                <label for="clientcorporation_num" name="clientcorporation_num" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">顧客番号</label>
             </div>
 
             <div class="grid gap-3 mb-2 sm:grid-cols-2">
