@@ -1052,45 +1052,6 @@ $(document).ready(function () {
         // 他の全てのチェックボックスの状態を一括で変更
         $('input[name="selectedIds[]"]').prop('checked', this.checked);
     });
-
-
-        // 一括削除ボタンがクリックされたときの処理
-        $('#bulkDeleteButton').click(function (event) {
-        // フォームをサブミット
-        $('#bulkDeleteForm').submit();
-    });
-
-    // 一括削除ボタンがクリックされたときの処理
-    // $('#bulkDeleteButton').click(function () {
-    //     // 選択された項目のIDを取得
-    //     var selectedIds = $('input[name="selectedIds[]"]:checked').map(function () {
-    //         return $(this).val();
-    //     }).get();
-
-    //     // 選択されたIDがない場合はアラートを表示して終了
-    //     if (selectedIds.length === 0) {
-    //         // alert('削除する項目が選択されていません');
-    //         return;
-    //     }
-
-    //     // 選択されたIDをサーバーに送信
-    //     $.ajax({
-    //         url: '/bulk-delete-revenues',
-    //         type: 'DELETE',
-    //         data: { selected_ids: selectedIds, _token: '{{ csrf_token() }}' },
-    //         success: function (response) {
-    //             // 成功時の処理（成功メッセージの表示など）
-    //             console.log('Selected IDs:', selectedIds);
-    //             alert(response.message);
-    //             // ページのリロードなどの処理
-    //             location.reload();
-    //         },
-    //         error: function (error) {
-    //             // エラー時の処理
-    //             alert('エラーが発生しました');
-    //         }
-    //     });
-    // });
 });
 
 </script>
