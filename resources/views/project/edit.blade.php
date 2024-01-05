@@ -215,7 +215,7 @@
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
                                         <td class="pl-4 py-2 whitespace-nowrap">
                                             <div class="flex items-center">
-                                                <input id="default-checkbox" type="checkbox" name="selectedIds[]" value="{{ $projectRevenue['revenue']->id }}" form="bulkDeleteForm" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                                <input id="checkbox{{ $projectRevenue['revenue']->id }}" type="checkbox" name="selectedIds[]" value="{{ $projectRevenue['revenue']->id }}" form="bulkDeleteForm" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                             </div>
                                         </td>
                                         <td class="pl-4 py-2 whitespace-nowrap">
@@ -1044,6 +1044,8 @@ var selectedIds;
 //     });
 // });
 
+
+
 $(document).ready(function () {
     // 一括選択用のチェックボックスがクリックされたときの処理
     $('#selectAllCheckbox').click(function () {
@@ -1051,37 +1053,44 @@ $(document).ready(function () {
         $('input[name="selectedIds[]"]').prop('checked', this.checked);
     });
 
-    // 一括削除ボタンがクリックされたときの処理
-    $('#bulkDeleteButton').click(function () {
-        // 選択された項目のIDを取得
-        var selectedIds = $('input[name="selectedIds[]"]:checked').map(function () {
-            return $(this).val();
-        }).get();
 
-        // 選択されたIDがない場合はアラートを表示して終了
-        if (selectedIds.length === 0) {
-            // alert('削除する項目が選択されていません');
-            return;
-        }
-
-        // 選択されたIDをサーバーに送信
-        $.ajax({
-            url: '/bulk-delete-revenues',
-            type: 'DELETE',
-            data: { selected_ids: selectedIds, _token: '{{ csrf_token() }}' },
-            success: function (response) {
-                // 成功時の処理（成功メッセージの表示など）
-                console.log('Selected IDs:', selectedIds);
-                alert(response.message);
-                // ページのリロードなどの処理
-                location.reload();
-            },
-            error: function (error) {
-                // エラー時の処理
-                alert('エラーが発生しました');
-            }
-        });
+        // 一括削除ボタンがクリックされたときの処理
+        $('#bulkDeleteButton').click(function (event) {
+        // フォームをサブミット
+        $('#bulkDeleteForm').submit();
     });
+
+    // 一括削除ボタンがクリックされたときの処理
+    // $('#bulkDeleteButton').click(function () {
+    //     // 選択された項目のIDを取得
+    //     var selectedIds = $('input[name="selectedIds[]"]:checked').map(function () {
+    //         return $(this).val();
+    //     }).get();
+
+    //     // 選択されたIDがない場合はアラートを表示して終了
+    //     if (selectedIds.length === 0) {
+    //         // alert('削除する項目が選択されていません');
+    //         return;
+    //     }
+
+    //     // 選択されたIDをサーバーに送信
+    //     $.ajax({
+    //         url: '/bulk-delete-revenues',
+    //         type: 'DELETE',
+    //         data: { selected_ids: selectedIds, _token: '{{ csrf_token() }}' },
+    //         success: function (response) {
+    //             // 成功時の処理（成功メッセージの表示など）
+    //             console.log('Selected IDs:', selectedIds);
+    //             alert(response.message);
+    //             // ページのリロードなどの処理
+    //             location.reload();
+    //         },
+    //         error: function (error) {
+    //             // エラー時の処理
+    //             alert('エラーが発生しました');
+    //         }
+    //     });
+    // });
 });
 
 </script>

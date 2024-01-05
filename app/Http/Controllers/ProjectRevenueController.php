@@ -121,7 +121,7 @@ class ProjectRevenueController extends Controller
 
     public function bulkDelete(Request $request)
     {
-        $selectedIds = $request->input('selected_ids');
+        $selectedIds = $request->input('selectedIds');
 
         // $selectedIds には削除対象のレコードのIDが配列として格納されています
 
