@@ -19,6 +19,7 @@ class ClientCorporation extends Model
         'clientcorporation_name',
         'clientcorporation_kana_name',
         'clientcorporation_short_name',
+        'credit_limit',
         'memo',
         'created_by',
         'updated_by',
@@ -28,14 +29,6 @@ class ClientCorporation extends Model
         'clientcorporation_num',
         'clientcorporation_name',
         'clientcorporation_kana_name'
-    ];
-
-    // バリデーションルール
-    public static $rules = [
-        'clientcorporation_num' => 'size:6',
-        'clientcorporation_name' => 'required|max:1024',
-        'clientcorporation_kana_name' => 'required|max:1024',
-        'clientcorporation_short_name' => 'required|max:1024',
     ];
 
     //GlobalObserverに定義されている作成者と更新者を登録するメソッド

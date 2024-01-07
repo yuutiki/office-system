@@ -44,7 +44,7 @@
                     <select id="installation_type_id" name="installation_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled>
                         <option selected value="">未選択</option>
                         @foreach($installationTypes as $installationType)
-                        <option value="{{ $installationType->id }}" @if( $installationType->id == $support->client->installation_type_id ) selected @endif>{{ $installationType->name }}</option>
+                        <option value="{{ $installationType->id }}" @if( $installationType->id == $support->client->installation_type_id ) selected @endif>{{ $installationType->type_name }}</option>
                         @endforeach
                     </select>
                     @error('installation_type_id')

@@ -11,19 +11,28 @@ class TradeStatusSeeder extends Seeder
     public function run(): void
     {
         TradeStatus::create([
-            'name' => 'ユーザ',
+            'trade_status_code' => '10',
+            'trade_status_name' => 'ユーザ',
+            'created_by' => '1',
+            'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);
 
         TradeStatus::create([
-            'name' => '新規：過去有',
+            'trade_status_code' => '20',
+            'trade_status_name' => '新規：過去有',
+            'created_by' => '1',
+            'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);
 
         TradeStatus::create([
-            'name' => '新規：過去無',
+            'trade_status_code' => '30',
+            'trade_status_name' => '新規：過去無',
+            'created_by' => '1',
+            'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);

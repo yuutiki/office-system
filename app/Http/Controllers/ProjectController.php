@@ -18,6 +18,9 @@ use App\Models\SalesStage;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Goodby\CSV\Import\Standard\Lexer;
+use Goodby\CSV\Import\Standard\Interpreter;
+use Goodby\CSV\Import\Standard\LexerConfig;
 
 class ProjectController extends Controller
 {
@@ -205,12 +208,93 @@ class ProjectController extends Controller
     $project->save();
 
     // project.editに後で変更する
-    return redirect()->route('project.index')->with('success', '正常に更新しました');
+    return redirect()->back()->with('success', '正常に更新されました');
 
     }
 
     public function destroy(Project $project)
     {
         //
+    }
+
+
+
+    public function upload(Request $request)
+    {
+        // ファイルがアップロードされているかチェック
+        if (!$request->hasFile('csv_upload')) {
+        // エラーメッセージをセットしてリダイレクト
+        return redirect()->back()->with('error', 'アップロードするCSVファイルが選択されていません。');
+        }
+
+        $csvFile = $request->file('csv_upload');
+        
+        // CSVファイルの一時保存先パス
+        $csvPath = $csvFile->getRealPath();
+        
+        // CSVデータのパースとデータベースへの登録処理
+        $this->parseCSVAndSaveToDatabase($csvPath);
+
+        // 成功時のリダイレクトやメッセージを追加するなどの処理を行う
+        return redirect()->back()->with('success', 'CSVファイルをアップロードしました。');
+    }
+
+    private function parseCSVAndSaveToDatabase($csvPath)
+    {
+        // CSVファイルの文字コードを自動判定
+        $fromCharset = mb_detect_encoding(file_get_contents($csvPath), 'UTF-8, Shift_JIS, EUC-JP, JIS, SJIS-win', true);
+        
+        $config = new LexerConfig();
+        $config->setFromCharset($fromCharset);
+
+        $config->setIgnoreHeaderLine(true); // ヘッダを無視する設定
+        $lexer = new Lexer($config);
+        $interpreter = new Interpreter();
+
+         // CSV行をパースした際に実行する処理を定義
+        $interpreter->addObserver(function (array $row) {
+            $project = new Project();
+
+            $clientNum = $row[0];
+                $client = Client::where('client_num', $clientNum)->first();
+                if ($client) {
+                    $project->client_id = $client->id;
+                } else {
+                    // clientが見つからない場合のエラーハンドリング
+                }
+
+            $projectNumber = Project::generateProjectNumber($clientNum);
+            $project->project_num = $projectNumber;
+
+            $project->project_name = $row[1];
+            $project->sales_stage_id = $row[2];
+
+            $project->project_type_id = $row[3];
+            $project->accounting_type_id = $row[4];
+            $project->distribution_type_id = $row[5];
+            $project->billing_corporation_id = $row[6];
+            
+            $project->proposed_order_date = Carbon::parse($row[7] . '-01');
+            $project->proposed_delivery_date = Carbon::parse($row[8] . '-01');
+            $project->proposed_accounting_date = Carbon::parse($row[9] . '-01');
+            $project->proposed_payment_date = Carbon::parse($row[10] . '-01');
+
+            $project->billing_corporation_name = $row[11];
+            $project->billing_corporation_division_name = $row[12];
+            $project->billing_corporation_person_name = $row[13];
+            $project->billing_head_post_code = $row[14];
+            $project->billing_head_prefecture = $row[15];
+            $project->billing_head_address1 = $row[16];
+
+            $project->project_memo = $row[17];
+
+            $project->account_company_id = $row[18];
+            $project->account_department_id = $row[19];
+            $project->account_division_id = $row[20];
+            $project->account_user_id = $row[21];
+            $project->save();
+        });
+
+        $lexer->parse($csvPath, $interpreter);
     }
 }

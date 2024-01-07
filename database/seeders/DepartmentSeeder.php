@@ -16,6 +16,8 @@ class DepartmentSeeder extends Seeder
             'department_name' => '学園ソリューション事業部',
             'department_kana_name' => 'ガクエンソリューションジギョウブ',
             'department_eng_name' => '',
+            'created_by' => '1',
+            'updated_by' => '1',            
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -25,6 +27,8 @@ class DepartmentSeeder extends Seeder
             'department_name' => 'ソフトエンジニアリング事業部',
             'department_kana_name' => 'ソフトエンジニアリングジギョウブ',
             'department_eng_name' => '',
+            'created_by' => '1',
+            'updated_by' => '1',            
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -34,6 +38,8 @@ class DepartmentSeeder extends Seeder
             'department_name' => '公教育ソリューション事業部',
             'department_kana_name' => 'コウキョウイクソリューションジギョウブ',
             'department_eng_name' => '',
+            'created_by' => '1',
+            'updated_by' => '1',            
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -43,6 +49,8 @@ class DepartmentSeeder extends Seeder
             'department_name' => '公会計ソリューション事業部',
             'department_kana_name' => 'コウカイケイソリューションジギョウブ',
             'department_eng_name' => '',
+            'created_by' => '1',
+            'updated_by' => '1',            
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -52,6 +60,8 @@ class DepartmentSeeder extends Seeder
             'department_name' => 'ウェルネスソリューション事業部',
             'department_kana_name' => 'ウェルネスソリューションジギョウブ',
             'department_eng_name' => '',
+            'created_by' => '1',
+            'updated_by' => '1',            
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -61,6 +71,8 @@ class DepartmentSeeder extends Seeder
             'department_name' => '管理本部',
             'department_kana_name' => 'カンリホンブ',
             'department_eng_name' => '',
+            'created_by' => '1',
+            'updated_by' => '1',            
             'created_at' => now(),
             'updated_at' => now()
         ]);

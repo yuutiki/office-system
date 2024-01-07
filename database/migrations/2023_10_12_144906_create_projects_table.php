@@ -23,6 +23,14 @@ return new class extends Migration
             $table->dateTime('proposed_delivery_date')->nullable(true)->comment('納品予定月');
             $table->dateTime('proposed_accounting_date')->nullable(true)->comment('計上予定月');
             $table->dateTime('proposed_payment_date')->nullable(true)->comment('入金予定月');
+
+            $table->string('billing_corporation_name')->nullable(true)->comment('請求先名');
+            $table->string('billing_corporation_division_name')->nullable(true)->comment('請求先部署名');
+            $table->string('billing_corporation_person_name')->nullable(true)->comment('請求先担当者名');
+            $table->string('billing_head_post_code',80)->nullable(true)->comment('請求先郵便番号');
+            $table->string('billing_head_prefecture',80)->nullable(true)->comment('請求先都道府県');
+            $table->string('billing_head_address1',80)->nullable(true)->comment('請求先住所1');
+            
                         
             $table->text('project_memo')->nullable(true)->comment('プロジェクト備考');
 

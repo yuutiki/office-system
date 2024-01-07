@@ -13,12 +13,16 @@ class DistributionTypeSeeder extends Seeder
         DistributionType::create([
             'distribution_type_code' => '10',
             'distribution_type_name' => '直販',
+            'created_by' => '1',
+            'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);
         DistributionType::create([
             'distribution_type_code' => '20',
             'distribution_type_name' => 'ディーラ',
+            'created_by' => '1',
+            'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);

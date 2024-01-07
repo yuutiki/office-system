@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ClientCorporationStoreRequest;
+use App\Http\Requests\ClientCorporationUpdateRequest;
 use App\Models\ClientCorporation;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
-// use App\Models\Client; //add
 // use Goodby\CSV\Import\Standard\InterpreterConfig;
-// use illuminate\pagination\paginator; //add
 use Goodby\CSV\Import\Standard\Lexer;
 use Goodby\CSV\Import\Standard\Interpreter;
 use Goodby\CSV\Import\Standard\LexerConfig;
@@ -32,8 +30,8 @@ class ClientCorporationController extends Controller
 
         $count = $clientcorporations->total(); // 検索結果の件数を取得
 
-        return view('clientcorporation.index', compact('clientcorporations', 'count') + $filters);
         // $filtersの中には('clientcorporation_num','clientcorporation_name','clientcorporation_kana_name')が入ってる
+        return view('clientcorporation.index', compact('clientcorporations', 'count') + $filters);
     }
 
     public function create()
@@ -41,7 +39,7 @@ class ClientCorporationController extends Controller
         return view('clientcorporation.create');
     }
 
-    public function store(Request $request)
+    public function store(ClientCorporationStoreRequest $request)
     {
         // サブミットの制御用キーを生成
         $submitKey = 'submit_' . md5($request->url() . serialize($request->all()));
@@ -49,15 +47,6 @@ class ClientCorporationController extends Controller
         // 重複サブミットのチェック
         if (Cache::has($submitKey)) {
             return redirect()->back()->with('error', '連続して登録することはできません。');
-        }
-
-        // バリデーションの実行(Model)
-        $validator = Validator::make($request->all(), ClientCorporation::$rules);
-
-        if ($validator->fails()) {
-            // バリデーションエラーが発生した場合
-            session()->flash('error', '入力内容にエラーがあります。');
-            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         // データ保存(Model)
@@ -83,30 +72,12 @@ class ClientCorporationController extends Controller
         return view('clientcorporation.edit',compact('clientcorporation'));
     }
 
-    public function update(Request $request,  string $id)
+    public function update(ClientCorporationUpdateRequest $request,  string $id)
     {
         $clientCorporation = ClientCorporation::find($id);
-
-        // バリデーションの実行(Model)
-        $validator = Validator::make($request->all(), ClientCorporation::$rules);
-
-        if ($validator->fails()) {
-            // バリデーションエラーが発生した場合
-            session()->flash('error', '入力内容にエラーがあります。');
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
         $clientCorporation->fill($request->all())->save();
 
-        // $clientCorporation->clientcorporation_name = $request->clientcorporation_name;
-        // $clientCorporation->clientcorporation_kana_name = $request->clientcorporation_kana_name;
-        // $clientCorporation->clientcorporation_short_name = $request->clientcorporation_short_name;
-        // $clientCorporation->memo = $request->memo;
-        // $clientCorporation->save();
-
-        session()->flash('success', '正常に更新されました。');
-
-        return redirect()->route('clientcorporation.edit',$id)->with('success','更新しました');
+        return redirect()->route('clientcorporation.edit',$id)->with('success','正常に更新されました。');
     }
 
     public function destroy(string $id)
@@ -114,10 +85,12 @@ class ClientCorporationController extends Controller
         $clientCorporation = ClientCorporation::find($id);
         $clientCorporation->delete();
 
-        return redirect()->route('clientcorporation.index')->with('success','削除しました');
+        return redirect()->back()->with('success','正常に削除されました');
     }
 
-    //モーダル用の非同期検索ロジック
+
+
+    //モーダル用の非同期検索メソッド
     public function search(Request $request)
     {
         $corporationName = $request->input('corporationName');
@@ -130,6 +103,7 @@ class ClientCorporationController extends Controller
 
         return response()->json($corporations);
     }
+
 
     public function upload(Request $request)
     {
@@ -150,6 +124,7 @@ class ClientCorporationController extends Controller
         // 成功時のリダイレクトやメッセージを追加するなどの処理を行う
         return redirect()->back()->with('success', 'CSVファイルをアップロードしました。');
     }
+
 
     private function parseCSVAndSaveToDatabase($csvPath)
     {

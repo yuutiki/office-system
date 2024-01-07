@@ -6,6 +6,7 @@
         <x-message :message="session('message')" />
     </x-slot>
 
+    
     {{-- <div id="accordion-color" data-accordion="collapse" data-active-classes="bg-blue-100 dark:bg-gray-800 text-blue-600 dark:text-white">
         <h2 id="accordion-color-heading-1">
             <button type="button" class="bg-gray-300 dark:bg-gray-700 flex items-center justify-between w-5/6 p-2 mt-4 mx-auto font-medium text-left text-gray-900 border border-gray-200 rounded-t-xl focus:ring-1 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-500 dark:hover:bg-gray-800" data-accordion-target="#accordion-color-body-1" aria-expanded="false" aria-controls="accordion-color-body-1">
@@ -72,8 +73,8 @@
                             <input type="search" name="s_clientcorporation_kana_name" value="@if (isset($clientcorporation_kana_name)){{ $clientcorporation_kana_name }}@endif" class="w-full p-1.5 pl-10  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="法人カナ名称" >
                         </div>
                         <div class="w-5/6 mt-2 ml-8 mb-2 flex justify-start">
-                            <button type="submit" form="clientcorporationform" id="searchButton" class="px-6 py-1.5 font-medium text-sm rounded-lg text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">検索</button>
-                            <button type="button" value="reset" form="clientcorporationform" id="clear" class="ml-2 px-4 py-1.5 font-medium text-sm rounded-lg text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-red-700 hover:bg-red-800 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">リセット</button>
+                            <button type="submit" form="clientcorporationform" id="searchButton" class="px-6 py-1.5 font-medium text-sm rounded-s rounded-e text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">検索</button>
+                            <button type="button" value="reset" form="clientcorporationform" id="clear" class="ml-2 px-4 py-1.5 font-medium text-sm rounded-s rounded-e text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-red-700 hover:bg-red-800 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">リセット</button>
                         </div>
                     </div>
                 </form>
@@ -81,14 +82,14 @@
     
     <!-- Dropdown bottoun -->
     <div class="w-5/6 text-right mt-2 mx-auto ">
-        <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+        <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="items-center font-medium rounded-s rounded-e text-sm px-4 py-2 text-center inline-flex text-white bg-blue-700 dark:bg-blue-600 hover:bg-blue-800 dark:hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800" type="button">
             追加
             <svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
         </button>
             <!-- Dropdown menu -->
-            <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+            <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-md shadow w-44 dark:bg-gray-700">
                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
                     <li>
                         <a href="/clientcorporation/create" class="block text-left pl-8 py-2 font-medium text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
@@ -97,7 +98,7 @@
                     </li>
                     <li>
                         <!-- Modal toggle start-->
-                        <button data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="text-left pl-8 py-2 w-full font-medium text-sm text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800" type="button">
+                        <button data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="text-left pl-8 py-2 w-full font-medium text-sm text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800" type="button">
                             CSV一括登録
                         </button>
                         <!-- Modal toggle end-->
@@ -146,7 +147,7 @@
                 </div>
             </div>
 
-        <button id="dropdownOutputButton" data-dropdown-toggle="outputdropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+        <button id="dropdownOutputButton" data-dropdown-toggle="outputdropdown" class="items-center font-medium rounded-s rounded-e text-sm px-4 py-2 text-center inline-flex text-white bg-blue-700 dark:bg-blue-600 hover:bg-blue-800 dark:hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800" type="button">
             出力
             <svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -254,12 +255,12 @@
                             {{ $loop->iteration }}
                         </td>
                         <td class="pl-1 py-2 whitespace-nowrap">
-                            <button onclick="location.href='{{route('clientcorporation.edit',$clientcorporation)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                            <button onclick="location.href='{{route('clientcorporation.edit',$clientcorporation)}}'"  class="button-edit" type="button">
                                 <div class="flex">
                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
                                     </svg>
-                                    <span class="text-ms">参照</span>
+                                    <span class="text-ms">編集</span>
                                 </div>
                             </button>
                         </td>
@@ -279,8 +280,8 @@
                             {{$clientcorporation->clients_count}}
                         </td>
                         <td class="py-2">
-                            <button data-modal-target="deleteModal-{{$clientcorporation->id}}" data-modal-toggle="deleteModal-{{$clientcorporation->id}}" tabindex="-1" class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
-                                <div class="flex">
+                            <button data-modal-target="deleteModal-{{$clientcorporation->id}}" data-modal-toggle="deleteModal-{{$clientcorporation->id}}" tabindex="-1" class="button-delete" type="button">
+                                <div class="flex items-center">
                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z"/>
                                     </svg>
@@ -325,6 +326,11 @@
         {{ $clientcorporations->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
         </div>
     </div>
+
+
+
+
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
         const uploadForm = document.getElementById('csv_form1');

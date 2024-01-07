@@ -13,6 +13,8 @@ class EmployeeStatusSeeder extends Seeder
         EmployeeStatus::create([
             'employee_status_num' => '10',
             'employee_status_name' => '在職',
+            'created_by' => '1',
+            'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -20,6 +22,8 @@ class EmployeeStatusSeeder extends Seeder
         EmployeeStatus::create([
             'employee_status_num' => '90',
             'employee_status_name' => '退職',
+            'created_by' => '1',
+            'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);

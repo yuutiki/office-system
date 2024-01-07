@@ -9,6 +9,18 @@ class ClientType extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'client_type_code',
+        'client_type_name',
+        'created_by',
+        'updated_by'
+    ];
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id');
+    }
+
     public function clients()
     {
         return $this->hasmany(Client::class);

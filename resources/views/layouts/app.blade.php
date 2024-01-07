@@ -51,9 +51,6 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
         <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
 
-
-        <script type="text/javascript" src="{{ asset('/assets/js/main.js') }}"></script>
-
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-blue-100 dark:bg-gray-900 ">
@@ -96,6 +93,7 @@
         <script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
         {{-- ショートカット --}}
         <script type="text/javascript" src="{{ asset('/assets/js/shortcut.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('/assets/js/main.js') }}"></script>
     </body>
 </html>
 

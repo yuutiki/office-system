@@ -11,19 +11,28 @@ class InstallationTypeSeeder extends Seeder
     public function run(): void
     {
         InstallationType::create([
-            'name' => '国公立',
+            'type_code' => '10',
+            'type_name' => '国公立',
+            'created_by' => '1',
+            'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);
 
         InstallationType::create([
-            'name' => '私立',
+            'type_code' => '20',
+            'type_name' => '私立',
+            'created_by' => '1',
+            'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);
 
         InstallationType::create([
-            'name' => 'その他',
+            'type_code' => '90',
+            'type_name' => 'その他',
+            'created_by' => '1',
+            'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);

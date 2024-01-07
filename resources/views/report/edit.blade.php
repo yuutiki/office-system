@@ -197,15 +197,14 @@
             this.style.height = 'auto';
             this.style.height = (this.scrollHeight + 2) + 'px';
         });
-
-        const textareaNotice = document.getElementById('auto-resize-textarea-report_notice');
-        textareaNotice.addEventListener('input', function() {
+        textareaContent.addEventListener('mouseover', function() {
             // テキストエリアの高さを自動調整
             this.style.height = 'auto';
             this.style.height = (this.scrollHeight + 2) + 'px';
         });
 
-        textareaContent.addEventListener('mouseover', function() {
+        const textareaNotice = document.getElementById('auto-resize-textarea-report_notice');
+        textareaNotice.addEventListener('input', function() {
             // テキストエリアの高さを自動調整
             this.style.height = 'auto';
             this.style.height = (this.scrollHeight + 2) + 'px';

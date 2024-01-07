@@ -13,12 +13,16 @@ class AccountingTypeSeeder extends Seeder
         AccountingType::create([
             'accounting_type_code' => '10',
             'accounting_type_name' => '一括計上',
+            'created_by' => '1',
+            'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);
         AccountingType::create([
             'accounting_type_code' => '20',
             'accounting_type_name' => '分割計上',
+            'created_by' => '1',
+            'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);

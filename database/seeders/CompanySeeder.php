@@ -15,6 +15,8 @@ class CompanySeeder extends Seeder
             'company_name' => '株式会社システムディ',
             'company_kana_name' => 'カブシキガイシャシステムディ',
             'company_eng_name' => 'SystemD,inc',
+            'created_by' => '1',
+            'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);

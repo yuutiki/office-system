@@ -13,15 +13,11 @@
         </div>
     </x-slot>
 
-    <script>
-            // let activetab = tabs.getActiveTab();
-            // consol.log(Activetab);
+    {{-- <script>
         function goBack() {
             window.history.back();
-
-            // show(reports-tab);
         }
-    </script>
+    </script> --}}
 
     <div class="md:w-4/6 flex justify-center md:mx-auto mt-8 ">
         {{-- <div class="mx-4 sm:p-8"> --}}

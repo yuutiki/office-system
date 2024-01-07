@@ -9,6 +9,19 @@ class InstallationType extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'type_code',
+        'type_name',
+        'created_by',
+        'updated_by'
+    ];
+
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id');
+    }
+
     public function clients()
     {
         return $this->hasmany(Client::class);

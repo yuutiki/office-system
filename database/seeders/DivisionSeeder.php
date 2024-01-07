@@ -15,6 +15,8 @@ class DivisionSeeder extends Seeder
             'division_name' => '営業部',
             'division_kana_name' => 'エイギョウブ',
             'division_eng_name' => '',
+            'created_by' => '1',
+            'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -23,6 +25,8 @@ class DivisionSeeder extends Seeder
             'division_name' => '東日本営業部',
             'division_kana_name' => '',
             'division_eng_name' => '',
+            'created_by' => '1',
+            'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -31,6 +35,8 @@ class DivisionSeeder extends Seeder
             'division_name' => '開発部',
             'division_kana_name' => '',
             'division_eng_name' => '',
+            'created_by' => '1',
+            'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);

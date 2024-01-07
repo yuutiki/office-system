@@ -31,7 +31,7 @@ export default {
                 "slide-in-top": 
                     "slide-in-top 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000)   both",
                 "slide-out-top": 
-                    "slide-out-top 1s cubic-bezier(0.600, -0.080, 0.735, 0.045) 1.5s  both",
+                    "slide-out-top 1s cubic-bezier(0.600, -0.080, 0.735, 0.045) 2s  both",
 
 
             },

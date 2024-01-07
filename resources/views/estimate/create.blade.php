@@ -476,7 +476,7 @@
 
             /** 初期処理開始 */
             // シートの領域取得
-            // var spArea = document.getElementById('mytable');
+            var spArea = document.getElementById('mytable');
 
             };            
 

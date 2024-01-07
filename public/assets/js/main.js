@@ -65,18 +65,49 @@ $(function(){
 //     });
 // });
 
+function goBack() {
+    window.history.back();
+}
+
 
 // 数値入力時に桁区切りをする場合、input="text"タグで onblur="formatNumberInput(this);" とすることで下記の関数を利用できる。
-function formatNumberInput(inputElement) {
-    let inputValue = inputElement.value;
-    let numericValue = inputValue.replace(/[^0-9]/g, "");
-    formattedValue = numericValue.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
-    console.log(formattedValue);
-    if (!isNaN(numericValue)) {
-        inputElement.value = formattedValue;
-        return true;
-    } else {
-        inputElement.value = ""; // 数値以外が入力された場合は空にするか、適切な処理を行う
-        return false;
-    }
-}
+// 例）<input type="text" onblur="formatNumberInput(this);" pattern="\d*">
+window.addEventListener('load', () => {
+    window.formatNumberInput = function(inputElement) {
+        let inputValue = inputElement.value;
+        let numericValue = inputValue.replace(/[^0-9]/g, "");
+        formattedValue = numericValue.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+        console.log(formattedValue);
+        if (!isNaN(numericValue)) {
+            inputElement.value = formattedValue;
+            return true;
+        } else {
+            inputElement.value = "";
+            return false;
+        }
+    };
+
+    // 他の初期化コードなどがあればここに追加
+
+    $(document).ready(function () {
+        // 一括選択用のチェックボックスがクリックされたときの処理
+        $('#selectAllCheckbox').click(function () {
+            // 他の全てのチェックボックスの状態を一括で変更
+            $('input[name="selectedIds[]"]').prop('checked', this.checked);
+        });
+    });
+
+
+    const autoResizeTextareas = document.querySelectorAll('[data-auto-resize="true"]');
+    autoResizeTextareas.forEach(textarea => {
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight + 2) + 'px';
+        });
+    
+        textarea.addEventListener('mouseover', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight + 2) + 'px';
+        });
+    });
+});

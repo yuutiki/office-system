@@ -5,7 +5,8 @@
                 法人編集
             </h2>
             <div class="flex justify-end">
-                <x-general-button onclick="location.href='{{route('clientcorporation.index')}}'">
+                {{-- <x-general-button onclick="location.href='{{route('clientcorporation.index')}}'"> --}}
+                    <x-general-button onclick="goBack()">
                     戻る
                 </x-general-button>
                 <x-message :message="session('message')"/>
@@ -36,13 +37,6 @@
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
                 <div class="w-full flex flex-col">
-                    <label for="clientcorporation_short_name" class="font-semibold dark:text-gray-100 leading-none mt-4">法人略称</label>
-                    <input type="text" name="clientcorporation_short_name" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="clientcorporation_short_name" value="{{old('clientcorporation_short_name',$clientcorporation->clientcorporation_short_name)}}" placeholder="烏丸学園">
-                </div>
-                @error('clientcorporation_short_name')
-                    <div class="text-red-500">{{$message}}</div>
-                @enderror
-                <div class="w-full flex flex-col">
                     <label for="clientcorporation_kana_name" class="font-semibold dark:text-gray-100 leading-none mt-4">法人正式カナ名称</label>
                     <input type="text" name="clientcorporation_kana_name" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="clientcorporation_kana_name" value="{{old('clientcorporation_kana_name',$clientcorporation->clientcorporation_kana_name)}}" placeholder="ガッコウホウジン カラスマガクエン">
                 </div>
@@ -50,8 +44,22 @@
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
                 <div class="w-full flex flex-col">
+                    <label for="clientcorporation_short_name" class="font-semibold dark:text-gray-100 leading-none mt-4">法人略称</label>
+                    <input type="text" name="clientcorporation_short_name" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="clientcorporation_short_name" value="{{old('clientcorporation_short_name',$clientcorporation->clientcorporation_short_name)}}" placeholder="烏丸学園">
+                </div>
+                @error('clientcorporation_short_name')
+                    <div class="text-red-500">{{$message}}</div>
+                @enderror
+                <div class="w-full flex flex-col">
+                    <label for="credit_limit" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">与信限度額</label>
+                    <input type="text" onblur="formatNumberInput(this);" name="credit_limit" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="credit_limit" value="{{old('credit_limit',number_format($clientcorporation->credit_limit))}}" placeholder="">
+                </div>
+                @error('credit_limit')
+                    <div class="text-red-500">{{$message}}</div>
+                @enderror
+                <div class="w-full flex flex-col">
                     <label for="memo" class="font-semibold dark:text-gray-100 leading-none mt-4">備考</label>
-                    <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="memo" cols="30" rows="5" placeholder="法人に関する備考...">{{old('memo',$clientcorporation->memo)}}</textarea>
+                    <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="auto-resize-textarea-content_1" cols="30" rows="5" placeholder="法人に関する備考...">{{old('memo',$clientcorporation->memo)}}</textarea>
                 </div>
                 @error('memo')
                     <div class="text-red-500">{{$message}}</div>
