@@ -103,8 +103,13 @@
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
-                            名称
+                            内訳名称
                         </div>
+                    </th>
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                      <div class="flex items-center">
+                          種別名称
+                      </div>
                     </th>
                     {{-- <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
@@ -150,6 +155,10 @@
                         <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$productSplitType->split_type_name}}
                         </td>
+                        <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                          {{$productSplitType->productType->type_code}}:
+                          {{$productSplitType->productType->type_name}}
+                      </td>
                         {{-- <td class="px-1 py-2 whitespace-nowrap">
                             {{$productSplitType->productSplitsplit_Type_eng_name}}
                         </td> --}}
@@ -194,9 +203,21 @@
                                 <input type="text" maxlength="2" name="split_type_code" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" id="product_split_type_code-{{$productSplitType->id}}" value="{{old('productSplitsplit_Type_code',$productSplitType->split_type_code)}}" required>
                             </div>
                             <div class="w-full flex flex-col col-span-2">
-                                <label for="product_split_type_name-{{$productSplitType->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">名称</label>
+                                <label for="product_split_type_name-{{$productSplitType->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">製品内訳種別名称</label>
                                 <input type="text" maxlength="10" name="split_type_name" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" id="product_split_type_name-{{$productSplitType->id}}" value="{{old('productSplitsplit_Type_name',$productSplitType->split_type_name)}}" required>
                             </div>
+
+                            <div class="w-full flex flex-col">
+                              <label for="product_type_id_{{$productSplitType->id}}" class="block mt-4 text-sm font-medium text-gray-900 dark:text-white">製品種別</label>
+                              <select name="product_type_id_{{$productSplitType->id}}" id="division_id-{{$productSplitType->id}}" value="{{old('product_type_id_' . $productSplitType->id, $productSplitType->division_id)}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" >
+                                  @foreach($productTypes as $productType)
+                                  <option value="{{ $productType->id }}"  @selected($productType->id == old('product_type_id_' . $productSplitType->id, $productSplitType->product_type_id))>{{ $productType->type_name }}</option>
+                                  @endforeach
+                              </select>
+                            </div>
+                            @error('product_type_id_' . $productSplitType->id)
+                                <div class="text-red-500">{{$message}}</div>
+                            @enderror
                             {{-- <div class="w-full flex flex-col col-span-2">
                                 <label for="product_split_type_eng_name-{{$productSplitType->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">英名称</label>
                                 <input type="text" name="product_split_type_eng_name" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" id="product_split_type_eng_name-{{$productSplitType->id}}" value="{{old('productSplitsplit_Type_eng_name',$productSplitType->productSplitsplit_Type_eng_name)}}">

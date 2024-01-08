@@ -214,7 +214,9 @@ class ProjectController extends Controller
 
     public function destroy(Project $project)
     {
-        //
+        $project->delete();
+
+        return redirect()->back()->with('success', '正常に削除されました');
     }
 
 

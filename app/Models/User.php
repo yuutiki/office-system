@@ -61,11 +61,25 @@ class User extends Authenticatable
         'last_login_at'
     ];
 
-    public static $rules = [
-        'company_id' => 'required',
-        'department_id' => 'required',
-        'division_id' => 'required',
-    ];
+    // public static $rules = [
+    //     'company_id' => 'required',
+    //     'department_id' => 'required',
+    //     'division_id' => 'required',
+    //     'int_phone' => 'size:3',
+    // ];
+
+    public static function rules($id)
+    {
+        return [
+            'company_id_' . $id => 'required',
+            'department_id_' . $id => 'required',
+            'division_id_' . $id => 'required',
+            'int_phone_' . $id => 'size:3',
+            'kana_name_' . $id => 'required|max:50',
+            'name_' . $id => 'required|max:10',
+            // 他のフィールドに対するルールも追加する
+        ];
+    }
 
     public static $uploadRules = [
         'csv_input' => 'required|file|mimes:csv,txt',

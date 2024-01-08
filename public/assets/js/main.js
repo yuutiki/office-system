@@ -30,22 +30,30 @@ $(function() {
     $.fn.autoKana('input[name="client_name"]', 'input[name="client_kana_name"]', {katakana: true});
 });
 
-$(function(){
-    $('#clear').click(function(){
-        $('#clientcorporationform input, #clientcorporationform select, #keepfileform input, #keepfileform select').each(function(){
-          //checkboxまたはradioボタンの時
-          if(this.type == 'checkbox' || this.type == 'radio'){
-            //一括でチェックを外す
-              this.checked = false;
-          }
-          //checkboxまたはradioボタン以外の時
-          else{
-            // val値を空にする
-            $(this).val('');
-          }
-        });
-    });
+$(function() {
+    $.fn.autoKana('input[name="name"]', 'input[name="kana_name"]', {katakana: true});
 });
+
+$(function() {
+    $.fn.autoKana('input[name="name_{{$user->id}}"]', 'input[name="kana_name_{{$user->id}}"]', {katakana: true});
+});
+
+// $(function(){
+//     $('#clear').click(function(){
+//         $('#clientcorporationform input, #clientcorporationform select, #keepfileform input, #keepfileform select').each(function(){
+//           //checkboxまたはradioボタンの時
+//           if(this.type == 'checkbox' || this.type == 'radio'){
+//             //一括でチェックを外す
+//               this.checked = false;
+//           }
+//           //checkboxまたはradioボタン以外の時
+//           else{
+//             // val値を空にする
+//             $(this).val('');
+//           }
+//         });
+//     });
+// });
 
 
 // $(function(){
@@ -64,6 +72,33 @@ $(function(){
 //         });
 //     });
 // });
+
+// resetForm.js
+
+$(function () {
+    $('#clear').click(function () {
+        resetForm('#clientcorporationform');
+        resetForm('#keepfileform');
+        resetForm('#link-search-form');
+        // 別のフォームがあればここで追加
+    });
+});
+
+function resetForm(formId) {
+    $(formId + ' input, ' + formId + ' select').each(function () {
+        // checkboxまたはradioボタンの時
+        if (this.type == 'checkbox' || this.type == 'radio') {
+            // 一括でチェックを外す
+            this.checked = false;
+        }
+        // checkboxまたはradioボタン以外の時
+        else {
+            // val値を空にする
+            $(this).val('');
+        }
+    });
+}
+
 
 function goBack() {
     window.history.back();
@@ -98,16 +133,16 @@ window.addEventListener('load', () => {
     });
 
 
-    const autoResizeTextareas = document.querySelectorAll('[data-auto-resize="true"]');
-    autoResizeTextareas.forEach(textarea => {
-        textarea.addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = (this.scrollHeight + 2) + 'px';
-        });
+    // const autoResizeTextareas = document.querySelectorAll('[data-auto-resize="true"]');
+    // autoResizeTextareas.forEach(textarea => {
+    //     textarea.addEventListener('input', function() {
+    //         this.style.height = 'auto';
+    //         this.style.height = (this.scrollHeight + 2) + 'px';
+    //     });
     
-        textarea.addEventListener('mouseover', function() {
-            this.style.height = 'auto';
-            this.style.height = (this.scrollHeight + 2) + 'px';
-        });
-    });
+    //     textarea.addEventListener('mouseover', function() {
+    //         this.style.height = 'auto';
+    //         this.style.height = (this.scrollHeight + 2) + 'px';
+    //     });
+    // });
 });

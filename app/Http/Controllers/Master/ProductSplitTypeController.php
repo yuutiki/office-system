@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
 use App\Models\ProductSplitType;
+use App\Models\ProductType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,8 +12,9 @@ class ProductSplitTypeController extends Controller
 {
     public function index()
     {
+        $productTypes = ProductType::all();
         $productSplitTypes = ProductSplitType::with('updatedBy')->orderBy('split_type_code','asc')->paginate();
-        return view('masters.product-split-type-index',compact('productSplitTypes'));
+        return view('masters.product-split-type-index',compact('productSplitTypes','productTypes'));
     }
 
     public function create()

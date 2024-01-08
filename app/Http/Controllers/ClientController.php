@@ -271,16 +271,21 @@ class ClientController extends Controller
             $client->trade_status_id = $row[6];
             $client->user_id = $row[7];
             
-            $client->head_tel = $row[8];
-            $client->head_fax = $row[9];
-            $client->students = $row[10];
 
-            $client->is_enduser = $row[11];
-            $client->is_supplier = $row[12];
-            $client->is_dealer = $row[13];
-            $client->is_lease = $row[14];
-            $client->is_other_partner = $row[15];
-            $client->is_closed = $row[16];
+            $client->head_post_code = $row[8];
+            $client->head_prefecture = $row[9];
+            $client->head_addre1 = $row[10];
+
+            $client->head_tel = $row[11];
+            $client->head_fax = $row[12];
+            $client->students = $row[13];
+
+            $client->is_enduser = $row[14];
+            $client->is_supplier = $row[15];
+            $client->is_dealer = $row[16];
+            $client->is_lease = $row[17];
+            $client->is_other_partner = $row[18];
+            $client->is_closed = $row[19];
             $client->save();
         });
 

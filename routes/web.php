@@ -36,7 +36,7 @@ use App\Http\Controllers\Master\SalesStageController;
 use App\Http\Controllers\Master\SupportTimeController;
 use App\Http\Controllers\Master\SupportTypeController;
 use App\Http\Controllers\Master\TradeStatusController;
-
+use App\Http\Controllers\ProjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -132,8 +132,8 @@ Route::middleware('auth')->group(function () {
 
 
 
-    Route::post('/update-link/{link}', [LinkController::class, 'mordalupdate'])->name('updateLink');
-    Route::post('/save-modal-id', [LinkController::class, 'saveModalId'])->name('save.modal.id');
+    // Route::post('/update-link/{link}', [LinkController::class, 'mordalupdate'])->name('updateLink');
+    // Route::post('/save-modal-id', [LinkController::class, 'saveModalId'])->name('save.modal.id');
 
     //顧客編集画面のアクティブタブを取得
     Route::post('/updateActiveTab',  [ClientController::class, 'updateActiveTab']);

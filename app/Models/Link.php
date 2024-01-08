@@ -11,20 +11,30 @@ class Link extends Model
     use HasFactory;
     use Sortable;
 
-    protected $fillable = ['display_name', 'display_order', 'url', 'department_id'];
-
+    protected $fillable = [
+        'display_name',
+        'display_order',
+        'url',
+        'department_id',
+        'created_by',
+        'updated_by'
+    ];
 
     //sort
     public $sortable = [
         'display_name',
         'url',
         'display_order',
-        'department_name'
+        'department_name',
     ];
 
     //relation
     public function department()
     {
         return $this->belongsTo(Department::class);
+    }
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id');
     }
 }
