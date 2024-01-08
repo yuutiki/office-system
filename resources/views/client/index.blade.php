@@ -237,7 +237,7 @@
                             {{$client->user->name}}
                         </td>
                         <td class="px-1 py-2 whitespace-nowrap">
-                            {{$client->tradestatus->name}}
+                            {{$client->tradestatus->trade_status_name}}
                         </td>
                         <td class="px-1 py-2 whitespace-nowrap">
                             {{$client->department->department_name}}
