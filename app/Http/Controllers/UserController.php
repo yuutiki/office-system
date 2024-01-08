@@ -157,7 +157,7 @@ class UserController extends Controller
             // カスタム属性名を設定
         $validator->setAttributeNames([
             'password_' . $id => 'パスワード',
-            'name' => '氏名',
+            'name_' . $id => '氏名',
             'kana_name_' . $id => 'カナ氏名',
             'email_' . $id => 'メールアドレス',
             'int_phone_' . $id => '内線電話番号',
@@ -180,7 +180,7 @@ class UserController extends Controller
 
         $user=user::find($id);
         // $user->employee_num = $request->employee_num;
-        $user->name = $request->name;
+        $user->name = $request->input('name_' . $id);;
         $user->kana_name = $request->input('kana_name_' . $id);
         $user->email = $request->input('email_' . $id);
         $user->int_phone = $request->input('int_phone_' . $id);
