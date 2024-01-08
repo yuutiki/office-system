@@ -28,12 +28,12 @@ return new class extends Migration
             $table->foreignId('client_type_id')->nullable(true)->comment('顧客種別ID');//add Client_typesテーブル参照
             $table->foreignId('trade_status_id')->comment('取引状態ID');//add Trade_statusesテーブル参照
             $table->foreignId('client_corporation_id')->comment('法人ID'); //add ClientCorporationsテーブル参照
-            $table->boolean('is_enduser')->comment('エンドユーザフラグ');
-            $table->boolean('is_supplier')->comment('仕入外注先フラグ');
-            $table->boolean('is_dealer')->comment('ディーラフラグ');
-            $table->boolean('is_lease')->comment('リース会社フラグ');
-            $table->boolean('is_other_partner')->comment('その他協業フラグ');
-            $table->boolean('is_closed')->comment('閉校フラグ');
+            $table->boolean('is_enduser')->default(0)->comment('エンドユーザフラグ');
+            $table->boolean('is_supplier')->default(0)->comment('仕入外注先フラグ');
+            $table->boolean('is_dealer')->default(0)->comment('ディーラフラグ');
+            $table->boolean('is_lease')->default(0)->comment('リース会社フラグ');
+            $table->boolean('is_other_partner')->default(0)->comment('その他協業フラグ');
+            $table->boolean('is_closed')->default(0)->comment('閉校フラグ');
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->datetimes();
