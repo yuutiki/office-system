@@ -136,26 +136,36 @@
                             契約情報
                         </button>
                     </li>
+
+                @if ($client->is_enduser)
                     <li class="mr-2" role="presentation">
                         <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts" aria-selected="false">
                             環境情報
                         </button>
                     </li>
+                @endif
+                @if ($client->is_enduser)
                     <li class="mr-2" role="presentation">
                         <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">
                             導入システム
                         </button>
                     </li>
+                @endif
+
                     <li class="mr-2" role="presentation">
                         <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="reports-tab" data-tabs-target="#reports" type="button" role="tab" aria-controls="reports" aria-selected="false">
                             営業報告
                         </button>
                     </li>
+                
+                    @if ($client->is_enduser)
                     <li class="mr-2" role="presentation">
                         <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="supports-tab" data-tabs-target="#supports" type="button" role="tab" aria-controls="supports" aria-selected="false">
                             サポート履歴
                         </button>
                     </li>
+                @endif
+
                 </ul>
             </div>
             {{-- タブコンテンツStart --}}
@@ -236,7 +246,7 @@
 
                     <div class="w-full flex flex-col">
                         <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">備考</label>
-                        <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 placeholder-gray-400" id="auto-resize-textarea-client_memo" value="{{old('memo')}}" cols="30" rows="5">{{old('memo', $client->memo)}}</textarea>
+                        <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 placeholder-gray-400" id="auto-resize-textarea" data-auto-resize="true"v value="{{old('memo')}}" cols="30" rows="5">{{old('memo', $client->memo)}}</textarea>
                     </div>
                     <ul class=" mt-4 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s rounded-e sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                         <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
@@ -370,6 +380,7 @@
                     </div>
                 </div>
                 {{-- 2つ目のタブコンテンツEnd --}}
+
 
                 {{-- 3つ目のタブコンテンツ(導入システム)Start --}}
                 <div class="hidden p-4 rounded-s rounded-e bg-gray-50 dark:bg-gray-800" id="settings" role="tabpanel" aria-labelledby="settings-tab">
@@ -1312,4 +1323,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     </script>
+<script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
+
 </x-app-layout>

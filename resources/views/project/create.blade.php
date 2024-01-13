@@ -192,7 +192,7 @@
                         </div>
                         <div class="w-full flex flex-col">
                             <label for="project_memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">プロジェクト備考</label>
-                            <textarea name="project_memo" class="w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 placeholder-gray-400" id="project_memo" value="{{old('project_memo')}}" cols="30" rows="5"></textarea>
+                            <textarea name="project_memo" class="w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 placeholder-gray-400"data-auto-resize="true" data-auto-resize="true" id="project_memo" value="{{old('project_memo')}}" cols="30" rows="5"></textarea>
                             @error('project_memo')
                                 <div class="text-red-500">{{ $message }}</div>
                             @enderror
@@ -528,4 +528,7 @@
             hideCorporationModal();
         }
     </script>
+
+<script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
+
 </x-app-layout>

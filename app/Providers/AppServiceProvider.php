@@ -39,12 +39,12 @@ class AppServiceProvider extends ServiceProvider
             return ($user->role_id <= 2);
         });
 
-        // 「最強」と「普通」と「最弱」全てに適用
-        Gate::define('manager', function ($user) {
+        // 「システム管理者」と「管理者」と「マネージャ」に適用
+        Gate::define('managerOrAbobe', function ($user) {
             return ($user->role_id <= 3);
         });
 
-        // 「最強」と「普通」と「最弱」全てに適用
+        // 「システム管理者」と「管理者」と「マネージャ」「一般」に適用
         Gate::define('general', function ($user) {
             return ($user->role_id <= 4);
         });

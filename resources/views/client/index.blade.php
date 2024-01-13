@@ -203,9 +203,11 @@
                             更新日
                         </div>
                     </th> --}}
+                    @can('managerOrAbobe')
                     <th scope="col" class="px-6 py-3 whitespace-nowrap">
                         <span class="sr-only">削除</span>
                     </th>
+                    @endcan
                 </tr>
             </thead>
             @foreach ($clients as $client)
@@ -242,8 +244,9 @@
                         <td class="px-1 py-2 whitespace-nowrap">
                             {{$client->department->department_name}}
                         </td>
+                        @can('managerOrAbobe')
                         <td class="px-1 py-2">
-                            <button data-modal-target="deleteModal-{{$client->id}}" data-modal-toggle="deleteModal-{{$client->id}}" tabindex="-1" class="button-delete" type="button">
+                            <button data-modal-target="deleteModal-{{$client->id}}" data-modal-toggle="deleteModal-{{$client->id}}" tabindex="-1" class="button-delete-primary" type="button">
                                 <div class="flex items-center">
                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z"/>
@@ -252,6 +255,7 @@
                                 </div>
                             </button>
                         </td>
+                        @endcan
                     </tr>
                 </tbody>
                 {{-- 削除確認モーダル画面 Start --}}
@@ -273,9 +277,12 @@
                                 <form action="{{route('client.destroy',$client->id)}}" method="POST" class="text-center m-auto">
                                     @csrf
                                     @method('delete')
-                                    <button type="submit" data-modal-hide="deleteModal-{{$client->id}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                                    @can('managerOrAbobe')
+                                    <button type="submit" data-modal-hide="deleteModal-{{$client->id}}" class="button-delete-primary">
                                         削除
-                                    </button>
+                                    </button>                                       
+                                    @endcan
+
                                 </form>
                                 <button data-modal-hide="deleteModal-{{$client->id}}" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                                     やっぱやめます

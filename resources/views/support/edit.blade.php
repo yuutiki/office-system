@@ -213,14 +213,14 @@
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="f_request_content" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">内容</label>
-                        <textarea name="f_request_content" class="w-auto py-1 border text-sm border-gray-300 rounded-md mt-1 placeholder-gray-400" id="f_request_content" cols="30" rows="8">{{ old('f_request_content',$support->request_content) }}</textarea>
+                        <textarea name="f_request_content" class="w-auto py-1 border text-sm border-gray-300 rounded-md mt-1 placeholder-gray-400" data-auto-resize="true" id="f_request_content" cols="30" rows="8">{{ old('f_request_content',$support->request_content) }}</textarea>
                         @error('f_request_content')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="f_response_content" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">回答</label>
-                        <textarea name="f_response_content" class="w-auto py-1 border text-sm border-gray-300 rounded-md mt-1 placeholder-gray-400" id="f_response_content" cols="30" rows="8">{{ old('f_response_content',$support->response_content) }}</textarea>
+                        <textarea name="f_response_content" class="w-auto py-1 border text-sm border-gray-300 rounded-md mt-1 placeholder-gray-400" data-auto-resize="true" id="f_response_content" cols="30" rows="8">{{ old('f_response_content',$support->response_content) }}</textarea>
                     </div>
                     @error('f_response_content')
                         <div class="text-red-500">{{ $message }}</div>
@@ -228,14 +228,14 @@
                     <div class="grid gap-2 mb-4 sm:grid-cols-2">
                         <div class="w-full flex flex-col">
                             <label for="f_internal_message" class="font-semibold dark:text-red-400 text-red-400 leading-none mt-4">社内連絡欄</label>
-                            <textarea name="f_internal_message" class="w-auto py-1 border text-sm border-gray-300 rounded-md mt-1 placeholder-gray-400" id="f_internal_message" cols="30" rows="5">{{ old('f_internal_message',$support->internal_message) }}</textarea>
+                            <textarea name="f_internal_message" class="w-auto py-1 border text-sm border-gray-300 rounded-md mt-1 placeholder-gray-400" data-auto-resize="true" id="f_internal_message" cols="30" rows="5">{{ old('f_internal_message',$support->internal_message) }}</textarea>
                         </div>
                         @error('f_internal_message')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                         <div class="w-full flex flex-col">
                             <label for="f_internal_memo1" class="font-semibold dark:text-red-400 text-red-400 leading-none mt-4">社内メモ欄</label>
-                            <textarea name="f_internal_memo1" class="w-auto py-1 border text-sm border-gray-300 rounded-md mt-1 placeholder-gray-400" id="f_internal_memo1" cols="30" rows="5">{{ old('f_internal_memo1',$support->internal_memo1) }}</textarea>
+                            <textarea name="f_internal_memo1" class="w-auto py-1 border text-sm border-gray-300 rounded-md mt-1 placeholder-gray-400" data-auto-resize="true" id="f_internal_memo1" cols="30" rows="5">{{ old('f_internal_memo1',$support->internal_memo1) }}</textarea>
                         </div>
                         @error('f_internal_memo1')
                             <div class="text-red-500">{{ $message }}</div>
@@ -477,4 +477,5 @@
 
 
     </script> 
+<script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
 </x-app-layout>

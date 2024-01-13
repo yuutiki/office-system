@@ -34,18 +34,24 @@ class UserController extends Controller
         //検索フォームに入力された値を取得
         $employee_num = $request->input('employee_num');
         $user_name = $request->input('user_name');
+        $departmentId = $request->input('department_id');
         // $roles1 = $request->input('roles');
         $selectedRoles = $request->input('roles', []); 
-        $employee_status = $request->input('employee_status');
+        $selectedEmployeeStatues = $request->input('employeeStatuses',[]);
 
         //検索Query
-        $query = user::query();
+        $query = User::query();
 
         //もし社員番号があれば
         if(!empty($employee_num))
         {
             // $query->where('employee_num','like',"%{$employee_num}%");
             $query->where('employee_num','=',$employee_num);
+        }
+
+        if(!empty($departmentId))
+        {
+            $query->where('department_id','=',$departmentId);
         }
 
         //もしユーザ名があれば
@@ -61,20 +67,21 @@ class UserController extends Controller
         }
         
         //もし権限があれば
-        if (!empty($selectedRoles)) {
+        if (!empty($selectedRoles))
+        {
             $query->whereIn('role_id', $selectedRoles);
         }
 
         //もし在職状態があれば
-        if(!empty($employee_status))
+        if(!empty($selectedEmployeeStatues))
         {
-            $query->where('employee_status_id','=',$employee_status);
+            $query->whereIn('employee_status_id', $selectedEmployeeStatues);
         }
 
         $users = $query->paginate();
         $count = $users->total();
 
-        return view('admin.user.index',compact('roles','users','employeeStatuses','employee_num','user_name','selectedRoles','employee_status','count','companies','departments','divisions'));
+        return view('admin.user.index',compact('roles','users','employeeStatuses','employee_num','user_name','selectedRoles','count','companies','departments','divisions','selectedEmployeeStatues','departmentId'));
     }
 
 
@@ -100,7 +107,10 @@ class UserController extends Controller
         // }
 
         $user = new User();
-        $user->employee_num = $request->employee_num;
+
+        // 6桁の顧客番号に変換してDBに保存
+        $user->employee_num = str_pad($request->employee_num, 6, '0', STR_PAD_LEFT);
+        // $user->employee_num = $request->employee_num;
         $user->name = $request->name;
         $user->kana_name = $request->kana_name;
         $user->email = $request->email;
@@ -206,7 +216,9 @@ class UserController extends Controller
     {
         $user = user::find($id);
         $user->delete();
-        return redirect()->route('user.index')->with('message', '削除しました');
+
+        $name = $user->name;
+        return redirect()->back()->with('success', $name . 'を正常に削除しました');
     }
 
     public function upload(Request $request)
@@ -247,7 +259,8 @@ class UserController extends Controller
          // CSV行をパースした際に実行する処理を定義
         $interpreter->addObserver(function (array $row) {
             $user = new User();
-            $user->employee_num = $row[0];
+
+            $user->employee_num = str_pad($row[0], 6, '0', STR_PAD_LEFT);
             $user->name = $row[1];
             $user->kana_name = $row[2];
             $user->email = $row[3];

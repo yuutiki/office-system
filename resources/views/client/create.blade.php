@@ -547,5 +547,5 @@
 
 
 <script type="text/javascript" src="{{ asset('/assets/js/aaaddresssearchbutton.js') }}"></script>
-<script type="text/javascript" src="{{ asset('/assets/js/aaautoresizetextarea.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
 </x-app-layout>

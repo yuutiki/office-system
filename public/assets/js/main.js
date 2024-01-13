@@ -80,6 +80,8 @@ $(function () {
         resetForm('#clientcorporationform');
         resetForm('#keepfileform');
         resetForm('#link-search-form');
+        resetForm('#search_form');
+        resetForm('#supportform');
         // 別のフォームがあればここで追加
     });
 });
@@ -97,6 +99,8 @@ function resetForm(formId) {
             $(this).val('');
         }
     });
+    // 検索ボタンをクリック
+    document.getElementById('search-button').click();
 }
 
 

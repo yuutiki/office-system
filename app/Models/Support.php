@@ -96,6 +96,48 @@ class Support extends Model
         return "$newSerialNumber";
     }
 
+        // キーワード検索用の関数
+        public static function getSearchWordArray($keyword)
+        {
+            // 検索文字列全体の前後にある空白を除去
+            $keywordRemoveSpace = preg_replace('/\A[\p{C}\p{Z}]++|[\p{C}\p{Z}]++\z/u', '', $keyword);
+            // 検索文字列内の半角スペースを全角スペースにする
+            $keywordUnifySpace =  mb_convert_kana($keywordRemoveSpace, 's');
+            // 全角空白で文字を区切り配列へ
+            $keywordArray = preg_split('/[\s]+/', $keywordUnifySpace);
+    
+            return $keywordArray;
+        }
+    
+// 複数単語のAND検索用のクエリ発行関数
+public static function getMultiWordSearchQuery($query, $searchTextArray)
+{
+    // AND検索なので、最初の条件をwhereで追加し、以降はandWhereで条件を追加する
+    $first = array_shift($searchTextArray);
+    $query->where(function ($q) use ($first) {
+        $q->where(function ($innerQ) use ($first) {
+            $innerQ->where('title', 'like', '%' . $first . '%')
+                ->orWhere('request_content', 'like', '%' . $first . '%')
+                ->orWhere('response_content', 'like', '%' . $first . '%')
+                ->orWhere('internal_message', 'like', '%' . $first . '%')
+                ->orWhere('internal_memo1', 'like', '%' . $first . '%');
+        });
+    });
+
+    foreach ($searchTextArray as $searchText) {
+        $query->where(function ($innerQ) use ($searchText) {
+            $innerQ->where('title', 'like', '%' . $searchText . '%')
+                ->orWhere('request_content', 'like', '%' . $searchText . '%')
+                ->orWhere('response_content', 'like', '%' . $searchText . '%')
+                ->orWhere('internal_message', 'like', '%' . $searchText . '%')
+                ->orWhere('internal_memo1', 'like', '%' . $searchText . '%');
+        });
+    }
+
+    return $query;
+}
+        
+
     public function client()
     {
         return $this->belongsTo(Client::class);
@@ -122,5 +164,10 @@ class Support extends Model
     public function supportType()
     {
         return $this->belongsTo(SupportType::class);
+    }
+
+    public function supportTime()
+    {
+        return $this->belongsTo(SupportTime::class);
     }
 }

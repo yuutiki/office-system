@@ -472,7 +472,7 @@
                         </div>
                         <div class="w-full flex flex-col">
                             <label for="project_memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">プロジェクト備考</label>
-                            <textarea form="updateForm" name="project_memo" class="w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1" id="auto-resize-textarea-content_1" value="{{old('project_memo',$project->project_memo)}}" cols="30" rows="5" data-auto-resize="true">{{old('project_memo',$project->project_memo)}}</textarea>
+                            <textarea form="updateForm" name="project_memo" class="w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1" data-auto-resize="true" id="auto-resize-textarea-content" value="{{old('project_memo',$project->project_memo)}}" cols="30" rows="5" data-auto-resize="true">{{old('project_memo',$project->project_memo)}}</textarea>
                         </div>
 
                         <ul class=" mt-4 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s rounded-e sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
@@ -989,19 +989,6 @@
             hideCorporationModal();
         }
     </script>
-    <script>
-        // const textareaContent = document.getElementById('auto-resize-textarea-project_content');
-        // textareaContent.addEventListener('input', function() {
-        //     // テキストエリアの高さを自動調整
-        //     this.style.height = 'auto';
-        //     this.style.height = (this.scrollHeight + 2) + 'px';
-        // });
-        // textareaContent.addEventListener('mouseover', function() {
-        //     // テキストエリアの高さを自動調整
-        //     this.style.height = 'auto';
-        //     this.style.height = (this.scrollHeight + 2) + 'px';
-        // });
-    </script>
 
 
 <script>
@@ -1043,6 +1030,7 @@ var selectedIds;
 
 
 
+<script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
 
 </script>
 </x-app-layout>

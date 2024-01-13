@@ -76,7 +76,7 @@ class User extends Authenticatable
             'division_id_' . $id => 'required',
             'int_phone_' . $id => 'size:3',
             'kana_name_' . $id => 'required|max:50',
-            'name_' . $id => 'required|max:10',
+            'name_' . $id => 'required|max:50',
             // 他のフィールドに対するルールも追加する
         ];
     }

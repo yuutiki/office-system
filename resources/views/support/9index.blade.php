@@ -1,12 +1,20 @@
-{{-- <x-app-layout>
+    {{-- favicon --}}
+    <link rel="shortcut icon" href="{{ asset('/favicon-sales.ico') }}">
+
+<x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-100 leading-tight">
             サポート履歴一覧
         </h2>
         <div class="flex justify-end">
+            {{-- <x-general-button onclick="location.href='{{ session()->get('previous_url') }}'">
+                戻る
+            </x-general-button> --}}
             <x-message :message="session('message')"/>
         </div>
     </x-slot>
+
+
 
     <div id="accordion-color" data-accordion="collapse" data-active-classes="bg-blue-100 dark:bg-gray-800 text-blue-600 dark:text-white">
         <h2 id="accordion-color-heading-1">
@@ -18,10 +26,12 @@
             </button>
         </h2>
         <div id="accordion-color-body-1" class="hidden transition duration-1000" aria-labelledby="accordion-color-heading-1">
+        {{-- 絞り込み検索 --}}
             <div class="w-5/6 border border-t-0 mx-auto h-auto dark:text-white">
                 <form method="GET" action="{{ route('support.index') }}" id="supportform">
                     @csrf
                     <div class="md:flex flex-wrap">
+                        {{-- テキスト検索 start --}}
                         <div class="relative w-auto mt-2 mx-2">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
@@ -40,6 +50,24 @@
                             </div>
                             <input type="search" name="support_kana_name" value="@if (isset($support_kana_name)){{ $support_kana_name }}@endif" class="w-full p-1.5 pl-10  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="法人カナ名称" >
                         </div>
+                        {{-- テキスト検索 end --}}
+                        {{-- セレクト検索 start --}}
+                        {{-- <div class="flex-nowrap">
+                            <select  name="finish" value="0" class="mt-2 w-auto ml-2 py-1.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="">ステータス</option>
+                                @foreach($supports as $support)
+                                    <option value="{{$support->is_finished}}">{{$support->is_finished}}</option>
+                                @endforeach
+                            </select>
+                            
+                            <select  name="finish" value="0" class="mt-2 w-auto ml-2 py-1.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="">担当者全て</option>
+                                @foreach($supports as $s_support)
+                                    <option value="{{$s_support->id}}">{{$s_support->name}}</option>
+                                @endforeach
+                            </select>
+                        </div> --}}
+                        {{-- セレクト検索 end --}}
                         <div class="w-5/6 mt-2 ml-8 mb-2 flex justify-start">
                             <button type="submit" form="supportform" class="px-6 py-1.5 font-medium text-sm rounded-lg text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">検索</button>
                             <button type="button" value="reset" form="supportform" id="clear" class="ml-2 px-4 py-1.5 font-medium text-sm rounded-lg text-white focus:outline-none focus:ring-4 focus:ring-blue-300 bg-red-700 hover:bg-red-800 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">リセット</button>
@@ -48,11 +76,78 @@
                 </form>
             </div>
         </div>
-    </div> --}}
+    </div>
       
+     <!-- Dropdown bottoun -->
+    <div class="w-5/6 text-right mt-2 mx-auto ">
+        <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+            追加
+            <svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+        </button>
+        <div class="float-left font-medium dark:text-white">
+            {{ $count }}件
+        </div>
+    </div>
+    <!-- Dropdown menu -->
+    <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+            <li>
+                <!-- Modal toggle start-->
+                <button data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="text-left pl-8 py-2 w-full font-medium text-sm text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800" type="button">
+                    CSV一括登録
+                </button>
+                <!-- Modal toggle end-->
+            </li>
 
-    {{-- <div class="w-5/6 relative overflow-x-auto shadow-md rounded-lg mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
+            <li>
+                <a href="/support/create" class="block text-left pl-8 py-2 font-medium text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                    手動登録
+                </a>
+            </li>
+        </ul>
+    </div>
+
+        <!-- Main modal -->
+        <div id="defaultModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div class="relative w-full max-w-2xl max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    <!-- Modal header -->
+                    <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                            CSV一括アップロード
+                        </h3>
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
+                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-6 space-y-6 mr-20 mt-4">
+                        <form action="{{ route('support.upload') }}" method="POST" enctype="multipart/form-data" class="flex items-center" id="csv_upload">
+                            @csrf
+                            <label for="csv_upload" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"></label>
+                            <input  id="csv_upload" name="csv_upload" type="file" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="csv_upload">
+                        </form>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="flex justify-end p-3 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                        <button type="submit" form="csv_upload"  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            アップロード
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    {{-- テーブル表示 --}}
+    <div class="w-5/6 relative overflow-x-auto shadow-md rounded-lg mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
         <table class="w-full text-sm font-medium text-left text-gray-800 dark:text-gray-400">
+
+            {{-- テーブルヘッダ start --}}
             <thead class="text-sm text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
                 <tr>
                     <th scope="col" class="pl-4 py-3 w-auto">
@@ -119,13 +214,23 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                         </div>
                     </th>
-
+                    {{-- <th scope="col" class="px-2 py-3 whitespace-nowrap">
+                        <div class="flex items-center">
+                            @sortablelink('status_flag','ステータス')
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
+                        </div>
+                    </th> --}}
                     <th scope="col" class="px-4 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             営業担当
+                            {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
                         </div>
                     </th>
-
+                    {{-- <th scope="col" class="px-2 py-3 whitespace-nowrap">
+                        <div class="flex items-center">
+                            更新日
+                        </div>
+                    </th> --}}
                     <th scope="col" class="px-6 py-3 whitespace-nowrap">
                         <span class="sr-only">削除</span>
                     </th>
@@ -177,6 +282,19 @@
                         <th scope="row" class="pl-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$support->client->user->name}}
                         </th>
+                        
+                        {{-- @if($keepdata->status_flag == "0")
+                            <td class="px-2 py-2 whitespace-nowrap text-fuchsia-300">
+                                未返却
+                            </td>
+                        @else
+                            <td class="px-2 py-2 whitespace-nowrap">
+                                返却済
+                            </td>
+                        @endif --}}
+                        {{-- <td class="px-2 py-2 whitespace-nowrap">
+                            {{$support->updated_at->format('y-m-d')}}
+                        </td> --}}
                         <td class="px-1 py-2">
                             <button data-modal-target="deleteModal-{{$support->id}}" data-modal-toggle="deleteModal-{{$support->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
                                 <div class="flex">
@@ -189,6 +307,7 @@
                         </td>
                     </tr>
                 </tbody>
+                {{-- 削除確認モーダル画面 Start --}}
                 <div id="deleteModal-{{$support->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
                     <div class="relative w-full max-w-md max-h-full">
                         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -218,13 +337,15 @@
                         </div>
                     </div>
                 </div>
+                {{-- 削除確認モーダル画面 End --}}
             @endforeach
         </table>
         <div class="mt-2 mb-2 px-4">
+        {{-- {{ $keepdatas->appends(request()->query())->links() }}   --}}
         {{ $supports->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
         </div> 
     </div>
-</x-app-layout> --}}
+</x-app-layout>
 
 
 
@@ -260,27 +381,19 @@
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                 </svg>
                             </div>
-                            <input type="search" id="keywords" name="keywords" value="@if (isset($keywords)){{$keywords}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="キーワード">
-                        </div>
-                        <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                            <input type="search" id="client_name" name="client_name" value="@if (isset($clientName)){{$clientName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="顧客名称">
+                            <input type="search" id="user_name" name="user_name" value="@if (isset($user_name)){{$user_name}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="氏名">
                         </div>
 
-                        {{-- <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-                            <select name="department_id" id="department_id" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <div class="relative w-full mt-2 md:ml-2 md:mt-0">
+                            {{-- <select name="department_id" id="department_id" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option value="">所属</option>
                                 @foreach ($departments as $department)
                                 <option value="{{ $department->id }}" @if (isset($departmentId) && $departmentId == $department->id) selected @endif>
                                     {{ $department->department_name }}
                                 </option>
                                 @endforeach
-                            </select>
-                        </div> --}}
+                            </select> --}}
+                        </div>
 
                         <div class="flex mt-2 md:mt-0">
                             <div class="w-full md:ml-2">
@@ -298,14 +411,14 @@
                                     <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
                                         権限
                                     </h6>
-                                    <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-                                        @foreach ($supportTypes as $supportType)
+                                    {{-- <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
+                                        @foreach ($roles as $role)
                                         <li class="flex items-center">
-                                            <input id="supportType-{{ $supportType->id }}" type="checkbox" name="support_types[]" @if(in_array($supportType->id, $selectedSupportTypes)) checked @endif value="{{$supportType->id}}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                            <label for="supportType-{{ $supportType->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $supportType->type_name }}</label>
+                                            <input id="role-{{ $role->id }}" type="checkbox" name="roles[]" @if(in_array($role->id, $selectedRoles)) checked @endif value="{{$role->id}}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                            <label for="role-{{ $role->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $role->role_name }}</label>
                                         </li>                       
                                         @endforeach
-                                    </ul>
+                                    </ul> --}}
                                     <ul class="border my-2"></ul>
                                     <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
                                         在職状態
@@ -399,22 +512,6 @@
                             №
                         </div>
                     </th>
-                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
-                        <div class="flex items-center">
-                            @sortablelink('client_num','顧客番号')
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
-                                <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
-                            </svg>
-                        </div>
-                    </th>
-                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
-                        <div class="flex items-center">
-                            @sortablelink('client_name','顧客名称')
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
-                                <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
-                            </svg>
-                        </div>
-                    </th>
                     <th scope="col" class="pl-4 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             @sortablelink('received_at','受付日')
@@ -439,7 +536,22 @@
                             </svg>
                         </div>
                     </th>
-
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                        <div class="flex items-center">
+                            @sortablelink('client_num','顧客番号')
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
+                                <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
+                            </svg>
+                        </div>
+                    </th>
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                        <div class="flex items-center">
+                            @sortablelink('client_name','顧客名称')
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
+                                <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
+                            </svg>
+                        </div>
+                    </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             @sortablelink('user_id','受付対応者')
@@ -472,15 +584,9 @@
             </thead>
             <tbody>
                 @foreach ($supports as $support)
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 font-medium hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600 clickable-row">
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 font-medium hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600">
                         <td class="pl-4 py-2 whitespace-nowrap">
                             {{ $loop->iteration }}
-                        </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
-                            {{$support->client->client_num}}
-                        </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
-                            {{$support->client->client_name}}
                         </td>
                         <td class="pl-4 py-2 whitespace-nowrap">
                             {{$support->received_at}}
@@ -491,7 +597,12 @@
                         <td class="px-1 py-2 whitespace-nowrap">
                             {{$support->title}}
                         </td>
-
+                        <td class="px-1 py-2 whitespace-nowrap">
+                            {{$support->client->client_num}}
+                        </td>
+                        <td class="px-1 py-2 whitespace-nowrap">
+                            {{$support->client->client_name}}
+                        </td>
                         <td class="px-1 py-2 whitespace-nowrap">
                             {{$support->user->name}}
                         </td>
@@ -503,19 +614,6 @@
                         </td>
                         <td class="px-1 py-2 whitespace-nowrap">
                             {{$support->productCategory->category_name}}
-                        </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
-                            {{$support->client->user->name}}
-                        </td>
-                        <td class="pl-4 py-2 whitespace-nowrap">
-                            <button onclick="location.href='{{route('support.edit',$support)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                                <div class="flex">
-                                    <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
-                                    </svg>
-                                    <span class="text-ms">編集</span>
-                                </div>
-                            </button>
                         </td>
                         <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <div class="text-center">
@@ -576,11 +674,10 @@
                     </div>
                     {{-- 削除確認モーダル画面 End --}}
                     <!-- 更新drawer --> 
-                    <div id="dupdateModal-{{$support->id}}" class="fixed top-0 right-0 z-50 h-screen p-4 overflow-y-auto transition-transform md:w-1/2 translate-x-full bg-gray-200 dark:bg-gray-800" tabindex="-1" aria-labelledby="dupdateModal-{{$support->id}}">
+                    <div id="dupdateModal-{{$support->id}}" class="fixed top-0 right-0 z-50 h-screen p-4 overflow-y-auto transition-transform md:w-[30rem] translate-x-full bg-gray-200 dark:bg-gray-800" tabindex="-1" aria-labelledby="dupdateModal-{{$support->id}}">
                         <div class="">
                             <h5 id="dupdateModal-{{$support->id}}" class="inline-flex items-center mb-4 font-semibold text-xl text-gray-500 dark:text-gray-400">
-                                サポート詳細
-                                {{-- -{{ $support->title }} --}}
+                                ユーザ編集-{{ $support->name }}
                             </h5>
                             <button type="button" data-drawer-hide="dupdateModal-{{$support->id}}" aria-controls="dupdateModal-{{$support->id}}" class="text-gray-400 bg-transparent ml-8 hover:bg-gray-200 hover:text-gray-900 rounded-md text-sm w-8 h-8 absolute top-2.5 end-2.5 inline-flex items-center justify-center dark:hover:bg-gray-600 dark:hover:text-white" >
                                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -592,158 +689,74 @@
                             @csrf
                             @method('PUT')
 
-                            {{-- <label class="relative inline-flex items-center cursor-pointer mt-4">
+                            <label class="relative inline-flex items-center cursor-pointer mt-4">
                                 <input type="hidden" name="is_enabled_{{$support->id}}" value="0">
                                 <input type="checkbox" name="is_enabled_{{$support->id}}" id="is_enabled-{{$support->id}}" value="1" class="sr-only peer" {{ old('is_enabled_' . $support->id, $support->is_enabled) == 1 ? 'checked' : '' }}>
                                 <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                                 <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">有効</span>
-                            </label> --}}
-
-                            <div class="grid  gap-4 my-4 md:grid-cols-4">
-                                <div class="relative z-0">
-                                    <input type="text" id="client_num" name="client_num" value="{{old('client_num',$support->client->client_num)}}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
-                                    <label for="client_num" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">顧客番号</label>
-                                </div>
-
-                                <div class="relative z-0">
-                                    <input type="text" id="client_name" name="client_name" value="{{old('client_name',$support->client->client_name)}}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
-                                    <label for="client_name" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">顧客名称</label>
-                                </div>
-
-                                <div class="relative z-0">
-                                    <input type="text" id="client_name" name="client_name" value="{{old('client_name',$support->client->user->name)}}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
-                                    <label for="client_name" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">営業担当</label>
-                                </div>
-
-                                <div class="relative z-0">
-                                    <input type="text" id="client_name" name="client_name" value="{{old('client_name',$support->client->department->department_name)}}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
-                                    <label for="client_name" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">管轄事業部</label>
-                                </div>
-                            </div>
+                            </label>
 
                             <div class="w-full flex flex-col col-span-2 mt-4">
-                                <label for="title-{{$support->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">表題</label>
-                                <input type="text" maxlength="100" name="title_{{$support->id}}" id="title-{{$support->id}}" value="{{old('title' . $support->id, $support->title)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
+                                <label for="employee_num-{{$support->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">社員番号</label>
+                                <input type="text" maxlength="20" name="employee_num_{{$support->id}}" id="employee_num-{{$support->id}}" value="{{old('employee_num' . $support->id, $support->employee_num)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
                             </div>
-                            @error('title_' . $support->id)
+                            @error('employee_num_' . $support->id)
                                 <div class="text-red-500">{{ $message }}</div>
                             @enderror
 
-                            <div class="grid gap-4 my-4 md:grid-cols-4">
-                                <div class="w-full flex flex-col">
-                                    <label for="received_at-{{$support->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">受付日</label>
-                                    <input type="date" maxlength="20" name="received_at_{{$support->id}}" id="received_at-{{$support->id}}" value="{{ old('received_at_' . $support->id, $support->received_at) }}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
-                                </div>
-                                @error('received_at_' . $support->id)
-                                    <div class="text-red-500">{{ $message }}</div>
-                                @enderror
-
-                                <div class="w-full flex flex-col">
-                                    <label for="user_id" class="block font-medium text-gray-900 dark:text-white">受付対応者</label>
-                                    <select name="user_id_{{$support->id}}" id="user_id-{{$support->id}}" value="{{old('user_id')}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        @foreach($users as $user)
-                                        <option value="{{ $user->id }}"  @selected($user->id == $support->user_id)>{{ $user->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                @error('user_id_' . $support->id)
-                                    <div class="text-red-500">{{$message}}</div>
-                                @enderror
+                            <div class="w-full flex flex-col col-span-2 mt-4">
+                                <label for="name-{{$support->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">氏名</label>
+                                <input type="text" maxlength="20" name="name_{{$support->id}}" id="name-{{$support->id}}" value="{{ old('name_' . $support->id, $support->name) }}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
                             </div>
+                            @error('name_' . $support->id)
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
 
-                            <div class="w-full flex flex-col">
-                                <label for="request_content-{{$support->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">内容</label>
-                                <textarea name="request_content_{{$support->id}}" id="request_content-{{$support->id}}" class="w-auto py-1 border text-sm border-gray-300 rounded-md mt-1 placeholder-gray-400" data-auto-resize="true"  cols="30" rows="8">{{ old('request_content_' . $support->id , $support->request_content) }}</textarea>
-                                @error('request_content_' . $support->id)
-                                    <div class="text-red-500">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="w-full flex flex-col">
-                                <label for="response_content-{{$support->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">回答</label>
-                                <textarea name="response_content_{{$support->id}}" id="response_content-{{$support->id}}" class="w-auto py-1 border text-sm border-gray-300 rounded-md mt-1 placeholder-gray-400" data-auto-resize="true"  cols="30" rows="8">{{ old('response_content_' . $support->id , $support->response_content) }}</textarea>
-                                @error('response_content_' . $support->id)
-                                    <div class="text-red-500">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="w-full flex flex-col">
-                                <label for="internal_message-{{$support->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">社内連絡欄</label>
-                                <textarea name="internal_message_{{$support->id}}" id="internal_message-{{$support->id}}" class="w-auto py-1 border text-sm border-gray-300 rounded-md mt-1 placeholder-gray-400" data-auto-resize="true"  cols="30" rows="8">{{ old('internal_message_' . $support->id , $support->internal_message) }}</textarea>
-                                @error('internal_message_' . $support->id)
-                                    <div class="text-red-500">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="w-full flex flex-col">
-                                <label for="internal_memo1-{{$support->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">メモ欄</label>
-                                <textarea name="internal_memo1_{{$support->id}}" id="internal_memo1-{{$support->id}}" class="w-auto py-1 border text-sm border-gray-300 rounded-md mt-1 placeholder-gray-400" data-auto-resize="true"  cols="30" rows="8">{{ old('internal_memo1_' . $support->id , $support->internal_memo1) }}</textarea>
-                                @error('internal_memo1_' . $support->id)
-                                    <div class="text-red-500">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="grid gap-4 my-4 md:grid-cols-2">
-                                <div class="w-full flex flex-col">
-                                    <label for="support_type_id" class="block font-medium text-gray-900 dark:text-white">サポート種別</label>
-                                    <select name="support_type_id_{{$support->id}}" id="support_type_id-{{$support->id}}" value="{{old('support_type_id')}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        @foreach($supportTypes as $supportType)
-                                        <option value="{{ $supportType->id }}"  @selected($supportType->id == $support->support_type_id)>{{ $supportType->type_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                @error('support_type_id_' . $support->id)
-                                    <div class="text-red-500">{{$message}}</div>
-                                @enderror
-
-                                <div class="w-full flex flex-col">
-                                    <label for="support_time_id" class="block font-medium text-gray-900 dark:text-white">サポート時間</label>
-                                    <select name="support_time_id_{{$support->id}}" id="support_time_id-{{$support->id}}" value="{{old('support_time_id')}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        @foreach($supportTimes as $supportTime)
-                                        <option value="{{ $supportTime->id }}"  @selected($supportTime->id == $support->support_time_id)>{{ $supportTime->time_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                @error('support_time_id_' . $support->id)
-                                    <div class="text-red-500">{{$message}}</div>
-                                @enderror
-                            </div>
-
-                            {{-- <div class="w-full flex flex-col col-span-2 mt-4">
+                            <div class="w-full flex flex-col col-span-2 mt-4">
                                 <label for="kana_name-{{$support->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">カナ氏名</label>
                                 <input type="text" maxlength="20" name="kana_name_{{$support->id}}" id="kana_name-{{$support->id}}" value="{{old('kana_name_' . $support->id, $support->kana_name)}}" class="dark:bg-white w-auto py-0.5 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
                             </div>
                             @error('kana_name_' . $support->id)
                                 <div class="text-red-500">{{ $message }}</div>
-                            @enderror --}}
-{{-- 
+                            @enderror
+
                             <div class="w-full flex flex-col col-span-2 mt-4">
                                 <label for="email-{{$support->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">E-Mail</label>
                                 <input type="text" maxlength="20" name="email_{{$support->id}}" id="email-{{$support->id}}" value="{{old('email_' . $support->id, $support->email)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
                             </div>
                             @error('email_' . $support->id)
                                 <div class="text-red-500">{{ $message }}</div>
-                            @enderror --}}
+                            @enderror
 
-                            {{-- <div class="w-full flex flex-col col-span-2 mt-4">
+                            <div class="w-full flex flex-col col-span-2 mt-4">
                                 <label for="ext_phone-{{$support->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">外線番号</label>
                                 <input type="text" maxlength="20" name="ext_phone_{{$support->id}}" id="ext_phone-{{$support->id}}" value="{{old('ext_phone_' . $support->id, $support->ext_phone)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
                             </div>
                             @error('ext_phone_' . $support->id)
                                 <div class="text-red-500">{{ $message }}</div>
-                            @enderror --}}
+                            @enderror
 
-                            {{-- <div class="w-full flex flex-col col-span-2 mt-4">
+                            <div class="w-full flex flex-col col-span-2 mt-4">
                                 <label for="int_phone-{{$support->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">内線番号</label>
                                 <input type="text" maxlength="20" name="int_phone_{{$support->id}}" id="int_phone-{{$support->id}}" value="{{old('int_phone_' . $support->id, $support->int_phone)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
                             </div>
                             @error('int_phone_' . $support->id)
                                 <div class="text-red-500">{{ $message }}</div>
-                            @enderror --}}
+                            @enderror
 
+                            <div class="w-full flex flex-col">
+                                <label for="employee_status_id" class="block mt-4 font-medium text-gray-900 dark:text-white">在職状態</label>
+                                <select name="employee_status_id_{{$support->id}}" id="employee_status_id-{{$support->id}}" value="{{old('employee_status_id')}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                    @foreach($employeeStatuses as $employeeStatus)
+                                    <option value="{{ $employeeStatus->id }}"  @selected($employeeStatus->id == $support->employeeStatus_id)>{{ $employeeStatus->employee_status_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @error('employee_status_id_' . $support->id)
+                                <div class="text-red-500">{{$message}}</div>
+                            @enderror
 
-
-                            {{-- <div class="w-full flex flex-col">
+                            <div class="w-full flex flex-col">
                                 <label for="role_id" class="block mt-4 font-medium text-gray-900 dark:text-white">権限</label>
                                 <select name="role_id_{{$support->id}}" id="role_id-{{$support->id}}" value="{{old('role_id')}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
                                     @foreach($roles as $role)
@@ -753,9 +766,9 @@
                             </div>
                             @error('role_id_' . $support->id)
                                 <div class="text-red-500">{{$message}}</div>
-                            @enderror --}}
+                            @enderror
 
-                            {{-- <div class="w-full flex flex-col">
+                            <div class="w-full flex flex-col">
                                 <label for="company_id" class="block mt-4 font-medium text-gray-900 dark:text-white">所属1</label>
                                 <select name="company_id_{{$support->id}}"  id="company_id-{{$support->id}}" value="{{old('company_id_' . $support->id)}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
                                     @foreach($companies as $company)
@@ -765,9 +778,9 @@
                             </div>
                             @error('company_id_' . $support->id)
                                 <div class="text-red-500">{{$message}}</div>
-                            @enderror --}}
+                            @enderror
 
-                            {{-- <div class="w-full flex flex-col">
+                            <div class="w-full flex flex-col">
                                 <label for="department_id" class="block mt-4 font-medium text-gray-900 dark:text-white">所属2</label>
                                 <select name="department_id_{{$support->id}}" id="department_id-{{$support->id}}" value="{{old('department_id_' . $support->id, $support->department_id)}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
                                     @foreach($departments as $department)
@@ -777,9 +790,9 @@
                             </div>
                             @error('department_id_' . $support->id)
                                 <div class="text-red-500">{{$message}}</div>
-                            @enderror --}}
+                            @enderror
 
-                            {{-- <div class="w-full flex flex-col">
+                            <div class="w-full flex flex-col">
                                 <label for="division_id" class="block mt-4 font-medium text-gray-900 dark:text-white">所属3</label>
                                 <select name="division_id_{{$support->id}}" id="division_id-{{$support->id}}" value="{{old('division_id_' . $support->id, $support->division_id)}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" >
                                     @foreach($divisions as $division)
@@ -789,9 +802,9 @@
                             </div>
                             @error('division_id_' . $support->id)
                                 <div class="text-red-500">{{$message}}</div>
-                            @enderror --}}
+                            @enderror
 
-                            {{-- <div class="bg-light px-3 py-2 mb-3 font-semibold dark:text-gray-100">以下は省略可</div>
+                            <div class="bg-light px-3 py-2 mb-3 font-semibold dark:text-gray-100">以下は省略可</div>
 
 
                             <div id="accordion-arrow-icon" data-accordion="open">
@@ -820,7 +833,7 @@
                                     </div>
                                 </div>
                             </div>
-                             --}}
+                            
                             {{-- <div class="w-full flex flex-col">
                                 <label class="font-semibold dark:text-gray-100 leading-none mt-2">パスワード</label>
                                 <input type="password" name="password_{{$support->id}}" autocomplete="new-password" class="form-control w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="password-{{$support->id}}" value="{{old('password_' . $support->id)}}">
@@ -898,6 +911,10 @@
 
 
 <script>
+    $(function() {
+    $.fn.autoKana('input[name="name_{{$support->id}}"]', 'input[name="kana_name_{{$support->id}}"]', {katakana: true});
+    });
+
     function submitAndUpdateDrawer(supportId) {
         // 保存処理（ここではLocalStorageを使用）
         localStorage.setItem('updateDrawerId', supportId);
@@ -1012,29 +1029,6 @@
         });
     </script>
 
-{{-- 行がクリックされたときに発火するJavaScript --}}
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // 各行のクリックイベントを設定
-        var rows = document.querySelectorAll('.clickable-row');
-
-        rows.forEach(function (row) {
-            row.addEventListener('click', function () {
-                // 選択された行に 'selected' クラスを追加
-                this.classList.toggle('selected');
-            });
-        });
-    });
-</script>
-
-{{-- 選択された行に適用されるスタイル --}}
-<style>
-    .selected {
-        background-color: #f0f0f0; /* 任意の背景色 */
-    }
-</style>
-
-
 {{-- <script>
 document.addEventListener('DOMContentLoaded', function () {
     const uploadForm = document.getElementById('csv_form1');
@@ -1087,6 +1081,4 @@ document.addEventListener('DOMContentLoaded', function () {
         z-index: 1000; /* 必要に応じて適切なz-indexを設定してください */
     }
 </style> --}}
-
-<script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
 </x-app-layout>

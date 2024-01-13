@@ -37,6 +37,7 @@ use App\Http\Controllers\Master\SupportTimeController;
 use App\Http\Controllers\Master\SupportTypeController;
 use App\Http\Controllers\Master\TradeStatusController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\SupportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -127,6 +128,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/user/upload', [UserController::class, 'upload'])->name('user.upload');
     Route::post('/product/upload', [ProductController::class, 'upload'])->name('product.upload');
     Route::post('/project/upload', [ProjectController::class, 'upload'])->name('project.upload');
+    Route::post('/support/upload', [SupportController::class, 'upload'])->name('support.upload');
 
 
 
