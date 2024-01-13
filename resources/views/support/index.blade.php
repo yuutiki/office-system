@@ -272,11 +272,11 @@
                         </div>
 
                         {{-- <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-                            <select name="department_id" id="department_id" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="">所属</option>
-                                @foreach ($departments as $department)
-                                <option value="{{ $department->id }}" @if (isset($departmentId) && $departmentId == $department->id) selected @endif>
-                                    {{ $department->department_name }}
+                            <select name="product_category_id" id="product_category_id" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="">製品系統</option>
+                                @foreach ($productCategories as $productCategory)
+                                <option value="{{ $productCategory->id }}" @if (isset($productCategoryId) && $productCategoryId == $productCategory->id) selected @endif>
+                                    {{ $productCategory->category_name }}
                                 </option>
                                 @endforeach
                             </select>
@@ -296,7 +296,7 @@
                                 <!-- Dropdown menu -->
                                 <div id="filterDropdown" class="z-50 hidden w-56 p-3 bg-gray-100 rounded-e rounded-s shadow dark:bg-gray-600">
                                     <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
-                                        権限
+                                        サポート種別
                                     </h6>
                                     <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
                                         @foreach ($supportTypes as $supportType)
@@ -308,16 +308,16 @@
                                     </ul>
                                     <ul class="border my-2"></ul>
                                     <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
-                                        在職状態
+                                        製品系統
                                     </h6>
-                                    {{-- <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-                                        @foreach ($employeeStatuses as $employeeStatus)
+                                    <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
+                                        @foreach ($productCategories as $productCategory)
                                         <li class="flex items-center">
-                                            <input id="employee-{{ $employeeStatus->id }}" type="checkbox" name="employeeStatuses[]" @if(in_array($employeeStatus->id, $selectedEmployeeStatues)) checked @endif value="{{$employeeStatus->id}}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                            <label for="employee-{{ $employeeStatus->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $employeeStatus->employee_status_name }}</label>
+                                            <input id="category-{{ $productCategory->id }}" type="checkbox" name="product_categories[]" @if(in_array($productCategory->id, $selectedProductCategories)) checked @endif value="{{$productCategory->id}}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                            <label for="category-{{ $productCategory->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $productCategory->category_name }}</label>
                                         </li>                       
                                         @endforeach
-                                    </ul> --}}
+                                    </ul>
                                 </div>
                             </div>
 
@@ -601,23 +601,23 @@
 
                             <div class="grid  gap-4 my-4 md:grid-cols-4">
                                 <div class="relative z-0">
-                                    <input type="text" id="client_num" name="client_num" value="{{old('client_num',$support->client->client_num)}}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
+                                    <input type="text" id="client_num" name="client_num" value="{{ $support->client->client_num }}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
                                     <label for="client_num" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">顧客番号</label>
                                 </div>
 
                                 <div class="relative z-0">
-                                    <input type="text" id="client_name" name="client_name" value="{{old('client_name',$support->client->client_name)}}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
+                                    <input type="text" id="client_name" name="client_name" value="{{ $support->client->client_name }}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
                                     <label for="client_name" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">顧客名称</label>
                                 </div>
 
                                 <div class="relative z-0">
-                                    <input type="text" id="client_name" name="client_name" value="{{old('client_name',$support->client->user->name)}}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
-                                    <label for="client_name" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">営業担当</label>
+                                    <input type="text" id="sales_person" name="sales_person" value="{{ $support->client->user->name }}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
+                                    <label for="sales_person" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">営業担当</label>
                                 </div>
 
                                 <div class="relative z-0">
-                                    <input type="text" id="client_name" name="client_name" value="{{old('client_name',$support->client->department->department_name)}}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
-                                    <label for="client_name" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">管轄事業部</label>
+                                    <input type="text" id="department_id" name="department_id" value="{{ $support->client->department->department_name }}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
+                                    <label for="department_id" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">管轄事業部</label>
                                 </div>
                             </div>
 
@@ -709,87 +709,116 @@
                                 @enderror
                             </div>
 
-                            {{-- <div class="w-full flex flex-col col-span-2 mt-4">
-                                <label for="kana_name-{{$support->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">カナ氏名</label>
-                                <input type="text" maxlength="20" name="kana_name_{{$support->id}}" id="kana_name-{{$support->id}}" value="{{old('kana_name_' . $support->id, $support->kana_name)}}" class="dark:bg-white w-auto py-0.5 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
+                            <div class="grid gap-4 my-4 md:grid-cols-3">
+                                <div class="w-full flex flex-col">
+                                    <label for="product_series_id" class="block font-medium text-gray-900 dark:text-white">製品シリーズ</label>
+                                    <select name="product_series_id_{{$support->id}}" id="product_series_id-{{$support->id}}" value="{{old('product_series_id')}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        @foreach($productSeriess as $productSeries)
+                                        <option value="{{ $productSeries->id }}"  @selected($productSeries->id == $support->product_series_id)>{{ $productSeries->series_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @error('product_series_id_' . $support->id)
+                                    <div class="text-red-500">{{$message}}</div>
+                                @enderror
+                                <div class="w-full flex flex-col">
+                                    <label for="product_version_id" class="block font-medium text-gray-900 dark:text-white">製品バージョン</label>
+                                    <select name="product_version_id_{{$support->id}}" id="product_version_id-{{$support->id}}" value="{{old('product_version_id')}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        @foreach($productVersions as $productVersion)
+                                        <option value="{{ $productVersion->id }}"  @selected($productVersion->id == $support->product_version_id)>{{ $productVersion->version_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @error('product_version_id_' . $support->id)
+                                    <div class="text-red-500">{{$message}}</div>
+                                @enderror
+                                <div class="w-full flex flex-col">
+                                    <label for="product_category_id" class="block font-medium text-gray-900 dark:text-white">製品系統</label>
+                                    <select name="product_category_id_{{$support->id}}" id="product_category_id-{{$support->id}}" value="{{old('product_category_id')}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        @foreach($productCategories as $productCategory)
+                                        <option value="{{ $productCategory->id }}"  @selected($productCategory->id == $support->product_category_id)>{{ $productCategory->category_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @error('product_category_id_' . $support->id)
+                                    <div class="text-red-500">{{$message}}</div>
+                                @enderror
                             </div>
-                            @error('kana_name_' . $support->id)
-                                <div class="text-red-500">{{ $message }}</div>
-                            @enderror --}}
-{{-- 
-                            <div class="w-full flex flex-col col-span-2 mt-4">
-                                <label for="email-{{$support->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">E-Mail</label>
-                                <input type="text" maxlength="20" name="email_{{$support->id}}" id="email-{{$support->id}}" value="{{old('email_' . $support->id, $support->email)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
-                            </div>
-                            @error('email_' . $support->id)
-                                <div class="text-red-500">{{ $message }}</div>
-                            @enderror --}}
+                            <ul class=" mt-4 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                    <div class="flex items-center pl-3">
+                                        <input id="is_finished_{{ $support->id }}" name="is_finished_{{ $support->id }}" type="hidden" value="0" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        @if($support->is_finished)
+                                            <input id="is_finished_{{ $support->id }}" name="is_finished_{{ $support->id }}" type="checkbox" value="1" checked="checked" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        @else
+                                            <input id="is_finished_{{ $support->id }}" name="is_finished_{{ $support->id }}" type="checkbox" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        @endif
+                                        <label for="is_finished_{{ $support->id }}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">対応完了済</label>
+                                    </div>
+                                    @error('is_finished_' . $support->id)
+                                     <div class="text-red-500">{{ $message }}</div>
+                                    @enderror
+                                </li>
+                                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                    <div class="flex items-center pl-3">
+                                        <input id="is_faq_target1_{{ $support->id }}" name="is_faq_target_{{ $support->id }}" type="hidden" value="0" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        @if($support->is_faq_target === 1)
+                                            <input id="is_faq_target_{{ $support->id }}" name="is_faq_target_{{ $support->id }}" type="checkbox" checked="checked" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        @else
+                                            <input id="is_faq_target_{{ $support->id }}" name="is_faq_target_{{ $support->id }}" type="checkbox" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        @endif
+                                        <label for="is_faq_target_{{ $support->id }}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">FAQ対象</label>
+                                    </div>
+                                    @error('is_faq_target_' . $support->id)
+                                     <div class="text-red-500">{{ $message }}</div>
+                                    @enderror
+                                </li>
+                                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                    <div class="flex items-center pl-3">
+                                        <input id="is_disclosured1_{{ $support->id }}" name="is_disclosured_{{ $support->id }}" type="hidden" value="0" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        @if($support->is_disclosured === 1)
+                                            <input id="is_disclosured_{{ $support->id }}" name="is_disclosured_{{ $support->id }}" type="checkbox" value="1" checked="checked" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        @else
+                                            <input id="is_disclosured_{{ $support->id }}" name="is_disclosured_{{ $support->id }}" type="checkbox" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        @endif
+                                        <label for="is_disclosured_{{ $support->id }}" class="cursor-pointer    w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">顧客開示</label>
+                                    </div>
+                                    @error('is_disclosured_' . $support->id)
+                                     <div class="text-red-500">{{ $message }}</div>
+                                    @enderror
+                                </li>
+                                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                    <div class="flex items-center pl-3">
+                                        <input id="is_troubled1_{{ $support->id }}" name="is_troubled_{{ $support->id }}" type="hidden" value="0" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        @if($support->is_troubled === 1)
+                                            <input id="is_troubled_{{ $support->id }}" name="is_troubled_{{ $support->id }}" type="checkbox" value="1" checked="checked" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        @else
+                                            <input id="is_troubled_{{ $support->id }}" name="is_troubled_{{ $support->id }}" type="checkbox" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        @endif
+                                        <label for="is_troubled_{{ $support->id }}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">トラブル</label>
+                                    </div>
+                                    @error('is_troubled_' . $support->id)
+                                     <div class="text-red-500">{{ $message }}</div>
+                                    @enderror
+                                </li>
+                                <li class="w-full dark:border-gray-600">
+                                    <div class="flex items-center pl-3">
+                                        <input id="is_confirmed1_{{ $support->id }}" name="is_confirmed_{{ $support->id }}" type="hidden" value="0" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        @if($support->is_confirmed === 1)
+                                            <input id="is_confirmed_{{ $support->id }}" name="is_confirmed_{{ $support->id }}" type="checkbox" value="1" checked="checked" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" >
+                                        @else
+                                            <input id="is_confirmed_{{ $support->id }}" name="is_confirmed_{{ $support->id }}" type="checkbox" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        @endif
+                                        <label for="is_confirmed_{{ $support->id }}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">上長確認済</label>
+                                    </div>
+                                    @error('is_confirmed_' . $support->id)
+                                     <div class="text-red-500">{{ $message }}</div>
+                                    @enderror
+                                </li>
+                            </ul>
 
-                            {{-- <div class="w-full flex flex-col col-span-2 mt-4">
-                                <label for="ext_phone-{{$support->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">外線番号</label>
-                                <input type="text" maxlength="20" name="ext_phone_{{$support->id}}" id="ext_phone-{{$support->id}}" value="{{old('ext_phone_' . $support->id, $support->ext_phone)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
-                            </div>
-                            @error('ext_phone_' . $support->id)
-                                <div class="text-red-500">{{ $message }}</div>
-                            @enderror --}}
-
-                            {{-- <div class="w-full flex flex-col col-span-2 mt-4">
-                                <label for="int_phone-{{$support->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">内線番号</label>
-                                <input type="text" maxlength="20" name="int_phone_{{$support->id}}" id="int_phone-{{$support->id}}" value="{{old('int_phone_' . $support->id, $support->int_phone)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
-                            </div>
-                            @error('int_phone_' . $support->id)
-                                <div class="text-red-500">{{ $message }}</div>
-                            @enderror --}}
 
 
-
-                            {{-- <div class="w-full flex flex-col">
-                                <label for="role_id" class="block mt-4 font-medium text-gray-900 dark:text-white">権限</label>
-                                <select name="role_id_{{$support->id}}" id="role_id-{{$support->id}}" value="{{old('role_id')}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
-                                    @foreach($roles as $role)
-                                    <option value="{{ $role->id }}"  @selected($role->id == $support->role_id)>{{ $role->role_name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            @error('role_id_' . $support->id)
-                                <div class="text-red-500">{{$message}}</div>
-                            @enderror --}}
-
-                            {{-- <div class="w-full flex flex-col">
-                                <label for="company_id" class="block mt-4 font-medium text-gray-900 dark:text-white">所属1</label>
-                                <select name="company_id_{{$support->id}}"  id="company_id-{{$support->id}}" value="{{old('company_id_' . $support->id)}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
-                                    @foreach($companies as $company)
-                                    <option value="{{ $company->id }}"  @selected($company->id == $support->company_id)>{{ $company->company_name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            @error('company_id_' . $support->id)
-                                <div class="text-red-500">{{$message}}</div>
-                            @enderror --}}
-
-                            {{-- <div class="w-full flex flex-col">
-                                <label for="department_id" class="block mt-4 font-medium text-gray-900 dark:text-white">所属2</label>
-                                <select name="department_id_{{$support->id}}" id="department_id-{{$support->id}}" value="{{old('department_id_' . $support->id, $support->department_id)}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
-                                    @foreach($departments as $department)
-                                    <option value="{{ $department->id }}"  @selected($department->id == old('department_id_' . $support->id, $support->department_id))>{{ $department->department_name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            @error('department_id_' . $support->id)
-                                <div class="text-red-500">{{$message}}</div>
-                            @enderror --}}
-
-                            {{-- <div class="w-full flex flex-col">
-                                <label for="division_id" class="block mt-4 font-medium text-gray-900 dark:text-white">所属3</label>
-                                <select name="division_id_{{$support->id}}" id="division_id-{{$support->id}}" value="{{old('division_id_' . $support->id, $support->division_id)}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" >
-                                    @foreach($divisions as $division)
-                                    <option value="{{ $division->id }}"  @selected($division->id == old('division_id_' . $support->id, $support->division_id))>{{ $division->division_name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            @error('division_id_' . $support->id)
-                                <div class="text-red-500">{{$message}}</div>
-                            @enderror --}}
 
                             {{-- <div class="bg-light px-3 py-2 mb-3 font-semibold dark:text-gray-100">以下は省略可</div>
 
@@ -873,8 +902,8 @@
             <div class="p-6 space-y-6 mr-20 mt-4">
                 <form action="{{ route('support.upload') }}" method="POST" enctype="multipart/form-data" class="flex items-center" id="csv_form1">
                     @csrf
-                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="csv_input"></label>
-                    <input type="file" name="csv_input"  id="csv_input_file"  class="block w-full text-sm text-gray-900 border border-gray-300 rounded-s rounded-e cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="csv_input_help">
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="csv_upload"></label>
+                    <input type="file" name="csv_upload"  id="csv_upload_file"  class="block w-full text-sm text-gray-900 border border-gray-300 rounded-s rounded-e cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="csv_upload_help">
                 </form>
             </div>
             <!-- Modal footer -->
@@ -929,7 +958,7 @@
             let drawerId = localStorage.getItem('updateDrawerId');
             
             // ページ遷移後初回のみ実行
-            if (!isValidationProcessed && drawerId) {
+            if (!isValidationProcessed && drawerId !== null) {
                 // オーバーレイを作成
                 const overlay = document.createElement('div');
                 overlay.classList.add('overlay'); // オーバーレイのクラスを追加
@@ -981,35 +1010,35 @@
 @endif
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-        const uploadForm = document.getElementById('csv_form1');
-        const uploadButton = document.getElementById('upload-button');
-        const spinner = document.getElementById('spinner');
-        const uploadOverlay = document.getElementById('uploadOverlay');
-        const fileInput = document.getElementById('csv_input_file');
-        const closeButton = document.getElementById('close_button');
+        // document.addEventListener('DOMContentLoaded', function () {
+        // const uploadForm = document.getElementById('csv_form1');
+        // const uploadButton = document.getElementById('upload-button');
+        // const spinner = document.getElementById('spinner');
+        // const uploadOverlay = document.getElementById('uploadOverlay');
+        // const fileInput = document.getElementById('csv_upload_file');
+        // const closeButton = document.getElementById('close_button');
 
-            uploadForm.addEventListener('submit', function (event) {
-                // ファイルが添付されているかを確認
-                if (fileInput.files.length === 0) {
-                    // ファイル未添付の場合は処理を中止
-                    event.preventDefault();
-                    return;
-                }
+        //     uploadForm.addEventListener('submit', function (event) {
+        //         // ファイルが添付されているかを確認
+        //         if (fileInput.files.length === 0) {
+        //             // ファイル未添付の場合は処理を中止
+        //             event.preventDefault();
+        //             return;
+        //         }
 
-                // アップロードボタンを非表示にし、スピナーを表示
-                uploadButton.style.display = 'none';
-                closeButton.style.display = 'none';
-                spinner.style.display = 'block';
-                fileInput.readOnly = true;
+        //         // アップロードボタンを非表示にし、スピナーを表示
+        //         uploadButton.style.display = 'none';
+        //         closeButton.style.display = 'none';
+        //         spinner.style.display = 'block';
+        //         fileInput.readOnly = true;
 
-                // 画面をロック
-                uploadOverlay.style.display = 'block';
+        //         // 画面をロック
+        //         uploadOverlay.style.display = 'block';
 
-                // フォームをサブミット
-                uploadForm.submit();
-            });
-        });
+        //         // フォームをサブミット
+        //         uploadForm.submit();
+        //     });
+        // });
     </script>
 
 {{-- 行がクリックされたときに発火するJavaScript --}}

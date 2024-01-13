@@ -36,9 +36,9 @@ class SupportController extends Controller
 
     public function index(Request $request)
     {
-        // $productSeriess = ProductSeries::all();  //製品シリーズ
-        // $productVersions = ProductVersion::all();  //製品バージョン
-        // $productCategories = ProductCategory::all();  // 製品系統
+        $productSeriess = ProductSeries::all();  //製品シリーズ
+        $productVersions = ProductVersion::all();  //製品バージョン
+        $productCategories = ProductCategory::all();  // 製品系統
         $users = User::all();  //受付対応者用
         $supportTimes = SupportTime::all(); //サポート時間
         $supportTypes = SupportType::all();// サポート種別
@@ -47,6 +47,7 @@ class SupportController extends Controller
         $selectedSupportTypes = $request->input('support_types', []);
         $keywords = $request->input('keywords'); // キーワード検索
         $clientName = $request->input('client_name');
+        $selectedProductCategories = $request->input('product_categories',[]);
 
 
         // サポート検索クエリ
@@ -57,14 +58,6 @@ class SupportController extends Controller
             $supportsQuery->whereIn('support_type_id', $selectedSupportTypes);
         }
 
-        // if (!empty($clientName)) {
-        //     $spaceConversion = mb_convert_kana($clientName, 's');
-        //     $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
-    
-        //     foreach ($wordArraySearched as $value) {
-        //         Client::where('client_name', 'like', '%'.$value.'%');
-        //     }
-        // }
 
         if (!empty($clientName)) {
             // Clientモデルからclient_nameをもとにIDを取得
@@ -74,6 +67,11 @@ class SupportController extends Controller
             if (!empty($clientIds)) {
                 $supportsQuery->whereIn('client_id', $clientIds);
             }
+        }
+
+        if (!empty($selectedProductCategories))
+        {
+            $supportsQuery->whereIn('product_category_id', $selectedProductCategories);
         }
 
         if ($keywords) {
@@ -86,7 +84,7 @@ class SupportController extends Controller
         $supports = $supportsQuery->paginate($per_page);
         $count = $supports->total(); // ページネーション後の総数を取得
 
-        return view('support.index', compact('supports', 'count', 'supportTypes' ,'selectedSupportTypes','keywords','users','supportTimes'));
+        return view('support.index', compact('supports', 'count', 'supportTypes' ,'selectedSupportTypes','keywords','users','supportTimes','productCategories','selectedProductCategories','clientName','productVersions','productSeriess'));
     }
 
     public function create()
@@ -210,26 +208,61 @@ class SupportController extends Controller
     public function update(Request $request, string $id)
     {
 
+        // // バリデーションルール
+        // $rules = [
+        //     'received_at' => 'required', 
+        // ];
+
+        // // バリデーション実行
+        // $validator = Validator::make($request->all(), $rules);
+        // // バリデーションエラーがある場合
+        // if ($validator->fails()) {
+        //     session()->flash('error', '入力内容にエラーがあります。');
+        //     return redirect()->back()->withErrors($validator)->withInput();
+        // }
+
+        // $support = Support::find($id);
+        // $support->received_at = $request->f_received_at;
+        // $support->title = $request->f_title;
+        // $support->request_content = $request->f_request_content;
+        // $support->response_content = $request->f_response_content;
+        // $support->internal_message = $request->f_internal_message;
+        // $support->internal_memo1 = $request->f_internal_memo1;
+        // $support->support_type_id = $request->f_support_type_id;
+        // $support->support_time_id = $request->f_support_time_id;
+        // $support->user_id = $request->f_user_id;// 受付対応者
+        // $support->client_user_department = $request->f_client_user_department;
+        // $support->client_user_kana_name = $request->f_client_user_kana_name;
+        // $support->product_series_id = $request->f_product_series_id;
+        // $support->product_version_id = $request->f_product_version_id;
+        // $support->product_category_id = $request->f_product_category_id;
+        // $support->is_finished = $request->f_is_finished;
+        // $support->is_disclosured = $request->f_is_disclosured;
+        // $support->is_confirmed = $request->f_is_confirmed;
+        // $support->is_troubled = $request->f_is_troubled;
+        // $support->is_faq_target = $request->f_is_faq_target;
+        // $support->save();
+
         $support = Support::find($id);
-        $support->received_at = $request->f_received_at;
-        $support->title = $request->f_title;
-        $support->request_content = $request->f_request_content;
-        $support->response_content = $request->f_response_content;
-        $support->internal_message = $request->f_internal_message;
-        $support->internal_memo1 = $request->f_internal_memo1;
-        $support->support_type_id = $request->f_support_type_id;
-        $support->support_time_id = $request->f_support_time_id;
-        $support->user_id = $request->f_user_id;// 受付対応者
-        $support->client_user_department = $request->f_client_user_department;
-        $support->client_user_kana_name = $request->f_client_user_kana_name;
-        $support->product_series_id = $request->f_product_series_id;
-        $support->product_version_id = $request->f_product_version_id;
-        $support->product_category_id = $request->f_product_category_id;
-        $support->is_finished = $request->f_is_finished;
-        $support->is_disclosured = $request->f_is_disclosured;
-        $support->is_confirmed = $request->f_is_confirmed;
-        $support->is_troubled = $request->f_is_troubled;
-        $support->is_faq_target = $request->f_is_faq_target;
+        $support->received_at = $request->input('received_at_' . $id);
+        $support->title = $request->input('title_' . $id);
+        $support->request_content = $request->input('request_content_' . $id);
+        $support->response_content = $request->input('response_content_' . $id);
+        $support->internal_message = $request->input('internal_message_' . $id);
+        $support->internal_memo1 = $request->input('internal_memo1_' . $id);
+        $support->support_type_id = $request->input('support_type_id_' . $id);
+        $support->support_time_id = $request->input('support_time_id_' . $id);
+        $support->user_id = $request->input('user_id_' . $id);// 受付対応者
+        $support->client_user_department = $request->input('client_user_department_' . $id);
+        $support->client_user_kana_name = $request->input('client_user_kana_name_' . $id);
+        $support->product_series_id = $request->input('product_series_id_' . $id);
+        $support->product_version_id = $request->input('product_version_id_' . $id);
+        $support->product_category_id = $request->input('product_category_id_' . $id);
+        $support->is_finished = $request->input('is_finished_' . $id);
+        $support->is_disclosured = $request->input('is_disclosured_' . $id);
+        $support->is_confirmed = $request->input('is_confirmed_' . $id);
+        $support->is_troubled = $request->input('is_troubled_' . $id);
+        $support->is_faq_target = $request->input('is_faq_target_' . $id);
         $support->save();
 
 
@@ -272,6 +305,20 @@ class SupportController extends Controller
         }
 
         $csvFile = $request->file('csv_upload');
+
+        // バリデーションルール
+        $rules = [
+            'csv_upload' => 'required|mimes:csv,txt|max:10240', // 最大10MBまでのCSVファイルを許可
+        ];
+
+        // バリデーション実行
+        $validator = Validator::make($request->all(), $rules);
+
+        // バリデーションエラーがある場合
+        if ($validator->fails()) {
+            session()->flash('error', '1入力内容にエラーがあります。');
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
         
         // CSVファイルの一時保存先パス
         $csvPath = $csvFile->getRealPath();
@@ -295,8 +342,48 @@ class SupportController extends Controller
         $lexer = new Lexer($config);
         $interpreter = new Interpreter();
 
-         // CSV行をパースした際に実行する処理を定義
-        $interpreter->addObserver(function (array $row) {
+        // 列数チェック用の変数
+        $expectedColumnCount = 20; // 期待される列数を設定
+
+        // CSV行をパースした際に実行する処理を定義
+        $interpreter->addObserver(function (array $row) use ($expectedColumnCount) {
+            // データのバリデーション
+            $validator = Validator::make(['csv_row' => $row], [
+                'csv_row' => 'required|array|size:' . $expectedColumnCount,
+            ]);
+
+            // バリデーションエラーがある場合
+            if ($validator->fails()) {
+                // エラーログ出力やエラーメッセージ表示などの処理を行う
+                session()->flash('error', '2入力内容にエラーがあります。');
+
+                return redirect()->back()->with('error', '列数が合っていません。');
+            }
+
+            // 以降の処理は変更なし
+
+            // さらに各列のバリデーションも追加する場合
+            $validator = Validator::make([
+                '0' => $row[0],
+                '1' => $row[1],
+                // 他の列に対するバリデーションルールを追加
+            ], [
+                '0' => 'required', // クライアント番号が整数であることを確認
+                '1' => 'required|date',    // 受信日が日付形式であることを確認
+                // 他の列に対するバリデーションルールを追加
+            ]);
+
+            // バリデーションエラーがある場合
+            if ($validator->fails()) {
+                // エラーログ出力やエラーメッセージ表示などの処理を行う
+                session()->flash('error', '3入力内容にエラーがあります。');
+
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+
+
+
             $support = new Support();
 
             $clientNum = $row[0];
@@ -349,8 +436,6 @@ class SupportController extends Controller
             } else {
 
             }
-
-
 
             $support->title = $row[8];
             $support->request_content = $row[9];

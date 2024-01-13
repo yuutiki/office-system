@@ -561,9 +561,12 @@
 
 
 <script>
-    $(function() {
-    $.fn.autoKana('input[name="name_{{$user->id}}"]', 'input[name="kana_name_{{$user->id}}"]', {katakana: true});
-    });
+    @if(isset($user))
+        $(function() {
+            $.fn.autoKana('input[name="name_{{$user->id}}"]', 'input[name="kana_name_{{$user->id}}"]', {katakana: true});
+        });
+    @endif
+
 
     function submitAndUpdateDrawer(userId) {
         // 保存処理（ここではLocalStorageを使用）

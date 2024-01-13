@@ -11,7 +11,7 @@ class ProductVersionController extends Controller
 {
     public function index()
     {
-        $productVersions = ProductVersion::with('updatedBy')->orderBy('version_code','asc')->paginate();
+        $productVersions = ProductVersion::with('updatedBy')->orderBy('version_code','asc')->paginate(100);
         return view('masters.product-version-index',compact('productVersions'));
     }
 
