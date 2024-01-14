@@ -21,7 +21,7 @@ use App\Http\Controllers\Master\CompanyController;
 use App\Http\Controllers\Master\ContactTypeController;
 use App\Http\Controllers\Master\DepartmentController;
 use App\Http\Controllers\Master\DistributionTypeController;
-use App\Http\Controllers\Master\DivisionController;
+use App\Http\Controllers\Master\Affiliation3Controller;
 use App\Http\Controllers\Master\InstallationTypeController;
 use App\Http\Controllers\Master\PrefectureController;
 use App\Http\Controllers\Master\ProductCategoryController;
@@ -84,7 +84,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/accounting-period', AccountingPeriodController::class);
     Route::resource('/accounting-type', AccountingTypeController::class);
     Route::resource('/masters', '\App\Http\Controllers\MasterController');
-    Route::resource('/division', DivisionController::class);
+    Route::resource('/affiliation3', Affiliation3Controller::class);
     Route::resource('/department', DepartmentController::class);
     Route::resource('/company', CompanyController::class);
     Route::resource('/contact-type', ContactTypeController::class);

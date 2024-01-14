@@ -171,7 +171,7 @@
                 <ul  class="hidden py-2 space-y-2" id="accordion-body-2" aria-labelledby="accordion-heading-2">
                     <li>
                         <x-nav-link :href="route('support.index')" :active="request()->routeIs('support.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('サポート履歴') }}</span>
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('サポート一覧') }}</span>
                         </x-nav-link>
                     </li>
                     <li>
@@ -367,7 +367,7 @@
                     <ul id="dropdown-sm-support" class="hidden py-2 space-y-2">
                         <li>
                             <x-nav-link :href="route('support.index')" :active="request()->routeIs('support.index')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                                <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('サポート履歴') }}</span>
+                                <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('サポート一覧') }}</span>
                             </x-nav-link>
                         </li>
                         <li>
@@ -397,11 +397,6 @@
                         <li>
                             <x-nav-link :href="route('client.index')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                                 <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('受注情報一覧') }}</span>
-                            </x-nav-link>
-                        </li>
-                        <li>
-                            <x-nav-link :href="route('client.index')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                                <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('発注情報一覧') }}</span>
                             </x-nav-link>
                         </li>
                     </ul>

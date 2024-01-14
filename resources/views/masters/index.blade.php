@@ -1,7 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-900 dark:text-white leading-tight">
-            マスタ一覧
+            {{-- マスタ一覧 --}}
+            {{ Breadcrumbs::render('masters') }}
         </h2>
         <x-message :message="session('message')" />
     </x-slot>

@@ -122,6 +122,11 @@
                         </div>
                     </th> --}}
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                      <div class="flex items-center">
+                          所属人数
+                      </div>
+                  </th>
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             更新者
                         </div>
@@ -159,6 +164,9 @@
                         {{-- <td class="px-1 py-2 whitespace-nowrap">
                             {{$company->created_by}}
                         </td> --}}
+                        <td class="px-1 py-2 whitespace-nowrap">
+                          {{ $company->users_count }}
+                        </td>
                         <td class="px-1 py-2 whitespace-nowrap">
                             {{-- {{$company->updatedBy->name}} --}}
                             {{ optional($company->updatedBy)->name }}

@@ -27,7 +27,7 @@ return new class extends Migration
             $table->foreignId('employee_status_id')->default(1)->comment('雇用状態ID');//追記 employee_statusesテーブル参照
             $table->foreignId('company_id')->comment('会社ID'); 
             $table->foreignId('department_id')->comment('事業部ID'); 
-            $table->foreignId('division_id')->comment('部署ID'); 
+            $table->foreignId('affiliation3_id')->comment('第三所属階層ID'); 
             $table->string('profile_image')->nullable(true)->default('default.png')->comment('プロフ画像');
             $table->datetimes();
         });

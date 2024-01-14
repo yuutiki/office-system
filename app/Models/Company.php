@@ -22,4 +22,10 @@ class Company extends Model
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');
     }
+
+        
+    public function users()//relation
+    {
+        return $this->hasMany(User::class);
+    }
 }

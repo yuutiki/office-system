@@ -43,6 +43,7 @@
     "client_name": "顧客名称",
     "client_kana": "顧客カナ名称",
     "Home": "ホーム",
+    "Masters": "マスタ一覧",
     "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.": "ユーザ登録時に使用したメールアドレスをご記入ください。パスワードリセット用のリンクをお送りします。",
     "Email Password Reset Link": "メール送信",
     "Ensure your account is using a long, random password to stay secure.": "6文字以上のランダムな英数字及び記号を使用したパスワードにしてください。",

@@ -1,9 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between w-5/6">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
-                ユーザ一覧
-                {{ $count }}件
+            <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex">
+                {{ Breadcrumbs::render('users') }}
+                <div class="ml-4">
+                    {{ $count }}件
+                </div>
             </h2>
             <x-message :message="session('message')" />
         </div>
@@ -88,6 +90,7 @@
                                 </svg>
                             </button>
                         </div>
+
                     </div>
                 </form>
             </div>
@@ -155,7 +158,7 @@
                     </th>
                     <th scope="col" class="pl-4 py-3 whitespace-nowrap">
                         <div class="flex items-center">
-                            @sortablelink('employee_id','社員番号')
+                            @sortablelink('employee_num','社員番号')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
                                 <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
                             </svg>
@@ -443,14 +446,14 @@
                             @enderror
 
                             <div class="w-full flex flex-col">
-                                <label for="division_id" class="block mt-4 font-medium text-gray-900 dark:text-white">所属3</label>
-                                <select name="division_id_{{$user->id}}" id="division_id-{{$user->id}}" value="{{old('division_id_' . $user->id, $user->division_id)}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" >
-                                    @foreach($divisions as $division)
-                                    <option value="{{ $division->id }}"  @selected($division->id == old('division_id_' . $user->id, $user->division_id))>{{ $division->division_name }}</option>
+                                <label for="affiliation3_id" class="block mt-4 font-medium text-gray-900 dark:text-white">所属3</label>
+                                <select name="affiliation3_id_{{$user->id}}" id="affiliation3_id-{{$user->id}}" value="{{old('affiliation3_id_' . $user->id, $user->affiliation3_id)}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" >
+                                    @foreach($affiliation3s as $affiliation3)
+                                    <option value="{{ $affiliation3->id }}"  @selected($affiliation3->id == old('affiliation3_id_' . $user->id, $user->affiliation3_id))>{{ $affiliation3->affiliation3_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            @error('division_id_' . $user->id)
+                            @error('affiliation3_id_' . $user->id)
                                 <div class="text-red-500">{{$message}}</div>
                             @enderror
 
@@ -512,7 +515,7 @@
             </tbody>
         </table>
         <div class="mt-1 mb-1 px-4">
-        {{ $users->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
+            {{ $users->withQueryString()->links('vendor.pagination.custum-tailwind') }}
         </div> 
     </div>
 

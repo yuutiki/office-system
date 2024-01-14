@@ -22,10 +22,12 @@ class DashboardController extends Controller
         $user = Auth::user();
         $receivedAtArray = [];
         if($user){
-            $mySupports=Support::where('user_id', $user->id)
-                        ->orderBy('received_at', 'desc')
-                        ->take(5)
-                        ->get();
+            $mySupports = Support::whereHas('client', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
+            ->orderBy('received_at', 'desc')
+            ->take(5)
+            ->get();
 
             foreach($mySupports as $mySupport){
                 $receivedAtArray[] = Carbon::parse($mySupport->received_at);

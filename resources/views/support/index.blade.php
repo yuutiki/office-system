@@ -239,9 +239,11 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between w-5/6">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
-                サポート一覧
-                {{ $count }}件
+            <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex">
+                {{ Breadcrumbs::render('supports') }}
+                <div class="ml-4">
+                    {{ $count }}件
+                </div>
             </h2>
             <x-message :message="session('message')" />
         </div>

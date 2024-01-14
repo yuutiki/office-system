@@ -132,14 +132,14 @@
                         @enderror
 
                         <div class="w-full flex flex-col">
-                            <label for="division_id" class="font-semibold dark:text-gray-100 leading-none mt-2">部署</label>
-                            <select name="division_id" class=" w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="division_id" value="{{old('division_id')}}">
-                                @foreach($divisions as $division)
-                                <option value="{{ $division->id }}">{{ $division->division_name }}</option>
+                            <label for="affiliation3_id" class="font-semibold dark:text-gray-100 leading-none mt-2">部署</label>
+                            <select name="affiliation3_id" class=" w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="affiliation3_id" value="{{old('affiliation3_id')}}">
+                                @foreach($affiliation3s as $affiliation3)
+                                <option value="{{ $affiliation3->id }}">{{ $affiliation3->affiliation3_name }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        @error('division_id')
+                        @error('affiliation3_id')
                             <div class="text-red-500">{{$message}}</div>
                         @enderror
                     </div>

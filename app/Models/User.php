@@ -64,7 +64,7 @@ class User extends Authenticatable
     // public static $rules = [
     //     'company_id' => 'required',
     //     'department_id' => 'required',
-    //     'division_id' => 'required',
+    //     'affiliation3_id' => 'required',
     //     'int_phone' => 'size:3',
     // ];
 
@@ -73,7 +73,7 @@ class User extends Authenticatable
         return [
             'company_id_' . $id => 'required',
             'department_id_' . $id => 'required',
-            'division_id_' . $id => 'required',
+            'affiliation3_id_' . $id => 'required',
             'int_phone_' . $id => 'size:3',
             'kana_name_' . $id => 'required|max:50',
             'name_' . $id => 'required|max:50',
@@ -137,9 +137,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Department::class);
     }
-    public function division()
+    public function affiliation3()
     {
-        return $this->belongsTo(Division::class);
+        return $this->belongsTo(Affiliation3::class);
     }
 
 

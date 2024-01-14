@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Models\Department;
-use App\Models\Division;
+use App\Models\Affiliation3;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\EmployeeStatus;
@@ -23,11 +23,11 @@ class UserController extends Controller
 {
     public function index(Request $request)//検索用にrequestを受取る
     {
-        $users = User::with(['role','company','department','division'])->sortable()->paginate();
+        $users = User::with(['role','company','department','affiliation3']);
         $roles = Role::all();
         $companies = Company::all();
         $departments = Department::all();
-        $divisions = Division::all();
+        $affiliation3s = Affiliation3::all();
         $employeeStatuses = EmployeeStatus::all();
 
 
@@ -78,10 +78,10 @@ class UserController extends Controller
             $query->whereIn('employee_status_id', $selectedEmployeeStatues);
         }
 
-        $users = $query->paginate();
+        $users = $query->sortable()->paginate();
         $count = $users->total();
 
-        return view('admin.user.index',compact('roles','users','employeeStatuses','employee_num','user_name','selectedRoles','count','companies','departments','divisions','selectedEmployeeStatues','departmentId'));
+        return view('admin.user.index',compact('roles','users','employeeStatuses','employee_num','user_name','selectedRoles','count','companies','departments','affiliation3s','selectedEmployeeStatues','departmentId'));
     }
 
 
@@ -89,11 +89,11 @@ class UserController extends Controller
     {
         $companies = Company::all();
         $departments = Department::all();
-        $divisions = Division::all();
+        $affiliation3s = Affiliation3::all();
         $roles = Role::orderBy('id','desc')->get();
         $e_statuses = EmployeeStatus::orderBy('id','asc')->get();
 
-        return view('admin.user.create',compact('roles','e_statuses','companies','departments','divisions'));
+        return view('admin.user.create',compact('roles','e_statuses','companies','departments','affiliation3s'));
     }
 
     public function store(Request $request)
@@ -119,7 +119,7 @@ class UserController extends Controller
         $user->role_id = $request->role_id;
         $user->company_id = $request->company_id;
         $user->department_id = $request->department_id;
-        $user->division_id = $request->division_id;
+        $user->affiliation3_id = $request->affiliation3_id;
         $user->employee_status_id = $request->employee_status_id;
         $user->is_enabled = $request->is_enabled;
         $user->password = bcrypt($request->password);
@@ -140,11 +140,11 @@ class UserController extends Controller
         $e_statuses = EmployeeStatus::with('users')->get();
         $companies = Company::all();
         $departments = Department::all();
-        $divisions = Division::all();
+        $affiliation3s = Affiliation3::all();
         $e_statuses = EmployeeStatus::all();
         $user_role = $user->role_id;
         $user_e_status = $user->employee_status_id;
-        return view('admin.user.edit',compact('user','roles','user_role','e_statuses','user_e_status','companies','departments','divisions'));
+        return view('admin.user.edit',compact('user','roles','user_role','e_statuses','user_e_status','companies','departments','affiliation3s'));
     }
 
     public function update(Request $request, $id)
@@ -175,7 +175,7 @@ class UserController extends Controller
             'role_id_' . $id => '権限',
             'company_id_' . $id => '[所属]会社',
             'department_id_' . $id => '[所属]部署',
-            'division_id_' . $id => '[所属]部門',
+            'affiliation3_id_' . $id => '[所属]部門',
             'employee_status_id_' . $id => '在職状態',
             'is_enabled_' . $id => '有効フラグ',
             // 他の属性も必要に応じて追加
@@ -198,7 +198,7 @@ class UserController extends Controller
         $user->role_id = $request->input('role_id_' . $id);
         $user->company_id = $request->input('company_id_' . $id);
         $user->department_id = $request->input('department_id_' . $id);
-        $user->division_id = $request->input('division_id_' . $id);
+        $user->affiliation3_id = $request->input('affiliation3_id_' . $id);
         $user->employee_status_id = $request->input('employee_status_id_' . $id);
         $user->is_enabled = $request->input('is_enabled_' . $id);
         $user->access_ip = $request->ip();
@@ -277,26 +277,26 @@ class UserController extends Controller
             
             
             
-            $divisionCode = $row[9];
-            $division = Division::where('division_code', $divisionCode)->first();
-            if ($division) {
-                $user->division_id = $division->id;
+            $affiliation3Code = $row[9];
+            $affiliation3 = Affiliation3::where('affiliation3_code', $affiliation3Code)->first();
+            if ($affiliation3) {
+                $user->affiliation3_id = $affiliation3->id;
             } else {
-                // divisionが見つからない場合のエラーハンドリング
+                // affiliation3が見つからない場合のエラーハンドリング
             }
             $roleNum = $row[10];
             $role = Role::where('role_num', $roleNum)->first();
             if ($role) {
                 $user->role_id = $role->id;
             } else {
-                // divisionが見つからない場合のエラーハンドリング
+                // affiliation3が見つからない場合のエラーハンドリング
             }
             $employeeStatusNum = $row[11];
             $employee_status = EmployeeStatus::where('employee_status_num', $employeeStatusNum)->first();
             if ($employee_status) {
                 $user->employee_status_id = $employee_status->id;
             } else {
-                // divisionが見つからない場合のエラーハンドリング
+                // affiliation3が見つからない場合のエラーハンドリング
             }
             $user->is_enabled = $row[12];
             $user->save();

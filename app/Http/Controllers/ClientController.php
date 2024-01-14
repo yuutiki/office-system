@@ -126,7 +126,7 @@ class ClientController extends Controller
 
         $clientProducts = ClientProduct::where('client_id',$id)->orderBy('product_id','asc')->get();
         $reports = Report::where('client_id',$id)->get();
-        $supports = Support::where('client_id',$id)->get();
+        $supports = Support::with(['client', 'user', 'productSeries', 'productVersion', 'productCategory', 'supportType', 'supportTime'])->where('client_id',$id)->paginate(25);
         // client_numとclient_nameをセッションに保存
         Session::put('selected_client_num', $client->client_num);
         Session::put('selected_client_name', $client->client_name);

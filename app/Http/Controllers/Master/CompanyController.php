@@ -11,7 +11,7 @@ class CompanyController extends Controller
 {
     public function index()
     {
-        $companies = Company::with('updatedBy')->orderBy('company_code', 'asc')->paginate(50);
+        $companies = Company::with('updatedBy')->orderBy('company_code', 'asc')->withCount('users')->paginate(50);
         return view('masters.company-index',compact('companies'));
     }
 

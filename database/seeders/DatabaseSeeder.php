@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductCategorySeeder::class);
         $this->call(LinkSeeder::class);
         $this->call(CompanySeeder::class);
-        $this->call(DivisionSeeder::class);
+        $this->call(Affiliation3Seeder::class);
         $this->call(AccountingPeriodSeeder::class);
         $this->call(SalesStageSeeder::class);
         $this->call(DistributionTypeSeeder::class);
