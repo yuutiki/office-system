@@ -36,7 +36,7 @@ return new class extends Migration
 
             $table->foreignId('account_company_id')->comment('計上会社ID'); 
             $table->foreignId('account_department_id')->comment('計上事業部ID'); 
-            $table->foreignId('account_division_id')->comment('計上部署ID'); 
+            $table->foreignId('account_affiliation3_id')->comment('計上所属階層3ID'); 
             $table->foreignId('account_user_id')->comment('計上担当者');
 
             $table->foreignId('created_by')->nullable(true)->comment('作成者');

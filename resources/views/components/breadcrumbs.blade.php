@@ -10,12 +10,12 @@
                     </svg>
                 @endif
 
-                <li class="breadcrumb-item ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">
-                    <a href="{{ $breadcrumb->url }}">{{ $breadcrumb->title }}</a>
+                <li tabindex="-1" class="breadcrumb-item ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">
+                    <a tabindex="-1" href="{{ $breadcrumb->url }}">{{ $breadcrumb->title }}</a>
                 </li>
             @else
                 <div class="flex items-center">
-                    <li class="breadcrumb-item active ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">
+                    <li tabindex="-1" class="breadcrumb-item active ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">
                         {{ $breadcrumb->title }}
                     </li>
                 </div>

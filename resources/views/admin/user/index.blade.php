@@ -501,7 +501,7 @@
                             </div> --}}
 
                             <div class="grid grid-cols-2 gap-4 mt-4">
-                                <button type="button" onclick="submitAndUpdateDrawer({{$user->id}})" class="w-full justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-s rounded-e text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                <button type="button" id="saveButton" onclick="submitAndUpdateDrawer({{$user->id}})" class="w-full justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-s rounded-e text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     {{ __('Update') }}
                                 </button>
                                 <button type="button" data-modal-target="deleteModal-{{$user->id}}" data-modal-show="deleteModal-{{$user->id}}" class="w-full justify-center text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-s rounded-e text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
@@ -647,6 +647,12 @@
                     
                     // bodyのoverflow-hiddenクラスを削除
                     document.body.classList.remove('overflow-hidden');
+
+                    // すべての行のスタイル（selectedクラス）を削除する
+                    var selectedRows = document.querySelectorAll('.selected');
+                    selectedRows.forEach(function(row) {
+                        row.classList.remove('selected');
+                    });
                 }
             }
         });
@@ -737,4 +743,31 @@ document.addEventListener('DOMContentLoaded', function () {
         z-index: 1000; /* 必要に応じて適切なz-indexを設定してください */
     }
 </style> --}}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var rows = document.querySelectorAll('.button-edit');
+
+        rows.forEach(function (row) {
+            row.addEventListener('click', function () {
+                // すべての行から 'selected' クラスを削除
+                rows.forEach(function (r) {
+                    r.closest('tr').classList.remove('selected');
+                });
+
+                // クリックされた行に 'selected' クラスを追加
+                this.closest('tr').classList.add('selected');
+            });
+        });
+    });
+</script>
+<style>
+    /* 選択された行の外側にリングを描くスタイル */
+    .selected {
+        outline: 2px solid #3498db; /* 選択時のリングの色を指定 */
+        outline-offset: -2px; /* リングの位置を微調整（任意） */
+    }
+</style>
+
+
 </x-app-layout>

@@ -65,10 +65,11 @@
         </button>
         
         <!-- 通知ボックスDropdown -->
-        <div id="dropdownDivider" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-auto dark:bg-gray-700 dark:divide-gray-600">
+        <div id="dropdownDivider" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-auto dark:bg-gray-700 dark:divide-gray-600 whitespace-nowrap">
             <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDividerButton">
                 @foreach ($unreadNotifications  as $notification)
                 <li class="flex justify-between hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                    <p  class="block px-4 py-2">{{ $notification->data['notification_data']['reporter'] }}</p>
                     <a href="{{ $notification->data['notification_data']['action_url'] }}" class="block px-4 py-2">{{ $notification->data['notification_data']['message'] }}</a>
                     <div class="px-4 py-2">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</div>
                 </li>

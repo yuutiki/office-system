@@ -155,7 +155,7 @@
 
 
                     {{-- テーブル表示 --}}
-                    <div class="w-full relative overflow-x-auto shadow-md rounded-s rounded-e mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
+                    <div class="w-full relative overflow-x-auto shadow-md rounded mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
                         <table class="w-full text-sm font-medium text-left text-gray-800 dark:text-gray-400">
                             {{-- テーブルヘッダ start --}}
                             <thead class="text-sm text-gray-700 bg-gray-300 dark:bg-gray-700 dark:text-gray-100">
@@ -532,13 +532,13 @@
                                 @enderror
                             </div>
                             <div>
-                                <label for="account_division_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">計上所属3</label>
-                                <select form="updateForm" id="account_division_id" name="account_division_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    @foreach($divisions as $division)
-                                    <option value="{{ $division->id }}" @selected($division->id == old('account_division_id', $project->account_division_id))>{{ $division->division_name }}</option>
+                                <label for="account_affiliation3_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">計上所属3</label>
+                                <select form="updateForm" id="account_affiliation3_id" name="account_affiliation3_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    @foreach($affiliation3s as $affiliation3)
+                                    <option value="{{ $affiliation3->id }}" @selected($affiliation3->id == old('account_affiliation3_id', $project->account_affiliation3_id))>{{ $affiliation3->affiliation3_name }}</option>
                                     @endforeach
                                 </select>
-                                @error('account_division_id')
+                                @error('account_affiliation3_id')
                                     <div class="text-red-500">{{ $message }}</div>
                                 @enderror
                             </div>

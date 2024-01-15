@@ -221,13 +221,13 @@
                                 @enderror
                             </div>
                             <div>
-                                <label for="account_division_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">計上所属3</label>
-                                <select id="account_division_id" name="account_division_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    @foreach($divisions as $division)
-                                    <option value="{{ $division->id }}" @selected($division->id == old('account_division_id', Auth::user()->division->id))>{{ $division->division_name }}</option>
+                                <label for="account_affiliation3_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">計上所属3</label>
+                                <select id="account_affiliation3_id" name="account_affiliation3_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    @foreach($affiliation3s as $affiliation3)
+                                    <option value="{{ $affiliation3->id }}" @selected($affiliation3->id == old('account_affiliation3_id', Auth::user()->affiliation3->id))>{{ $affiliation3->affiliation3_name }}</option>
                                     @endforeach
                                 </select>
-                                @error('account_division_id')
+                                @error('account_affiliation3_id')
                                     <div class="text-red-500">{{ $message }}</div>
                                 @enderror
                             </div>

@@ -9,7 +9,7 @@ use App\Models\Client;
 use App\Models\Company;
 use App\Models\Department;
 use App\Models\DistributionType;
-use App\Models\Division;
+use App\Models\Affiliation3;
 use App\Models\Prefecture;
 use App\Models\Project;
 use App\Models\ProjectRevenue;
@@ -57,7 +57,7 @@ class ProjectController extends Controller
     {
         $companies = Company::all();
         $departments = Department::all();
-        $divisions = Division::all();
+        $affiliation3s = Affiliation3::all();
         $users = User::all();
         $salesStages = SalesStage::all();
         $distributionTypes = DistributionType::all();
@@ -66,7 +66,7 @@ class ProjectController extends Controller
         $accountingTypes = AccountingType::all();
         $prefectures = Prefecture::all(); //都道府県
 
-        return view('project.create',compact('accountingPeriods','salesStages','distributionTypes','departments','companies','divisions','projectTypes','accountingTypes','users','prefectures'));
+        return view('project.create',compact('accountingPeriods','salesStages','distributionTypes','departments','companies','affiliation3s','projectTypes','accountingTypes','users','prefectures'));
     }
 
     public function store(ProjectStoreRequest $request)
@@ -105,7 +105,7 @@ class ProjectController extends Controller
         $project->project_memo = $request->project_memo;
         $project->account_company_id = $request->account_company_id;
         $project->account_department_id = $request->account_department_id;
-        $project->account_division_id = $request->account_division_id;
+        $project->account_affiliation3_id = $request->account_affiliation3_id;
         $project->account_user_id = $request->account_user_id;
         $project->save();
 
@@ -124,7 +124,7 @@ class ProjectController extends Controller
 
         $companies = Company::all();
         $departments = Department::all();
-        $divisions = Division::all();
+        $affiliation3s = Affiliation3::all();
         $users = User::all();
         $salesStages = SalesStage::all();
         $distributionTypes = DistributionType::all();
@@ -167,7 +167,7 @@ class ProjectController extends Controller
                 'formatRevenueDate' => $targetDate->format('Y-m'),
             ];
         }
-        return view('project.edit',compact('project','projectRevenues','accountingPeriods','salesStages','distributionTypes','departments','companies','divisions','projectTypes','accountingTypes','users','revenuesWithPeriod','totalRevenue','prefectures'));
+        return view('project.edit',compact('project','projectRevenues','accountingPeriods','salesStages','distributionTypes','departments','companies','affiliation3s','projectTypes','accountingTypes','users','revenuesWithPeriod','totalRevenue','prefectures'));
         
     }
 
@@ -203,7 +203,7 @@ class ProjectController extends Controller
     $project->project_memo = $request->project_memo;
     $project->account_company_id = $request->account_company_id;
     $project->account_department_id = $request->account_department_id;
-    $project->account_division_id = $request->account_division_id;
+    $project->account_affiliation3_id = $request->account_affiliation3_id;
     $project->account_user_id = $request->account_user_id;
     $project->save();
 
@@ -292,7 +292,7 @@ class ProjectController extends Controller
 
             $project->account_company_id = $row[18];
             $project->account_department_id = $row[19];
-            $project->account_division_id = $row[20];
+            $project->account_affiliation3_id = $row[20];
             $project->account_user_id = $row[21];
             $project->save();
         });

@@ -13,6 +13,14 @@
         </div>
     </x-slot>
 
+{{-- @if(auth()->check() && $unreadNotifications)
+    @foreach($unreadNotifications as $notification)
+        @if($notification->data['content_id'] == $content->id)
+            <button class="mark-as-read" data-id="{{ $notification->id }}">Mark as Read</button>
+        @endif
+    @endforeach
+@endif --}}
+
     <div class="md:w-4/6 mx-auto mt-8">
         <div class="bg-white dark:bg-gray-600 dark:text-white rounded-lg p-8 shadow-lg hover:shadow-2xl transition duration-500">
             <h3 class="text-xl font-semibold">{{ $report->reportType->report_type_name }}</h3>

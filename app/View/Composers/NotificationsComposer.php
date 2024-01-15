@@ -24,9 +24,9 @@ class NotificationsComposer
     {
         if ($view->getName() === 'link.index') {
             // リンク一覧画面の場合、すべてのリンクを事業部別および表示順別に取得
-            $links = Link::orderBy('department_id')
-                ->orderBy('display_order')
-                ->get();
+            // $links = Link::orderBy('department_id')
+            //     ->orderBy('display_order')
+            //     ->get();
         } else {
              
             // 未読通知を取得するコードをここに記述します

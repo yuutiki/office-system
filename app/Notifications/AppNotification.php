@@ -58,6 +58,7 @@ class AppNotification extends Notification
         return [
             'content_data' => $this->contentData,
             'notification_data' => $this->notificationData,
+            'notification' => $this, // 通知自体をビューに渡す
         ];
     }
 }

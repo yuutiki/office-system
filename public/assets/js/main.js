@@ -10,9 +10,9 @@ shortcut.add("Ctrl+S", function () {
 });
 
 
-shortcut.add("Alt+S", function () {
+shortcut.add("Ctrl+F", function () {
     // 保存ボタンをクリック
-    document.getElementById('searchButton').click();
+    document.getElementById('search-button').click();
 });
 
 

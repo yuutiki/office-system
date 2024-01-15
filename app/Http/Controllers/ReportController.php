@@ -88,7 +88,8 @@ class ReportController extends Controller
         // 通知の内容を設定
         $notificationData = [
             'action_url' => route('report.show', ['report' => $report->id]), // 例: 日報を表示するURL
-            'message' => '新しい日報が登録されました。',
+            'reporter' => $report->reporter->name,
+            'message' => '新しい日報を登録しました。',
             // 他の通知に関する情報をここで設定
         ];
 
@@ -173,7 +174,7 @@ class ReportController extends Controller
     {
         $report = Report::find($id);
         $report->delete();
-        return redirect()->back()->with('message', '削除しました');
+        return redirect()->back()->with('success', '正常に削除しました');
     }
 
     //ユーザが報告先を選択した際に実行されるメソッド

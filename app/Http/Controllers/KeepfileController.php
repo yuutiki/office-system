@@ -6,8 +6,6 @@ use App\Models\Keepfile;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use illuminate\pagination\paginator; //addページネーション用
-
 
 
 class KeepfileController extends Controller
@@ -23,7 +21,7 @@ class KeepfileController extends Controller
     
         // 検索フォームの値を取得する
         $projectNum = $request->input('project_num');
-        $clientName = $request->input('clientname');
+        $clientName = $request->input('client_name');
         $userId = $request->input('user_id');
         $dayFrom = $request->input('day_from');
         $dayTo = $request->input('day_to');
@@ -69,7 +67,7 @@ class KeepfileController extends Controller
 
     public function store(Request $request)
     {
-        $inputs=$request->validate([
+        $inputs = $request->validate([
             'project_num'=>'required|max:13',
             'clientname'=>'required|max:255',
             'purpose'=>'required|max:255',
@@ -96,8 +94,7 @@ class KeepfileController extends Controller
 
     public function show($id)
     {
-        $keepfile = Keepfile::find($id);
-        return view('keepfile.show',compact('keepfile'));
+
     }
 
     public function edit(string $id)
