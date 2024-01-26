@@ -69,7 +69,7 @@
             <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDividerButton">
                 @foreach ($unreadNotifications  as $notification)
                 <li class="flex justify-between hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                    <p  class="block px-4 py-2">{{ $notification->data['notification_data']['reporter'] }}</p>
+                    {{-- <p  class="block px-4 py-2">{{ $notification->data['notification_data']['reporter'] }}</p> --}}
                     <a href="{{ $notification->data['notification_data']['action_url'] }}" class="block px-4 py-2">{{ $notification->data['notification_data']['message'] }}</a>
                     <div class="px-4 py-2">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</div>
                 </li>
@@ -81,9 +81,9 @@
             </div>
         </div>
 
-
+        <img class="w-10 h-10 rounded" src="{{ asset('assets/image/usericon.png') }}" alt="Default avatar">
         {{-- ユーザ設定 --}}
-        <div class=" sm:flex sm:items-center  sm:ml-6">
+        <div class=" sm:flex sm:items-center sm:ml-1">
             <x-dropdown align="right" width="48">
                 <x-slot name="trigger">
                     <button class="inline-flex items-center bg-gray-100 px-3 py-4 border border-transparent text-sm leading-4 font-medium rounded-sm text-gray-900 dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
@@ -157,6 +157,11 @@
                             <span class="flex-1 ml-10 whitespace-nowrap">{{ __('顧客一覧') }}</span>
                         </x-nav-link>
                     </li>
+                    <li>
+                        <x-nav-link :href="route('client-person.index')" :active="request()->routeIs('client-person.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('担当者一覧') }}</span>
+                        </x-nav-link>
+                    </li>
                 </ul>
             </li>
             <li>
@@ -176,7 +181,7 @@
                         </x-nav-link>
                     </li>
                     <li>
-                        <x-nav-link :href="route('client.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                        <x-nav-link :href="route('contract.index')" :active="request()->routeIs('contract.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                             <span class="flex-1 ml-10 whitespace-nowrap">{{ __('契約一覧') }}</span>
                         </x-nav-link>
                     </li>

@@ -1,13 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white leading-tight">
-                法人登録
+            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
+                {{ Breadcrumbs::render('createClientcorporation') }}
             </h2>
             <div class="flex justify-end">
-                <x-general-button onclick="location.href='{{route('clientcorporation.index')}}'" tabindex="-1">
-                    戻る
-                </x-general-button>
                 <x-message :message="session('message')"/>
             </div>
         </div>
@@ -59,7 +56,7 @@
                 @enderror
                 <div class="w-full flex flex-col">
                     <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">備考</label>
-                    <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="auto-resize-textarea-content_1" cols="30" rows="5" placeholder="法人に関するメモ...">{{old('memo')}}</textarea>
+                    <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="memo" data-auto-resize="true"  cols="30" rows="5" placeholder="法人に関するメモ...">{{old('memo')}}</textarea>
                 </div>
                 @error('memo')
                     <div class="text-red-500">{{$message}}</div>
@@ -71,4 +68,7 @@
             </form>
         </div>
     </div>
+
+    <script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
+
 </x-app-layout>

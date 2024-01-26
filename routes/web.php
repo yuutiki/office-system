@@ -5,8 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KeepfileController; //add
 use App\Http\Controllers\ClientCorporationController;//add
 use App\Http\Controllers\ClientController;//add
+use App\Http\Controllers\ClientPersonController;
 use App\Http\Controllers\Dashboard\DashboardController;//add
 use App\Http\Controllers\CommentController;//add
+use App\Http\Controllers\ContractController;
 use App\Http\Controllers\LinkController;
 use App\Http\Controllers\ReportController;//add
 use App\Http\Controllers\ProductController;//add
@@ -38,6 +40,7 @@ use App\Http\Controllers\Master\SupportTypeController;
 use App\Http\Controllers\Master\TradeStatusController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SupportController;
+use App\Models\Contract;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,6 +70,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('/clientcorporation/show-upload', [ClientCorporationController::class, 'showUploadForm'])->name('clientcorporation.showUploadForm');
+
     Route::resource('/keepfile','\App\Http\Controllers\KeepfileController');
     Route::resource('/clientcorporation','\App\Http\Controllers\ClientCorporationController');
     Route::resource('/client','\App\Http\Controllers\ClientController');
@@ -79,6 +84,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('/client-product' , '\App\Http\Controllers\ClientProductController');
     Route::resource('/projectrevenue' , '\App\Http\Controllers\ProjectRevenueController');
     Route::resource('/estimate' , '\App\Http\Controllers\EstimateController');
+    Route::resource('/contract', ContractController::class);
+    Route::resource('/client-person', ClientPersonController::class);
+
 
     //マスタ系
     Route::resource('/accounting-period', AccountingPeriodController::class);
@@ -115,6 +123,7 @@ Route::middleware('auth')->group(function () {
     // Route::resource('/comment', '\App\Http\Controllers\CommentController');
     Route::post('/clientcorporation/search', [ClientCorporationController::class, 'search'])->name('clientcorporation.search');
     Route::post('/client/search', [ClientController::class, 'search'])->name('client.search');
+    Route::post('/user/search', [UserController::class, 'search'])->name('user.ajaxsearch');
     Route::post('/product/search', [ProductController::class, 'search'])->name('product.search');
     Route::get('/report/{report_id}/comment', [CommentController::class, 'show'])->name('comment.show');
     Route::post('/report/{report_id}/comment', [CommentController::class, 'store'])->name('comment.store');
@@ -143,6 +152,9 @@ Route::middleware('auth')->group(function () {
 
     // Route::get('/product-selection', 'ProductController@index');
     Route::get('/get-split-types/{productTypeId}', [ProductController::class, 'getSplitTypes'])->name('product.getSplitTypes');
+
+    Route::get('/clientcorporations/export', [ClientCorporationController::class, 'exportCsv'])->name('clientcorporations.export');
+    Route::get('/clientcorporations/download/{filename}', [ClientCorporationController::class, 'downloadCsv'])->name('clientcorporations.download');
 
 });
 

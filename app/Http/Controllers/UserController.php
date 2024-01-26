@@ -200,6 +200,7 @@ class UserController extends Controller
         $user->department_id = $request->input('department_id_' . $id);
         $user->affiliation3_id = $request->input('affiliation3_id_' . $id);
         $user->employee_status_id = $request->input('employee_status_id_' . $id);
+        $user->employee_num = $request->input('employee_num_' . $id);
         $user->is_enabled = $request->input('is_enabled_' . $id);
         $user->access_ip = $request->ip();
 
@@ -304,4 +305,25 @@ class UserController extends Controller
 
         $lexer->parse($csvPath, $interpreter);
     }
+
+    // public function search(Request $request) {
+
+    //     $query = \App\User::query();
+
+    //     if($request->filled('q')) {
+
+    //         $keywords = explode(' ', trim(mb_convert_kana($request->q, 's')));
+
+    //         foreach($keywords as $keyword) {
+
+    //             $query->where('name', 'LIKE', '%'. $keyword .'%');
+
+    //         }
+
+    //     }
+
+    //     $per_page = 10;
+    //     return $query->paginate($per_page);
+
+    // }
 }

@@ -23,17 +23,76 @@ use Illuminate\Support\Facades\Validator;
 use Goodby\CSV\Import\Standard\Lexer;
 use Goodby\CSV\Import\Standard\Interpreter;
 use Goodby\CSV\Import\Standard\LexerConfig;
+use Illuminate\Support\Facades\Auth;
 
 class ClientController extends Controller
 {
     public function index(Request $request)
     {
-        $per_page = 25;
-        $clients = Client::with(['clientCorporation'])->sortable()->orderBy('client_num','asc')->paginate($per_page); 
-        $users = User::all();
-        $count = $clients->count();
+        $per_page = 50;
 
-        return view('client.index',compact('clients','count','users'));
+        // 検索条件用
+        $salesUsers = User::all();
+        $departments = Department::all();
+        $tradeStatuses = TradeStatus::all();
+        $clientTypes = ClientType::all();
+        $installationTypes = InstallationType::all();
+
+        // 検索リクエストを取得し変数に格納
+        $request->session()->put([
+            'user_id' => $request->user_id,
+        ]);
+        $selectedTradeStatuses = $request->input('trade_statuses', []);
+        $selectedClientTypes = $request->input('client_types', []);
+        $selectedInstallationTypes = $request->input('installation_types', []);
+        $clientName = $request->input('client_name');
+        $salesUserId = $request->input('user_id');
+        $departmentId = $request->input('department_id');
+
+        // 検索クエリを組み立てる
+        $clientsQuery = Client::with(['clientCorporation','user','tradeStatus','department'])->sortable()->orderBy('client_num','asc');
+
+        if (!empty($selectedTradeStatuses)) {// 取引状態
+            $clientsQuery->whereIn('trade_status_id', $selectedTradeStatuses);
+        }
+        if (!empty($selectedClientTypes)) {// 顧客種別
+            $clientsQuery->whereIn('client_type_id', $selectedClientTypes);
+        }
+        if (!empty($selectedInstallationTypes)) {// 設置種別
+            $clientsQuery->whereIn('installation_type_id', $selectedInstallationTypes);
+        }
+        if (!empty($clientName)) {
+            // Clientモデルからclient_nameをもとにIDを取得
+            $clientIds = Client::where('client_name', 'like', '%' . $clientName . '%')->pluck('id')->toArray();
+        
+            // 取得したIDを利用してサポート検索クエリに追加条件を設定
+            if (!empty($clientIds)) {
+                $clientsQuery->whereIn('id', $clientIds);
+            }
+        }
+        if (!empty($salesUserId)) {
+            $clientsQuery->where('user_id','=', $salesUserId);
+        }
+        if (!empty($departmentId)) {
+            $clientsQuery->where('department_id', '=', $departmentId);
+        }
+
+        // 初期表示で絞る
+        if (empty($salesUserId)) {
+            $clientsQuery->where('user_id','=', Auth::id());
+        }
+        if (empty($departmentId)) {
+            $clientsQuery->where('department_id', '=', Auth::user()->department_id);
+        }
+
+
+
+
+
+        $clients = $clientsQuery->paginate($per_page);
+        $count = $clients->total();
+
+        return view('client.index',compact('clients','count','salesUsers', 'departments', 'installationTypes', 'tradeStatuses', 'clientTypes', 'selectedTradeStatuses','selectedClientTypes','selectedInstallationTypes','salesUserId', 'departmentId'));
     }
 
     public function create()
@@ -171,7 +230,7 @@ class ClientController extends Controller
         $client = Client::find($id);
         $client->delete();
 
-        return redirect()->route('client.index')->with('message', '削除しました');
+        return redirect()->route('client.index')->with('success', '正常に削除しました');
     }
 
     //モーダル用の非同期検索ロジック
@@ -209,12 +268,12 @@ class ClientController extends Controller
     public function upload(Request $request)
     {
         // ファイルがアップロードされているかチェック
-        if (!$request->hasFile('csv_input')) {
+        if (!$request->hasFile('csv_upload')) {
         // エラーメッセージをセットしてリダイレクト
         return redirect()->back()->with('error', 'アップロードするCSVファイルが選択されていません。');
         }
 
-        $csvFile = $request->file('csv_input');
+        $csvFile = $request->file('csv_upload');
         
         // CSVファイルの一時保存先パス
         $csvPath = $csvFile->getRealPath();

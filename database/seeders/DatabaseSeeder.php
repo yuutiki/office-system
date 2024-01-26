@@ -37,6 +37,11 @@ class DatabaseSeeder extends Seeder
         $this->call(ReportTypeSeeder::class);
         $this->call(ProjectTypeSeeder::class);
         $this->call(AccountingTypeSeeder::class);
+        $this->call(ContractUpdateTypeSeeder::class);
+        $this->call(ContractTypeSeeder::class);
+        $this->call(ContractPartnerTypeSeeder::class);
+        $this->call(ContractChangeTypeSeeder::class);
+        $this->call(ContractSheetStatusSeeder::class);
         // $this->call(T_ProjectSeeder::class);
 
         // \App\Models\User::factory(10)->create();

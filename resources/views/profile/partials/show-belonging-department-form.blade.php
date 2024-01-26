@@ -25,7 +25,7 @@
         </div>
         <div>
             <x-input-label for="division" :value="__('所属3')" />
-            <x-text-input id="division" name="division" type="text" class="mt-1 block w-full" :value="old('division', $user->division->division_name)" disabled/>
+            <x-text-input id="division" name="division" type="text" class="mt-1 block w-full" :value="old('division', $user->affiliation3->affiliation3_name)" disabled/>
             {{-- <x-input-error :messages="$errors->updatePassword->get('division')" class="mt-2" /> --}}
         </div>
 

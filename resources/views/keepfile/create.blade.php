@@ -80,6 +80,7 @@
                     <input id="image" type="file" name="image">
                     </div>
                 </div> --}}
+
                 <x-primary-button class="mt-4 mb-4">
                     新規登録する
                 </x-primary-button>

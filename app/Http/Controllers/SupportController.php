@@ -36,14 +36,15 @@ class SupportController extends Controller
 
     public function index(Request $request)
     {
-        $productSeriess = ProductSeries::all();  //製品シリーズ
-        $productVersions = ProductVersion::all();  //製品バージョン
-        $productCategories = ProductCategory::all();  // 製品系統
-        $users = User::all();  //受付対応者用
-        $supportTimes = SupportTime::all(); //サポート時間
-        $supportTypes = SupportType::all();// サポート種別
+        // 検索条件用
+        $productSeriess = ProductSeries::select('id', 'series_name')->get();  //製品シリーズ
+        $productVersions = ProductVersion::select('id', 'version_name')->get();  //製品バージョン
+        $productCategories = ProductCategory::select('id', 'category_name')->get();  // 製品系統
+        $users = User::select('id', 'name')->get();  //受付対応者用
+        $supportTimes = SupportTime::select('id', 'time_name')->get(); //サポート時間
+        $supportTypes = SupportType::select('id', 'type_name')->get();// サポート種別
 
-        // 検索条件を取得し変数に格納
+        // 検索リクエストを取得し変数に格納
         $selectedSupportTypes = $request->input('support_types', []);
         $keywords = $request->input('keywords'); // キーワード検索
         $clientName = $request->input('client_name');
@@ -74,13 +75,13 @@ class SupportController extends Controller
             $supportsQuery->whereIn('product_category_id', $selectedProductCategories);
         }
 
-        if ($keywords) {
+        if (!empty($keywords)) {
             $searchTextArray = Support::getSearchWordArray($keywords);
             $supportsQuery = Support::getMultiWordSearchQuery($supportsQuery, $searchTextArray);
         }
 
         // ページネーション設定
-        $per_page = 100;
+        $per_page = 50;
         $supports = $supportsQuery->paginate($per_page);
         $count = $supports->total(); // ページネーション後の総数を取得
 
@@ -159,6 +160,7 @@ class SupportController extends Controller
         // 通知の内容を設定
         $notificationData = [
             'action_url' => route('support.edit', ['support' => $support->id]), // 例: サポート履歴を表示するURL
+            'reporter' => $support->user->name,
             'message' => '新しいサポート履歴が登録されました。',
             // 他の通知に関する情報をここで設定
         ];

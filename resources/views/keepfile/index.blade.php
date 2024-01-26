@@ -623,28 +623,4 @@
         //     });
         // });
     </script>
-
-{{-- 行がクリックされたときに発火するJavaScript --}}
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // 各行のクリックイベントを設定
-        var rows = document.querySelectorAll('.clickable-row');
-
-        rows.forEach(function (row) {
-            row.addEventListener('click', function () {
-                // 選択された行に 'selected' クラスを追加
-                this.classList.toggle('selected');
-            });
-        });
-    });
-</script>
-
-{{-- 選択された行に適用されるスタイル --}}
-<style>
-    .selected {
-        background-color: #f0f0f0; /* 任意の背景色 */
-    }
-</style>
-
-<script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
 </x-app-layout>

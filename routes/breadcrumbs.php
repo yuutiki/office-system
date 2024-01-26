@@ -3,6 +3,66 @@ Breadcrumbs::for('dashboard', function ($trail) {
     $trail->push('ホーム', route('dashboard'));
 });
 
+        // ダッシュボード > 法人一覧
+        Breadcrumbs::for('clientcorporations', function ($trail) {
+            $trail->parent('dashboard');
+            $trail->push('法人一覧', url('clientcorporation'));
+        });
+
+                // ダッシュボード > 法人一覧 > 新規登録
+                Breadcrumbs::for('createClientcorporation', function ($trail) {
+                    $trail->parent('clientcorporations');
+                    $trail->push('新規作成', url('clientcorporation/create'));
+                });
+
+                // ダッシュボード > 法人一覧 > 編集
+                Breadcrumbs::for('editClientcorporation', function ($trail ,$clientcorporation) {
+                    $trail->parent('clientcorporations');
+                    $trail->push('編集', url('clientcorporation/' . $clientcorporation->id . '/edit'));
+                });
+
+                // ダッシュボード > 法人一覧 > CSVアップロード
+                Breadcrumbs::for('csvUploadClientcorporation', function ($trail) {
+                    $trail->parent('clientcorporations');
+                    $trail->push('CSVアップロード', url('clientcorporation/show-upload'));
+                });
+
+        // ダッシュボード > 顧客一覧
+        Breadcrumbs::for('clients', function ($trail) {
+            $trail->parent('dashboard');
+            $trail->push('顧客一覧', url('client'));
+        });
+
+                // ダッシュボード > 顧客一覧 > 新規登録
+                Breadcrumbs::for('createClient', function ($trail) {
+                    $trail->parent('clients');
+                    $trail->push('新規作成', url('client/create'));
+                });
+
+                // ダッシュボード > 顧客一覧 > 編集
+                Breadcrumbs::for('editClient', function ($trail) {
+                    $trail->parent('clients');
+                    $trail->push('編集', url('client/edit'));
+                });
+        
+        // ダッシュボード > 担当者一覧
+        Breadcrumbs::for('clientpersons', function ($trail) {
+            $trail->parent('dashboard');
+            $trail->push('担当者一覧', url('client-person'));
+        });
+
+                // ダッシュボード > 担当者一覧 > 新規登録
+                Breadcrumbs::for('createclientperson', function ($trail) {
+                    $trail->parent('clientpersons');
+                    $trail->push('新規作成', url('client-person/create'));
+                });
+
+                // ダッシュボード > 担当者一覧 > 編集
+                Breadcrumbs::for('editclientperson', function ($trail) {
+                    $trail->parent('clientpersons');
+                    $trail->push('編集', url('client-person/edit'));
+                });
+
         // ダッシュボード > ユーザ一覧
         Breadcrumbs::for('users', function ($trail) {
             $trail->parent('dashboard');
@@ -14,6 +74,17 @@ Breadcrumbs::for('dashboard', function ($trail) {
             $trail->parent('dashboard');
             $trail->push('サポート一覧', url('support'));
         });
+
+        // ダッシュボード > 契約一覧
+        Breadcrumbs::for('contracts', function ($trail) {
+            $trail->parent('dashboard');
+            $trail->push('契約一覧', url('contract'));
+        });
+                // ダッシュボード > 契約一覧 > 契約新規登録
+                Breadcrumbs::for('createContract', function ($trail) {
+                    $trail->parent('contracts');
+                    $trail->push('新規作成', url('contract/create'));
+                });
 
         // ダッシュボード > 預託情報一覧
         Breadcrumbs::for('keepfiles', function ($trail) {

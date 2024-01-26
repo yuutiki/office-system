@@ -80,7 +80,13 @@ class ClientCorporation extends Model
         });
     }
 
-    
+    public static function rules($id = null)
+{
+    return [
+        'clientcorporation_num' => 'unique:client_corporations,clientcorporation_num,' . $id,
+        // 他のバリデーションルールも追加
+    ];
+}
 
 
 

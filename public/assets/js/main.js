@@ -35,6 +35,14 @@ $(function() {
 });
 
 $(function() {
+    $.fn.autoKana('input[name="first_name"]', 'input[name="first_name_kana"]', {katakana: true});
+});
+
+$(function() {
+    $.fn.autoKana('input[name="last_name"]', 'input[name="last_name_kana"]', {katakana: true});
+});
+
+$(function() {
     $.fn.autoKana('input[name="name_{{$user->id}}"]', 'input[name="kana_name_{{$user->id}}"]', {katakana: true});
 });
 

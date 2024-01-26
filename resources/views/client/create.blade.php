@@ -2,12 +2,12 @@
     <x-slot name="header">
         <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
-                顧客登録
+                {{ Breadcrumbs::render('createClient') }}
             </h2>
             <div class="flex justify-end">
-                <x-general-button onclick="location.href='{{route('client.index')}}'">
+                {{-- <x-general-button onclick="location.href='{{route('client.index')}}'">
                     戻る
-                </x-general-button>
+                </x-general-button> --}}
                 <x-message :message="session('message')"/>
             </div>
         </div>
@@ -546,6 +546,6 @@
 </script>
 
 
-<script type="text/javascript" src="{{ asset('/assets/js/aaaddresssearchbutton.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/assets/js/addresssearchbutton.js') }}"></script>
 <script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
 </x-app-layout>
