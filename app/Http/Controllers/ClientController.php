@@ -38,6 +38,10 @@ class ClientController extends Controller
         $clientTypes = ClientType::all();
         $installationTypes = InstallationType::all();
 
+        // ログインユーザーの所属を取得
+        $userAffiliation2 = auth()->user()->department_id;
+        $selectedDepartment = $userAffiliation2; // ユーザーの所属を初期値に設定
+
         // 検索リクエストを取得し変数に格納
         $request->session()->put([
             'user_id' => $request->user_id,
@@ -70,29 +74,40 @@ class ClientController extends Controller
                 $clientsQuery->whereIn('id', $clientIds);
             }
         }
+
+
         if (!empty($salesUserId)) {
             $clientsQuery->where('user_id','=', $salesUserId);
-        }
-        if (!empty($departmentId)) {
-            $clientsQuery->where('department_id', '=', $departmentId);
         }
 
         // 初期表示で絞る
         if (empty($salesUserId)) {
             $clientsQuery->where('user_id','=', Auth::id());
         }
-        if (empty($departmentId)) {
-            $clientsQuery->where('department_id', '=', Auth::user()->department_id);
+
+        // プルダウンが変更された場合の処理
+        if (request()->has('selected_department')) {
+            $selectedDepartment = request('selected_department');
+
+            // プルダウンが「事業部全て」以外の場合、検索結果を絞る
+            if ($selectedDepartment != 0) {
+                $clientsQuery->where('department_id', $selectedDepartment);
+            }  // 「事業部全て」の場合は何もしない（絞り込み解除）
+
+            // 上記の条件で検索結果を取得
+            $clients = $clientsQuery->get();
+            
+        } else {
+            // 初期表示の場合、ユーザーの所属に基づいて検索結果を絞る
+            $clientsQuery->where('department_id', $userAffiliation2)->get();
         }
-
-
 
 
 
         $clients = $clientsQuery->paginate($per_page);
         $count = $clients->total();
 
-        return view('client.index',compact('clients','count','salesUsers', 'departments', 'installationTypes', 'tradeStatuses', 'clientTypes', 'selectedTradeStatuses','selectedClientTypes','selectedInstallationTypes','salesUserId', 'departmentId'));
+        return view('client.index',compact('clients','count','salesUsers', 'departments', 'installationTypes', 'tradeStatuses', 'clientTypes', 'selectedTradeStatuses','selectedClientTypes','selectedInstallationTypes','salesUserId', 'departmentId', 'clientName', 'selectedDepartment'));
     }
 
     public function create()

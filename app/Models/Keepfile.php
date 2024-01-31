@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;//add
 use Carbon\Carbon; //add
+use App\Observers\GlobalObserver;
 
 class Keepfile extends Model
 {
@@ -31,6 +32,14 @@ class Keepfile extends Model
         'is_finished',
         'user_id'
     ];
+
+    //GlobalObserverに定義されている作成者と更新者を登録するメソッド
+    //なお、値を更新せずにupdateをかけても更新者は更新されない。
+    protected static function boot()
+    {
+        parent::boot();
+        self::observe(GlobalObserver::class);
+    }
 
     //relation
     public function user()

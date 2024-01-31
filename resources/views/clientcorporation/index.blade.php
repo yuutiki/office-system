@@ -5,7 +5,7 @@
                 {{ Breadcrumbs::render('clientcorporations') }}
                 <div class="ml-4">
                     {{ $count }}件
-                    <a href="{{ route('clientcorporations.export', $filters ?? []) }}" class="btn btn-primary">CSVダウンロード</a>
+                    {{-- <a href="{{ route('clientcorporations.export', $filters ?? []) }}" class="btn btn-primary">CSVダウンロード</a> --}}
                 </div>
             </h2>
             <x-message :message="session('message')" />
@@ -28,7 +28,7 @@
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                 </svg>
                             </div>
-                            <input type="search" id="s_clientcorporation_num" name="s_clientcorporation_num" value="@if (isset($clientcorporation_num)){{$clientcorporation_num}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="法人№">
+                            <input type="search" id="clientcorporation_num" name="clientcorporation_num" value="@if (isset($clientCorporationNum)){{$clientCorporationNum}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="法人№">
                         </div>
                         <div class="relative w-full mt-2 md:ml-2 md:mt-0">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -36,7 +36,7 @@
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                 </svg>
                             </div>
-                            <input type="search" id="s_clientcorporation_name" name="s_clientcorporation_name" value="@if (isset($clientcorporation_name)){{$clientcorporation_name}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="法人名称">
+                            <input type="search" id="clientcorporation_name" name="clientcorporation_name" value="@if (isset($clientCorporationName)){{$clientCorporationName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="法人名称/カナ名称">
                         </div>
 
                         {{-- <div class="relative w-full mt-2 md:ml-2 md:mt-0">
@@ -118,8 +118,23 @@
                                 {{-- <button type="button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="block w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
                                     CSV一括登録
                                 </button> --}}
-                                <button type="button" onclick="location.href='{{ route('clientcorporation.showUploadForm') }}'" class="block w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
-                                    CSV一括登録
+                                <button type="button" onclick="location.href='{{ route('clientcorporation.showUploadForm') }}'" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2M8 9l4-5 4 5m1 8h0"/>
+                                        </svg>
+                                    </div>
+                                    CSVアップロード
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" onclick="location.href='{{ route('clientcorporations.downloadCsv', $filters ?? []) }}'" class="relative w-full items-center py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2m-1-5-4 5-4-5m9 8h0"/>
+                                        </svg>
+                                    </div>
+                                    CSVダウンロード
                                 </button>
                             </li>
                         </ul>
@@ -177,7 +192,7 @@
                 @foreach ($clientcorporations as $clientcorporation)
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 font-medium hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600 clickable-row">
                         <td class="pl-4 py-2 whitespace-nowrap">
-                            {{ $loop->iteration }}
+                            {{ ($clientcorporations->currentPage() - 1) * $clientcorporations->perPage() + $loop->index + 1 }}
                         </td>
                         <td class="pl-4 py-2 whitespace-nowrap">
                             <button type="button" onclick="location.href='{{route('clientcorporation.edit',$clientcorporation)}}'"  class="button-edit">

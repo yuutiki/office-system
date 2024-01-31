@@ -43,25 +43,22 @@ class ClientCorporation extends Model
     // index画面の検索ロジック
     public function scopeFilter($query, $filters)
     {
-        if (isset($filters['s_clientcorporation_num'])) {
-            $query->where('clientcorporation_num', 'like', '%' . $filters['s_clientcorporation_num']);
+        if (isset($filters['clientcorporation_num'])) {
+            $query->where('clientcorporation_num', 'like', $filters['clientcorporation_num'] . '%');
         }
 
-        if (isset($filters['s_clientcorporation_name'])) {
-            $spaceConversion = mb_convert_kana($filters['s_clientcorporation_name'], 's'); //全角スペース⇒半角スペースへ変換
+        if (isset($filters['clientcorporation_name'])) {
+            $spaceConversion = mb_convert_kana($filters['clientcorporation_name'], 's'); //全角スペース⇒半角スペースへ変換
             $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
-
-            foreach ($wordArraySearched as $value) {
-                $query->where('clientcorporation_name', 'like', '%' . $value . '%');
+    
+            $query->where(function($query) use ($wordArraySearched) {
+                foreach ($wordArraySearched as $value) {
+                    $query->orWhere('clientcorporation_name', 'like', '%' . $value . '%');
+                    $query->orWhere('clientcorporation_kana_name', 'like', '%' . $value . '%');
                 }
-        }
-
-        if (isset($filters['s_clientcorporation_kana_name'])) {
-            $query->where('clientcorporation_kana_name', 'like', '%' . $filters['s_clientcorporation_kana_name'] . '%');
+            });
         }
     }
-
-
 
     public static function storeWithTransaction(array $data)
     {
@@ -80,13 +77,7 @@ class ClientCorporation extends Model
         });
     }
 
-    public static function rules($id = null)
-{
-    return [
-        'clientcorporation_num' => 'unique:client_corporations,clientcorporation_num,' . $id,
-        // 他のバリデーションルールも追加
-    ];
-}
+
 
 
 
@@ -106,8 +97,21 @@ class ClientCorporation extends Model
         $this->attributes['clientcorporation_kana_name'] = mb_convert_kana($value, 'KVs');
     }
     
-    public function clients()//relation
+
+    // 以下リレーション設定
+    public function clients()
     {
         return $this->hasMany(Client::class);
     }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id');
+    }
+
 }

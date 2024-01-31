@@ -50,13 +50,13 @@ class AppServiceProvider extends ServiceProvider
         });
 
 
-        Model::creating(function ($model) {
-            $model->created_by = auth()->user()->id;
-        });
+        // Model::creating(function ($model) {
+        //     $model->created_by = auth()->user()->id;
+        // });
 
-        Model::updating(function ($model) {
-            $model->updated_by = auth()->user()->id;
-        });
+        // Model::updating(function ($model) {
+        //     $model->updated_by = auth()->user()->id;
+        // });
 
         // ClientCorporation::observe(GlobalObserver::class);
     }

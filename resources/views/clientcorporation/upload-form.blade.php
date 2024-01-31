@@ -10,7 +10,7 @@
         </div>
     </x-slot>
 
-    <div class="md:w-auto md:ml-14 md:mr-2 max-h-full mt-8">
+    <div class="w-auto md:ml-14 md:mr-2 max-h-full mt-8">
         <div class="relative bg-white rounded shadow dark:bg-gray-700">
 
 
@@ -23,11 +23,11 @@
                     <input type="file" name="csv_upload"  id="csv_upload_file"  class="block w-full text-sm text-gray-900 border border-gray-300 rounded-s rounded-e cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="csv_upload_help"> --}}
                     <div class="flex px-8 py-8">
                         <div class="flex items-center me-4">
-                            <input id="inline-radio" type="radio" value="new" name="inline-radio-group" class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <input id="inline-radio" type="radio" value="new" name="inline-radio-group" class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-300 dark:border-gray-600">
                             <label for="inline-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">新規登録</label>
                         </div>
                         <div class="flex items-center me-4">
-                            <input id="inline-2-radio" type="radio" value="update" name="inline-radio-group" class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <input id="inline-2-radio" type="radio" value="update" name="inline-radio-group" class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-300 dark:border-gray-600">
                             <label for="inline-2-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">既存更新</label>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                                 <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
                                 </svg>
-                                <p id="file-info" class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">クリックもしくは</span>ドラッグ＆ドロップでファイルを選択してください</p>
+                                <p id="file-info" class="mb-2 text-sm text-gray-500 dark:text-gray-400 font-semibold">クリックもしくはドラッグ＆ドロップでファイルを選択してください</p>
                             </div>
                             <input type="file" name="csv_upload" id="csv_upload_file" class="w-full h-full opacity-0" onchange="displayFileInfo()" />
                         </label>
@@ -74,12 +74,17 @@
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
                 ファイル形式：CSV / 文字コード：shift-Jis / ヘッダ有 / サイズ：10000KB
-                <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Browse a list of Flowbite products designed to help you work and play, stay organized, get answers, keep in touch, grow your business, and more.</p>
+                <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
+                    更新処理時に「空白」のデータは「空白」で上書きされますのでご注意ください。
+                </p>
             </caption>
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="pl-4 py-3">
                         項目名称
+                    </th>
+                    <th scope="col" class="px-2 py-3">
+                        必須
                     </th>
                     <th scope="col" class="px-2 py-3">
                         登録可否
@@ -107,6 +112,9 @@
                         ◯
                     </td>
                     <td class="px-2 py-3">
+                        ◯
+                    </td>
+                    <td class="px-2 py-3">
                         -
                     </td>
                     <td class="px-2 py-3">
@@ -123,6 +131,9 @@
                     <th scope="row" class="pl-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         法人正式名称
                     </th>
+                    <td class="px-2 py-3">
+                        ◯
+                    </td>
                     <td class="px-2 py-3">
                         ◯
                     </td>
@@ -150,6 +161,9 @@
                         ◯
                     </td>
                     <td class="px-2 py-3">
+                        ◯
+                    </td>
+                    <td class="px-2 py-3">
                         文字列
                     </td>
                     <td class="px-2 py-3">
@@ -163,6 +177,9 @@
                     <th scope="row" class="pl-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         法人略称
                     </th>
+                    <td class="px-2 py-3">
+                        ◯
+                    </td>
                     <td class="px-2 py-3">
                         ◯
                     </td>
@@ -190,6 +207,9 @@
                         -
                     </td>
                     <td class="px-2 py-3">
+                        -
+                    </td>
+                    <td class="px-2 py-3">
                         数値
                     </td>
                     <td class="px-2 py-3">
@@ -204,6 +224,9 @@
                         法人備考
                     </th>
                     <td class="px-2 py-3">
+                        -
+                    </td>
+                    <td class="px-2 py-3">
                         ◯
                     </td>
                     <td class="px-2 py-3">
@@ -217,6 +240,121 @@
                     </td>
                     <td class="px-2 py-3">
                         法人に関する備考情報です。
+                    </td>
+                </tr>
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="pl-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        顧客数
+                    </th>
+                    <td class="px-2 py-3">
+                        -
+                    </td>
+                    <td class="px-2 py-3">
+                        -
+                    </td>
+                    <td class="px-2 py-3">
+                        -
+                    </td>
+                    <td class="px-2 py-3">
+                        -
+                    </td>
+                    <td class="px-2 py-3">
+                        <div class="w-[30px] text-right">-</div>
+                    </td>
+                    <td class="px-2 py-3">
+                        法人に紐づく顧客の数です。
+                    </td>
+                </tr>
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="pl-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        作成者
+                    </th>
+                    <td class="px-2 py-3">
+                        -
+                    </td>
+                    <td class="px-2 py-3">
+                        -
+                    </td>
+                    <td class="px-2 py-3">
+                        -
+                    </td>
+                    <td class="px-2 py-3">
+                        -
+                    </td>
+                    <td class="px-2 py-3">
+                        <div class="w-[30px] text-right">-</div>
+                    </td>
+                    <td class="px-2 py-3">
+                        データの作成者名称です。
+                    </td>
+                </tr>
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="pl-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        作成日時
+                    </th>
+                    <td class="px-2 py-3">
+                        -
+                    </td>
+                    <td class="px-2 py-3">
+                        -
+                    </td>
+                    <td class="px-2 py-3">
+                        -
+                    </td>
+                    <td class="px-2 py-3">
+                        -
+                    </td>
+                    <td class="px-2 py-3">
+                        <div class="w-[30px] text-right">-</div>
+                    </td>
+                    <td class="px-2 py-3">
+                        データの作成日時です。
+                    </td>
+                </tr>
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="pl-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        更新者
+                    </th>
+                    <td class="px-2 py-3">
+                        -
+                    </td>
+                    <td class="px-2 py-3">
+                        -
+                    </td>
+                    <td class="px-2 py-3">
+                        -
+                    </td>
+                    <td class="px-2 py-3">
+                        -
+                    </td>
+                    <td class="px-2 py-3">
+                        <div class="w-[30px] text-right">-</div>
+                    </td>
+                    <td class="px-2 py-3">
+                        データの更新者名称です。
+                    </td>
+                </tr>
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="pl-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        更新日時
+                    </th>
+                    <td class="px-2 py-3">
+                        -
+                    </td>
+                    <td class="px-2 py-3">
+                        -
+                    </td>
+                    <td class="px-2 py-3">
+                        -
+                    </td>
+                    <td class="px-2 py-3">
+                        -
+                    </td>
+                    <td class="px-2 py-3">
+                        <div class="w-[30px] text-right">-</div>
+                    </td>
+                    <td class="px-2 py-3">
+                        データの更新日時です。
                     </td>
                 </tr>
             </tbody>

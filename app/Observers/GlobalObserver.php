@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
+// use Illuminate\Database\Eloquent\Model;
 
 class GlobalObserver
 {

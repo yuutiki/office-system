@@ -35,10 +35,10 @@
                             <input type="search" id="client_name" name="client_name" value="@if (isset($clientName)){{$clientName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="顧客名称（カナ）">
                         </div>
                         <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-                            <select name="department_id" id="department_id" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="">管轄事業部</option>
+                            <select name="selected_department" id="selected_department" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="0"  @if($selectedDepartment == 0) selected @endif>管轄事業部</option>
                                 @foreach ($departments as $department)
-                                <option value="{{ $department->id }}" @if ((empty($departmentId) && Auth::user()->department_id == $department->id) || (!empty($departmentId) && $departmentId == $department->id)) selected @endif>
+                                <option value="{{ $department->id }}" @if($selectedDepartment == $department->id) selected @endif>
                                     {{ $department->department_name }}
                                 </option>
                                 @endforeach
@@ -54,6 +54,52 @@
                                 @endforeach
                             </select>
                         </div>
+
+                        <script>
+                            $(document).ready(function () {
+                                // select2を適用
+                                $('#user_id').select2({
+                                    ajax: {
+                                        url: '/search-users', // ユーザーの検索エンドポイントのURLに変更する必要があります
+                                        dataType: 'json',
+                                        delay: 250,
+                                        // processResults: function (data) {
+                                        //     return {
+                                        //         results: data
+                                        //     };
+                                        // },
+                                        cache: true
+                                        // processResults(response) {  // データをselect2向けに加工
+
+                                        //     let options = [];
+
+                                        //     response.data.forEach((user) => {
+
+                                        //         options.push({
+                                        //             id: user.id,
+                                        //             text: user.name
+                                        //         });
+
+                                        //     });
+
+                                        //     return {
+                                        //         results: options,
+                                        //         pagination: {
+                                        //             more: (response.next_page_url !== null)  // 次ページがあるかどうか
+                                        //         }
+                                        //     };
+
+                                        // }
+                                    },
+                                    minimumInputLength: 1,
+                                    placeholder: '営業担当を選択',
+                                    language: 'ja', // 日本語化
+                                    escapeMarkup: function (markup) {
+                                        return markup;
+                                    }
+                                });
+                            });
+                        </script>
 
                         <div class="flex mt-2 md:mt-0">
                             <div class="w-full md:ml-2">

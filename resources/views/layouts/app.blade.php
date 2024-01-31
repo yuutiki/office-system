@@ -53,6 +53,10 @@
         {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/datepicker.min.js"></script> --}}
         {{-- <link rel="stylesheet" href="{{ asset('/assets/css/select2.min.css') }}"> --}}
         {{-- <script type="text/javascript" src="{{ asset('/assets/js/select2.min.js') }}"></script> --}}
+        <!-- Select2のスタイルを読み込む（CDNを使用する場合） -->
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+
+
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-blue-100 dark:bg-gray-900 ">
@@ -96,6 +100,9 @@
         {{-- ショートカット --}}
         <script type="text/javascript" src="{{ asset('/assets/js/shortcut.js') }}"></script>
         <script type="text/javascript" src="{{ asset('/assets/js/main.js') }}"></script>
+        <!-- Select2を読み込む（CDNを使用する場合） -->
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/i18n/ja.js"></script>
     </body>
 </html>
 

@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('clientcorporation_short_name')->comment('法人略称');
             $table->decimal('credit_limit',10, 0)->default(0)->comment('与信限度額');
             $table->text('memo')->nullable(true)->commebt('法人メモ');
+            $table->boolean('is_stop_trading')->default(0)->comment('取引停止フラグ');
+            $table->text('stop_trading_reason')->nullable(true)->comment('取引停止理由');
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->datetimes();

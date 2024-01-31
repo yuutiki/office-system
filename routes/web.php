@@ -119,11 +119,11 @@ Route::middleware('auth')->group(function () {
 
 
 
-
     // Route::resource('/comment', '\App\Http\Controllers\CommentController');
+    Route::post('/search-users', [UserController::class, 'searchUsers']);
     Route::post('/clientcorporation/search', [ClientCorporationController::class, 'search'])->name('clientcorporation.search');
     Route::post('/client/search', [ClientController::class, 'search'])->name('client.search');
-    Route::post('/user/search', [UserController::class, 'search'])->name('user.ajaxsearch');
+    // Route::post('/user/search', [UserController::class, 'search'])->name('user.ajaxsearch');
     Route::post('/product/search', [ProductController::class, 'search'])->name('product.search');
     Route::get('/report/{report_id}/comment', [CommentController::class, 'show'])->name('comment.show');
     Route::post('/report/{report_id}/comment', [CommentController::class, 'store'])->name('comment.store');
@@ -154,7 +154,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/get-split-types/{productTypeId}', [ProductController::class, 'getSplitTypes'])->name('product.getSplitTypes');
 
     Route::get('/clientcorporations/export', [ClientCorporationController::class, 'exportCsv'])->name('clientcorporations.export');
-    Route::get('/clientcorporations/download/{filename}', [ClientCorporationController::class, 'downloadCsv'])->name('clientcorporations.download');
+    // Route::get('/clientcorporations/download/{filename}', [ClientCorporationController::class, 'downloadCsv'])->name('clientcorporations.download');
+
+    Route::get('/clientcorporations/download-csv', [ClientCorporationController::class, 'downloadCsv'])->name('clientcorporations.downloadCsv');
 
 });
 

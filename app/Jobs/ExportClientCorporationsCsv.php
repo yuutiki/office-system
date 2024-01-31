@@ -31,6 +31,7 @@ class ExportClientCorporationsCsv implements ShouldQueue
      */
     public function handle(): string
     {
+        \Log::info('ジョブが実行されました。');
         $clientCorporations = ClientCorporation::filter($this->filters)
             ->withCount('clients')
             ->sortable()
@@ -38,6 +39,8 @@ class ExportClientCorporationsCsv implements ShouldQueue
 
         // 生成されたファイル名
         $csvFileName = 'clientcorporations_' . now()->format('YmdHis') . '.csv';
+
+        dd('$csvFileName'); // この行を追加してジョブがどこまで実行されているか確認
 
         // CSVヘッダーの動的生成
         $csvFileContent = $this->generateCsvHeader(ClientCorporation::class);

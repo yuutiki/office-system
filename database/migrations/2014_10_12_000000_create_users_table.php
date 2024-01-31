@@ -29,6 +29,8 @@ return new class extends Migration
             $table->foreignId('department_id')->comment('事業部ID'); 
             $table->foreignId('affiliation3_id')->comment('第三所属階層ID'); 
             $table->string('profile_image')->nullable(true)->default('default.png')->comment('プロフ画像');
+            $table->foreignId('created_by')->nullable(true)->comment('作成者');
+            $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->datetimes();
         });
     }

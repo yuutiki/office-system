@@ -188,4 +188,9 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+
+    // 'pagination' => [
+    //     'default' => 50, // デフォルトのページサイズ
+    // ],
+
 ];

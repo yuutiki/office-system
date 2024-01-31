@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;//add
+use App\Observers\GlobalObserver;
 
 class Report extends Model
 {
@@ -15,6 +16,14 @@ class Report extends Model
         'report_title' => 'required|max:255',
         'report_content' => 'required',
     ];
+
+    //GlobalObserverに定義されている作成者と更新者を登録するメソッド
+    //なお、値を更新せずにupdateをかけても更新者は更新されない。
+    protected static function boot()
+    {
+        parent::boot();
+        self::observe(GlobalObserver::class);
+    }
 
     // 報告に関連する報告者（投稿者）のリレーションok
     public function reporter()

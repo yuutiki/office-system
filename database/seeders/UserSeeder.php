@@ -25,6 +25,8 @@ class UserSeeder extends Seeder
             'company_id'=> 1,
             'department_id'=> 1,
             'affiliation3_id'=> 2,
+            'created_by' => 1,
+            'updated_by' => 1,
             'created_at' => now(),
             'updated_at' => now()
         ]);

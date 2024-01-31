@@ -144,11 +144,9 @@ class ClientPersonController extends Controller
     return redirect()->back()->with('success', '正常に更新しました');
     }
 
-    public function destroy(string $id)
+    public function destroy(ClientPerson $clientPerson)
     {
-        $clientPerson = ClientPerson::find($id);
         $clientPerson->delete();
-
         return redirect()->route('client-person.index')->with('success', '正常に削除しました');
     }
 }

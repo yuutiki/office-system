@@ -10,6 +10,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Validation\Rule as ValidationRule;
 use Laravel\Sanctum\HasApiTokens;
 use Kyslik\ColumnSortable\Sortable;//add
+use App\Observers\GlobalObserver;
+
 
 
 class User extends Authenticatable
@@ -61,13 +63,6 @@ class User extends Authenticatable
         'last_login_at'
     ];
 
-    // public static $rules = [
-    //     'company_id' => 'required',
-    //     'department_id' => 'required',
-    //     'affiliation3_id' => 'required',
-    //     'int_phone' => 'size:3',
-    // ];
-
     public static function rules($id)
     {
         return [
@@ -84,6 +79,15 @@ class User extends Authenticatable
     public static $uploadRules = [
         'csv_input' => 'required|file|mimes:csv,txt',
     ];
+
+    //GlobalObserverに定義されている作成者と更新者を登録するメソッド
+    //なお、値を更新せずにupdateをかけても更新者は更新されない。
+    protected static function boot()
+    {
+        parent::boot();
+
+        self::observe(GlobalObserver::class);
+    }
 
     
 

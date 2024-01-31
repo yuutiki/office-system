@@ -326,4 +326,19 @@ class UserController extends Controller
     //     return $query->paginate($per_page);
 
     // }
+
+    public function searchUsers(Request $request)
+    {
+        $term = $request->input('q'); // Select2からの検索クエリ
+
+        // 検索クエリがない場合は全てのユーザーを取得
+        if (empty($term)) {
+            $users = User::all();
+        } else {
+            // もし検索クエリがある場合は、部分一致でユーザーを検索
+            $users = User::where('name', 'like', '%' . $term . '%')->get();
+        }
+    
+        return response()->json($users);
+    }
 }
