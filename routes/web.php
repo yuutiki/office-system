@@ -120,7 +120,7 @@ Route::middleware('auth')->group(function () {
 
 
     // Route::resource('/comment', '\App\Http\Controllers\CommentController');
-    Route::post('/search-users', [UserController::class, 'searchUsers']);
+    Route::get('/search-users', [UserController::class, 'searchUsers']);
     Route::post('/clientcorporation/search', [ClientCorporationController::class, 'search'])->name('clientcorporation.search');
     Route::post('/client/search', [ClientController::class, 'search'])->name('client.search');
     // Route::post('/user/search', [UserController::class, 'search'])->name('user.ajaxsearch');

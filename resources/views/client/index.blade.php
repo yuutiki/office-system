@@ -45,7 +45,7 @@
                             </select>
                         </div>
                         <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-                            <select name="user_id" id="user_id" class="select2-ajax block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <select name="user_id" id="user_id" class="select2-ajax custom-select block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option value="">営業担当</option>
                                 @foreach ($salesUsers as $salesUser)
                                 <option value="{{ $salesUser->id }}" @if ((empty($salesUserId) && Auth::id() == $salesUser->id) || (!empty($salesUserId) && $salesUserId == $salesUser->id)) selected @endif>
@@ -60,46 +60,83 @@
                                 // select2を適用
                                 $('#user_id').select2({
                                     ajax: {
-                                        url: '/search-users', // ユーザーの検索エンドポイントのURLに変更する必要があります
+                                        url: '/search-users',
                                         dataType: 'json',
                                         delay: 250,
-                                        // processResults: function (data) {
-                                        //     return {
-                                        //         results: data
-                                        //     };
-                                        // },
+                                        processResults: function (response) {
+                                            let options = [];
+                        
+                                            response.forEach((user) => {
+                                                options.push({
+                                                    id: user.id,
+                                                    text: user.name
+                                                });
+                                            });
+                        
+                                            // 担当者全てのオプションを追加
+                                            options.unshift({
+                                                id: '',
+                                                text: '担当者全て'
+                                            });
+                        
+                                            return {
+                                                results: options
+                                            };
+                                        },
                                         cache: true
-                                        // processResults(response) {  // データをselect2向けに加工
-
-                                        //     let options = [];
-
-                                        //     response.data.forEach((user) => {
-
-                                        //         options.push({
-                                        //             id: user.id,
-                                        //             text: user.name
-                                        //         });
-
-                                        //     });
-
-                                        //     return {
-                                        //         results: options,
-                                        //         pagination: {
-                                        //             more: (response.next_page_url !== null)  // 次ページがあるかどうか
-                                        //         }
-                                        //     };
-
-                                        // }
                                     },
-                                    minimumInputLength: 1,
+                                    minimumInputLength: 0,
                                     placeholder: '営業担当を選択',
-                                    language: 'ja', // 日本語化
+                                    language: 'ja',
                                     escapeMarkup: function (markup) {
                                         return markup;
                                     }
                                 });
+                        
+                                // ドロップダウンが表示された時に検索欄にフォーカスを当てる
+                                $('#user_id').on('select2:open', function () {
+                                    $(this).data('select2').$dropdown.find(':input.select2-search__field').focus();
+                                });
                             });
                         </script>
+                        <style>
+                            .select2-selection__rendered {
+                                font-size: 14px;
+                                height: 30px;
+                                line-height: 28px !important;
+                                border-radius: 4px !important;
+                                padding: 4px;
+                                width: 100%;
+                                color: #f8fafc !important; 
+
+                            }
+                            .select2-container .select2-selection--single {
+                                height: 37px !important;
+                                background-color: #374151  !important; /* bg-gray-50 の色 */
+                                border-color: rgb(75 85 99) !important;
+
+                            }
+                            .select2-selection__arrow {
+                                height: 31px !important;
+                            }
+                        
+                            .select2-results__options {
+                                font-size: 14px;
+                            }
+
+                            .custom-select {
+                                width: 100%  !important;
+                                padding: 2px  !important;
+                                padding-left: 4px  !important;
+                                font-size: 0.875rem  !important; /* text-sm のサイズ */
+                                color: #333  !important; /* text-gray-900 の色 */
+                                border: 1px solid #d2d6dc  !important; /* border-gray-300 の色 */
+                                border-radius: 0.375rem  !important; /* rounded のサイズ */
+                                background-color: #f8fafc  !important; /* bg-gray-50 の色 */
+                                focus:ring-blue-500  !important;
+                                focus:border-blue-500  !important;
+                            }
+                        </style>
 
                         <div class="flex mt-2 md:mt-0">
                             <div class="w-full md:ml-2">
