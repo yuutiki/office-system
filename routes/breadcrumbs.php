@@ -66,7 +66,7 @@ Breadcrumbs::for('dashboard', function ($trail) {
         // ダッシュボード > ユーザ一覧
         Breadcrumbs::for('users', function ($trail) {
             $trail->parent('dashboard');
-            $trail->push('ユーザ一覧', url('users'));
+            $trail->push('ユーザ一覧', url('user'));
         });
 
         // ダッシュボード > サポート一覧

@@ -52,7 +52,7 @@
                     <div>
                         <div class="w-full flex flex-col">
                             <label for="last_name" class="font-semibold dark:text-red-300 text-red-700 leading-none md:mt-4">姓</label>
-                            <input type="text" name="last_name" id="last_name" value="{{old('last_name')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="" required>
+                            <input type="text" name="last_name" id="last_name" value="{{old('last_name')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="">
                         </div>
                         @error('last_name')
                             <div class="text-red-500">{{$message}}</div>
@@ -61,7 +61,7 @@
                     <div>
                         <div class="w-full flex flex-col">
                             <label for="first_name" class="font-semibold dark:text-red-300 text-red-700 leading-none md:mt-4">名</label>
-                            <input type="text" name="first_name" id="first_name" value="{{old('first_name')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="" required>
+                            <input type="text" name="first_name" id="first_name" value="{{old('first_name')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="">
                         </div>
                         @error('first_name')
                             <div class="text-red-500">{{$message}}</div>
@@ -70,7 +70,7 @@
                     <div>
                         <div class="w-full flex flex-col">
                             <label for="last_name_kana" class="font-semibold dark:text-red-300 text-red-700 leading-none">カナ姓</label>
-                            <input type="text" name="last_name_kana" id="last_name_kana" value="{{old('last_name_kana')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="" required>
+                            <input type="text" name="last_name_kana" id="last_name_kana" value="{{old('last_name_kana')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="">
                         </div>
                         @error('last_name_kana')
                             <div class="text-red-500">{{$message}}</div>
@@ -79,7 +79,7 @@
                     <div>
                         <div class="w-full flex flex-col">
                             <label for="first_name_kana" class="font-semibold dark:text-red-300 text-red-700 leading-none">カナ名</label>
-                            <input type="text" name="first_name_kana" id="first_name_kana" value="{{old('first_name_kana')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="" required>
+                            <input type="text" name="first_name_kana" id="first_name_kana" value="{{old('first_name_kana')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="">
                         </div>
                         @error('first_name_kana')
                             <div class="text-red-500">{{$message}}</div>

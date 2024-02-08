@@ -329,16 +329,31 @@ class UserController extends Controller
 
     public function searchUsers(Request $request)
     {
-        $term = $request->input('q'); // Select2からの検索クエリ
+        // $term = $request->input('q'); // Select2からの検索クエリ
 
-        // 検索クエリがない場合は全てのユーザーを取得
-        if (empty($term)) {
-            $users = User::all();
-        } else {
-            // もし検索クエリがある場合は、部分一致でユーザーを検索
-            $users = User::where('name', 'like', '%' . $term . '%')->get();
-        }
+        // // 検索クエリがない場合は全てのユーザーを取得
+        // if (empty($term)) {
+        //     $users = User::all();
+        // } else {
+        //     // もし検索クエリがある場合は、部分一致でユーザーを検索
+        //     $users = User::where('name', 'like', '%' . $term . '%')->get();
+        // }
     
+        // return response()->json($users);
+
+        $query = $request->input('query');
+        $companyId = $request->input('company_id');
+        $departmentId = $request->input('department_id');
+        $affiliation3Id = $request->input('affiliation3_id');
+
+
+        $users = User::where('name', 'like', '%' . $query . '%')
+        ->where('company_id', 'like', '%' . $companyId . '%')
+        ->where('department_id', 'like', '%' . $departmentId . '%')
+        ->where('affiliation3_id', 'like', '%' . $affiliation3Id . '%')
+        ->where('employee_status_id', 1) // 退職者を除外する条件を追加
+        ->get();
+        // 検索結果をJSON形式で返す
         return response()->json($users);
     }
 }

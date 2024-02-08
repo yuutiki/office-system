@@ -193,7 +193,7 @@
                         <select id="head_prefecture" name="head_prefecture" class="focus:ring-2 w-full py-1.5 text-sm mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option selected value="">未選択</option>
                             @foreach($prefectures as $prefecture)
-                                <option value="{{ $prefecture->id }}" @if( $prefecture->id == old('head_prefecture', $clientPerson->head_prefecture) ) selected @endif>{{ $prefecture->prefecture_code }}:{{ $prefecture->prefecture_name }}</option>
+                                <option value="{{ $prefecture->id }}" @if( $prefecture->id == old('head_prefecture', $clientPerson->prefecture_id) ) selected @endif>{{ $prefecture->prefecture_code }}:{{ $prefecture->prefecture_name }}</option>
                             @endforeach
                         </select>
                     </div>

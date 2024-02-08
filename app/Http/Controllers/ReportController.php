@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Affiliation3;
 use App\Models\Report;
 use App\Models\User;//add
 use App\Models\Client;//add
 use App\Models\Comment;//add
+use App\Models\Company;
 use App\Models\ContactType;
 use App\Models\Department;
 use App\Models\ReportType;
@@ -42,13 +44,16 @@ class ReportController extends Controller
         $departments = Department::all();
         $reportTypes = ReportType::all();
         $contactTypes = ContactType::all();
-        $users = User::all();
+        $users = User::where('employee_status_id', 1)->get();
+        $companies = Company::all();
+        $departments = Department::all();
+        $affiliation3s = Affiliation3::all();
 
         $clientNum = Session::get('selected_client_num');
         $clientName = Session::get('selected_client_name');
         // $clientId = Session::get('selected_client_id');
 
-        return view('report.create',compact('users','departments', 'reportTypes', 'contactTypes', 'clientNum', 'clientName'));
+        return view('report.create',compact('users','departments', 'reportTypes', 'contactTypes', 'clientNum', 'clientName', 'companies', 'departments', 'affiliation3s'));
     }
 
     public function store(Request $request)
@@ -96,6 +101,7 @@ class ReportController extends Controller
         // 日報を登録したユーザーに通知を送信
         $userIds = $request->input('selectedRecipientsId',[]);
         $users = User::whereIn('id', $userIds)->get();
+
 
         // 通知の作成
         $notification = new AppNotification($report, $notificationData); // $report を通知データとして渡す
@@ -192,4 +198,37 @@ class ReportController extends Controller
         // 例えば、報告先が登録された後にユーザー詳細ページにリダイレクトする
         return redirect()->route('user.show', ['user' => $userId]);
     }
+
+
+    // public function search(Request $request)
+    // {
+    //     $query = $request->input('query');
+        
+    //     // ユーザ名、所属1、所属2、所属3のいずれかに検索クエリがマッチするユーザを取得
+    //     $users = User::where('name', 'like', '%' . $query . '%')
+    //                  ->orWhere('company_id', 'like', '%' . $query . '%')
+    //                  ->orWhere('department_id', 'like', '%' . $query . '%')
+    //                  ->orWhere('affiliation3_id', 'like', '%' . $query . '%')
+    //                  ->get();
+                     
+    //     return view('partials.user_search_results', ['users' => $users]);
+    // }
+
+    // ユーザを検索して検索結果を返す
+    public function searchUsers(Request $request)
+    {
+        $query = $request->input('query');
+        $users = User::where('name', 'like', '%' . $query . '%')->get();
+        // 検索結果をJSON形式で返す
+        return response()->json($users);
+    }
+
+    // // 選択されたユーザを受け取り、ビューに返す（Ajaxで呼ばれる）
+    // public function selectedRecipients(Request $request)
+    // {
+    //     $selectedUsers = $request->input('selectedUsers', []);
+    //     // 必要に応じて選択されたユーザを処理する（例：データベースに保存）
+    //     return response()->json(['message' => 'Success']);
+    // }
+    
 }

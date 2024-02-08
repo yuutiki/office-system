@@ -44,8 +44,8 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-                            <select name="user_id" id="user_id" class="select2-ajax custom-select block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        {{-- <div class="relative w-full mt-2 md:ml-2 md:mt-0">
+                            <select name="" id="user_id" class="select2-ajax block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option value="">営業担当</option>
                                 @foreach ($salesUsers as $salesUser)
                                 <option value="{{ $salesUser->id }}" @if ((empty($salesUserId) && Auth::id() == $salesUser->id) || (!empty($salesUserId) && $salesUserId == $salesUser->id)) selected @endif>
@@ -53,9 +53,9 @@
                                 </option>
                                 @endforeach
                             </select>
-                        </div>
+                        </div> --}}
 
-                        <script>
+                        {{-- <script>
                             $(document).ready(function () {
                                 // select2を適用
                                 $('#user_id').select2({
@@ -136,7 +136,221 @@
                                 focus:ring-blue-500  !important;
                                 focus:border-blue-500  !important;
                             }
-                        </style>
+                        </style> --}}
+
+
+                        <div class="relative w-full mt-2 md:ml-2 md:mt-0">
+
+<div class="custom-select" id="customSelect">
+    <input type="text" placeholder="営業担当" autocomplete="off" id="searchInput" name="" value="{{ $salesUserId }}" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    <ul id="optionsList" class="z-50 overflow-y-auto dark:bg-gray-700 text-white text-sm h-40 whitespace-nowrap"></ul>
+    <input type="hidden" name="user_id" id="selectedUserId">
+</div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var selectContainer = document.getElementById("customSelect");
+        var searchInput = document.getElementById("searchInput");
+        var optionsList = document.getElementById("optionsList");
+        var selectedUserIdInput = document.getElementById("selectedUserId");
+        var highlightedOption = null;
+
+        // カスタムセレクトボックスの表示・非表示
+        selectContainer.addEventListener("click", function () {
+            optionsList.style.display = (optionsList.style.display === "block") ? "none" : "block";
+            searchInput.focus();
+        });
+
+        // 選択肢がクリックされたときの処理
+        optionsList.addEventListener("click", function (event) {
+            // 選択肢がクリックされたら選択肢を非表示にする
+            optionsList.style.display = "none";
+        });
+
+        document.addEventListener("click", function (event) {
+        var selectContainer = document.getElementById("customSelect");
+        var optionsList = document.getElementById("optionsList");
+
+        // クリックされた要素がカスタムセレクトボックス内かどうかを確認
+        var isInsideSelect = event.target.closest("#customSelect");
+
+        if (!isInsideSelect) {
+            // カスタムセレクトボックス外がクリックされた場合は選択肢を非表示にする
+            optionsList.style.display = "none";
+        }
+    });
+
+        // 検索欄の入力に応じてオプションを絞り込む
+        searchInput.addEventListener("input", function () {
+            var searchTerm = searchInput.value.toLowerCase();
+            filterOptions(searchTerm);
+        });
+
+        // キーボードでのオプションの選択
+        searchInput.addEventListener("keydown", function (event) {
+            switch (event.key) {
+                case "ArrowDown":
+                    event.preventDefault();
+                    highlightNextOption();
+                    break;
+                case "ArrowUp":
+                    event.preventDefault();
+                    highlightPreviousOption();
+                    break;
+                case "Enter":
+                    event.preventDefault();
+                    selectHighlightedOption();
+                    break;
+            }
+        });
+
+        // Ajaxを使用して選択肢を取得
+        fetch('/search-users')
+            .then(response => response.json())
+            .then(data => {
+                // 取得したデータをセレクトボックスに追加
+                populateOptions(data);
+            })
+            .catch(error => console.error('Error fetching data:', error));
+
+        // オプションを絞り込む関数
+        function filterOptions(searchTerm) {
+            Array.from(optionsList.children).forEach(function (option) {
+                var optionText = option.innerText.toLowerCase();
+                option.style.display = optionText.includes(searchTerm) ? "block" : "none";
+            });
+            highlightedOption = null; // 絞り込み時にハイライトをリセット
+        }
+
+        // オプションをセレクトボックスに追加する関数
+        function populateOptions(options) {
+            options.forEach(function (option, index) {
+                var li = document.createElement("li");
+                li.textContent = option.name; // ここで適切なプロパティを指定
+                li.dataset.value = option.id; // ここで適切なプロパティを指定
+                li.addEventListener("click", function () {
+                    searchInput.value = option.name; // 選択されたオプションの名前をセット
+                    selectedUserIdInput.value = option.id; // hidden inputに選択されたオプションのidをセット
+
+                    // Ajaxリクエストでサーバーに選択されたオプションのidを送信
+                    sendSelectedOption(option.id);
+
+                    optionsList.style.display = "none";
+                });
+
+                li.addEventListener("mouseenter", function () {
+                    highlightedOption = index;
+                    highlightOption();
+                });
+
+                optionsList.appendChild(li);
+            });
+        }
+
+        // オプションをハイライトする関数
+        function highlightOption() {
+            Array.from(optionsList.children).forEach(function (option, index) {
+                if (index === highlightedOption) {
+                    option.classList.add("highlighted");
+                } else {
+                    option.classList.remove("highlighted");
+                }
+            });
+        }
+
+        // 次のオプションをハイライトする関数
+        function highlightNextOption() {
+            highlightedOption = (highlightedOption === null || highlightedOption === optionsList.children.length - 1) ? 0 : highlightedOption + 1;
+            highlightOption();
+        }
+
+        // 前のオプションをハイライトする関数
+        function highlightPreviousOption() {
+            highlightedOption = (highlightedOption === null || highlightedOption === 0) ? optionsList.children.length - 1 : highlightedOption - 1;
+            highlightOption();
+        }
+
+        // ハイライトされているオプションを選択する関数
+        function selectHighlightedOption() {
+            if (highlightedOption !== null) {
+                var selectedOption = optionsList.children[highlightedOption];
+                searchInput.value = selectedOption.innerText;
+                selectedUserIdInput.value = selectedOption.dataset.value;
+
+                // Ajaxリクエストでサーバーに選択されたオプションのidを送信
+                sendSelectedOption(selectedOption.dataset.value);
+
+                optionsList.style.display = "none";
+            }
+        }
+
+        // 選択されたオプションのidをサーバーに送信する関数
+        function sendSelectedOption(selectedId) {
+            // ここでAjaxリクエストを作成してサーバーに選択されたオプションのidを送信
+            // 例えば、fetchやXMLHttpRequestを使用してサーバーに送信できます
+            console.log("Sending selected option id to server:", selectedId);
+        }
+
+        // フォームのサブミット時に選択されたオプションをコンソールに表示
+        document.getElementById("myForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            console.log("Form submitted. Selected option id:", selectedUserIdInput.value);
+            // ここでフォームを実際にサブミットするか、別途処理を追加することができます
+        });
+    });
+</script>
+<style>
+    /* スタイルの定義 */
+    .custom-select {
+        position: relative;
+        display: inline-block;
+        width: 200px;
+        /* padding: 10px; */
+        /* border: 1px solid #ccc; */
+        /* border-radius: 5px; */
+        cursor: pointer;
+        /* background-color: #fff; */
+    }
+
+    /* .custom-select input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 5px;
+    } */
+
+    .custom-select ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-top: none;
+        border-radius: 0 0 5px 5px;
+        display: none;
+    }
+
+    .custom-select li {
+        padding: 4px;
+        cursor: pointer;
+    }
+
+    .custom-select li:hover {
+        background-color: blue;
+    }
+</style>
+
+
+
+
+
+
+
 
                         <div class="flex mt-2 md:mt-0">
                             <div class="w-full md:ml-2">

@@ -30,8 +30,8 @@ class ClientPersonController extends Controller
     {
         ////以下にFormRequestのバリデーションを通過した場合の処理を記述////
         $request->validate([
-            'tel1' => 'required',
-            'last_name' => 'required'
+            // 'tel1' => 'required',
+            // 'last_name' => 'required'
         ]);
 
         $inputPost = $request->head_post_code;
@@ -95,8 +95,8 @@ class ClientPersonController extends Controller
     {
             // FormRequestのバリデーションを通過した場合の処理を記述
     $request->validate([
-        'tel1' => 'required',
-        'last_name' => 'required'
+        // 'tel1' => 'required',
+        // 'last_name' => 'required'
     ]);
 
     $inputPost = $request->head_post_code;

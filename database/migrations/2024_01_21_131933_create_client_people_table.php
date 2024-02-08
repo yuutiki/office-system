@@ -35,6 +35,8 @@ return new class extends Migration
             $table->boolean('is_closing_info_receiver')->default(0)->comment('休業案内フラグ');
             $table->boolean('is_exhibition_info_receiver')->default(0)->comment('展示会案内フラグ');
             $table->boolean('is_cloud_info_receiver')->default(0)->comment('クラウド会案内フラグ');
+            $table->foreignId('created_by')->nullable(true)->comment('作成者');
+            $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->datetimes();
         });
     }
