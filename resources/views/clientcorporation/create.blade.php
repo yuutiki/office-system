@@ -16,21 +16,21 @@
                 @csrf
                 <div class="w-full flex flex-col">
                     <label for="clientcorporation_name" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">法人正式名称</label>
-                    <input type="text" name="clientcorporation_name" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="clientcorporation_name" value="{{old('clientcorporation_name')}}" placeholder="学校法人 烏丸学園">
+                    <input type="text" name="clientcorporation_name" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="clientcorporation_name" value="{{old('clientcorporation_name')}}" placeholder="学校法人 烏丸学園">
                 </div>
                 @error('clientcorporation_name')
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
                 <div class="w-full flex flex-col">
                     <label for="clientcorporation_kana_name" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">法人正式カナ名称</label>
-                    <input type="text" name="clientcorporation_kana_name" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="clientcorporation_kana_name" value="{{old('clientcorporation_kana_name')}}" placeholder="ガッコウホウジン カラスマガクエン">
+                    <input type="text" name="clientcorporation_kana_name" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="clientcorporation_kana_name" value="{{old('clientcorporation_kana_name')}}" placeholder="ガッコウホウジン カラスマガクエン">
                 </div>
                 @error('clientcorporation_kana_name')
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
                 <div class="w-full flex flex-col">
                     <label for="clientcorporation_short_name" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">法人略称</label>
-                    <input type="text" name="clientcorporation_short_name" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="clientcorporation_short_name" value="{{old('clientcorporation_short_name')}}" placeholder="烏丸学園">
+                    <input type="text" name="clientcorporation_short_name" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="clientcorporation_short_name" value="{{old('clientcorporation_short_name')}}" placeholder="烏丸学園">
                 </div>
                 @error('clientcorporation_short_name')
                     <div class="text-red-500">{{$message}}</div>
@@ -49,14 +49,14 @@
                 </div> --}}
                 <div class="w-full flex flex-col">
                     <label for="credit_limit" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">与信限度額</label>
-                    <input type="text" onblur="formatNumberInput(this);" name="credit_limit" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="credit_limit" value="{{old('credit_limit',0)}}" placeholder="">
+                    <input type="text" onblur="formatNumberInput(this);" name="credit_limit" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="credit_limit" value="{{old('credit_limit',0)}}" placeholder="">
                 </div>
                 @error('credit_limit')
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
                 <div class="w-full flex flex-col">
                     <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">備考</label>
-                    <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="memo" data-auto-resize="true"  cols="30" rows="5" placeholder="法人に関するメモ...">{{old('memo')}}</textarea>
+                    <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="memo" data-auto-resize="true"  cols="30" rows="5" placeholder="法人に関するメモ...">{{old('memo')}}</textarea>
                 </div>
                 @error('memo')
                     <div class="text-red-500">{{$message}}</div>

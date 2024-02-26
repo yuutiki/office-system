@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
-            $table->string('client_num',10)->unique()->comment('顧客番号');
+            $table->string('client_num',12)->unique()->comment('顧客番号');
             $table->string('client_name',255)->comment('顧客名称');
             $table->string('client_kana_name',255)->comment('顧客カナ名称');
             $table->foreignId('department_id')->comment('管轄事業部ID');//Departmentテーブル参照

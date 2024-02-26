@@ -96,7 +96,7 @@ class Client extends Model
             $newSerialNumber = '01';
         }
 
-        return "$clientcorporationNum-$suffix$newSerialNumber";
+        return "$clientcorporationNum-C-$suffix$newSerialNumber";
     }
 
     // public static function generateClientNumber($clientcorporationId)

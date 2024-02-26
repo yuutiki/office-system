@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
+            <h2 class="font-medium text-xl text-gray-900 dark:text-white">
                 営業報告登録
             </h2>
             <div class="flex justify-end">
@@ -20,20 +20,22 @@
         <div class="mx-4 sm:p-8">
             <form id="reoportForm" method="post" action="{{route('report.store')}}" enctype="multipart/form-data">
                 @csrf
-
-                <!-- 顧客検索ボタン -->
                 <button type="button"  onclick="showModal()" class="md:ml-1 md:mt-1 mt-1 mb-2 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     顧客検索
                 </button>
 
                 <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                    {{-- <div class="">
+                        <label for="client_num" class="block font-medium dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客番号</label>
+                        <input type="text" name="client_num" id="client_num" value="{{$clientNum}}" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" placeholder="顧客検索してください" readonly>
+                    </div> --}}
                     <div class="">
-                        <label for="client_num" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客番号</label>
-                        <input type="text" name="client_num" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" id="client_num" value="{{$clientNum}}" placeholder="顧客検索してください" readonly>
-                    </div>     
+                        <label for="client_num" class="block font-medium dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客番号<span class="text-red-500">*</span></label>
+                        <input type="text" name="client_num" id="client_num" value="{{$clientNum}}" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" placeholder="顧客検索してください" readonly>
+                    </div>
                     <div class="">
-                        <label for="client_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客名称</label>
-                        <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" id="client_name" value="{{$clientName}}" readonly>
+                        <label for="client_name" class="block font-medium dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客名称<span class="text-red-500">*</span></label>
+                        <input type="text" name="client_name" id="client_name" value="{{$clientName}}" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" readonly>
                     </div>
                 </div>
 
@@ -41,7 +43,7 @@
                 <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-2">
 
                     {{-- <div>
-                        <label for="user_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">営業担当</label>
+                        <label for="user_id" class="font-medium text-gray-900 dark:text-white leading-none mt-4">営業担当</label>
                         <select id="user_id" name="user_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option selected value="">未選択</option>
                             @foreach($users as $user)
@@ -66,72 +68,75 @@
                     <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 
                         <div class="w-full flex flex-col">
-                            <label for="report_type_id" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">報告種別</label>
+                            <label for="report_type_id" class="font-medium dark:text-gray-100 text-gray-900 leading-none mt-4">報告種別<span class="text-red-500">*</span></label>
                             <select id="report_type_id" name="report_type_id" class="block w-48 py-1 mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option value="">未選択</option>
                                 @foreach ($reportTypes as $reportType)
                                     <option value="{{ $reportType->id }}" @selected($reportType->id == old('report_type_id'))>{{ $reportType->report_type_name }}</option>
                                 @endforeach
                             </select>
+                            @error('report_type_id')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror                    
                         </div>
 
                         <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-1">
                             <div class="w-full flex flex-col">
-                                <label for="contact_at" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">対応日付</label>
+                                <label for="contact_at" class="font-medium dark:text-gray-100 text-gray-900 leading-none mt-4">対応日付<span class="text-red-500">*</span></label>
                                 <input type="date" min="2000-01-01" max="2100-12-31" name="contact_at" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 p-locality p-street-address p-extended-address" id="contact_at" value="{{ old('contact_at', now()->format('Y-m-d')) }}" placeholder="">
+                                @error('report_type_id')
+                                    <div class="text-red-500">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="w-full flex flex-col">
-                                <label for="contact_type_id" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">対応形式</label>
+                                <label for="contact_type_id" class="font-medium dark:text-gray-100 .
+                                text-gray-900 leading-none mt-4">対応形式<span class="text-red-500">*</span></label>
                                 <select id="contact_type_id" name="contact_type_id" class="w-auto py-1 mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option value="">未選択</option>
                                     @foreach ($contactTypes as $contactType)
                                         <option value="{{ $contactType->id }}" @selected($contactType->id == old('contact_type_id'))>{{ $contactType->contact_type_name }}</option>
                                     @endforeach
                                 </select>
+                                @error('report_type_id')
+                                    <div class="text-red-500">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="w-full flex flex-col">
-                                <label for="client_representative" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">顧客担当者</label>
+                                <label for="client_representative" class="font-medium dark:text-gray-100 text-gray-900 leading-none mt-4">顧客担当者</label>
                                 <input type="text" name="client_representative" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="client_representative" value="{{old('client_representative')}}" placeholder="">
                             </div>
                         </div>
 
-                        <div class="w-full flex flex-col">
-                            <label for="report_title" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">報告タイトル</label>
-                            <input type="text" name="report_title" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="report_title" value="{{old('report_title')}}" placeholder="">
+                        <div>
+                            <div class="w-full flex flex-col">
+                                <label for="report_title" class="font-medium dark:text-gray-100 text-gray-900 leading-none mt-4">報告タイトル<span class="text-red-500">*</span></label>
+                                <input type="text" name="report_title" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="report_title" value="{{old('report_title')}}" placeholder="">
+                            </div>
+                            @error('report_title')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
                         </div>
 
-                        <div class="relative mb-4 mt-4">
-                            <label for="report_content" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">報告内容</label>
-                            <textarea name="report_content" id="auto-resize-textarea-content" data-auto-resize="true" class="resize-none block w-full py-1 border focus:outline-none focus:ring focus:border-blue-300 rounded mt-1" value="{{old('report_content')}}" rows="5"></textarea>
+                       <div>
+                            <div class="relative mt-4">
+                                <label for="report_content" class="font-medium dark:text-gray-100 text-gray-900 leading-none mt-4">報告内容<span class="text-red-500">*</span></label>
+                                <textarea name="report_content" id="auto-resize-textarea-content" data-auto-resize="true" class="resize-none block w-full py-1 border focus:outline-none focus:ring focus:border-blue-300 rounded mt-1" value="{{old('report_content')}}" rows="5"></textarea>
+                            </div>
+                            @error('report_content')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
                         </div>
 
-                        <div class="relative mb-4 mt-4">
-                            <label for="report_notice" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">特記事項</label>
-                            <textarea name="report_notice" id="auto-resize-textarea-notice" data-auto-resize="true" class="resize-none  block w-full py-1 border focus:outline-none focus:ring focus:border-blue-300 rounded mt-1" value="{{old('report_notice')}}" rows="5"></textarea>
+                        <div>
+                            <div class="relative mt-4">
+                                <label for="report_notice" class="font-medium dark:text-gray-100 text-gray-900 leading-none mt-4">特記事項</label>
+                                <textarea name="report_notice" id="auto-resize-textarea-notice" data-auto-resize="true" class="resize-none  block w-full py-1 border focus:outline-none focus:ring focus:border-blue-300 rounded mt-1" value="{{old('report_notice')}}" rows="5"></textarea>
+                            </div>
+                            @error('report_notice')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
                         </div>
 
-
-
-
-                        {{-- <!-- ユーザ検索フォーム -->
-                        <input type="text" id="userSearch" class="border border-gray-300 rounded px-3 py-1 w-full mb-2" placeholder="ユーザを検索...">
-
-                        <!-- ユーザ検索結果のリスト -->
-                        <ul id="userList" class="border border-gray-300 rounded px-3 py-2 h-60 overflow-y-scroll dark:text-white">
-                            @foreach($users as $user)
-                            <li data-user-id="{{ $user->id }}">
-                                <label>
-                                    <input type="checkbox" class="mr-2"  name="selectedRecipientsId[]" value="{{ $user->id }}">
-                                    {{ $user->name }}
-                                </label>
-                            </li>
-                            @endforeach
-                        </ul>
-
-                        <!-- 選択済みユーザーのリスト -->
-                        <ul id="selectedUserList" class="border border-gray-300 rounded px-3 py-2 h-60 overflow-y-scroll dark:text-white">
-                            <!-- ここに選択済みユーザーが追加されます -->
-                        </ul> --}}
 
 <div class="mt-8">
     <span class="dark:text-white">報告先設定</span>
@@ -143,13 +148,13 @@
 
     <!-- 検索フォーム -->
     <div class="w-full flex flex-col">
-        <label for="company_id" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">氏名</label>
+        <label for="company_id" class="font-medium dark:text-gray-100 text-gray-900 leading-none mt-1">氏名</label>
         <input type="text" id="searchQuery" class="block py-1 mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="ユーザ名で検索">
     </div>
 
     <!-- 所属1選択フォーム -->
     <div class="w-full flex flex-col">
-        <label for="company_id" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">所属1</label>
+        <label for="company_id" class="font-medium dark:text-gray-100 text-gray-900 leading-none mt-1">所属1</label>
         <select id="company_id" name="company_id" class="block py-1 mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
             <option value="">未選択</option>
             @foreach ($companies as $company)
@@ -160,7 +165,7 @@
 
     <!-- 部署選択フォーム -->
     <div class="w-full flex flex-col">
-        <label for="department_id" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">所属2</label>
+        <label for="department_id" class="font-medium dark:text-gray-100 text-gray-900 leading-none mt-1">所属2</label>
         <select id="department_id" name="department_id" class="block py-1 mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
             <option value="">未選択</option>
             @foreach ($departments as $department)
@@ -171,7 +176,7 @@
 
     <!-- 所属3選択フォーム -->
     <div class="w-full flex flex-col">
-        <label for="affiliation3_id" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">所属3</label>
+        <label for="affiliation3_id" class="font-medium dark:text-gray-100 text-gray-900 leading-none mt-1">所属3</label>
         <select id="affiliation3_id" name="affiliation3_id" class="block py-1 mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
             <option value="">未選択</option>
             @foreach ($affiliation3s as $affiliation3)
@@ -246,15 +251,15 @@
                     <!-- 検索条件入力フォーム -->
                     <div class="grid gap-2 mb-4 sm:grid-cols-3">
                         <div class="w-full flex flex-col mx-2">
-                            <label for="clientName" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">顧客名称</label>
+                            <label for="clientName" class="font-medium dark:text-gray-100 text-gray-900 leading-none mt-4">顧客名称</label>
                             <input type="text" name="clientName" id="clientName" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded">
                         </div>
                         <div class="w-full flex flex-col mx-2">
-                            <label for="clientNumber" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">顧客番号</label>
+                            <label for="clientNumber" class="font-medium dark:text-gray-100 text-gray-900 leading-none mt-4">顧客番号</label>
                             <input type="text" name="clientNumber" id="clientNumber" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded">
                         </div>
                         <div class="w-full flex flex-col mx-2">
-                            <label for="departmentId" class="font-semibold  dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
+                            <label for="departmentId" class="font-medium  dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
                             <select id="departmentId" name="departmentId" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 @foreach($departments as $department)
@@ -363,67 +368,6 @@
 
 
 <script>
-    // document.addEventListener("DOMContentLoaded", function() {
-    //   const userSearchInput = document.getElementById('userSearch');
-    //   const userList = document.getElementById('userList');
-    //   const selectedUserList = document.getElementById('selectedUserList');
-    //   const selectedUsers = [];
-  
-    //   userSearchInput.addEventListener('input', function() {
-    //     const searchTerm = this.value.trim().toLowerCase();
-  
-    //     const users = userList.getElementsByTagName('li');
-    //     for (const user of users) {
-    //       const userName = user.textContent.trim().toLowerCase();
-    //       const userId = user.getAttribute('data-user-id');
-  
-    //       if (userName.includes(searchTerm) && !selectedUsers.includes(userId)) {
-    //         user.style.display = "block";
-    //       } else {
-    //         user.style.display = "none";
-    //       }
-    //     }
-    //   });
-  
-    //   userList.addEventListener('click', function(event) {
-    //     const target = event.target;
-    //     if (target.tagName === 'LI') {
-    //       const userId = target.getAttribute('data-user-id');
-    //       const userName = target.textContent.trim();
-  
-    //       if (!selectedUsers.includes(userId)) {
-    //         selectedUsers.push(userId);
-    //         target.style.display = "none";
-  
-    //         const listItem = document.createElement('li');
-    //         listItem.textContent = userName;
-    //         listItem.setAttribute('data-user-id', userId);
-    //         listItem.classList.add('selected-user');
-    //         selectedUserList.appendChild(listItem);
-    //       }
-    //     }
-    //   });
-  
-    //   selectedUserList.addEventListener('click', function(event) {
-    //     const target = event.target;
-    //     if (target.tagName === 'LI') {
-    //       const userId = target.getAttribute('data-user-id');
-    //       const userName = target.textContent.trim();
-  
-    //       const index = selectedUsers.indexOf(userId);
-    //       if (index !== -1) {
-    //         selectedUsers.splice(index, 1);
-    //         userList.querySelector(`li[data-user-id="${userId}"]`).style.display = "block";
-  
-    //         // ユーザーを右側の欄から左側の欄に戻す
-    //         selectedUserList.removeChild(target);
-    //       }
-    //     }
-    //   });
-    // });
-
-
-
     $(document).ready(function() {
         // ページ読み込み時にローカルストレージから選択されたユーザのIDを取得して隠しフィールドに設定
         var selectedUserIds = JSON.parse(localStorage.getItem('selectedUserIds')) || [];

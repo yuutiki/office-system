@@ -157,34 +157,34 @@
                             </div>
                             <div class="w-full flex flex-col">
                                 <label for="billing_corporation_name" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">請求先法人名称</label>
-                                <input type="text" name="billing_corporation_name" class="dark:bg-gray-400 w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-s rounded-e mt-1 mb-2" id="billing_corporation_name" value="{{old('billing_corporation_name')}}" disabled>
+                                <input type="text" name="billing_corporation_name" class="dark:bg-gray-400 w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-s rounded-e mt-1 mb-2" id="billing_corporation_name" value="{{old('billing_corporation_name')}}" readonly>
                             </div>
                         </div>
                         <div class="grid gap-2 mb-4 sm:grid-cols-5">
                             <div class="w-full flex flex-col">
                                 <label for="proposed_order_date" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-2">受注予定月</label>
-                                <input type="month" min="1900-01" max="2100-12" name="proposed_order_date" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-s rounded-e mt-1">
+                                <input type="month" min="1900-01" max="2100-12" name="proposed_order_date" value="{{ old('proposed_order_date') }}" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-s rounded-e mt-1">
                             </div>
                             @error('proposed_order_date')
                                 <div class="text-red-500">{{ $message }}</div>
                             @enderror
                             <div class="w-full flex flex-col">
                                 <label for="proposed_delivery_date" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-2">納品予定月</label>
-                                <input type="month" min="1900-01" max="2100-12"  name="proposed_delivery_date" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-s rounded-e mt-1">
+                                <input type="month" min="1900-01" max="2100-12" name="proposed_delivery_date" value="{{ old('proposed_delivery_date') }}" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-s rounded-e mt-1">
                             </div>
                             @error('proposed_delivery_date')
                                 <div class="text-red-500">{{ $message }}</div>
                             @enderror
                             <div class="w-full flex flex-col">
                                 <label for="proposed_accounting_date" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-2">検収/計上予定月</label>
-                                <input type="month" min="1900-01" max="2100-12"  name="proposed_accounting_date" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-s rounded-e mt-1">
+                                <input type="month" min="1900-01" max="2100-12"  name="proposed_accounting_date" value="{{ old('proposed_accounting_date') }}" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-s rounded-e mt-1">
                             </div>
                             @error('proposed_accounting_date')
                                 <div class="text-red-500">{{ $message }}</div>
                             @enderror
                             <div class="w-full flex flex-col">
                                 <label for="proposed_payment_date" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-2">入金予定月</label>
-                                <input type="month" min="1900-01" max="2100-12"  name="proposed_payment_date" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-s rounded-e mt-1">
+                                <input type="month" min="1900-01" max="2100-12"  name="proposed_payment_date" value="{{ old('proposed_payment_date') }}" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-s rounded-e mt-1">
                             </div>
                             @error('proposed_payment_date')
                                 <div class="text-red-500">{{ $message }}</div>
@@ -192,7 +192,7 @@
                         </div>
                         <div class="w-full flex flex-col">
                             <label for="project_memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">プロジェクト備考</label>
-                            <textarea name="project_memo" class="w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 placeholder-gray-400"data-auto-resize="true" data-auto-resize="true" id="project_memo" value="{{old('project_memo')}}" cols="30" rows="5"></textarea>
+                            <textarea name="project_memo" class="w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 placeholder-gray-400"data-auto-resize="true" data-auto-resize="true" id="project_memo" cols="30" rows="5">{{old('project_memo')}}</textarea>
                             @error('project_memo')
                                 <div class="text-red-500">{{ $message }}</div>
                             @enderror

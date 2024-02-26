@@ -126,7 +126,7 @@
 <nav X-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
 
 {{-- デスクトップ画面用 --}}
-<div id="accordion-collapse" data-accordion="collapse" class="fixed mt-10 pt-4 dark:bg-gray-800 bg-gray-100 h-screen w-12 overflow-x-hidden hover:w-52 whitespace-nowrap transition-all duration-500 ease-in-out z-40  invisible lg:visible border-r border-gray-200 dark:border-gray-700">
+<div id="accordion-collapse" data-accordion="collapse" class="fixed mt-10 pt-4 dark:bg-gray-800 bg-gray-100 h-screen w-12 overflow-x-hidden hover:w-52 whitespace-nowrap transition-all duration-500 ease-in-out z-40 invisible md:visible border-r border-gray-200 dark:border-gray-700">
 
         <div class="py-4 pl-2">
         <ul class="space-y-2 font-medium">
@@ -158,8 +158,18 @@
                         </x-nav-link>
                     </li>
                     <li>
+                        <x-nav-link :href="route('client.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('業者一覧') }}</span>
+                        </x-nav-link>
+                    </li>
+                    <li>
                         <x-nav-link :href="route('client-person.index')" :active="request()->routeIs('client-person.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('担当者一覧') }}</span>
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('顧客担当者一覧') }}</span>
+                        </x-nav-link>
+                    </li>
+                    <li>
+                        <x-nav-link :href="route('client-person.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('業者担当者一覧') }}</span>
                         </x-nav-link>
                     </li>
                 </ul>

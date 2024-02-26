@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Report\ReportStoreRequest;
 use App\Models\Affiliation3;
 use App\Models\Report;
 use App\Models\User;//add
@@ -56,7 +57,7 @@ class ReportController extends Controller
         return view('report.create',compact('users','departments', 'reportTypes', 'contactTypes', 'clientNum', 'clientName', 'companies', 'departments', 'affiliation3s'));
     }
 
-    public function store(Request $request)
+    public function store(ReportStoreRequest $request)
     {
         // $rules = [
         //     'title' => 'required|max:255',

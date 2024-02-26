@@ -16,12 +16,15 @@ use Illuminate\Support\Facades\Validator;
 // use Goodby\CSV\Import\Standard\InterpreterConfig;
 use Illuminate\Support\Facades\Response;
 use App\Jobs\ExportClientCorporationsCsv;
-
+use Illuminate\Support\Facades\Session;
 
 class ClientCorporationController extends Controller
 {
     public function index(Request $request)//検索用にrequestを受取る
-    {
+        {
+        // 検索条件を取得してセッションに保存
+        Session::put('search_params', $request->all());
+
         $perPage = 100; // １ページごとの表示件数
 
         // 検索フォームから検索条件を取得し変数に格納
@@ -86,9 +89,13 @@ class ClientCorporationController extends Controller
         }
     }
 
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
         try {
+
+        // 検索条件を取得
+        $searchParams = $request->session()->get('search_params', []);
+        
             // 子データが存在するか確認
             $clientCorporation = ClientCorporation::with('clients')->findOrFail($id);
     
@@ -98,8 +105,12 @@ class ClientCorporationController extends Controller
             }
     
             // 子データが存在しない場合は削除を実行
-            $clientCorporation->delete();
-            return redirect()->back()->with('success', '正常に削除されました');
+            // $clientCorporation->delete();
+            // return redirect()->back()->with('success', '正常に削除されました');
+
+        // 子データが存在しない場合は削除を実行
+        $clientCorporation->delete();
+        return redirect()->route('clientcorporation.index', $searchParams)->with('success', '正常に削除されました');            
 
         } catch (ModelNotFoundException $e) {
             return redirect()->back()->with('error', '対象のデータが見つかりませんでした');

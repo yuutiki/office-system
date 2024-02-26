@@ -254,6 +254,7 @@ class ClientController extends Controller
         $clientName = $request->input('clientName');
         $clientNumber = $request->input('clientNumber');
         $clientDepartment = $request->input('departmentId');
+        $isDealer = $request->input('isDealer');
 
         // 検索条件に基づいて顧客データを取得
         // $clients = Client::where('client_name', 'LIKE', '%' . $clientName . '%')
@@ -263,7 +264,8 @@ class ClientController extends Controller
         $query = Client::query()
         ->where('client_name', 'LIKE', '%' . $clientName . '%')
         ->Where('client_num', 'LIKE', '%' . $clientNumber . '%')
-        ->Where('department_id', 'LIKE', '%' . $clientDepartment . '%');
+        ->Where('department_id', 'LIKE', '%' . $clientDepartment . '%')
+        ->where('is_dealer', '=', $isDealer);
         $clients = $query->with('products','department','clientCorporation')->get();
 
         return response()->json($clients);
