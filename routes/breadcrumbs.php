@@ -4,27 +4,27 @@ Breadcrumbs::for('dashboard', function ($trail) {
 });
 
         // ダッシュボード > 法人一覧
-        Breadcrumbs::for('clientcorporations', function ($trail) {
+        Breadcrumbs::for('corporations', function ($trail) {
             $trail->parent('dashboard');
-            $trail->push('法人一覧', url('clientcorporation'));
+            $trail->push('法人一覧', url('corporations'));
         });
 
                 // ダッシュボード > 法人一覧 > 新規登録
-                Breadcrumbs::for('createClientcorporation', function ($trail) {
-                    $trail->parent('clientcorporations');
-                    $trail->push('新規作成', url('clientcorporation/create'));
+                Breadcrumbs::for('createCorporation', function ($trail) {
+                    $trail->parent('corporations');
+                    $trail->push('新規作成', url('corporations/create'));
                 });
 
                 // ダッシュボード > 法人一覧 > 編集
-                Breadcrumbs::for('editClientcorporation', function ($trail ,$clientcorporation) {
-                    $trail->parent('clientcorporations');
-                    $trail->push('編集', url('clientcorporation/' . $clientcorporation->id . '/edit'));
+                Breadcrumbs::for('editCorporation', function ($trail ,$corporation) {
+                    $trail->parent('corporations');
+                    $trail->push('編集', url('corporations/' . $corporation->id . '/edit'));
                 });
 
                 // ダッシュボード > 法人一覧 > CSVアップロード
-                Breadcrumbs::for('csvUploadClientcorporation', function ($trail) {
-                    $trail->parent('clientcorporations');
-                    $trail->push('CSVアップロード', url('clientcorporation/show-upload'));
+                Breadcrumbs::for('csvUploadCorporation', function ($trail) {
+                    $trail->parent('corporations');
+                    $trail->push('CSVアップロード', url('corporations/show-upload'));
                 });
 
         // ダッシュボード > 顧客一覧
@@ -44,7 +44,25 @@ Breadcrumbs::for('dashboard', function ($trail) {
                     $trail->parent('clients');
                     $trail->push('編集', url('client/edit'));
                 });
-        
+
+        // ダッシュボード > 業者一覧
+        Breadcrumbs::for('vendors', function ($trail) {
+            $trail->parent('dashboard');
+            $trail->push('業者一覧', url('vendors'));
+        });
+
+                // ダッシュボード > 業者一覧 > 新規登録
+                Breadcrumbs::for('createVendor', function ($trail) {
+                    $trail->parent('vendors');
+                    $trail->push('新規作成', url('vendors/create'));
+                });
+
+                // ダッシュボード > 業者一覧 > 編集
+                Breadcrumbs::for('editVendor', function ($trail) {
+                    $trail->parent('vendors');
+                    $trail->push('編集', url('vendors/edit'));
+                });
+
         // ダッシュボード > 担当者一覧
         Breadcrumbs::for('clientpersons', function ($trail) {
             $trail->parent('dashboard');

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ClientCorporationUpdateRequest extends FormRequest
+class CorporationStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +22,10 @@ class ClientCorporationUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'clientcorporation_num' => 'size:6',
-            'clientcorporation_name' => 'required|max:1024',
-            'clientcorporation_kana_name' => 'required|max:1024',
-            'clientcorporation_short_name' => 'required|max:1024',
+            'corporation_num' => 'size:6',
+            'corporation_name' => 'required|max:1024',
+            'corporation_kana_name' => 'required|max:1024',
+            'corporation_short_name' => 'required|max:1024',
             'credit_limit' => 'numeric',
         ];
     }

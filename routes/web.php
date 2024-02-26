@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KeepfileController; //add
-use App\Http\Controllers\ClientCorporationController;//add
+use App\Http\Controllers\CorporationController;//add
 use App\Http\Controllers\ClientController;//add
 use App\Http\Controllers\ClientPersonController;
 use App\Http\Controllers\Dashboard\DashboardController;//add
@@ -70,11 +70,14 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/clientcorporation/show-upload', [ClientCorporationController::class, 'showUploadForm'])->name('clientcorporation.showUploadForm');
+    Route::get('/corporations/show-upload', [CorporationController::class, 'showUploadForm'])->name('corporations.showUploadForm');
+    Route::get('/corporations/download-csv', [CorporationController::class, 'downloadCsv'])->name('corporations.downloadCsv');
+
 
     Route::resource('/keepfile','\App\Http\Controllers\KeepfileController');
-    Route::resource('/clientcorporation','\App\Http\Controllers\ClientCorporationController');
+    Route::resource('/corporations','\App\Http\Controllers\CorporationController');
     Route::resource('/client','\App\Http\Controllers\ClientController');
+    Route::resource('/vendors','\App\Http\Controllers\VendorController');
     Route::resource('/user', '\App\Http\Controllers\UserController');
     Route::resource('/report', '\App\Http\Controllers\ReportController');
     Route::resource('/product', '\App\Http\Controllers\ProductController');
@@ -121,7 +124,7 @@ Route::middleware('auth')->group(function () {
 
     // Route::resource('/comment', '\App\Http\Controllers\CommentController');
     Route::get('/search-users', [UserController::class, 'searchUsers']);
-    Route::post('/clientcorporation/search', [ClientCorporationController::class, 'search'])->name('clientcorporation.search');
+    Route::post('/corporations/search', [CorporationController::class, 'search'])->name('corporations.search');
     Route::post('/client/search', [ClientController::class, 'search'])->name('client.search');
     // Route::post('/user/search', [UserController::class, 'search'])->name('user.ajaxsearch');
     Route::post('/product/search', [ProductController::class, 'search'])->name('product.search');
@@ -132,7 +135,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/bulk-delete-revenues', [ProjectRevenueController::class, 'bulkDelete'])->name('projectrevenue.bulkDelete');
 
 // CSVアップロード系
-    Route::post('/clientcorporation/upload', [ClientCorporationController::class, 'upload'])->name('clientcorporation.upload');
+    Route::post('/corporations/upload', [CorporationController::class, 'upload'])->name('corporations.upload');
     Route::post('/client/upload', [ClientController::class, 'upload'])->name('client.upload');
     Route::post('/user/upload', [UserController::class, 'upload'])->name('user.upload');
     Route::post('/product/upload', [ProductController::class, 'upload'])->name('product.upload');
@@ -153,11 +156,8 @@ Route::middleware('auth')->group(function () {
     // Route::get('/product-selection', 'ProductController@index');
     Route::get('/get-split-types/{productTypeId}', [ProductController::class, 'getSplitTypes'])->name('product.getSplitTypes');
 
-    Route::get('/clientcorporations/export', [ClientCorporationController::class, 'exportCsv'])->name('clientcorporations.export');
-    // Route::get('/clientcorporations/download/{filename}', [ClientCorporationController::class, 'downloadCsv'])->name('clientcorporations.download');
-
-    Route::get('/clientcorporations/download-csv', [ClientCorporationController::class, 'downloadCsv'])->name('clientcorporations.downloadCsv');
-
+    // Route::get('/corporations/export', [CorporationController::class, 'exportCsv'])->name('corporations.export');
+    // Route::get('/corporations/download/{filename}', [CorporationController::class, 'downloadCsv'])->name('corporations.download');
 });
 
 // Route::resource('/dashboard', '\App\Http\Controllers\DashboardController')->middleware(['auth', 'verified'])->name('dashboard');

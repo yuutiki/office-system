@@ -22,7 +22,7 @@ shortcut.add("Ctrl+F", function () {
 
 // カナ変換（clientcorporation/）
 $(function() {
-    $.fn.autoKana('input[name="clientcorporation_name"]', 'input[name="clientcorporation_kana_name"]', {katakana: true});
+    $.fn.autoKana('input[name="corporation_name"]', 'input[name="corporation_kana_name"]', {katakana: true});
 });
 
 // カナ変換（client/）

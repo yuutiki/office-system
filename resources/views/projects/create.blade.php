@@ -25,9 +25,9 @@
                 </button>
                 <div class="grid gap-4 mb-4 sm:grid-cols-3">
                     <div class="">
-                        <label for="clientcorporation_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人名称</label>
-                        <input type="text" name="clientcorporation_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded-s rounded-e mt-1 cursor-not-allowed" id="clientcorporation_name" value="{{old('clientcorporation_name')}}" placeholder="顧客検索してください" readonly>
-                        @error('clientcorporation_name')
+                        <label for="corporation_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人名称</label>
+                        <input type="text" name="corporation_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded-s rounded-e mt-1 cursor-not-allowed" id="corporation_name" value="{{old('corporation_name')}}" placeholder="顧客検索してください" readonly>
+                        @error('corporation_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
@@ -280,7 +280,7 @@
                         </button>
                     </div>
                     <!-- Modal body -->
-                    <form action="{{ route('clientcorporation.search') }}" method="GET">
+                    <form action="{{ route('corporations.search') }}" method="GET">
                         <!-- 検索条件入力フォーム -->
                         <div class="grid gap-2 mb-4 sm:grid-cols-3">
                             <div class="w-full flex flex-col mx-2">
@@ -352,7 +352,7 @@
                             </button>
                         </div>
                         <!-- Modal body -->
-                        <form action="{{ route('clientcorporation.search') }}" method="GET">
+                        <form action="{{ route('corporations.search') }}" method="GET">
                             <!-- 検索条件入力フォーム -->
                             <div class="grid gap-4 mb-4 sm:grid-cols-2 mt-2">
                             {{-- <div class="flex flex-wrap justify-start mx-5"> --}}
@@ -426,6 +426,7 @@
             const clientName = document.getElementById('clientName').value;
             const clientNumber = document.getElementById('clientNumber').value;
             const departmentId = document.getElementById('departmentId').value;
+            const isDealer = 0;
 
             fetch('/client/search', {
                 method: 'POST',
@@ -433,7 +434,7 @@
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
-                body: JSON.stringify({ clientName, clientNumber, departmentId })
+                body: JSON.stringify({ clientName, clientNumber, departmentId, isDealer })
             })
             .then(response => response.json())
             .then(data => {
@@ -444,7 +445,7 @@
                 const resultElement = document.createElement('tr');
                 resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
                 resultElement.innerHTML = `
-                    <td class="py-2 pl-5 cursor-pointer" onclick="setClient('${result.client_corporation.clientcorporation_name}', '${result.client_num}', '${result.client_name}', '${result.department_id}')">${result.client_name}</td>
+                    <td class="py-2 pl-5 cursor-pointer" onclick="setClient('${result.corporation.corporation_name}', '${result.client_num}', '${result.client_name}', '${result.department_id}')">${result.client_name}</td>
                     <td class="py-2 ml-2">${result.client_num}</td>
                     <td class="py-2 ml-2">${result.department.department_name}</td>
                 `;
@@ -454,7 +455,7 @@
             }
 
             function setClient(corporationname, clientnum, clientname, department) {
-            document.getElementById('clientcorporation_name').value = corporationname;
+            document.getElementById('corporation_name').value = corporationname;
             document.getElementById('client_num').value = clientnum;
             document.getElementById('client_name').value = clientname;
             document.getElementById('department_id').value = department;
@@ -496,7 +497,7 @@
             const corporationName = document.getElementById('corporationName').value;
             const corporationNumber = document.getElementById('corporationNumber').value;
 
-            fetch('/clientcorporation/search', {
+            fetch('/corporations/search', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -513,8 +514,8 @@
                 const resultElement = document.createElement('tr');
                 resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
                 resultElement.innerHTML = `
-                    <td tabindex="1" class="py-2 pl-5 cursor-pointer" onclick="setCorporation('${result.id}', '${result.clientcorporation_num}', '${result.clientcorporation_name}')">${result.clientcorporation_short_name}</td>
-                    <td class="py-2 ml-2">${result.clientcorporation_num}</td>
+                    <td tabindex="1" class="py-2 pl-5 cursor-pointer" onclick="setCorporation('${result.id}', '${result.corporation_num}', '${result.corporation_name}')">${result.corporation_short_name}</td>
+                    <td class="py-2 ml-2">${result.corporation_num}</td>
                 `;
                 searchResultsCorporationContainer.appendChild(resultElement);
                 });

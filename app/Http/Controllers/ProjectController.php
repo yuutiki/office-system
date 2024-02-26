@@ -50,7 +50,7 @@ class ProjectController extends Controller
         $projectTypes = ProjectType::all();
         $distributionTypes = DistributionType::all();
         $accountingPeriods = AccountingPeriod::all();
-        return view('project.index',compact('accountingPeriods','salesStages','distributionTypes','count','projects','totalAmount','users','projectTypes'));
+        return view('projects.index',compact('accountingPeriods','salesStages','distributionTypes','count','projects','totalAmount','users','projectTypes'));
     }
 
     public function create()
@@ -66,7 +66,7 @@ class ProjectController extends Controller
         $accountingTypes = AccountingType::all();
         $prefectures = Prefecture::all(); //都道府県
 
-        return view('project.create',compact('accountingPeriods','salesStages','distributionTypes','departments','companies','affiliation3s','projectTypes','accountingTypes','users','prefectures'));
+        return view('projects.create',compact('accountingPeriods','salesStages','distributionTypes','departments','companies','affiliation3s','projectTypes','accountingTypes','users','prefectures'));
     }
 
     public function store(ProjectStoreRequest $request)
@@ -110,7 +110,7 @@ class ProjectController extends Controller
         $project->save();
 
         // 新規作成後、編集画面にリダイレクト
-        return redirect()->route('project.edit', ['project' => $project->id])->with('success', '正常に登録し編集画面に遷移しました');
+        return redirect()->route('projects.edit', ['project' => $project->id])->with('success', '正常に登録し編集画面に遷移しました');
     }
 
     public function show(Project $project)
@@ -167,7 +167,7 @@ class ProjectController extends Controller
                 'formatRevenueDate' => $targetDate->format('Y-m'),
             ];
         }
-        return view('project.edit',compact('project','projectRevenues','accountingPeriods','salesStages','distributionTypes','departments','companies','affiliation3s','projectTypes','accountingTypes','users','revenuesWithPeriod','totalRevenue','prefectures'));
+        return view('projects.edit',compact('project','projectRevenues','accountingPeriods','salesStages','distributionTypes','departments','companies','affiliation3s','projectTypes','accountingTypes','users','revenuesWithPeriod','totalRevenue','prefectures'));
         
     }
 
@@ -207,7 +207,7 @@ class ProjectController extends Controller
     $project->account_user_id = $request->account_user_id;
     $project->save();
 
-    // project.editに後で変更する
+    // projects.editに後で変更する
     return redirect()->back()->with('success', '正常に更新されました');
 
     }

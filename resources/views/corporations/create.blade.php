@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
-                {{ Breadcrumbs::render('createClientcorporation') }}
+                {{ Breadcrumbs::render('createCorporation') }}
             </h2>
             <div class="flex justify-end">
                 <x-message :message="session('message')"/>
@@ -12,27 +12,27 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="mx-4 sm:p-8">
-            <form id="corporationForm" method="post" action="{{route('clientcorporation.store')}}" enctype="multipart/form-data">
+            <form id="corporationForm" method="post" action="{{route('corporations.store')}}" enctype="multipart/form-data">
                 @csrf
                 <div class="w-full flex flex-col">
-                    <label for="clientcorporation_name" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">法人正式名称</label>
-                    <input type="text" name="clientcorporation_name" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="clientcorporation_name" value="{{old('clientcorporation_name')}}" placeholder="学校法人 烏丸学園">
+                    <label for="corporation_name" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">法人正式名称</label>
+                    <input type="text" name="corporation_name" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="corporation_name" value="{{old('corporation_name')}}" placeholder="学校法人 烏丸学園">
                 </div>
-                @error('clientcorporation_name')
+                @error('corporation_name')
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
                 <div class="w-full flex flex-col">
-                    <label for="clientcorporation_kana_name" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">法人正式カナ名称</label>
-                    <input type="text" name="clientcorporation_kana_name" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="clientcorporation_kana_name" value="{{old('clientcorporation_kana_name')}}" placeholder="ガッコウホウジン カラスマガクエン">
+                    <label for="corporation_kana_name" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">法人正式カナ名称</label>
+                    <input type="text" name="corporation_kana_name" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="corporation_kana_name" value="{{old('corporation_kana_name')}}" placeholder="ガッコウホウジン カラスマガクエン">
                 </div>
-                @error('clientcorporation_kana_name')
+                @error('corporation_kana_name')
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
                 <div class="w-full flex flex-col">
-                    <label for="clientcorporation_short_name" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">法人略称</label>
-                    <input type="text" name="clientcorporation_short_name" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="clientcorporation_short_name" value="{{old('clientcorporation_short_name')}}" placeholder="烏丸学園">
+                    <label for="corporation_short_name" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">法人略称</label>
+                    <input type="text" name="corporation_short_name" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="corporation_short_name" value="{{old('corporation_short_name')}}" placeholder="烏丸学園">
                 </div>
-                @error('clientcorporation_short_name')
+                @error('corporation_short_name')
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
                 {{-- <div class="relative z-0">
@@ -70,5 +70,6 @@
     </div>
 
     <script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/assets/js/main.js') }}"></script>
 
 </x-app-layout>

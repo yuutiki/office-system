@@ -148,7 +148,7 @@
                 </button>
                 <ul  class="hidden py-2 space-y-2" id="accordion-body-1" aria-labelledby="accordion-heading-1">
                     <li>
-                        <x-nav-link :href="route('clientcorporation.index')" :active="request()->routeIs('clientcorporation.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                        <x-nav-link :href="route('corporations.index')" :active="request()->routeIs('corporations.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                             <span class="flex-1  ml-10 whitespace-nowrap">{{ __('法人一覧') }}</span>
                         </x-nav-link>
                     </li>
@@ -158,7 +158,7 @@
                         </x-nav-link>
                     </li>
                     <li>
-                        <x-nav-link :href="route('client.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                        <x-nav-link :href="route('vendors.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                             <span class="flex-1 ml-10 whitespace-nowrap">{{ __('業者一覧') }}</span>
                         </x-nav-link>
                     </li>
@@ -359,7 +359,7 @@
                     </button>
                     <ul id="dropdown-sm-client" class="hidden py-2 space-y-2">
                         <li>
-                            <x-nav-link :href="route('clientcorporation.index')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <x-nav-link :href="route('corporations.index')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('法人一覧') }}</span>
                             </x-nav-link>
                         </li>

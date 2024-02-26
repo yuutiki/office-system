@@ -22,7 +22,7 @@ class ClientStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'client_num' => 'size:10',
+            'client_num' => 'size:12',
             'client_name' => 'required|max:50',
             'client_kana_name' => 'required|max:50',
             'user_id' => 'required',

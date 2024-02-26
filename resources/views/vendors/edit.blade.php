@@ -29,16 +29,16 @@
 
             <div class="grid gap-3 mb-2 sm:grid-cols-2">
                 <div class="">
-                    <label for="corporation_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2 mt-2">法人名称</label>
-                    <input type="text" name="corporation_name" class="w-full py-1 mt-1 bg-gray-400 border border-gray-300 rounded" id="corporation_name" value="{{old('corporation_name',$client->corporation->corporation_name)}}" readonly>
-                    @error('corporation_name')
+                    <label for="clientcorporation_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2 mt-2">法人名称</label>
+                    <input type="text" name="clientcorporation_name" class="w-full py-1 mt-1 bg-gray-400 border border-gray-300 rounded" id="clientcorporation_name" value="{{old('clientcorporation_name',$client->clientcorporation->clientcorporation_name)}}" readonly>
+                    @error('clientcorporation_name')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror                
                 </div>
                 <div class="hidden md:inline-block">
-                    <label for="corporation_kana_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">法人カナ名称</label>
-                    <input type="text" name="corporation_kana_name" class="w-full py-1 mt-1 bg-gray-400 border border-gray-300 rounded" id="corporation_kana_name" value="{{old('corporation_kana_name',$client->corporation->corporation_kana_name)}}" readonly>
-                    @error('corporation_kana_name')
+                    <label for="clientcorporation_kana_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">法人カナ名称</label>
+                    <input type="text" name="clientcorporation_kana_name" class="w-full py-1 mt-1 bg-gray-400 border border-gray-300 rounded" id="clientcorporation_kana_name" value="{{old('clientcorporation_kana_name',$client->clientcorporation->clientcorporation_kana_name)}}" readonly>
+                    @error('clientcorporation_kana_name')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror                
                 </div>
@@ -269,11 +269,11 @@
                         </div>
                         <div class="w-full flex flex-col">
                             <label for="billing_corporation_num" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（顧客）№</label>
-                            <input type="text" name="billing_corporation_num" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1" id="billing_corporation_num" value="{{old('billing_corporation_num',$client->corporation->corporation_num)}}" disabled>
+                            <input type="text" name="billing_corporation_num" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1" id="billing_corporation_num" value="{{old('billing_corporation_num',$client->clientcorporation->clientcorporation_num)}}" disabled>
                         </div>
                         <div class="w-full flex flex-col col-span-3">
                             <label for="billing_corporation_name" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（顧客）名称</label>
-                            <input type="text" name="billing_corporation_name" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="billing_corporation_name" value="{{old('billing_corporation_name',$client->corporation->corporation_name)}}" disabled>
+                            <input type="text" name="billing_corporation_name" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="billing_corporation_name" value="{{old('billing_corporation_name',$client->clientcorporation->clientcorporation_name)}}" disabled>
                         </div>
                     </div>
 
@@ -1075,7 +1075,7 @@
                     </button>
                 </div>
                 <!-- Modal body -->
-                <form action="{{ route('corporations.search') }}" method="GET">
+                <form action="{{ route('clientcorporation.search') }}" method="GET">
                     <!-- 検索条件入力フォーム -->
                     <div class="flex flex-wrap justify-start mx-5">
                         <div class="w-full flex flex-col">
@@ -1163,7 +1163,7 @@
             const corporationName = document.getElementById('corporationName').value;
             const corporationNumber = document.getElementById('corporationNumber').value;
 
-            fetch('/corporations/search', {
+            fetch('/clientcorporation/search', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -1179,10 +1179,10 @@
                 data.forEach(result => {
                 const resultElement = document.createElement('tr');
                 resultElement.innerHTML = `
-                    <td class="py-2">${result.corporation_name}</td>
-                    <td class="py-2">${result.corporation_num}</td>
+                    <td class="py-2">${result.clientcorporation_name}</td>
+                    <td class="py-2">${result.clientcorporation_num}</td>
                     <td class="py-2">
-                    <button type="button" onclick="setCorporation('${result.corporation_name}', '${result.corporation_num}')" class="font-bold text-blue-500 hover:underline"  tabindex="-1">選択</button>
+                    <button type="button" onclick="setCorporation('${result.clientcorporation_name}', '${result.clientcorporation_num}')" class="font-bold text-blue-500 hover:underline"  tabindex="-1">選択</button>
                     </td>
                 `;
                 searchResultsContainer.appendChild(resultElement);
@@ -1191,10 +1191,10 @@
             }
 
             function setCorporation(name, number) {
-            document.getElementById('corporation_num').value = number;
-            document.getElementById('corporation_name').value = name;
-            // document.getElementById('corporation_name').textContent = name;
-            // document.getElementById('corporation_num').textContent = number;
+            document.getElementById('clientcorporation_num').value = number;
+            document.getElementById('clientcorporation_name').value = name;
+            // document.getElementById('clientcorporation_name').textContent = name;
+            // document.getElementById('clientcorporation_num').textContent = number;
 
             hideModal();
             }

@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
-                {{ Breadcrumbs::render('csvUploadClientcorporation') }}
+                {{ Breadcrumbs::render('csvUploadCorporation') }}
             </h2>
             <div class="flex justify-end">
                 <x-message :message="session('message')"/>
@@ -17,7 +17,7 @@
 
             <div class="p-4 space-y-6">
                 
-                <form action="{{ route('clientcorporation.upload') }}" method="POST" enctype="multipart/form-data" class="" id="csv_form1">
+                <form action="{{ route('corporations.upload') }}" method="POST" enctype="multipart/form-data" class="" id="csv_form1">
                     @csrf
                     {{-- <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="csv_upload"></label>
                     <input type="file" name="csv_upload"  id="csv_upload_file"  class="block w-full text-sm text-gray-900 border border-gray-300 rounded-s rounded-e cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="csv_upload_help"> --}}

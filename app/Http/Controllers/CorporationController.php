@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ClientCorporationStoreRequest;
-use App\Http\Requests\ClientCorporationUpdateRequest;
-use App\Models\ClientCorporation;
+use App\Http\Requests\CorporationStoreRequest;
+use App\Http\Requests\CorporationUpdateRequest;
+use App\Models\Corporation;
 use Goodby\CSV\Import\Standard\Lexer;
 use Goodby\CSV\Import\Standard\Interpreter;
 use Goodby\CSV\Import\Standard\LexerConfig;
@@ -12,13 +12,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-use Illuminate\Support\Facades\Validator;
 // use Goodby\CSV\Import\Standard\InterpreterConfig;
 use Illuminate\Support\Facades\Response;
-use App\Jobs\ExportClientCorporationsCsv;
+use App\Jobs\ExportCorporationsCsv;
 use Illuminate\Support\Facades\Session;
 
-class ClientCorporationController extends Controller
+class CorporationController extends Controller
 {
     public function index(Request $request)//検索用にrequestを受取る
         {
@@ -28,60 +27,59 @@ class ClientCorporationController extends Controller
         $perPage = 100; // １ページごとの表示件数
 
         // 検索フォームから検索条件を取得し変数に格納
-        $filters = $request->only(['clientcorporation_num', 'clientcorporation_name']);
+        $filters = $request->only(['corporation_num', 'corporation_name']);
 
         // 同じ条件を別の変数にも格納(画面の検索条件入力欄にセットするために利用する)
-        $clientCorporationNum = $filters['clientcorporation_num'] ?? null;
-        $clientCorporationName = $filters['clientcorporation_name'] ?? null;
+        $CorporationNum = $filters['corporation_num'] ?? null;
+        $CorporationName = $filters['corporation_name'] ?? null;
 
-        //上記で$filters変数に格納した検索条件をModelに渡し、検索処理を行う。結果を$clientcorporationsに詰める
-        $clientcorporations = ClientCorporation::filter($filters) 
+        //上記で$filters変数に格納した検索条件をModelに渡し、検索処理を行う。結果を$corporationsに詰める
+        $corporations = Corporation::filter($filters) 
             ->withCount('clients')
             ->sortable()
             ->paginate($perPage);
 
-        $count = $clientcorporations->total(); // 検索結果の件数を取得
+        $count = $corporations->total(); // 検索結果の件数を取得
 
-        return view('clientcorporation.index', compact('clientcorporations', 'count' ,'filters', 'clientCorporationNum', 'clientCorporationName'));
+        return view('corporations.index', compact('corporations', 'count' ,'filters', 'CorporationNum', 'CorporationName'));
     }
 
     public function create()
     {
-        return view('clientcorporation.create');
+        return view('corporations.create');
     }
 
-    public function store(ClientCorporationStoreRequest $request)
+    public function store(CorporationStoreRequest $request)
     {
-        $result = ClientCorporation::storeWithTransaction($request->except('clientcorporation_num'));
+        $result = Corporation::storeWithTransaction($request->except('corporation_num'));
 
         if ($result) {
-            // $request->session()->forget('success'); // フラッシュメッセージを削除
-            return redirect()->route('clientcorporation.index')->with('success', '正常に登録しました');
+            return redirect()->route('corporations.index')->with('success', '正常に登録しました');
         } else {
             return back()->with('error', '登録に失敗しました。');
         }
     }
 
-    public function show(ClientCorporation $clientCorporation)
+    public function show(Corporation $Corporation)
     {
         //
     }
 
     public function edit(string $id)
     {
-        $clientCorporation = ClientCorporation::find($id);
-        return view('clientcorporation.edit',compact('clientCorporation'));
+        $corporation = Corporation::find($id);
+        return view('corporations.edit',compact('corporation'));
     }
 
-    public function update(ClientCorporationUpdateRequest $request, string $id)
+    public function update(CorporationUpdateRequest $request, string $id)
     {
         try {
             // モデルを見つけて、存在するか確認
-            $clientCorporation = ClientCorporation::findOrFail($id);
+            $corporation = Corporation::findOrFail($id);
 
             // データを更新
-            $clientCorporation->fill($request->all())->save();
-            return redirect()->route('clientcorporation.edit', $id)->with('success', '正常に更新されました');
+            $corporation->fill($request->all())->save();
+            return redirect()->route('corporations.edit', $id)->with('success', '正常に更新されました');
             
         } catch (ModelNotFoundException $e) {
             // モデルが見つからない場合のエラーメッセージ
@@ -97,20 +95,20 @@ class ClientCorporationController extends Controller
         $searchParams = $request->session()->get('search_params', []);
         
             // 子データが存在するか確認
-            $clientCorporation = ClientCorporation::with('clients')->findOrFail($id);
+            $Corporation = Corporation::with('clients')->findOrFail($id);
     
             // 子データが存在する場合は削除を中止
-            if ($clientCorporation->clients()->exists()) {
+            if ($Corporation->clients()->exists()) {
                 return redirect()->back()->with('error', '顧客データが存在するため、削除できません');
             }
     
             // 子データが存在しない場合は削除を実行
-            // $clientCorporation->delete();
+            // $Corporation->delete();
             // return redirect()->back()->with('success', '正常に削除されました');
 
         // 子データが存在しない場合は削除を実行
-        $clientCorporation->delete();
-        return redirect()->route('clientcorporation.index', $searchParams)->with('success', '正常に削除されました');            
+        $Corporation->delete();
+        return redirect()->route('corporations.index', $searchParams)->with('success', '正常に削除されました');            
 
         } catch (ModelNotFoundException $e) {
             return redirect()->back()->with('error', '対象のデータが見つかりませんでした');
@@ -124,8 +122,8 @@ class ClientCorporationController extends Controller
         $corporationNumber = $request->input('corporationNumber');
 
         // 検索条件に基づいて法人データを取得
-        $corporations = ClientCorporation::where('clientcorporation_name', 'LIKE', '%' . $corporationName . '%')
-            ->where('clientcorporation_num', 'LIKE', '%' . $corporationNumber . '%')
+        $corporations = Corporation::where('corporation_name', 'LIKE', '%' . $corporationName . '%')
+            ->where('corporation_num', 'LIKE', '%' . $corporationNumber . '%')
             ->get();
 
         return response()->json($corporations);
@@ -141,13 +139,14 @@ class ClientCorporationController extends Controller
     public function downloadCsv(Request $request)
     {
         // 検索条件を取得
-        $filters = $request->only(['clientcorporation_num', 'clientcorporation_name']);
+        $filters = $request->only(['corporation_num', 'corporation_name']);
 
         // 検索結果の顧客法人データを取得
-        $clientcorporations = ClientCorporation::with(['createdBy', 'updatedBy'])
+        $corporations = Corporation::with(['createdBy', 'updatedBy'])
         ->filter($filters)
         ->withCount('clients')
         ->get();
+
 
         // CSVのヘッダー行を作成
         $csvHeader = ['ID', '法人番号', '法人正式名', '法人正式カナ名', '法人略称', '法人備考', '顧客数', '作成者', '作成日時', '更新者', '更新日時'];
@@ -156,32 +155,32 @@ class ClientCorporationController extends Controller
         $csvData = [];
 
         // 顧客法人データをCSVデータに変換
-        foreach ($clientcorporations as $clientcorporation) {
+        foreach ($corporations as $corporation) {
             $csvData[] = [
-                $clientcorporation->id,
-                $clientcorporation->clientcorporation_num,
-                $clientcorporation->clientcorporation_name,
-                $clientcorporation->clientcorporation_kana_name,
-                $clientcorporation->clientcorporation_short_name,
-                $clientcorporation->memo,
-                $clientcorporation->clients_count,
-                $clientcorporation->createdBy->name,
-                $clientcorporation->created_at,
-                $clientcorporation->updatedBy->name,
-                $clientcorporation->updated_at,
+                $corporation->id,
+                $corporation->corporation_num,
+                $corporation->corporation_name,
+                $corporation->corporation_kana_name,
+                $corporation->corporation_short_name,
+                $corporation->memo,
+                $corporation->clients_count,
+                $corporation->createdBy->name,
+                $corporation->created_at,
+                $corporation->updatedBy->name,
+                $corporation->updated_at,
             ];
         }
 
         // CSVファイルの名前を生成
         $fileName = '法人データ_' . date('YmdHis') . '.csv';
-        // $fileName = 'clientcorporation_data_' . date('YmdHis') . '.csv';
+        // $fileName = 'corporation_data_' . date('YmdHis') . '.csv';
 
         // CSVファイルを生成してダウンロード
         return $this->downloadCsvFile($fileName, $csvHeader, $csvData);
     }
 
     // CSVファイルを生成してダウンロード
-    private function downloadCsvFile($fileName, $header, $data)
+    private function downloadCsvFile($fileName, $csvHeader, $csvData)
     {
         ob_start();
         $output = fopen('php://output', 'w');
@@ -190,10 +189,10 @@ class ClientCorporationController extends Controller
         fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
     
         // ヘッダー行を書き込む
-        fputcsv($output, $header);
+        fputcsv($output, $csvHeader);
     
         // データを書き込む
-        foreach ($data as $row) {
+        foreach ($csvData as $row) {
             fputcsv($output, $row);
         }
     
@@ -213,14 +212,14 @@ class ClientCorporationController extends Controller
 
 //     public function exportCsv(Request $request)
 // {
-//     $filters = $request->only(['clientcorporation_num', 'clientcorporation_name']);
-//     ExportClientCorporationsCsv::dispatch($filters);
+//     $filters = $request->only(['corporation_num', 'corporation_name']);
+//     ExportCorporationsCsv::dispatch($filters);
 
 //     // 生成されたファイル名を取得
-//     $filename = 'clientcorporations_' . now()->format('YmdHis') . '.csv';
+//     $filename = 'corporations_' . now()->format('YmdHis') . '.csv';
 
 //     // ダウンロードページにリダイレクト
-//     return redirect()->route('clientcorporation.index')->with('status', 'エクスポートジョブがディスパッチされました。進捗状況はキューを確認してください。');
+//     return redirect()->route('corporations.index')->with('status', 'エクスポートジョブがディスパッチされました。進捗状況はキューを確認してください。');
 // }
 
 //     public function downloadCsv($filename)
@@ -236,7 +235,7 @@ class ClientCorporationController extends Controller
 
     public function showUploadForm()
     {
-        return view('clientcorporation.upload-form');
+        return view('corporations.upload-form');
     }
 
 
@@ -298,39 +297,39 @@ class ClientCorporationController extends Controller
             
             $interpreter->addObserver(function (array $row) use ($operation, &$recordCount) {
                 // 登録済みかどうかを確認
-                $existingRecord = ClientCorporation::where('clientcorporation_num', $row[0])->first();
+                $existingRecord = Corporation::where('corporation_num', $row[0])->first();
 
-                // 新規登録かつclientcorporation_numが重複している場合
-                if ($operation === 'new' && ClientCorporation::where('clientcorporation_num', $row[0])->exists()) {
+                // 新規登録かつcorporation_numが重複している場合
+                if ($operation === 'new' && Corporation::where('corporation_num', $row[0])->exists()) {
                     // バリデーションエラーがある場合
                     // エラーメッセージをセットしてリダイレクト
-                    return redirect()->back()->withErrors(['clientcorporation_num' => 'すでに登録されている法人番号が含まれています。'])->withInput()->with('error','エラーがあります。');
+                    return redirect()->back()->withErrors(['corporation_num' => 'すでに登録されている法人番号が含まれています。'])->withInput()->with('error','エラーがあります。');
                 }
-                // 既存更新かつclientcorporation_numが存在していない場合
-                if ($operation === 'update' && !ClientCorporation::where('clientcorporation_num', $row[0])->exists()) {
+                // 既存更新かつcorporation_numが存在していない場合
+                if ($operation === 'update' && !Corporation::where('corporation_num', $row[0])->exists()) {
                     // バリデーションエラーがある場合
                     // エラーメッセージをセットしてリダイレクト
-                    return redirect()->back()->withErrors(['clientcorporation_num' => '更新対象の法人番号が見つかりません。'])->withInput()->with('error','エラーがあります。');
+                    return redirect()->back()->withErrors(['corporation_num' => '更新対象の法人番号が見つかりません。'])->withInput()->with('error','エラーがあります。');
                 }
 
                 if ($existingRecord && $operation === 'update') {
                     // 既存更新の処理
                     $existingRecord->update([
-                        'clientcorporation_name' => $row[1],
-                        'clientcorporation_kana_name' => $row[2],
-                        'clientcorporation_short_name' => $row[3],
+                        'corporation_name' => $row[1],
+                        'corporation_kana_name' => $row[2],
+                        'corporation_short_name' => $row[3],
                         'memo' => $row[4],
                     ]);
                 } elseif ($operation === 'new') {
 
                     // 新規登録の処理
-                    $clientCorporation = new ClientCorporation();
-                    $clientCorporation->clientcorporation_num = $row[0];
-                    $clientCorporation->clientcorporation_name = $row[1];
-                    $clientCorporation->clientcorporation_kana_name = $row[2];
-                    $clientCorporation->clientcorporation_short_name = $row[3];
-                    $clientCorporation->memo = $row[4];
-                    $clientCorporation->save();
+                    $Corporation = new Corporation();
+                    $Corporation->corporation_num = $row[0];
+                    $Corporation->corporation_name = $row[1];
+                    $Corporation->corporation_kana_name = $row[2];
+                    $Corporation->corporation_short_name = $row[3];
+                    $Corporation->memo = $row[4];
+                    $Corporation->save();
 
                     // 登録したレコード数をインクリメント
                     $recordCount++;

@@ -19,7 +19,7 @@ class Client extends Model
         'client_num',
         'client_name',
         'client_kana_name',
-        'client_corporation_id',
+        'corporation_id',
         'user_id',
         'client_type_id',
         'trade_status_id',
@@ -35,7 +35,7 @@ class Client extends Model
         'client_num',
         'client_name',
         'client_kana_name',
-        'client_corporation_id'
+        'corporation_id'
     ];
 
     //バリデーションルールを設定
@@ -82,10 +82,10 @@ class Client extends Model
 
 
 
-    public static function generateClientNumber($clientcorporationNum, $prefix_code)
+    public static function generateClientNumber($corporationNum, $prefix_code)
     {
         $suffix = strtoupper(Str::substr($prefix_code, 0, 1));
-        $lastClient = Client::where('client_num', 'like', "$clientcorporationNum-$suffix%")
+        $lastClient = Client::where('client_num', 'like', "$corporationNum-C-$suffix%")
             ->orderBy('client_num', 'desc')
             ->first();
 
@@ -96,7 +96,7 @@ class Client extends Model
             $newSerialNumber = '01';
         }
 
-        return "$clientcorporationNum-C-$suffix$newSerialNumber";
+        return "$corporationNum-C-$suffix$newSerialNumber";
     }
 
     // public static function generateClientNumber($clientcorporationId)
@@ -134,9 +134,9 @@ class Client extends Model
 
 
     //relation
-    public function clientCorporation()
+    public function corporation()
     {
-        return $this->belongsTo(ClientCorporation::class);
+        return $this->belongsTo(Corporation::class);
     }
     public function user()
     {

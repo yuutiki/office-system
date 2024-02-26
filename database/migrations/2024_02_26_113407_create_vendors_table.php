@@ -6,29 +6,32 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        Schema::create('clients', function (Blueprint $table) {
+        Schema::create('vendors', function (Blueprint $table) {
             $table->id();
-            $table->string('client_num',12)->unique()->comment('顧客番号');
-            $table->string('client_name',255)->comment('顧客名称');
-            $table->string('client_kana_name',255)->comment('顧客カナ名称');
+
+            $table->string('vendor_num',12)->unique()->comment('業者番号');
+            $table->string('vendor_name',255)->comment('業者名称');
+            $table->string('vendor_kana_name',255)->comment('業者カナ名称');
+
             $table->foreignId('department_id')->comment('管轄事業部ID');//Departmentテーブル参照
+            // $table->foreignId('user_id')->nullable(true)->comment('営業担当ID');//add Usersテーブル参照
+            // $table->foreignId('installation_type_id')->nullable(true)->comment('設置種別ID');//add Installation_typesテーブル参照
+            $table->foreignId('vendor_type_id')->nullable(true)->comment('業者種別ID');//add Client_typesテーブル参照
+            $table->foreignId('trade_status_id')->comment('取引状態ID');//add Trade_statusesテーブル参照
+            $table->foreignId('client_corporation_id')->comment('法人ID'); //add ClientCorporationsテーブル参照
             $table->text('memo',1000)->nullable(true)->comment('備考');
-            $table->string('distribution',100)->nullable(true)->default('直販')->comment('商流');
-            $table->foreignId('distribution_id')->nullable(true)->comment('ディーラID');//同じClientテーブルから取得
             $table->string('head_post_code',80)->nullable(true)->comment('本店郵便番号');
             $table->string('head_prefecture',80)->nullable(true)->comment('本店都道府県');
             $table->string('head_address1',80)->nullable(true)->comment('本店住所1');
             $table->string('head_tel',80)->nullable(true)->comment('本店TEL');
             $table->string('head_fax',80)->nullable(true)->comment('本店FAX');
-            $table->foreignId('students')->length(5)->nullable(true)->comment('学生数');
-            $table->foreignId('user_id')->nullable(true)->comment('営業担当ID');//add Usersテーブル参照
-            $table->foreignId('installation_type_id')->nullable(true)->comment('設置種別ID');//add Installation_typesテーブル参照
-            $table->foreignId('client_type_id')->nullable(true)->comment('顧客種別ID');//add Client_typesテーブル参照
-            $table->foreignId('trade_status_id')->comment('取引状態ID');//add Trade_statusesテーブル参照
-            $table->foreignId('corporation_id')->comment('法人ID'); //add Corporationsテーブル参照
-            $table->boolean('is_enduser')->default(0)->comment('エンドユーザフラグ');
+            $table->foreignId('number_of_employees')->length(6)->nullable(true)->comment('従業員数');
+            $table->text('url',30000)->nullable(true)->comment('企業HP');
             $table->boolean('is_supplier')->default(0)->comment('仕入外注先フラグ');
             $table->boolean('is_dealer')->default(0)->comment('ディーラフラグ');
             $table->boolean('is_lease')->default(0)->comment('リース会社フラグ');
@@ -38,12 +41,15 @@ return new class extends Migration
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->datetimes();
 
-            $table->index('client_num');
+            $table->index('vendor_num');
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::dropIfExists('clients');
+        Schema::dropIfExists('vendors');
     }
 };
