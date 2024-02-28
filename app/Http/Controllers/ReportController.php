@@ -37,7 +37,7 @@ class ReportController extends Controller
         $count = $reports->count();
         $user = User::all();
 
-        return view('report.index',compact('reports' , 'user' , 'count'));
+        return view('reports.index',compact('reports' , 'user' , 'count'));
     }
 
     public function create()
@@ -54,7 +54,7 @@ class ReportController extends Controller
         $clientName = Session::get('selected_client_name');
         // $clientId = Session::get('selected_client_id');
 
-        return view('report.create',compact('users','departments', 'reportTypes', 'contactTypes', 'clientNum', 'clientName', 'companies', 'departments', 'affiliation3s'));
+        return view('reports.create',compact('users','departments', 'reportTypes', 'contactTypes', 'clientNum', 'clientName', 'companies', 'departments', 'affiliation3s'));
     }
 
     public function store(ReportStoreRequest $request)
@@ -93,7 +93,7 @@ class ReportController extends Controller
 
         // 通知の内容を設定
         $notificationData = [
-            'action_url' => route('report.show', ['report' => $report->id]), // 例: 日報を表示するURL
+            'action_url' => route('reports.show', ['report' => $report->id]), // 例: 日報を表示するURL
             'reporter' => $report->reporter->name,
             'message' => '新しい日報を登録しました。',
             // 他の通知に関する情報をここで設定
@@ -112,14 +112,14 @@ class ReportController extends Controller
   
 
 
-        return redirect()->route('report.index')->with('success','正常に登録しました');
+        return redirect()->route('reports.index')->with('success','正常に登録しました');
     }
 
     public function show($id)
     {
         $report = Report::find($id);
         $comments = $report->comments;
-        return view('report.show',compact('report'));
+        return view('reports.show',compact('report'));
     }
 
     // 顧客情報から飛ぶ画面
@@ -127,7 +127,7 @@ class ReportController extends Controller
     {
         $report = Report::find($id);
         $comments = $report->comments;
-        return view('report.show-from-client',compact('report'));
+        return view('reports.show-from-client',compact('report'));
     }
 
     public function edit(string $id)
@@ -148,7 +148,7 @@ class ReportController extends Controller
         //     $notification->markAsRead();
         // }
         
-        return view('report.edit',compact('users', 'report', 'reportTypes', 'contactTypes'));
+        return view('reports.edit',compact('users', 'report', 'reportTypes', 'contactTypes'));
     }
 
     public function update(Request $request, string $id)
@@ -174,7 +174,7 @@ class ReportController extends Controller
         $selectedRecipientsId = $request->input('selectedRecipientsId');
         $report->recipients()->attach($selectedRecipientsId);
 
-        return redirect()->route('report.edit', $id)->with('success','正常に更新しました');
+        return redirect()->route('reports.edit', $id)->with('success','正常に更新しました');
     }
 
     public function destroy(string $id)

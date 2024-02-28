@@ -5,7 +5,7 @@
                 営業報告確認
             </h2>
             <div class="flex justify-end">
-                <x-general-button onclick="location.href='{{route('report.index')}}'">
+                <x-general-button onclick="location.href='{{route('reports.index')}}'">
                     戻る
                 </x-general-button>
                 <x-message :message="session('message')"/>

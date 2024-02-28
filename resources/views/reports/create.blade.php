@@ -18,7 +18,7 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="mx-4 sm:p-8">
-            <form id="reoportForm" method="post" action="{{route('report.store')}}" enctype="multipart/form-data">
+            <form id="reoportForm" method="post" action="{{route('reports.store')}}" enctype="multipart/form-data">
                 @csrf
                 <button type="button"  onclick="showModal()" class="md:ml-1 md:mt-1 mt-1 mb-2 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     顧客検索
@@ -247,7 +247,7 @@
                     </button>
                 </div>
                 <!-- Modal body -->
-                <form action="{{ route('clientcorporation.search') }}" method="GET">
+                <form action="#" method="GET">
                     <!-- 検索条件入力フォーム -->
                     <div class="grid gap-2 mb-4 sm:grid-cols-3">
                         <div class="w-full flex flex-col mx-2">

@@ -6,7 +6,7 @@ use App\Models\Vendor;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\ClientStoreRequest;
-use App\Models\ClientCorporation;//add
+use App\Models\Corporation;//add
 use App\Models\Client;
 use App\Models\ClientProduct;
 use App\Models\User;
@@ -56,7 +56,7 @@ class VendorController extends Controller
         $departmentId = $request->input('department_id');
 
         // 検索クエリを組み立てる
-        $vendorsQuery = Vendor::with(['clientCorporation','user','tradeStatus','department'])->sortable()->orderBy('vendor_num','asc');
+        $vendorsQuery = Vendor::with(['corporation','user','tradeStatus','department'])->sortable()->orderBy('vendor_num','asc');
 
         if (!empty($selectedTradeStatuses)) {// 取引状態
             $vendorsQuery->whereIn('trade_status_id', $selectedTradeStatuses);
@@ -134,17 +134,17 @@ class VendorController extends Controller
         $formattedPost = Vendor::formatPostCode($inputPost);
 
         // フォームからの値を変数に格納
-        $clientcorporationNum = $request->input('clientcorporation_num');
+        $corporationNum = $request->input('corporation_num');
         $departmentId = $request->input('department');
         $getdepartment = Department::where('id', $departmentId)->first();
         $prefix_code = $getdepartment->prefix_code;
 
-        $vendorNumber = Vendor::generateVendorNumber($clientcorporationNum, $prefix_code);
+        $vendorNumber = Vendor::generateVendorNumber($corporationNum, $prefix_code);
 
 
-        // clientcorporation_numからclientcorporation_idを取得する
-        $clientcorporation = ClientCorporation::where('clientcorporation_num', $clientcorporationNum)->first();
-        $clientcorporationId = $clientcorporation->id;
+        // corporation_numからcorporation_idを取得する
+        $corporation = Corporation::where('corporation_num', $corporationNum)->first();
+        $corporationId = $corporation->id;
 
         $department = Department::where('prefix_code', $prefix_code)->first();
         $departmentId = $department->id;
@@ -155,7 +155,7 @@ class VendorController extends Controller
         $vendor->vendor_num = $vendorNumber;// 採番した顧客番号をセット
 
 
-        $vendor->client_corporation_id = $clientcorporationId;
+        $vendor->corporation_id = $corporationId;
         $vendor->department_id = $departmentId;
         $vendor->vendor_name = $request->client_name;
         $vendor->vendor_kana_name = $request->client_kana_name;
@@ -244,8 +244,8 @@ class VendorController extends Controller
 
     public function destroy(string $id)
     {
-        $client = Vendor::find($id);
-        $client->delete();
+        $vendor = Vendor::find($id);
+        $vendor->delete();
 
         return redirect()->route('vendors.index')->with('success', '正常に削除しました');
     }
@@ -253,9 +253,9 @@ class VendorController extends Controller
     //モーダル用の非同期検索ロジック
     public function search(Request $request)
     {
-        $clientName = $request->input('clientName');
-        $clientNumber = $request->input('clientNumber');
-        $clientDepartment = $request->input('departmentId');
+        $vendorName = $request->input('vendorName');
+        $vendorNumber = $request->input('vendorNumber');
+        $vendorDepartment = $request->input('departmentId');
         $isDealer = $request->input('isDealer');
 
         // 検索条件に基づいて顧客データを取得
@@ -264,11 +264,11 @@ class VendorController extends Controller
         //     ->where('department_id', 'LIKE', '%' . $clientDepartment . '%')
         //     ->get();
         $query = Vendor::query()
-        ->where('client_name', 'LIKE', '%' . $clientName . '%')
-        ->Where('client_num', 'LIKE', '%' . $clientNumber . '%')
-        ->Where('department_id', 'LIKE', '%' . $clientDepartment . '%')
+        ->where('vendor_name', 'LIKE', '%' . $vendorName . '%')
+        ->Where('vendor_num', 'LIKE', '%' . $vendorNumber . '%')
+        ->Where('department_id', 'LIKE', '%' . $vendorDepartment . '%')
         ->where('is_dealer', '=', $isDealer);
-        $vendors = $query->with('products','department','clientCorporation')->get();
+        $vendors = $query->with('department','corporation')->get();
 
         return response()->json($vendors);
     }
@@ -321,9 +321,9 @@ class VendorController extends Controller
             $client = new Vendor();
 
             $clientcorporationNum = $row[0];
-                $clientCorporation = VendorCorporation::where('clientcorporation_num', $clientcorporationNum)->first();
-                if ($clientCorporation) {
-                    $client->client_corporation_id = $clientCorporation->id;
+                $Corporation = VendorCorporation::where('clientcorporation_num', $clientcorporationNum)->first();
+                if ($Corporation) {
+                    $client->client_corporation_id = $Corporation->id;
                 } else {
                     // divisionが見つからない場合のエラーハンドリング
                 }
@@ -337,7 +337,7 @@ class VendorController extends Controller
 
             
             $departmentPrefixCode = $department->prefix_code;
-            $clientcorporationNum = $clientCorporation->clientcorporation_num;
+            $clientcorporationNum = $Corporation->clientcorporation_num;
             $clientNumber = Vendor::generateVendorNumber($clientcorporationNum, $departmentPrefixCode);
             $client->client_num = $clientNumber;
 

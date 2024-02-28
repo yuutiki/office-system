@@ -426,7 +426,6 @@
             const clientName = document.getElementById('clientName').value;
             const clientNumber = document.getElementById('clientNumber').value;
             const departmentId = document.getElementById('departmentId').value;
-            const isDealer = 0;
 
             fetch('/client/search', {
                 method: 'POST',
@@ -434,7 +433,7 @@
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
-                body: JSON.stringify({ clientName, clientNumber, departmentId, isDealer })
+                body: JSON.stringify({ clientName, clientNumber, departmentId })
             })
             .then(response => response.json())
             .then(data => {

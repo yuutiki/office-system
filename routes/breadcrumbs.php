@@ -104,6 +104,23 @@ Breadcrumbs::for('dashboard', function ($trail) {
                     $trail->push('新規作成', url('contract/create'));
                 });
 
+        // ダッシュボード > 営業報告一覧
+        Breadcrumbs::for('reports', function ($trail) {
+            $trail->parent('dashboard');
+            $trail->push('営業報告一覧', url('reports'));
+        });
+                // ダッシュボード > 営業報告一覧 > 営業報告新規登録
+                Breadcrumbs::for('createreport', function ($trail) {
+                    $trail->parent('reports');
+                    $trail->push('新規作成', url('reports/create'));
+                });
+
+                // ダッシュボード > 営業報告一覧 > 営業報告編集
+                Breadcrumbs::for('editreport', function ($trail) {
+                    $trail->parent('reports');
+                    $trail->push('編集', url('reports/edit'));
+                });
+
         // ダッシュボード > 預託情報一覧
         Breadcrumbs::for('keepfiles', function ($trail) {
             $trail->parent('dashboard');

@@ -15,10 +15,10 @@ class Vendor extends Model
     use Sortable;
 
 
-    public static function generateVendorNumber($clientcorporationNum, $prefix_code)
+    public static function generateVendorNumber($corporationNum, $prefix_code)
     {
         $suffix = strtoupper(Str::substr($prefix_code, 0, 1));
-        $lastVendor = Vendor::where('vendor_num', 'like', "$clientcorporationNum-V-$suffix%")
+        $lastVendor = Vendor::where('vendor_num', 'like', "$corporationNum-V-$suffix%")
             ->orderBy('vendor_num', 'desc')
             ->first();
 
@@ -29,7 +29,7 @@ class Vendor extends Model
             $newSerialNumber = '01';
         }
 
-        return "$clientcorporationNum-V-$suffix$newSerialNumber";
+        return "$corporationNum-V-$suffix$newSerialNumber";
     }
 
     //郵便番号のフォーマット変換を行うメソッド
@@ -56,27 +56,31 @@ class Vendor extends Model
 
 
     //relation
-    public function clientCorporation()
+    public function corporation()
     {
-        return $this->belongsTo(ClientCorporation::class);
+        return $this->belongsTo(Corporation::class);
+    }
+    public function clients()
+    {
+        return $this->hasMany(Client::class, 'dealer_id'); // 'dealer_id'がClientテーブルのvendor_idを参照することを示す
     }
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-    public function clientType()
-    {
-        return $this->belongsTo(ClientType::class);
-    }
-    public function installationType()
-    {
-        return $this->belongsTo(InstallationType::class);
-    }
+    // public function clientType()
+    // {
+    //     return $this->belongsTo(ClientType::class);
+    // }
+    // public function installationType()
+    // {
+    //     return $this->belongsTo(InstallationType::class);
+    // }
+
     public function tradeStatus()
     {
         return $this->belongsTo(TradeStatus::class);
     }
-
     public function department()
     {
         return $this->belongsTo(Department::class);

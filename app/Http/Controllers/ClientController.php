@@ -107,7 +107,7 @@ class ClientController extends Controller
         $clients = $clientsQuery->paginate($per_page);
         $count = $clients->total();
 
-        return view('client.index',compact('clients','count','salesUsers', 'departments', 'installationTypes', 'tradeStatuses', 'clientTypes', 'selectedTradeStatuses','selectedClientTypes','selectedInstallationTypes','salesUserId', 'departmentId', 'clientName', 'selectedDepartment'));
+        return view('clients.index',compact('clients','count','salesUsers', 'departments', 'installationTypes', 'tradeStatuses', 'clientTypes', 'selectedTradeStatuses','selectedClientTypes','selectedInstallationTypes','salesUserId', 'departmentId', 'clientName', 'selectedDepartment'));
     }
 
     public function create()
@@ -121,7 +121,7 @@ class ClientController extends Controller
         $distributionTypes = DistributionType::all();
 
 
-        return view('client.create',compact('departments','users','tradeStatuses','clientTypes','installationTypes','prefectures','distributionTypes'));
+        return view('clients.create',compact('departments','users','tradeStatuses','clientTypes','installationTypes','prefectures','distributionTypes'));
     }
 
     public function store(ClientStoreRequest $request)
@@ -152,12 +152,11 @@ class ClientController extends Controller
         $client = new Client();
         $client->client_num = $clientNumber;// 採番した顧客番号をセット
 
-
         $client->corporation_id = $corporationId;
         $client->department_id = $departmentId;
         $client->client_name = $request->client_name;
         $client->client_kana_name = $request->client_kana_name;
-        $client->head_post_code = $formattedPost;//変換後の郵便番号をセット
+        $client->head_post_code = $formattedPost; // 変換後の郵便番号をセット
         $client->head_prefecture = $request->head_prefecture;
         $client->head_address1 = $request->head_addre1;
         $client->head_tel = $request->head_tel;
@@ -169,7 +168,7 @@ class ClientController extends Controller
         $client->trade_status_id = $request->trade_status_id;
         $client->user_id = $request->user_id;
         $client->memo = $request->memo;
-        $client->distribution_id = $request->distribution_id;
+        $client->dealer_id = $request->dealer_id; // Vendorとリレーションしている
         $client->is_enduser = $request->has('is_enduser') ? 1 : 0;
         $client->is_supplier = $request->has('is_supplier') ? 1 : 0;
         $client->is_dealer = $request->has('is_dealer') ? 1 : 0;
@@ -177,7 +176,7 @@ class ClientController extends Controller
         $client->is_other_partner = $request->has('is_other_partner') ? 1 : 0;
         $client->save();
 
-        return redirect()->route('client.index')->with('success', '正常に登録しました');
+        return redirect()->route('clients.index')->with('success', '正常に登録しました');
     }
 
 
@@ -206,7 +205,7 @@ class ClientController extends Controller
         Session::put('selected_client_name', $client->client_name);
         Session::put('selected_client_id', $client->id);
 
-        return view('client.edit',compact('departments','users','tradeStatuses','clientTypes','installationTypes','client','reports','prefectures','supports','clientProducts','distributionTypes'));
+        return view('clients.edit',compact('departments','users','tradeStatuses','clientTypes','installationTypes','client','reports','prefectures','supports','clientProducts','distributionTypes'));
     }
 
     public function update(ClientStoreRequest $request, string $id)
@@ -237,7 +236,7 @@ class ClientController extends Controller
         $client->is_other_partner = $request->has('is_other_partner') ? 1 : 0;
         $client->save();
 
-        return redirect()->route('client.edit', $id)->with('success', '正常に変更しました');
+        return redirect()->route('clients.edit', $id)->with('success', '正常に変更しました');
     }
 
     public function destroy(string $id)
@@ -245,7 +244,7 @@ class ClientController extends Controller
         $client = Client::find($id);
         $client->delete();
 
-        return redirect()->route('client.index')->with('success', '正常に削除しました');
+        return redirect()->route('clients.index')->with('success', '正常に削除しました');
     }
 
     //モーダル用の非同期検索ロジック
@@ -254,7 +253,6 @@ class ClientController extends Controller
         $clientName = $request->input('clientName');
         $clientNumber = $request->input('clientNumber');
         $clientDepartment = $request->input('departmentId');
-        $isDealer = $request->input('isDealer');
 
         // 検索条件に基づいて顧客データを取得
         // $clients = Client::where('client_name', 'LIKE', '%' . $clientName . '%')
@@ -264,8 +262,7 @@ class ClientController extends Controller
         $query = Client::query()
         ->where('client_name', 'LIKE', '%' . $clientName . '%')
         ->Where('client_num', 'LIKE', '%' . $clientNumber . '%')
-        ->Where('department_id', 'LIKE', '%' . $clientDepartment . '%')
-        ->where('is_dealer', '=', $isDealer);
+        ->Where('department_id', 'LIKE', '%' . $clientDepartment . '%');
         $clients = $query->with('products','department','corporation')->get();
 
         return response()->json($clients);

@@ -38,17 +38,17 @@ class Client extends Model
         'corporation_id'
     ];
 
-    //バリデーションルールを設定
-    public static $rules = [
-        'client_num' => 'size:10',
-        'client_name' => 'required|max:20',
-        'client_kana_name' => 'required|max:50',
-        'user_id' => 'required',
-        'client_type_id' => 'required',
-        'trade_status_id' => 'required',
-        'installation_type_id' => 'required',
-        'department' => 'required',
-    ];
+    // //バリデーションルールを設定
+    // public static $rules = [
+    //     'client_num' => 'size:10',
+    //     'client_name' => 'required|max:20',
+    //     'client_kana_name' => 'required|max:50',
+    //     'user_id' => 'required',
+    //     'client_type_id' => 'required',
+    //     'trade_status_id' => 'required',
+    //     'installation_type_id' => 'required',
+    //     'department' => 'required',
+    // ];
 
     //GlobalObserverに定義されている作成者と更新者を登録するメソッド
     //なお、値を更新せずにupdateをかけても更新者は更新されない。
@@ -138,6 +138,10 @@ class Client extends Model
     {
         return $this->belongsTo(Corporation::class);
     }
+    public function dealer() // Vendorとのリレーション
+    {
+        return $this->belongsTo(Vendor::class, 'dealer_id'); // 'dealer_id'がClientテーブルのvendor_idを参照することを示す
+    }
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -154,20 +158,18 @@ class Client extends Model
     {
         return $this->belongsTo(TradeStatus::class);
     }
-
     public function reports()
     {
-        return $this->hasmany(Report::class);
+        return $this->hasMany(Report::class);
     }
     public function supports()
     {
-        return $this->hasmany(Support::class);
+        return $this->hasMany(Support::class);
     }
     public function products()
     {
         return $this->belongsToMany(Product::class, 'client_products', 'client_id', 'product_id');
     }
-
     public function department()
     {
         return $this->belongsTo(Department::class);

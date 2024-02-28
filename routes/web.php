@@ -40,6 +40,7 @@ use App\Http\Controllers\Master\SupportTypeController;
 use App\Http\Controllers\Master\TradeStatusController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SupportController;
+use App\Http\Controllers\VendorController;
 use App\Models\Contract;
 
 /*
@@ -73,16 +74,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/corporations/show-upload', [CorporationController::class, 'showUploadForm'])->name('corporations.showUploadForm');
     Route::get('/corporations/download-csv', [CorporationController::class, 'downloadCsv'])->name('corporations.downloadCsv');
 
+    Route::post('/vendors/search', [VendorController::class, 'search'])->name('vendors.search');
+
+
 
     Route::resource('/keepfile','\App\Http\Controllers\KeepfileController');
     Route::resource('/corporations','\App\Http\Controllers\CorporationController');
     Route::resource('/client','\App\Http\Controllers\ClientController');
     Route::resource('/vendors','\App\Http\Controllers\VendorController');
     Route::resource('/user', '\App\Http\Controllers\UserController');
-    Route::resource('/report', '\App\Http\Controllers\ReportController');
+    Route::resource('/reports', '\App\Http\Controllers\ReportController');
     Route::resource('/product', '\App\Http\Controllers\ProductController');
     Route::resource('/support', '\App\Http\Controllers\SupportController');
-    Route::resource('/project', '\App\Http\Controllers\ProjectController');
+    Route::resource('/projects', '\App\Http\Controllers\ProjectController');
     Route::resource('/link', '\App\Http\Controllers\LinkController');
     Route::resource('/client-product' , '\App\Http\Controllers\ClientProductController');
     Route::resource('/projectrevenue' , '\App\Http\Controllers\ProjectRevenueController');

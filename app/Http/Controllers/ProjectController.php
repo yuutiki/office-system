@@ -262,7 +262,7 @@ class ProjectController extends Controller
                 if ($client) {
                     $project->client_id = $client->id;
                 } else {
-                    // clientが見つからない場合のエラーハンドリング
+                    // clientが見つからない場合のエラーハンドリング★重要
                 }
 
             $projectNumber = Project::generateProjectNumber($clientNum);

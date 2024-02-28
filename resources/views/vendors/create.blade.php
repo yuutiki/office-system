@@ -5,9 +5,6 @@
                 {{ Breadcrumbs::render('createVendor') }}
             </h2>
             <div class="flex justify-end">
-                {{-- <x-general-button onclick="location.href='{{route('client.index')}}'">
-                    戻る
-                </x-general-button> --}}
                 <x-message :message="session('message')"/>
             </div>
         </div>
@@ -27,16 +24,16 @@
                 </button>
                 <div class="grid gap-4 mb-4 sm:grid-cols-2">
                     <div class="">
-                        <label for="clientcorporation_num" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人番号</label>
-                        <input type="text" name="clientcorporation_num" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" id="clientcorporation_num" value="{{old('clientcorporation_num')}}" placeholder="法人検索してください" readonly>
-                        @error('clientcorporation_num')
+                        <label for="corporation_num" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人番号</label>
+                        <input type="text" name="corporation_num" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" id="corporation_num" value="{{old('corporation_num')}}" placeholder="法人検索してください" readonly>
+                        @error('corporation_num')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="">
-                        <label for="clientcorporation_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人名称</label>
-                        <input type="text" name="clientcorporation_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" id="clientcorporation_name" value="{{old('clientcorporation_name')}}" placeholder="法人検索してください" readonly>
-                        @error('clientcorporation_name')
+                        <label for="corporation_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人名称</label>
+                        <input type="text" name="corporation_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" id="corporation_name" value="{{old('corporation_name')}}" placeholder="法人検索してください" readonly>
+                        @error('corporation_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
@@ -104,19 +101,6 @@
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
-                    {{-- <div>
-                        <label for="user_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">営業担当<span class="text-red-500"> *</span></label>
-                        <select id="user_id" name="user_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option value="">未選択</option>
-                            @foreach($users as $user)
-                            <option value="{{ $user->id }}" @selected($user->id == old('user_id', Auth::user()->id))>{{ $user->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('user_id')
-                            <div class="text-red-500">{{ $message }}</div>
-                        @enderror
-                    </div> --}}
-
                 </div>
 
 
@@ -141,7 +125,6 @@
                         <div class="grid gap-4 mb-4 sm:grid-cols-5 mt-2">
                             <div class="">
                                 <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">郵便番号</label>
-                                {{-- <input type="text" name="head_post_code" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="head_post_code" value="{{old('head_post_code')}}" placeholder="" onKeyUp="AjaxZip3.zip2addr(this,'','head_prefecture','head_addre1','','',false);"> --}}
                                 <div class="relative w-full">
                                     <input type="text" name="head_post_code" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="head_post_code" value="{{old('head_post_code')}}" placeholder="">
                                     <button type="button" id="ajaxzip3" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-[34px] text-white mt-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -152,9 +135,6 @@
                                 </div>
                             </div>
 
-                            {{-- <x-general-button type="button" class="ajaxzip3">
-                                郵便番号から住所を取得
-                            </x-general-button> --}}
                             <div class="">
                                 <label for="head_prefecture" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4 ">都道府県</label>
                                 <select id="head_prefecture" name="head_prefecture" class="w-full py-1.5  text-sm mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -168,13 +148,10 @@
                                 <label for="head_addre1" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">代表所在地</label>
                                 <input type="text" name="head_addre1" id="head_addre1" value="{{old('head_addre1')}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" placeholder="">
                             </div>
-
-
                             <div class="">
                                 <label for="head_tel" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">代表TEL（-）</label>
                                 <input type="text" name="head_tel" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_tel" value="{{old('head_tel')}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" placeholder="">
                             </div>
-        
                             <div class="">
                                 <label for="head_fax" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">代表FAX（-）</label>
                                 <input type="tel" name="head_fax" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_fax" value="{{old('head_fax')}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded"  placeholder="">
@@ -189,20 +166,6 @@
                                 <input type="number" min="0" name="number_of_employees" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="number_of_employees" value="{{old('number_of_employees')}}">
                             </div>
                         </div>
-                        {{-- <div class="grid gap-4 mb-1 sm:grid-cols-5 mt-1">
-                            <div class="w-full flex flex-col">
-                                <label for="distribution" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">商流</label>
-                                <select id="distribution_type_id" name="distribution_type_id" class="w-full mt-1 block p-1.5 text-sm bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option selected value="">未選択</option>
-                                    @foreach($distributionTypes as $distributionType)
-                                    <option value="{{ $distributionType->id }}" @selected( $distributionType->id == old('distribution_type_id'))>{{ $distributionType->distribution_type_name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('distribution_type_id')
-                                <div class="text-red-500">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div> --}}
     
                         <div class="w-full flex flex-col">
                             <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">備考</label>
@@ -284,7 +247,7 @@
                     </button>
                 </div>
                 <!-- Modal body -->
-                <form action="{{ route('clientcorporation.search') }}" method="GET">
+                <form action="#" method="GET">
                     <!-- 検索条件入力フォーム -->
                     <div class="grid gap-4 mb-4 sm:grid-cols-2 mt-2">
                     {{-- <div class="flex flex-wrap justify-start mx-5"> --}}
@@ -356,7 +319,7 @@
         const corporationName = document.getElementById('corporationName').value;
         const corporationNumber = document.getElementById('corporationNumber').value;
 
-        fetch('/clientcorporation/search', {
+        fetch('/corporations/search', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -373,8 +336,8 @@
             const resultElement = document.createElement('tr');
             resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
             resultElement.innerHTML = `
-                <td tabindex="1" class="py-2 pl-5 cursor-pointer" onclick="setCorporation('${result.clientcorporation_name}', '${result.clientcorporation_num}')">${result.clientcorporation_short_name}</td>
-                <td class="py-2 ml-2">${result.clientcorporation_num}</td>
+                <td tabindex="1" class="py-2 pl-5 cursor-pointer" onclick="setCorporation('${result.corporation_name}', '${result.corporation_num}')">${result.corporation_short_name}</td>
+                <td class="py-2 ml-2">${result.corporation_num}</td>
             `;
             searchResultsContainer.appendChild(resultElement);
             });
@@ -382,10 +345,10 @@
         }
 
         function setCorporation(name, number) {
-        document.getElementById('clientcorporation_num').value = number;
-        document.getElementById('clientcorporation_name').value = name;
-        // document.getElementById('clientcorporation_name').textContent = name;
-        // document.getElementById('clientcorporation_num').textContent = number;
+        document.getElementById('corporation_num').value = number;
+        document.getElementById('corporation_name').value = name;
+        // document.getElementById('corporation_name').textContent = name;
+        // document.getElementById('corporation_num').textContent = number;
 
         hideModal();
         }
