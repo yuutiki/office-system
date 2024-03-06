@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
-                {{ Breadcrumbs::render('editClient') }}
+                {{ Breadcrumbs::render('editClient', $client) }}
             </h2>
             <div class="flex justify-end">
                 {{-- <x-general-button onclick="location.href='{{route('client.index')}}'">
@@ -802,7 +802,7 @@
                                     </th>
                                     <th scope="col" class="px-2 py-1 whitespace-nowrap">
                                         <div class="flex items-center">
-                                            <button type="button" onclick="location.href='{{route('report.create')}}'" class=" bg-blue-400 flex items-center justify-center px-2 py-1 text-sm font-medium text-white rounded bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none m-auto">
+                                            <button type="button" onclick="location.href='{{route('reports.create')}}'" class=" bg-blue-400 flex items-center justify-center px-2 py-1 text-sm font-medium text-white rounded bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none m-auto">
                                                 <svg class="h-3.5 w-3.5 mr-0.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                                   <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                                                 </svg>
@@ -816,7 +816,7 @@
                                 <tbody>
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
                                         <td class="px-2 py-2 text-center">
-                                     {{-- report.showを作成して変更 --}}
+                                     {{-- reports.showを作成して変更 --}}
                                             <button onclick="location.href='{{route('report.showFromClient',$report)}}'"  class="block whitespace-nowrap text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded text-sm px-2 py-1 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 m-auto" type="button">
                                                 <div class="flex">
                                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -839,7 +839,7 @@
                                             {{$report->reporter->name}}
                                         </td>
                                         <td class="px-2 py-2 text-center">
-                                            <button onclick="location.href='{{route('report.edit',$report)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
+                                            <button onclick="location.href='{{route('reports.edit',$report)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
                                                 <div class="flex">
                                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
@@ -876,7 +876,7 @@
                                                 </svg>
                                                 <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
 
-                                                <form action="{{route('report.destroy',$report->id)}}" method="POST" class="text-center m-auto">
+                                                <form action="{{route('reports.destroy',$report->id)}}" method="POST" class="text-center m-auto">
                                                     @csrf
                                                     @method('delete')
                                                     <button type="submit" data-modal-hide="deleteModal-{{$report->id}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">

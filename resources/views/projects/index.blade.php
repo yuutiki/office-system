@@ -363,7 +363,5 @@
                 uploadForm.submit();
             });
         });
-
-        モーダル上のsubmitボタンを取得
     </script>
 </x-app-layout>

@@ -34,16 +34,22 @@ Breadcrumbs::for('dashboard', function ($trail) {
         });
 
                 // ダッシュボード > 顧客一覧 > 新規登録
-                Breadcrumbs::for('createClient', function ($trail) {
+                Breadcrumbs::for('createClient', function ($trail,) {
                     $trail->parent('clients');
                     $trail->push('新規作成', url('client/create'));
                 });
 
                 // ダッシュボード > 顧客一覧 > 編集
-                Breadcrumbs::for('editClient', function ($trail) {
+                Breadcrumbs::for('editClient', function ($trail, $client) {
                     $trail->parent('clients');
-                    $trail->push('編集', url('client/edit'));
+                    $trail->push('編集', url('client/' . $client->id . '/edit'));
                 });
+
+                        // ダッシュボード > 顧客一覧 > 編集 > 導入システム新規登録
+                        Breadcrumbs::for('createClientProduct', function ($trail) {
+                            $trail->parent('editClient');
+                            $trail->push('導入システム登録', url('client-product/create'));
+                        });
 
         // ダッシュボード > 業者一覧
         Breadcrumbs::for('vendors', function ($trail) {
@@ -92,6 +98,12 @@ Breadcrumbs::for('dashboard', function ($trail) {
             $trail->parent('dashboard');
             $trail->push('サポート一覧', url('support'));
         });
+                // ダッシュボード > サポート一覧 > サポート新規登録
+                Breadcrumbs::for('createSupport', function ($trail) {
+                    $trail->parent('supports');
+                    $trail->push('新規作成', url('support/create'));
+                });
+
 
         // ダッシュボード > 契約一覧
         Breadcrumbs::for('contracts', function ($trail) {
@@ -120,6 +132,13 @@ Breadcrumbs::for('dashboard', function ($trail) {
                     $trail->parent('reports');
                     $trail->push('編集', url('reports/edit'));
                 });
+
+                // ダッシュボード > 営業報告一覧 > 営業報告確認
+                Breadcrumbs::for('showReport', function ($trail, $report) {
+                    $trail->parent('reports');
+                    $trail->push('確認', url('reports/' . $report->id));
+                });
+
 
         // ダッシュボード > 預託情報一覧
         Breadcrumbs::for('keepfiles', function ($trail) {

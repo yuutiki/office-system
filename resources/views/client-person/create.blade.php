@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
+            <h2 class="font-normal text-xl text-gray-900 dark:text-white">
                 {{ Breadcrumbs::render('createclientperson') }}
             </h2>
             <div class="flex justify-end">
@@ -23,15 +23,15 @@
                 </button>
                 <div class="grid gap-4 my-4 md:grid-cols-3">
                     <div class="w-full flex flex-col">
-                        <label for="client_num" class="font-semibold dark:text-red-300 text-red-700 leading-none md:mt-4">顧客№</label>
+                        <label for="client_num" class="font-normal dark:text-white text-red-700 leading-none md:mt-4">顧客№<span class="text-red-500"> *</span></label>
                         <input type="text" name="client_num" id="client_num" value="{{old('client_num')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1 pointer-events-none" placeholder="" readonly>
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="client_name" class="font-semibold dark:text-red-300 text-red-700 leading-none md:mt-4">顧客名称</label>
+                        <label for="client_name" class="font-normal dark:text-white text-red-700 leading-none md:mt-4">顧客名称<span class="text-red-500"> *</span></label>
                         <input type="text" name="client_name" id="client_name" value="{{old('client_name')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1 pointer-events-none" placeholder="" readonly>
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="department_id" class="font-semibold dark:text-red-300 text-red-700 leading-none md:mt-4">管轄事業部</label>
+                        <label for="department_id" class="font-normal dark:text-white text-red-700 leading-none md:mt-4">管轄事業部<span class="text-red-500"> *</span></label>
                         <input type="text" name="department_id" id="department_id" value="{{old('department_id')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1 pointer-events-none" placeholder="" readonly>
                     </div>
                 </div>
@@ -51,7 +51,7 @@
                 <div class="grid gap-4 sm:grid-cols-2 md:mx-4">
                     <div>
                         <div class="w-full flex flex-col">
-                            <label for="last_name" class="font-semibold dark:text-red-300 text-red-700 leading-none md:mt-4">姓</label>
+                            <label for="last_name" class="font-normal dark:text-white text-red-700 leading-none md:mt-4">姓<span class="text-red-500"> *</span></label>
                             <input type="text" name="last_name" id="last_name" value="{{old('last_name')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="">
                         </div>
                         @error('last_name')
@@ -60,7 +60,7 @@
                     </div>
                     <div>
                         <div class="w-full flex flex-col">
-                            <label for="first_name" class="font-semibold dark:text-red-300 text-red-700 leading-none md:mt-4">名</label>
+                            <label for="first_name" class="font-normal dark:text-white text-red-700 leading-none md:mt-4">名<span class="text-red-500"> *</span></label>
                             <input type="text" name="first_name" id="first_name" value="{{old('first_name')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="">
                         </div>
                         @error('first_name')
@@ -69,7 +69,7 @@
                     </div>
                     <div>
                         <div class="w-full flex flex-col">
-                            <label for="last_name_kana" class="font-semibold dark:text-red-300 text-red-700 leading-none">カナ姓</label>
+                            <label for="last_name_kana" class="font-normal dark:text-white text-red-700 leading-none">カナ姓<span class="text-red-500"> *</span></label>
                             <input type="text" name="last_name_kana" id="last_name_kana" value="{{old('last_name_kana')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="">
                         </div>
                         @error('last_name_kana')
@@ -78,7 +78,7 @@
                     </div>
                     <div>
                         <div class="w-full flex flex-col">
-                            <label for="first_name_kana" class="font-semibold dark:text-red-300 text-red-700 leading-none">カナ名</label>
+                            <label for="first_name_kana" class="font-normal dark:text-white text-red-700 leading-none">カナ名<span class="text-red-500"> *</span></label>
                             <input type="text" name="first_name_kana" id="first_name_kana" value="{{old('first_name_kana')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="">
                         </div>
                         @error('first_name_kana')
@@ -87,7 +87,7 @@
                     </div>
                     <div>
                         <div class="w-full flex flex-col">
-                            <label for="division_name" class="font-semibold dark:text-white text-gray-900 leading-none">所属部署名</label>
+                            <label for="division_name" class="font-normal dark:text-white text-gray-900 leading-none">所属部署名</label>
                             <input type="text" name="division_name" id="division_name" value="{{old('division_name')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="">
                         </div>
                         @error('division_name')
@@ -96,7 +96,7 @@
                     </div>
                     <div>
                         <div class="w-full flex flex-col">
-                            <label for="position_name" class="font-semibold dark:text-white text-gray-900 leading-none">役職名</label>
+                            <label for="position_name" class="font-normal dark:text-white text-gray-900 leading-none">役職名</label>
                             <input type="text" name="position_name" id="position_name" value="{{old('position_name')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="">
                         </div>
                         @error('position_name')
@@ -113,7 +113,7 @@
                 <div class="grid gap-4 sm:grid-cols-2 md:mx-4">
                     <div>
                         <div class="w-full flex flex-col">
-                            <label for="tel1" class="font-semibold dark:text-white text-gray-900 leading-none">電話番号</label>
+                            <label for="tel1" class="font-normal dark:text-white text-gray-900 leading-none">電話番号</label>
                             <input type="text" name="tel1" id="tel1" value="{{old('tel1')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="">
                         </div>
                         @error('tel1')
@@ -121,7 +121,7 @@
                         @enderror
                     </div>
                     {{-- <div class="w-full flex flex-col">
-                        <label for="tel2" class="font-semibold dark:text-white text-gray-900 leading-none md:mt-4">電話番号2</label>
+                        <label for="tel2" class="font-normal dark:text-white text-gray-900 leading-none md:mt-4">電話番号2</label>
                         <input type="text" name="tel2" id="tel2" value="{{old('tel2')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="">
                     </div>
                     @error('tel2')
@@ -129,7 +129,7 @@
                     @enderror --}}
                     <div>
                         <div class="w-full flex flex-col">
-                            <label for="fax1" class="font-semibold dark:text-white text-gray-900 leading-none">FAX番号</label>
+                            <label for="fax1" class="font-normal dark:text-white text-gray-900 leading-none">FAX番号</label>
                             <input type="text" name="fax1" id="fax1" value="{{old('fax1')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="">
                         </div>
                         @error('fax1')
@@ -137,14 +137,14 @@
                         @enderror
                     </div>
                     {{-- <div class="w-full flex flex-col">
-                        <label for="fax2" class="font-semibold dark:text-white text-gray-900 leading-none">FAX番号2</label>
+                        <label for="fax2" class="font-normal dark:text-white text-gray-900 leading-none">FAX番号2</label>
                         <input type="text" name="fax2" id="fax2" value="{{old('fax2')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="">
                     </div>
                     @error('fax2')
                         <div class="text-red-500">{{$message}}</div>
                     @enderror --}}
                     {{-- <div class="w-full flex flex-col">
-                        <label for="int_tel" class="font-semibold dark:text-white text-gray-900 leading-none">内線番号</label>
+                        <label for="int_tel" class="font-normal dark:text-white text-gray-900 leading-none">内線番号</label>
                         <input type="text" name="int_tel" id="int_tel" value="{{old('int_tel')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="">
                     </div>
                     @error('int_tel')
@@ -152,7 +152,7 @@
                     @enderror --}}
                     <div>
                         <div class="w-full flex flex-col">
-                            <label for="phone" class="font-semibold dark:text-white text-gray-900 leading-none">携帯番号</label>
+                            <label for="phone" class="font-normal dark:text-white text-gray-900 leading-none">携帯番号</label>
                             <input type="text" name="phone" id="phone" value="{{old('phone')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="">
                         </div>
                         @error('phone')
@@ -161,7 +161,7 @@
                     </div>
                     <div>
                         <div class="w-full flex flex-col">
-                            <label for="mail" class="font-semibold dark:text-white text-gray-900 leading-none">Mail</label>
+                            <label for="mail" class="font-normal dark:text-white text-gray-900 leading-none">Mail</label>
                             <input type="text" name="mail" id="mail" value="{{old('mail')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="">
                         </div>
                         @error('mail')
@@ -177,7 +177,7 @@
 
                 <div class="grid gap-4 sm:grid-cols-4 md:mx-4">
                     <div class="col-span-1">
-                        <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">郵便番号</label>
+                        <label for="head_post_code" class="font-normal dark:text-gray-100 text-gray-900 leading-none" autocomplete="new-password">郵便番号</label>
                         <div class="relative w-full">
                             <input type="text" name="head_post_code" class="focus:ring-2 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="head_post_code" value="{{old('head_post_code')}}" placeholder="">
                             <button type="button" id="ajaxzip3" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-[34px] text-white mt-1 bg-blue-700 rounded-e border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -188,7 +188,7 @@
                         </div>
                     </div>
                     <div class="col-span-1">
-                        <label for="head_prefecture" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">都道府県</label>
+                        <label for="head_prefecture" class="font-normal dark:text-gray-100 text-gray-900 leading-none">都道府県</label>
                         <select id="head_prefecture" name="head_prefecture" class="focus:ring-2 w-full py-1.5 text-sm mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option selected value="">未選択</option>
                             @foreach($prefectures as $prefecture)
@@ -200,7 +200,7 @@
 
                 <div>
                     <div class="mt-3 md:mx-4">
-                        <label for="head_addre1" class="font-semibold dark:text-gray-100 text-gray-900 leading-none">代表所在地</label>
+                        <label for="head_addre1" class="font-normal dark:text-gray-100 text-gray-900 leading-none">代表所在地</label>
                         <input type="text" name="head_addre1" id="head_addre1" value="{{old('head_addre1')}}" class="focus:ring-2 w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" placeholder="">
                     </div>
                     @error('head_addre1')
@@ -210,7 +210,7 @@
 
                 <div>
                     <div class=" flex flex-col md:mx-4">
-                        <label for="person_memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-8">担当者備考</label>
+                        <label for="person_memo" class="font-normal dark:text-gray-100 text-gray-900 leading-none mt-8">担当者備考</label>
                         <textarea name="person_memo" id="person_memo" value="" class="w-full py-1 border border-gray-300 rounded mt-1 focus:ring-2 placeholder-gray-500" cols="30" rows="5" data-auto-resize="true" placeholder="">{{old('person_memo')}}</textarea>
                     </div>           
                     @error('person_memo')
@@ -302,15 +302,15 @@
                         <!-- 検索条件入力フォーム -->
                         <div class="grid gap-2 mb-4 sm:grid-cols-3">
                             <div class="w-full flex flex-col mx-2">
-                                <label for="clientName" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">顧客名称</label>
+                                <label for="clientName" class="font-normal dark:text-gray-100 text-gray-900 leading-none mt-4">顧客名称</label>
                                 <input type="text" name="clientName" id="clientName" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded">
                             </div>
                             <div class="w-full flex flex-col mx-2">
-                                <label for="clientNumber" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">顧客番号</label>
+                                <label for="clientNumber" class="font-normal dark:text-gray-100 text-gray-900 leading-none mt-4">顧客番号</label>
                                 <input type="text" name="clientNumber" id="clientNumber" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded">
                             </div>
                             <div class="w-full flex flex-col mx-2">
-                                <label for="departmentId" class="font-semibold  dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
+                                <label for="departmentId" class="font-normal  dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
                                 <select id="departmentId" name="departmentId" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option selected value="">未選択</option>
                                     @foreach($departments as $department)

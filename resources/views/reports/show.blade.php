@@ -1,25 +1,17 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
-                営業報告確認
+        <div class="flex justify-between w-5/6">
+            <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex">
+                {{ Breadcrumbs::render('showReport', $report) }}
+                {{-- <div class="ml-4">
+                    {{ $count }}件
+                </div> --}}
             </h2>
-            <div class="flex justify-end">
-                <x-general-button onclick="location.href='{{route('reports.index')}}'">
-                    戻る
-                </x-general-button>
-                <x-message :message="session('message')"/>
-            </div>
+            <x-message :message="session('message')" />
         </div>
     </x-slot>
 
-{{-- @if(auth()->check() && $unreadNotifications)
-    @foreach($unreadNotifications as $notification)
-        @if($notification->data['content_id'] == $content->id)
-            <button class="mark-as-read" data-id="{{ $notification->id }}">Mark as Read</button>
-        @endif
-    @endforeach
-@endif --}}
+
 
     <div class="md:w-4/6 mx-auto mt-8">
         <div class="bg-white dark:bg-gray-600 dark:text-white rounded-lg p-8 shadow-lg hover:shadow-2xl transition duration-500">
@@ -31,7 +23,7 @@
                 <div>
                     <div class="flex items-center">
                         <p class="text-blue-400 font-semibold text-sm mr-2 ">取引先</p>
-                        <div class="rounded-md bg-blue-400 w-auto px-2 py-1 font-semibold text-center text-xs">{{ $report->client->tradeStatus->name }}</div>
+                        <div class="rounded-md bg-blue-400 w-auto px-2 py-1 font-semibold text-center text-xs">{{ $report->client->tradeStatus->trade_status_name }}</div>
                     </div>
 
                     <p class="text-gray-600 dark:text-white">{{ $report->client->client_num }}：{{ $report->client->client_name }}</p>

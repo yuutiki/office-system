@@ -13,7 +13,9 @@ class Comment extends Model
     protected $fillable =[
         'content',
         'report_id',
-        'user_id'
+        'user_id',
+        'created_by',
+        'updated_by',
     ];
 
     public static $rules = [

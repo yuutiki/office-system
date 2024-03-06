@@ -70,7 +70,7 @@ class Support extends Model
 
     // バリデーションルール
     public static $rules = [
-        'client_num' => 'required|size:10',
+        'client_num' => 'required|size:12',
         'f_received_at' =>  'required',
         'f_title' => 'required|max:500',
         'f_support_type_id' => 'required',

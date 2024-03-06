@@ -40,7 +40,9 @@ class ClientProductController extends Controller
         $clientName = Session::get('selected_client_name');
         $clientId = Session::get('selected_client_id');
 
-        return view('client-product.create',compact('departments','users','productSeries','productVersions','productSplitTypes','clientNum','clientName','clientId'));
+        $client = $clientId;
+
+        return view('client-product.create',compact('departments','users','productSeries','productVersions','productSplitTypes','clientNum','clientName','clientId', 'client'));
     }
 
     public function store(Request $request)

@@ -115,7 +115,7 @@ class ReportController extends Controller
         return redirect()->route('reports.index')->with('success','正常に登録しました');
     }
 
-    public function show($id)
+    public function show(string $id)
     {
         $report = Report::find($id);
         $comments = $report->comments;

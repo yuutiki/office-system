@@ -12,6 +12,16 @@
             </div>
         </div>
     </x-slot>
+    {{-- <x-slot name="header">
+        <div class="flex justify-between">
+            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
+                {{ Breadcrumbs::render('createClientProduct', $client) }}
+            </h2>
+            <div class="flex justify-end">
+                <x-message :message="session('message')"/>
+            </div>
+        </div>
+    </x-slot> --}}
 
     <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
 
@@ -29,14 +39,14 @@
                 <div class="grid gap-4 mb-4 sm:grid-cols-2">
                     <div class="">
                         <label for="client_num" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客番号</label>
-                        <input type="text" name="client_num" tabindex="-1" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="client_num" value="{{ $clientNum }}" placeholder="顧客検索してください" readonly>
+                        <input type="text" name="client_num" tabindex="-1" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" id="client_num" value="{{ $clientNum }}" placeholder="顧客検索してください" readonly>
                     </div>
                     @error('client_num')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror   
                     <div class="">
                         <label for="client_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客名称</label>
-                        <input type="text" name="client_name" tabindex="-1" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="client_name" value="{{ $clientName }}" readonly>
+                        <input type="text" name="client_name" tabindex="-1" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" id="client_name" value="{{ $clientName }}" readonly>
                     </div>
                     @error('client_name')
                         <div class="text-red-500">{{ $message }}</div>
@@ -66,7 +76,7 @@
                         <div class="grid gap-4 mb-4 sm:grid-cols-4 mt-2" inert>
                             <div>
                                 <label for="productSeries" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">シリーズ</label>
-                                <select id="productSeries" name="productSeries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500 focus:border-primary-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 cursor-not-allowed pointer-events-none" readonly>
+                                <select id="productSeries" name="productSeries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-500 focus:border-primary-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 cursor-not-allowed pointer-events-none" readonly>
                                     <option value="" >未選択</option>
                                     @foreach ($productSeries as $productSeries1)
                                         <option value="{{ $productSeries1->id }}" @selected($productSeries1->id == old('productSeries')) >
@@ -80,7 +90,7 @@
                             </div>
                             <div>
                                 <label for="split_type_name" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">内訳種別</label>
-                                <select id="split_type_name" name="split_type_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500 focus:border-primary-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 cursor-not-allowed pointer-events-none" readonly>
+                                <select id="split_type_name" name="split_type_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-500 focus:border-primary-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 cursor-not-allowed pointer-events-none" readonly>
                                     <option value="" >未選択</option>
                                     @foreach ($productSplitTypes as $productSplitType)
                                     <option value="{{ $productSplitType->id }}" @selected($productSplitType->id == old('productSplitTypeId')) disabled>
@@ -91,18 +101,18 @@
                             </div>
                             <div hidden>
                                 <label for="product_code" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">製品コード</label>
-                                <input type="text" name="product_code" id="product_code" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 cursor-not-allowed" placeholder="Type product code" readonly>
+                                <input type="text" name="product_code" id="product_code" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 cursor-not-allowed" placeholder="Type product code" readonly>
                             </div>
                             <div class="col-span-2">
                                 <label for="product_name" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">製品名称</label>
-                                <input type="text" name="product_name" id="product_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 cursor-not-allowed" placeholder="製品検索をしてください" inert>
+                                <input type="text" name="product_name" id="product_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 cursor-not-allowed" placeholder="製品検索をしてください" inert>
                             </div>
                         </div>
 
                         <div class="grid gap-4 mb-4 sm:grid-cols-4 mt-8">
                             <div>
                                 <label for="product_version_id" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">バージョン</label>
-                                <select id="product_version_id" name="product_version_id" tabindex="1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500 focus:border-primary-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                <select id="product_version_id" name="product_version_id" tabindex="1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-500 focus:border-primary-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option selected value="">未選択</option>
                                     @foreach ($productVersions as $productVersion)
                                         <option value = "{{ $productVersion->id }}" @selected($productVersion->id == old('product_version_id')) >
@@ -116,7 +126,7 @@
                             </div>
                             <div>
                                 <label for="is_customized" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">CUSフラグ</label>
-                                <select id="is_customized" name="is_customized" tabindex="2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500 focus:border-primary-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                <select id="is_customized" name="is_customized" tabindex="2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-500 focus:border-primary-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option selected value="0">標準</option>
                                     <option value="1">CUS</option>
                                 </select>
@@ -126,7 +136,7 @@
                             </div>
                             <div>
                                 <label for="is_contracted" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">契約区分</label>
-                                <select id="is_contracted" name="is_contracted" tabindex="3" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-500 focus:border-primary-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                <select id="is_contracted" name="is_contracted" tabindex="3" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-500 focus:border-primary-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option value="0">未契約</option>
                                     <option selected value="1">契約済</option>
                                 </select>
@@ -136,14 +146,14 @@
                             </div>
                             <div>
                                 <label for="quantity" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">数量</label>
-                                <input type="number" min="1" tabindex="4" name="quantity" id="quantity" value="1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="">
+                                <input type="number" min="1" tabindex="4" name="quantity" id="quantity" value="1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="">
                             </div>
                             @error('quantity')
                                 <div class="text-red-500">{{ $message }}</div>
                             @enderror
                             <div class="sm:col-span-4">
                                 <label for="install_memo" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">備考</label>
-                                <textarea id="install_memo" name="install_memo" tabindex="5" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Write product description here"></textarea>                    
+                                <textarea id="install_memo" name="install_memo" tabindex="5" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Write product description here"></textarea>                    
                             </div>
                             @error('install_memo')
                                 <div class="text-red-500">{{ $message }}</div>
@@ -184,15 +194,15 @@
                     <div class="grid gap-2 mb-4 sm:grid-cols-3">
                         <div class="w-full flex flex-col mx-2">
                             <label for="clientName" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">顧客名称</label>
-                            <input type="text" name="clientName" id="clientName" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded-md">
+                            <input type="text" name="clientName" id="clientName" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded">
                         </div>
                         <div class="w-full flex flex-col mx-2">
                             <label for="clientNumber" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">顧客番号</label>
-                            <input type="text" name="clientNumber" id="clientNumber" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded-md">
+                            <input type="text" name="clientNumber" id="clientNumber" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded">
                         </div>
                         <div class="w-full flex flex-col mx-2">
                             <label for="departmentId" class="font-semibold  dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
-                            <select id="departmentId" name="departmentId" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-md focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <select id="departmentId" name="departmentId" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 @foreach($departments as $department)
                                 <option value="{{ $department->id }}" @selected($department->id == Auth::user()->department->id)>

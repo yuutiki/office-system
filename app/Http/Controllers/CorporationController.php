@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CorporationStoreRequest;
 use App\Http\Requests\CorporationUpdateRequest;
+use App\Http\Requests\CorporationUploadRequest;
 use App\Models\Corporation;
 use Goodby\CSV\Import\Standard\Lexer;
 use Goodby\CSV\Import\Standard\Interpreter;
@@ -239,124 +240,168 @@ class CorporationController extends Controller
     }
 
 
-    public function upload(Request $request)
+    public function upload(CorporationUploadRequest $request)
     {
-        // ファイルがアップロードされているかチェック
-        if (!$request->hasFile('csv_upload')) {
-        // エラーメッセージをセットしてリダイレクト
-        return redirect()->back()->with('error', 'アップロードするCSVファイルが選択されていません。');
-        }
+        session()->forget('error1');
 
         $csvFile = $request->file('csv_upload');
-        
+
         // CSVファイルの一時保存先パス
         $csvPath = $csvFile->getRealPath();
 
         // ラジオボタンの選択状態を確認
-        $radioOption = $request->input('inline-radio-group');
+        $radioOption = $request->input('processing_type');
 
         // 分岐処理
         if ($radioOption === 'new') {
             // 新規登録の処理
-            $this->parseCSVAndSaveToDatabase($csvPath, 'new');
+            $recordCount = $this->parseCSVAndSaveToDatabase($csvPath, 'new');
         } elseif ($radioOption === 'update') {
             // 既存更新の処理
-            $this->parseCSVAndSaveToDatabase($csvPath, 'update');
+            $recordCount = $this->parseCSVAndSaveToDatabase($csvPath, 'update');
         } else {
-            // その他の処理（エラー処理など）
-            return redirect()->back()->with('error', '選択された処理が不明です。');
+            // バリデーション：更新種別が選択されていない場合（ほぼ起こり得ない）
+            return redirect()->back()->with('error', '処理種別が選択されていません。');
         }
         
-        // CSVデータのパースとデータベースへの登録処理
-        // $this->parseCSVAndSaveToDatabase($csvPath);
-
         // 成功時のリダイレクトやメッセージを追加するなどの処理を行う
-        return redirect()->back()->with('success', '正常にアップロードしました。');
+        return redirect()->back()->with('success', $recordCount . '件のデータを正常にアップロードしました。');
     }
 
     private function parseCSVAndSaveToDatabase($csvPath, $operation)
     {
-        // CSVファイルの文字コードを自動判定
-        $fromCharset = mb_detect_encoding(file_get_contents($csvPath), 'UTF-8, Shift_JIS, EUC-JP, JIS, SJIS-win', true);
+        // CSV ファイルの文字コードを自動判定
+        $fromCharset = mb_detect_encoding(file_get_contents($csvPath), 'UTF-8, Shift_JIS, EUC-JP, JIS, SJIS-win, UTF-16, Unicode', true);
         
         $config = new LexerConfig();
-        $config->setFromCharset($fromCharset);
-
-        $config->setIgnoreHeaderLine(true); // ヘッダを無視する設定
+        $config->setFromCharset($fromCharset)
+            ->setEnclosure('"')
+            ->setDelimiter(',')
+            ->setIgnoreHeaderLine(true);
+    
         $lexer = new Lexer($config);
-
+    
         // トランザクション開始
         DB::beginTransaction();
-
+    
         try {
-            // CSV行をパースした際に実行する処理を定義
-            $interpreter = new Interpreter();
-
-            // 登録したレコード数をカウントする変数
             $recordCount = 0;
+            $lineNumber = 1;
+    
+            $interpreter = new Interpreter();
+            $interpreter->addObserver(function (array $row) use ($operation, &$recordCount, &$lineNumber) {
+                $lineNumber++;
+    
+                $errors = $this->validateRow($row, $operation, $lineNumber);
+    
+                // if (!empty($errors)) {
+                //     // エラーメッセージをセッションに保存
+                //     // session()->flash('error', "エラーがあります。 on line $lineNumber: " . implode(', ', $errors));
+                //     return redirect()->back()->withInput()->with('error',implode(', ', $errors));
+                // }
+                if (!empty($errors)) {
+                    $existingErrors = session('error1', []);
+                    DB::rollBack();
+
+                    $existingErrors = array_merge($existingErrors, $errors);
+                    session(['error1' => $existingErrors]);
+                    return redirect()->back()->withInput();
+                }
             
-            $interpreter->addObserver(function (array $row) use ($operation, &$recordCount) {
-                // 登録済みかどうかを確認
-                $existingRecord = Corporation::where('corporation_num', $row[0])->first();
-
-                // 新規登録かつcorporation_numが重複している場合
-                if ($operation === 'new' && Corporation::where('corporation_num', $row[0])->exists()) {
-                    // バリデーションエラーがある場合
-                    // エラーメッセージをセットしてリダイレクト
-                    return redirect()->back()->withErrors(['corporation_num' => 'すでに登録されている法人番号が含まれています。'])->withInput()->with('error','エラーがあります。');
-                }
-                // 既存更新かつcorporation_numが存在していない場合
-                if ($operation === 'update' && !Corporation::where('corporation_num', $row[0])->exists()) {
-                    // バリデーションエラーがある場合
-                    // エラーメッセージをセットしてリダイレクト
-                    return redirect()->back()->withErrors(['corporation_num' => '更新対象の法人番号が見つかりません。'])->withInput()->with('error','エラーがあります。');
-                }
-
-                if ($existingRecord && $operation === 'update') {
-                    // 既存更新の処理
-                    $existingRecord->update([
-                        'corporation_name' => $row[1],
-                        'corporation_kana_name' => $row[2],
-                        'corporation_short_name' => $row[3],
-                        'memo' => $row[4],
-                    ]);
-                } elseif ($operation === 'new') {
-
-                    // 新規登録の処理
-                    $Corporation = new Corporation();
-                    $Corporation->corporation_num = $row[0];
-                    $Corporation->corporation_name = $row[1];
-                    $Corporation->corporation_kana_name = $row[2];
-                    $Corporation->corporation_short_name = $row[3];
-                    $Corporation->memo = $row[4];
-                    $Corporation->save();
-
-                    // 登録したレコード数をインクリメント
-                    $recordCount++;
-                }
+    
+                $this->processRow($row, $operation);
+                $recordCount++;
             });
-
+    
             $lexer->parse($csvPath, $interpreter);
-
-                // フラッシュメッセージに登録したレコード数を含むメッセージをセット
-            $flashMessage = $recordCount > 0
-            ? "正常にアップロードしました。新規登録件数: {$recordCount} 件"
-            : '正常にアップロードしました。新しいデータはありません。';
-
+    
             // トランザクションコミット
             DB::commit();
-
-            // フラッシュメッセージをセットしてリダイレクト
-            return redirect()->back()->with('success', $flashMessage);
-
+    
+            return $recordCount;
+    
         } catch (\Exception $e) {
-            // エラー発生時の処理（例: ログ出力、エラーメッセージの設定など）
-            
             // トランザクションロールバック
             DB::rollBack();
-
-            // 例外を再スロー
             throw $e;
+        }
+    }
+    
+    private function validateRow(array $row, $operation, $lineNumber)
+    {
+        $errors = [];
+    
+        if (count($row) !== 5) {
+            $errors[] = "$lineNumber 行目：列数が5ではない行があります";
+        }
+
+        // 法人番号($row[0])に関して
+        if (empty($row[0])) {
+            // required
+            $errors[] = "$lineNumber 行目：「法人番号」は必須です";
+        } elseif (mb_strlen($row[0]) !== 6) {
+            // size=6
+            $errors[] = "$lineNumber 行目：法人番号は6桁でなければなりません";
+        }
+
+        if ($operation === 'new' && Corporation::where('corporation_num', $row[0])->exists()) {
+            $errors[] = "$lineNumber 行目：「法人番号」が重複しています";
+        }
+    
+        if ($operation === 'update' && !Corporation::where('corporation_num', $row[0])->exists()) {
+            $errors[] = "$lineNumber 行目：更新対象の「法人番号」が存在しません";
+        }
+
+
+        // 桁数チェック
+        if (mb_strlen($row[1]) > 100) {
+            $errors[] = "$lineNumber 行目：法人名称は100文字以下でなければなりません";
+        }
+        if (strlen($row[2]) > 100) {
+            $errors[] = "$lineNumber 行目：カナ名称は100文字以下でなければなりません";
+        }
+        if (mb_strlen($row[3]) > 100) {
+            $errors[] = "$lineNumber 行目：略称は100文字以下でなければなりません";
+        }
+        if (mb_strlen($row[4]) > 1000) {
+            $errors[] = "$lineNumber 行目：法人備考は1000文字以下でなければなりません";
+        }
+
+        // 型チェック
+        if (!is_string($row[1])) {
+            $errors[] = "$lineNumber 行目：法人名称は文字列である必要があります";
+        }
+        if (!is_string($row[2])) {
+            $errors[] = "$lineNumber 行目：カナ名称は文字列である必要があります";
+        }
+        if (!is_string($row[3])) {
+            $errors[] = "$lineNumber 行目：略称は文字列である必要があります";
+        }
+        if (!is_string($row[4])) {
+            $errors[] = "$lineNumber 行目：法人備考は文字列である必要があります";
+        }
+    
+
+        return $errors;
+    }
+    
+    private function processRow(array $row, $operation)
+    {
+        if ($existingRecord = Corporation::where('corporation_num', $row[0])->first()) {
+            $existingRecord->update([
+                'corporation_name' => $row[1],
+                'corporation_kana_name' => $row[2],
+                'corporation_short_name' => $row[3],
+                'memo' => $row[4],
+            ]);
+        } elseif ($operation === 'new') {
+            $corporation = new Corporation();
+            $corporation->corporation_num = $row[0];
+            $corporation->corporation_name = $row[1];
+            $corporation->corporation_kana_name = $row[2];
+            $corporation->corporation_short_name = $row[3];
+            $corporation->memo = $row[4];
+            $corporation->save();
         }
     }
 }

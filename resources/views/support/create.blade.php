@@ -1,15 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
-                サポート履歴登録
+        <div class="flex justify-between w-5/6">
+            <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex">
+                {{ Breadcrumbs::render('createSupport') }}
+                {{-- <div class="ml-4">
+                    {{ $count }}件
+                </div> --}}
             </h2>
-            <div class="flex justify-end">
-                <x-general-button onclick="location.href='{{route('support.index')}}'">
-                    戻る
-                </x-general-button>
-                <x-message :message="session('message')"/>
-            </div>
+            <x-message :message="session('message')" />
         </div>
     </x-slot>
 
@@ -27,17 +25,24 @@
                 顧客検索
             </button>
             <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                <div class="">
-                    <label for="client_num" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客番号</label>
-                    <input type="text" name="client_num" class="w-full py-1 placeholder-red-800 bg-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" id="client_num" value="{{$clientNum}}" placeholder="顧客を検索してください" readonly>
+                <div>
+                    <div class="">
+                        <label for="client_num" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客番号</label>
+                        <input type="text" name="client_num" class="w-full py-1 placeholder-red-800 bg-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" id="client_num" value="{{ old('client_num', $clientNum) }}" placeholder="顧客を検索してください" readonly>
+                    </div>
+                    @error('client_num')
+                    <div class="text-red-500">{{ $message }}</div>
+                    @enderror
                 </div>
-                @error('client_num')
-                <div class="text-red-500">{{ $message }}</div>
-                @enderror
 
-                <div class="">
-                    <label for="client_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客名称</label>
-                    <input type="text" name="client_name" class="w-full py-1 placeholder-red-800 bg-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" id="client_name" value="{{$clientName}}" placeholder="顧客を検索してください" readonly>
+                <div>
+                    <div class="">
+                        <label for="client_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客名称</label>
+                        <input type="text" name="client_name" class="w-full py-1 placeholder-red-800 bg-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" id="client_name" value="{{ old('client_name', $clientName) }}" placeholder="顧客を検索してください" readonly>
+                    </div>
+                    @error('client_name')
+                    <div class="text-red-500">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
 
@@ -56,7 +61,7 @@
                     <select id="client_type_id" name="client_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed pointer-events-none" readonly>
                         <option selected value="">未選択</option>
                         @foreach($clientTypes as $clientType)
-                        <option value="{{ $clientType->id }}" @selected($clientType->id == old('client_type_id')) >{{ $clientType->name }}</option>
+                        <option value="{{ $clientType->id }}" @selected($clientType->id == old('client_type_id')) >{{ $clientType->client_type_name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -126,21 +131,7 @@
                             @enderror
                         </div>
                         <div class="">
-                            <label for="f_client_user_department" class="font-semibold text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">担当者 部署</label>
-                            <input type="text" name="f_client_user_department" class="block w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="f_client_user_department" value="{{old('f_client_user_department')}}" placeholder="">
-                            @error('f_client_user_department')
-                            <div class="text-red-500">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        {{-- <div class="">
-                            <label for="f_client_user_kana_name" class="font-semibold text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">担当者 氏名</label>
-                            <input type="text" name="f_client_user_kana_name" class="block w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="f_client_user_kana_name" value="{{old('f_client_user_kana_name')}}" placeholder="">
-                            @error('f_client_user_kana_name')
-                                <div class="text-red-500">{{ $message }}</div>
-                            @enderror
-                        </div> --}}
-                        <div class="">
-                            <label for="f_client_user_kana_name" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">担当者 氏名</label>
+                            <label for="f_client_user_kana_name" class="font-semibold text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">担当者 氏名</label>
                             <div class="relative w-full">
                                 <input type="text" name="f_client_user_kana_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-e rounded-s mt-1" id="f_client_user_kana_name" value="{{old('f_client_user_kana_name')}}" placeholder="">
                                 <button type="button" onclick="showClientPersonModal()" class="absolute top-0 end-0 p-2 text-sm font-medium h-[34px] text-white mt-1 bg-blue-700 rounded-e border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -152,6 +143,13 @@
                                     <div class="text-red-500">{{ $message }}</div>
                                 @enderror
                             </div>
+                        </div>
+                        <div class="">
+                            <label for="f_client_user_department" class="font-semibold text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">担当者 部署</label>
+                            <input type="text" name="f_client_user_department" class="block w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="f_client_user_department" value="{{old('f_client_user_department')}}" placeholder="">
+                            @error('f_client_user_department')
+                            <div class="text-red-500">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 

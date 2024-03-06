@@ -54,18 +54,6 @@
                 </div>
                 <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-2">
                     <div>
-                        <label for="installation_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">設置種別<span class="text-red-500"> *</span></label>
-                        <select id="installation_type_id" name="installation_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option value="">未選択</option>
-                            @foreach($installationTypes as $installationType)
-                                <option value="{{ $installationType->id }}" @selected($installationType->id == old('installation_type_id'))>{{ $installationType->type_name }}</option>
-                            @endforeach
-                        </select>
-                        @error('installation_type_id')
-                            <div class="text-red-500">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div>
                         <label for="client_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">業者種別<span class="text-red-500"> *</span></label>
                         <select id="client_type_id" name="client_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">未選択</option>
@@ -78,7 +66,7 @@
                         @enderror
                     </div>
                     <div>
-                        <label for="trade_status_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">取引状態<span class="text-red-500"> *</span></label>
+                        <label for="trade_status_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">業者取引状態<span class="text-red-500"> *</span></label>
                         <select id="trade_status_id" name="trade_status_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">未選択</option>
                             @foreach($tradeStatuses as $tradeStatus)
@@ -215,6 +203,10 @@
                         </x-primary-button>
             </form>
                     </div>
+
+
+
+
                     <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
                         {{-- content --}}
                     </div>
@@ -228,9 +220,8 @@
         </div>
     </div>
 
-    <!-- Extra Large Modal -->
+    <!-- 法人検索 Modal -->
     <div id="corporationSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden animate-slide-in-top">
-    {{-- <div id="corporationSearchModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full justify-center items-center"> --}}
         <div class="max-h-full w-full max-w-2xl">
             <!-- Modal content -->
             <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
@@ -275,7 +266,6 @@
                         </tbody>
                     </table>
                 </div>
-                
                 <!-- Modal footer -->
                 <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
                     <button type="button" onclick="searchCorporation()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -288,6 +278,9 @@
             </div>
         </div>
     </div>
+
+
+
 
 <script>
     // モーダルを表示するための関数
@@ -328,33 +321,30 @@
             body: JSON.stringify({ corporationName, corporationNumber })
         })
         .then(response => response.json())
-        .then(data => {
-            const searchResultsContainer = document.getElementById('searchResultsContainer');
-            searchResultsContainer.innerHTML = '';
+            .then(data => {
+                const searchResultsContainer = document.getElementById('searchResultsContainer');
+                searchResultsContainer.innerHTML = '';
 
-            data.forEach(result => {
-            const resultElement = document.createElement('tr');
-            resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
-            resultElement.innerHTML = `
-                <td tabindex="1" class="py-2 pl-5 cursor-pointer" onclick="setCorporation('${result.corporation_name}', '${result.corporation_num}')">${result.corporation_short_name}</td>
-                <td class="py-2 ml-2">${result.corporation_num}</td>
-            `;
-            searchResultsContainer.appendChild(resultElement);
+                data.forEach(result => {
+                const resultElement = document.createElement('tr');
+                resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
+                resultElement.innerHTML = `
+                    <td tabindex="1" class="py-2 pl-5 cursor-pointer" onclick="setCorporation('${result.corporation_name}', '${result.corporation_num}')">${result.corporation_short_name}</td>
+                    <td class="py-2 ml-2">${result.corporation_num}</td>
+                    `;
+                searchResultsContainer.appendChild(resultElement);
+                });
             });
-        });
         }
 
         function setCorporation(name, number) {
-        document.getElementById('corporation_num').value = number;
-        document.getElementById('corporation_name').value = name;
-        // document.getElementById('corporation_name').textContent = name;
-        // document.getElementById('corporation_num').textContent = number;
-
-        hideModal();
+            document.getElementById('corporation_num').value = number;
+            document.getElementById('corporation_name').value = name;
+            // document.getElementById('corporation_name').textContent = name;
+            // document.getElementById('corporation_num').textContent = number;
+            hideModal();
         }
-
 </script>
-
 
 <script type="text/javascript" src="{{ asset('/assets/js/addresssearchbutton.js') }}"></script>
 <script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>

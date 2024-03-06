@@ -73,14 +73,16 @@ class Corporation extends Model
         return DB::transaction(function () use ($data) {
             // ロックをかけて最後の法人情報を取得
             $lastCorporation = Corporation::lockForUpdate()->orderBy('id', 'desc')->first();
-            $lastNumber = $lastCorporation ? $lastCorporation->clientcorporation_num : '000000';
+            $lastNumber = $lastCorporation ? $lastCorporation->corporation_num : '000000';
+            
+            // 最後の番号をインクリメントして新しい番号を生成
             $newNumber = str_pad((int) $lastNumber + 1, 6, '0', STR_PAD_LEFT);
-
+            
             $data['corporation_num'] = $newNumber;
-
+    
             // データ登録
             $corporation = Corporation::create($data);
-
+    
             return $corporation;
         });
     }
