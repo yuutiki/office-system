@@ -34,55 +34,22 @@ class T_KeepfileSeeder extends Seeder
 
         Keepfile::create([
             'project_num' => '9999-99-99-02',
-            'clientname' => '烏丸大学',
-            'purpose' => 'バージョンアップ',
-            'keep_at' => '2023-03-01',
-            'return_at' => '2024-03-31',
-            'memo' => 'テスト',
+            'clientname' => '聖路加国際大学',
+            'purpose' => 'シラバス不具合調査',
+            'keep_at' => '2024-03-04',
+            'return_at' => '2024-06-30',
+            'memo' => 'リモート取得',
             'is_finished' => '0',
             'user_id' => '1'
         ]);
 
         Keepfile::create([
             'project_num' => '9999-99-99-03',
-            'clientname' => '烏丸大学',
-            'purpose' => 'バージョンアップ',
-            'keep_at' => '2023-03-01',
-            'return_at' => '2024-03-31',
-            'memo' => 'テスト',
-            'is_finished' => '0',
-            'user_id' => '1'
-        ]);
-
-        Keepfile::create([
-            'project_num' => '9999-99-99-04',
-            'clientname' => '烏丸大学',
-            'purpose' => 'バージョンアップ',
-            'keep_at' => '2023-03-01',
-            'return_at' => '2024-03-31',
-            'memo' => 'テスト',
-            'is_finished' => '0',
-            'user_id' => '1'
-        ]);
-
-        Keepfile::create([
-            'project_num' => '9999-99-99-05',
-            'clientname' => '烏丸大学',
-            'purpose' => 'バージョンアップ',
-            'keep_at' => '2023-03-01',
-            'return_at' => '2024-03-31',
-            'memo' => 'テスト',
-            'is_finished' => '0',
-            'user_id' => '1'
-        ]);
-
-        Keepfile::create([
-            'project_num' => '9999-99-99-06',
-            'clientname' => '烏丸大学',
-            'purpose' => 'バージョンアップ',
-            'keep_at' => '2023-03-01',
-            'return_at' => '2024-03-31',
-            'memo' => 'テスト',
+            'clientname' => '桐朋学園大学',
+            'purpose' => 'Web学生カルテ導入',
+            'keep_at' => '2023-03-06',
+            'return_at' => '2024-06-30',
+            'memo' => 'リモート取得',
             'is_finished' => '0',
             'user_id' => '1'
         ]);
