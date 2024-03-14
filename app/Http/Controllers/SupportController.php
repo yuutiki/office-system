@@ -267,8 +267,6 @@ class SupportController extends Controller
         $support->is_faq_target = $request->input('is_faq_target_' . $id);
         $support->save();
 
-
-
         return redirect()->route('support.index')->with('success', '変更しました');
     }
 

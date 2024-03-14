@@ -24,48 +24,48 @@
                 </button>
                 <div class="grid gap-4 mb-4 sm:grid-cols-2">
                     <div class="">
-                        <label for="corporation_num" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人番号</label>
+                        <label for="corporation_num" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人番号<span class="text-red-500"> *</span></label>
                         <input type="text" name="corporation_num" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" id="corporation_num" value="{{old('corporation_num')}}" placeholder="法人検索してください" readonly>
                         @error('corporation_num')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="">
-                        <label for="corporation_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人名称</label>
+                        <label for="corporation_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人名称<span class="text-red-500"> *</span></label>
                         <input type="text" name="corporation_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" id="corporation_name" value="{{old('corporation_name')}}" placeholder="法人検索してください" readonly>
                         @error('corporation_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="">
-                        <label for="client_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">業者名称</label>
-                        <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="client_name" value="{{old('client_name')}}" placeholder="例）烏丸大学">
-                        @error('client_name')
+                        <label for="vendor_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">業者名称<span class="text-red-500"> *</span></label>
+                        <input type="text" name="vendor_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="vendor_name" value="{{old('vendor_name')}}" placeholder="">
+                        @error('vendor_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="">
-                        <label for="client_kana_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">業者カナ名称</label>
-                        <input type="text" name="client_kana_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="client_kana_name" value="{{old('client_kana_name')}}" placeholder="例）カラスマダイガク">
-                        @error('client_kana_name')
+                        <label for="vendor_kana_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">業者カナ名称<span class="text-red-500"> *</span></label>
+                        <input type="text" name="vendor_kana_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="vendor_kana_name" value="{{old('vendor_kana_name')}}" placeholder="">
+                        @error('vendor_kana_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
                 <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-2">
                     <div>
-                        <label for="client_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">業者種別<span class="text-red-500"> *</span></label>
-                        <select id="client_type_id" name="client_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <label for="vendor_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">業者種別<span class="text-red-500"> *</span></label>
+                        <select id="vendor_type_id" name="vendor_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">未選択</option>
-                            @foreach($clientTypes as $clientType)
-                                <option value="{{ $clientType->id }}" @selected($clientType->id == old('client_type_id'))>{{ $clientType->client_type_name }}</option>
+                            @foreach($vendorTypes as $vendorType)
+                                <option value="{{ $vendorType->id }}" @selected($vendorType->id == old('vendor_type_id'))>{{ $vendorType->vendor_type_name }}</option>
                             @endforeach
                         </select>
-                        @error('client_type_id')
+                        @error('vendor_type_id')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div>
+                    {{-- <div>
                         <label for="trade_status_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">業者取引状態<span class="text-red-500"> *</span></label>
                         <select id="trade_status_id" name="trade_status_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">未選択</option>
@@ -76,7 +76,7 @@
                         @error('trade_status_id')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
-                    </div>
+                    </div> --}}
                     <div>
                         <label for="department" class="font-semibold  text-gray-900 dark:text-white leading-none mt-4">管轄事業部<span class="text-red-500"> *</span></label>
                         <select id="department" name="department" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">

@@ -136,7 +136,7 @@
                     {{ __('Add') }}
                 </button>
                 <div class="flex items-center w-full space-x-3 hidden md:w-auto md:inline-block">
-                    <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s rounded-e md:w-auto focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
+                    <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded md:w-auto focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
                         <svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
                         </svg>
@@ -145,10 +145,28 @@
                     <div id="actionsDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-600 dark:divide-gray-600">
                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
                             <li>
-                                <button type="button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="block w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                {{-- <button type="button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="block w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
                                     CSV一括登録
+                                </button> --}}
+                                <button type="button" onclick="location.href='{{ route('client-person.showUploadForm') }}'" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2M8 9l4-5 4 5m1 8h0"/>
+                                        </svg>
+                                    </div>
+                                    CSVアップロード
                                 </button>
                             </li>
+                            {{-- <li>
+                                <button type="button" onclick="location.href='{{ route('corporations.downloadCsv', $filters ?? []) }}'" class="relative w-full items-center py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2m-1-5-4 5-4-5m9 8h0"/>
+                                        </svg>
+                                    </div>
+                                    CSVダウンロード
+                                </button>
+                            </li> --}}
                         </ul>
                     </div>
                 </div>
@@ -237,10 +255,10 @@
             <tbody>
                 @foreach ($clientPersons as $clientPerson)
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 font-medium hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600 clickable-row">
-                        <td class="pl-4 py-2 whitespace-nowrap">
+                        <td class="pl-4 py-1 whitespace-nowrap">
                             {{ $loop->iteration }}
                         </td>
-                        <td class="pl-4 py-2 whitespace-nowrap">
+                        <td class="pl-4 py-1 whitespace-nowrap">
                             <button type="button" onclick="location.href='{{route('client-person.edit',$clientPerson)}}'"  class="button-edit">
                                 <div class="flex">
                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -250,19 +268,19 @@
                                 </div>
                             </button>
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{ optional($clientPerson->client)->client_num}}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             @if ($clientPerson->client->is_dealer)
                                 <div class="rounded bg-blue-400 w-14 px-2 py-1 font-semibold text-center text-xs">ディーラ</div>
                             @endif
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{ optional($clientPerson->client)->client_name}}
                         </td>
 
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             <ruby>
                             {{$clientPerson->last_name}}<rt class="text-[9px]">{{$clientPerson->last_name_kana}}</rt>
                             </ruby>
@@ -270,13 +288,13 @@
                                  {{$clientPerson->first_name}}<rt class="text-[9px]">{{ $clientPerson->first_name_kana }}</rt>
                             </ruby>
                         </td>
-                        <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <td class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$clientPerson->mail}}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$clientPerson->tel1}}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             @if ($clientPerson->is_billing_receiver)
                                 <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
                                     請求先
@@ -284,18 +302,18 @@
                             @endif
                         </td>
                     @if($clientPerson->is_retired == "1")
-                        <td class="px-1 py-2 whitespace-nowrap text-fuchsia-300">
+                        <td class="px-1 py-1 whitespace-nowrap text-fuchsia-300">
                             退職
                         </td>
                     @else
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             在職
                         </td>
                     @endif
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{ optional($clientPerson->client)->department->department_name}}
                         </td>
-                        {{-- <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        {{-- <td class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <div class="text-center">
                                 <button class="button-edit" type="button" data-drawer-target="dupdateModal-{{$clientPersons->id}}" data-drawer-body-scrolling="false" data-drawer-show="dupdateModal-{{$clientPersons->id}}" data-drawer-placement="right" aria-controls="dupdateModal-{{$clientPersons->id}}">
                                     <div class="flex">
@@ -307,7 +325,7 @@
                                 </button>
                             </div>
                         </td> --}}
-                        <td class="py-2">
+                        <td class="py-1">
                             <button type="button" data-modal-target="deleteModal-{{$clientPerson->id}}" data-modal-show="deleteModal-{{$clientPerson->id}}" class="button-delete-primary">
                                 <div class="flex">
                                     <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>

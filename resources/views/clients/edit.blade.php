@@ -5,7 +5,7 @@
                 {{ Breadcrumbs::render('editClient', $client) }}
             </h2>
             <div class="flex justify-end">
-                {{-- <x-general-button onclick="location.href='{{route('client.index')}}'">
+                {{-- <x-general-button onclick="location.href='{{route('clients.index')}}'">
                     戻る
                 </x-general-button> --}}
                 <x-message :message="session('message')"/>
@@ -18,7 +18,7 @@
     <div class="max-w-7xl mx-auto px-4">
 
         <div class="mx-4 sm:p-8">
-        <form method="post" action="{{route('client.update',$client)}}" enctype="multipart/form-data" autocomplete="new-password">
+        <form method="post" action="{{route('clients.update',$client)}}" enctype="multipart/form-data" autocomplete="new-password">
             @csrf
             @method('patch')
 
@@ -258,7 +258,7 @@
                         </div>
                     </div>
 
-                    <button type="button"  onclick="showCorporationModal()" class="md:mt-10 mt-6 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    {{-- <button type="button"  onclick="showCorporationModal()" class="md:mt-10 mt-6 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         ディーラ検索
                     </button>
                     <div class="grid gap-4 mt-1 mb-4 sm:grid-cols-5">
@@ -269,13 +269,64 @@
                         </div>
                         <div class="w-full flex flex-col">
                             <label for="billing_corporation_num" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（顧客）№</label>
-                            <input type="text" name="billing_corporation_num" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1" id="billing_corporation_num" value="{{old('billing_corporation_num',$client->corporation->corporation_num)}}" disabled>
+                            <input type="text" name="billing_corporation_num" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1" id="billing_corporation_num" value="{{old('billing_corporation_num',optional($client->dealer)->vendor_num)}}" disabled>
                         </div>
                         <div class="w-full flex flex-col col-span-3">
                             <label for="billing_corporation_name" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（顧客）名称</label>
-                            <input type="text" name="billing_corporation_name" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="billing_corporation_name" value="{{old('billing_corporation_name',$client->corporation->corporation_name)}}" disabled>
+                            <input type="text" name="billing_corporation_name" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="billing_corporation_name" value="{{old('billing_corporation_name',optional($client->dealer)->vendor_name)}}" disabled>
                         </div>
+                    </div> --}}
+
+                    {{-- <div class="grid gap-4 mt-1 mb-4 sm:grid-cols-5">
+                        <div class="w-full flex flex-col hidden">
+                            <label for="dealer_id" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">ディーラID（hidden要素）</label>
+                            <input type="text" name="dealer_id" class="w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="dealer_id" value="{{old('dealer_id')}}" placeholder="">
+                        </div>
+                        <div class="w-full flex flex-col">
+                            <label for="vendor_num" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（業者）№</label>
+                            <div class="relative w-full">
+                                <input type="text" name="vendor_num" class="dark:bg-gray-400 w-full py-1 border border-gray-300 rounded mt-1" id="vendor_num" value="{{old('vendor_num',optional($client->dealer)->vendor_num)}}" disabled>
+                                <button type="button" onclick="showdealerModal()" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-[34px] text-white mt-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="w-full flex flex-col md:col-span-3">
+                            <label for="vendor_name" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（業者）名称</label>
+                            <input type="text" name="vendor_name" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="vendor_name" value="{{old('vendor_name',optional($client->dealer)->vendor_name)}}" disabled>
+                        </div>
+                    </div> --}}
+
+                    <div class="grid gap-4 mt-1 mb-4 sm:grid-cols-5">
+                        <div class="w-full flex flex-col hidden">
+                            <label for="dealer_id" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">ディーラID（hidden要素）</label>
+                            <input type="text" name="dealer_id" class="w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="dealer_id" value="{{old('dealer_id')}}" placeholder="">
+                        </div>
+                        <div class="w-full flex flex-col">
+                            <label for="vendor_num" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（業者）№</label>
+                            <div class="relative w-full">
+                                <input type="text" name="vendor_num" class="dark:bg-gray-400 w-full py-1 border border-gray-300 rounded mt-1" id="vendor_num" value="{{old('vendor_num',optional($client->dealer)->vendor_num)}}" disabled>
+                                <button type="button" onclick="showdealerModal()" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-[34px] text-white mt-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    
+                        <div class="w-full flex flex-col md:col-span-3">
+                            <label for="vendor_name" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（業者）名称</label>
+                            <input type="text" name="vendor_name" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="vendor_name" value="{{old('vendor_name',optional($client->dealer)->vendor_name)}}" disabled>
+                        </div>
+                    
                     </div>
+                    
+
+
+                    
 
                     <div class="w-full flex flex-col">
                         <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">備考</label>
@@ -500,7 +551,7 @@
                                     @foreach ($clientProducts as $clientProduct)
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
                                         <td class="px-2 py-2 text-center">
-                                            <button onclick="location.href='{{route('client.edit',$client)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
+                                            <button onclick="location.href='{{route('clients.edit',$client)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
                                                 <div class="flex">
                                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
@@ -936,7 +987,7 @@
                                     </th>
                                     <th scope="col" class="px-2 py-3 whitespace-nowrap">
                                         <div class="flex items-center">
-                                            @sortablelink('product_version_id','バージョン')
+                                            @sortablelink('product_version_id','Ver')
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                                         </div>
                                     </th>
@@ -948,7 +999,7 @@
                                     </th>
                                     <th scope="col" class="px-2 py-3 whitespace-nowrap">
                                         <div class="flex items-center">
-                                            @sortablelink('user_id','受付対応者')
+                                            @sortablelink('user_id','対応者')
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                                         </div>
                                     </th>
@@ -968,7 +1019,7 @@
                             @foreach ($supports as $support)
                                 <tbody>
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
-                                        <td class="px-2 py-2 whitespace-nowrap">
+                                        <td class="px-2 py-1 whitespace-nowrap">
                                             <button onclick="location.href='{{route('support.edit',$support)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded  text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
                                                 <div class="flex">
                                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -977,30 +1028,30 @@
                                                     <span class="text-ms">編集</span>
                                                 </div>
                                             </button>
-                                        </td>
-                                        <th scope="row" class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        </td >
+                                        <th scope="row" class="px-2 py-1 font-normal text-gray-900 whitespace-nowrap dark:text-white">
                                             {{$support->received_at}}
                                         </th>
-                                        <th scope="row" class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        <th scope="row" class="px-2 py-1 font-normal text-gray-900 whitespace-nowrap dark:text-white">
                                             {{$support->supportType->type_name}}
                                         </th>
-                                        <th scope="row" class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        <th scope="row" class="px-2 py-1 font-normal text-gray-900 whitespace-nowrap dark:text-white">
                                             {{$support->title}}
                                         </th>
-                                        <th scope="row" class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        <th scope="row" class="px-2 py-1 font-normal text-gray-900 whitespace-nowrap dark:text-white">
                                             {{$support->productSeries->series_name}}
                                         </th>
-                                        <th scope="row" class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        <th scope="row" class="px-2 py-1 font-normal text-gray-900 whitespace-nowrap dark:text-white">
                                             {{$support->productVersion->version_name}}
                                         </th>
-                                        <th scope="row" class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        <th scope="row" class="px-2 py-1 font-normal text-gray-900 whitespace-nowrap dark:text-white">
                                             {{$support->productCategory->category_name}}
                                         </th>
-                                        <th scope="row" class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        <th scope="row" class="px-2 py-1 font-normal text-gray-900 whitespace-nowrap dark:text-white">
                                             {{$support->user->name}}
                                         </th>
-                                        <td class="px-2 py-2">
-                                            <button data-modal-target="deleteModal-{{$support->id}}" data-modal-toggle="deleteModal-{{$support->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded text-sm px-2 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 m-auto" type="button">
+                                        <td class="px-2 py-1">
+                                            <button data-modal-target="deleteModal-{{$support->id}}" data-modal-toggle="deleteModal-{{$support->id}}"  class="button-delete-primary" type="button">
                                                 <div class="flex">
                                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z"/>
@@ -1044,9 +1095,8 @@
                                 {{-- 削除確認モーダル画面 End --}}
                             @endforeach
                         </table>
-                        <div class="mt-2 mb-2 px-4">
-                        {{-- {{ $keepdatas->appends(request()->query())->links() }}   --}}
-                        {{-- {{ $supports->withQueryString()->links('vendor.pagination.custum-tailwind') }}   --}}
+                        <div class="mt-1 mb-1 px-4">
+                            {{ $supports->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
                         </div> 
                     </div>
                 </div>
@@ -1056,7 +1106,7 @@
 </div>
 
 
-    <!-- Extra Large Modal -->
+    <!-- 法人検索 Modal -->
     <div id="corporationSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden">
     {{-- <div id="corporationSearchModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full justify-center items-center"> --}}
         <div class=" w-4/5  max-h-full">
@@ -1116,23 +1166,86 @@
         </div>
     </div>
 
+        <!-- ディーラ検索 Modal -->
+        <div id="dealerSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden animate-slide-in-top">
+            {{-- <div id="dealerSearchModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full justify-center items-center"> --}}
+                <div class="max-h-full w-full max-w-2xl">
+                    <!-- Modal content -->
+                    <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
+                        <!-- Modal header -->
+                        <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
+                            <h3 class="text-xl font-medium text-gray-900 dark:text-white">
+                                ディーラ検索画面
+                            </h3>
+                            <button type="button" onclick="hideDealerModal()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                                <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                </svg>
+                                <span class="sr-only">Close modal</span>
+                            </button>
+                        </div>
+                        <!-- Modal body -->
+                        <form action="#" method="GET">
+                            <!-- 検索条件入力フォーム -->
+                            <div class="grid gap-4 mb-4 sm:grid-cols-2 mt-2">
+                            {{-- <div class="flex flex-wrap justify-start mx-5"> --}}
+                                <div class="">
+                                    <label for="vendorName" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none">法人名称</label>
+                                    <input type="text" name="vendorName" id="vendorName" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
+                                </div>
+                                <div class="">
+                                    <label for="vendorNumber" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none">法人番号</label>
+                                    <input type="text" name="vendorNumber" id="vendorNumber" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
+                                </div>
+                            </div>
+                        </form>
+                        <div class=" max-h-80 overflow-y-auto overflow-x-hidden mt-4">
+                            <table class="w-full mt-4 text-white mb-5 text-left text-sm">
+                                <thead>
+                                <tr>
+                                    {{-- <th class="py-1"></th> --}}
+                                    <th class="py-1 pl-5">法人名称</th>
+                                    <th class="py-1 whitespace-nowrap">法人番号</th>
+                                </tr>
+                                </thead>
+                                <tbody class="" id="searchResultsDealerContainer">                          
+                                        <!-- 検索結果がここに追加されます -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Modal footer -->
+                        <div class="flex justify-between items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                            <div>
+                                <button type="button" onclick="searchDealer()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    検索
+                                </button>
+                                <button type="button" onclick="hideDealerModal()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                    閉じる
+                                </button>
+                            </div>
+                            <!-- 一括クリアボタン -->
+                            <div class="flex items-center">
+                                <button type="button" onclick="clearAllFields()" class="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded hover:bg-red-600 focus:outline-none focus:bg-red-600">
+                                    一括クリア
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
 
 
-
-
-{{-- <script>
-    const textareaContent = document.getElementById('auto-resize-textarea-client_memo');
-    textareaContent.addEventListener('input', function() {
-        // テキストエリアの高さを自動調整
-        this.style.height = 'auto';
-        this.style.height = (this.scrollHeight + 2) + 'px';
-    });
-    textareaContent.addEventListener('mouseover', function() {
-        // テキストエリアの高さを自動調整
-        this.style.height = 'auto';
-        this.style.height = (this.scrollHeight + 2) + 'px';
-    });
-</script> --}}
+    <script>
+        function clearAllFields() {
+            // フィールドの値をクリアする
+            document.getElementById('dealer_id').value = '';
+            document.getElementById('vendor_num').value = '';
+            document.getElementById('vendor_name').value = '';
+            hideDealerModal();
+        }
+    </script>
     <script>
         // モーダルを表示するための関数
         function showModal() {
@@ -1198,6 +1311,71 @@
 
             hideModal();
             }
+
+
+
+    //ディーラ（業者）検索モーダル関連
+        // モーダルを表示するための関数
+        function showdealerModal() {
+        // モーダルの要素を取得
+        const modal = document.getElementById('dealerSearchModal');
+        //背後の操作不可を有効
+        const overlay = document.getElementById('overlay').classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+
+        // モーダルを表示するためのクラスを追加
+        modal.classList.remove('hidden');
+    }
+
+    // モーダルを非表示にするための関数
+    function hideDealerModal() {
+        // モーダルの要素を取得
+        const modal = document.getElementById('dealerSearchModal');
+        //背後の操作不可を解除
+        const overlay = document.getElementById('overlay').classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+
+        // モーダルを非表示にするためのクラスを削除
+        modal.classList.add('hidden');
+    }
+
+    // 検索ボタンを押した時の処理
+    function searchDealer() {
+        const vendorName = document.getElementById('vendorName').value;
+        const vendorNumber = document.getElementById('vendorNumber').value;
+        const isDealer = 1;
+
+        fetch('/vendors/search', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ vendorName, vendorNumber, isDealer })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const searchResultsDealerContainer = document.getElementById('searchResultsDealerContainer');
+            searchResultsDealerContainer.innerHTML = '';
+
+            data.forEach(result => {
+            const resultElement = document.createElement('tr');
+            resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
+            resultElement.innerHTML = `
+                <td tabindex="1" class="py-2 pl-5 cursor-pointer" onclick="setDistribution('${result.id}', '${result.vendor_num}', '${result.vendor_name}')">${result.vendor_name}</td>
+                <td class="py-2 ml-2">${result.vendor_num}</td>
+            `;
+            searchResultsDealerContainer.appendChild(resultElement);
+            });
+        });
+        }
+
+    function setDistribution(id, number, name) {
+        document.getElementById('dealer_id').value = id;
+        document.getElementById('vendor_num').value = number;
+        document.getElementById('vendor_name').value = name;
+        hideDealerModal();
+    }
 
 // // タブがクリックされたときにアクティブなタブ情報をローカルストレージに保存
 // document.addEventListener('click', function(event) {

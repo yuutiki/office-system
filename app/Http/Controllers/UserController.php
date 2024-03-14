@@ -23,6 +23,7 @@ class UserController extends Controller
 {
     public function index(Request $request)//検索用にrequestを受取る
     {
+        $per_page = 50;
         $users = User::with(['role','company','department','affiliation3']);
         $roles = Role::all();
         $companies = Company::all();
@@ -78,7 +79,7 @@ class UserController extends Controller
             $query->whereIn('employee_status_id', $selectedEmployeeStatues);
         }
 
-        $users = $query->sortable()->paginate();
+        $users = $query->sortable()->paginate($per_page);
         $count = $users->total();
 
         return view('admin.user.index',compact('roles','users','employeeStatuses','employee_num','user_name','selectedRoles','count','companies','departments','affiliation3s','selectedEmployeeStatues','departmentId'));

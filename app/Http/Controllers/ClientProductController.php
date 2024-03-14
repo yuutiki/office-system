@@ -88,7 +88,7 @@ class ClientProductController extends Controller
             $clientProduct->install_memo = $request->install_memo;
             $clientProduct->save();
 
-            return redirect()->route('client.index')->with('success', '正常に登録しました');    
+            return redirect()->route('clients.index')->with('success', '正常に登録しました');    
         }
     }
 
@@ -99,7 +99,7 @@ class ClientProductController extends Controller
 
     public function edit(ClientProduct $clientProduct)
     {
-        //
+        
     }
 
     public function update(Request $request, ClientProduct $clientProduct)

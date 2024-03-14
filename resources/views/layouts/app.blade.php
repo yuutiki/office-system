@@ -75,17 +75,20 @@
             <main class="h-auto">
                 {{ $slot }}
             </main>
+            <footer class="bg-white dark:bg-gray-800 sticky top-[100vh]">
+                <div class="w-full mx-auto justify-end">
+                    <div class="text-sm text-right text-gray-500  dark:text-gray-400 px-2" tabindex="-1">
+                        © 2023 <a href="#" class="hover:underline" tabindex="-1">Yuu™</a>. All Rights Reserved.
+                    </div>
+                    <div class="text-sm text-right text-gray-500 dark:text-gray-400 px-2">
+                        Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
+                    </div>
+                </div>
+            </footer>
         </div>
-        <footer class="bg-white dark:bg-gray-800">
-            <div class="w-full mx-auto justify-end">
-                <div class="text-sm text-right text-gray-500  dark:text-gray-400 px-2" tabindex="-1">
-                    © 2023 <a href="#" class="hover:underline" tabindex="-1">Yuu™</a>. All Rights Reserved.
-                </div>
-                <div class="text-sm text-right text-gray-500 dark:text-gray-400 px-2">
-                    Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
-                </div>
-            </div>
-        </footer>
+
+
+
         {{-- ダークモードスイッチャー --}}
         <script src="{{ asset('/assets/js/darkmodeswitcher.js') }}"></script>
         {{-- inputのEnter無効化 --}}

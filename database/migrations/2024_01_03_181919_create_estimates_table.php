@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('estimates', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('created_by')->nullable(true)->comment('作成者');
+            $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->timestamps();
         });
     }

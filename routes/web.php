@@ -9,6 +9,7 @@ use App\Http\Controllers\ClientPersonController;
 use App\Http\Controllers\Dashboard\DashboardController;//add
 use App\Http\Controllers\CommentController;//add
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\ContractDetailController;
 use App\Http\Controllers\LinkController;
 use App\Http\Controllers\ReportController;//add
 use App\Http\Controllers\ProductController;//add
@@ -71,28 +72,68 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+
+    // Projects関連
+    Route::get('/projects/show-upload', [ProjectController::class, 'showUploadForm'])->name('projects.showUploadForm');
+    Route::post('/projects/upload', [ProjectController::class, 'upload'])->name('projects.upload');
+    Route::resource('/projects', ProjectController::class);
+
+    // corporations関連
     Route::get('/corporations/show-upload', [CorporationController::class, 'showUploadForm'])->name('corporations.showUploadForm');
+    Route::post('/corporations/upload', [CorporationController::class, 'upload'])->name('corporations.upload');
     Route::get('/corporations/download-csv', [CorporationController::class, 'downloadCsv'])->name('corporations.downloadCsv');
+    Route::post('/corporations/search', [CorporationController::class, 'search'])->name('corporations.search');
+    Route::resource('/corporations', CorporationController::class);
 
+    // clients関連
+    Route::post('/clients/upload', [ClientController::class, 'upload'])->name('clients.upload');
+    Route::resource('/clients','\App\Http\Controllers\ClientController');
+    Route::post('/updateActiveTab',  [ClientController::class, 'updateActiveTab']); //顧客編集画面のアクティブタブを取得
+
+    // clientPerson関連
+    Route::get('/client-person/show-upload', [ClientPersonController::class, 'showUploadForm'])->name('client-person.showUploadForm');
+    Route::post('/client-person/upload', [ClientPersonController::class, 'upload'])->name('client-person.upload');
+    Route::post('/client/search', [ClientController::class, 'search'])->name('client.search');
+    Route::resource('/client-person', ClientPersonController::class);
+
+    // vendor関連
+    Route::get('/vendors/show-upload', [VendorController::class, 'showUploadForm'])->name('vendors.showUploadForm');
+    Route::post('/vendors/upload', [VendorController::class, 'upload'])->name('vendors.upload');
     Route::post('/vendors/search', [VendorController::class, 'search'])->name('vendors.search');
+    Route::resource('/vendors',VendorController::class);
+
+    // keepfile関連
+    Route::get('/generate-pdf', [KeepfileController::class, 'generatePdf'])->name('pdf.generate'); //仮
+    Route::delete('/keepfile/{id}/delete-pdf', [KeepfileController::class, 'deletePdf'])->name('keepfile.deletePdf');
+    Route::resource('/keepfile',KeepfileController::class);
+
+
+    // user関連
+    Route::post('/user/upload', [UserController::class, 'upload'])->name('user.upload');
+    Route::get('/search-users', [UserController::class, 'searchUsers']);
+    Route::resource('/user', UserController::class);
+
+
+    // product関連
+    Route::post('/product/search', [ProductController::class, 'search'])->name('product.search');
+    Route::post('/product/upload', [ProductController::class, 'upload'])->name('product.upload');
+    Route::get('/get-split-types/{productTypeId}', [ProductController::class, 'getSplitTypes'])->name('product.getSplitTypes');
+    Route::resource('/product', ProductController::class);
+
+
+    Route::resource('/contracts', ContractController::class);
+
+    Route::get('contracts/{contract}/details/create',  [ContractDetailController::class, 'create'])->name('contracts.details.create');
+    // Route::resource('/contract-details', ContractDetailController::class);
 
 
 
-    Route::resource('/keepfile','\App\Http\Controllers\KeepfileController');
-    Route::resource('/corporations','\App\Http\Controllers\CorporationController');
-    Route::resource('/client','\App\Http\Controllers\ClientController');
-    Route::resource('/vendors','\App\Http\Controllers\VendorController');
-    Route::resource('/user', '\App\Http\Controllers\UserController');
     Route::resource('/reports', '\App\Http\Controllers\ReportController');
-    Route::resource('/product', '\App\Http\Controllers\ProductController');
     Route::resource('/support', '\App\Http\Controllers\SupportController');
-    Route::resource('/projects', '\App\Http\Controllers\ProjectController');
     Route::resource('/link', '\App\Http\Controllers\LinkController');
     Route::resource('/client-product' , '\App\Http\Controllers\ClientProductController');
     Route::resource('/projectrevenue' , '\App\Http\Controllers\ProjectRevenueController');
     Route::resource('/estimate' , '\App\Http\Controllers\EstimateController');
-    Route::resource('/contract', ContractController::class);
-    Route::resource('/client-person', ClientPersonController::class);
 
 
     //マスタ系
@@ -119,19 +160,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('/support-time', SupportTimeController::class);
     Route::resource('/support-type', SupportTypeController::class);
     Route::resource('/trade-status', TradeStatusController::class);
-    
-    
-    
-    // Route::get('/search-users', [UserController::class, 'search'])->name('users.search');
-
-
 
     // Route::resource('/comment', '\App\Http\Controllers\CommentController');
-    Route::get('/search-users', [UserController::class, 'searchUsers']);
-    Route::post('/corporations/search', [CorporationController::class, 'search'])->name('corporations.search');
-    Route::post('/client/search', [ClientController::class, 'search'])->name('client.search');
-    // Route::post('/user/search', [UserController::class, 'search'])->name('user.ajaxsearch');
-    Route::post('/product/search', [ProductController::class, 'search'])->name('product.search');
     Route::get('/report/{report_id}/comment', [CommentController::class, 'show'])->name('comment.show');
     Route::post('/report/{report_id}/comment', [CommentController::class, 'store'])->name('comment.store');
     Route::get('/report/{report_id}/client', [ReportController::class, 'showFromClient'])->name('report.showFromClient');
@@ -139,27 +169,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/bulk-delete-revenues', [ProjectRevenueController::class, 'bulkDelete'])->name('projectrevenue.bulkDelete');
 
 // CSVアップロード系
-    Route::post('/corporations/upload', [CorporationController::class, 'upload'])->name('corporations.upload');
-    Route::post('/client/upload', [ClientController::class, 'upload'])->name('client.upload');
-    Route::post('/user/upload', [UserController::class, 'upload'])->name('user.upload');
-    Route::post('/product/upload', [ProductController::class, 'upload'])->name('product.upload');
-    Route::post('/project/upload', [ProjectController::class, 'upload'])->name('project.upload');
     Route::post('/support/upload', [SupportController::class, 'upload'])->name('support.upload');
-
-
-
-
 
     // Route::post('/update-link/{link}', [LinkController::class, 'mordalupdate'])->name('updateLink');
     // Route::post('/save-modal-id', [LinkController::class, 'saveModalId'])->name('save.modal.id');
-
-    //顧客編集画面のアクティブタブを取得
-    Route::post('/updateActiveTab',  [ClientController::class, 'updateActiveTab']);
-
-
-    // Route::get('/product-selection', 'ProductController@index');
-    Route::get('/get-split-types/{productTypeId}', [ProductController::class, 'getSplitTypes'])->name('product.getSplitTypes');
-
     // Route::get('/corporations/export', [CorporationController::class, 'exportCsv'])->name('corporations.export');
     // Route::get('/corporations/download/{filename}', [CorporationController::class, 'downloadCsv'])->name('corporations.download');
 });

@@ -29,6 +29,9 @@ $(function() {
 $(function() {
     $.fn.autoKana('input[name="client_name"]', 'input[name="client_kana_name"]', {katakana: true});
 });
+$(function() {
+    $.fn.autoKana('input[name="vendor_name"]', 'input[name="vendor_kana_name"]', {katakana: true});
+});
 
 $(function() {
     $.fn.autoKana('input[name="name"]', 'input[name="kana_name"]', {katakana: true});

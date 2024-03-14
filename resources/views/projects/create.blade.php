@@ -2,10 +2,10 @@
     <x-slot name="header">
         <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
-                プロジェクト登録
+                {{ Breadcrumbs::render('createProject') }}
             </h2>
             <div class="flex justify-end">
-                <x-general-button onclick="location.href='{{route('client.index')}}'">
+                <x-general-button onclick="location.href='{{route('projects.index')}}'">
                     戻る
                 </x-general-button>
                 <x-message :message="session('message')"/>
@@ -17,7 +17,7 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="mx-4 sm:p-8">
-            <form id="form1" method="post" action="{{route('project.store')}}" enctype="multipart/form-data" autocomplete="new-password">
+            <form id="form1" method="post" action="{{route('projects.store')}}" enctype="multipart/form-data" autocomplete="new-password">
                 @csrf
                 <!-- 顧客検索ボタン -->
                 <button type="button"  onclick="showModal()" class="md:ml-1 md:mt-1 mt-1 mb-2 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-s rounded-e text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">

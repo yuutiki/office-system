@@ -236,42 +236,41 @@
             </thead>
             <tbody>
                 @foreach ($supports as $support)
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 font-medium hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600 clickable-row">
-                        <td class="pl-4 py-2 whitespace-nowrap">
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 font-normal hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600 clickable-row">
+                        <td class="pl-4 py-1 whitespace-nowrap">
                             {{ $loop->iteration }}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$support->client->client_num}}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$support->client->client_name}}
                         </td>
-                        <td class="pl-4 py-2 whitespace-nowrap">
+                        <td class="pl-4 py-1 whitespace-nowrap">
                             {{$support->received_at}}
                         </td>
-                        <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <td class="px-1 py-1 whitespace-nowrap font-medium">
                             {{$support->supportType->type_name}}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap font-semibold">
                             {{$support->title}}
                         </td>
-
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$support->user->name}}
                         </td>
-                        <td class="px-1 py-3 whitespace-nowrap mr-2">
+                        <td class="px-1 py-1 whitespace-nowrap mr-2">
                             {{$support->productSeries->series_name}}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$support->productVersion->version_name}}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$support->productCategory->category_name}}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$support->client->user->name}}
                         </td>
-                        <td class="pl-4 py-2 whitespace-nowrap">
+                        <td class="pl-4 py-1 whitespace-nowrap">
                             <button onclick="location.href='{{route('support.edit',$support)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
                                 <div class="flex">
                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -281,7 +280,7 @@
                                 </div>
                             </button>
                         </td>
-                        <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <td class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <div class="text-center">
                                 <button class="button-edit" type="button" data-drawer-target="dupdateModal-{{$support->id}}" data-drawer-body-scrolling="false" data-drawer-show="dupdateModal-{{$support->id}}" data-drawer-placement="right" aria-controls="dupdateModal-{{$support->id}}">
                                     <div class="flex">
@@ -293,15 +292,7 @@
                                 </button>
                             </div>
                         </td>
-                        <td class="py-2">
-                            {{-- <button data-modal-target="deleteModal-{{$support->id}}" data-modal-show="deleteModal-{{$support->id}}"  class="button-delete" type="button">
-                                <div class="flex">
-                                    <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z"/>
-                                    </svg>
-                                    <span class="text-ms ">削除</span>
-                                </div>
-                            </button> --}}
+                        <td class="py-1">
                             <button type="button" data-modal-target="deleteModal-{{$support->id}}" data-modal-show="deleteModal-{{$support->id}}" class="button-delete-primary">
                                 <div class="flex">
                                     <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>

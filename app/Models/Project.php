@@ -85,4 +85,8 @@ class Project extends Model
     {
         return $this->hasmany(ProjectRevenue::class);
     }
+    public function billingCorporation()
+    {
+        return $this->belongsTo(Corporation::class, 'billing_corporation_id');
+    }
 }

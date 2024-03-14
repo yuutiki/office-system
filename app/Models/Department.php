@@ -16,8 +16,9 @@ class Department extends Model
         'department_name',
         'department_kana_name',
         'department_eng_name',
+        'department_short_name',
         'created_by',
-        'updated_by'
+        'updated_by',
     ];
 
     //GlobalObserverに定義されている作成者と更新者を登録するメソッド

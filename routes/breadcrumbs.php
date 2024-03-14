@@ -30,19 +30,19 @@ Breadcrumbs::for('dashboard', function ($trail) {
         // ダッシュボード > 顧客一覧
         Breadcrumbs::for('clients', function ($trail) {
             $trail->parent('dashboard');
-            $trail->push('顧客一覧', url('client'));
+            $trail->push('顧客一覧', url('clients'));
         });
 
                 // ダッシュボード > 顧客一覧 > 新規登録
                 Breadcrumbs::for('createClient', function ($trail,) {
                     $trail->parent('clients');
-                    $trail->push('新規作成', url('client/create'));
+                    $trail->push('新規作成', url('clients/create'));
                 });
 
                 // ダッシュボード > 顧客一覧 > 編集
                 Breadcrumbs::for('editClient', function ($trail, $client) {
                     $trail->parent('clients');
-                    $trail->push('編集', url('client/' . $client->id . '/edit'));
+                    $trail->push('編集', url('clients/' . $client->id . '/edit'));
                 });
 
                         // ダッシュボード > 顧客一覧 > 編集 > 導入システム新規登録
@@ -64,9 +64,15 @@ Breadcrumbs::for('dashboard', function ($trail) {
                 });
 
                 // ダッシュボード > 業者一覧 > 編集
-                Breadcrumbs::for('editVendor', function ($trail) {
+                Breadcrumbs::for('editVendor', function ($trail, $vendor) {
                     $trail->parent('vendors');
-                    $trail->push('編集', url('vendors/edit'));
+                    $trail->push('編集', url('vendors/' . $vendor->id . '/edit'));
+                });
+
+                // ダッシュボード > 担当者一覧 > CSVアップロード
+                Breadcrumbs::for('csvUploadVendors', function ($trail) {
+                    $trail->parent('vendors');
+                    $trail->push('CSVアップロード', url('vendors/show-upload'));
                 });
 
         // ダッシュボード > 担当者一覧
@@ -85,6 +91,12 @@ Breadcrumbs::for('dashboard', function ($trail) {
                 Breadcrumbs::for('editclientperson', function ($trail) {
                     $trail->parent('clientpersons');
                     $trail->push('編集', url('client-person/edit'));
+                });
+
+                // ダッシュボード > 担当者一覧 > CSVアップロード
+                Breadcrumbs::for('csvUploadClientPerson', function ($trail) {
+                    $trail->parent('clientpersons');
+                    $trail->push('CSVアップロード', url('client-person/show-upload'));
                 });
 
         // ダッシュボード > ユーザ一覧
@@ -108,14 +120,58 @@ Breadcrumbs::for('dashboard', function ($trail) {
         // ダッシュボード > 契約一覧
         Breadcrumbs::for('contracts', function ($trail) {
             $trail->parent('dashboard');
-            $trail->push('契約一覧', url('contract'));
+            $trail->push('契約一覧', url('contracts'));
         });
                 // ダッシュボード > 契約一覧 > 契約新規登録
                 Breadcrumbs::for('createContract', function ($trail) {
                     $trail->parent('contracts');
-                    $trail->push('新規作成', url('contract/create'));
+                    $trail->push('新規作成', url('contracts/create'));
                 });
 
+                // 契約一覧 > 契約基本編集画面（例　ID=1）
+                Breadcrumbs::for('editContract', function ($trail, $contract) {
+                    $trail->parent('contracts');
+                    $trail->push('編集（契約連番' . $contract->contract_num . '）', route('contracts.edit', $contract->id));
+                });
+
+                // 契約基本編集画面（例　ID=1） > 契約詳細新規登録
+                Breadcrumbs::for('CreateContractDetail', function ($trail, $contract) {
+                    $trail->parent('editContract', $contract);
+                    $trail->push('契約詳細新規登録', route('contract.details.create', $contract->id));
+                });
+
+                // 契約基本編集画面（例　ID=1） > 契約詳細編集
+                Breadcrumbs::for('editContractDetail', function ($trail, $contract) {
+                    $trail->parent('editContract', $contract);
+                    $trail->push('契約詳細編集', route('contract.details.edit', $contract->id));
+                });                
+
+
+
+        // ダッシュボード > プロジェクト一覧
+        Breadcrumbs::for('projects', function ($trail) {
+            $trail->parent('dashboard');
+            $trail->push('プロジェクト一覧', url('projects'));
+        });
+                // ダッシュボード > プロジェクト一覧 > プロジェクト新規登録
+                Breadcrumbs::for('createProject', function ($trail) {
+                    $trail->parent('projects');
+                    $trail->push('新規作成', url('projects/create'));
+                });
+
+                // ダッシュボード > プロジェクト一覧 > プロジェクト編集
+                Breadcrumbs::for('editProject', function ($trail) {
+                    $trail->parent('projects');
+                    $trail->push('編集', url('projects/edit'));
+                });
+
+                // ダッシュボード > プロジェクト一覧 > CSVアップロード
+                Breadcrumbs::for('csvUploadProjects', function ($trail) {
+                    $trail->parent('projects');
+                    $trail->push('CSVアップロード', url('projects/show-upload'));
+                });                
+                
+                
         // ダッシュボード > 営業報告一覧
         Breadcrumbs::for('reports', function ($trail) {
             $trail->parent('dashboard');

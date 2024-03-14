@@ -228,47 +228,47 @@
             <tbody>
                 @foreach ($keepfiles as $keepfile)
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 font-medium hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600 clickable-row">
-                        <td class="pl-4 py-2 whitespace-nowrap">
+                        <td class="pl-4 py-1 whitespace-nowrap">
                             {{ $loop->iteration }}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$keepfile->project_num}}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$keepfile->clientname}}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$keepfile->purpose}}
                         </td>
-                        <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <td class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$keepfile->keep_at}}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$keepfile->return_at}}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$keepfile->user->name}}
                         </td>
                     @if($keepfile->is_finished == "0")
-                        <td class="px-1 py-2 whitespace-nowrap text-fuchsia-300">
+                        <td class="px-1 py-1 whitespace-nowrap text-fuchsia-300">
                             未返却
                         </td>
                     @else
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             返却済
                         </td>
                     @endif
 
                     @if($keepfile->remaining_days < 0)
-                        <td class="px-1 py-2 whitespace-nowrap text-fuchsia-300">
+                        <td class="px-1 py-1 whitespace-nowrap text-fuchsia-300">
                             期限超過
                         </td>
                     @else
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{ $keepfile->remaining_days }}日
                         </td>
                     @endif
-                        <td class="pl-4 py-2 whitespace-nowrap">
+                        <td class="pl-4 py-1 whitespace-nowrap">
                             <button type="button" onclick="location.href='{{route('keepfile.edit',$keepfile)}}'"  class="button-edit">
                                 <div class="flex">
                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -278,7 +278,7 @@
                                 </div>
                             </button>
                         </td>
-                        {{-- <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        {{-- <td class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <div class="text-center">
                                 <button class="button-edit" type="button" data-drawer-target="dupdateModal-{{$keepfile->id}}" data-drawer-body-scrolling="false" data-drawer-show="dupdateModal-{{$keepfile->id}}" data-drawer-placement="right" aria-controls="dupdateModal-{{$keepfile->id}}">
                                     <div class="flex">
@@ -290,7 +290,7 @@
                                 </button>
                             </div>
                         </td> --}}
-                        <td class="py-2">
+                        <td class="py-1">
                             <button type="button" data-modal-target="deleteModal-{{$keepfile->id}}" data-modal-show="deleteModal-{{$keepfile->id}}" class="button-delete-primary">
                                 <div class="flex">
                                     <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>

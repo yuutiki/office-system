@@ -5,7 +5,7 @@
                 顧客導入システム追加
             </h2>
             <div class="flex justify-end">
-                <x-general-button tabindex="-1" onclick="location.href='{{ route('client.edit', ['client'=> $clientId]) }}'">
+                <x-general-button tabindex="-1" onclick="location.href='{{ route('clients.edit', ['client'=> $clientId]) }}'">
                     戻る
                 </x-general-button>
                 <x-message :message="session('message')"/>

@@ -14,7 +14,7 @@
     <div class="relative bg-white dark:bg-gray-800 rounded-t-md md:w-auto md:ml-14 md:mr-2 m-auto shadow-md  dark:text-gray-900 mt-4">
         <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
             <div class="w-full md:w-3/4">
-                <form method="GET" action="{{ route('client.index') }}" id="search_form" class="flex items-center">
+                <form method="GET" action="{{ route('clients.index') }}" id="search_form" class="flex items-center">
                     @csrf
                     <div class="flex flex-col md:flex-row w-full">
                         <label for="simple-search" class="sr-only">Search</label>
@@ -155,7 +155,7 @@
                 </form>
             </div>
             <div class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
-                <button type="button" onclick="location.href='{{ route('client.create') }}'" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-s rounded-e bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                <button type="button" onclick="location.href='{{ route('clients.create') }}'" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-s rounded-e bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                     <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                     </svg>
@@ -239,11 +239,11 @@
             <tbody>
                 @foreach ($clients as $client)
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 font-medium hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600 clickable-row">
-                        <td class="pl-4 py-2 whitespace-nowrap">
+                        <td class="pl-4 py-1 whitespace-nowrap">
                             {{ $loop->iteration }}
                         </td>
-                        <td class="pl-4 py-2 whitespace-nowrap">
-                            <button onclick="location.href='{{route('client.edit',$client)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                        <td class="pl-4 py-1 whitespace-nowrap">
+                            <button onclick="location.href='{{route('clients.edit',$client)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
                                 <div class="flex">
                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
@@ -252,25 +252,25 @@
                                 </div>
                             </button>
                         </td>
-                        <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <td class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$client->client_num}}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$client->Corporation->corporation_name}}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$client->client_name}}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$client->user->name}}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$client->tradestatus->trade_status_name}}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$client->department->department_name}}
                         </td>
-                        <td class="py-2">
+                        <td class="py-1">
                             <button type="button" data-modal-target="deleteModal-{{$client->id}}" data-modal-show="deleteModal-{{$client->id}}" class="button-delete-primary">
                                 <div class="flex">
                                     <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
@@ -294,7 +294,7 @@
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                                     </svg>
                                     <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
-                                    <form action="{{route('client.destroy',$client->id)}}" method="POST" class="text-center m-auto">
+                                    <form action="{{route('clients.destroy',$client->id)}}" method="POST" class="text-center m-auto">
                                         @csrf
                                         @method('delete')
                                         @can('managerOrAbobe')
@@ -337,7 +337,7 @@
                 </div>
                 <!-- Modal body -->
                 <div class="p-6 space-y-6 mr-20 mt-4">
-                    <form action="{{ route('client.upload') }}" method="POST" enctype="multipart/form-data" class="flex items-center" id="csv_form1">
+                    <form action="{{ route('clients.upload') }}" method="POST" enctype="multipart/form-data" class="flex items-center" id="csv_form1">
                         @csrf
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="csv_upload"></label>
                         <input type="file" name="csv_upload"  id="csv_upload_file" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-s rounded-e cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="csv_upload_help">
@@ -394,55 +394,6 @@
             });
         });
     </script>
-
-{{-- <style>
-    #overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5); /* 透明度を指定できます */
-        z-index: 1000; /* 必要に応じて適切なz-indexを設定してください */
-    }
-</style> --}}
-
-{{-- <script>
-    // ページが読み込まれたら実行
-    $(() => {
-
-        $('.select2-ajax').select2({
-            ajax: {
-                url: '/user/search',
-                dataType: 'json',
-                processResults(response) {  // データをselect2向けに加工
-
-                    let options = [];
-
-                    response.data.forEach((user) => {
-
-                        options.push({
-                            id: user.id,
-                            text: user.name
-                        });
-
-                    });
-
-                    return {
-                        results: options,
-                        pagination: {
-                            more: (response.next_page_url !== null)  // 次ページがあるかどうか
-                        }
-                    };
-
-                }
-            }
-        });
-
-    });
-
-</script> --}}
-
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {

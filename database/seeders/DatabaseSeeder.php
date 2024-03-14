@@ -42,6 +42,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ContractPartnerTypeSeeder::class);
         $this->call(ContractChangeTypeSeeder::class);
         $this->call(ContractSheetStatusSeeder::class);
+        $this->call(VendorTypeSeeder::class);
         // $this->call(T_ProjectSeeder::class);
 
         // \App\Models\User::factory(10)->create();

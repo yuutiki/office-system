@@ -32,7 +32,7 @@
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                 </svg>
                             </div>
-                            <input type="search" id="client_name" name="client_name" value="@if (isset($clientName)){{$clientName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="業者名称（カナ）">
+                            <input type="search" id="vendor_name" name="vendor_name" value="@if (isset($vendorName)){{$vendorName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="業者名称（カナ）">
                         </div>
                         <div class="relative w-full mt-2 md:ml-2 md:mt-0">
                             <select name="selected_department" id="selected_department" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -44,314 +44,6 @@
                                 @endforeach
                             </select>
                         </div>
-                        {{-- <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-                            <select name="" id="user_id" class="select2-ajax block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="">営業担当</option>
-                                @foreach ($salesUsers as $salesUser)
-                                <option value="{{ $salesUser->id }}" @if ((empty($salesUserId) && Auth::id() == $salesUser->id) || (!empty($salesUserId) && $salesUserId == $salesUser->id)) selected @endif>
-                                    {{ $salesUser->name }}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div> --}}
-
-                        {{-- <script>
-                            $(document).ready(function () {
-                                // select2を適用
-                                $('#user_id').select2({
-                                    ajax: {
-                                        url: '/search-users',
-                                        dataType: 'json',
-                                        delay: 250,
-                                        processResults: function (response) {
-                                            let options = [];
-                        
-                                            response.forEach((user) => {
-                                                options.push({
-                                                    id: user.id,
-                                                    text: user.name
-                                                });
-                                            });
-                        
-                                            // 担当者全てのオプションを追加
-                                            options.unshift({
-                                                id: '',
-                                                text: '担当者全て'
-                                            });
-                        
-                                            return {
-                                                results: options
-                                            };
-                                        },
-                                        cache: true
-                                    },
-                                    minimumInputLength: 0,
-                                    placeholder: '営業担当を選択',
-                                    language: 'ja',
-                                    escapeMarkup: function (markup) {
-                                        return markup;
-                                    }
-                                });
-                        
-                                // ドロップダウンが表示された時に検索欄にフォーカスを当てる
-                                $('#user_id').on('select2:open', function () {
-                                    $(this).data('select2').$dropdown.find(':input.select2-search__field').focus();
-                                });
-                            });
-                        </script>
-                        <style>
-                            .select2-selection__rendered {
-                                font-size: 14px;
-                                height: 30px;
-                                line-height: 28px !important;
-                                border-radius: 4px !important;
-                                padding: 4px;
-                                width: 100%;
-                                color: #f8fafc !important; 
-
-                            }
-                            .select2-container .select2-selection--single {
-                                height: 37px !important;
-                                background-color: #374151  !important; /* bg-gray-50 の色 */
-                                border-color: rgb(75 85 99) !important;
-
-                            }
-                            .select2-selection__arrow {
-                                height: 31px !important;
-                            }
-                        
-                            .select2-results__options {
-                                font-size: 14px;
-                            }
-
-                            .custom-select {
-                                width: 100%  !important;
-                                padding: 2px  !important;
-                                padding-left: 4px  !important;
-                                font-size: 0.875rem  !important; /* text-sm のサイズ */
-                                color: #333  !important; /* text-gray-900 の色 */
-                                border: 1px solid #d2d6dc  !important; /* border-gray-300 の色 */
-                                border-radius: 0.375rem  !important; /* rounded のサイズ */
-                                background-color: #f8fafc  !important; /* bg-gray-50 の色 */
-                                focus:ring-blue-500  !important;
-                                focus:border-blue-500  !important;
-                            }
-                        </style> --}}
-
-
-                        <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-
-<div class="custom-select" id="customSelect">
-    <input type="text" placeholder="営業担当" autocomplete="off" id="searchInput" name="" value="{{ $salesUserId }}" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-    <ul id="optionsList" class="z-50 overflow-y-auto dark:bg-gray-700 text-white text-sm h-40 whitespace-nowrap"></ul>
-    <input type="hidden" name="user_id" id="selectedUserId">
-</div>
-</div>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var selectContainer = document.getElementById("customSelect");
-        var searchInput = document.getElementById("searchInput");
-        var optionsList = document.getElementById("optionsList");
-        var selectedUserIdInput = document.getElementById("selectedUserId");
-        var highlightedOption = null;
-
-        // カスタムセレクトボックスの表示・非表示
-        selectContainer.addEventListener("click", function () {
-            optionsList.style.display = (optionsList.style.display === "block") ? "none" : "block";
-            searchInput.focus();
-        });
-
-        // 選択肢がクリックされたときの処理
-        optionsList.addEventListener("click", function (event) {
-            // 選択肢がクリックされたら選択肢を非表示にする
-            optionsList.style.display = "none";
-        });
-
-        document.addEventListener("click", function (event) {
-        var selectContainer = document.getElementById("customSelect");
-        var optionsList = document.getElementById("optionsList");
-
-        // クリックされた要素がカスタムセレクトボックス内かどうかを確認
-        var isInsideSelect = event.target.closest("#customSelect");
-
-        if (!isInsideSelect) {
-            // カスタムセレクトボックス外がクリックされた場合は選択肢を非表示にする
-            optionsList.style.display = "none";
-        }
-    });
-
-        // 検索欄の入力に応じてオプションを絞り込む
-        searchInput.addEventListener("input", function () {
-            var searchTerm = searchInput.value.toLowerCase();
-            filterOptions(searchTerm);
-        });
-
-        // キーボードでのオプションの選択
-        searchInput.addEventListener("keydown", function (event) {
-            switch (event.key) {
-                case "ArrowDown":
-                    event.preventDefault();
-                    highlightNextOption();
-                    break;
-                case "ArrowUp":
-                    event.preventDefault();
-                    highlightPreviousOption();
-                    break;
-                case "Enter":
-                    event.preventDefault();
-                    selectHighlightedOption();
-                    break;
-            }
-        });
-
-        // Ajaxを使用して選択肢を取得
-        fetch('/search-users')
-            .then(response => response.json())
-            .then(data => {
-                // 取得したデータをセレクトボックスに追加
-                populateOptions(data);
-            })
-            .catch(error => console.error('Error fetching data:', error));
-
-        // オプションを絞り込む関数
-        function filterOptions(searchTerm) {
-            Array.from(optionsList.children).forEach(function (option) {
-                var optionText = option.innerText.toLowerCase();
-                option.style.display = optionText.includes(searchTerm) ? "block" : "none";
-            });
-            highlightedOption = null; // 絞り込み時にハイライトをリセット
-        }
-
-        // オプションをセレクトボックスに追加する関数
-        function populateOptions(options) {
-            options.forEach(function (option, index) {
-                var li = document.createElement("li");
-                li.textContent = option.name; // ここで適切なプロパティを指定
-                li.dataset.value = option.id; // ここで適切なプロパティを指定
-                li.addEventListener("click", function () {
-                    searchInput.value = option.name; // 選択されたオプションの名前をセット
-                    selectedUserIdInput.value = option.id; // hidden inputに選択されたオプションのidをセット
-
-                    // Ajaxリクエストでサーバーに選択されたオプションのidを送信
-                    sendSelectedOption(option.id);
-
-                    optionsList.style.display = "none";
-                });
-
-                li.addEventListener("mouseenter", function () {
-                    highlightedOption = index;
-                    highlightOption();
-                });
-
-                optionsList.appendChild(li);
-            });
-        }
-
-        // オプションをハイライトする関数
-        function highlightOption() {
-            Array.from(optionsList.children).forEach(function (option, index) {
-                if (index === highlightedOption) {
-                    option.classList.add("highlighted");
-                } else {
-                    option.classList.remove("highlighted");
-                }
-            });
-        }
-
-        // 次のオプションをハイライトする関数
-        function highlightNextOption() {
-            highlightedOption = (highlightedOption === null || highlightedOption === optionsList.children.length - 1) ? 0 : highlightedOption + 1;
-            highlightOption();
-        }
-
-        // 前のオプションをハイライトする関数
-        function highlightPreviousOption() {
-            highlightedOption = (highlightedOption === null || highlightedOption === 0) ? optionsList.children.length - 1 : highlightedOption - 1;
-            highlightOption();
-        }
-
-        // ハイライトされているオプションを選択する関数
-        function selectHighlightedOption() {
-            if (highlightedOption !== null) {
-                var selectedOption = optionsList.children[highlightedOption];
-                searchInput.value = selectedOption.innerText;
-                selectedUserIdInput.value = selectedOption.dataset.value;
-
-                // Ajaxリクエストでサーバーに選択されたオプションのidを送信
-                sendSelectedOption(selectedOption.dataset.value);
-
-                optionsList.style.display = "none";
-            }
-        }
-
-        // 選択されたオプションのidをサーバーに送信する関数
-        function sendSelectedOption(selectedId) {
-            // ここでAjaxリクエストを作成してサーバーに選択されたオプションのidを送信
-            // 例えば、fetchやXMLHttpRequestを使用してサーバーに送信できます
-            console.log("Sending selected option id to server:", selectedId);
-        }
-
-        // フォームのサブミット時に選択されたオプションをコンソールに表示
-        document.getElementById("myForm").addEventListener("submit", function (event) {
-            event.preventDefault();
-            console.log("Form submitted. Selected option id:", selectedUserIdInput.value);
-            // ここでフォームを実際にサブミットするか、別途処理を追加することができます
-        });
-    });
-</script>
-<style>
-    /* スタイルの定義 */
-    .custom-select {
-        position: relative;
-        display: inline-block;
-        width: 200px;
-        /* padding: 10px; */
-        /* border: 1px solid #ccc; */
-        /* border-radius: 5px; */
-        cursor: pointer;
-        /* background-color: #fff; */
-    }
-
-    /* .custom-select input {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        margin-bottom: 5px;
-    } */
-
-    .custom-select ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        border: 1px solid #ccc;
-        border-top: none;
-        border-radius: 0 0 5px 5px;
-        display: none;
-    }
-
-    .custom-select li {
-        padding: 4px;
-        cursor: pointer;
-    }
-
-    .custom-select li:hover {
-        background-color: blue;
-    }
-</style>
-
-
-
-
-
-
-
-
                         <div class="flex mt-2 md:mt-0">
                             <div class="w-full md:ml-2">
                                 <button id="filterDropdownButton" data-dropdown-toggle="filterDropdown" class="z-50 flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s rounded-e md:w-auto focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
@@ -372,65 +64,34 @@
                                             </h6>
                                             <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
                                                 <li>
-                                                    <input type="checkbox" id="is_enduser" name="is_enduser" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                                    <label for="is_enduser" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap">エンドユーザ</label>
-                                                </li>
-                                                <li>
-                                                    <input type="checkbox" id="is_dealer" name="is_dealer" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                                    <input type="checkbox" id="is_dealer" name="is_dealer" @if($isDealer) checked @endif class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                                     <label for="is_dealer" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap">ディーラ</label>
                                                 </li>
                                                 <li>
-                                                    <input type="checkbox" id="is_supplier" name="is_supplier" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                                    <input type="checkbox" id="is_supplier" name="is_supplier" @if($isSupplier) checked @endif class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                                     <label for="is_supplier" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap">仕入外注先</label>
                                                 </li>
                                                 <li>
-                                                    <input type="checkbox" id="is_lease" name="is_lease" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                                    <input type="checkbox" id="is_lease" name="is_lease" @if($isLease) checked @endif class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                                     <label for="is_lease" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap">リース会社</label>
                                                 </li>
                                                 <li>
-                                                    <input type="checkbox" id="is_other_partner" name="is_other_partner" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                                    <input type="checkbox" id="is_other_partner" name="is_other_partner" @if($isOtherPartner) checked @endif class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                                     <label for="is_other_partner" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap">その他協業</label>
                                                 </li>
                                             </ul>
                                         </div>
-                                        {{-- <ul class="border my-2 mx-4"></ul> --}}
-                                        <div class="md:mr-12 mt-4 md:mt-0">
-                                            <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
-                                                取引状態
-                                            </h6>
-                                            <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-                                                @foreach ($tradeStatuses as $tradeStatus)
-                                                <li class="flex items-center">
-                                                    <input id="trade_status_{{ $tradeStatus->id }}" type="checkbox" name="trade_statuses[]" @if(in_array($tradeStatus->id, $selectedTradeStatuses)) checked @endif value="{{$tradeStatus->id}}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                    <label for="trade_status_{{ $tradeStatus->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap">{{ $tradeStatus->trade_status_name }}</label>
-                                                </li>                       
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                        {{-- <ul class="border my-2 mx-4"></ul> --}}
-                                        <div class="md:mr-12 mt-4 md:mt-0">
-                                            <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
-                                                設置種別
-                                            </h6>
-                                            <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-                                                @foreach ($installationTypes as $installationType)
-                                                <li class="flex items-center">
-                                                    <input id="installation_type_{{ $installationType->id }}" type="checkbox" name="installation_types[]" @if(in_array($installationType->id, $selectedInstallationTypes)) checked @endif value="{{$installationType->id}}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                    <label for="installation_type_{{ $installationType->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap">{{ $installationType->type_name }}</label>
-                                                </li>                       
-                                                @endforeach
-                                            </ul>
-                                        </div>
+
                                         {{-- <ul class="border my-2 mx-4"></ul> --}}
                                         <div class="mt-4 md:mt-0">
                                             <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
                                                 業者種別
                                             </h6>
                                             <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-                                                @foreach ($clientTypes as $clientType)
+                                                @foreach ($vendorTypes as $vendorType)
                                                 <li class="flex items-center">
-                                                    <input id="client_type_{{ $clientType->id }}" type="checkbox" name="client_types[]" @if(in_array($clientType->id, $selectedClientTypes)) checked @endif value="{{$clientType->id}}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                    <label for="client_type_{{ $clientType->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $clientType->client_type_name }}</label>
+                                                    <input id="vendor_type_{{ $vendorType->id }}" type="checkbox" name="vendor_types[]" @if(in_array($vendorType->id, $selectedVendorTypes)) checked @endif value="{{$vendorType->id}}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                                    <label for="vendor_type_{{ $vendorType->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $vendorType->vendor_type_name }}</label>
                                                 </li>      
                                                 @endforeach
                                             </ul>
@@ -472,8 +133,13 @@
                     <div id="actionsDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-600 dark:divide-gray-600">
                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
                             <li>
-                                <button type="button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="block w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
-                                    CSV一括登録
+                                <button type="button" onclick="location.href='{{ route('vendors.showUploadForm') }}'" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2M8 9l4-5 4 5m1 8h0"/>
+                                        </svg>
+                                    </div>
+                                    CSVアップロード
                                 </button>
                             </li>
                         </ul>
@@ -497,7 +163,7 @@
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
-                            @sortablelink('client_num','業者番号')
+                            @sortablelink('vendor_num','業者№')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                         </div>
                     </th>
@@ -509,14 +175,8 @@
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
-                            @sortablelink('client_name','業者名称')
+                            @sortablelink('vendor_name','業者名称')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
-                        </div>
-                    </th>
-                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
-                        <div class="flex items-center">
-                            取引種別
-                            {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg> --}}
                         </div>
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
@@ -534,10 +194,10 @@
             <tbody>
                 @foreach ($vendors as $vendor)
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 font-medium hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600 clickable-row">
-                        <td class="pl-4 py-2 whitespace-nowrap">
+                        <td class="pl-4 py-1 whitespace-nowrap">
                             {{ $loop->iteration }}
                         </td>
-                        <td class="pl-4 py-2 whitespace-nowrap">
+                        <td class="pl-4 py-1 whitespace-nowrap">
                             <button onclick="location.href='{{route('vendors.edit',$vendor)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
                                 <div class="flex">
                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -547,22 +207,19 @@
                                 </div>
                             </button>
                         </td>
-                        <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <td class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$vendor->vendor_num}}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$vendor->corporation->corporation_name}}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$vendor->vendor_name}}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
-                            {{$vendor->tradestatus->trade_status_name}}
-                        </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$vendor->department->department_name}}
                         </td>
-                        <td class="py-2">
+                        <td class="py-1">
                             <button type="button" data-modal-target="deleteModal-{{$vendor->id}}" data-modal-show="deleteModal-{{$vendor->id}}" class="button-delete-primary">
                                 <div class="flex">
                                     <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
@@ -610,128 +267,4 @@
         {{ $vendors->withQueryString()->links('vendor.pagination.custum-tailwind') }} 
         </div> 
     </div>
-
-
-    <!-- CSV一括登録 modal -->
-    <div id="defaultModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-        <div class="relative w-full max-w-2xl max-h-full">
-            <!-- Modal content -->
-            <div class="relative bg-white rounded-s rounded-e shadow dark:bg-gray-700">
-                <!-- Modal header -->
-                <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                        CSV一括アップロード
-                    </h3>
-                    <button type="button" id="close_button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-s rounded-e text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
-                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                        <span class="sr-only">Close modal</span>
-                    </button>
-                </div>
-                <!-- Modal body -->
-                <div class="p-6 space-y-6 mr-20 mt-4">
-                    <form action="{{ route('client.upload') }}" method="POST" enctype="multipart/form-data" class="flex items-center" id="csv_form1">
-                        @csrf
-                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="csv_upload"></label>
-                        <input type="file" name="csv_upload"  id="csv_upload_file" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-s rounded-e cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="csv_upload_help">
-                    </form>
-                </div>
-                <!-- Modal footer -->
-                <div class="flex justify-end p-3 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                    <button type="submit" form="csv_form1" id="upload-button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-s rounded-e text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        アップロード
-                    </button>
-                    <button disabled type="button" id="spinner" class="hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 font-medium rounded-s rounded-e text-sm px-5 py-2.5 text-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 items-center">
-                        <svg aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
-                        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
-                        </svg>
-                        アップロード中...
-                    </button>
-                    <div id="uploadOverlay" style="display: none"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-        const uploadForm = document.getElementById('csv_form1');
-        const uploadButton = document.getElementById('upload-button');
-        const spinner = document.getElementById('spinner');
-        const uploadOverlay = document.getElementById('uploadOverlay');
-        const fileInput = document.getElementById('csv_upload_file');
-        const closeButton = document.getElementById('close_button');
-
-            uploadForm.addEventListener('submit', function (event) {
-                // // ファイルが添付されているかを確認
-                // if (fileInput.files.length === 0) {
-                //     // ファイル未添付の場合は処理を中止
-                //     event.preventDefault();
-                //     return;
-                // }
-
-                // アップロードボタンを非表示にし、スピナーを表示
-                uploadButton.style.display = 'none';
-                closeButton.style.display = 'none';
-                spinner.style.display = 'block';
-                fileInput.readOnly = true;
-
-                // 画面をロック
-                uploadOverlay.style.display = 'block';
-
-                // フォームをサブミット
-                uploadForm.submit();
-            });
-        });
-    </script>
-
-{{-- <style>
-    #overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5); /* 透明度を指定できます */
-        z-index: 1000; /* 必要に応じて適切なz-indexを設定してください */
-    }
-</style> --}}
-
-{{-- <script>
-    // ページが読み込まれたら実行
-    $(() => {
-
-        $('.select2-ajax').select2({
-            ajax: {
-                url: '/user/search',
-                dataType: 'json',
-                processResults(response) {  // データをselect2向けに加工
-
-                    let options = [];
-
-                    response.data.forEach((user) => {
-
-                        options.push({
-                            id: user.id,
-                            text: user.name
-                        });
-
-                    });
-
-                    return {
-                        results: options,
-                        pagination: {
-                            more: (response.next_page_url !== null)  // 次ページがあるかどうか
-                        }
-                    };
-
-                }
-            }
-        });
-
-    });
-
-</script> --}}
 </x-app-layout>

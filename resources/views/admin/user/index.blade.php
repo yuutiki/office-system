@@ -229,46 +229,46 @@
             <tbody>
                 @foreach ($users as $user)
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 font-medium hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600">
-                        <td class="pl-4 py-2 whitespace-nowrap">
+                        <td class="pl-4 py-1 whitespace-nowrap">
                             {{ $loop->iteration }}
                         </td>
-                        <td class="pl-4 py-2 whitespace-nowrap">
+                        <td class="pl-4 py-1 whitespace-nowrap">
                             {{ $user->employee_num }}
                         </td>
-                        <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <td class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{ $user->name }}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{ $user->email }}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{ $user->role->role_name }}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                         @if ($user->last_login_at)
                             {{ Carbon\Carbon::parse($user->last_login_at)->diffForHumans() }}
                         @else
                             未ログイン
                         @endif
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$user->employee_status->employee_status_num}}:
                             {{$user->employee_status->employee_status_name}}
                         </td>
                         @if($user->is_enabled == '1')
-                            <td class="px-1 py-3 whitespace-nowrap mr-2">
+                            <td class="px-1 py-1 whitespace-nowrap mr-2">
                                 有効
                             </td>
                          @else
-                            <td class="px-1 py-3 whitespace-nowrap mr-2 text-fuchsia-300">
+                            <td class="px-1 py-1 whitespace-nowrap mr-2 text-fuchsia-300">
                                 無効
                             </td>
                         @endif
 
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{ optional($user->updatedBy)->name }}
                         </td>
-                        <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <td class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <div class="text-center">
                                 <button class="button-edit" type="button" data-drawer-target="dupdateModal-{{$user->id}}" data-drawer-body-scrolling="false" data-drawer-show="dupdateModal-{{$user->id}}" data-drawer-placement="right" aria-controls="dupdateModal-{{$user->id}}">
                                     <div class="flex">
@@ -280,7 +280,7 @@
                                 </button>
                             </div>
                         </td>
-                        <td class="py-2">
+                        <td class="py-1">
                             {{-- <button data-modal-target="deleteModal-{{$user->id}}" data-modal-show="deleteModal-{{$user->id}}"  class="button-delete" type="button">
                                 <div class="flex">
                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
@@ -399,9 +399,9 @@
 
                             <div class="w-full flex flex-col">
                                 <label for="employee_status_id" class="block mt-4 font-medium text-gray-900 dark:text-white">在職状態</label>
-                                <select name="employee_status_id_{{$user->id}}" id="employee_status_id-{{$user->id}}" value="{{old('employee_status_id')}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                <select name="employee_status_id_{{$user->id}}" id="employee_status_id-{{$user->id}}" value="{{old('employee_status_id' . $user->id, $user->employee_status_id)}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                     @foreach($employeeStatuses as $employeeStatus)
-                                    <option value="{{ $employeeStatus->id }}"  @selected($employeeStatus->id == $user->employeeStatus_id)>{{ $employeeStatus->employee_status_name }}</option>
+                                        <option value="{{ $employeeStatus->id }}"  @selected($employeeStatus->id == $user->employee_status_id)>{{ $employeeStatus->employee_status_name }}</option>
                                     @endforeach
                                 </select>
                             </div>

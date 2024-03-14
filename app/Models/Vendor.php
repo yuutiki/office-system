@@ -68,15 +68,10 @@ class Vendor extends Model
     {
         return $this->belongsTo(User::class);
     }
-    // public function clientType()
-    // {
-    //     return $this->belongsTo(ClientType::class);
-    // }
-    // public function installationType()
-    // {
-    //     return $this->belongsTo(InstallationType::class);
-    // }
-
+    public function vendorType()
+    {
+        return $this->belongsTo(VendorType::class);
+    }
     public function tradeStatus()
     {
         return $this->belongsTo(TradeStatus::class);
@@ -85,4 +80,5 @@ class Vendor extends Model
     {
         return $this->belongsTo(Department::class);
     }
+    
 }

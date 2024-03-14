@@ -187,7 +187,7 @@ class ProjectController extends Controller
     // $proposedDeliveryMonth = $request->input('proposed_delivery_date');
     // $proposedAccountingMonth = $request->input('proposed_accounting_date');
     // $proposedPaymentMonth = $request->input('proposed_payment_date');
-
+    
     // PJ基本データを更新
     $project->client_id = $clientId;
     $project->project_name = $request->project_name;
@@ -196,11 +196,21 @@ class ProjectController extends Controller
     $project->accounting_type_id = $request->accounting_type_id;
     $project->distribution_type_id = $request->distribution_type_id;
     $project->billing_corporation_id = $request->billing_corporation_id;
+
+    $project->billing_corporation_name = $request->billing_corporation_name;
+    $project->billing_corporation_division_name = $request->billing_corporation_division_name;
+    $project->billing_corporation_person_name = $request->billing_corporation_person_name;
+
+    $project->billing_head_post_code = $request->head_post_code;
+    $project->billing_head_prefecture = $request->head_prefecture;
+    $project->billing_head_address1 = $request->head_addre1;
+
     $project->proposed_order_date = Carbon::parse($request->proposed_order_date . '-01');
     $project->proposed_delivery_date = Carbon::parse($request->proposed_delivery_date . '-01');
     $project->proposed_accounting_date = Carbon::parse($request->proposed_accounting_date . '-01');
     $project->proposed_payment_date = Carbon::parse($request->proposed_payment_date . '-01');
     $project->project_memo = $request->project_memo;
+
     $project->account_company_id = $request->account_company_id;
     $project->account_department_id = $request->account_department_id;
     $project->account_affiliation3_id = $request->account_affiliation3_id;
@@ -217,6 +227,11 @@ class ProjectController extends Controller
         $project->delete();
 
         return redirect()->back()->with('success', '正常に削除されました');
+    }
+
+    public function showUploadForm()
+    {
+        return view('projects.upload-form');
     }
 
 

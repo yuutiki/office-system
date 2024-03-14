@@ -153,7 +153,7 @@
                         </x-nav-link>
                     </li>
                     <li>
-                        <x-nav-link :href="route('client.index')" :active="request()->routeIs('client.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                        <x-nav-link :href="route('clients.index')" :active="request()->routeIs('clients.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                             <span class="flex-1 ml-10 whitespace-nowrap">{{ __('顧客一覧') }}</span>
                         </x-nav-link>
                     </li>
@@ -191,7 +191,7 @@
                         </x-nav-link>
                     </li>
                     <li>
-                        <x-nav-link :href="route('contract.index')" :active="request()->routeIs('contract.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                        <x-nav-link :href="route('contracts.index')" :active="request()->routeIs('contracts.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                             <span class="flex-1 ml-10 whitespace-nowrap">{{ __('契約一覧') }}</span>
                         </x-nav-link>
                     </li>
@@ -216,12 +216,12 @@
                         </x-nav-link>
                     </li>
                     {{-- <li>
-                        <x-nav-link :href="route('client.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                        <x-nav-link :href="route('clients.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                             <span class="flex-1 ml-10 whitespace-nowrap">{{ __('受注情報一覧') }}</span>
                         </x-nav-link>
                     </li> --}}
                     <li>
-                        <x-nav-link :href="route('client.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                        <x-nav-link :href="route('clients.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                             <span class="flex-1 ml-10 whitespace-nowrap">{{ __('発注情報一覧') }}</span>
                         </x-nav-link>
                     </li>
@@ -364,7 +364,7 @@
                             </x-nav-link>
                         </li>
                         <li>
-                            <x-nav-link :href="route('client.index')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <x-nav-link :href="route('clients.index')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('顧客一覧') }}</span>
                             </x-nav-link>
                         </li>
@@ -387,7 +387,7 @@
                             </x-nav-link>
                         </li>
                         <li>
-                            <x-nav-link :href="route('client.index')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                            <x-nav-link :href="route('clients.index')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                                 <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('契約一覧') }}</span>
                             </x-nav-link>
                         </li>
@@ -411,7 +411,7 @@
                             </x-nav-link>
                         </li>
                         <li>
-                            <x-nav-link :href="route('client.index')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                            <x-nav-link :href="route('clients.index')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                                 <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('受注情報一覧') }}</span>
                             </x-nav-link>
                         </li>

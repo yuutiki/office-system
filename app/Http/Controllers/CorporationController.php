@@ -264,8 +264,19 @@ class CorporationController extends Controller
             return redirect()->back()->with('error', '処理種別が選択されていません。');
         }
         
+        if ($recordCount === false) {
+            // エラーが発生した場合はリダイレクトしない
+            return;
+        }
+
+        if ($recordCount === false) {
+            // エラーが発生した場合はリダイレクトしてエラーメッセージを表示
+            return redirect()->back()->withInput()->with('error', 'エラーがあります');
+        }
+    
         // 成功時のリダイレクトやメッセージを追加するなどの処理を行う
-        return redirect()->back()->with('success', $recordCount . '件のデータを正常にアップロードしました。');
+        // return redirect()->back()->with('success', $recordCount . '件のデータを正常にアップロードしました。');
+        return redirect()->back()->with('success', '件のデータを正常にアップロードしました。');
     }
 
     private function parseCSVAndSaveToDatabase($csvPath, $operation)
@@ -287,38 +298,45 @@ class CorporationController extends Controller
         try {
             $recordCount = 0;
             $lineNumber = 1;
+            $errors = [];
     
             $interpreter = new Interpreter();
-            $interpreter->addObserver(function (array $row) use ($operation, &$recordCount, &$lineNumber) {
+            $interpreter->addObserver(function (array $row) use ($operation, &$recordCount, &$lineNumber, &$errors) {
                 $lineNumber++;
     
-                $errors = $this->validateRow($row, $operation, $lineNumber);
-    
-                // if (!empty($errors)) {
-                //     // エラーメッセージをセッションに保存
-                //     // session()->flash('error', "エラーがあります。 on line $lineNumber: " . implode(', ', $errors));
-                //     return redirect()->back()->withInput()->with('error',implode(', ', $errors));
-                // }
-                if (!empty($errors)) {
-                    $existingErrors = session('error1', []);
-                    DB::rollBack();
-
-                    $existingErrors = array_merge($existingErrors, $errors);
-                    session(['error1' => $existingErrors]);
-                    return redirect()->back()->withInput();
+                $rowErrors = $this->validateRow($row, $operation, $lineNumber);
+                if (!empty($rowErrors)) {
+                    // 行ごとのエラーを$errorsに追加
+                    $errors[$lineNumber] = $rowErrors;
+                } else {
+                    // エラーがなければ処理を継続し、データを登録する
+                    $this->processRow($row, $operation);
+                    $recordCount++;
                 }
-            
-    
-                $this->processRow($row, $operation);
-                $recordCount++;
             });
     
             $lexer->parse($csvPath, $interpreter);
+    
+            // エラーがある場合はトランザクションをロールバックしてエラーメッセージをセッションに保存
+            if (!empty($errors)) {
+                DB::rollBack();
+                $existingErrors = session('error1', []);
+                foreach ($errors as $lineNumber => $lineErrors) {
+                    foreach ($lineErrors as $error) {
+                        $existingErrors[] = "$lineNumber 行目：$error";
+                    }
+                }
+                session(['error1' => $existingErrors]);
+    
+                
+                return redirect()->back()->withInput()->with('error', 'エラーがあります');
+            }
     
             // トランザクションコミット
             DB::commit();
     
             return $recordCount;
+
     
         } catch (\Exception $e) {
             // トランザクションロールバック
@@ -357,7 +375,7 @@ class CorporationController extends Controller
         if (mb_strlen($row[1]) > 100) {
             $errors[] = "$lineNumber 行目：法人名称は100文字以下でなければなりません";
         }
-        if (strlen($row[2]) > 100) {
+        if (mb_strlen($row[2]) > 100) {
             $errors[] = "$lineNumber 行目：カナ名称は100文字以下でなければなりません";
         }
         if (mb_strlen($row[3]) > 100) {
@@ -385,23 +403,41 @@ class CorporationController extends Controller
         return $errors;
     }
     
+    // private function processRow(array $row, $operation)
+    // {
+    //     if ($existingRecord = Corporation::where('corporation_num', $row[0])->first()) {
+    //         $existingRecord->update([
+    //             'corporation_name' => $row[1],
+    //             'corporation_kana_name' => $row[2],
+    //             'corporation_short_name' => $row[3],
+    //             'memo' => $row[4],
+    //         ]);
+    //     } elseif ($operation === 'new') {
+    //         $corporation = new Corporation();
+    //         $corporation->corporation_num = $row[0];
+    //         $corporation->corporation_name = $row[1];
+    //         $corporation->corporation_kana_name = $row[2];
+    //         $corporation->corporation_short_name = $row[3];
+    //         $corporation->memo = $row[4];
+    //         $corporation->save();
+    //     }
+    // }
     private function processRow(array $row, $operation)
     {
-        if ($existingRecord = Corporation::where('corporation_num', $row[0])->first()) {
-            $existingRecord->update([
-                'corporation_name' => $row[1],
-                'corporation_kana_name' => $row[2],
-                'corporation_short_name' => $row[3],
-                'memo' => $row[4],
-            ]);
-        } elseif ($operation === 'new') {
-            $corporation = new Corporation();
-            $corporation->corporation_num = $row[0];
-            $corporation->corporation_name = $row[1];
-            $corporation->corporation_kana_name = $row[2];
-            $corporation->corporation_short_name = $row[3];
-            $corporation->memo = $row[4];
-            $corporation->save();
+        $data = [
+            'corporation_num' => $row[0],
+            'corporation_name' => $row[1],
+            'corporation_kana_name' => $row[2],
+            'corporation_short_name' => $row[3],
+            'memo' => $row[4],
+        ];
+
+        if ($operation === 'new') {
+            // 新規登録の場合は$dataを保存
+            Corporation::create($data);
+        } elseif ($existingRecord = Corporation::where('corporation_num', $row[0])->first()) {
+            // 既存レコードが存在する場合は更新
+            $existingRecord->update($data);
         }
     }
 }

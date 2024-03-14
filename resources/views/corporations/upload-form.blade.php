@@ -28,13 +28,13 @@
                                         処理種別
                                     </th>
                                     <th class="dark:bg-gray-700 border-b dark:border-gray-600">
-                                        <div class="flex px-8 py-2">
+                                        <div class="flex px-8 py-1.5">
                                             <div class="flex items-center me-4">
-                                                <input id="inline-radio" type="radio" value="new" name="processing_type" class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-300 dark:border-gray-600"  {{ old('processing_type') == 'new' ? 'checked' : '' }}>
+                                                <input id="inline-radio" type="radio" value="new" name="processing_type" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-300 dark:border-gray-600"  {{ old('processing_type') == 'new' ? 'checked' : '' }}>
                                                 <label for="inline-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 whitespace-nowrap">新規登録</label>
                                             </div>
                                             <div class="flex items-center me-4">
-                                                <input id="inline-2-radio" type="radio" value="update" name="processing_type" class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-300 dark:border-gray-600"  {{ old('processing_type') == 'update' ? 'checked' : '' }}>
+                                                <input id="inline-2-radio" type="radio" value="update" name="processing_type" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-300 dark:border-gray-600"  {{ old('processing_type') == 'update' ? 'checked' : '' }}>
                                                 <label for="inline-2-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 whitespace-nowrap">既存更新</label>
                                             </div>
                                             <div class="md:w-auto md:ml-14">
@@ -50,42 +50,21 @@
                                         ヘッダー
                                     </th>
                                     <th class="dark:bg-gray-700 border-b dark:border-gray-600">
-                                        <div class="flex px-8 py-2">
+                                        <div class="flex px-8 py-1.5">
                                             <div class="flex items-center mr-12 ">
-                                                <input id="head-radio" type="radio" value="headon" name="head-radio-group" class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-300 dark:border-gray-600" checked disabled>
+                                                <input id="head-radio" type="radio" value="headon" name="head-radio-group" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-300 dark:border-gray-600" checked disabled>
                                                 <label for="head-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300  whitespace-nowrap">有り</label>
                                             </div>
-                                            {{-- <div class="flex items-center me-4">
-                                                <input id="head-2-radio" type="radio" value="headoff" name="head-radio-group" class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-300 dark:border-gray-600" disabled>
-                                                <label for="head-2-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300  whitespace-nowrap">無し</label>
-                                            </div> --}}
                                         </div>
                                     </th>
                                 </tr>
-                                {{-- <tr class="border-b dark:border-gray-700">
-                                    <th class="pl-4 border-r dark:border-gray-700 dark:bg-gray-800 w-44">
-                                        ダブルクォーテーション
-                                    </th>
-                                    <th class="dark:bg-gray-700 border-b dark:border-gray-600">
-                                        <div class="flex px-8 py-2">
-                                            <div class="flex items-center mr-12">
-                                                <input id="double-quotes-radio" type="radio" value="double-quoteson" name="double-quotes-radio-group" class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-300 dark:border-gray-600" checked>
-                                                <label for="double-quotes-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300  whitespace-nowrap">有り</label>
-                                            </div>
-                                            <div class="flex items-center me-4">
-                                                <input id="double-quotes-2-radio" type="radio" value="double-quotesoff" name="double-quotes-radio-group" class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-300 dark:border-gray-600">
-                                                <label for="double-quotes-2-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300  whitespace-nowrap">無し</label>
-                                            </div>
-                                        </div>
-                                    </th>
-                                </tr> --}}
                                 <tr class="border-b dark:border-gray-700">
                                     <th class="pl-4 border-r dark:border-gray-700 dark:bg-gray-800 w-44">
                                         エスケープ
                                         <button data-tooltip-target="tooltip-right" data-tooltip-placement="right" type="button" class="ms-3 mb-2 md:mb-0 text-white bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-1.5 py-[1px] text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                             ?
                                         </button>
-                                        <div id="tooltip-right" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-xl shadow-sm opacity-0 tooltip dark:bg-gray-600">
+                                        <div id="tooltip-right" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-1.5 text-sm font-medium text-white bg-gray-900 rounded-xl shadow-sm opacity-0 tooltip dark:bg-gray-600">
                                             <span class="text-xs">
                                                 データ内に「1,000円」などのカンマが入っている場合に「"1,000円"」とすることで
                                                 <br>
@@ -95,7 +74,7 @@
                                         </div>
                                     </th>
                                     <th class="dark:bg-gray-700 border-b dark:border-gray-600">
-                                        <div class="flex px-8 py-2">
+                                        <div class="flex px-8 py-1.5">
                                             <div class="flex items-center mr-12 ">
                                                 <span>ダブルクォーテーション（""）</span>
                                             </div>
@@ -107,7 +86,7 @@
                                         ファイル形式
                                     </th>
                                     <th class="dark:bg-gray-700 border-b dark:border-gray-600">
-                                        <div class="flex px-8 py-2">
+                                        <div class="flex px-8 py-1.5">
                                             <div class="flex items-center mr-12 ">
                                                 <span>CSV形式</span>
                                             </div>
@@ -119,7 +98,7 @@
                                         ファイルサイズ
                                     </th>
                                     <th class="dark:bg-gray-700 border-b dark:border-gray-600">
-                                        <div class="flex px-8 py-2">
+                                        <div class="flex px-8 py-1.5">
                                             <div class="flex items-center mr-12 ">
                                                 <span>10,000KB（10MB）以下</span>
                                             </div>
@@ -131,7 +110,7 @@
                                         文字コード
                                     </th>
                                     <th class="dark:bg-gray-700 border-b dark:border-gray-600">
-                                        <div class="flex px-8 py-2">
+                                        <div class="flex px-8 py-1.5">
                                             <div class="flex items-center mr-12 ">
                                                 <span>shift-Jis</span>
                                             </div>
@@ -142,7 +121,7 @@
                         </table>
                     </div>
                     <div class="relative flex items-center justify-center w-full">
-                        <input type="file" name="csv_upload" id="csv_upload_file" class="absolute inset-0 w-full h-full opacity-0 z-10 " onchange="displayFileInfo()" />
+                        <input type="file" name="csv_upload" id="csv_upload_file" accept=".csv" class="absolute inset-0 w-full h-full opacity-0 z-10 " onchange="displayFileInfo()" />
                         <label for="csv_upload_file" class="dark:bg-gray-900flex flex-col items-center justify-center w-full h-44 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-bray-800 dark:bg-gray-800 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                             <div class="flex flex-col items-center justify-center pt-5 pb-6">
                                 <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
@@ -175,7 +154,7 @@
         </div>
         <div class=" h-40 w-full rounded mt-4 overflow-y-scroll bg-gray-700">
 
-            @if($errors->any())
+            {{-- @if($errors->any())
                 <div class="alert alert-danger">
                     <ul>
                         @foreach ($errors->all() as $error)
@@ -183,7 +162,7 @@
                         @endforeach
                     </ul>
                 </div>
-            @endif
+            @endif --}}
             @if(session()->has('error1') && is_array(session('error1')))
                 <div class="w-auto mx-2 p-1">
                     <ul>

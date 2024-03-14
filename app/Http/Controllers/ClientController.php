@@ -67,13 +67,18 @@ class ClientController extends Controller
         }
         if (!empty($clientName)) {
             // Clientモデルからclient_nameをもとにIDを取得
-            $clientIds = Client::where('client_name', 'like', '%' . $clientName . '%')->pluck('id')->toArray();
-        
-            // 取得したIDを利用してサポート検索クエリに追加条件を設定
-            if (!empty($clientIds)) {
-                $clientsQuery->whereIn('id', $clientIds);
-            }
+            $clientsQuery = Client::where('client_name', 'like', '%' . $clientName . '%');
+
         }
+        // if (!empty($clientName)) {
+        //     // Clientモデルからclient_nameをもとにIDを取得
+        //     $clientIds = Client::where('client_name', 'like', '%' . $clientName . '%')->pluck('id')->toArray();
+        
+        //     // 取得したIDを利用してサポート検索クエリに追加条件を設定
+        //     if (!empty($clientIds)) {
+        //         $clientsQuery->whereIn('id', $clientIds);
+        //     }
+        // }
 
 
         if (!empty($salesUserId)) {
@@ -199,7 +204,7 @@ class ClientController extends Controller
 
         $clientProducts = ClientProduct::where('client_id',$id)->orderBy('product_id','asc')->get();
         $reports = Report::where('client_id',$id)->get();
-        $supports = Support::with(['client', 'user', 'productSeries', 'productVersion', 'productCategory', 'supportType', 'supportTime'])->where('client_id',$id)->paginate(25);
+        $supports = Support::with(['client', 'user', 'productSeries', 'productVersion', 'productCategory', 'supportType', 'supportTime'])->orderBy('received_at', 'desc')->where('client_id',$id)->paginate(25);
         // client_numとclient_nameをセッションに保存
         Session::put('selected_client_num', $client->client_num);
         Session::put('selected_client_name', $client->client_name);
@@ -222,12 +227,14 @@ class ClientController extends Controller
         $client->head_tel = $request->head_tel;
         $client->head_fax = $request->head_fax;
         $client->students = $request->students;
+
         $client->distribution = $request->distribution_type_id;
         $client->department_id = $request->department;
         $client->client_type_id = $request->client_type_id;
         $client->installation_type_id = $request->installation_type_id;
         $client->trade_status_id = $request->trade_status_id;
         $client->user_id = $request->user_id;
+        $client->dealer_id = $request->dealer_id; // Vendorとリレーションしている
         $client->memo = $request->memo;
         $client->is_enduser = $request->has('is_enduser') ? 1 : 0;
         $client->is_supplier = $request->has('is_supplier') ? 1 : 0;

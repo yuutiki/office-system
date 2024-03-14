@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('fax2',15)->nullable(true)->comment('FAX番号2');///いらん
             $table->string('int_tel',15)->nullable(true)->comment('内線番号');///いらん
             $table->string('phone',15)->nullable(true)->comment('携帯番号');
-            $table->string('mail',30)->nullable(true)->comment('メールアドレス');
+            $table->string('mail',255)->nullable(true)->comment('メールアドレス');
             $table->string('head_post_code',8)->nullable(true)->comment('郵便番号');//////ハイフンありで登録する
             $table->foreignId('prefecture_id',80)->nullable(true)->comment('都道府県ID');/////////////IDを登録する
             $table->string('head_address1',300)->nullable(true)->comment('住所1');

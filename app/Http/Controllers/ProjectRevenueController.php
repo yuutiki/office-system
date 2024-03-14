@@ -31,7 +31,7 @@ class ProjectRevenueController extends Controller
         // モデルを保存
         if (is_numeric($numericValue)) {
             $projectRevenue->save();
-            return redirect()->route('project.edit',$request->modalproject_id)->with('success', '正常に登録しました');
+            return redirect()->route('projects.edit',$request->modalproject_id)->with('success', '正常に登録しました');
         }else {
             return redirect()->back()->with('error', 'Invalid numeric input');
         }
@@ -62,7 +62,7 @@ class ProjectRevenueController extends Controller
         // モデルを保存
         if (is_numeric($numericValue)) {
             $projectRevenue->save();
-            return redirect()->route('project.edit', $request->modalproject_id)->with('success', '正常に更新しました');
+            return redirect()->route('projects.edit', $request->modalproject_id)->with('success', '正常に更新しました');
         } else {
             return redirect()->back()->with('error', 'Invalid numeric input');
         }
@@ -76,7 +76,7 @@ class ProjectRevenueController extends Controller
 
         $projectRevenue->delete();
 
-        return redirect()->route('project.edit', $projectId)->with('message', '削除しました');
+        return redirect()->route('projects.edit', $projectId)->with('message', '削除しました');
     }
 
     public function bulkInsert(Request $request)
@@ -116,7 +116,7 @@ class ProjectRevenueController extends Controller
         ProjectRevenue::bulkInsert($projectRevenuesData);
 
         // 成功したらリダイレクトやレスポンスを返す
-        return redirect()->route('project.edit',$request->Insert_modalproject_id)->with('success', '正常に登録しました');
+        return redirect()->route('projects.edit',$request->Insert_modalproject_id)->with('success', '正常に登録しました');
     }
 
     public function bulkDelete(Request $request)

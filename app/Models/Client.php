@@ -146,6 +146,10 @@ class Client extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function prefecture()
+    {
+        return $this->belongsTo(Prefecture::class);
+    }
     public function clientType()
     {
         return $this->belongsTo(ClientType::class);

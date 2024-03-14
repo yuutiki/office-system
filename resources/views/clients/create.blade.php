@@ -16,7 +16,7 @@
 
         <div class="">
 
-            <form id="form1" method="post" action="{{route('client.store')}}" enctype="multipart/form-data" autocomplete="new-password">
+            <form id="form1" method="post" action="{{route('clients.store')}}" enctype="multipart/form-data" autocomplete="new-password">
                 @csrf
                 <!-- 法人検索ボタン -->
                 <button type="button"  onclick="showModal()" class="md:ml-1 md:mt-1 mt-1 mb-2 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -202,7 +202,7 @@
     
                             <div class="w-full flex flex-col hidden">
                                 <label for="dealer_id" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">ディーラID（hidden要素）</label>
-                                <input form="updateForm" type="text" name="dealer_id" class="w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="dealer_id" value="{{old('dealer_id')}}" placeholder="">
+                                <input type="text" name="dealer_id" class="w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="dealer_id" value="{{old('dealer_id')}}" placeholder="">
                             </div>
                             <div class="w-full flex flex-col">
                                 <label for="vendor_num" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（業者）№</label>
@@ -293,7 +293,7 @@
         </div>
     </div>
 
-    <!-- Extra Large Modal -->
+    <!-- 法人検索 Modal -->
     <div id="corporationSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden animate-slide-in-top">
     {{-- <div id="corporationSearchModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full justify-center items-center"> --}}
         <div class="max-h-full w-full max-w-2xl">
@@ -354,7 +354,7 @@
         </div>
     </div>
 
-    <!-- ディーラ法人検索 Modal -->
+    <!-- ディーラ検索 Modal -->
     <div id="dealerSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden animate-slide-in-top">
         {{-- <div id="dealerSearchModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full justify-center items-center"> --}}
             <div class="max-h-full w-full max-w-2xl">

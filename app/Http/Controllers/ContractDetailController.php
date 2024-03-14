@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ContractChangeType;
 use App\Models\ContractDetail;
+use App\Models\ContractPartnerType;
+use App\Models\ContractSheetStatus;
+use App\Models\ContractType;
+use App\Models\ContractUpdateType;
 use Illuminate\Http\Request;
 
 class ContractDetailController extends Controller
@@ -20,7 +25,13 @@ class ContractDetailController extends Controller
      */
     public function create()
     {
-        //
+        $contractTypes = ContractType::all();
+        $contractUpdateTypes = ContractUpdateType::all();
+        $contractChangeTypes = ContractChangeType::all();
+        $contractPartnerTypes = ContractPartnerType::all();
+        $contractSheetStatuses = ContractSheetStatus::all();
+
+        return view('contract-details.create',compact('contractTypes','contractUpdateTypes','contractChangeTypes','contractPartnerTypes','contractSheetStatuses',));
     }
 
     /**

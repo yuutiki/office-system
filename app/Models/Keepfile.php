@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;//add
 use Carbon\Carbon; //add
 use App\Observers\GlobalObserver;
+use Illuminate\Support\Facades\Storage;
 
 class Keepfile extends Model
 {
@@ -20,7 +21,8 @@ class Keepfile extends Model
         'keep_at',
         'return_at',
         'memo',
-        'is_finished'
+        'is_finished',
+        'pdf_file',
     ];
 
     //ソート用に使うカラムを指定
@@ -33,12 +35,20 @@ class Keepfile extends Model
         'user_id'
     ];
 
+
     //GlobalObserverに定義されている作成者と更新者を登録するメソッド
     //なお、値を更新せずにupdateをかけても更新者は更新されない。
     protected static function boot()
     {
         parent::boot();
         self::observe(GlobalObserver::class);
+
+        // データが削除される前に関連する PDF ファイルも削除する
+        static::deleting(function ($keepfile) {
+            if ($keepfile->pdf_file) {
+                Storage::disk('public')->delete($keepfile->pdf_file);
+            }
+        });
     }
 
     //relation

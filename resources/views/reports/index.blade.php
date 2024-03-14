@@ -340,7 +340,7 @@
                 </div>
                 <!-- Modal body -->
                 <div class="p-6 space-y-6 mr-20 mt-4">
-                    <form action="{{ route('client.upload') }}" method="POST" enctype="multipart/form-data" class="flex items-center" id="csv_form1">
+                    <form action="{{ route('clients.upload') }}" method="POST" enctype="multipart/form-data" class="flex items-center" id="csv_form1">
                         @csrf
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="csv_upload"></label>
                         <input type="file" name="csv_upload"  id="csv_upload_file" class="block w-full text-sm text-gray-900 border border-gray-300 rounded cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="csv_upload_help">

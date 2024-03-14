@@ -15,9 +15,10 @@ class DepartmentSeeder extends Seeder
             'prefix_code' => 'C',
             'department_name' => '学園ソリューション事業部',
             'department_kana_name' => 'ガクエンソリューションジギョウブ',
-            'department_eng_name' => '',
+            'department_eng_name' => 'Gakuen',
+            'department_short_name' => '学園',
             'created_by' => '1',
-            'updated_by' => '1',            
+            'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -26,9 +27,10 @@ class DepartmentSeeder extends Seeder
             'prefix_code' => 'S',
             'department_name' => 'ソフトエンジニアリング事業部',
             'department_kana_name' => 'ソフトエンジニアリングジギョウブ',
-            'department_eng_name' => '',
+            'department_eng_name' => 'SoftEngine',
+            'department_short_name' => 'ソフト',
             'created_by' => '1',
-            'updated_by' => '1',            
+            'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -37,9 +39,10 @@ class DepartmentSeeder extends Seeder
             'prefix_code' => 'E',
             'department_name' => '公教育ソリューション事業部',
             'department_kana_name' => 'コウキョウイクソリューションジギョウブ',
-            'department_eng_name' => '',
+            'department_eng_name' => 'Koukyouiku',
+            'department_short_name' => '公教育',
             'created_by' => '1',
-            'updated_by' => '1',            
+            'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -48,9 +51,10 @@ class DepartmentSeeder extends Seeder
             'prefix_code' => 'A',
             'department_name' => '公会計ソリューション事業部',
             'department_kana_name' => 'コウカイケイソリューションジギョウブ',
-            'department_eng_name' => '',
+            'department_eng_name' => 'Koukaikei',
+            'department_short_name' => '公会計',
             'created_by' => '1',
-            'updated_by' => '1',            
+            'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -59,9 +63,10 @@ class DepartmentSeeder extends Seeder
             'prefix_code' => 'W',
             'department_name' => 'ウェルネスソリューション事業部',
             'department_kana_name' => 'ウェルネスソリューションジギョウブ',
-            'department_eng_name' => '',
+            'department_eng_name' => 'Wellness',
+            'department_short_name' => 'ウェルネス',
             'created_by' => '1',
-            'updated_by' => '1',            
+            'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -70,9 +75,10 @@ class DepartmentSeeder extends Seeder
             'prefix_code' => 'M',
             'department_name' => '管理本部',
             'department_kana_name' => 'カンリホンブ',
-            'department_eng_name' => '',
+            'department_eng_name' => 'Manage',
+            'department_short_name' => '管理部',
             'created_by' => '1',
-            'updated_by' => '1',            
+            'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);

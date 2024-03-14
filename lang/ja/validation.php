@@ -303,23 +303,25 @@ return [
         'keep_at' => '預託日',
         'return_at' => '返却日',
         'memo' => '備考',
-        "clientcorporation_num" => "法人番号",
-        "clientcorporation_name" => "法人名称",
-        "clientcorporation_kana_name" => "法人カナ名称",
-        "client_num" => "法人番号",
-        "client_name" => "法人名称",
+
+        "corporation_num" => "法人№",
+        "corporation_name" => "法人名称",
+        "corporation_kana_name" => "法人カナ名称",
+        "corporation_short_name" => "法人略称",
+
+        "client_num" => "顧客№",
+        "client_name" => "顧客名称",
+        "client_kana_name" => "顧客カナ名称",
+        "client_type_id" => "顧客種別",
+
+        "vendor_num" => "業者№",
+        "vendor_name" => "業者名称",
+        "vendor_kana_name" => "業者カナ名称",
+        "vendor_type_id" => "業者種別",
+
         "installation_type_id" => "設置種別",
         "trade_status_id" => "取引状態",
-        "client_type_id" => "顧客種別",
-        "client_num" => "法人番号",
-        "clientcorporation_short_name" => "法人略称",
         "credit_limit" => "与信限度額",
-        "client_num" => "法人番号",
-        "client_num" => "法人番号",
-        "client_num" => "法人番号",
-        "client_num" => "法人番号",
-        "client_num" => "法人番号",
-        "client_kana_name" => "法人カナ名称"
     ],
 
 ];

@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Observers\GlobalObserver;
+use Illuminate\Support\Str;//add
+
 
 class Contract extends Model
 {
@@ -17,6 +19,24 @@ class Contract extends Model
     {
         parent::boot();
         self::observe(GlobalObserver::class);
+    }
+
+
+
+    public static function generateContractNumber($clientId)
+    {
+        $lastContractNum = Contract::where('client_id', $clientId)
+                            ->orderBy('contract_num', 'desc')
+                            ->first();
+
+        if ($lastContractNum) {
+            $lastSerialNumber = $lastContractNum->contract_num;
+            $newSerialNumber = str_pad($lastSerialNumber + 1, 3, '0', STR_PAD_LEFT);
+        } else {
+            $newSerialNumber = '001';
+        }
+
+        return "$newSerialNumber";
     }
 
     public function client()

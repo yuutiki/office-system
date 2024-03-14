@@ -2,22 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CsvUploadRequest;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
 
-use App\Http\Requests\ClientStoreRequest;
+use App\Http\Requests\VendorStoreRequest;
 use App\Models\Corporation;//add
-use App\Models\Client;
-use App\Models\ClientProduct;
 use App\Models\User;
 use App\Models\Department;//add
-use App\Models\InstallationType;//add
 use App\Models\ClientType;//add
-use App\Models\DistributionType;
-use App\Models\TradeStatus;//add
 use App\Models\Prefecture;//add
-use App\Models\Report;//add
-use App\Models\Support;
+use App\Models\VendorType;
 use Illuminate\pagination\paginator;//add
 use Illuminate\Support\Facades\DB;//add
 use Illuminate\Support\Facades\Session;
@@ -36,56 +31,57 @@ class VendorController extends Controller
         // 検索条件用
         $salesUsers = User::all();
         $departments = Department::all();
-        $tradeStatuses = TradeStatus::all();
         $clientTypes = ClientType::all();
-        $installationTypes = InstallationType::all();
+        $vendorTypes = VendorType::all();
 
         // ログインユーザーの所属を取得
         $userAffiliation2 = auth()->user()->department_id;
         $selectedDepartment = $userAffiliation2; // ユーザーの所属を初期値に設定
 
         // 検索リクエストを取得し変数に格納
-        $request->session()->put([
-            'user_id' => $request->user_id,
-        ]);
-        $selectedTradeStatuses = $request->input('trade_statuses', []);
-        $selectedClientTypes = $request->input('client_types', []);
-        $selectedInstallationTypes = $request->input('installation_types', []);
-        $clientName = $request->input('client_name');
-        $salesUserId = $request->input('user_id');
+        // $request->session()->put([
+        //     'user_id' => $request->user_id,
+        // ]);
+
+        $selectedVendorTypes = $request->input('vendor_types', []);
+        $vendorName = $request->input('vendor_name');
         $departmentId = $request->input('department_id');
+        $isDealer = $request->input('is_dealer');
+        $isSupplier = $request->input('is_supplier');
+        $isLease = $request->input('is_lease');
+        $isOtherPartner = $request->input('is_other_partner');
+
+
 
         // 検索クエリを組み立てる
-        $vendorsQuery = Vendor::with(['corporation','user','tradeStatus','department'])->sortable()->orderBy('vendor_num','asc');
+        $vendorsQuery = Vendor::with(['corporation','user','department'])->sortable()->orderBy('vendor_num','asc');
 
-        if (!empty($selectedTradeStatuses)) {// 取引状態
-            $vendorsQuery->whereIn('trade_status_id', $selectedTradeStatuses);
+        if (!empty($isDealer)) {
+            $vendorsQuery->where('is_dealer', 1);
         }
-        if (!empty($selectedVendorTypes)) {// 顧客種別
-            $vendorsQuery->whereIn('client_type_id', $selectedVendorTypes);
+        if (!empty($isSupplier)) {
+            $vendorsQuery->where('is_supplier', 1);
         }
-        if (!empty($selectedInstallationTypes)) {// 設置種別
-            $vendorsQuery->whereIn('installation_type_id', $selectedInstallationTypes);
+        if (!empty($isLease)) {
+            $vendorsQuery->where('is_lease', 1);
         }
-        if (!empty($clientName)) {
+        if (!empty($isOtherPartner)) {
+            $vendorsQuery->where('is_other_partner', 1);
+        }
+
+        if (!empty($selectedVendorTypes)) {
+            $vendorsQuery->whereIn('vendor_type_id', $selectedVendorTypes);
+        }
+        if (!empty($vendorName)) {
             // Vendorモデルからclient_nameをもとにIDを取得
-            $clientIds = Vendor::where('vendor_name', 'like', '%' . $clientName . '%')->pluck('id')->toArray();
+            $vendorIds = Vendor::where('vendor_name', 'like', '%' . $vendorName . '%')->pluck('id')->toArray();
         
             // 取得したIDを利用してサポート検索クエリに追加条件を設定
-            if (!empty($clientIds)) {
-                $vendorsQuery->whereIn('id', $clientIds);
+            if (!empty($vendorIds)) {
+                $vendorsQuery->whereIn('id', $vendorIds);
             }
         }
 
-
-        if (!empty($salesUserId)) {
-            $vendorsQuery->where('user_id','=', $salesUserId);
-        }
-
-        // // 初期表示で絞る
-        // if (empty($salesUserId)) {
-        //     $vendorsQuery->where('user_id','=', Auth::id());
-        // }
 
         // プルダウンが変更された場合の処理
         if (request()->has('selected_department')) {
@@ -104,29 +100,23 @@ class VendorController extends Controller
             $vendorsQuery->where('department_id', $userAffiliation2)->get();
         }
 
-
-
         $vendors = $vendorsQuery->paginate($per_page);
         $count = $vendors->total();
 
-        return view('vendors.index',compact('vendors','count','salesUsers', 'departments', 'installationTypes', 'tradeStatuses', 'clientTypes', 'selectedTradeStatuses','selectedClientTypes','selectedInstallationTypes','salesUserId', 'departmentId', 'clientName', 'selectedDepartment'));
+        return view('vendors.index',compact('vendors','count','salesUsers', 'departments', 'vendorTypes','selectedVendorTypes', 'departmentId', 'vendorName', 'selectedDepartment', 'isDealer', 'isSupplier','isLease', 'isOtherPartner',));
     }
 
     public function create()
     {
         $users = User::all();
-        $installationTypes = InstallationType::all(); //設置種別
-        $tradeStatuses = TradeStatus::all(); //取引状態
-        $clientTypes = ClientType::all(); //顧客種別
+        $vendorTypes = VendorType::all(); //業者種別
         $departments = Department::all(); //管轄事業部
         $prefectures = Prefecture::all(); //都道府県
-        $distributionTypes = DistributionType::all();
 
-
-        return view('vendors.create',compact('departments','users','tradeStatuses','clientTypes','installationTypes','prefectures','distributionTypes'));
+        return view('vendors.create',compact('departments','users','vendorTypes','prefectures',));
     }
 
-    public function store(Request $request)
+    public function store(VendorStoreRequest $request)
     {
         ////以下にFormRequestのバリデーションを通過した場合の処理を記述////
 
@@ -141,7 +131,6 @@ class VendorController extends Controller
 
         $vendorNumber = Vendor::generateVendorNumber($corporationNum, $prefix_code);
 
-
         // corporation_numからcorporation_idを取得する
         $corporation = Corporation::where('corporation_num', $corporationNum)->first();
         $corporationId = $corporation->id;
@@ -149,30 +138,22 @@ class VendorController extends Controller
         $department = Department::where('prefix_code', $prefix_code)->first();
         $departmentId = $department->id;
 
-
         // 顧客データを保存
         $vendor = new Vendor();
         $vendor->vendor_num = $vendorNumber;// 採番した顧客番号をセット
 
-
         $vendor->corporation_id = $corporationId;
         $vendor->department_id = $departmentId;
-        $vendor->vendor_name = $request->client_name;
-        $vendor->vendor_kana_name = $request->client_kana_name;
+        $vendor->vendor_name = $request->vendor_name;
+        $vendor->vendor_kana_name = $request->vendor_kana_name;
         $vendor->head_post_code = $formattedPost;//変換後の郵便番号をセット
         $vendor->head_prefecture = $request->head_prefecture;
         $vendor->head_address1 = $request->head_addre1;
         $vendor->head_tel = $request->head_tel;
         $vendor->head_fax = $request->head_fax;
         $vendor->number_of_employees = $request->number_of_employees;
-        // $vendor->distribution = $request->distribution;
-        $vendor->vendor_type_id = $request->client_type_id;
-        // $vendor->installation_type_id = $request->installation_type_id;
-        $vendor->trade_status_id = $request->trade_status_id;
-        // $vendor->user_id = $request->user_id;
+        $vendor->vendor_type_id = $request->vendor_type_id;
         $vendor->memo = $request->memo;
-        // $vendor->distribution_id = $request->distribution_id;
-        // $vendor->is_enduser = $request->has('is_enduser') ? 1 : 0;
         $vendor->is_supplier = $request->has('is_supplier') ? 1 : 0;
         $vendor->is_dealer = $request->has('is_dealer') ? 1 : 0;
         $vendor->is_lease = $request->has('is_lease') ? 1 : 0;
@@ -182,8 +163,6 @@ class VendorController extends Controller
         return redirect()->route('vendors.index')->with('success', '正常に登録しました');
     }
 
-
-
     public function show(Vendor $client)
     {
         //
@@ -192,54 +171,36 @@ class VendorController extends Controller
     public function edit(string $id)
     {
         $users = User::all();
-        $tradeStatuses = TradeStatus::all();
-        $clientTypes = VendorType::all();
-        $installationTypes = InstallationType::all();
+        $vendorTypes = VendorType::all();
         $departments = Department::all();
-        $client = Vendor::find($id);
+        $vendor = Vendor::find($id);
         $prefectures = Prefecture::all(); //都道府県
-        $distributionTypes = DistributionType::all();
 
-        $clientProducts = VendorProduct::where('client_id',$id)->orderBy('product_id','asc')->get();
-        $reports = Report::where('client_id',$id)->get();
-        $supports = Support::with(['client', 'user', 'productSeries', 'productVersion', 'productCategory', 'supportType', 'supportTime'])->where('client_id',$id)->paginate(25);
-        // client_numとclient_nameをセッションに保存
-        Session::put('selected_client_num', $client->client_num);
-        Session::put('selected_client_name', $client->client_name);
-        Session::put('selected_client_id', $client->id);
-
-        return view('client.edit',compact('departments','users','tradeStatuses','clientTypes','installationTypes','client','reports','prefectures','supports','clientProducts','distributionTypes'));
+        return view('vendors.edit',compact('departments','users','vendorTypes','vendor','prefectures',));
     }
 
-    public function update(VendorStoreRequest $request, string $id)
+    public function update(Request $request, string $id)
     {
+        $vendor = Vendor::find($id);
 
-        $client = Vendor::find($id);
+        $vendor->vendor_name = $request->vendor_name;
+        $vendor->vendor_kana_name = $request->vendor_kana_name;
+        $vendor->vendor_type_id = $request->vendor_type_id;
+        $vendor->head_post_code = $request->head_post_code;
+        $vendor->head_prefecture = $request->head_prefecture;
+        $vendor->head_address1 = $request->head_addre1;
+        $vendor->head_tel = $request->head_tel;
+        $vendor->head_fax = $request->head_fax;
+        $vendor->number_of_employees = $request->number_of_employees;
+        $vendor->department_id = $request->department;
+        $vendor->memo = $request->memo;
+        $vendor->is_supplier = $request->has('is_supplier') ? 1 : 0;
+        $vendor->is_dealer = $request->has('is_dealer') ? 1 : 0;
+        $vendor->is_lease = $request->has('is_lease') ? 1 : 0;
+        $vendor->is_other_partner = $request->has('is_other_partner') ? 1 : 0;
+        $vendor->save();
 
-        $client->client_num = $request->client_num;
-        $client->client_name = $request->client_name;
-        $client->client_kana_name = $request->client_kana_name;
-        $client->head_post_code = $request->head_post_code;
-        $client->head_prefecture = $request->head_prefecture;
-        $client->head_address1 = $request->head_addre1;
-        $client->head_tel = $request->head_tel;
-        $client->head_fax = $request->head_fax;
-        $client->students = $request->students;
-        $client->distribution = $request->distribution_type_id;
-        $client->department_id = $request->department;
-        $client->client_type_id = $request->client_type_id;
-        $client->installation_type_id = $request->installation_type_id;
-        $client->trade_status_id = $request->trade_status_id;
-        $client->user_id = $request->user_id;
-        $client->memo = $request->memo;
-        $client->is_enduser = $request->has('is_enduser') ? 1 : 0;
-        $client->is_supplier = $request->has('is_supplier') ? 1 : 0;
-        $client->is_dealer = $request->has('is_dealer') ? 1 : 0;
-        $client->is_lease = $request->has('is_lease') ? 1 : 0;
-        $client->is_other_partner = $request->has('is_other_partner') ? 1 : 0;
-        $client->save();
-
-        return redirect()->route('client.edit', $id)->with('success', '正常に変更しました');
+        return redirect()->route('vendors.edit', $id)->with('success', '正常に変更しました');
     }
 
     public function destroy(string $id)
@@ -273,18 +234,13 @@ class VendorController extends Controller
         return response()->json($vendors);
     }
 
-    public function updateActiveTab(Request $request)
+    public function showUploadForm()
     {
-        $activeTabId = $request->input('activeTabId');
-        Session::put('active_tab', $activeTabId);
-        return response()->json(['message' => 'アクティブなタブが更新されました']);
+        return view('vendors.upload-form');
     }
 
 
-
-
-
-    public function upload(Request $request)
+    public function upload(CsvUploadRequest $request)
     {
         // ファイルがアップロードされているかチェック
         if (!$request->hasFile('csv_upload')) {
@@ -318,53 +274,45 @@ class VendorController extends Controller
 
          // CSV行をパースした際に実行する処理を定義
         $interpreter->addObserver(function (array $row) {
-            $client = new Vendor();
+            $vendor = new Vendor();
 
-            $clientcorporationNum = $row[0];
-                $Corporation = VendorCorporation::where('clientcorporation_num', $clientcorporationNum)->first();
+            $corporationNum = $row[0];
+                $Corporation = Corporation::where('corporation_num', $corporationNum)->first();
                 if ($Corporation) {
-                    $client->client_corporation_id = $Corporation->id;
+                    $vendor->corporation_id = $Corporation->id;
                 } else {
-                    // divisionが見つからない場合のエラーハンドリング
+                    // corporationが見つからない場合のエラーハンドリング
                 }
+
             $departmentCode = $row[1];
                 $department = Department::where('department_code', $departmentCode)->first();
                 if ($department) {
-                    $client->department_id = $department->id;
+                    $vendor->department_id = $department->id;
                 } else {
-                    // divisionが見つからない場合のエラーハンドリング
+                    // department_idが見つからない場合のエラーハンドリング
                 }
 
-            
+            $corporationNum = $Corporation->corporation_num;
             $departmentPrefixCode = $department->prefix_code;
-            $clientcorporationNum = $Corporation->clientcorporation_num;
-            $clientNumber = Vendor::generateVendorNumber($clientcorporationNum, $departmentPrefixCode);
-            $client->client_num = $clientNumber;
+            $vendorNumber = Vendor::generateVendorNumber($corporationNum, $departmentPrefixCode);
+            $vendor->vendor_num = $vendorNumber;
 
-            $client->client_name = $row[2];
-            $client->client_kana_name = $row[3];
+            $vendor->vendor_name = $row[2];
+            $vendor->vendor_kana_name = $row[3];
+            $vendor->vendor_type_id = $row[4];
 
-            $client->installation_type_id = $row[4];
-            $client->client_type_id = $row[5];
-            $client->trade_status_id = $row[6];
-            $client->user_id = $row[7];
-            
+            $vendor->head_post_code = $row[5];
+            $vendor->head_prefecture = $row[6];
+            $vendor->head_address1 = $row[7];
+            $vendor->head_tel = $row[8];
+            $vendor->head_fax = $row[9];
+            $vendor->number_of_employees = $row[10];
 
-            $client->head_post_code = $row[8];
-            $client->head_prefecture = $row[9];
-            $client->head_address1 = $row[10];
-
-            $client->head_tel = $row[11];
-            $client->head_fax = $row[12];
-            $client->students = $row[13];
-
-            $client->is_enduser = $row[14];
-            $client->is_supplier = $row[15];
-            $client->is_dealer = $row[16];
-            $client->is_lease = $row[17];
-            $client->is_other_partner = $row[18];
-            $client->is_closed = $row[19];
-            $client->save();
+            $vendor->is_supplier = $row[11];
+            $vendor->is_dealer = $row[12];
+            $vendor->is_lease = $row[13];
+            $vendor->is_other_partner = $row[14];
+            $vendor->save();
         });
 
         $lexer->parse($csvPath, $interpreter);
