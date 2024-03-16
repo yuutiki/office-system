@@ -229,6 +229,34 @@ class ProjectController extends Controller
         return redirect()->back()->with('success', '正常に削除されました');
     }
 
+    //モーダル用の非同期検索ロジック
+    public function search(Request $request)
+    {
+        $projectName = $request->input('projectName');
+        $projectNumber = $request->input('projectNumber');
+        // $projectDepartment = $request->input('departmentId');
+
+        $query = Project::query()
+        ->where('project_name', 'LIKE', '%' . $projectName . '%')
+        ->Where('project_num', 'LIKE', '%' . $projectNumber . '%');
+        // ->Where('department_id', 'LIKE', '%' . $projectDepartment . '%');
+        $projects = $query->with('salesStage','accountUser')->get();
+
+        return response()->json($projects);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function showUploadForm()
     {
         return view('projects.upload-form');

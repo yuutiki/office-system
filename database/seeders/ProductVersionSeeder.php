@@ -35,8 +35,24 @@ class ProductVersionSeeder extends Seeder
             'updated_at' => now()
         ]);
         ProductVersion::create([
+            'version_code' => '0301',
+            'version_name' => 'V3.01',
+            'created_by' => '1',
+            'updated_by' => '1',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        ProductVersion::create([
             'version_code' => '0400',
             'version_name' => 'V4.0',
+            'created_by' => '1',
+            'updated_by' => '1',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        ProductVersion::create([
+            'version_code' => '0403',
+            'version_name' => 'V4.03',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),

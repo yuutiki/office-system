@@ -338,7 +338,11 @@ class SupportController extends Controller
         $config = new LexerConfig();
         $config->setFromCharset($fromCharset);
 
-        $config->setIgnoreHeaderLine(true); // ヘッダを無視する設定
+        $config->setIgnoreHeaderLine(true) // ヘッダを無視する設定
+        ->setEnclosure('"')
+        ->setDelimiter(',')
+        ->setIgnoreHeaderLine(true);
+
         $lexer = new Lexer($config);
         $interpreter = new Interpreter();
 

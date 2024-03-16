@@ -1,4 +1,7 @@
 <?php
+
+use App\Models\Contract;
+
 Breadcrumbs::for('dashboard', function ($trail) {
     $trail->push('ホーム', route('dashboard'));
 });
@@ -120,31 +123,32 @@ Breadcrumbs::for('dashboard', function ($trail) {
         // ダッシュボード > 契約一覧
         Breadcrumbs::for('contracts', function ($trail) {
             $trail->parent('dashboard');
-            $trail->push('契約一覧', url('contracts'));
+            $trail->push('契約一覧', route('contracts.index')); // URLをroute関数を使って生成
         });
+
                 // ダッシュボード > 契約一覧 > 契約新規登録
                 Breadcrumbs::for('createContract', function ($trail) {
                     $trail->parent('contracts');
-                    $trail->push('新規作成', url('contracts/create'));
+                    $trail->push('新規作成', route('contracts.create')); // URLをroute関数を使って生成
                 });
 
                 // 契約一覧 > 契約基本編集画面（例　ID=1）
                 Breadcrumbs::for('editContract', function ($trail, $contract) {
                     $trail->parent('contracts');
-                    $trail->push('編集（契約連番' . $contract->contract_num . '）', route('contracts.edit', $contract->id));
+                    $trail->push('契約基本（' . $contract->contract_num . '）', route('contracts.edit', $contract)); // $contractを直接渡す
                 });
 
                 // 契約基本編集画面（例　ID=1） > 契約詳細新規登録
                 Breadcrumbs::for('CreateContractDetail', function ($trail, $contract) {
                     $trail->parent('editContract', $contract);
-                    $trail->push('契約詳細新規登録', route('contract.details.create', $contract->id));
+                    $trail->push('契約詳細', route('contracts.details.create', $contract)); // $contractを直接渡す
                 });
 
                 // 契約基本編集画面（例　ID=1） > 契約詳細編集
                 Breadcrumbs::for('editContractDetail', function ($trail, $contract) {
                     $trail->parent('editContract', $contract);
-                    $trail->push('契約詳細編集', route('contract.details.edit', $contract->id));
-                });                
+                    $trail->push('契約詳細', route('contracts.details.edit', $contract));
+                });
 
 
 

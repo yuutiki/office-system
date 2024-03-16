@@ -75,6 +75,7 @@ Route::middleware('auth')->group(function () {
 
     // Projects関連
     Route::get('/projects/show-upload', [ProjectController::class, 'showUploadForm'])->name('projects.showUploadForm');
+    Route::post('/projects/search', [ProjectController::class, 'search'])->name('projects.search');
     Route::post('/projects/upload', [ProjectController::class, 'upload'])->name('projects.upload');
     Route::resource('/projects', ProjectController::class);
 
@@ -87,13 +88,13 @@ Route::middleware('auth')->group(function () {
 
     // clients関連
     Route::post('/clients/upload', [ClientController::class, 'upload'])->name('clients.upload');
-    Route::resource('/clients','\App\Http\Controllers\ClientController');
+    Route::post('/client/search', [ClientController::class, 'search'])->name('client.search');
+    Route::resource('/clients', ClientController::class);
     Route::post('/updateActiveTab',  [ClientController::class, 'updateActiveTab']); //顧客編集画面のアクティブタブを取得
 
     // clientPerson関連
     Route::get('/client-person/show-upload', [ClientPersonController::class, 'showUploadForm'])->name('client-person.showUploadForm');
     Route::post('/client-person/upload', [ClientPersonController::class, 'upload'])->name('client-person.upload');
-    Route::post('/client/search', [ClientController::class, 'search'])->name('client.search');
     Route::resource('/client-person', ClientPersonController::class);
 
     // vendor関連
@@ -121,9 +122,19 @@ Route::middleware('auth')->group(function () {
     Route::resource('/product', ProductController::class);
 
 
+
+
+    // contract-detail 関連
+    Route::get('contracts/{contract}/details/create', [ContractDetailController::class, 'create'])->name('contracts.details.create');
+    Route::post('contracts/{contract}/details/store', [ContractDetailController::class, 'store'])->name('contracts.details.store');
+    Route::get('contracts/{contract}/details/{detail}/edit', [ContractDetailController::class, 'edit'])->name('contracts.details.edit');
+    // Route::put('/contracts/{contract}/details/{detail}', [ContractDetailController::class, 'update'])->name('contracts.details.update');
+    Route::put('contracts/{contract}/details/{detail}', [ContractDetailController::class, 'update'])->name('contracts.details.update');
+    
     Route::resource('/contracts', ContractController::class);
 
-    Route::get('contracts/{contract}/details/create',  [ContractDetailController::class, 'create'])->name('contracts.details.create');
+
+
     // Route::resource('/contract-details', ContractDetailController::class);
 
 
