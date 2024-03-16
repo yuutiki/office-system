@@ -254,7 +254,7 @@
             </thead>
             <tbody>
                 @foreach ($clientPersons as $clientPerson)
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 font-medium hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600 clickable-row">
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600 clickable-row">
                         <td class="pl-4 py-1 whitespace-nowrap">
                             {{ $loop->iteration }}
                         </td>
@@ -280,7 +280,7 @@
                             {{ optional($clientPerson->client)->client_name}}
                         </td>
 
-                        <td class="px-1 py-1 whitespace-nowrap">
+                        <td class="px-1 py-1 pt-3 whitespace-nowrap">
                             <ruby>
                             {{$clientPerson->last_name}}<rt class="text-[9px]">{{$clientPerson->last_name_kana}}</rt>
                             </ruby>

@@ -43,6 +43,10 @@ class Contract extends Model
     {
         return $this->belongsTo(Client::class);
     }
+    public function contractDetails()
+    {
+        return $this->hasMany(ContractDetail::class);
+    }
     public function contractType()
     {
         return $this->belongsTo(ContractType::class);

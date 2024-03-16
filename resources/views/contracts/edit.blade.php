@@ -61,7 +61,7 @@
                 <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="grid gap-4 mb-4 md:grid-cols-6 grid-cols-2">
                         <div>
-                            <label for="contract_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">契約種別<span class="text-red-500"> *</span></label>
+                            <label for="contract_type_id" class="text-gray-900 dark:text-white leading-none mt-4">契約種別<span class="text-red-500"> *</span></label>
                             <select form="updateForm" id="contract_type_id" name="contract_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option value="">未選択</option>
                                 @foreach($contractTypes as $contractType)
@@ -73,29 +73,23 @@
                             @enderror
                         </div>
                         <div>
-                            <label for="contract_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">契約先区分</label>
-                            <select form="updateForm" id="contract_type_id" name="contract_type_id" class="bg-gray-400 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="">未選択</option>
-                                @foreach($contractTypes as $contractType)
-                                <option value="{{ $contractType->id }}" @selected($contractType->id == old('contract_type_id', $contract->contract_type_id))>{{ $contractType->contract_type_name }}</option>
-                                @endforeach
-                            </select>
-                            @error('contract_type_id')
-                                <div class="text-red-500">{{ $message }}</div>
-                            @enderror
+                            <div>
+                                <label class="text-gray-900 dark:text-white leading-none mt-4">契約先区分(参照)</label>
+                                <input type="text" value="{{ $oldestContractPartnerTypeName }}" class="input-primary" readonly>
+                            </div>
                         </div>
                     </div>
                     <div class="grid gap-4 mb-4 md:grid-cols-6 grid-cols-2">
                         <div>
-                            <label class="font-semibold text-gray-900 dark:text-white leading-none mt-4">初回契約日</label>
-                            <input type="date" value="" readonly class="bg-gray-400 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <label class="text-gray-900 dark:text-white leading-none mt-4">初回契約日(参照)</label>
+                            <input type="date" value="{{ $firstContractStartAt }}" class="input-primary" readonly>
                         </div>
                         <div>
-                            <label for="" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">解約日</label>
-                            <input type="date" value="" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <label for="cancelled_at" class="text-gray-900 dark:text-white leading-none mt-4">解約日</label>
+                            <input type="date" form="updateForm" min="1900-01-01" max="2200-12-31" value="{{ old('cancelled_at', $contract->cancelled_at) }}" name="cancelled_at" class="input-primary">
                         </div>
-                        <div>
-                            <label for="contract_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">更新月</label>
+                        {{-- <div>
+                            <label for="contract_type_id" class="text-gray-900 dark:text-white leading-none mt-4">更新月</label>
                             <select form="updateForm" id="contract_type_id" name="contract_type_id" class="bg-gray-400 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500 pointer-events-none">
                                 <option value="">未選択</option>
                                 @foreach($contractTypes as $contractType)
@@ -105,13 +99,17 @@
                             @error('contract_type_id')
                                 <div class="text-red-500">{{ $message }}</div>
                             @enderror
+                        </div> --}}
+                        <div>
+                            契約期間: {{ $periodString }}
                         </div>
+
                     </div>
 
 
                     {{-- テーブル表示 --}}
                     <div class="w-full relative overflow-x-auto shadow-md rounded mx-auto mt-8 boeder-2 bg-gray-300 dark:bg-gray-700">
-                        <table class="w-full text-sm font-medium text-left text-gray-800 dark:text-gray-400">
+                        <table class="w-full text-sm text-left text-gray-800 dark:text-gray-400">
                             {{-- テーブルヘッダ start --}}
                             <thead class="text-sm text-gray-700 bg-gray-300 dark:bg-gray-700 dark:text-gray-100">
                                 <tr>
@@ -157,9 +155,9 @@
                                             新規/更新/変更
                                         </div>
                                     </th>
-                                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
+                                    {{-- <th scope="col" class="px-2 py-3 whitespace-nowrap">
                                         <span class="sr-only">編集</span>
-                                    </th>
+                                    </th> --}}
                                     <th scope="col" class="px-2 py-1 whitespace-nowrap">
                                         {{-- <button data-modal-target="storeRevenueModal" data-modal-toggle="storeRevenueModal"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
                                             <div class="flex items-center">
@@ -198,23 +196,31 @@
                                             {{ $contractDetail->contract_end_at }}
                                         </td>
                                         <td class="px-2 py-1 whitespace-nowrap">
-                                            {{ $contractDetail->update_month }}
+                                            {{ \Carbon\Carbon::parse($contractDetail->contract_end_at)->endOfMonth()->addDay()->format('n') }}月
                                         </td>
                                         <td class="px-2 py-1 whitespace-nowrap">
                                             {{ number_format($contractDetail->contract_amount) }}
                                         </td>
                                         <td class="px-2 py-1 whitespace-nowrap">
-                                            {{ $contractDetail->update_type_id }}
+                                            {{ $contractDetail->contractUpdateType->contract_update_type_name }}
                                         </td>
                                         <td class="px-2 py-1 whitespace-nowrap">
-                                            {{ $contractDetail->update_type_id }}
+                                            @if ($contractDetail->contract_change_type_id == 1)
+                                                <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
+                                                    {{ $contractDetail->contractChangeType->contract_change_type_name }}
+                                                </span>
+                                            @elseif ($contractDetail->contract_change_type_id == 3)
+                                                <span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-400 border border-yellow-400">
+                                                    {{ $contractDetail->contractChangeType->contract_change_type_name }}
+                                                </span>
+                                            @else
+                                                <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                                    {{ $contractDetail->contractChangeType->contract_change_type_name }}
+                                                </span>
+                                            @endif
                                         </td>
-                                        <td class="px-2 py-1 whitespace-nowrap">
-                                            {{ $contractDetail->update_type_id }}
-                                        </td>
-
                                         <td class="px-2 py-1 text-center">
-                                            <button id="updateProductButton" data-modal-target="updateRevenueModal-{{ $contractDetail->id }}" data-modal-show="updateRevenueModal-{{ $contractDetail->id }}"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-2 py-0.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
+                                            <button id="" onclick="location.href='{{ route('contracts.details.edit', ['contract' => $contract, 'detail' => $contractDetail]) }}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-2 py-0.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
                                                 <div class="flex items-center">
                                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
@@ -269,61 +275,6 @@
                                             </div>
                                         </td>
                                     </tr>
-
-
-
-                                    <div id="updateRevenueModal-{{ $contractDetail->id }}" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
-                                        <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
-                                            <!-- Modal content -->
-                                            <div class="relative p-4 bg-white rounded shadow dark:bg-gray-800 sm:p-5">
-                                                <!-- Modal header -->
-                                                <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-                                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                                        売上編集
-                                                    </h3>
-                                                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="updateRevenueModal-{{ $contractDetail->id }}">
-                                                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                                        <span class="sr-only">Close modal</span>
-                                                    </button>
-                                                </div>
-                                                <!-- Modal body -->
-                                                <form method="POST" action="{{ route('projectrevenue.update',$contractDetail->id) }}">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                                                        <div class="hidden">
-                                                            <div class="w-full flex flex-col">
-                                                                <div class="w-full flex flex-col">
-                                                                    <label for="modalproject_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">プロジェクトID</label>
-                                                                    <input type="text" name="modalproject_id" id="modalproject_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                                                </div>
-                                                            </div>
-                                                            @error('department_id')
-                                                                <div class="text-red-500">{{$message}}</div>
-                                                            @enderror
-                                                        </div>
-                                                        <div>
-                                                            <div class="md:flex items-center">
-                                                                <div class="w-full flex flex-col">
-                                                                <label for="revenue_amount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">売上金額</label>
-                                                                <input type="text" onblur="formatNumberInput(this);" maxlength="9"   name="revenue_amount" id="revenue_amount" value="{{old('revenue_amount',number_format($contractDetail->revenue))}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="0" required>
-                                                                </div>
-                                                            </div>
-
-                                                            @error('revenue_amount')
-                                                                <div class="text-red-500">{{$message}}</div>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex items-center space-x-4 mt-2">
-                                                        <x-primary-button class="mt-4" id="saveModalButton">
-                                                            変更を確定
-                                                        </x-primary-button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
                                 @endforeach
 
 
@@ -420,7 +371,7 @@
                             <textarea form="updateForm" name="project_memo" class="w-auto py-1 border border-gray-300 rounded mt-1" data-auto-resize="true" id="auto-resize-textarea-content" value="{{old('project_memo')}}" cols="30" rows="5" data-auto-resize="true">{{old('project_memo')}}</textarea>
                         </div>
 
-                        <form id="updateForm" method="post" action="{{route('projects.create')}}" enctype="multipart/form-data" autocomplete="new-password">
+                        <form id="updateForm" method="post" action="{{route('contracts.update', $contract)}}" enctype="multipart/form-data" autocomplete="new-password">
                             @csrf
                             @method('patch')
                             <x-primary-button class="mt-4" form="updateForm" id="saveButton">
