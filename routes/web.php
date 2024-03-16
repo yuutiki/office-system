@@ -10,6 +10,7 @@ use App\Http\Controllers\Dashboard\DashboardController;//add
 use App\Http\Controllers\CommentController;//add
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\ContractDetailController;
+use App\Http\Controllers\EstimateController;
 use App\Http\Controllers\LinkController;
 use App\Http\Controllers\ReportController;//add
 use App\Http\Controllers\ProductController;//add
@@ -104,7 +105,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('/vendors',VendorController::class);
 
     // keepfile関連
-    Route::get('/generate-pdf', [KeepfileController::class, 'generatePdf'])->name('pdf.generate'); //仮
     Route::delete('/keepfile/{id}/delete-pdf', [KeepfileController::class, 'deletePdf'])->name('keepfile.deletePdf');
     Route::resource('/keepfile',KeepfileController::class);
 
@@ -138,13 +138,16 @@ Route::middleware('auth')->group(function () {
     // Route::resource('/contract-details', ContractDetailController::class);
 
 
+    // estimate（見積）
+    Route::get('/estimate/generate-pdf', [EstimateController::class, 'generatePdf'])->name('estimate.pdf.generate'); //仮
+    Route::resource('/estimate' , EstimateController::class);
+
 
     Route::resource('/reports', '\App\Http\Controllers\ReportController');
     Route::resource('/support', '\App\Http\Controllers\SupportController');
     Route::resource('/link', '\App\Http\Controllers\LinkController');
     Route::resource('/client-product' , '\App\Http\Controllers\ClientProductController');
     Route::resource('/projectrevenue' , '\App\Http\Controllers\ProjectRevenueController');
-    Route::resource('/estimate' , '\App\Http\Controllers\EstimateController');
 
 
     //マスタ系

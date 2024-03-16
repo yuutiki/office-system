@@ -144,7 +144,9 @@
         </div>
     </div>
 
-    <div class="md:w-auto md:ml-14 md:mr-2 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-300">
+    {{-- <div class="js-scrollable"> --}}
+
+    <div class="md:w-auto md:ml-14 md:mr-2 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-300 js-scrollable">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-sm text-gray-700 dark:bg-gray-700 dark:text-gray-200">
                 <tr>
@@ -407,6 +409,8 @@
         {{ $corporations->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
         </div> 
     </div>
+{{-- </div>  --}}
+
 
 
 {{-- <script>
@@ -491,4 +495,14 @@
         });
     </script>
 @endif --}}
+<script src="https://unpkg.com/scroll-hint@latest/js/scroll-hint.min.js"></script>
+
+<script>
+//   window.addEventListener('DOMContentLoaded', function () {
+//     new ScrollHint('.js-scrollable');
+//   });
+
+new ScrollHint('.js-scrollable', {
+});
+</script>
 </x-app-layout>

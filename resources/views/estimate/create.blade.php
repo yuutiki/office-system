@@ -1,11 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
+            <h2 class="text-xl text-gray-900 dark:text-white">
                 見積書登録
             </h2>
             <div class="flex justify-end">
-                <x-general-button onclick="location.href='{{route('client.index')}}'">
+                <x-general-button onclick="location.href='{{route('clients.index')}}'">
                     戻る
                 </x-general-button>
                 <x-primary-button class="ml-2" form="form1">
@@ -20,29 +20,29 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="mx-4 sm:p-8">
-            <form id="form1" method="post" action="{{route('project.store')}}" enctype="multipart/form-data" autocomplete="new-password">
+            <form id="form1" method="post" action="{{route('projects.store')}}" enctype="multipart/form-data" autocomplete="new-password">
                 @csrf
                 {{-- <div class="grid gap-4 mb-4 sm:grid-cols-3">
                     <div class="">
-                        <label for="clientcorporation_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人名称</label>
-                        <input type="text" name="clientcorporation_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="clientcorporation_name" value="{{old('clientcorporation_name')}}" placeholder="顧客検索してください" readonly>
+                        <label for="clientcorporation_name" class="block  dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人名称</label>
+                        <input type="text" name="clientcorporation_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" id="clientcorporation_name" value="{{old('clientcorporation_name')}}" placeholder="顧客検索してください" readonly>
                         @error('clientcorporation_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="hidden">
-                        <label for="client_num" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">顧客番号</label>
-                        <input type="text" name="client_num" id="client_num" value="{{old('client_num')}}" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed">
+                        <label for="client_num" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-4">顧客番号</label>
+                        <input type="text" name="client_num" id="client_num" value="{{old('client_num')}}" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed">
                     </div>
                     <div class="">
-                        <label for="client_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">顧客名称</label>
-                        <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="client_name" value="{{old('client_name')}}" placeholder="顧客検索してください" readonly>
+                        <label for="client_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-4">顧客名称</label>
+                        <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" id="client_name" value="{{old('client_name')}}" placeholder="顧客検索してください" readonly>
                         @error('client_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
                     <div>
-                        <label for="department_id" class="block font-semibold  text-gray-900 dark:text-white leading-none md:mt-4">管轄事業部</label>
+                        <label for="department_id" class="block  text-gray-900 dark:text-white leading-none md:mt-4">管轄事業部</label>
                         <select id="department_id" name="department_id" class="dark:bg-gray-400 mt-1 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 pointer-events-none" readonly>
                             <option value="">未選択</option>
                             @foreach($departments as $department)
@@ -54,36 +54,36 @@
                         @enderror
                     </div> --}}
                     <div class="">
-                        <label for="project_num" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">見積番号</label>
-                        <input type="text" name="project_num" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="project_num" value="{{old('project_num')}}" placeholder="登録時に自動採番されます" readonly>
+                        <label for="project_num" class="block  dark:text-gray-100 text-gray-900 leading-none md:mt-4">見積番号</label>
+                        <input type="text" name="project_num" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" id="project_num" value="{{old('project_num')}}" placeholder="登録時に自動採番されます" readonly>
                         @error('project_num')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-span-2">
-                        <label for="project_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">宛名</label>
-                        <input type="text" name="project_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="project_name" value="白梅学園大学" placeholder="">
+                        <label for="project_name" class="block  dark:text-gray-100 text-gray-900 leading-none md:mt-4">宛名</label>
+                        <input type="text" name="project_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="project_name" value="白梅学園大学" placeholder="">
                         @error('project_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="">
-                        <label for="client_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">見積書表題</label>
-                        <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_name" value="御　見　積　書" placeholder="">
+                        <label for="client_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-4">見積書表題</label>
+                        <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="client_name" value="御　見　積　書" placeholder="">
                         @error('client_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="">
-                        <label for="client_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">注文書表題</label>
-                        <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_name" value="注　文　書" placeholder="">
+                        <label for="client_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-4">注文書表題</label>
+                        <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="client_name" value="注　文　書" placeholder="">
                         @error('client_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="">
-                        <label for="client_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">件名</label>
-                        <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_name" value="" placeholder="">
+                        <label for="client_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-4">件名</label>
+                        <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="client_name" value="" placeholder="">
                         @error('client_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
@@ -91,51 +91,51 @@
                 <div class="grid gap-4 mb-4 sm:grid-cols-5">
 
                     <div class="">
-                        <label for="client_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">受渡期日</label>
-                        <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_name" value="御相談" placeholder="">
+                        <label for="client_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-4">受渡期日</label>
+                        <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="client_name" value="御相談" placeholder="">
                         @error('client_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="">
-                        <label for="client_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">受渡場所</label>
-                        <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_name" value="御指定場所" placeholder="">
+                        <label for="client_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-4">受渡場所</label>
+                        <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="client_name" value="御指定場所" placeholder="">
                         @error('client_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="">
-                        <label for="client_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">取引方法</label>
-                        <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_name" value="月末締翌月末迄現金" placeholder="">
+                        <label for="client_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-4">取引方法</label>
+                        <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="client_name" value="月末締翌月末迄現金" placeholder="">
                         @error('client_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="">
-                        <label for="client_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">有効期限</label>
-                        <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_name" value="3ヶ月" placeholder="">
+                        <label for="client_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-4">有効期限</label>
+                        <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="client_name" value="3ヶ月" placeholder="">
                         @error('client_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="">
-                        <label for="client_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">見積作成日</label>
-                        <input type="date" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_name" value="2024-01-04" placeholder="">
+                        <label for="client_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-4">見積作成日</label>
+                        <input type="date" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="client_name" value="2024-01-04" placeholder="">
                         @error('client_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <div class="">
-                        <label for="client_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">住所</label>
-                        <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_name" value="3ヶ月" placeholder="">
+                        <label for="client_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-4">住所</label>
+                        <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="client_name" value="3ヶ月" placeholder="">
                         @error('client_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="">
-                        <label for="client_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">担当者</label>
-                        <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_name" value="3ヶ月" placeholder="">
+                        <label for="client_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-4">担当者</label>
+                        <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="client_name" value="3ヶ月" placeholder="">
                         @error('client_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
@@ -170,24 +170,24 @@
 
                         <div class="grid gap-4 sm:grid-cols-5">
                             <div class="">
-                                <label for="client_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">税抜合計</label>
-                                <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="totalPrice" value="3,000,000" placeholder="">
+                                <label for="client_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-4">税抜合計</label>
+                                <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="totalPrice" value="3,000,000" placeholder="">
                             </div>
                             <div class="">
-                                <label for="client_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">消費税額</label>
-                                <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_name" value="300,000" placeholder="">
+                                <label for="client_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-4">消費税額</label>
+                                <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="client_name" value="300,000" placeholder="">
                             </div>
                         </div>
                         <div class="grid gap-4 mb-4 sm:grid-cols-5">
                             <div class="col-span-2">
-                                <label for="client_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-1">税込合計</label>
-                                <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_name" value="3,300,000" placeholder="">
+                                <label for="client_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-1">税込合計</label>
+                                <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="client_name" value="3,300,000" placeholder="">
                             </div>
                         </div>
 
                         <div class="w-full flex flex-col">
-                            <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">見積備考</label>
-                            <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded-md mt-1 placeholder-gray-400" id="auto-resize-textarea-client_memo" value="{{old('memo')}}" cols="30" rows="5">■内容等変更が生じた場合は再度御見積りが必要となります。
+                            <label for="memo" class="dark:text-gray-100 text-gray-900 leading-none mt-4">見積備考</label>
+                            <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="auto-resize-textarea-client_memo" value="{{old('memo')}}" cols="30" rows="5">■内容等変更が生じた場合は再度御見積りが必要となります。
 ■消費税率が改定される際は別途御見積り致します。</textarea>
                         </div>
 
@@ -195,7 +195,8 @@
 
                     </div>
                     <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="order" role="tabpanel" aria-labelledby="order-tab">
-
+                        <button>generatePdf</button>
+                        <iframe src="{{ route('estimate.pdf.generate') }}" style="width:600px; height:500px;"></iframe>
                     </div>
                 </div>
             </form>

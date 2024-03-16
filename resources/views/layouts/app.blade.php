@@ -33,6 +33,8 @@
             }
         </script>
         <!-- Scripts -->
+
+
         
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -56,6 +58,9 @@
         <!-- Select2のスタイルを読み込む（CDNを使用する場合） -->
         <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 
+        {{-- 横スクロールヒント1/2 --}}
+        <link rel="stylesheet" href="https://unpkg.com/scroll-hint@latest/css/scroll-hint.css">
+        {{-- 横スクロールヒント2/2 --}}
 
     </head>
     <body class="font-sans antialiased">
@@ -75,6 +80,8 @@
             <main class="h-auto">
                 {{ $slot }}
             </main>
+
+
             <div data-dial-init class="fixed bottom-6 end-6 group z-[9999]">
                 <div id="speed-dial-menu-text-inside-button" class="flex flex-col items-center hidden mb-4 space-y-2">
                     <button type="button" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 shadow-sm dark:hover:text-white dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
@@ -112,6 +119,8 @@
                     <span class="sr-only">Open actions menu</span>
                 </button>
             </div>
+
+
             <footer class="bg-white dark:bg-gray-800 sticky top-[100vh]">
                 <div class="w-full mx-auto justify-end">
                     <div class="text-sm text-right text-gray-500  dark:text-gray-400 px-2" tabindex="-1">
@@ -143,6 +152,9 @@
         <!-- Select2を読み込む（CDNを使用する場合） -->
         <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/i18n/ja.js"></script>
+
+
+
     </body>
 </html>
 

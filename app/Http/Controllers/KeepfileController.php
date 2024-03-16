@@ -215,16 +215,4 @@ class KeepfileController extends Controller
     
         return back()->with('success', '添付ファイルを削除しました');
     }
-
-    public function generatePdf()
-    {
-        $data = [
-            'atesaki' => '田中学園'
-        ];
-        //ここでviewに$dataを送っているけど、
-        //今回$dataはviewで使わない
-        $pdf = PDF::loadView('pdf.document', $data);
-
-        return $pdf->stream('document.pdf'); //生成されるファイル名
-    }
 }

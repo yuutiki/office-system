@@ -82,33 +82,31 @@ class ProjectRevenueController extends Controller
     public function bulkInsert(Request $request)
     {
         $projectId = $request->input('Insert_modalproject_id');
-        $numericTotalValue = filter_var($request->total_amount, FILTER_SANITIZE_NUMBER_INT);
-        $totalAmount = $numericTotalValue;
+        $totalAmount = (float) filter_var($request->total_amount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $startDate = Carbon::parse($request->input('start_date'));
         $endDate = Carbon::parse($request->input('end_date'));
-
+        
         $months = $endDate->diffInMonths($startDate);
-
-        // 月ごとの金額
-        $monthlyAmount = round($totalAmount / ($months + 1));
-        $totalAmountWithoutFraction = $monthlyAmount * ($months + 1);
-
+        
+        // 月ごとの金額（少数部分を保持）
+        $monthlyAmount = $totalAmount / ($months + 1);
+        $roundedMonthlyAmount = floor($monthlyAmount); // 月ごとの金額を端数を切り捨てて計算
+        
         // 切り捨てを適用して端数を計算
-        $fraction = $totalAmount - $totalAmountWithoutFraction;
-
+        $fraction = $totalAmount - $roundedMonthlyAmount * ($months + 1);
+        
         $projectRevenuesData = [];
-
+        
         for ($i = 0; $i <= $months; $i++) {
             // 最初の月に端数を加算
-            $amount = $monthlyAmount + ($i === 0 ? $fraction : 0);
-
+            $amount = $roundedMonthlyAmount + ($i === 0 ? $fraction : 0);
+        
             $projectRevenuesData[] = [
                 'project_id' => $projectId,
                 'revenue_year_month' => $startDate->copy()->addMonths($i),
                 'revenue' => $amount,
                 'created_at' => now(),
                 'updated_at' => now(),
-
             ];
         }
 
