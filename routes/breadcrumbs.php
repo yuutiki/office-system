@@ -182,7 +182,7 @@ Breadcrumbs::for('dashboard', function ($trail) {
             $trail->push('営業報告一覧', url('reports'));
         });
                 // ダッシュボード > 営業報告一覧 > 営業報告新規登録
-                Breadcrumbs::for('createreport', function ($trail) {
+                Breadcrumbs::for('createReport', function ($trail) {
                     $trail->parent('reports');
                     $trail->push('新規作成', url('reports/create'));
                 });

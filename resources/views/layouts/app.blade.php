@@ -112,7 +112,7 @@
                         <span class="block mb-px text-xs font-medium">Copy</span>
                     </button>
                 </div>
-                <button type="button" data-dial-toggle="speed-dial-menu-text-inside-button" aria-controls="speed-dial-menu-text-inside-button" aria-expanded="false" class="flex items-center justify-center text-white bg-blue-700 rounded-full w-14 h-14 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800">
+                <button type="button" id="dial" data-dial-toggle="speed-dial-menu-text-inside-button" data-dial-trigger="click" aria-controls="speed-dial-menu-text-inside-button" aria-expanded="false" class="flex items-center justify-center text-white bg-blue-700 rounded-full w-14 h-14 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800">
                     <svg class="w-5 h-5 transition-transform group-hover:rotate-45" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
                     </svg>
@@ -133,6 +133,59 @@
             </footer>
         </div>
 
+
+        <script>
+            // ページのスクロールを監視し、特定の要素を非表示にする関数
+            function hideElementOnScroll() {
+                var specialElement = document.getElementById('dial');
+                var scrollThreshold = 100; // スクロールの閾値（最下部からの距離）
+    
+                // スクロールイベントリスナーの追加
+                window.addEventListener('scroll', function() {
+                    // ページの最下部までスクロールしたかどうかをチェック
+                    var isBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - scrollThreshold;
+    
+                    // 最下部までスクロールした場合は特定の要素を非表示にする
+                    if (isBottom) {
+                        specialElement.style.display = 'none';
+                    } else {
+                        specialElement.style.display = '';
+                    }
+                });
+            }
+    
+            // ページ読み込み時に関数を呼び出す
+            window.onload = hideElementOnScroll;
+        </script>
+
+        <script>
+// ペアレント要素 (スピードダイヤルのラッピング要素)
+const $parentEl = document.querySelector('[data-dial-init]');
+
+// ターゲット要素 (メニュー項目またはボタンのリストを含む要素)
+const $targetEl = document.getElementById('speed-dial-menu-text-inside-button');
+
+// スピードダイヤルが表示されているかどうかを追跡するフラグ
+let isDialVisible = false;
+
+// スピードダイヤルを表示/非表示に切り替える関数
+function toggleDialVisibility() {
+    if (isDialVisible) {
+        $targetEl.classList.add('hidden');
+    } else {
+        $targetEl.classList.remove('hidden');
+    }
+    isDialVisible = !isDialVisible;
+}
+
+// ペアレント要素にクリックイベントリスナーを追加
+$parentEl.addEventListener('click', function(event) {
+    const dialToggle = event.target.closest('[data-dial-toggle]');
+    if (dialToggle) {
+        toggleDialVisibility();
+    }
+});
+        </script>
 
 
         {{-- ダークモードスイッチャー --}}
