@@ -15,8 +15,7 @@ class Keepfile extends Model
     use Sortable;//add
 
     protected $fillable = [
-        'project_num',
-        'clientname',
+        'project_id',
         'purpose',
         'keep_at',
         'return_at',
@@ -27,8 +26,7 @@ class Keepfile extends Model
 
     //ソート用に使うカラムを指定
     public $sortable = [
-        'project_num',
-        'clientname',
+        'project_id',
         'keep_at',
         'return_at',
         'is_finished',
@@ -55,6 +53,10 @@ class Keepfile extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
     }
 
         // // プロジェクト№ハイフンつける

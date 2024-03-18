@@ -13,7 +13,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         $this->call(EmployeeStatusSeeder::class);
         $this->call(UserSeeder::class);
-        $this->call(T_KeepfileSeeder::class);
         $this->call(DepartmentSeeder::class);
         $this->call(InstallationTypeSeeder::class);
         $this->call(TradeStatusSeeder::class);
@@ -43,7 +42,11 @@ class DatabaseSeeder extends Seeder
         $this->call(ContractChangeTypeSeeder::class);
         $this->call(ContractSheetStatusSeeder::class);
         $this->call(VendorTypeSeeder::class);
-        // $this->call(T_ProjectSeeder::class);
+
+        $this->call(T_CorporationSeeder::class);
+        $this->call(T_ClientSeeder::class);
+        $this->call(T_ProjectSeeder::class);
+        $this->call(T_KeepfileSeeder::class);
 
         // \App\Models\User::factory(10)->create();
 

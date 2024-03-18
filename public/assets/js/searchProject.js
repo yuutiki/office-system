@@ -59,7 +59,7 @@
 
         // モーダル内のコンテンツ要素からTabキーイベントリスナーを削除
         const modalContent = modal.querySelector('.rounded');
-        modalContent.removeEventListener('keydown', trapTabKey);
+        modalContent.removeEventListener('keydown', showProjectModal.trapTabKey);
     }
 
 
@@ -86,7 +86,7 @@
                 const resultElement = document.createElement('tr');
                 resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
                 resultElement.innerHTML = `
-                    <td class="py-2 pl-5 cursor-pointer" onclick="setProject('${result.id}','${result.project_num}', '${result.project_name}', '${result.account_user.name}', '${result.sales_stage.sales_stage_name}')">${result.project_num}</td>
+                    <td class="py-2 pl-5 cursor-pointer" onclick="setProject('${result.id}','${result.project_num}', '${result.project_name}', '${result.account_user.name}', '${result.sales_stage.sales_stage_name}','${result.client.client_name}')">${result.project_num}</td>
                     <td class="py-2 ml-2">${result.project_name}</td>
                 `;
                 searchResultsProjectContainer.appendChild(resultElement);
@@ -94,13 +94,50 @@
             });
             }
 
-            function setProject(id, num, name, accountUserName, salesStageName) {
-            document.getElementById('project_id').value = id;
-            document.getElementById('project_num').value = num;
-            document.getElementById('project_name').value = name;
-            document.getElementById('account_user').value = accountUserName;
-            document.getElementById('sales_stage_name').value = salesStageName;
+            // function setProject(id, num, name, accountUserName, salesStageName) {
+            // document.getElementById('project_id').value = id;
+            // document.getElementById('project_num').value = num;
+            // document.getElementById('project_name').value = name;
+            // document.getElementById('account_user').value = accountUserName;
+            // document.getElementById('sales_stage_name').value = salesStageName;
+            // hideProjectModal();
+            // }
 
-
-            hideProjectModal();
+            // プロジェクト情報をセットする関数
+            function setProject(id, num, name, accountUserName, salesStageName, clientName) {
+                // セットする値と対応する要素のマッピング
+                var valueMap = {
+                    'project_id': id,
+                    'project_num': num,
+                    'project_name': name,
+                    'account_user': accountUserName,
+                    'sales_stage_name': salesStageName,
+                    'client_name':clientName,
+                };
+                
+                // マッピングされた各要素について、存在すれば値をセットし、存在しなければスルーする
+                Object.keys(valueMap).forEach(function(elementId) {
+                    // 要素のIDから対応する値を取得
+                    var value = valueMap[elementId];
+                    // 値が存在する場合にのみ処理を行う
+                    if (value !== null && value !== undefined) {
+                        // 対応する要素を取得
+                        var element = document.getElementById(elementId);
+                        // 要素が存在する場合にのみ値をセットする
+                        if (element) {
+                            element.value = value;
+                        }
+                    }
+                });
+                
+                // プロジェクトモーダルを非表示にする
+                hideProjectModal();
             }
+            
+
+
+// 使用画面
+// ・contract-details.create
+// ・contract-details.edit
+// ・keepfiles.create
+// ・keepfiles.edit

@@ -118,7 +118,7 @@
                         <label for="project_num" class="dark:text-gray-100 text-gray-900 leading-none mt-1">プロジェクト№</label>
                         <div class="relative w-full">
                             <input type="text" name="project_num"  id="project_num" value="{{old('project_num')}}" class="dark:bg-gray-400 w-full py-1 border border-gray-700 rounded" readonly>
-                            <button type="button" onclick="showProjectModal()" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-[34px] text-white bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                            <button type="button" id="searchProjectButton" onclick="showProjectModal()" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-[34px] text-white bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
                                 <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                 </svg>
@@ -162,7 +162,7 @@
     </div>
 
 
-    <!-- ディーラ検索 Modal -->
+    <!-- PJ検索 Modal -->
     <div id="projectSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden animate-slide-in-top">
         <div class="max-h-full w-full max-w-2xl">
             <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">

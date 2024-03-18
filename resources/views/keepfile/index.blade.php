@@ -247,10 +247,10 @@
                             </button>
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$keepfile->project_num}}
+                            {{optional($keepfile->project)->project_num}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$keepfile->clientname}}
+                            {{optional(optional($keepfile->project)->client)->client_name}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
                             {{$keepfile->purpose}}
@@ -264,25 +264,28 @@
                         <td class="px-1 py-1 whitespace-nowrap">
                             {{$keepfile->user->name}}
                         </td>
-                    @if($keepfile->is_finished == "0")
-                        <td class="px-1 py-1 whitespace-nowrap text-fuchsia-300">
-                            未返却
-                        </td>
-                    @else
                         <td class="px-1 py-1 whitespace-nowrap">
-                            返却済
+                            @if ($keepfile->is_finished == "0")
+                                <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
+                                    未返却
+                                </span>
+                            @else
+                                <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                    返却済
+                                </span>
+                            @endif
                         </td>
-                    @endif
-
-                    @if($keepfile->remaining_days < 0)
-                        <td class="px-1 py-1 whitespace-nowrap text-fuchsia-300">
-                            期限超過
-                        </td>
-                    @else
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{ $keepfile->remaining_days }}日
+                            @if($keepfile->remaining_days < 0)
+                                <span class="text-fuchsia-300">
+                                    期限超過
+                                </span>
+                            @else
+                                <span>
+                                    {{ $keepfile->remaining_days }}日
+                                </span> 
+                            @endif
                         </td>
-                    @endif
 
                         {{-- <td class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <div class="text-center">

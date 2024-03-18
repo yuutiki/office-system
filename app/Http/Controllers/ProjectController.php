@@ -240,7 +240,7 @@ class ProjectController extends Controller
         ->where('project_name', 'LIKE', '%' . $projectName . '%')
         ->Where('project_num', 'LIKE', '%' . $projectNumber . '%');
         // ->Where('department_id', 'LIKE', '%' . $projectDepartment . '%');
-        $projects = $query->with('salesStage','accountUser')->get();
+        $projects = $query->with('salesStage', 'accountUser', 'client')->get();
 
         return response()->json($projects);
     }

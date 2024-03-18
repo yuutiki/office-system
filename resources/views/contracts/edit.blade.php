@@ -61,7 +61,7 @@
                 <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="grid gap-4 mb-4 md:grid-cols-6 grid-cols-2">
                         <div>
-                            <label for="contract_type_id" class="text-gray-900 dark:text-white leading-none mt-4">契約種別<span class="text-red-500"> *</span></label>
+                            <label for="contract_type_id" class="text-gray-900 dark:text-white leading-none mt-4 text-sm">契約種別<span class="text-red-500"> *</span></label>
                             <select form="updateForm" id="contract_type_id" name="contract_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option value="">未選択</option>
                                 @foreach($contractTypes as $contractType)
@@ -74,22 +74,22 @@
                         </div>
                         <div>
                             <div>
-                                <label class="text-gray-900 dark:text-white leading-none mt-4">契約先区分(参照)</label>
+                                <label class="text-gray-900 dark:text-white leading-none mt-4 text-sm">契約先区分(参照)</label>
                                 <input type="text" value="{{ $oldestContractPartnerTypeName }}" class="input-primary" readonly>
                             </div>
                         </div>
                     </div>
                     <div class="grid gap-4 mb-4 md:grid-cols-6 grid-cols-2">
                         <div>
-                            <label class="text-gray-900 dark:text-white leading-none mt-4">初回契約日(参照)</label>
+                            <label class="text-gray-900 dark:text-white leading-none mt-4 text-sm">初回契約日(参照)</label>
                             <input type="date" value="{{ $firstContractStartAt }}" class="input-primary" readonly>
                         </div>
                         <div>
-                            <label for="cancelled_at" class="text-gray-900 dark:text-white leading-none mt-4">解約日</label>
+                            <label for="cancelled_at" class="text-gray-900 dark:text-white leading-none mt-4 text-sm">解約日</label>
                             <input type="date" form="updateForm" min="1900-01-01" max="2200-12-31" value="{{ old('cancelled_at', $contract->cancelled_at) }}" name="cancelled_at" class="input-primary">
                         </div>
                         {{-- <div>
-                            <label for="contract_type_id" class="text-gray-900 dark:text-white leading-none mt-4">更新月</label>
+                            <label for="contract_type_id" class="text-gray-900 dark:text-white leading-none mt-4 text-sm">更新月</label>
                             <select form="updateForm" id="contract_type_id" name="contract_type_id" class="bg-gray-400 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500 pointer-events-none">
                                 <option value="">未選択</option>
                                 @foreach($contractTypes as $contractType)

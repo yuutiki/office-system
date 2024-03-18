@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Keepfile;
+use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,7 @@ class KeepfileController extends Controller
         $users = User::all();
         
         // フィルタリングクエリを作成
-        $query = Keepfile::where('user_id', $user->id)->sortable()->with('user');
+        $query = Keepfile::where('user_id', $user->id)->sortable()->with('user','project');
     
         // 検索フォームの値を取得する
         $projectNum = $request->input('project_num');
@@ -69,20 +70,22 @@ class KeepfileController extends Controller
     public function store(Request $request)
     {
         $inputs = $request->validate([
-            'project_num'=>'required|max:13',
-            'clientname'=>'required|max:255',
+            'project_id'=>'required',
             'purpose'=>'required|max:255',
             'keep_at'=>'required|max:10',
             'return_at'=>'required|max:10',
-            'memo'=>'max:255',
+            'keepfile_memo'=>'max:255',
             'pdf_file' => ['nullable', 'max:1024', 'mimes:pdf'],
         ]);
+
+        // ファイル名用に取得
+        $ClientName = Project::where('id', $request->project_id)->first()->client->client_name;
 
     
     // PDFファイルがアップロードされた場合のみ保存する
     if ($request->hasFile('pdf_file')) {
         // ファイル名を生成
-        $fileName = $request->project_num . '_' . $request->clientname . '_' . $request->return_at . '_' . now()->format('YmdHis') . '.pdf';
+        $fileName = $request->project_num . '_' . $ClientName . '_' . $request->return_at . '_' . now()->format('YmdHis') . '.pdf';
         // ファイルを指定した名前で保存
         $pdfFilePath = $request->file('pdf_file')->storeAs('keepfiles/pdf', $fileName, 'public');
     } else {
@@ -90,12 +93,11 @@ class KeepfileController extends Controller
     }
 
         $keepfile = new keepfile();
-        $keepfile->project_num = $request->project_num;
-        $keepfile->clientname = $request->clientname;
+        $keepfile->project_id = $request->project_id;
         $keepfile->purpose = $request->purpose;
         $keepfile->keep_at = $request->keep_at;
         $keepfile->return_at = $request->return_at;
-        $keepfile->memo = $request->memo;
+        $keepfile->keepfile_memo = $request->keepfile_memo;
         $keepfile->is_finished = $request->is_finished;
         $keepfile->pdf_file = $pdfFilePath;
         $keepfile->user_id = auth()->user()->id;
@@ -159,12 +161,11 @@ class KeepfileController extends Controller
         $keepfile = keepfile::find($id);
 
         $request->validate([
-            'project_num'=>'required|max:13',
-            'clientname'=>'required|max:255',
+            'project_id'=>'required',
             'purpose'=>'required|max:255',
             'keep_at'=>'required|max:10',
             'return_at'=>'required|max:10',
-            'memo'=>'max:255',
+            'keepfile_memo'=>'max:255',
             'pdf_file' => ['nullable', 'max:1024', 'mimes:pdf'],
         ]);
 
@@ -175,19 +176,18 @@ class KeepfileController extends Controller
                 Storage::disk('public')->delete($keepfile->pdf_file);
             }
 
-            $fileName = $request->project_num . '_' . $request->clientname . '_' . $request->return_at . '_' . now()->format('YmdHis') . '.pdf';
+            $fileName = $request->project_num . '_' . $request->project->client->client_name . '_' . $request->return_at . '_' . now()->format('YmdHis') . '.pdf';
 
         // ファイルを指定した名前で保存
         $pdfFilePath = $request->file('pdf_file')->storeAs('keepfiles/pdf', $fileName, 'public');
             $keepfile->pdf_file = $pdfFilePath;
         }
 
-        $keepfile->project_num = $request->project_num;
-        $keepfile->clientname = $request->clientname;
+        $keepfile->project_id = $request->project_id;
         $keepfile->purpose = $request->purpose;
         $keepfile->keep_at = $request->keep_at;
         $keepfile->return_at = $request->return_at;
-        $keepfile->memo = $request->memo;
+        $keepfile->keepfile_memo = $request->keepfile_memo;
         $keepfile->is_finished = $request->is_finished;
         $keepfile->user_id = auth()->user()->id;
         $keepfile->save();

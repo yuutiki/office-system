@@ -154,6 +154,15 @@
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="hidden">
+                        <div class="w-full flex flex-col">
+                            <label for="client_name" class="dark:text-white text-red-700 leading-none text-sm">顧客名称（非表示）<span class="text-red-500"> *</span></label>
+                            <input type="text" name="client_name" class="input-primary" id="client_name" value="{{old('client_name')}}" placeholder="">
+                        </div>
+                        @error('client_name')
+                            <div class="text-red-500">{{$message}}</div>
+                        @enderror
+                    </div>
                 </div>
                 <x-primary-button class="mt-4" onkeydown="stopTab(event)" id="saveButton">
                     保存(S)
@@ -163,7 +172,7 @@
     </div>
 
 
-    <!-- ディーラ検索 Modal -->
+    <!-- PJ検索 Modal -->
     <div id="projectSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden animate-slide-in-top">
         <div class="max-h-full w-full max-w-2xl">
             <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
