@@ -75,7 +75,8 @@
                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="pdf_file_help">
                         PDF (最大 1024KB)
                     </p>
-                        <input type="file" name="pdf_file" id="pdf_file" accept=".pdf" class="block w-full text-sm text-gray-900 border  appearance-none border-gray-300 rounded cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help">
+
+                    <input type="file" name="pdf_file" id="pdf_file" accept=".pdf" class="block w-full text-sm text-gray-900 border  appearance-none border-gray-300 rounded cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help">
                 </div>
                 @error('pdf_file')
                     <div class="text-red-500">{{ $message }}</div>
@@ -98,7 +99,7 @@
 
 
     <style>
-        #pdf_file {
+        input[type="file"] {
             -webkit-appearance: none;
         }
     </style>
