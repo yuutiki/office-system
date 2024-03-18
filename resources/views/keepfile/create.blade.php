@@ -96,5 +96,11 @@
         </form>
     </div>
 
+
+    <style>
+        #pdf_file {
+            -webkit-appearance: none;
+        }
+    </style>
     <script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
 </x-app-layout>
