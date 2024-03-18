@@ -24,7 +24,7 @@
         </div>
         
         {{-- 基本情報タブ --}}
-        <div class="hidden md:p-4 p-2 rounded bg-gray-50 dark:bg-gray-800" id="base" role="tabpanel" aria-labelledby="base-tab">
+        <div class="hidden md:p-4 p-2 mb-4 rounded bg-gray-50 dark:bg-gray-800" id="base" role="tabpanel" aria-labelledby="base-tab">
 
             <div class="w-full flex flex-col">
                 <label for="corporation_name" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">法人名称<span class="text-red-500"> *</span></label>
@@ -122,7 +122,7 @@
             </div>
 
             <div class="w-auto flex flex-col mt-6">
-                <label class="flex items-center me-5 cursor-pointer w-36">
+                <label class="flex items-center me-5 cursor-pointer w-30">
                     <input type="checkbox" form="corporationForm" value="1" @if (old('is_stop_trading')) checked @endif name="is_stop_trading" id="is_stop_trading" class="sr-only peer">
                     <div class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-red-300 dark:peer-focus:ring-red-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-red-600"></div>
                     <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">取引停止</span>

@@ -48,7 +48,7 @@
         </div>
         
         {{-- 基本情報タブ --}}
-        <div class="hidden md:p-4 p-2 rounded bg-gray-50 dark:bg-gray-800" id="base" role="tabpanel" aria-labelledby="base-tab">
+        <div class="hidden md:p-4 p-2 mb-4 rounded bg-gray-50 dark:bg-gray-800" id="base" role="tabpanel" aria-labelledby="base-tab">
 
 
             <div class="relative z-0">
