@@ -131,7 +131,9 @@
                     </button>
                     <div id="tooltip-right" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-1.5 text-sm font-medium text-white bg-gray-900 rounded-xl shadow-sm opacity-0 tooltip dark:bg-gray-600">
                         <span class="text-xs">
-                            取引停止中は検索時に非表示になります。
+                            取引停止中は検索時に
+                            <br>
+                            非表示になります。
                         </span>
                         <div class="tooltip-arrow" data-popper-arrow></div>
                     </div>
