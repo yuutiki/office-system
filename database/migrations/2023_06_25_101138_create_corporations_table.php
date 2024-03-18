@@ -15,7 +15,12 @@ return new class extends Migration
             $table->string('corporation_kana_name')->comment('法人カナ名称');
             $table->string('corporation_short_name')->comment('法人略称');
             $table->decimal('credit_limit',10, 0)->default(0)->comment('与信限度額');
-            $table->text('memo')->nullable(true)->commebt('法人メモ');
+            $table->text('corporation_memo')->nullable(true)->commebt('法人備考');
+
+            $table->string('corporation_post_code',80)->nullable(true)->comment('法人郵便番号');
+            $table->foreignId('corporation_prefecture_id')->nullable(true)->comment('法人都道府県コード');
+            $table->string('corporation_address1',80)->nullable(true)->comment('法人住所1');
+
             $table->boolean('is_stop_trading')->default(0)->comment('取引停止フラグ');
             $table->text('stop_trading_reason')->nullable(true)->comment('取引停止理由');
             $table->string('invoice_num')->nullable(true)->comment('インボイス番号');

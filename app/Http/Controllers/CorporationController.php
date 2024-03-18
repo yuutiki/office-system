@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 // use Goodby\CSV\Import\Standard\InterpreterConfig;
 use Illuminate\Support\Facades\Response;
 use App\Jobs\ExportCorporationsCsv;
+use App\Models\Prefecture;
 use Illuminate\Support\Facades\Session;
 
 class CorporationController extends Controller
@@ -47,7 +48,8 @@ class CorporationController extends Controller
 
     public function create()
     {
-        return view('corporations.create');
+        $prefectures = Prefecture::all();
+        return view('corporations.create',compact('prefectures'));
     }
 
     public function store(CorporationStoreRequest $request)
@@ -55,7 +57,13 @@ class CorporationController extends Controller
         $result = Corporation::storeWithTransaction($request->except('corporation_num'));
 
         if ($result) {
-            return redirect()->route('corporations.index')->with('success', '正常に登録しました');
+            // 作成されたcorporationのIDを取得
+            $corporationId = $result->id;
+            // 編集画面へのURLを生成
+            $editUrl = route('corporations.edit', ['corporation' => $corporationId]);
+    
+            // 生成されたURLにリダイレクト
+            return redirect($editUrl)->with('success', '正常に登録しました');
         } else {
             return back()->with('error', '登録に失敗しました。');
         }
@@ -69,7 +77,9 @@ class CorporationController extends Controller
     public function edit(string $id)
     {
         $corporation = Corporation::find($id);
-        return view('corporations.edit',compact('corporation'));
+        $prefectures = Prefecture::all();
+
+        return view('corporations.edit',compact('corporation','prefectures',));
     }
 
     public function update(CorporationUpdateRequest $request, string $id)
@@ -163,7 +173,7 @@ class CorporationController extends Controller
                 $corporation->corporation_name,
                 $corporation->corporation_kana_name,
                 $corporation->corporation_short_name,
-                $corporation->memo,
+                $corporation->corporation_memo,
                 $corporation->clients_count,
                 $corporation->createdBy->name,
                 $corporation->created_at,
@@ -410,7 +420,7 @@ class CorporationController extends Controller
     //             'corporation_name' => $row[1],
     //             'corporation_kana_name' => $row[2],
     //             'corporation_short_name' => $row[3],
-    //             'memo' => $row[4],
+    //             'corporation_memo' => $row[4],
     //         ]);
     //     } elseif ($operation === 'new') {
     //         $corporation = new Corporation();
@@ -418,7 +428,7 @@ class CorporationController extends Controller
     //         $corporation->corporation_name = $row[1];
     //         $corporation->corporation_kana_name = $row[2];
     //         $corporation->corporation_short_name = $row[3];
-    //         $corporation->memo = $row[4];
+    //         $corporation->corporation_memo = $row[4];
     //         $corporation->save();
     //     }
     // }
@@ -429,7 +439,7 @@ class CorporationController extends Controller
             'corporation_name' => $row[1],
             'corporation_kana_name' => $row[2],
             'corporation_short_name' => $row[3],
-            'memo' => $row[4],
+            'corporation_memo' => $row[4],
         ];
 
         if ($operation === 'new') {

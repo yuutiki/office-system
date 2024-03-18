@@ -155,6 +155,9 @@
                             №
                         </div>
                     </th>
+                    <th scope="col" class="px-1 py-3 w-auto">
+                        <span class="sr-only">編集</span>
+                    </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center w-auto">
                             @sortablelink('corporation_num','法人№')
@@ -165,6 +168,16 @@
                         <div class="flex items-center whitespace-nowrap">
                             @sortablelink('corporation_kana_name','法人正式名称')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg></a>
+                        </div>
+                    </th>
+                    <th scope="col" class="px-1 py-3 w-auto">
+                        <div class="flex items-center whitespace-nowrap text-right">
+                            インボイス番号
+                        </div>
+                    </th>
+                    <th scope="col" class="px-1 py-3 w-auto">
+                        <div class="flex items-center whitespace-nowrap text-right">
+                            取引状況
                         </div>
                     </th>
                     <th scope="col" class="px-1 py-3 w-auto">
@@ -182,9 +195,7 @@
                             顧客数
                         </div>
                     </th>
-                    <th scope="col" class="px-1 py-3 w-auto">
-                        <span class="sr-only">編集</span>
-                    </th>
+
                     <th scope="col" class="px-1 py-3 w-auto">
                         <span class="sr-only">削除</span>
                     </th>
@@ -196,12 +207,35 @@
                         <td class="pl-4 py-1 whitespace-nowrap">
                             {{ ($corporations->currentPage() - 1) * $corporations->perPage() + $loop->index + 1 }}
                         </td>
-
+                        <td class="pl-4 py-1 whitespace-nowrap">
+                            <button type="button" onclick="location.href='{{route('corporations.edit',$corporation)}}'"  class="button-edit-primary">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+                                    </svg>
+                                    <span class=" md:block hidden">編集</span>
+                                </div>
+                            </button>
+                        </td>
                         <td class="pl-1 py-1 whitespace-nowrap">
                             {{$corporation->corporation_num}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
                             {{$corporation->corporation_name}}
+                        </td>
+                        <td class="px-1 py-1 whitespace-nowrap">
+                            {{$corporation->invoice_num}}
+                        </td>
+                        <td class="px-1 py-1 whitespace-nowrap">
+                        @if ($corporation->is_stop_trading == 1)
+                            <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
+                                取引停止中
+                            </span>
+                        @else
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                取引中
+                            </span>
+                        @endif
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
                             <div class="w-[65px] text-right">
@@ -228,20 +262,11 @@
                                 </button>
                             </div>
                         </td> --}}
-                        <td class="pl-4 py-1 whitespace-nowrap">
-                            <button type="button" onclick="location.href='{{route('corporations.edit',$corporation)}}'"  class="button-edit">
-                                <div class="flex">
-                                    <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
-                                    </svg>
-                                    <span class="text-ms">編集</span>
-                                </div>
-                            </button>
-                        </td>
+
                         <td class="py-1">
                             <button type="button" data-modal-target="deleteModal-{{$corporation->id}}" data-modal-show="deleteModal-{{$corporation->id}}" class="button-delete-primary">
-                                <div class="flex">
-                                    <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                                <div class="flex items-center">
+                                    <svg aria-hidden="true" class="w-[17px] h-[17px] mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
                                     <span class="text-ms ">削除</span>
                                 </div>
                             </button>

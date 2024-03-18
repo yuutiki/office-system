@@ -40,6 +40,18 @@ class CorporationUpdateRequest extends FormRequest
                 'credit_limit' => is_numeric($creditLimit) ? $creditLimit : str_replace(',', '', $creditLimit),
             ]);
         }
+
+        // is_stop_trading の整形
+        $this->merge([
+            'is_stop_trading' => $this->has('is_stop_trading') ? 1 : 0,
+        ]);
+        
+        // is_stop_trading が0の場合、stop_trading_reason をnullに設定
+        if ($this->is_stop_trading == 0) {
+            $this->merge([
+                'stop_trading_reason' => null,
+            ]);
+        }        
     }
 
     protected function failedValidation($validator)

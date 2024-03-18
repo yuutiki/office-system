@@ -99,8 +99,8 @@ return [
     'password'             => '正しいパスワードを指定してください。',
     'present'              => ':attributeが存在していません。',
     'regex'                => ':attributeに正しい形式を指定してください。',
-    'required'             => ':attributeは必須入力です。',
-    'required_if'          => ':otherが:valueの場合、:attributeも指定してください。',
+    'required'             => ':attributeは必須項目です。',
+    'required_if'          => ':otherが:valueの場合、:attributeも入力してください。',
     'required_unless'      => ':otherが:valuesでない場合、:attributeを指定してください。',
     'required_with'        => ':valuesを指定する場合は、:attributeも指定してください。',
     'required_with_all'    => ':valuesを指定する場合は、:attributeも指定してください。',
@@ -114,7 +114,7 @@ return [
     'size'                 => [
         'numeric' => ':attributeは:sizeを指定してください。',
         'file'    => ':attributeのファイルは、:sizeキロバイトでなくてはなりません。',
-        'string'  => ':attributeは:size文字で指定してください。',
+        'string'  => ':attributeは:size文字です。',
         'array'   => ':attributeは:size個指定してください。',
     ],
     'starts_with'          => ':attributeには、:valuesのどれかで始まる値を指定してください。',
@@ -322,6 +322,9 @@ return [
         "installation_type_id" => "設置種別",
         "trade_status_id" => "取引状態",
         "credit_limit" => "与信限度額",
+        "invoice_num" => "インボイス番号",
+        "is_stop_trading" => "取引停止フラグ",
+        "stop_trading_reason" => "取引停止理由",
     ],
 
 ];
