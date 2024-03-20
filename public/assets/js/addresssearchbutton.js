@@ -30,12 +30,12 @@ $('#ajaxzip3').on('click', function(){
     return false;
 });
 
-$('#another_ajaxzip3').on('click', function(){
-    AjaxZip3.zip2addr('another_post_code','','another_prefecture_id','another_address1','', '');
+$('#client_ajaxzip3').on('click', function(){
+    AjaxZip3.zip2addr('head_post_code','','head_prefecture_id','head_addre1','', '');
 
     //成功時に実行する処理
     AjaxZip3.onSuccess = function() {
-        $('#another_address1').focus();
+        $('#head_addre1').focus();
     };
     
     //失敗時に実行する処理

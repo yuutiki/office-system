@@ -41,14 +41,14 @@
                             {{ $loop->iteration }}
                         </td>
                         <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{$master['name']}}
+                            {{$master->master_name}}
                         </td>
                         {{-- <td class="px-1 py-2 whitespace-nowrap">
                             <a href="{{ route($master['route']) }}" class="button-edit">参照ボタン</a>
                         </td> --}}
                         <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <div class="text-center">
-                                <button class="button-edit" type="button" onclick="location.href='{{route($master['route'])}}'">
+                                <button class="button-edit-primary" type="button" onclick="location.href='{{route($master['route'])}}'">
                                 編集
                                 </button>
                             </div>

@@ -176,7 +176,10 @@ class KeepfileController extends Controller
                 Storage::disk('public')->delete($keepfile->pdf_file);
             }
 
-            $fileName = $request->project_num . '_' . $request->project->client->client_name . '_' . $request->return_at . '_' . now()->format('YmdHis') . '.pdf';
+                    // ファイル名用に取得
+            $ClientName = Project::where('id', $request->project_id)->first()->client->client_name;
+
+            $fileName = $request->project_num . '_' . $ClientName . '_' . $request->return_at . '_' . now()->format('YmdHis') . '.pdf';
 
         // ファイルを指定した名前で保存
         $pdfFilePath = $request->file('pdf_file')->storeAs('keepfiles/pdf', $fileName, 'public');

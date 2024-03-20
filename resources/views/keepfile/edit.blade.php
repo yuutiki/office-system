@@ -26,111 +26,92 @@
         <div class="hidden md:p-4 p-2 mb-4 rounded bg-gray-50 dark:bg-gray-800" id="base" role="tabpanel" aria-labelledby="base-tab">
             <span class="text-xs  text-gray-900 dark:text-gray-300 block">※返却時は「sdg-sales-ismstensou@systemd.co.jp」をCcに含めてください</span>
 
-                <label class="relative inline-flex items-center cursor-pointer mt-6">
-                <input type="hidden" form="keepfileForm" name="is_finished" id="is_finished" value="0">
-                @if($keepfile->is_finished == 1)
-                    <input type="checkbox" form="keepfileForm" name="is_finished" id="is_finished" value="1" class="sr-only peer" checked>
-                @else
-                    <input type="checkbox" form="keepfileForm" name="is_finished" id="is_finished" value="1" class="sr-only peer">
-                @endif
-                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                    <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">完了</span>
-                </label>
+            <label class="relative inline-flex items-center cursor-pointer mt-6">
+            <input type="hidden" form="keepfileForm" name="is_finished" id="is_finished" value="0">
+            @if($keepfile->is_finished == 1)
+                <input type="checkbox" form="keepfileForm" name="is_finished" id="is_finished" value="1" class="sr-only peer" checked>
+            @else
+                <input type="checkbox" form="keepfileForm" name="is_finished" id="is_finished" value="1" class="sr-only peer">
+            @endif
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">完了</span>
+            </label>
 
+            <div class="grid gap-4 md:grid-cols-2">
+                <div class="w-full flex flex-col">
+                    <label for="project_num" class=" dark:text-white text-red-700 leading-none text-sm">プロジェクト№<span class="text-red-500"> *</span></label>
 
-            
-            <div class="grid gap-4 my-4 sm:grid-cols-2">
-                {{-- <div class="md:flex items-center"> --}}
-                    <div class="w-full flex flex-col">
-                        <label for="project_num" class=" dark:text-white text-red-700 leading-none text-sm">プロジェクト№<span class="text-red-500"> *</span></label>
-
-                        <div class="relative">
-                            <input type="text" form="keepfileForm" copy-target="true" name="project_num" class="input-primary" id="project_num" value="{{old('project_num', $keepfile->project->project_num)}}" required readonly>
-                            
-                            <button id="copy-button" data-tooltip-target="tooltip-copy-copy-button" data-tooltip-placement="left" class="mt-[2px] absolute end-2 top-1/2 -translate-y-1/2 text-gray-500 dark:text-white hover:bg-gray-400 dark:hover:bg-gray-400 dark:bg-gray-500 rounded p-2 inline-flex items-center justify-center">
-                                <span id="default-icon">
-                                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
-                                        <path d="M16 1h-3.278A1.992 1.992 0 0 0 11 0H7a1.993 1.993 0 0 0-1.722 1H2a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2Zm-3 14H5a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2Zm0-4H5a1 1 0 0 1 0-2h8a1 1 0 1 1 0 2Zm0-5H5a1 1 0 0 1 0-2h2V2h4v2h2a1 1 0 1 1 0 2Z"/>
-                                    </svg>
-                                </span>
-                                <span id="success-icon" class="hidden inline-flex items-center">
-                                    <svg class="w-3.5 h-3.5 text-blue-700 dark:text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
-                                    </svg>
-                                </span>
-                            </button>
-                            
-                            <div id="tooltip-copy-copy-button" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded shadow-sm opacity-0 tooltip dark:bg-gray-700">
-                                <span id="default-tooltip-message">クリップボードにコピー</span>
-                                <span id="success-tooltip-message" class="hidden">コピー完了!</span>
-                                <div class="tooltip-arrow" data-popper-arrow></div>
-                            </div>
+                    <div class="relative">
+                        <input type="text" form="keepfileForm" copy-target="true" name="project_num" class="input-primary" id="project_num" value="{{old('project_num', $keepfile->project->project_num)}}"  readonly>
+                        
+                        <button id="copy-button" data-tooltip-target="tooltip-copy-copy-button" data-tooltip-placement="left" class="mt-[2px] absolute end-2 top-1/2 -translate-y-1/2 text-gray-500 dark:text-white hover:bg-gray-400 dark:hover:bg-gray-400 dark:bg-gray-500 rounded p-2 inline-flex items-center justify-center">
+                            <span id="default-icon">
+                                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
+                                    <path d="M16 1h-3.278A1.992 1.992 0 0 0 11 0H7a1.993 1.993 0 0 0-1.722 1H2a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2Zm-3 14H5a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2Zm0-4H5a1 1 0 0 1 0-2h8a1 1 0 1 1 0 2Zm0-5H5a1 1 0 0 1 0-2h2V2h4v2h2a1 1 0 1 1 0 2Z"/>
+                                </svg>
+                            </span>
+                            <span id="success-icon" class="hidden inline-flex items-center">
+                                <svg class="w-3.5 h-3.5 text-blue-700 dark:text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
+                                </svg>
+                            </span>
+                        </button>
+                        <div id="tooltip-copy-copy-button" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                            <span id="default-tooltip-message">クリップボードにコピー</span>
+                            <span id="success-tooltip-message" class="hidden">コピー完了!</span>
+                            <div class="tooltip-arrow" data-popper-arrow></div>
                         </div>
                     </div>
-                {{-- </div> --}}
-
-
-                <div>
-                    <div class="w-full flex flex-col">
-                        <label for="client_name" class="dark:text-white text-red-700 leading-none text-sm">顧客名称<span class="text-red-500"> *</span></label>
-                        <input type="text" form="keepfileForm" name="client_name" class="dark:bg-gray-400 w-full py-1 border border-gray-700 rounded mt-1" id="client_name" value="{{old('client_name', $keepfile->project->client->client_name)}}" placeholder="" tabindex="-1" required readonly>
-                    </div>
+                </div>
+                <div class="hidden">
+                    <label for="project_id" class="dark:text-gray-100 text-gray-900 leading-none mt-1">プロジェクトID（非表示）</label>
+                    <input type="text" form="keepfileForm" maxlength="100" name="project_id" id="project_id" value="{{old('project_id',$keepfile->project_id)}}" class="dark:bg-gray-400 w-full py-1 border border-gray-700 rounded" tabindex="-1">
+                    @error('project_id')
+                        <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="w-full flex flex-col">
+                    <label for="client_name" class="dark:text-white text-red-700 leading-none text-sm">顧客名称<span class="text-red-500"> *</span></label>
+                    <input type="text" form="keepfileForm" name="client_name" class="dark:bg-gray-400 w-full py-1 border border-gray-700 rounded mt-1" id="client_name" value="{{old('client_name', $keepfile->project->client->client_name)}}" placeholder="" tabindex="-1"  readonly>
                     @error('client_name')
                         <div class="text-red-500">{{$message}}</div>
                     @enderror
                 </div>
-                <div  class="col-span-2">
-                    <div class="w-full flex flex-col">
-                        <label for="project_name" class="dark:text-gray-100 text-gray-900 leading-none text-sm">プロジェクト名称<span class="text-red-500"> *</span></label>
-                        <input type="text" form="KeepfileForm" maxlength="100" name="project_name" id="project_name" value="{{old('project_name', $keepfile->project->project_name)}}" class="dark:bg-gray-400 w-full py-1 border border-gray-700 rounded mt-1" tabindex="-1" readonly>
-                    </div>
-                    @error('project_name')
-                        <div class="text-red-500">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div>
-                    <div class="w-full flex flex-col">
-                        <label for="keep_at" class="dark:text-white text-red-700 leading-none text-sm">預託日<span class="text-red-500"> *</span></label>
-                        <input type="date" form="keepfileForm" min="2000-01-01" max="2100-12-31" name="keep_at" class="input-primary" id="keep_at" value="{{old('keep_at',$keepfile->keep_at)}}" required>
-                    </div>
+            </div>
+
+            <div class="w-full flex flex-col mt-4">
+                <label for="project_name" class="dark:text-gray-100 text-gray-900 leading-none text-sm">プロジェクト名称<span class="text-red-500"> *</span></label>
+                <input type="text" form="KeepfileForm" maxlength="100" name="project_name" id="project_name" value="{{old('project_name', $keepfile->project->project_name)}}" class="dark:bg-gray-400 w-full py-1 border border-gray-700 rounded mt-1" tabindex="-1" readonly>
+                @error('project_name')
+                    <div class="text-red-500">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="grid gap-4 md:grid-cols-2 mt-4">
+                <div class="w-full flex flex-col">
+                    <label for="keep_at" class="dark:text-white text-red-700 leading-none text-sm">預託日<span class="text-red-500"> *</span></label>
+                    <input type="date" form="keepfileForm" min="2000-01-01" max="2100-12-31" name="keep_at" class="input-primary" id="keep_at" value="{{old('keep_at',$keepfile->keep_at)}}" >
                     @error('keep_at')
                         <div class="text-red-500">{{$message}}</div>
                     @enderror
                 </div>
-                <div>
-                    <div class="w-full flex flex-col">
-                        <label for="return_at" class="dark:text-white text-red-700 leading-none text-sm">消去予定日<span class="text-red-500"> *</span></label>
-                        <input type="date" form="keepfileForm" min="2000-01-01" max="2100-12-31" name="return_at" class="input-primary" id="return_at" value="{{old('return_at',$keepfile->return_at)}}" required>
-                    </div>
+                <div class="w-full flex flex-col">
+                    <label for="return_at" class="dark:text-white text-red-700 leading-none text-sm">消去予定日<span class="text-red-500"> *</span></label>
+                    <input type="date" form="keepfileForm" min="2000-01-01" max="2100-12-31" name="return_at" class="input-primary" id="return_at" value="{{old('return_at',$keepfile->return_at)}}" >
                     @error('return_at')
                         <div class="text-red-500">{{$message}}</div>
                     @enderror
                 </div>
             </div>
 
-            <div>
-                <div class="w-full flex flex-col">
-                    <label for="purpose" class="dark:text-white text-red-700 leading-none text-sm">用途<span class="text-red-500"> *</span></label>
-                    <input type="text" form="keepfileForm" name="purpose" class="input-primary" id="purpose" value="{{old('purpose',$keepfile->purpose)}}" placeholder="例）バージョンアップ" required>
-                </div>
+            <div class="w-full flex flex-col mt-4">
+                <label for="purpose" class="dark:text-white text-red-700 leading-none text-sm">用途<span class="text-red-500"> *</span></label>
+                <input type="text" form="keepfileForm" name="purpose" class="input-primary" id="purpose" value="{{old('purpose',$keepfile->purpose)}}" placeholder="例）バージョンアップ" >
                 @error('purpose')
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
             </div>
-
-            {{-- <div>
-                <div class="mt-8">
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="pdf_file_help">
-                        PDF (最大 1024KB)
-                    </p>
-
-                    <input type="file" form="keepfileForm" name="pdf_file" id="pdf_file" accept=".pdf" class="block w-full text-sm text-gray-900 border  appearance-none border-gray-300 rounded cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help">
-                </div>
-                @error('pdf_file')
-                    <div class="text-red-500">{{ $message }}</div>
-                @enderror
-            </div> --}}
-
+                
             <div>
                 <div class="w-full flex flex-col">
                     <label for="keepfile_memo" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">備考</label>
@@ -165,6 +146,8 @@
                         </svg>
                         <p id="file-info" class="mb-2 text-sm text-gray-500 dark:text-gray-400 font-semibold">
                             クリックもしくはドラッグ＆ドロップでファイルを選択してください
+                            <br>
+                            なお、既存のPDFを上書きますのでご留意ください
                         </p>
                         <div class="md:w-auto md:ml-14" id="fileError">
                             @error('pdf_file')

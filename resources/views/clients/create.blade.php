@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
+            <h2 class="text-sm text-xl text-gray-900 dark:text-white">
                 {{ Breadcrumbs::render('createClient') }}
             </h2>
             <div class="flex justify-end">
@@ -12,40 +12,39 @@
 
     <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
 
-    <div class="max-w-7xl mx-auto px-2 pb-4 lg:pl-16 sm:p-8">
-
-        <div class="">
+    <div class="max-w-7xl mx-auto px-2 pb-4 sm:pl-16">
+        {{-- <div class=""> --}}
 
             <form id="form1" method="post" action="{{route('clients.store')}}" enctype="multipart/form-data" autocomplete="new-password">
                 @csrf
                 <!-- 法人検索ボタン -->
-                <button type="button"  onclick="showModal()" class="md:ml-1 md:mt-1 mt-1 mb-2 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <button type="button" onclick="showModal()" class="md:ml-1 mt-8 mb-2 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     法人検索
                 </button>
                 <div class="grid gap-4 mb-4 sm:grid-cols-2">
                     <div class="">
-                        <label for="corporation_num" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人番号</label>
+                        <label for="corporation_num" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人番号</label>
                         <input type="text" name="corporation_num" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" id="corporation_num" value="{{old('corporation_num')}}" placeholder="法人検索してください" readonly>
                         @error('corporation_num')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="">
-                        <label for="corporation_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人名称</label>
+                        <label for="corporation_name" class="block  text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人名称</label>
                         <input type="text" name="corporation_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" id="corporation_name" value="{{old('corporation_name')}}" placeholder="法人検索してください" readonly>
                         @error('corporation_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="">
-                        <label for="client_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客名称</label>
+                        <label for="client_name" class="block  text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客名称</label>
                         <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="client_name" value="{{old('client_name')}}" placeholder="例）烏丸大学">
                         @error('client_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="">
-                        <label for="client_kana_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客カナ名称</label>
+                        <label for="client_kana_name" class="block  text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客カナ名称</label>
                         <input type="text" name="client_kana_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="client_kana_name" value="{{old('client_kana_name')}}" placeholder="例）カラスマダイガク">
                         @error('client_kana_name')
                             <div class="text-red-500">{{ $message }}</div>
@@ -54,7 +53,7 @@
                 </div>
                 <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-2">
                     <div>
-                        <label for="installation_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">設置種別<span class="text-red-500"> *</span></label>
+                        <label for="installation_type_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">設置種別<span class="text-red-500"> *</span></label>
                         <select id="installation_type_id" name="installation_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">未選択</option>
                             @foreach($installationTypes as $installationType)
@@ -66,7 +65,7 @@
                         @enderror
                     </div>
                     <div>
-                        <label for="client_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">顧客種別<span class="text-red-500"> *</span></label>
+                        <label for="client_type_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">顧客種別<span class="text-red-500"> *</span></label>
                         <select id="client_type_id" name="client_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">未選択</option>
                             @foreach($clientTypes as $clientType)
@@ -78,7 +77,7 @@
                         @enderror
                     </div>
                     <div>
-                        <label for="trade_status_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">取引状態<span class="text-red-500"> *</span></label>
+                        <label for="trade_status_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">取引状態<span class="text-red-500"> *</span></label>
                         <select id="trade_status_id" name="trade_status_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">未選択</option>
                             @foreach($tradeStatuses as $tradeStatus)
@@ -90,7 +89,7 @@
                         @enderror
                     </div>
                     <div>
-                        <label for="department" class="font-semibold  text-gray-900 dark:text-white leading-none mt-4">管轄事業部<span class="text-red-500"> *</span></label>
+                        <label for="department" class="text-sm  text-gray-900 dark:text-white leading-none mt-4">管轄事業部<span class="text-red-500"> *</span></label>
                         <select id="department" name="department" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">未選択</option>
                             @foreach($departments as $department)
@@ -102,7 +101,7 @@
                         @enderror
                     </div>
                     <div>
-                        <label for="user_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">営業担当<span class="text-red-500"> *</span></label>
+                        <label for="user_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">営業担当<span class="text-red-500"> *</span></label>
                         <select id="user_id" name="user_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">未選択</option>
                             @foreach($users as $user)
@@ -138,7 +137,7 @@
                         <div class="grid gap-4 mb-4 sm:grid-cols-5 mt-2">
 
                             <div class="w-full flex flex-col">
-                                <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">郵便番号</label>
+                                <label for="head_post_code" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">郵便番号</label>
                                 <div class="relative w-full">
                                     <input type="text" name="head_post_code" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="head_post_code" value="{{old('head_post_code')}}" placeholder="">
                                     <button type="button" id="ajaxzip3" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-[34px] text-white mt-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -150,7 +149,7 @@
                             </div>
 
                             <div class="w-full flex flex-col">
-                                <label for="head_prefecture" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">都道府県</label>
+                                <label for="head_prefecture" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">都道府県</label>
                                 <select id="head_prefecture" name="head_prefecture" class="w-full py-1.5 block text-sm mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option selected value="">未選択</option>
                                     @foreach($prefectures as $prefecture)
@@ -159,18 +158,18 @@
                                 </select>
                             </div>
                             <div class="w-full flex flex-col md:col-span-3">
-                                <label for="head_addre1" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">代表所在地</label>
+                                <label for="head_addre1" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">代表所在地</label>
                                 <input type="text" name="head_addre1" id="head_addre1" value="{{old('head_addre1')}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" placeholder="">
                             </div>
 
 
                             <div class="w-full flex flex-col">
-                                <label for="head_tel" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">代表TEL（-）</label>
+                                <label for="head_tel" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">代表TEL（-）</label>
                                 <input type="text" name="head_tel" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_tel" value="{{old('head_tel')}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" placeholder="">
                             </div>
         
                             <div class="w-full flex flex-col">
-                                <label for="head_fax" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">代表FAX（-）</label>
+                                <label for="head_fax" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">代表FAX（-）</label>
                                 <input type="tel" name="head_fax" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_fax" value="{{old('head_fax')}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded"  placeholder="">
                             </div>
                         </div>
@@ -179,13 +178,13 @@
     
                         <div class="grid gap-4 mb-1 sm:grid-cols-5 mt-1">
                             <div class="w-full flex flex-col">
-                                <label for="students" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">規模（学生数/従業員数）</label>
+                                <label for="students" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">規模（学生数/従業員数）</label>
                                 <input type="number" min="0" name="students" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="students" value="{{old('students')}}">
                             </div>
                         </div>
                         <div class="grid gap-4 mb-1 sm:grid-cols-5 mt-1">
                             <div class="w-full flex flex-col">
-                                <label for="distribution" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">商流</label>
+                                <label for="distribution" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">商流</label>
                                 <select id="distribution_type_id" name="distribution_type_id" class="w-full mt-1 block p-1.5 text-sm bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option selected value="">未選択</option>
                                     @foreach($distributionTypes as $distributionType)
@@ -201,11 +200,11 @@
                         <div class="grid gap-4 mt-1 mb-4 sm:grid-cols-5">
     
                             <div class="w-full flex flex-col hidden">
-                                <label for="dealer_id" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">ディーラID（hidden要素）</label>
+                                <label for="dealer_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">ディーラID（hidden要素）</label>
                                 <input type="text" name="dealer_id" class="w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="dealer_id" value="{{old('dealer_id')}}" placeholder="">
                             </div>
                             <div class="w-full flex flex-col">
-                                <label for="vendor_num" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（業者）№</label>
+                                <label for="vendor_num" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（業者）№</label>
                                 {{-- <input type="text" name="vendor_num" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1" id="vendor_num" value="{{old('vendor_num')}}" disabled> --}}
                                 <div class="relative w-full">
                                     <input type="text" name="vendor_num" class="dark:bg-gray-400 w-full py-1 border border-gray-300 rounded mt-1" id="vendor_num" value="{{old('vendor_num')}}" disabled>
@@ -218,13 +217,13 @@
                             </div>
 
                             <div class="w-full flex flex-col md:col-span-3">
-                                <label for="vendor_name" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（業者）名称</label>
+                                <label for="vendor_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（業者）名称</label>
                                 <input type="text" name="vendor_name" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="vendor_name" value="{{old('vendor_name')}}" disabled>
                             </div>
                         </div>
     
                         <div class="w-full flex flex-col">
-                            <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">備考</label>
+                            <label for="memo" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">備考</label>
                             <textarea name="memo" data-auto-resize="true" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="auto-resize-textarea-client_memo" value="{{old('memo')}}" cols="30" rows="5">{{old('memo')}}</textarea>
                         </div>
 
@@ -290,7 +289,7 @@
                         {{-- content --}}
                     </div>
             </div>
-        </div>
+        {{-- </div> --}}
     </div>
 
     <!-- 法人検索 Modal -->
@@ -317,11 +316,11 @@
                     <div class="grid gap-4 mb-4 sm:grid-cols-2 mt-2">
                     {{-- <div class="flex flex-wrap justify-start mx-5"> --}}
                         <div class="">
-                            <label for="corporationName" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none">法人名称</label>
+                            <label for="corporationName" class="block text-sm dark:text-gray-100 text-gray-900 leading-none">法人名称</label>
                             <input type="text" name="corporationName" id="corporationName" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
                         </div>
                         <div class="">
-                            <label for="corporationNumber" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none">法人番号</label>
+                            <label for="corporationNumber" class="block text-sm dark:text-gray-100 text-gray-900 leading-none">法人番号</label>
                             <input type="text" name="corporationNumber" id="corporationNumber" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
                         </div>
                     </div>
@@ -378,11 +377,11 @@
                         <div class="grid gap-4 mb-4 sm:grid-cols-2 mt-2">
                         {{-- <div class="flex flex-wrap justify-start mx-5"> --}}
                             <div class="">
-                                <label for="vendorName" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none">法人名称</label>
+                                <label for="vendorName" class="block text-sm dark:text-gray-100 text-gray-900 leading-none">法人名称</label>
                                 <input type="text" name="vendorName" id="vendorName" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
                             </div>
                             <div class="">
-                                <label for="vendorNumber" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none">法人番号</label>
+                                <label for="vendorNumber" class="block text-sm dark:text-gray-100 text-gray-900 leading-none">法人番号</label>
                                 <input type="text" name="vendorNumber" id="vendorNumber" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
                             </div>
                         </div>

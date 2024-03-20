@@ -151,9 +151,9 @@ Route::middleware('auth')->group(function () {
 
 
     //マスタ系
+    Route::resource('/masters', '\App\Http\Controllers\AppMasterController');
     Route::resource('/accounting-period', AccountingPeriodController::class);
     Route::resource('/accounting-type', AccountingTypeController::class);
-    Route::resource('/masters', '\App\Http\Controllers\MasterController');
     Route::resource('/affiliation3', Affiliation3Controller::class);
     Route::resource('/department', DepartmentController::class);
     Route::resource('/company', CompanyController::class);

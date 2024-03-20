@@ -168,7 +168,7 @@
                         </td>
                         <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <div class="text-center">
-                                <button class="button-edit" type="button" data-drawer-target="dupdateModal-{{$contactType->id}}" data-drawer-show="dupdateModal-{{$contactType->id}}" data-drawer-placement="right" aria-controls="dupdateModal-{{$contactType->id}}">
+                                <button class="button-edit-primary" type="button" data-drawer-target="dupdateModal-{{$contactType->id}}" data-drawer-show="dupdateModal-{{$contactType->id}}" data-drawer-placement="right" aria-controls="dupdateModal-{{$contactType->id}}">
                                 編集
                                 </button>
                             </div>

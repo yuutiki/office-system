@@ -58,7 +58,7 @@
 
             <div class="w-full flex flex-col">
                 <label for="corporation_name" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">法人名称<span class="text-red-500"> *</span></label>
-                <input type="text" form="corporationForm" name="corporation_name" class="input-primary" id="corporation_name" value="{{old('corporation_name',$corporation->corporation_name)}}" placeholder="学校法人 烏丸学園">
+                <input type="text" form="corporationForm" name="corporation_name" class="input-secondary" id="corporation_name" value="{{old('corporation_name',$corporation->corporation_name)}}" placeholder="学校法人 烏丸学園">
                 @error('corporation_name')
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
@@ -66,7 +66,7 @@
             <div>
                 <div  class="w-full flex flex-col">
                     <label for="corporation_kana_name" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">法人カナ名称<span class="text-red-500"> *</span></label>
-                    <input type="text" form="corporationForm" name="corporation_kana_name" class="input-primary" id="corporation_kana_name" value="{{old('corporation_kana_name',$corporation->corporation_kana_name)}}" placeholder="ガッコウホウジン カラスマガクエン">
+                    <input type="text" form="corporationForm" name="corporation_kana_name" class="input-secondary" id="corporation_kana_name" value="{{old('corporation_kana_name',$corporation->corporation_kana_name)}}" placeholder="ガッコウホウジン カラスマガクエン">
                 </div>
                 @error('corporation_kana_name')
                     <div class="text-red-500">{{$message}}</div>
@@ -75,7 +75,7 @@
             <div>
                 <div class="w-full flex flex-col">
                     <label for="corporation_short_name" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">法人略称<span class="text-red-500"> *</span></label>
-                    <input type="text" form="corporationForm" name="corporation_short_name" id="corporation_short_name" value="{{old('corporation_short_name',$corporation->corporation_short_name)}}" class="input-primary" placeholder="烏丸学園">
+                    <input type="text" form="corporationForm" name="corporation_short_name" id="corporation_short_name" value="{{old('corporation_short_name',$corporation->corporation_short_name)}}" class="input-secondary" placeholder="烏丸学園">
                 </div>
                 @error('corporation_short_name')
                     <div class="text-red-500">{{$message}}</div>

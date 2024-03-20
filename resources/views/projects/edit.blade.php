@@ -34,7 +34,7 @@
                 </div>
                 <div class="col-span-2">
                     <label for="project_name" class="block font-semibold dark:text-white text-sm text-gray-900 leading-none md:mt-4">プロジェクト名称<span class="text-red-500"> *</span></label>
-                    <input type="text" name="project_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="project_name" value="{{old('project_name',$project->project_name)}}" placeholder=""  form="updateForm">
+                    <input type="text" name="project_name" class="input-secondary" id="project_name" value="{{old('project_name',$project->project_name)}}" placeholder=""  form="updateForm">
                     @error('project_name')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror
@@ -89,7 +89,7 @@
                     <div class="grid gap-4 mb-4 md:grid-cols-6 grid-cols-2">
                         <div>
                             <label for="sales_stage_id" class="font-semibold text-gray-900 text-sm dark:text-white leading-none mt-4">営業段階<span class="text-red-500"> *</span></label>
-                            <select form="updateForm" id="sales_stage_id" name="sales_stage_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <select form="updateForm" id="sales_stage_id" name="sales_stage_id" class="input-primary">
                                 <option value="">未選択</option>
                                 @foreach($salesStages as $salesStage)
                                 <option value="{{ $salesStage->id }}" @selected($salesStage->id == old('sales_stage_id',$project->sales_stage_id))>{{ $salesStage->sales_stage_name }}</option>
@@ -100,11 +100,11 @@
                             @enderror
                         </div>
                         <div>
-                            <label for="project_type_id" class="font-semibold text-gray-900 text-sm dark:text-white leading-none mt-4">プロジェクト種別<span class="text-red-500"> *</span></label>
-                            <select form="updateForm" id="project_type_id" name="project_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <label for="project_type_id" class="text-gray-900 text-sm dark:text-white leading-none mt-4">プロジェクト種別<span class="text-red-500"> *</span></label>
+                            <select form="updateForm" id="project_type_id" name="project_type_id" class="input-primary">
                                 <option value="">未選択</option>
                                 @foreach($projectTypes as $projectType)
-                                <option value="{{ $projectType->id }}" @if($projectType->id == old('project_type_id',$project->project_type_id)) selected @endif>{{ $projectType->project_type_name }}</option>
+                                <option value="{{ $projectType->id }}" @selected($projectType->id == old('project_type_id',$project->project_type_id))>{{ $projectType->project_type_name }}</option>
                                 @endforeach
                             </select>
                             @error('project_type_id')
@@ -112,11 +112,11 @@
                             @enderror
                         </div>
                         <div>
-                            <label for="accounting_type_id" class="font-semibold text-gray-900 text-sm dark:text-white leading-none mt-4">計上種別<span class="text-red-500"> *</span></label>
-                            <select form="updateForm" id="accounting_type_id" name="accounting_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <label for="accounting_type_id" class="text-gray-900 text-sm dark:text-white leading-none mt-4">計上種別<span class="text-red-500"> *</span></label>
+                            <select form="updateForm" id="accounting_type_id" name="accounting_type_id" class="input-primary">
                                 <option value="">未選択</option>
                                 @foreach($accountingTypes as $accountingType)
-                                <option value="{{ $accountingType->id }}" @if($accountingType->id == old('accounting_type_id',$project->accounting_type_id)) selected @endif>{{ $accountingType->accounting_type_name }}</option>
+                                <option value="{{ $accountingType->id }}" @selected($accountingType->id == old('accounting_type_id',$project->accounting_type_id))>{{ $accountingType->accounting_type_name }}</option>
                                 @endforeach
                             </select>
                             @error('accounting_type_id')
@@ -124,8 +124,8 @@
                             @enderror
                         </div>
                         <div>
-                            <label for="distribution_type_id" class="font-semibold text-gray-900 text-sm dark:text-white leading-none mt-4">商流<span class="text-red-500"> *</span></label>
-                            <select form="updateForm" id="distribution_type_id" name="distribution_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 w-full p-1.5 text-sm dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <label for="distribution_type_id" class="text-gray-900 text-sm dark:text-white leading-none mt-4">商流<span class="text-red-500"> *</span></label>
+                            <select form="updateForm" id="distribution_type_id" name="distribution_type_id" class="input-primary">
                                 <option value="">未選択</option>
                                 @foreach($distributionTypes as $distributionType)
                                 <option value="{{ $distributionType->id }}" @selected($distributionType->id == old('distribution_type_id',$project->distribution_type_id))>{{ $distributionType->distribution_type_name }}</option>
@@ -137,7 +137,7 @@
                         </div>
                         <div class="">
                             <div class="relative w-full">
-                                <label for="distribution_type_id" class="font-semibold text-gray-900 text-sm dark:text-white leading-none">受注確度<span class="text-red-500"> *</span></label>
+                                <label for="distribution_type_id" class="text-gray-900 text-sm dark:text-white leading-none">受注確度<span class="text-red-500"> *</span></label>
                                 <input type="number" id="currency-input" class="block py-1 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Enter amount" value="50" required />
                             </div>
                             <div class="relative">
@@ -165,20 +165,20 @@
 
                     <div class="grid gap-4 mb-8 md:grid-cols-6 grid-cols-2">
                             <div class="w-full flex flex-col">
-                                <label for="proposed_order_date" class="font-semibold dark:text-white text-sm text-gray-900 leading-none mt-1">受注予定月</label>
-                                <input form="updateForm" type="month" min="1900-01" max="2100-12" name="proposed_order_date" value="{{ old('proposed_order_date', \Carbon\Carbon::parse($project->proposed_order_date)->format('Y-m') ?? '') }}" class="w-auto py-1 border border-gray-300 rounded mt-1" required>
+                                <label for="proposed_order_date" class="dark:text-white text-sm text-gray-900 leading-none mt-1">受注予定月</label>
+                                <input form="updateForm" type="month" min="1900-01" max="2100-12" name="proposed_order_date" value="{{ old('proposed_order_date', \Carbon\Carbon::parse($project->proposed_order_date)->format('Y-m') ?? '') }}" class="input-primary" required>
                             </div>
                             <div class="w-full flex flex-col">
-                                <label for="proposed_delivery_date" class="font-semibold dark:text-white text-sm text-gray-900 leading-none mt-1">納品予定月</label>
-                                <input form="updateForm" type="month" min="1900-01" max="2100-12"  name="proposed_delivery_date" value="{{ old('proposed_delivery_date', \Carbon\Carbon::parse($project->proposed_delivery_date)->format('Y-m') ?? '') }}" class="w-auto py-1 border border-gray-300 rounded mt-1" required>
+                                <label for="proposed_delivery_date" class="dark:text-white text-sm text-gray-900 leading-none mt-1">納品予定月</label>
+                                <input form="updateForm" type="month" min="1900-01" max="2100-12"  name="proposed_delivery_date" value="{{ old('proposed_delivery_date', \Carbon\Carbon::parse($project->proposed_delivery_date)->format('Y-m') ?? '') }}" class="input-primary" required>
                             </div>
                             <div class="w-full flex flex-col">
-                                <label for="proposed_accounting_date" class="font-semibold dark:text-white text-sm text-gray-900 leading-none mt-1">計上予定月</label>
-                                <input form="updateForm" type="month" min="1900-01" max="2100-12"  name="proposed_accounting_date" value="{{ old('proposed_accounting_date', \Carbon\Carbon::parse($project->proposed_accounting_date)->format('Y-m') ?? '') }}" class="w-auto py-1 border border-gray-300 rounded mt-1" required>
+                                <label for="proposed_accounting_date" class="dark:text-white text-sm text-gray-900 leading-none mt-1">計上予定月</label>
+                                <input form="updateForm" type="month" min="1900-01" max="2100-12"  name="proposed_accounting_date" value="{{ old('proposed_accounting_date', \Carbon\Carbon::parse($project->proposed_accounting_date)->format('Y-m') ?? '') }}" class="input-primary" required>
                             </div>
                             <div class="w-full flex flex-col">
-                                <label for="proposed_payment_date" class="font-semibold dark:text-white text-sm text-gray-900 leading-none mt-1">入金予定月</label>
-                                <input form="updateForm" type="month" min="1900-01" max="2100-12"  name="proposed_payment_date" value="{{ old('proposed_payment_date', \Carbon\Carbon::parse($project->proposed_payment_date)->format('Y-m') ?? '') }}" class="w-auto py-1 border border-gray-300 rounded mt-1" required>
+                                <label for="proposed_payment_date" class="dark:text-white text-sm text-gray-900 leading-none mt-1">入金予定月</label>
+                                <input form="updateForm" type="month" min="1900-01" max="2100-12"  name="proposed_payment_date" value="{{ old('proposed_payment_date', \Carbon\Carbon::parse($project->proposed_payment_date)->format('Y-m') ?? '') }}" class="input-primary" required>
                             </div>
                         {{-- </div> --}}
                         {{-- <div class="w-full flex flex-col">
@@ -401,11 +401,11 @@
                         <div class="md:ml-8 md:w-1/2">
                             <div class="grid gap-4 mt-1 sm:grid-cols-3">
                                 <div class="w-full flex flex-col hidden">
-                                    <label for="billing_corporation_id" class="font-semibold dark:text-white text-sm text-gray-900 leading-none mt-4">請求先法人ID</label>
+                                    <label for="billing_corporation_id" class="dark:text-white text-sm text-gray-900 leading-none mt-4">請求先法人ID</label>
                                     <input form="updateForm" type="text" name="billing_corporation_id" class="w-auto py-[2px] border border-gray-300 rounded mt-1 mb-1" id="billing_corporation_id" value="{{old('billing_corporation_id',$project->billing_corporation_id)}}" placeholder="">
                                 </div>
                                 <div class="w-full flex flex-col">
-                                    <label for="billing_corporation_num" class="font-semibold dark:text-white text-sm text-gray-900 leading-none mt-1">請求先法人№</label>
+                                    <label for="billing_corporation_num" class="dark:text-white text-sm text-gray-900 leading-none mt-1">請求先法人№</label>
                                     <div class="relative w-full">
                                         <input type="text" name="billing_corporation_num" class="dark:bg-gray-400 w-full py-1 border border-gray-300 rounded mt-1 mb-1" id="billing_corporation_num" value="{{old('billing_corporation_num', $project->billingCorporation->corporation_num)}}" disabled>
                                         <button type="button" id="" onclick="showCorporationModal()" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-[34px] text-white mt-1 bg-blue-700 rounded-e border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -416,28 +416,28 @@
                                     </div>
                                 </div>
                                 <div class="w-full flex flex-col col-span-2">
-                                    <label for="billing_corporation_name" class="font-semibold dark:text-white text-sm text-gray-900 leading-none mt-1">請求先法人名</label>
+                                    <label for="billing_corporation_name" class="dark:text-white text-sm text-gray-900 leading-none mt-1">請求先法人名</label>
                                     <input type="text" form="updateForm" name="billing_corporation_name" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1 mb-1" id="billing_corporation_name" value="{{old('billing_corporation_name', optional($project->billingCorporation)->corporation_name)}}" disabled>
                                 </div>
                             </div>
                             <div class="grid gap-2 mt-1 sm:grid-cols-3">
                                 <div class="w-full flex flex-col col-span-3">
-                                    <label for="billing_corporation_name" class="font-semibold dark:text-white text-gray-900 leading-none mt-1">請求先名</label>
+                                    <label for="billing_corporation_name" class="dark:text-white text-sm text-gray-900 leading-none mt-1">請求先名</label>
                                     <input type="text" form="updateForm" name="billing_corporation_name" class="dark:bg-white w-auto py-1 border border-gray-300 rounded mt-1 mb-1" id="billing_corporation_name" value="{{old('billing_corporation_name', $project->billing_corporation_name)}}">
                                 </div>
                                 <div class="w-full flex flex-col col-span-3">
-                                    <label for="billing_corporation_division_name" class="font-semibold dark:text-white text-sm text-gray-900 leading-none mt-1">請求先部署名</label>
+                                    <label for="billing_corporation_division_name" class="dark:text-white text-sm text-gray-900 leading-none mt-1">請求先部署名</label>
                                     <input type="text" form="updateForm" name="billing_corporation_division_name" class="dark:bg-white w-auto py-1 border border-gray-300 rounded mt-1 mb-1" id="billing_corporation_division_name" value="{{old('billing_corporation_division_name', $project->billing_corporation_division_name)}}">
                                 </div>
                                 <div class="w-full flex flex-col col-span-3">
-                                    <label for="billing_corporation_person_name" class="font-semibold dark:text-white text-sm text-gray-900 leading-none mt-1">請求先担当者名</label>
+                                    <label for="billing_corporation_person_name" class="dark:text-white text-sm text-gray-900 leading-none mt-1">請求先担当者名</label>
                                     <input type="text" form="updateForm" name="billing_corporation_person_name" class="dark:bg-white w-auto py-1 border border-gray-300 rounded mt-1 mb-1" id="billing_corporation_person_name" value="{{old('billing_corporation_person_name',$project->billing_corporation_person_name)}}">
                                 </div>
                             </div>
 
                             <div class="grid gap-4 mt-2 sm:grid-cols-3">
                                 <div class="col-span-1">
-                                    <label for="head_post_code" class="font-semibold dark:text-white text-sm text-gray-900 leading-none mt-1" autocomplete="new-password">郵便番号</label>
+                                    <label for="head_post_code" class="dark:text-white text-sm text-gray-900 leading-none mt-1" autocomplete="new-password">郵便番号</label>
                                     <div class="relative w-full">
                                         <input type="text" form="updateForm" name="head_post_code" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded" id="head_post_code" value="{{old('head_post_code', $project->billing_head_post_code)}}" placeholder="">
                                         <button type="button" id="ajaxzip3" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-[34px] text-white bg-blue-700 rounded-e border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -448,7 +448,7 @@
                                     </div>
                                 </div>
                                 <div class="col-span-1">
-                                    <label for="head_prefecture" class="font-semibold dark:text-white text-sm text-gray-900 leading-none mt-4">都道府県</label>
+                                    <label for="head_prefecture" class="dark:text-white text-sm text-gray-900 leading-none mt-4">都道府県</label>
                                     <select id="head_prefecture" form="updateForm" name="head_prefecture" class="w-full px-2 py-1.5 text-sm bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option selected value="">未選択</option>
                                         @foreach($prefectures as $prefecture)
@@ -462,7 +462,7 @@
                             </div>
                             <div class="grid gap-4 mt-3 mb-4 sm:grid-cols-3">
                                 <div class="col-span-3">
-                                    <label for="head_addre1" class="font-semibold dark:text-white text-sm text-gray-900 leading-none mt-4">住所</label>
+                                    <label for="head_addre1" class="dark:text-white text-sm text-gray-900 leading-none mt-4">住所</label>
                                     <input type="text" form="updateForm" name="head_addre1" id="head_addre1" value="{{old('head_addre1',$project->billing_head_address1)}}" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded" placeholder="">
                                 </div>
                             </div>
@@ -513,12 +513,12 @@
 
                     <div>
                         <div class="w-full flex flex-col">
-                            <label for="project_memo" class="font-semibold dark:text-white text-sm text-gray-900 leading-none mt-4">プロジェクト備考</label>
+                            <label for="project_memo" class="dark:text-white text-sm text-gray-900 leading-none mt-4">プロジェクト備考</label>
                             <textarea form="updateForm" name="project_memo" class="w-auto py-1 border border-gray-300 rounded mt-1" data-auto-resize="true" id="auto-resize-textarea-content" value="{{old('project_memo',$project->project_memo)}}" cols="30" rows="5" data-auto-resize="true">{{old('project_memo',$project->project_memo)}}</textarea>
                         </div>
                         <div class="grid gap-4 my-4 sm:grid-cols-4">
                             <div>
-                                <label for="account_company_id" class="font-semibold text-gray-900 dark:text-white text-sm leading-none mt-4">計上所属1</label>
+                                <label for="account_company_id" class="text-gray-900 dark:text-white text-sm leading-none mt-4">計上所属1</label>
                                 <select form="updateForm" id="account_company_id" name="account_company_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     @foreach($companies as $company)
                                     <option value="{{ $company->id }}" @selected($company->id == old('account_company_id', $project->account_company_id))>{{ $company->company_name }}</option>
@@ -529,7 +529,7 @@
                                 @enderror
                             </div>
                             <div>
-                                <label for="account_department_id" class="font-semibold text-gray-900 dark:text-white text-sm leading-none mt-4">計上所属2</label>
+                                <label for="account_department_id" class="text-gray-900 dark:text-white text-sm leading-none mt-4">計上所属2</label>
                                 <select form="updateForm" id="account_department_id" name="account_department_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     @foreach($departments as $department)
                                     <option value="{{ $department->id }}" @selected($department->id == old('department', $project->account_department_id))>{{ $department->department_name }}</option>
@@ -540,7 +540,7 @@
                                 @enderror
                             </div>
                             <div>
-                                <label for="account_affiliation3_id" class="font-semibold text-gray-900 dark:text-white text-sm leading-none mt-4">計上所属3</label>
+                                <label for="account_affiliation3_id" class="text-gray-900 dark:text-white text-sm leading-none mt-4">計上所属3</label>
                                 <select form="updateForm" id="account_affiliation3_id" name="account_affiliation3_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     @foreach($affiliation3s as $affiliation3)
                                     <option value="{{ $affiliation3->id }}" @selected($affiliation3->id == old('account_affiliation3_id', $project->account_affiliation3_id))>{{ $affiliation3->affiliation3_name }}</option>
@@ -551,7 +551,7 @@
                                 @enderror
                             </div>
                             <div>
-                                <label for="account_user_id" class="font-semibold text-gray-900 dark:text-white text-sm leading-none mt-4">計上担当者</label>
+                                <label for="account_user_id" class="text-gray-900 dark:text-white text-sm leading-none mt-4">計上担当者</label>
                                 <select form="updateForm" id="account_user_id" name="account_user_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     @foreach($users as $user)
                                     <option value="{{ $user->id }}" @selected($user->id == old('account_user_id', $project->account_user_id))>{{ $user->name }}</option>

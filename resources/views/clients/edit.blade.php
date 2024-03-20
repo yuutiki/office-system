@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
+            <h2 class="text-sm text-xl text-gray-900 dark:text-white">
                 {{ Breadcrumbs::render('editClient', $client) }}
             </h2>
             <div class="flex justify-end">
@@ -15,42 +15,42 @@
 
     <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
 
-    <div class="max-w-7xl mx-auto px-4">
+    <div class="max-w-7xl mx-auto px-2 pb-4 sm:pl-16">
 
-        <div class="mx-4 sm:p-8">
+        <div class="">
         <form method="post" action="{{route('clients.update',$client)}}" enctype="multipart/form-data" autocomplete="new-password">
             @csrf
             @method('patch')
 
-            <div class="relative z-0">
+            <div class="relative z-0 mt-8">
                 <input type="text" id="client_num" name="client_num" value="{{old('client_num',$client->client_num)}}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
                 <label for="client_num" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">顧客番号</label>
             </div>
 
             <div class="grid gap-3 mb-2 sm:grid-cols-2">
                 <div class="">
-                    <label for="corporation_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2 mt-2">法人名称</label>
+                    <label for="corporation_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2 mt-2">法人名称</label>
                     <input type="text" name="corporation_name" class="w-full py-1 mt-1 bg-gray-400 border border-gray-300 rounded" id="corporation_name" value="{{old('corporation_name',$client->corporation->corporation_name)}}" readonly>
                     @error('corporation_name')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror                
                 </div>
                 <div class="hidden md:inline-block">
-                    <label for="corporation_kana_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">法人カナ名称</label>
+                    <label for="corporation_kana_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">法人カナ名称</label>
                     <input type="text" name="corporation_kana_name" class="w-full py-1 mt-1 bg-gray-400 border border-gray-300 rounded" id="corporation_kana_name" value="{{old('corporation_kana_name',$client->corporation->corporation_kana_name)}}" readonly>
                     @error('corporation_kana_name')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror                
                 </div>
                 <div class="">
-                    <label for="client_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2 mt-2">顧客名称</label>
+                    <label for="client_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2 mt-2">顧客名称</label>
                     <input type="text" name="client_name" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" id="client_name" value="{{old('client_name',$client->client_name)}}" placeholder="例）烏丸大学">
                     @error('client_name')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror                
                 </div>
                 <div class="hidden md:inline-block">
-                    <label for="client_kana_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客カナ名称</label>
+                    <label for="client_kana_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客カナ名称</label>
                     <input type="text" name="client_kana_name" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" id="client_kana_name" value="{{old('client_kana_name',$client->client_kana_name)}}" placeholder="例）カラスマダイガク">
                     @error('client_kana_name')
                         <div class="text-red-500">{{ $message }}</div>
@@ -61,7 +61,7 @@
             <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-2">
 
                 <div>
-                    <label for="installation_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">設置種別</label>
+                    <label for="installation_type_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">設置種別</label>
                     <select id="installation_type_id" name="installation_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected value="">未選択</option>
                         @foreach($installationTypes as $installationType)
@@ -73,7 +73,7 @@
                     @enderror
                 </div>
                 <div>
-                    <label for="client_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">顧客種別</label>
+                    <label for="client_type_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">顧客種別</label>
                     <select id="client_type_id" name="client_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected value="">未選択</option>
                         @foreach($clientTypes as $clientType)
@@ -85,7 +85,7 @@
                     @enderror
                 </div>
                 <div>
-                    <label for="trade_status_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">取引状態</label>
+                    <label for="trade_status_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">取引状態</label>
                     <select id="trade_status_id" name="trade_status_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected value="">未選択</option>
                         @foreach($tradeStatuses as $tradeStatus)
@@ -97,7 +97,7 @@
                     @enderror
                 </div>
                 <div>
-                    <label for="department" class="font-semibold  text-gray-900 dark:text-white leading-none mt-4">管轄事業部</label>
+                    <label for="department" class="text-sm  text-gray-900 dark:text-white leading-none mt-4">管轄事業部</label>
                     <select id="department" name="department" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected value="">未選択</option>
                         @foreach($departments as $department)
@@ -109,7 +109,7 @@
                     @enderror
                 </div>
                 <div>
-                    <label for="user_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">営業担当</label>
+                    <label for="user_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">営業担当</label>
                     <select id="user_id" name="user_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected value="">未選択</option>
                         @foreach($users as $user)
@@ -124,7 +124,7 @@
 
             {{-- タブヘッダStart --}}
             <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
-                <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTabs" data-tabs-toggle="#myTabContent" role="tablist">
+                <ul class="flex flex-wrap -mb-px text-sm text-center" id="myTabs" data-tabs-toggle="#myTabContent" role="tablist">
                     <li class="mr-2" role="presentation">
                         <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="basic-tab" data-tabs-target="#basic" type="button" role="tab" aria-controls="basic" aria-selected="false">
                             基本情報
@@ -174,11 +174,11 @@
                 <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="basic" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="grid gap-4 mb-4 sm:grid-cols-5 mt-2">
                         {{-- <div class="">
-                            <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">郵便番号</label>
+                            <label for="head_post_code" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">郵便番号</label>
                             <input type="text" name="head_post_code" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="head_post_code" value="{{old('head_post_code',$client->head_post_code)}}" placeholder="" onKeyUp="AjaxZip3.zip2addr(this,'','head_prefecture','head_addre1','','',false);">
                         </div> --}}
                         {{-- <div class="">
-                            <label for="head_prefecture" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4 ">都道府県</label>
+                            <label for="head_prefecture" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">都道府県</label>
                             <select id="head_prefecture" name="head_prefecture" class="w-full py-1.5  text-sm mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 @foreach($prefectures as $prefecture)
@@ -187,16 +187,16 @@
                             </select>
                         </div> --}}
                         {{-- <div class="col-span-3">
-                            <label for="head_addre1" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">代表所在地</label>
+                            <label for="head_addre1" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表所在地</label>
                             <input type="text" name="head_addre1" id="head_addre1" value="{{old('head_addre1',$client->head_address1)}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" placeholder="">
                         </div> --}}
 
                         <div class="">
-                            <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">郵便番号</label>
+                            <label for="head_post_code" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">郵便番号</label>
                             {{-- <input type="text" name="head_post_code" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="head_post_code" value="{{old('head_post_code')}}" placeholder="" onKeyUp="AjaxZip3.zip2addr(this,'','head_prefecture','head_addre1','','',false);"> --}}
                             <div class="relative w-full">
                                 <input type="text" name="head_post_code" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="head_post_code" value="{{old('head_post_code', $client->head_post_code)}}" placeholder="">
-                                <button type="button" id="ajaxzip3" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-[34px] text-white mt-1 bg-blue-700 rounded-e border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                <button type="button" id="client_ajaxzip3" class="absolute top-0 end-0 p-2.5 text-sm h-[34px] text-white mt-1 bg-blue-700 rounded-e border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                     </svg>
@@ -208,8 +208,8 @@
                             郵便番号から住所を取得
                         </x-general-button> --}}
                         <div class="">
-                            <label for="head_prefecture" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4 ">都道府県</label>
-                            <select id="head_prefecture" name="head_prefecture" class="w-full py-1.5  text-sm mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <label for="head_prefecture_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">都道府県</label>
+                            <select id="head_prefecture_id" name="head_prefecture_id" class="w-full py-1.5  text-sm mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 @foreach($prefectures as $prefecture)
                                     <option value="{{ $prefecture->id }}" @if( $prefecture->id == $client->head_prefecture ) selected @endif>{{ $prefecture->prefecture_code }}:{{ $prefecture->prefecture_name }}</option>
@@ -217,7 +217,7 @@
                             </select>
                         </div>
                         <div class="col-span-3">
-                            <label for="head_addre1" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">代表所在地</label>
+                            <label for="head_addre1" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表所在地</label>
                             <input type="text" name="head_addre1" id="head_addre1" value="{{old('head_addre1', $client->head_address1)}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" placeholder="">
                         </div>
 
@@ -225,27 +225,27 @@
 
 
                         <div class="">
-                            <label for="head_tel" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">代表TEL（-）</label>
+                            <label for="head_tel" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表TEL（-）</label>
                             <input type="text" name="head_tel" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_tel" value="{{old('head_tel',$client->head_tel)}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" placeholder="">
                         </div>
     
                         <div class="">
-                            <label for="head_fax" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">代表FAX（-）</label>
+                            <label for="head_fax" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表FAX（-）</label>
                             <input type="tel" name="head_fax" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_fax" value="{{old('head_fax',$client->head_fax)}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded"  placeholder="">
                         </div>
                     </div>
 
-                    <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
+                    <ul class="pt-4 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700"></ul>
 
                     <div class="grid gap-4 mb-1 sm:grid-cols-5 mt-1">
                         <div class="w-full flex flex-col">
-                            <label for="students" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">規模（学生数/従業員数）</label>
+                            <label for="students" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">規模（学生数/従業員数）</label>
                             <input type="number" min="0" name="students" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="students" value="{{old('students',$client->students)}}">
                         </div>
                     </div>
                     <div class="grid gap-4 mb-1 sm:grid-cols-5 mt-1">
                         <div class="w-full flex flex-col">
-                            <label for="distribution" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">商流</label>
+                            <label for="distribution" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">商流</label>
                             <select id="distribution_type_id" name="distribution_type_id" class="w-full mt-1 block py-1.5 text-sm bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 @foreach($distributionTypes as $distributionType)
@@ -258,35 +258,35 @@
                         </div>
                     </div>
 
-                    {{-- <button type="button"  onclick="showCorporationModal()" class="md:mt-10 mt-6 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    {{-- <button type="button"  onclick="showCorporationModal()" class="md:mt-10 mt-6 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         ディーラ検索
                     </button>
                     <div class="grid gap-4 mt-1 mb-4 sm:grid-cols-5">
 
                         <div class="w-full flex flex-col hidden">
-                            <label for="billing_corporation_id" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">ディーラ（顧客）ID</label>
+                            <label for="billing_corporation_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">ディーラ（顧客）ID</label>
                             <input form="updateForm" type="text" name="billing_corporation_id" class="w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="billing_corporation_id" value="{{old('billing_corporation_id',$client->billing_corporation_id)}}" placeholder="">
                         </div>
                         <div class="w-full flex flex-col">
-                            <label for="billing_corporation_num" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（顧客）№</label>
+                            <label for="billing_corporation_num" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（顧客）№</label>
                             <input type="text" name="billing_corporation_num" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1" id="billing_corporation_num" value="{{old('billing_corporation_num',optional($client->dealer)->vendor_num)}}" disabled>
                         </div>
                         <div class="w-full flex flex-col col-span-3">
-                            <label for="billing_corporation_name" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（顧客）名称</label>
+                            <label for="billing_corporation_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（顧客）名称</label>
                             <input type="text" name="billing_corporation_name" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="billing_corporation_name" value="{{old('billing_corporation_name',optional($client->dealer)->vendor_name)}}" disabled>
                         </div>
                     </div> --}}
 
                     {{-- <div class="grid gap-4 mt-1 mb-4 sm:grid-cols-5">
                         <div class="w-full flex flex-col hidden">
-                            <label for="dealer_id" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">ディーラID（hidden要素）</label>
+                            <label for="dealer_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">ディーラID（hidden要素）</label>
                             <input type="text" name="dealer_id" class="w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="dealer_id" value="{{old('dealer_id')}}" placeholder="">
                         </div>
                         <div class="w-full flex flex-col">
-                            <label for="vendor_num" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（業者）№</label>
+                            <label for="vendor_num" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（業者）№</label>
                             <div class="relative w-full">
                                 <input type="text" name="vendor_num" class="dark:bg-gray-400 w-full py-1 border border-gray-300 rounded mt-1" id="vendor_num" value="{{old('vendor_num',optional($client->dealer)->vendor_num)}}" disabled>
-                                <button type="button" onclick="showdealerModal()" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-[34px] text-white mt-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                <button type="button" onclick="showdealerModal()" class="absolute top-0 end-0 p-2.5 text-sm h-[34px] text-white mt-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                     </svg>
@@ -295,21 +295,21 @@
                         </div>
 
                         <div class="w-full flex flex-col md:col-span-3">
-                            <label for="vendor_name" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（業者）名称</label>
+                            <label for="vendor_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（業者）名称</label>
                             <input type="text" name="vendor_name" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="vendor_name" value="{{old('vendor_name',optional($client->dealer)->vendor_name)}}" disabled>
                         </div>
                     </div> --}}
 
                     <div class="grid gap-4 mt-1 mb-4 sm:grid-cols-5">
                         <div class="w-full flex flex-col hidden">
-                            <label for="dealer_id" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">ディーラID（hidden要素）</label>
+                            <label for="dealer_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">ディーラID（hidden要素）</label>
                             <input type="text" name="dealer_id" class="w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="dealer_id" value="{{old('dealer_id')}}" placeholder="">
                         </div>
                         <div class="w-full flex flex-col">
-                            <label for="vendor_num" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（業者）№</label>
+                            <label for="vendor_num" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（業者）№</label>
                             <div class="relative w-full">
                                 <input type="text" name="vendor_num" class="dark:bg-gray-400 w-full py-1 border border-gray-300 rounded mt-1" id="vendor_num" value="{{old('vendor_num',optional($client->dealer)->vendor_num)}}" disabled>
-                                <button type="button" onclick="showdealerModal()" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-[34px] text-white mt-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                <button type="button" onclick="showdealerModal()" class="absolute top-0 end-0 p-2.5 text-sm h-[34px] text-white mt-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                     </svg>
@@ -318,7 +318,7 @@
                         </div>
                     
                         <div class="w-full flex flex-col md:col-span-3">
-                            <label for="vendor_name" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（業者）名称</label>
+                            <label for="vendor_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（業者）名称</label>
                             <input type="text" name="vendor_name" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="vendor_name" value="{{old('vendor_name',optional($client->dealer)->vendor_name)}}" disabled>
                         </div>
                     
@@ -329,10 +329,10 @@
                     
 
                     <div class="w-full flex flex-col">
-                        <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">備考</label>
+                        <label for="memo" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">備考</label>
                         <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="auto-resize-textarea" data-auto-resize="true" value="{{old('memo')}}" cols="30" rows="5">{{old('memo', $client->memo)}}</textarea>
                     </div>
-                    <ul class=" mt-4 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                    <ul class=" mt-4 items-center w-full text-sm text-gray-900 bg-white border border-gray-200 rounded sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                         <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                             <div class="flex items-center pl-3">
                                 @if ($client->is_enduser === 1)
@@ -340,7 +340,7 @@
                                 @else
                                     <input id="is_enduser" name="is_enduser" type="checkbox" value="1"  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                 @endif
-                                <label for="is_enduser" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">エンドユーザ</label>
+                                <label for="is_enduser" class="w-full py-3 ml-2 text-sm text-gray-900 dark:text-gray-300">エンドユーザ</label>
                             </div>
                             @error('is_enduser')
                              <div class="text-red-500">{{ $message }}</div>
@@ -353,7 +353,7 @@
                                 @else
                                     <input id="is_dealer" name="is_dealer" type="checkbox" value="1"  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                 @endif
-                                <label for="is_dealer" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">ディーラ</label>
+                                <label for="is_dealer" class="w-full py-3 ml-2 text-sm text-gray-900 dark:text-gray-300">ディーラ</label>
                             </div>
                             @error('is_dealer')
                              <div class="text-red-500">{{ $message }}</div>
@@ -366,7 +366,7 @@
                                 @else
                                     <input id="is_supplier" name="is_supplier" type="checkbox" value="1"  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                 @endif
-                                <label for="is_supplier" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">仕入外注先</label>
+                                <label for="is_supplier" class="w-full py-3 ml-2 text-sm text-gray-900 dark:text-gray-300">仕入外注先</label>
                             </div>
                             @error('is_supplier')
                              <div class="text-red-500">{{ $message }}</div>
@@ -379,7 +379,10 @@
                                 @else
                                     <input id="is_lease" name="is_lease" type="checkbox" value="1"  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                 @endif
+                            <label for="is_supplier" class="w-full py-3 ml-2 text-sm text-gray-900 dark:text-gray-300">リース</label>
+
                             </div>
+
                             @error('is_lease')
                              <div class="text-red-500">{{ $message }}</div>
                             @enderror
@@ -391,7 +394,7 @@
                                 @else
                                     <input id="is_other_partner" name="is_other_partner" type="checkbox" value="1"  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                 @endif
-                                <label for="is_other_partner" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">その他協業</label>
+                                <label for="is_other_partner" class="w-full py-3 ml-2 text-sm text-gray-900 dark:text-gray-300">その他協業</label>
                             </div>
                             @error('is_other_partner')
                              <div class="text-red-500">{{ $message }}</div>
@@ -409,56 +412,56 @@
                 <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
                     <p class="text-sm text-gray-500 dark:text-gray-400">請求区分、契約日、解約日、契約金額、サポートページID、PW、暗号、契約備考、契約書添付、契約履歴</p>
                     <div class="w-full flex flex-col">
-                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約番号</label>
+                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約番号</label>
                         <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約先区分</label>
+                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約先区分</label>
                         <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">更新月</label>
+                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">更新月</label>
                         <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約種別</label>
+                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約種別</label>
                         <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約日</label>
+                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約日</label>
                         <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">解約日</label>
+                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">解約日</label>
                         <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約金額</label>
+                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約金額</label>
                         <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">SPログイン名</label>
+                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">SPログイン名</label>
                         <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">SPパスワード</label>
+                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">SPパスワード</label>
                         <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">SPパスワード（読み方）</label>
+                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">SPパスワード（読み方）</label>
                         <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">契約備考</label>
+                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">契約備考</label>
                         <textarea name="non" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="non" value="{{old('non')}}" cols="30" rows="5"></textarea>
                     </div>
 
                     <div class="w-full flex flex-col">
-                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-8" autocomplete="new-password">請求区分</label>
+                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-8" autocomplete="new-password">請求区分</label>
                         <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="non" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">請求備考</label>
+                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">請求備考</label>
                         <textarea name="non" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="non" value="{{old('non')}}" cols="30" rows="5"></textarea>
                     </div>
                 </div>
@@ -470,12 +473,12 @@
                     <span class="text-white">この顧客のサポート問い合わせ情報の内容が表示されます。ここからサポート情報を登録することもできます。</span>
 
                     {{-- <div class="w-full flex flex-col">
-                        <label for="" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">主バージョン</label>
+                        <label for="" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">主バージョン</label>
                         <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="" value="{{old('',"V10.1")}}" placeholder="">
                     </div> --}}
 
                     <div class="w-full relative overflow-x-auto shadow-md rounded mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
-                        <table class="w-full text-sm font-medium text-left text-gray-800 dark:text-gray-400">
+                        <table class="w-full text-sm text-left text-gray-800 dark:text-gray-400">
                 
                             {{-- テーブルヘッダ start --}}
                             <thead class="text-sm text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
@@ -525,19 +528,19 @@
                                     </th>
                                     <th scope="col" class="px-2 py-2 whitespace-nowrap">
                                         {{-- <button class="rounded bg-blue-400 px-3 py-1">追加</button> --}}
-                                        {{-- <button type="button" class=" bg-blue-400 flex items-center justify-center px-3 py-1 text-sm font-medium text-white rounded bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
+                                        {{-- <button type="button" class=" bg-blue-400 flex items-center justify-center px-3 py-1 text-sm text-white rounded bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                                             <svg class="h-3.5 w-3.5 mr-1" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                               <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                                             </svg>
                                             追加
                                         </button> --}}
-                                        {{-- <button id="storeProductButton" data-modal-toggle="storeProduct" class="bg-blue-400 flex items-center justify-center px-2 py-1 text-sm font-medium text-white rounded bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" type="button">
+                                        {{-- <button id="storeProductButton" data-modal-toggle="storeProduct" class="bg-blue-400 flex items-center justify-center px-2 py-1 text-sm text-white rounded bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" type="button">
                                             <svg class="h-3.5 w-3.5 mr-0.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                                 <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                                             </svg>
                                             <span class="text-ms">追加</span>
                                         </button> --}}
-                                        <button onclick="location.href='{{route('client-product.create')}}'" class="bg-blue-400 flex items-center justify-center px-2 py-1 text-sm font-medium text-white rounded bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" type="button">
+                                        <button onclick="location.href='{{route('client-product.create')}}'" class="bg-blue-400 flex items-center justify-center px-2 py-1 text-sm text-white rounded bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" type="button">
                                             <svg class="h-3.5 w-3.5 mr-0.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                                 <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                                             </svg>
@@ -550,7 +553,7 @@
                                     @foreach ($clientProducts as $clientProduct)
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
                                         <td class="px-2 py-2 text-center">
-                                            <button onclick="location.href='{{route('clients.edit',$client)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
+                                            <button onclick="location.href='{{route('clients.edit',$client)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
                                                 <div class="flex">
                                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
@@ -559,7 +562,7 @@
                                                 </div>
                                             </button>
                                         </td>
-                                        <th scope="row" class="pl-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        <th scope="row" class="pl-4 py-2 text-gray-900 whitespace-nowrap dark:text-white">
                                             {{ $clientProduct->product->productSeries->series_name }}
                                         </th>
                                         <td class="px-1 py-2 whitespace-nowrap">
@@ -600,7 +603,7 @@
                                         </td>
                                         <td class="py-3">
                                             {{-- <button>削除</button> --}}
-                                            {{-- <button data-modal-target="deleteModal-{{$client->id}}" data-modal-toggle="deleteModal-{{$client->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded text-sm px-3 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
+                                            {{-- <button data-modal-target="deleteModal-{{$client->id}}" data-modal-toggle="deleteModal-{{$client->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 rounded text-sm px-3 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
                                                 削除
                                             </button> --}}
                                         </td>
@@ -623,7 +626,7 @@
                 <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
                     <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-2">
                         <div>
-                            <label for="test1" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">インフラ区分</label>
+                            <label for="test1" class="text-sm text-gray-900 dark:text-white leading-none mt-4">インフラ区分</label>
                             <select id="test1" name="test1" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 <option selected value="">物理</option>
@@ -642,7 +645,7 @@
                         </div>
 
                         <div>
-                            <label for="test2" class="font-semibold  text-gray-900 dark:text-white leading-none mt-4">Windows Server</label>
+                            <label for="test2" class="text-sm  text-gray-900 dark:text-white leading-none mt-4">Windows Server</label>
                             <select id="test2" name="test2" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 <option selected value="">2008R2</option>
@@ -656,7 +659,7 @@
                         </div>
         
                         <div>
-                            <label for="test3" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">SQL Server</label>
+                            <label for="test3" class="text-sm text-gray-900 dark:text-white leading-none mt-4">SQL Server</label>
                             <select id="test3" name="test3" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 <option selected value="">2008R2</option>
@@ -670,7 +673,7 @@
                         </div>
         
                         <div>
-                            <label for="test4" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">セキュリティソフト</label>
+                            <label for="test4" class="text-sm text-gray-900 dark:text-white leading-none mt-4">セキュリティソフト</label>
                             <select id="test4" name="test4" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">WindowsDifenser</option>
                                 <option selected value="">Norton</option>
@@ -683,7 +686,7 @@
                         </div>
         
                         <div>
-                            <label for="test5" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">設置種別</label>
+                            <label for="test5" class="text-sm text-gray-900 dark:text-white leading-none mt-4">設置種別</label>
                             <select id="test5" name="test5" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 <option selected value="">未選択</option>
@@ -695,24 +698,24 @@
                             @enderror
                         </div>
                         <div class="w-full flex flex-col">
-                            <label for="" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">SQL サーバ名</label>
+                            <label for="" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">SQL サーバ名</label>
                             <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="" value="{{old('',"DBサーバ名")}}" placeholder="">
                         </div>       
 
                         <div class="w-full flex flex-col">
-                            <label for="" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">SQL インスタンス名</label>
+                            <label for="" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">SQL インスタンス名</label>
                             <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="" value="{{old('',"SQLSERVER2019")}}" placeholder="">
                         </div>
                         <div class="w-full flex flex-col">
-                            <label for="" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">SQL ユーザ名</label>
+                            <label for="" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">SQL ユーザ名</label>
                             <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="" value="{{old('',"sa")}}" placeholder="">
                         </div>
                         <div class="w-full flex flex-col">
-                            <label for="" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">SQL パスワード</label>
+                            <label for="" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">SQL パスワード</label>
                             <input type="password" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="" value="{{old('',"V10.1")}}" placeholder="">
                         </div>
                         <div>
-                            <label for="test6" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">IIS Ver</label>
+                            <label for="test6" class="text-sm text-gray-900 dark:text-white leading-none mt-4">IIS Ver</label>
                             <select id="test6" name="test6" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">なし</option>
                                 <option selected value="">5.0</option>
@@ -728,7 +731,7 @@
                             @enderror
                         </div>
                         <div>
-                            <label for="test7" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">IIS TCPポート</label>
+                            <label for="test7" class="text-sm text-gray-900 dark:text-white leading-none mt-4">IIS TCPポート</label>
                             <select id="test7" name="test7" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未使用</option>
                                 <option selected value="">80使用</option>
@@ -738,7 +741,7 @@
                             @enderror
                         </div>
                         <div>
-                            <label for="test8" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">IIS SSLポート</label>
+                            <label for="test8" class="text-sm text-gray-900 dark:text-white leading-none mt-4">IIS SSLポート</label>
                             <select id="test8" name="test8" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未使用</option>
                                 <option selected value="">443使用</option>
@@ -748,7 +751,7 @@
                             @enderror
                         </div>
                         <div>
-                            <label for="test9" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">IIS 共有サービス</label>
+                            <label for="test9" class="text-sm text-gray-900 dark:text-white leading-none mt-4">IIS 共有サービス</label>
                             <select id="test9" name="test9" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">なし</option>
                                 <option selected value="">.campus</option>
@@ -758,16 +761,16 @@
                             @enderror
                         </div>
                         <div class="w-full flex flex-col">
-                            <label for="" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">接続タイムアウト値</label>
+                            <label for="" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">接続タイムアウト値</label>
                             <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="" value="{{old('',"120秒")}}" placeholder="">
                         </div>
                         <div class="w-full flex flex-col">
-                            <label for="" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">プロセスリサイクル値</label>
+                            <label for="" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">プロセスリサイクル値</label>
                             <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="" value="{{old('',"1740分")}}" placeholder="">
                         </div>
 
                         <div>
-                            <label for="test10" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">リモート種別</label>
+                            <label for="test10" class="text-sm text-gray-900 dark:text-white leading-none mt-4">リモート種別</label>
                             <select id="test10" name="test10" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">禁止</option>
                                 <option selected value="">RDP直</option>
@@ -779,7 +782,7 @@
                             @enderror
                         </div>
                         <div>
-                            <label for="test11" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">VPN方法</label>
+                            <label for="test11" class="text-sm text-gray-900 dark:text-white leading-none mt-4">VPN方法</label>
                             <select id="test11" name="test11" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">なし</option>
                                 <option selected value="">FortiClient</option>
@@ -794,19 +797,19 @@
 
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="test14" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">サーバ構成</label>
+                        <label for="test14" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">サーバ構成</label>
                         <textarea name="test14" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="test14" value="{{old('test14')}}" cols="30" rows="5"></textarea>
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="test14" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">フォルダ構成</label>
+                        <label for="test14" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">フォルダ構成</label>
                         <textarea name="test14" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="test14" value="{{old('test14')}}" cols="30" rows="5"></textarea>
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="test14" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">バックアップ情報</label>
+                        <label for="test14" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">バックアップ情報</label>
                         <textarea name="test14" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="test14" value="{{old('test14')}}" cols="30" rows="5"></textarea>
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="test14" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">環境備考</label>
+                        <label for="test14" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">環境備考</label>
                         <textarea name="test14" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="test14" value="{{old('test14')}}" cols="30" rows="5"></textarea>
                     </div>
 
@@ -818,7 +821,7 @@
                     <span class="text-white">この顧客の営業報告の内容が表示されます。ここから営業報告を登録することもできます。</span>
                     {{-- テーブル表示 --}}
                     <div class="w-full relative overflow-x-auto shadow-md rounded mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
-                        <table class="w-full text-sm font-medium text-left text-gray-800 dark:text-gray-400">
+                        <table class="w-full text-sm text-left text-gray-800 dark:text-gray-400">
 
                             {{-- テーブルヘッダ start --}}
                             <thead class="text-sm text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
@@ -852,7 +855,7 @@
                                     </th>
                                     <th scope="col" class="px-2 py-1 whitespace-nowrap">
                                         <div class="flex items-center">
-                                            <button type="button" onclick="location.href='{{route('reports.create')}}'" class=" bg-blue-400 flex items-center justify-center px-2 py-1 text-sm font-medium text-white rounded bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none m-auto">
+                                            <button type="button" onclick="location.href='{{route('reports.create')}}'" class=" bg-blue-400 flex items-center justify-center px-2 py-1 text-sm text-white rounded bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none m-auto">
                                                 <svg class="h-3.5 w-3.5 mr-0.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                                   <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                                                 </svg>
@@ -867,7 +870,7 @@
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
                                         <td class="px-2 py-2 text-center">
                                      {{-- reports.showを作成して変更 --}}
-                                            <button onclick="location.href='{{route('report.showFromClient',$report)}}'"  class="block whitespace-nowrap text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded text-sm px-2 py-1 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 m-auto" type="button">
+                                            <button onclick="location.href='{{route('report.showFromClient',$report)}}'"  class="block whitespace-nowrap text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 rounded text-sm px-2 py-1 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 m-auto" type="button">
                                                 <div class="flex">
                                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
@@ -889,7 +892,7 @@
                                             {{$report->reporter->name}}
                                         </td>
                                         <td class="px-2 py-2 text-center">
-                                            <button onclick="location.href='{{route('reports.edit',$report)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
+                                            <button onclick="location.href='{{route('reports.edit',$report)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
                                                 <div class="flex">
                                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
@@ -899,7 +902,7 @@
                                             </button>
                                         </td>
                                         <td class="px-2 py-2">
-                                            <button data-modal-target="deleteModal-{{$report->id}}" data-modal-toggle="deleteModal-{{$report->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded text-sm px-2 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 m-auto" type="button">
+                                            <button data-modal-target="deleteModal-{{$report->id}}" data-modal-toggle="deleteModal-{{$report->id}}"  class="block whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 rounded text-sm px-2 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 m-auto" type="button">
                                                 <div class="flex">
                                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z"/>
@@ -929,11 +932,11 @@
                                                 <form action="{{route('reports.destroy',$report->id)}}" method="POST" class="text-center m-auto">
                                                     @csrf
                                                     @method('delete')
-                                                    <button type="submit" data-modal-hide="deleteModal-{{$report->id}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                                                    <button type="submit" data-modal-hide="deleteModal-{{$report->id}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 rounded text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
                                                         削除
                                                     </button>
                                                 </form>
-                                                <button data-modal-hide="deleteModal-{{$report->id}}" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                                <button data-modal-hide="deleteModal-{{$report->id}}" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                                                     やっぱやめます
                                                 </button>
                                             </div>
@@ -953,7 +956,7 @@
                 <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="supports" role="tabpanel" aria-labelledby="supports-tab">
                     <span class="text-white">この顧客のサポート問い合わせ情報の内容が表示されます。ここからサポート情報を登録することもできます。</span>
                     <div class="w-full relative overflow-x-auto shadow-md rounded mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
-                        <table class="w-full text-sm font-medium text-left text-gray-800 dark:text-gray-400">
+                        <table class="w-full text-sm text-left text-gray-800 dark:text-gray-400">
                 
                             {{-- テーブルヘッダ start --}}
                             <thead class="text-sm text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
@@ -1004,7 +1007,7 @@
                                     </th>
                                     <th scope="col" class="px-2 py-1 whitespace-nowrap">
                                         <div class="flex items-center">
-                                            <button type="button" onclick="location.href='{{route('support.create')}}'" class=" bg-blue-400 flex items-center justify-center px-2 py-1 text-sm font-medium text-white rounded bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none m-auto">
+                                            <button type="button" onclick="location.href='{{route('support.create')}}'" class=" bg-blue-400 flex items-center justify-center px-2 py-1 text-sm text-white rounded bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none m-auto">
                                                 <svg class="h-3.5 w-3.5 mr-0.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                                   <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                                                 </svg>
@@ -1019,7 +1022,7 @@
                                 <tbody>
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
                                         <td class="px-2 py-1 whitespace-nowrap">
-                                            <button onclick="location.href='{{route('support.edit',$support)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded  text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
+                                            <button onclick="location.href='{{route('support.edit',$support)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded  text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
                                                 <div class="flex">
                                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
@@ -1080,11 +1083,11 @@
                                                 <form action="{{route('support.destroy',$support->id)}}" method="POST" class="text-center m-auto">
                                                     @csrf
                                                     @method('delete')
-                                                    <button type="submit" data-modal-hide="deleteModal-{{$support->id}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                                                    <button type="submit" data-modal-hide="deleteModal-{{$support->id}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 rounded text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
                                                         削除
                                                     </button>
                                                 </form>
-                                                <button data-modal-hide="deleteModal-{{$support->id}}" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                                <button data-modal-hide="deleteModal-{{$support->id}}" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                                                     やっぱやめます
                                                 </button>
                                             </div>
@@ -1113,7 +1116,7 @@
             <div class="relative bg-white rounded shadow dark:bg-gray-700">
                 <!-- Modal header -->
                 <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
-                    <h3 class="text-xl font-medium text-gray-900 dark:text-white">
+                    <h3 class="text-xl text-gray-900 dark:text-white">
                         法人検索画面
                     </h3>
                     <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
@@ -1128,11 +1131,11 @@
                     <!-- 検索条件入力フォーム -->
                     <div class="flex flex-wrap justify-start mx-5">
                         <div class="w-full flex flex-col">
-                            <label for="corporationName" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">法人名称</label>
+                            <label for="corporationName" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">法人名称</label>
                             <input type="text" name="corporationName" id="corporationName" class="w-auto mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
                         </div>
                         <div class="w-full flex flex-col">
-                            <label for="corporationNumber" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">法人番号</label>
+                            <label for="corporationNumber" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">法人番号</label>
                             <input type="text" name="corporationNumber" id="corporationNumber" class="w-auto mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
                         </div>
                     </div>
@@ -1154,10 +1157,10 @@
                 
                 <!-- Modal footer -->
                 <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                    <button type="button" onclick="searchCorporation()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <button type="button" onclick="searchCorporation()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         検索
                     </button>
-                    <button type="button" onclick="hideModal()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                    <button type="button" onclick="hideModal()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                         閉じる
                     </button> 
                 </div>
@@ -1173,7 +1176,7 @@
                     <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
                         <!-- Modal header -->
                         <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
-                            <h3 class="text-xl font-medium text-gray-900 dark:text-white">
+                            <h3 class="text-xl text-gray-900 dark:text-white">
                                 ディーラ検索画面
                             </h3>
                             <button type="button" onclick="hideDealerModal()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
@@ -1189,11 +1192,11 @@
                             <div class="grid gap-4 mb-4 sm:grid-cols-2 mt-2">
                             {{-- <div class="flex flex-wrap justify-start mx-5"> --}}
                                 <div class="">
-                                    <label for="vendorName" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none">法人名称</label>
+                                    <label for="vendorName" class="block text-sm dark:text-gray-100 text-gray-900 leading-none">法人名称</label>
                                     <input type="text" name="vendorName" id="vendorName" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
                                 </div>
                                 <div class="">
-                                    <label for="vendorNumber" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none">法人番号</label>
+                                    <label for="vendorNumber" class="block text-sm dark:text-gray-100 text-gray-900 leading-none">法人番号</label>
                                     <input type="text" name="vendorNumber" id="vendorNumber" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
                                 </div>
                             </div>
@@ -1216,16 +1219,16 @@
                         <!-- Modal footer -->
                         <div class="flex justify-between items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
                             <div>
-                                <button type="button" onclick="searchDealer()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                <button type="button" onclick="searchDealer()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     検索
                                 </button>
-                                <button type="button" onclick="hideDealerModal()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                <button type="button" onclick="hideDealerModal()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                                     閉じる
                                 </button>
                             </div>
                             <!-- 一括クリアボタン -->
                             <div class="flex items-center">
-                                <button type="button" onclick="clearAllFields()" class="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded hover:bg-red-600 focus:outline-none focus:bg-red-600">
+                                <button type="button" onclick="clearAllFields()" class="px-4 py-2 text-sm text-white bg-red-500 rounded hover:bg-red-600 focus:outline-none focus:bg-red-600">
                                     一括クリア
                                 </button>
                             </div>
