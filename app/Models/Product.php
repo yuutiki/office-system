@@ -101,9 +101,14 @@ class Product extends Model
     // {
     //     return $this->belongsToMany(Client::class);
     // }
+    // public function clients()
+    // {
+    //     return $this->belongsToMany(Client::class, 'client_products', 'product_id', 'client_id');
+    // }
+
     public function clients()
     {
-        return $this->belongsToMany(Client::class, 'client_products', 'product_id', 'client_id');
+        return $this->belongsToMany(Client::class, 'client_products');
     }
 
 }

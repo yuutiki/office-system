@@ -47,6 +47,7 @@ class ClientProduct extends Model
     {
         return $this->belongsTo(ProductVersion::class, 'product_version_id' ,'id');
     }
+
     // 作成者とのリレーション
     public function createdBy()
     {

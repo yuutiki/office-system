@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
             'is_enabled' => 1,
             'role_id' => 1,
             'employee_status_id'=> 1,
-            'company_id'=> 1,
+            'affiliation1_id'=> 1,
             'department_id'=> 1,
             'affiliation3_id'=> 2,
             'created_by' => 1,

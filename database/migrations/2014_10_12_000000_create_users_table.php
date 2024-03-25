@@ -11,6 +11,9 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('employee_num',6)->unique()->comment('社員番号'); 
+            $table->string('last_name',255)->nullable(true)->comment('姓');
+            // $table->string('middle_name',255)->nullable(true)->comment('ミドルネーム');
+            $table->string('first_name',255)->nullable(true)->comment('名');
             $table->string('name',255)->comment('氏名');
             $table->string('kana_name',255)->comment('カナ氏名');
             $table->date('birth')->nullable(true)->comment('生年月日');
@@ -25,7 +28,7 @@ return new class extends Migration
             $table->boolean('is_enabled')->default(1)->comment('有効フラグ'); 
             $table->foreignId('role_id')->default(4)->comment('権限ID'); //追記 rolesテーブル参照
             $table->foreignId('employee_status_id')->default(1)->comment('雇用状態ID');//追記 employee_statusesテーブル参照
-            $table->foreignId('company_id')->comment('会社ID'); 
+            $table->foreignId('affiliation1_id')->comment('第一所属階層ID'); 
             $table->foreignId('department_id')->comment('事業部ID'); 
             $table->foreignId('affiliation3_id')->comment('第三所属階層ID'); 
             $table->string('profile_image')->nullable(true)->default('default.png')->comment('プロフ画像');

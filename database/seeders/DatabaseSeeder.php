@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
         $this->call(SupportTimeSeeder::class);
         $this->call(ProductCategorySeeder::class);
         $this->call(LinkSeeder::class);
-        $this->call(CompanySeeder::class);
+        $this->call(Affiliation1Seeder::class);
         $this->call(Affiliation3Seeder::class);
         $this->call(AccountingPeriodSeeder::class);
         $this->call(SalesStageSeeder::class);
@@ -43,6 +43,9 @@ class DatabaseSeeder extends Seeder
         $this->call(ContractChangeTypeSeeder::class);
         $this->call(ContractSheetStatusSeeder::class);
         $this->call(VendorTypeSeeder::class);
+        $this->call(RoleGroupSeeder::class);
+        $this->call(FunctionMenuSeeder::class);
+        $this->call(PermissionSeeder::class);
 
         $this->call(T_CorporationSeeder::class);
         $this->call(T_ClientSeeder::class);

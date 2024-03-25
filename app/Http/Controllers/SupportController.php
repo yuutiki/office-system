@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\ClientProduct;
 use App\Models\ClientType;
 use App\Models\Department;
 use App\Models\InstallationType;
@@ -184,7 +185,7 @@ class SupportController extends Controller
         //
     }
 
-    public function edit(string $id)
+    public function edit(Support $support)
     {
         // $clients = Client::all();
         $users = User::all();
@@ -198,13 +199,24 @@ class SupportController extends Controller
         $supportTypes = SupportType::all(); //サポート種別
         $supportTimes = SupportTime::all(); //サポート所要時間
 
-        $support = Support::find($id);
+        $support = Support::find($support->id);
+        $clientId = $support->client_id;
+
+        // $client = Client::findOrFail($clientId);
+
+        // $clientSystems = $client->products;
+
+        // 特定のクライアントを取得
+        $client = Client::findOrFail($clientId);
+
+        // クライアントに関連する製品を取得
+        $clientProducts = ClientProduct::where('client_id', $clientId)->get();
 
 
         session()->put('previous_url', url()->previous());
 
 
-        return view('support.edit',compact('users','tradeStatuses','clientTypes','installationTypes','departments','support','productSeriess','productVersions','productCategories','supportTypes','supportTimes'));
+        return view('support.edit',compact('users','tradeStatuses','clientTypes','installationTypes','departments','support','productSeriess','productVersions','productCategories','supportTypes','supportTimes', 'clientProducts',));
     }
 
     public function update(Request $request, string $id)

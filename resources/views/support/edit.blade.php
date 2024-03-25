@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
+            <h2 class="text-xl text-gray-900 dark:text-white">
                 サポート履歴編集
             </h2>
             <div class="flex justify-end">
@@ -15,89 +15,81 @@
 
     <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        <div class="mx-4 sm:p-8">
-
+    <div class="max-w-7xl mx-auto px-2 md:pl-14">
         <form id="form1" method="post" action="{{route('support.update',$support)}}" enctype="multipart/form-data" autocomplete="new-password">
             @csrf
             @method('patch')
 
-            <!-- 法人検索ボタン -->
-            {{-- <button type="button"  onclick="showModal()" class="md:ml-1 md:mt-1 mt-1 mb-2 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                顧客検索
-            </button> --}}
-            <div class="grid gap-4 mb-4 sm:grid-cols-2">
+            {{-- <div class="grid gap-4 mb-4 sm:grid-cols-2">
                 <div class="">
-                    <label for="client_num" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客番号</label>
-                    <input type="text" name="client_num" class="w-full py-1 placeholder-red-500 border border-gray-300 rounded-md mt-1 cursor-not-allowed" id="client_num" value="{{old('client_num',$support->client->client_num)}}" placeholder="顧客を検索してください" readonly disabled>
+                    <label for="client_num" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客番号</label>
+                    <input type="text" name="client_num" class="w-full py-1 placeholder-red-500 border border-gray-300 rounded mt-1 cursor-not-allowed" id="client_num" value="{{ $support->client->client_num }}" placeholder="顧客を検索してください" readonly disabled>
                 </div>
                 <div class="">
-                    <label for="client_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客名称</label>
-                    <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="client_name" value="{{old('client_name',$support->client->client_name)}}" placeholder="例）烏丸大学" readonly disabled>
+                    <label for="client_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客名称</label>
+                    <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" value="{{ $support->client->client_name }}" readonly disabled>
                 </div>
             </div>
 
             <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-2">
-                <div>
-                    <label for="installation_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">設置種別</label>
-                    <select id="installation_type_id" name="installation_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled>
-                        <option selected value="">未選択</option>
-                        @foreach($installationTypes as $installationType)
-                        <option value="{{ $installationType->id }}" @if( $installationType->id == $support->client->installation_type_id ) selected @endif>{{ $installationType->type_name }}</option>
-                        @endforeach
-                    </select>
-                    @error('installation_type_id')
-                    <div class="text-red-500">{{ $message }}</div>
-                    @enderror
+                <div class="">
+                    <label for="client_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">設置種別</label>
+                    <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" value="{{ $support->client->installationType->type_name }}" readonly disabled>
                 </div>
-                <div>
-                    <label for="client_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">顧客種別</label>
-                    <select id="client_type_id" name="client_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled>
-                        <option selected value="">未選択</option>
-                        @foreach($clientTypes as $clientType)
-                        <option value="{{ $clientType->id }}" @if($clientType->id == $support->client->client_type_id) selected @endif>{{ $clientType->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('client_type_id')
-                    <div class="text-red-500">{{ $message }}</div>
-                    @enderror
+                <div class="">
+                    <label for="client_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客種別</label>
+                    <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" value="{{ $support->client->clientType->client_type_name }}" readonly disabled>
                 </div>
-                <div>
-                    <label for="department" class="font-semibold  text-gray-900 dark:text-white leading-none mt-4">管轄事業部</label>
-                    <select id="department" name="department" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled>
-                        <option selected value="">未選択</option>
-                        @foreach($departments as $department)
-                        <option value="{{ $department->id }}" @if($department->id == $support->client->department_id) selected @endif >{{ $department->department_name }}</option>
-                        @endforeach
-                    </select>
-                    @error('department')
-                    <div class="text-red-500">{{ $message }}</div>
-                    @enderror
+                <div class="">
+                    <label for="client_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">管轄所属</label>
+                    <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" value="{{ $support->client->department->department_name }}" readonly disabled>
                 </div>
-                <div>
-                    <label for="user_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">営業担当</label>
-                    <select id="user_id" name="user_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled>
-                        <option selected value="">未選択</option>
-                        @foreach($users as $user)
-                        <option value="{{ $user->id }}" @if($user->id == $support->client->user_id) selected @endif>{{ $user->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('user')
-                    <div class="text-red-500">{{ $message }}</div>
-                    @enderror
+                <div class="">
+                    <label for="client_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">営業担当</label>
+                    <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" value="{{ $support->client->user->name }}" readonly disabled>
+                </div>
+            </div> --}}
+
+            <div class="bg-gray-600 rounded px-4 py-4 mt-8 dark:text-gray-200">
+
+            
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                    <div class="whitespace-nowrap">
+                        <div class="text-xl text-white">{{ $support->client->client_num }}</div>
+                        <div class="text-white">{{ $support->client->client_name }}</div>
+                    </div>
+                    <div class="flex md:mt-3">
+                        <div class="whitespace-nowrap mr-12">
+                            <div class="text-xs text-gray-300">設置種別</div>
+                            <div class="text-white">{{ $support->client->installationType->type_name }}</div>
+                        </div>
+                        <div class="whitespace-nowrap">
+                            <div class="text-xs text-gray-300">顧客種別</div>
+                            <div class="text-white">{{ $support->client->clientType->client_type_name }}</div>
+                        </div>
+                    </div>
+                    <div class="whitespace-nowrap md:mt-3">
+                        <div class="text-xs text-gray-300">管轄事業部</div>
+                        <div class="text-white">{{ $support->client->department->department_name }}</div>
+                    </div>
+                    <div class="whitespace-nowrap md:mt-3">
+                        <div class="text-xs text-gray-300">営業担当</div>
+                        <div class="text-white">{{ $support->client->user->name }}</div>
+                    </div>
                 </div>
             </div>
+
+
             {{-- タブボタン --}}
             <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
                 <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
                     <li class="mr-2" role="presentation">
                         <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">サポート内容</button>
                     </li>
-                    {{-- <li class="mr-2" role="presentation">
-                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">契約情報</button>
-                    </li>
                     <li class="mr-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="system-tab" data-tabs-target="#system" type="button" role="tab" aria-controls="system" aria-selected="false">導入システム</button>
+                    </li>
+                    {{-- <li class="mr-2" role="presentation">
                         <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">導入システム</button>
                     </li>
                     <li role="presentation">
@@ -106,57 +98,18 @@
                 </ul>
             </div>
             <div id="myTabContent">
-                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="grid gap-2 mb-4 sm:grid-cols-6">
                         <div class="">
-                            <label for="f_received_at" class="font-semibold text-sm  dark:text-gray-100 text-gray-900 leading-none mt-4">受付日</label>
-                            <input type="date" min="2000-01-01" max="2100-12-31" name="f_received_at" class="block w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="f_received_at" value="{{old('f_received_at',$support->received_at)}}" placeholder="">
+                            <label for="f_received_at" class="text-sm  dark:text-gray-100 text-gray-900 leading-none mt-4">受付日</label>
+                            <input type="date" min="2000-01-01" max="2100-12-31" name="f_received_at" class="block w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="f_received_at" value="{{old('f_received_at',$support->received_at)}}" placeholder="">
                             @error('f_received_at')
                             <div class="text-red-500">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="">
-                            <label for="f_client_user_department" class="font-semibold text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">顧客 部署</label>
-                            <input type="text" name="f_client_user_department" class="block w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="f_client_user_department" value="{{old('f_client_user_department',$support->client_user_department)}}" placeholder="">
-                            @error('f_client_user_department')
-                            <div class="text-red-500">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="">
-                            <label for="f_client_user_kana_name" class="font-semibold text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">顧客 氏名</label>
-                            <input type="text" name="f_client_user_kana_name" class="block w-full py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1" id="f_client_user_kana_name" value="{{old('f_client_user_kana_name',$support->client_user_kana_name)}}" placeholder="">
-                            @error('f_client_user_kana_name')
-                                <div class="text-red-500">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="">
-                            <label for="f_support_type_id" class="font-semibold text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">サポート種別</label>
-                            <select id="f_support_type_id" name="f_support_type_id" class="block w-full py-1.5 border bg-gray-50 rounded-md mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option selected value="">未選択</option>
-                                @foreach($supportTypes as $supportType)
-                                    <option value="{{ $supportType->id }}" @if($supportType->id == $support->support_type_id) selected @endif>{{ $supportType->type_name }}</option>
-                                @endforeach
-                            </select>
-                            @error('f_support_type_id')
-                                <div class="text-red-500">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="">
-                            <label for="f_support_time_id" class="font-semibold text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">所要時間</label>
-                            <select id="f_support_time_id" name="f_support_time_id" class="block w-full py-1.5 border bg-gray-50 rounded-md mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option selected value="">未選択</option>
-                                @foreach($supportTimes as $supportTime)
-                                    <option value="{{ $supportTime->id }}" @if($supportTime->id == $support->support_time_id) selected @endif>{{ $supportTime->time_name }}</option>
-                                @endforeach
-                            </select>
-                            @error('f_support_time_id')
-                                <div class="text-red-500">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="">
-                            <label for="f_user_id" class="font-semibold text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">受付対応者</label>
-                            <select id="f_user_id" name="f_user_id" class="block w-full py-1.5 border bg-gray-50 rounded-md mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <label for="f_user_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">受付対応者</label>
+                            <select id="f_user_id" name="f_user_id" class="block w-full py-1.5 border bg-gray-50 rounded mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 @foreach($users as $user)
                                     <option value="{{ $user->id }}" @if($user->id == $support->user_id) selected @endif>{{ $user->name }}</option>
@@ -167,8 +120,89 @@
                             @enderror
                         </div>
                         <div class="">
-                            <label for="f_product_series_id" class="font-semibold text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">シリーズ</label>
-                            <select id="f_product_series_id" name="f_product_series_id" class="block w-full py-1.5 border bg-gray-50 rounded-md mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <label for="f_client_user_department" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">顧客 部署</label>
+                            <input type="text" name="f_client_user_department" class="block w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="f_client_user_department" value="{{old('f_client_user_department',$support->client_user_department)}}" placeholder="">
+                            @error('f_client_user_department')
+                            <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="">
+                            <label for="f_client_user_kana_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">顧客 氏名</label>
+                            <input type="text" name="f_client_user_kana_name" class="block w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="f_client_user_kana_name" value="{{old('f_client_user_kana_name',$support->client_user_kana_name)}}" placeholder="">
+                            @error('f_client_user_kana_name')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="w-full flex flex-col">
+                        <label for="f_title" class="dark:text-gray-100 text-gray-900 leading-none mt-4">タイトル</label>
+                        <input type="text" name="f_title" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 " id="f_title" value="{{old('f_title',$support->title)}}" placeholder="">
+                        @error('f_title')
+                            <div class="text-red-500">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <label for="f_request_content" class="dark:text-gray-100 text-gray-900 leading-none mt-4">内容</label>
+                        <textarea name="f_request_content" class="w-auto py-1 border text-sm border-gray-300 rounded mt-1 placeholder-gray-400" data-auto-resize="true" id="f_request_content" cols="30" rows="8">{{ old('f_request_content',$support->request_content) }}</textarea>
+                        @error('f_request_content')
+                            <div class="text-red-500">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <label for="f_response_content" class="dark:text-gray-100 text-gray-900 leading-none mt-4">回答</label>
+                        <textarea name="f_response_content" class="w-auto py-1 border text-sm border-gray-300 rounded mt-1 placeholder-gray-400" data-auto-resize="true" id="f_response_content" cols="30" rows="8">{{ old('f_response_content',$support->response_content) }}</textarea>
+                    </div>
+                    @error('f_response_content')
+                        <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+                    <div class="grid gap-2 mb-4 sm:grid-cols-2">
+                        <div class="w-full flex flex-col">
+                            <label for="f_internal_message" class="dark:text-red-400 text-red-400 leading-none mt-4">社内連絡欄</label>
+                            <textarea name="f_internal_message" class="w-auto py-1 border text-sm border-gray-300 rounded mt-1 placeholder-gray-400" data-auto-resize="true" id="f_internal_message" cols="30" rows="5">{{ old('f_internal_message',$support->internal_message) }}</textarea>
+                        </div>
+                        @error('f_internal_message')
+                            <div class="text-red-500">{{ $message }}</div>
+                        @enderror
+                        <div class="w-full flex flex-col">
+                            <label for="f_internal_memo1" class="dark:text-red-400 text-red-400 leading-none mt-4">社内メモ欄</label>
+                            <textarea name="f_internal_memo1" class="w-auto py-1 border text-sm border-gray-300 rounded mt-1 placeholder-gray-400" data-auto-resize="true" id="f_internal_memo1" cols="30" rows="5">{{ old('f_internal_memo1',$support->internal_memo1) }}</textarea>
+                        </div>
+                        @error('f_internal_memo1')
+                            <div class="text-red-500">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+
+
+                    <div class="grid gap-2 mb-4 sm:grid-cols-5">
+                        <div class="">
+                            <label for="f_support_type_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">サポート種別</label>
+                            <select id="f_support_type_id" name="f_support_type_id" class="block w-full py-1.5 border bg-gray-50 rounded mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected value="">未選択</option>
+                                @foreach($supportTypes as $supportType)
+                                    <option value="{{ $supportType->id }}" @if($supportType->id == $support->support_type_id) selected @endif>{{ $supportType->type_name }}</option>
+                                @endforeach
+                            </select>
+                            @error('f_support_type_id')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="">
+                            <label for="f_support_time_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">所要時間</label>
+                            <select id="f_support_time_id" name="f_support_time_id" class="block w-full py-1.5 border bg-gray-50 rounded mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected value="">未選択</option>
+                                @foreach($supportTimes as $supportTime)
+                                    <option value="{{ $supportTime->id }}" @if($supportTime->id == $support->support_time_id) selected @endif>{{ $supportTime->time_name }}</option>
+                                @endforeach
+                            </select>
+                            @error('f_support_time_id')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="">
+                            <label for="f_product_series_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">シリーズ</label>
+                            <select id="f_product_series_id" name="f_product_series_id" class="block w-full py-1.5 border bg-gray-50 rounded mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 @foreach($productSeriess as $productSeries)
                                     <option value="{{ $productSeries->id }}" @if($productSeries->id == $support->product_series_id) selected @endif>{{ $productSeries->series_name }}</option>
@@ -179,8 +213,8 @@
                             @enderror
                         </div>
                         <div class="">
-                            <label for="f_product_version_id" class="font-semibold text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">バージョン</label>
-                            <select id="f_product_version_id" name="f_product_version_id" class="block w-full py-1.5 border bg-gray-50 rounded-md mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <label for="f_product_version_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">バージョン</label>
+                            <select id="f_product_version_id" name="f_product_version_id" class="block w-full py-1.5 border bg-gray-50 rounded mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 @foreach($productVersions as $productVersion)
                                     <option value="{{ $productVersion->id }}" @if($productVersion->id == $support->product_version_id) selected @endif>{{ $productVersion->version_name }}</option>
@@ -191,8 +225,8 @@
                             @enderror
                         </div>
                         <div class="">
-                            <label for="f_product_category_id" class="font-semibold text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">系統</label>
-                            <select id="f_product_category_id" name="f_product_category_id" class="block w-full py-1.5 border bg-gray-50 rounded-md mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <label for="f_product_category_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">系統</label>
+                            <select id="f_product_category_id" name="f_product_category_id" class="block w-full py-1.5 border bg-gray-50 rounded mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 @foreach($productCategories as $productCategory)
                                     <option value="{{ $productCategory->id }}" @if($productCategory->id == $support->product_category_id) selected @endif>{{ $productCategory->category_name }}</option>
@@ -204,44 +238,8 @@
                         </div>
                     </div>
 
-                    <div class="w-full flex flex-col">
-                        <label for="f_title" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">タイトル</label>
-                        <input type="text" name="f_title" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded-md mt-1 " id="f_title" value="{{old('f_title',$support->title)}}" placeholder="">
-                        @error('f_title')
-                            <div class="text-red-500">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="f_request_content" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">内容</label>
-                        <textarea name="f_request_content" class="w-auto py-1 border text-sm border-gray-300 rounded-md mt-1 placeholder-gray-400" data-auto-resize="true" id="f_request_content" cols="30" rows="8">{{ old('f_request_content',$support->request_content) }}</textarea>
-                        @error('f_request_content')
-                            <div class="text-red-500">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="f_response_content" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">回答</label>
-                        <textarea name="f_response_content" class="w-auto py-1 border text-sm border-gray-300 rounded-md mt-1 placeholder-gray-400" data-auto-resize="true" id="f_response_content" cols="30" rows="8">{{ old('f_response_content',$support->response_content) }}</textarea>
-                    </div>
-                    @error('f_response_content')
-                        <div class="text-red-500">{{ $message }}</div>
-                    @enderror
-                    <div class="grid gap-2 mb-4 sm:grid-cols-2">
-                        <div class="w-full flex flex-col">
-                            <label for="f_internal_message" class="font-semibold dark:text-red-400 text-red-400 leading-none mt-4">社内連絡欄</label>
-                            <textarea name="f_internal_message" class="w-auto py-1 border text-sm border-gray-300 rounded-md mt-1 placeholder-gray-400" data-auto-resize="true" id="f_internal_message" cols="30" rows="5">{{ old('f_internal_message',$support->internal_message) }}</textarea>
-                        </div>
-                        @error('f_internal_message')
-                            <div class="text-red-500">{{ $message }}</div>
-                        @enderror
-                        <div class="w-full flex flex-col">
-                            <label for="f_internal_memo1" class="font-semibold dark:text-red-400 text-red-400 leading-none mt-4">社内メモ欄</label>
-                            <textarea name="f_internal_memo1" class="w-auto py-1 border text-sm border-gray-300 rounded-md mt-1 placeholder-gray-400" data-auto-resize="true" id="f_internal_memo1" cols="30" rows="5">{{ old('f_internal_memo1',$support->internal_memo1) }}</textarea>
-                        </div>
-                        @error('f_internal_memo1')
-                            <div class="text-red-500">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <ul class=" mt-4 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+
+                    <ul class=" mt-4 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                         <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                             <div class="flex items-center pl-3">
                                 <input id="f_is_finished1" name="f_is_finished" type="hidden" value="0" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
@@ -318,11 +316,82 @@
                     </x-primary-button>
                 </div>
         </form>
-                {{-- <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="system" role="tabpanel" aria-labelledby="system-tab">
+                    {{-- @foreach ($clientProducts as $clientProduct)
+                        <div>{{ $clientProduct->product->product_name }}</div>
+                        <div>{{ $clientProduct->productVersion->version_name }}</div>
+                    @endforeach --}}
+
+                    <div class="relative overflow-x-auto mt-8">
+                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border border-gray-600">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 mt-8">
+                                <tr>
+                                    <th scope="col" class="px-6 py-2 whitespace-nowrap border-x border-gray-600">
+                                        システム名称
+                                    </th>
+                                    <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 text-center">
+                                        シリーズ
+                                    </th>
+                                    <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 text-center">
+                                        バージョン
+                                    </th>
+                                    <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 text-center">
+                                        数量
+                                    </th>
+                                    <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 text-center">
+                                        契約状況
+                                    </th>
+                                    <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 text-center">
+                                        PKG/CUS
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($clientProducts as $clientProduct)
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                        <th scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white border-x border-gray-600">
+                                            {{ $clientProduct->product->product_name }}
+                                        </th>
+                                        <td class="px-2 py-2 text-center border-x border-gray-600">
+                                            {{ $clientProduct->product->productSeries->series_name }}
+                                        </td>
+                                        <td class="px-2 py-2 text-center border-x border-gray-600">
+                                            {{ $clientProduct->productVersion->version_name }}
+                                        </td>
+                                        <td class="px-2 py-2 text-center border-x border-gray-600">
+                                            {{ $clientProduct->quantity }}
+                                        </td>
+                                        <td class="px-2 py-2 text-center border-x border-gray-600">
+                                            @if ($clientProduct->is_contracted)
+                                                <span class="bg-blue-100 text-blue-800 text-xs whitespace-nowrap font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                                    契約済み
+                                                </span>
+                                            @else
+                                                <span class="bg-red-100 text-red-800 text-xs whitespace-nowrap font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
+                                                    未契約
+                                                </span>
+                                            @endif
+                                        </td>
+                                        <td class="px-2 py-2 text-center border-x border-gray-600">
+                                            @if ($clientProduct->is_customized)
+                                                <span class="bg-red-100 text-red-800 text-xs whitespace-nowrap font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
+                                                    CUS
+                                                </span>
+                                            @else
+                                                <span class="bg-blue-100 text-blue-800 text-xs whitespace-nowrap font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                                    PKG
+                                                </span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                {{-- <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="settings" role="tabpanel" aria-labelledby="settings-tab">
                 </div>
-                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
+                <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
                 </div> --}}
         </div>
     </div>
@@ -333,13 +402,13 @@
     {{-- <div id="clientSearchModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full justify-center items-center"> --}}
         <div class=" w-4/5  max-h-full">
             <!-- Modal content -->
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <div class="relative bg-white rounded shadow dark:bg-gray-700">
                 <!-- Modal header -->
                 <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
                     <h3 class="text-xl font-medium text-gray-900 dark:text-white">
                         顧客検索画面
                     </h3>
-                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
                         <svg class="w-3 h-3"  onclick="hideModal()"xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                         </svg>
@@ -352,16 +421,16 @@
                     {{-- <div class="flex flex-wrap justify-start mx-5"> --}}
                     <div class="grid gap-2 mb-4 sm:grid-cols-3">
                         <div class="w-full flex flex-col mx-2">
-                            <label for="clientName" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">顧客名称</label>
-                            <input type="text" name="clientName" id="clientName" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded-md">
+                            <label for="clientName" class="dark:text-gray-100 text-gray-900 leading-none mt-4">顧客名称</label>
+                            <input type="text" name="clientName" id="clientName" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded">
                         </div>
                         <div class="w-full flex flex-col mx-2">
-                            <label for="clientNumber" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">顧客番号</label>
-                            <input type="text" name="clientNumber" id="clientNumber" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded-md">
+                            <label for="clientNumber" class="dark:text-gray-100 text-gray-900 leading-none mt-4">顧客番号</label>
+                            <input type="text" name="clientNumber" id="clientNumber" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded">
                         </div>
                         <div class="w-full flex flex-col mx-2">
-                            <label for="departmentCode" class="font-semibold  dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
-                            <select id="departmentCode" name="departmentCode" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-md focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <label for="departmentCode" class=" dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
+                            <select id="departmentCode" name="departmentCode" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 @foreach($departments as $department)
                                 <option value="{{ $department->prefix_code }}">{{ $department->department_name }}</option>
@@ -387,10 +456,10 @@
                 
                 <!-- Modal footer -->
                 <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                    <button type="button" onclick="searchCorporation()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <button type="button" onclick="searchCorporation()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         検索
                     </button>
-                    <button type="button" onclick="hideModal()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                    <button type="button" onclick="hideModal()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                         閉じる
                     </button> 
                 </div>

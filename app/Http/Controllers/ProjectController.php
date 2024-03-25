@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProjectStoreRequest;
 use App\Models\AccountingPeriod;
 use App\Models\AccountingType;
+use App\Models\Affiliation1;
 use App\Models\Client;
 use App\Models\Company;
 use App\Models\Department;
@@ -122,7 +123,7 @@ class ProjectController extends Controller
     {
         $project = Project::find($id);
 
-        $companies = Company::all();
+        $companies = Affiliation1::all();
         $departments = Department::all();
         $affiliation3s = Affiliation3::all();
         $users = User::all();

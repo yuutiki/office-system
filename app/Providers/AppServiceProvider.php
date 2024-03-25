@@ -49,6 +49,24 @@ class AppServiceProvider extends ServiceProvider
             return ($user->role_id <= 4);
         });
 
+        // Gate::define('view_user_management', function (User $user) {
+        //     // ユーザーが関連するロールを取得
+        //     $roles = $user->roles;
+        
+        //     // ユーザーが管理者ロールを持っているかどうかをチェック
+        //     if ($roles->contains('name', 'admin')) {
+        //         return true; // 管理者は常に表示を許可する
+        //     }
+        
+        //     // ユーザーがFunctionMenu_id=13のPermission_idが2以下であるかどうかを確認
+        //     $functionMenuPermission = $user->functionMenus()->where('id', 13)->first()->pivot->permission_id;
+        //     if ($functionMenuPermission <= 2) {
+        //         return true; // ユーザーが必要な権限を持っている場合は表示を許可する
+        //     }
+        
+        //     return false; // ユーザーが必要な権限を持っていない場合は表示を許可しない
+        // });
+
 
         // Model::creating(function ($model) {
         //     $model->created_by = auth()->user()->id;

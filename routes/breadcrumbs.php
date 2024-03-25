@@ -241,4 +241,22 @@ Breadcrumbs::for('dashboard', function ($trail) {
             //     $trail->push($book->book_title, url('books/' . $book->id));
             // });
 
+
+        // ダッシュボード > 権限グループ管理
+        Breadcrumbs::for('roleGroups', function ($trail) {
+            $trail->parent('dashboard');
+            $trail->push('権限グループ管理', url('role-groups'));
+        });
+                // ダッシュボード > 権限グループ管理 >  グループ新規作成
+                Breadcrumbs::for('createRoleGroup', function ($trail) {
+                    $trail->parent('roleGroups');
+                    $trail->push('新規作成', url('role-groups.create'));
+                });
+
+                // ダッシュボード > 権限グループ管理 >  グループ編集
+                Breadcrumbs::for('editRoleGroup', function ($trail) {
+                    $trail->parent('roleGroups');
+                    $trail->push('編集', url('client-type'));
+                });  
+
 // {{ Breadcrumbs::render('hogehoge') }}

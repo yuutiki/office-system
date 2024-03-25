@@ -8,7 +8,7 @@ use App\Models\Report;
 use App\Models\User;//add
 use App\Models\Client;//add
 use App\Models\Comment;//add
-use App\Models\Company;
+use App\Models\Affiliation1;
 use App\Models\ContactType;
 use App\Models\Department;
 use App\Models\ReportType;
@@ -46,7 +46,7 @@ class ReportController extends Controller
         $reportTypes = ReportType::all();
         $contactTypes = ContactType::all();
         $users = User::where('employee_status_id', 1)->get();
-        $companies = Company::all();
+        $affiliation1s = Affiliation1::all();
         $departments = Department::all();
         $affiliation3s = Affiliation3::all();
 
@@ -54,7 +54,7 @@ class ReportController extends Controller
         $clientName = Session::get('selected_client_name');
         // $clientId = Session::get('selected_client_id');
 
-        return view('reports.create',compact('users','departments', 'reportTypes', 'contactTypes', 'clientNum', 'clientName', 'companies', 'departments', 'affiliation3s'));
+        return view('reports.create',compact('users','departments', 'reportTypes', 'contactTypes', 'clientNum', 'clientName', 'affiliation1s', 'departments', 'affiliation3s'));
     }
 
     public function store(ReportStoreRequest $request)

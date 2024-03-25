@@ -119,17 +119,17 @@
                     <div class="grid gap-4 mb-4 sm:grid-cols-5">
                         <!-- 検索フォーム -->
                         <div class="w-full flex flex-col">
-                            <label for="company_id" class="dark:text-gray-100 text-gray-900 leading-none mt-1">氏名</label>
+                            <label for="affiliation1_id" class="dark:text-gray-100 text-gray-900 leading-none mt-1">氏名</label>
                             <input type="text" id="searchQuery" class="block py-1 mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="ユーザ名で検索">
                         </div>
 
                         <!-- 所属1選択フォーム -->
                         <div class="w-full flex flex-col">
-                            <label for="company_id" class="dark:text-gray-100 text-gray-900 leading-none mt-1">所属1</label>
-                            <select id="company_id" name="company_id" class="block py-1 mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <label for="affiliation1_id" class="dark:text-gray-100 text-gray-900 leading-none mt-1">所属1</label>
+                            <select id="affiliation1_id" name="affiliation1_id" class="block py-1 mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option value="">未選択</option>
-                                @foreach ($companies as $company)
-                                    <option value="{{ $company->id }}" @selected($company->id == old('company_id'))>{{ $company->company_name }}</option>
+                                @foreach ($affiliation1s as $affiliation1)
+                                    <option value="{{ $affiliation1->id }}" @selected($affiliation1->id == old('affiliation1_id'))>{{ $affiliation1->affiliation1_name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -344,7 +344,7 @@
             // ユーザを非同期で検索して検索結果表示部分に表示する
             $('#searchUsersButton').click(function() {
                 var searchQuery = $('#searchQuery').val();
-                var companyId = $('#company_id').val();
+                var affiliation1Id = $('#affiliation1_id').val();
                 var departmentId = $('#department_id').val();
                 var affiliation3Id = $('#affiliation3_id').val();
                 $.ajax({
@@ -352,7 +352,7 @@
                     method: 'GET',
                     data: {
                         query: searchQuery,
-                        company_id: companyId,
+                        affiliation1_id: affiliation1Id,
                         department_id: departmentId,
                         affiliation3_id: affiliation3Id
                     },

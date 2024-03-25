@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between w-5/6">
             <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex">
-                {{ Breadcrumbs::render('masters') }}
+                {{ Breadcrumbs::render('roleGroups') }}
                 <div class="ml-4">
                     {{-- {{ $count }}件 --}}
                 </div>
@@ -121,12 +121,12 @@
                 </form>
             </div>
             <div class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
-                {{-- <button type="button" onclick="location.href='{{ route('reports.create') }}'" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                <button type="button" onclick="location.href='{{ route('role-groups.create') }}'" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                     <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                     </svg>
                     {{ __('Add') }}
-                </button> --}}
+                </button>
                 {{-- <div class="flex items-center w-full space-x-3 hidden md:w-auto md:inline-block">
                     <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded md:w-auto focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
                         <svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -163,54 +163,54 @@
 
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
-                            @sortablelink('master_code','マスタコード')
+                            @sortablelink('master_code','グループコード')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg></a>
                         </div>
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
-                            @sortablelink('master_name','マスタ名称')
+                            @sortablelink('master_name','グループ名称')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                         </div>
-                    </th>
-                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
-                        桁数
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
-                            @sortablelink('master_type','マスタ種別')
+                            @sortablelink('master_type','グループ英名称')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                         </div>
+                    </th>
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                        備考
                     </th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($masters as $master)
+                @foreach ($roleGroups as $roleGroup)
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600 clickable-row">
                         <td class="pl-4 py-1 whitespace-nowrap w-14">
                             {{ $loop->iteration }}
                         </td>
                         <td class="pl-4 py-1 whitespace-nowrap w-20 pr-10">
-                            <button onclick="location.href='{{route($master['route'])}}'" class="button-edit-primary" type="button">
-                                <div class="flex items">
+                            <button type="button" onclick="location.href='{{route('role-groups.edit',$roleGroup)}}'"  class="button-edit-primary">
+                                <div class="flex items-center">
                                     <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
                                     </svg>
-                                    <span class="md:block hidden">編集</span>
+                                    <span class=" md:block hidden">編集</span>
                                 </div>
                             </button>
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{ $master->master_code }}
+                            {{ $roleGroup->role_group_code }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{ $master->master_name }}
+                            {{ $roleGroup->role_group_name }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{ $master->digit }}
+                            {{ $roleGroup->role_group_eng_name }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{ $master->master_type }}
+                            {{ $roleGroup->role_group_memo }}
                         </td>
                     </tr>
                 @endforeach

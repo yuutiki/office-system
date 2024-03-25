@@ -8,6 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
+        // 部署
         Schema::create('affiliation3s', function (Blueprint $table) {
             $table->id();
             $table->string('affiliation3_code',2)->unique()->comment('第三階層所属コード');

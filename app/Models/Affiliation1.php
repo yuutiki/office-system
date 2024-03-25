@@ -6,15 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Observers\GlobalObserver;
 
-class Company extends Model
+class Affiliation1 extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'company_code',
-        'company_name',
-        'company_kana_name',
-        'company_eng_name',
+        'affiliation1_code',
+        'affiliation1_prefix',
+        'affiliation1_name',
+        'affiliation1_kana_name',
+        'affiliation1_eng_name',
         'created_by',
         'updated_by'
     ];

@@ -13,6 +13,7 @@ class SalesStage extends Model
     protected $fillable = [
         'sales_stage_code',
         'sales_stage_name',
+        'sales_stage_eng_name',
         'created_by',
         'updated_by'
     ];

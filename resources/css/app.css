@@ -25,6 +25,10 @@
     @apply w-full py-1 mt-1 rounded dark:bg-gray-100 border-gray-700 border border-transparent dark:text-gray-900 hover:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 placeholder-gray-400 transition ease-in-out duration-150;
 }
 
+/* 非活性 */
+.input-readonly {
+    @apply w-full py-1 mt-1 rounded dark:bg-gray-500 border-gray-700 border border-transparent dark:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 placeholder-gray-400 transition ease-in-out duration-150;
+}
 
 
 

@@ -170,10 +170,15 @@ class Client extends Model
     {
         return $this->hasMany(Support::class);
     }
+    // public function products()
+    // {
+    //     return $this->belongsToMany(Product::class, 'client_products', 'client_id', 'product_id');
+    // }
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'client_products', 'client_id', 'product_id');
+        return $this->belongsToMany(Product::class, 'client_products');
     }
+
     public function department()
     {
         return $this->belongsTo(Department::class);

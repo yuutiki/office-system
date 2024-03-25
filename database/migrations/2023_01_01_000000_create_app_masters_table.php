@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('master_name',20)->comment('マスタ名称');
             $table->string('master_name_en',20)->nullable(true)->comment('マスタ英名称');
             $table->string('route')->comment('ルート');
+            $table->integer('digit')->comment('桁数');
 
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');

@@ -63,73 +63,73 @@
                                     </svg>
                                 </button>
                                 <!-- Dropdown menu -->
-                                <div id="filterDropdown" class="z-50 hidden w-2/3 md:w-1/3 p-3 bg-gray-100 rounded shadow dark:bg-gray-600">
-                                    <div class="md:flex">
-                                        <div class="md:mr-12">
-                                            <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
+                                <div id="filterDropdown" class="z-50 hidden w-2/3 lg:w-1/3 p-3 bg-gray-100 rounded shadow dark:bg-gray-600">
+                                    <div class="">
+                                        <div class="lg:mr-12">
+                                            <h6 class="mb-1 text-sm font-medium text-gray-900 dark:text-white">
                                                 顧客属性
                                             </h6>
-                                            <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-                                                <li>
+                                            <ul class="mb-3 text-sm flex flex-wrap" aria-labelledby="dropdownDefault">
+                                                <li class="flex items-center mr-4  w-24">
                                                     <input type="checkbox" id="is_enduser" name="is_enduser" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                                    <label for="is_enduser" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap">エンドユーザ</label>
+                                                    <label for="is_enduser" class="ml-2 text-sm text-gray-900 dark:text-gray-100 whitespace-nowrap">エンドユーザ</label>
                                                 </li>
-                                                <li>
+                                                <li class="flex items-center mr-4  w-24">
                                                     <input type="checkbox" id="is_dealer" name="is_dealer" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                                    <label for="is_dealer" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap">ディーラ</label>
+                                                    <label for="is_dealer" class="ml-2 text-sm text-gray-900 dark:text-gray-100 whitespace-nowrap">ディーラ</label>
                                                 </li>
-                                                <li>
+                                                <li class="flex items-center mr-4  w-24">
                                                     <input type="checkbox" id="is_supplier" name="is_supplier" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                                    <label for="is_supplier" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap">仕入外注先</label>
+                                                    <label for="is_supplier" class="ml-2 text-sm text-gray-900 dark:text-gray-100 whitespace-nowrap">仕入外注先</label>
                                                 </li>
-                                                <li>
+                                                <li class="flex items-center mr-4  w-24">
                                                     <input type="checkbox" id="is_lease" name="is_lease" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                                    <label for="is_lease" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap">リース会社</label>
+                                                    <label for="is_lease" class="ml-2 text-sm text-gray-900 dark:text-gray-100 whitespace-nowrap">リース会社</label>
                                                 </li>
-                                                <li>
+                                                <li class="flex items-center mr-4  w-24">
                                                     <input type="checkbox" id="is_other_partner" name="is_other_partner" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                                    <label for="is_other_partner" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap">その他協業</label>
+                                                    <label for="is_other_partner" class="ml-2 text-sm text-gray-900 dark:text-gray-100 whitespace-nowrap">その他協業</label>
                                                 </li>
                                             </ul>
                                         </div>
                                         {{-- <ul class="border my-2 mx-4"></ul> --}}
                                         <div class="md:mr-12 mt-4 md:mt-0">
-                                            <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
+                                            <h6 class="mb-1 text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                                 取引状態
                                             </h6>
-                                            <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
+                                            <ul class="mb-3 text-sm flex flex-wrap" aria-labelledby="dropdownDefault">
                                                 @foreach ($tradeStatuses as $tradeStatus)
-                                                <li class="flex items-center">
+                                                <li class="flex items-center mr-4 w-24">
                                                     <input id="trade_status_{{ $tradeStatus->id }}" type="checkbox" name="trade_statuses[]" @if(in_array($tradeStatus->id, $selectedTradeStatuses)) checked @endif value="{{$tradeStatus->id}}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                    <label for="trade_status_{{ $tradeStatus->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap">{{ $tradeStatus->trade_status_name }}</label>
+                                                    <label for="trade_status_{{ $tradeStatus->id }}" class="ml-2 text-sm whitespace-nowrap text-gray-900 dark:text-gray-100">{{ $tradeStatus->trade_status_name }}</label>
                                                 </li>                       
                                                 @endforeach
                                             </ul>
                                         </div>
                                         {{-- <ul class="border my-2 mx-4"></ul> --}}
                                         <div class="md:mr-12 mt-4 md:mt-0">
-                                            <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
+                                            <h6 class="mb-1 text-sm font-medium text-gray-900 dark:text-white">
                                                 設置種別
                                             </h6>
-                                            <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
+                                            <ul class="mb-3 text-sm flex flex-wrap" aria-labelledby="dropdownDefault">
                                                 @foreach ($installationTypes as $installationType)
-                                                <li class="flex items-center">
+                                                <li class="flex items-center mr-4 w-24">
                                                     <input id="installation_type_{{ $installationType->id }}" type="checkbox" name="installation_types[]" @if(in_array($installationType->id, $selectedInstallationTypes)) checked @endif value="{{$installationType->id}}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                    <label for="installation_type_{{ $installationType->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap">{{ $installationType->type_name }}</label>
+                                                    <label for="installation_type_{{ $installationType->id }}" class="ml-2 text-sm whitespace-nowrap text-gray-900 dark:text-gray-100">{{ $installationType->type_name }}</label>
                                                 </li>                       
                                                 @endforeach
                                             </ul>
                                         </div>
                                         {{-- <ul class="border my-2 mx-4"></ul> --}}
                                         <div class="mt-4 md:mt-0">
-                                            <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
+                                            <h6 class="mb-1 text-sm font-medium text-gray-900 dark:text-white">
                                                 顧客種別
                                             </h6>
-                                            <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
+                                            <ul class="mb-3 text-sm flex flex-wrap" aria-labelledby="dropdownDefault">
                                                 @foreach ($clientTypes as $clientType)
-                                                <li class="flex items-center">
+                                                <li class="flex items-center mr-4 break-words whitespace-pre-wrap w-24">
                                                     <input id="client_type_{{ $clientType->id }}" type="checkbox" name="client_types[]" @if(in_array($clientType->id, $selectedClientTypes)) checked @endif value="{{$clientType->id}}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                    <label for="client_type_{{ $clientType->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $clientType->client_type_name }}</label>
+                                                    <label for="client_type_{{ $clientType->id }}" class="ml-2 text-sm whitespace-nowrap text-gray-900 dark:text-gray-100">{{ $clientType->client_type_name }}</label>
                                                 </li>      
                                                 @endforeach
                                             </ul>

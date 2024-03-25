@@ -16,9 +16,9 @@ class Affiliation3Seeder extends Seeder
             'affiliation3_name' => '営業部',
             'affiliation3_name_kana' => 'エイギョウブ',
             'affiliation3_name_en' => '',
-            'affiliation2_id' => '1',
-            'created_by' => '1',
-            'updated_by' => '1',
+            'affiliation2_id' => 1,
+            'created_by' => 1,
+            'updated_by' => 1,
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -28,9 +28,9 @@ class Affiliation3Seeder extends Seeder
             'affiliation3_name' => '東日本営業部',
             'affiliation3_name_kana' => 'ヒガシニホンエイギョウブ',
             'affiliation3_name_en' => '',
-            'affiliation2_id' => '1',
-            'created_by' => '1',
-            'updated_by' => '1',
+            'affiliation2_id' => 1,
+            'created_by' => 1,
+            'updated_by' => 1,
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -40,9 +40,9 @@ class Affiliation3Seeder extends Seeder
             'affiliation3_name' => '開発部',
             'affiliation3_name_kana' => 'カイハツブ',
             'affiliation3_name_en' => '',
-            'affiliation2_id' => '1',
-            'created_by' => '1',
-            'updated_by' => '1',
+            'affiliation2_id' => 1,
+            'created_by' => 1,
+            'updated_by' => 1,
             'created_at' => now(),
             'updated_at' => now()
         ]);

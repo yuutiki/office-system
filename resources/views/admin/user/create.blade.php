@@ -108,14 +108,14 @@
                 <div class="mt-4 p-4 sm:p-4 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                     <div class="grid gap-4 mb-4 md:grid-cols-3 ">
                         <div class="w-full flex flex-col">
-                            <label for="company_id" class="font-semibold dark:text-gray-100 leading-none mt-2">会社</label>
-                            <select name="company_id" class=" w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="company_id" value="{{old('company_id')}}">
-                                @foreach($companies as $company)
-                                <option value="{{ $company->id }}">{{ $company->company_name }}</option>
+                            <label for="affiliation1_id" class="font-semibold dark:text-gray-100 leading-none mt-2">会社</label>
+                            <select name="affiliation1_id" class=" w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="affiliation1_id" value="{{old('affiliation1_id')}}">
+                                @foreach($affiliation1s as $affiliation1)
+                                <option value="{{ $affiliation1->id }}">{{ $affiliation1->affiliation1_name }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        @error('company_id')
+                        @error('affiliation1_id')
                             <div class="text-red-500">{{$message}}</div>
                         @enderror
 

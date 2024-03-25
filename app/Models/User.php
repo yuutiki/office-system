@@ -66,7 +66,7 @@ class User extends Authenticatable
     public static function rules($id)
     {
         return [
-            'company_id_' . $id => 'required',
+            'affiliation1_id_' . $id => 'required',
             'department_id_' . $id => 'required',
             'affiliation3_id_' . $id => 'required',
             'int_phone_' . $id => 'size:3',
@@ -133,9 +133,9 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class,'user_id');
     }
 
-    public function company()
+    public function affiliation1()
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsTo(Affiliation1::class);
     }
     public function department()
     {
@@ -146,6 +146,9 @@ class User extends Authenticatable
         return $this->belongsTo(Affiliation3::class);
     }
 
-
+    public function roleGroups()
+    {
+        return $this->belongsToMany(RoleGroup::class, 'user_rolegroup');
+    }
 
 }

@@ -17,13 +17,13 @@ return new class extends Migration
             $table->foreignId('project_type_id')->comment('プロジェクト種別ID');
             $table->foreignId('accounting_type_id')->comment('計上種別ID');
             $table->foreignId('distribution_type_id')->comment('商流ID');
-            $table->foreignId('billing_corporation_id')->comment('請求先法人ID');
 
             $table->dateTime('proposed_order_date')->nullable(true)->comment('受注予定月');
             $table->dateTime('proposed_delivery_date')->nullable(true)->comment('納品予定月');
             $table->dateTime('proposed_accounting_date')->nullable(true)->comment('計上予定月');
             $table->dateTime('proposed_payment_date')->nullable(true)->comment('入金予定月');
 
+            $table->foreignId('billing_corporation_id')->comment('請求先法人ID');
             $table->string('billing_corporation_name')->nullable(true)->comment('請求先名');
             $table->string('billing_corporation_division_name')->nullable(true)->comment('請求先部署名');
             $table->string('billing_corporation_person_name')->nullable(true)->comment('請求先担当者名');

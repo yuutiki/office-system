@@ -95,12 +95,22 @@
                 </form>
             </div>
             <div class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
+                @can('storeUpdate_users')
                 <button type="button" onclick="location.href='{{ route('user.create') }}'" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-s rounded-e bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                     <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                     </svg>
                     {{ __('Add') }}
                 </button>
+                @else
+                <button type="button" onclick="location.href='{{ route('user.create') }}'" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-s rounded-e bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-blue-800 cursor-not-allowed" disabled>
+                    <svg class="h-4 w-4 mr-2 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
+                    </svg>
+                    {{ __('Add') }}
+                </button>
+                @endcan
+
                 <div class="flex items-center w-full space-x-3 hidden md:w-auto md:inline-block">
                     <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s rounded-e md:w-auto focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
                         <svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -108,13 +118,44 @@
                         </svg>
                         {{ __('Actions') }}
                     </button>
+
                     <div id="actionsDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-600 dark:divide-gray-600">
                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
+                            @can('admin_users')
                             <li>
-                                <button type="button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="block w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
-                                    CSV一括登録
+                                {{-- <button type="button" onclick="location.href='{{ route('users.showUploadForm') }}'" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white"> --}}
+                                <button type="button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2M8 9l4-5 4 5m1 8h0"/>
+                                        </svg>
+                                    </div>
+                                    CSVアップロード
                                 </button>
                             </li>
+                            @else
+                            <li>
+                                <button type="button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
+                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                        <svg class="h-4 w-4 mr-2 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                            <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                    CSVアップロード
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
+                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                        <svg class="h-4 w-4 mr-2 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                            <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                    CSVダウンロード
+                                </button>
+                            </li>
+                            @endcan
+
                         </ul>
                     </div>
                     {{-- <div>
@@ -219,23 +260,25 @@
                             
                         </div>
                     </th>
+                    @can('delete_users')
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             
                         </div>
                     </th>
+                    @endcan
                 </tr>
             </thead>
             <tbody>
                 @foreach ($users as $user)
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 font-medium hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600">
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600">
                         <td class="pl-4 py-1 whitespace-nowrap">
                             {{ $loop->iteration }}
                         </td>
                         <td class="pl-4 py-1 whitespace-nowrap">
                             {{ $user->employee_num }}
                         </td>
-                        <td class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{ $user->name }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
@@ -270,32 +313,26 @@
                         </td>
                         <td class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <div class="text-center">
-                                <button class="button-edit" type="button" data-drawer-target="dupdateModal-{{$user->id}}" data-drawer-body-scrolling="false" data-drawer-show="dupdateModal-{{$user->id}}" data-drawer-placement="right" aria-controls="dupdateModal-{{$user->id}}">
-                                    <div class="flex">
-                                        <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
+                                <button class="button-edit-primary" type="button" data-drawer-target="dupdateModal-{{$user->id}}" data-drawer-body-scrolling="false" data-drawer-show="dupdateModal-{{$user->id}}" data-drawer-placement="right" aria-controls="dupdateModal-{{$user->id}}">
+                                    <div class="flex items-center">
+                                        <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
                                         </svg>
-                                        <span class="text-ms">編集</span>
+                                        <span class=" md:block hidden">編集</span>
                                     </div>
                                 </button>
                             </div>
                         </td>
+                        @can('delete_users')
                         <td class="py-1">
-                            {{-- <button data-modal-target="deleteModal-{{$user->id}}" data-modal-show="deleteModal-{{$user->id}}"  class="button-delete" type="button">
-                                <div class="flex">
-                                    <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z"/>
-                                    </svg>
-                                    <span class="text-ms ">削除</span>
-                                </div>
-                            </button> --}}
                             <button type="button" data-modal-target="deleteModal-{{$user->id}}" data-modal-show="deleteModal-{{$user->id}}" class="button-delete-primary">
                                 <div class="flex">
                                     <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
                                     <span class="text-ms ">削除</span>
                                 </div>
                             </button>
-                        </td>
+                        </td>                            
+                        @endcan
                     </tr>
                     {{-- 削除確認モーダル画面 Start --}}
                     <div id="deleteModal-{{$user->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -350,7 +387,7 @@
                             </label>
 
                             <div class="w-full flex flex-col col-span-2 mt-4">
-                                <label for="employee_num-{{$user->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">社員番号</label>
+                                <label for="employee_num-{{$user->id}}" class="dark:text-gray-100 text-gray-900 leading-none mt-1">社員番号</label>
                                 <input type="text" maxlength="20" name="employee_num_{{$user->id}}" id="employee_num-{{$user->id}}" value="{{old('employee_num' . $user->id, $user->employee_num)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
                             </div>
                             @error('employee_num_' . $user->id)
@@ -358,7 +395,7 @@
                             @enderror
 
                             <div class="w-full flex flex-col col-span-2 mt-4">
-                                <label for="name-{{$user->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">氏名</label>
+                                <label for="name-{{$user->id}}" class="dark:text-gray-100 text-gray-900 leading-none mt-1">氏名</label>
                                 <input type="text" maxlength="20" name="name_{{$user->id}}" id="name-{{$user->id}}" value="{{ old('name_' . $user->id, $user->name) }}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
                             </div>
                             @error('name_' . $user->id)
@@ -366,7 +403,7 @@
                             @enderror
 
                             <div class="w-full flex flex-col col-span-2 mt-4">
-                                <label for="kana_name-{{$user->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">カナ氏名</label>
+                                <label for="kana_name-{{$user->id}}" class="dark:text-gray-100 text-gray-900 leading-none mt-1">カナ氏名</label>
                                 <input type="text" maxlength="20" name="kana_name_{{$user->id}}" id="kana_name-{{$user->id}}" value="{{old('kana_name_' . $user->id, $user->kana_name)}}" class="dark:bg-white w-auto py-0.5 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
                             </div>
                             @error('kana_name_' . $user->id)
@@ -374,7 +411,7 @@
                             @enderror
 
                             <div class="w-full flex flex-col col-span-2 mt-4">
-                                <label for="email-{{$user->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">E-Mail</label>
+                                <label for="email-{{$user->id}}" class="dark:text-gray-100 text-gray-900 leading-none mt-1">E-Mail</label>
                                 <input type="text" maxlength="20" name="email_{{$user->id}}" id="email-{{$user->id}}" value="{{old('email_' . $user->id, $user->email)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
                             </div>
                             @error('email_' . $user->id)
@@ -382,7 +419,7 @@
                             @enderror
 
                             <div class="w-full flex flex-col col-span-2 mt-4">
-                                <label for="ext_phone-{{$user->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">外線番号</label>
+                                <label for="ext_phone-{{$user->id}}" class="dark:text-gray-100 text-gray-900 leading-none mt-1">外線番号</label>
                                 <input type="text" maxlength="20" name="ext_phone_{{$user->id}}" id="ext_phone-{{$user->id}}" value="{{old('ext_phone_' . $user->id, $user->ext_phone)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
                             </div>
                             @error('ext_phone_' . $user->id)
@@ -390,7 +427,7 @@
                             @enderror
 
                             <div class="w-full flex flex-col col-span-2 mt-4">
-                                <label for="int_phone-{{$user->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">内線番号</label>
+                                <label for="int_phone-{{$user->id}}" class="dark:text-gray-100 text-gray-900 leading-none mt-1">内線番号</label>
                                 <input type="text" maxlength="20" name="int_phone_{{$user->id}}" id="int_phone-{{$user->id}}" value="{{old('int_phone_' . $user->id, $user->int_phone)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
                             </div>
                             @error('int_phone_' . $user->id)
@@ -398,7 +435,7 @@
                             @enderror
 
                             <div class="w-full flex flex-col">
-                                <label for="employee_status_id" class="block mt-4 font-medium text-gray-900 dark:text-white">在職状態</label>
+                                <label for="employee_status_id" class="block mt-4 text-gray-900 dark:text-white">在職状態</label>
                                 <select name="employee_status_id_{{$user->id}}" id="employee_status_id-{{$user->id}}" value="{{old('employee_status_id' . $user->id, $user->employee_status_id)}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                     @foreach($employeeStatuses as $employeeStatus)
                                         <option value="{{ $employeeStatus->id }}"  @selected($employeeStatus->id == $user->employee_status_id)>{{ $employeeStatus->employee_status_name }}</option>
@@ -410,7 +447,7 @@
                             @enderror
 
                             <div class="w-full flex flex-col">
-                                <label for="role_id" class="block mt-4 font-medium text-gray-900 dark:text-white">権限</label>
+                                <label for="role_id" class="block mt-4 text-gray-900 dark:text-white">権限</label>
                                 <select name="role_id_{{$user->id}}" id="role_id-{{$user->id}}" value="{{old('role_id')}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
                                     @foreach($roles as $role)
                                     <option value="{{ $role->id }}"  @selected($role->id == $user->role_id)>{{ $role->role_name }}</option>
@@ -422,19 +459,19 @@
                             @enderror
 
                             <div class="w-full flex flex-col">
-                                <label for="company_id" class="block mt-4 font-medium text-gray-900 dark:text-white">所属1</label>
-                                <select name="company_id_{{$user->id}}"  id="company_id-{{$user->id}}" value="{{old('company_id_' . $user->id)}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
-                                    @foreach($companies as $company)
-                                    <option value="{{ $company->id }}"  @selected($company->id == $user->company_id)>{{ $company->company_name }}</option>
+                                <label for="affiliation1_id" class="block mt-4 text-gray-900 dark:text-white">所属1</label>
+                                <select name="affiliation1_id_{{$user->id}}"  id="affiliation1_id-{{$user->id}}" value="{{old('affiliation1_id_' . $user->id)}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
+                                    @foreach($affiliation1s as $affiliation1)
+                                    <option value="{{ $affiliation1->id }}"  @selected($affiliation1->id == $user->affiliation1_id)>{{ $affiliation1->affiliation1_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            @error('company_id_' . $user->id)
+                            @error('affiliation1_id_' . $user->id)
                                 <div class="text-red-500">{{$message}}</div>
                             @enderror
 
                             <div class="w-full flex flex-col">
-                                <label for="department_id" class="block mt-4 font-medium text-gray-900 dark:text-white">所属2</label>
+                                <label for="department_id" class="block mt-4 text-gray-900 dark:text-white">所属2</label>
                                 <select name="department_id_{{$user->id}}" id="department_id-{{$user->id}}" value="{{old('department_id_' . $user->id, $user->department_id)}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
                                     @foreach($departments as $department)
                                     <option value="{{ $department->id }}"  @selected($department->id == old('department_id_' . $user->id, $user->department_id))>{{ $department->department_name }}</option>
@@ -446,7 +483,7 @@
                             @enderror
 
                             <div class="w-full flex flex-col">
-                                <label for="affiliation3_id" class="block mt-4 font-medium text-gray-900 dark:text-white">所属3</label>
+                                <label for="affiliation3_id" class="block mt-4 text-gray-900 dark:text-white">所属3</label>
                                 <select name="affiliation3_id_{{$user->id}}" id="affiliation3_id-{{$user->id}}" value="{{old('affiliation3_id_' . $user->id, $user->affiliation3_id)}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" >
                                     @foreach($affiliation3s as $affiliation3)
                                     <option value="{{ $affiliation3->id }}"  @selected($affiliation3->id == old('affiliation3_id_' . $user->id, $user->affiliation3_id))>{{ $affiliation3->affiliation3_name }}</option>
@@ -457,12 +494,12 @@
                                 <div class="text-red-500">{{$message}}</div>
                             @enderror
 
-                            <div class="bg-light px-3 py-2 mb-3 font-semibold dark:text-gray-100">以下は省略可</div>
+                            <div class="bg-light px-3 py-2 mb-3 dark:text-gray-100">以下は省略可</div>
 
 
                             <div id="accordion-arrow-icon" data-accordion="open">
                                 <h2 id="accordion-arrow-icon-heading-2">
-                                    <button type="button" class="flex items-center justify-between w-full p-2 rounded font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3" data-accordion-target="#accordion-arrow-icon-body-2{{$user->id}}" aria-expanded="false" aria-controls="accordion-arrow-icon-body-2{{$user->id}}">
+                                    <button type="button" class="flex items-center justify-between w-full p-2 rounded rtl:text-right text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3" data-accordion-target="#accordion-arrow-icon-body-2{{$user->id}}" aria-expanded="false" aria-controls="accordion-arrow-icon-body-2{{$user->id}}">
                                         <span>パスワードを変更する</span>
                                         <svg class="w-4 h-4 shrink-0 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.529 7.988a2.502 2.502 0 0 1 5 .191A2.441 2.441 0 0 1 10 10.582V12m-.01 3.008H10M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
@@ -472,7 +509,7 @@
                                 <div id="accordion-arrow-icon-body-2{{$user->id}}" class="hidden" aria-labelledby="accordion-arrow-icon-heading-2">
                                     <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
                                         <div class="w-full flex flex-col">
-                                            <label class="font-semibold dark:text-gray-100 leading-none mt-2">パスワード</label>
+                                            <label class="dark:text-gray-100 leading-none mt-2">パスワード</label>
                                             <input type="password" name="password_{{$user->id}}" autocomplete="new-password" class="form-control w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="password-{{$user->id}}" value="{{old('password_' . $user->id)}}">
                                         </div>
                                         @error('password_' . $user->id)
@@ -480,7 +517,7 @@
                                         @enderror
                                         
                                         <div class="w-full flex flex-col">
-                                            <label class="font-semibold dark:text-gray-100 leading-none mt-2">パスワード（確認）</label>
+                                            <label class="dark:text-gray-100 leading-none mt-2">パスワード（確認）</label>
                                             <input type="password" name="password_{{$user->id}}_confirmation" autocomplete="new-password" class="form-control w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="password_confirmation-{{$user->id}}" value="{{old('password_confirmation_' . $user->id)}}">
                                         </div>
                                     </div>
@@ -488,7 +525,7 @@
                             </div>
                             
                             {{-- <div class="w-full flex flex-col">
-                                <label class="font-semibold dark:text-gray-100 leading-none mt-2">パスワード</label>
+                                <label class="dark:text-gray-100 leading-none mt-2">パスワード</label>
                                 <input type="password" name="password_{{$user->id}}" autocomplete="new-password" class="form-control w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="password-{{$user->id}}" value="{{old('password_' . $user->id)}}">
                             </div>
                             @error('password_' . $user->id)
@@ -496,18 +533,22 @@
                             @enderror
                             
                             <div class="w-full flex flex-col">
-                                <label class="font-semibold dark:text-gray-100 leading-none mt-2">パスワード（確認）</label>
+                                <label class="dark:text-gray-100 leading-none mt-2">パスワード（確認）</label>
                                 <input type="password" name="password_{{$user->id}}_confirmation" autocomplete="new-password" class="form-control w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="password_confirmation-{{$user->id}}" value="{{old('password_confirmation_' . $user->id)}}">
                             </div> --}}
 
                             <div class="grid grid-cols-2 gap-4 mt-4">
+                                @can('storeUpdate_users')
                                 <button type="button" id="saveButton" onclick="submitAndUpdateDrawer({{$user->id}})" class="w-full justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-s rounded-e text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     {{ __('Update') }}
-                                </button>
+                                </button>                                    
+                                @endcan
+                                @can('delete_users')
                                 <button type="button" data-modal-target="deleteModal-{{$user->id}}" data-modal-show="deleteModal-{{$user->id}}" class="w-full justify-center text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-s rounded-e text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
                                     <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
                                     {{ __('Delete') }}
                                 </button>
+                                @endcan
                             </div>
                         </form>
                     </div>

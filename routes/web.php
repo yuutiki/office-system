@@ -20,12 +20,12 @@ use App\Http\Livewire\ClientCorporationSearchModal;
 use App\Http\Livewire\ClientForm;
 use App\Http\Controllers\Master\AccountingPeriodController;
 use App\Http\Controllers\Master\AccountingTypeController;
+use App\Http\Controllers\Master\Affiliation1Controller;
+use App\Http\Controllers\Master\Affiliation3Controller;
 use App\Http\Controllers\Master\ClientTypeController;
-use App\Http\Controllers\Master\CompanyController;
 use App\Http\Controllers\Master\ContactTypeController;
 use App\Http\Controllers\Master\DepartmentController;
 use App\Http\Controllers\Master\DistributionTypeController;
-use App\Http\Controllers\Master\Affiliation3Controller;
 use App\Http\Controllers\Master\InstallationTypeController;
 use App\Http\Controllers\Master\PrefectureController;
 use App\Http\Controllers\Master\ProductCategoryController;
@@ -41,6 +41,7 @@ use App\Http\Controllers\Master\SupportTimeController;
 use App\Http\Controllers\Master\SupportTypeController;
 use App\Http\Controllers\Master\TradeStatusController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\RoleGroupController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\VendorController;
 use App\Models\Contract;
@@ -108,18 +109,31 @@ Route::middleware('auth')->group(function () {
     Route::delete('/keepfile/{id}/delete-pdf', [KeepfileController::class, 'deletePdf'])->name('keepfile.deletePdf');
     Route::resource('/keepfile',KeepfileController::class);
 
-
     // user関連
     Route::post('/user/upload', [UserController::class, 'upload'])->name('user.upload');
     Route::get('/search-users', [UserController::class, 'searchUsers']);
     Route::resource('/user', UserController::class);
-
 
     // product関連
     Route::post('/product/search', [ProductController::class, 'search'])->name('product.search');
     Route::post('/product/upload', [ProductController::class, 'upload'])->name('product.upload');
     Route::get('/get-split-types/{productTypeId}', [ProductController::class, 'getSplitTypes'])->name('product.getSplitTypes');
     Route::resource('/product', ProductController::class);
+
+    // support関連
+    Route::post('/support/upload', [SupportController::class, 'upload'])->name('support.upload');
+    Route::resource('/support', '\App\Http\Controllers\SupportController');
+
+    // repport関連
+    Route::resource('/reports', '\App\Http\Controllers\ReportController');
+
+
+    // RoleGroup
+    Route::post('/groups/add-users', [RoleGroupController::class, 'addUsersToGroup'])->name('role-groups.add-users');
+    Route::delete('/group/delete-user', [RoleGroupController::class, 'deleteUserFromGroup'])->name('group.delete_user');
+    Route::resource('role-groups', RoleGroupController::class);
+
+
 
 
 
@@ -130,12 +144,7 @@ Route::middleware('auth')->group(function () {
     Route::get('contracts/{contract}/details/{detail}/edit', [ContractDetailController::class, 'edit'])->name('contracts.details.edit');
     // Route::put('/contracts/{contract}/details/{detail}', [ContractDetailController::class, 'update'])->name('contracts.details.update');
     Route::put('contracts/{contract}/details/{detail}', [ContractDetailController::class, 'update'])->name('contracts.details.update');
-    
     Route::resource('/contracts', ContractController::class);
-
-
-
-    // Route::resource('/contract-details', ContractDetailController::class);
 
 
     // estimate（見積）
@@ -143,8 +152,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('/estimate' , EstimateController::class);
 
 
-    Route::resource('/reports', '\App\Http\Controllers\ReportController');
-    Route::resource('/support', '\App\Http\Controllers\SupportController');
     Route::resource('/link', '\App\Http\Controllers\LinkController');
     Route::resource('/client-product' , '\App\Http\Controllers\ClientProductController');
     Route::resource('/projectrevenue' , '\App\Http\Controllers\ProjectRevenueController');
@@ -156,7 +163,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/accounting-type', AccountingTypeController::class);
     Route::resource('/affiliation3', Affiliation3Controller::class);
     Route::resource('/department', DepartmentController::class);
-    Route::resource('/company', CompanyController::class);
+    Route::resource('/affiliation1', Affiliation1Controller::class);
     Route::resource('/contact-type', ContactTypeController::class);
     Route::resource('/client-type', ClientTypeController::class);
     Route::resource('/distribution-type', DistributionTypeController::class);
@@ -182,8 +189,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/bulk-insert-revenues', [ProjectRevenueController::class, 'bulkInsert'])->name('projectrevenue.bulkInsert');
     Route::delete('/bulk-delete-revenues', [ProjectRevenueController::class, 'bulkDelete'])->name('projectrevenue.bulkDelete');
 
-// CSVアップロード系
-    Route::post('/support/upload', [SupportController::class, 'upload'])->name('support.upload');
 
     // Route::post('/update-link/{link}', [LinkController::class, 'mordalupdate'])->name('updateLink');
     // Route::post('/save-modal-id', [LinkController::class, 'saveModalId'])->name('save.modal.id');
@@ -191,7 +196,6 @@ Route::middleware('auth')->group(function () {
     // Route::get('/corporations/download/{filename}', [CorporationController::class, 'downloadCsv'])->name('corporations.download');
 });
 
-// Route::resource('/dashboard', '\App\Http\Controllers\DashboardController')->middleware(['auth', 'verified'])->name('dashboard');
-Route::get('/dashboard',  [DashboardController::class, 'index'])->name('dashboard')->middleware(['auth', 'verified']);
+Route::get('/dashboard',  [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 require __DIR__.'/auth.php';
