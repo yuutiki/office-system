@@ -282,6 +282,11 @@ class ClientController extends Controller
         return response()->json(['message' => 'アクティブなタブが更新されました']);
     }
 
+    public function showUploadForm()
+    {
+        return view('clients.upload-form');
+    }
+
 
 
 

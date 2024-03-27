@@ -55,7 +55,7 @@
             <div>
                 <div  class="w-full flex flex-col">
                     <label for="role_group_code" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">権限グループコード</label>
-                    <input type="text" form="corporationForm" name="role_group_code" class="input-readonly" id="role_group_code" value="{{old('role_group_code',$roleGroup->role_group_code)}}" readonly tabindex="-1">
+                    <input type="text" form="corporationForm" name="role_group_code" class="w-full py-1 mt-1 rounded dark:bg-gray-400 border-gray-700 border border-transparent dark:text-gray-900 tracking-widest hover:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 placeholder-gray-400 transition ease-in-out duration-150" id="role_group_code" value="{{old('role_group_code',$roleGroup->role_group_code)}}" readonly tabindex="-1">
                 </div>
             </div>
             <div class="w-full flex flex-col">
@@ -99,12 +99,11 @@
                 </label>
             </div> --}}
             
-            <div class="relative bg-white dark:bg-gray-700 rounded-t md:w-auto shadow-md  dark:text-gray-900 mt-16 border border-gray-600">
-                <div class="flex flex-col justify-end p-2 space-y-1 md:flex-row md:space-y-0 md:space-x-4">
-                    <!-- ユーザ検索モーダルを表示するボタン -->
-                    <div class="flex flex-col items-stretch flex-shrink-0 w-full md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
-                        <div class="flex justify-end w-72">
-                            <select id="bulkPermissionSelect" class="py-[5px] rounded rounded-r-none">
+            <div class="relative bg-white dark:bg-gray-700 rounded-t md:w-auto shadow-md dark:text-gray-900 mt-16 border border-gray-600">
+                <div class="flex justify-end p-2 space-y-1 flex-row md:space-y-0">
+                    <div class="flex flex-shrink-0 w-auto md:space-y-0 items-center">
+                        <div class="flex justify-end md:max-w-[calc(100%-3rem)]">
+                            <select id="bulkPermissionSelect" class="py-[5px] rounded rounded-r-none text-sm md:text-base w-full md:w-auto">
                                 @foreach($permissions as $permission)
                                     <option value="{{ $permission->id }}">{{ $permission->permission_code }}:{{ $permission->permission_name }}</option>
                                 @endforeach
@@ -116,8 +115,8 @@
             </div>
             <div class="relative overflow-x-auto">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border border-gray-600">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 mt-8">
-                        <tr>
+                    <thead class="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 mt-8">
+                        <tr class="">
                             <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 text-center w-2">
                                 №
                             </th>
@@ -135,11 +134,11 @@
                                 <td class="px-2 py-1 border border-gray-600 text-center">
                                     {{ $loop->iteration }}
                                 </td>
-                                <td class="px-6 py-1 border border-gray-600">
+                                <td class="px-6 py-1 border text-base border-gray-600">
                                     {{ $functionMenu->function_menu_name }}
                                 </td>
-                                <td class="px-2 py-1 border border-gray-600">
-                                    <select name="permissions[{{ $functionMenu->id }}]" form="corporationForm" class="input-primary">
+                                <td class="px-2 py-2 border border-gray-600">
+                                    <select name="permissions[{{ $functionMenu->id }}]" form="corporationForm" class="w-full py-1 rounded dark:bg-gray-300 border-gray-700 border border-transparent dark:text-gray-900 tracking-widest hover:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 placeholder-gray-400 transition ease-in-out duration-150">
                                         @foreach($permissions as $permission)
                                             <option value="{{ $permission->id }}"  @selected($permission->id == $functionMenu->permission->id)>{{ $permission->permission_code }}:{{ $permission->permission_name }}</option>
                                         @endforeach

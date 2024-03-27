@@ -26,8 +26,9 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
+    // Usersに関する
         Gate::define('view_users', function (User $user) {
-            // ユーザーがFunctionMenu_id=13のPermission_idが2以下であるかどうかを確認
+            // ユーザーがFunctionMenu_id=13のPermission_idが2以上（参照権限以上）であるかどうかを確認
             $functionMenuPermission = RoleGroup::whereHas('users', function ($query) use ($user) {
                 $query->where('users.id', $user->id);
             })->whereHas('functionMenus', function ($query) {
@@ -38,7 +39,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('storeUpdate_users', function (User $user) {
-            // ユーザーがFunctionMenu_id=13のPermission_idが2以下であるかどうかを確認
+            // ユーザーがFunctionMenu_id=13のPermission_idが3以上（登録更新権限以上）であるかどうかを確認
             $functionMenuPermission = RoleGroup::whereHas('users', function ($query) use ($user) {
                 $query->where('users.id', $user->id);
             })->whereHas('functionMenus', function ($query) {
@@ -49,7 +50,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('delete_users', function (User $user) {
-            // ユーザーがFunctionMenu_id=13のPermission_idが2以下であるかどうかを確認
+            // ユーザーがFunctionMenu_id=13のPermission_idが4以上（削除権限以上）であるかどうかを確認
             $functionMenuPermission = RoleGroup::whereHas('users', function ($query) use ($user) {
                 $query->where('users.id', $user->id);
             })->whereHas('functionMenus', function ($query) {
@@ -59,12 +60,81 @@ class AuthServiceProvider extends ServiceProvider
             return $functionMenuPermission;
         });
 
-        Gate::define('admin_users', function (User $user) {
-            // ユーザーがFunctionMenu_id=13のPermission_idが2以下であるかどうかを確認
+        Gate::define('download_users', function (User $user) {
+            // ユーザーがFunctionMenu_id=13のPermission_idが5以上（書出権限以上）であるかどうかを確認
             $functionMenuPermission = RoleGroup::whereHas('users', function ($query) use ($user) {
                 $query->where('users.id', $user->id);
             })->whereHas('functionMenus', function ($query) {
                 $query->where('function_menus.id', 13)->where('function_menu_role_group.permission_id', '>=', 5); // 中間テーブルのカラム名を直接指定
+            })->exists();
+
+            return $functionMenuPermission;
+        });
+
+        Gate::define('admin_users', function (User $user) {
+            // ユーザーがFunctionMenu_id=13のPermission_idが5（全権限）であるかどうかを確認
+            $functionMenuPermission = RoleGroup::whereHas('users', function ($query) use ($user) {
+                $query->where('users.id', $user->id);
+            })->whereHas('functionMenus', function ($query) {
+                $query->where('function_menus.id', 13)->where('function_menu_role_group.permission_id', '=', 6); // 中間テーブルのカラム名を直接指定
+            })->exists();
+
+            return $functionMenuPermission;
+        });
+
+
+
+    // Corporationsに関する
+        Gate::define('view_corporations', function (User $user) {
+            // ユーザーがFunctionMenu_id=1のPermission_idが2以上（参照権限以上）であるかどうかを確認
+            $functionMenuPermission = RoleGroup::whereHas('users', function ($query) use ($user) {
+                $query->where('users.id', $user->id);
+            })->whereHas('functionMenus', function ($query) {
+                $query->where('function_menus.id', 1)->where('function_menu_role_group.permission_id', '>=', 2); // 中間テーブルのカラム名を直接指定
+            })->exists();
+
+            return $functionMenuPermission;
+        });
+
+        Gate::define('storeUpdate_corporations', function (User $user) {
+            // ユーザーがFunctionMenu_id=1のPermission_idが3以上（登録更新権限以上）であるかどうかを確認
+            $functionMenuPermission = RoleGroup::whereHas('users', function ($query) use ($user) {
+                $query->where('users.id', $user->id);
+            })->whereHas('functionMenus', function ($query) {
+                $query->where('function_menus.id', 1)->where('function_menu_role_group.permission_id', '>=', 3); // 中間テーブルのカラム名を直接指定
+            })->exists();
+
+            return $functionMenuPermission;
+        });
+
+        Gate::define('delete_corporations', function (User $user) {
+            // ユーザーがFunctionMenu_id=1のPermission_idが4以上（削除権限以上）であるかどうかを確認
+            $functionMenuPermission = RoleGroup::whereHas('users', function ($query) use ($user) {
+                $query->where('users.id', $user->id);
+            })->whereHas('functionMenus', function ($query) {
+                $query->where('function_menus.id', 1)->where('function_menu_role_group.permission_id', '>=', 4); // 中間テーブルのカラム名を直接指定
+            })->exists();
+
+            return $functionMenuPermission;
+        });
+
+        Gate::define('download_corporations', function (User $user) {
+            // ユーザーがFunctionMenu_id=1のPermission_idが5以上（書出権限以上）であるかどうかを確認
+            $functionMenuPermission = RoleGroup::whereHas('users', function ($query) use ($user) {
+                $query->where('users.id', $user->id);
+            })->whereHas('functionMenus', function ($query) {
+                $query->where('function_menus.id', 1)->where('function_menu_role_group.permission_id', '>=', 5); // 中間テーブルのカラム名を直接指定
+            })->exists();
+
+            return $functionMenuPermission;
+        });
+
+        Gate::define('admin_corporations', function (User $user) {
+            // ユーザーがFunctionMenu_id=1のPermission_idが5（全権限）であるかどうかを確認
+            $functionMenuPermission = RoleGroup::whereHas('users', function ($query) use ($user) {
+                $query->where('users.id', $user->id);
+            })->whereHas('functionMenus', function ($query) {
+                $query->where('function_menus.id', 1)->where('function_menu_role_group.permission_id', '=', 6); // 中間テーブルのカラム名を直接指定
             })->exists();
 
             return $functionMenuPermission;

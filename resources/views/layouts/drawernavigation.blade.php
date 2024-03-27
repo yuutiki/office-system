@@ -148,9 +148,11 @@
                 </button>
                 <ul  class="hidden py-1 space-y-1" id="accordion-body-1" aria-labelledby="accordion-heading-1">
                     <li>
+                        @can('view_corporations')
                         <x-nav-link :href="route('corporations.index')" :active="request()->routeIs('corporations.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                             <span class="flex-1 ml-10 whitespace-nowrap">{{ __('法人一覧') }}</span>
-                        </x-nav-link>
+                        </x-nav-link>                            
+                        @endcan
                     </li>
                     <li>
                         <x-nav-link :href="route('clients.index')" :active="request()->routeIs('clients.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
@@ -289,7 +291,7 @@
                           <path d="M10 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
                         </g>
                     </svg>
-                    <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('管理者機能') }}</span>
+                    <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('共通機能') }}</span>
                     <svg data-accordion-icon class="w-3 h-3 mr-1 rotate-270 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6" >
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
                     </svg>
@@ -367,9 +369,11 @@
                     </button>
                     <ul id="dropdown-sm-client" class="hidden py-1 space-y-1">
                         <li>
+                            @can('view_corporations')
                             <x-nav-link :href="route('corporations.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('法人一覧') }}</span>
                             </x-nav-link>
+                            @endcan
                         </li>
                         <li>
                             <x-nav-link :href="route('clients.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">

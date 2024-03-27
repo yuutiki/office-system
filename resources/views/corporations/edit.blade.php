@@ -194,9 +194,11 @@
             <form method="post" action="{{route('corporations.update',$corporation)}}" enctype="multipart/form-data" id="corporationForm">
                 @csrf
                 @method('patch')
-                <x-primary-button class="mt-4" form-id="corporationForm" id="saveButton" onkeydown="stopTab(event)">
-                    保存(S)
-                </x-primary-button>
+                @can('storeUpdate_corporations')
+                    <x-primary-button class="mt-4" form-id="corporationForm" id="saveButton" onkeydown="stopTab(event)">
+                        保存(S)
+                    </x-primary-button>
+                @endcan
             </form>
         </div>
 

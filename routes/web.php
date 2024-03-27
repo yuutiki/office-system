@@ -89,6 +89,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/corporations', CorporationController::class);
 
     // clients関連
+    Route::get('/clients/show-upload', [ClientController::class, 'showUploadForm'])->name('clients.showUploadForm');
     Route::post('/clients/upload', [ClientController::class, 'upload'])->name('clients.upload');
     Route::post('/client/search', [ClientController::class, 'search'])->name('client.search');
     Route::resource('/clients', ClientController::class);

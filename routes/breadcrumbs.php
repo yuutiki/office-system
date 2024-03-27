@@ -54,6 +54,12 @@ Breadcrumbs::for('dashboard', function ($trail) {
                             $trail->push('導入システム登録', url('client-product/create'));
                         });
 
+                // ダッシュボード > 顧客一覧 > CSVアップロード
+                Breadcrumbs::for('csvUploadClients', function ($trail) {
+                    $trail->parent('clients');
+                    $trail->push('CSVアップロード', route('clients.showUploadForm'));
+                });
+
         // ダッシュボード > 業者一覧
         Breadcrumbs::for('vendors', function ($trail) {
             $trail->parent('dashboard');

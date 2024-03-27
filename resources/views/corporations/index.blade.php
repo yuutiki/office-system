@@ -99,12 +99,21 @@
                 </form>
             </div>
             <div class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
-                <button type="button" onclick="location.href='{{ route('corporations.create') }}'" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                    <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                    </svg>
-                    {{ __('Add') }}
-                </button>
+                @can('storeUpdate_corporations')
+                    <button type="button" onclick="location.href='{{ route('corporations.create') }}'" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                        <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                        </svg>
+                        {{ __('Add') }}
+                    </button>
+                @else
+                    <button type="button" onclick="location.href='{{ route('corporations.create') }}'" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-s rounded-e bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-blue-800 cursor-not-allowed" disabled>
+                        <svg class="h-4 w-4 mr-2 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
+                        </svg>
+                        {{ __('Add') }}
+                    </button>
+                @endcan
                 <div class="flex items-center w-full space-x-3 hidden md:w-auto md:inline-block">
                     <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded md:w-auto focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
                         <svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -115,27 +124,46 @@
                     <div id="actionsDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-600 dark:divide-gray-600">
                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
                             <li>
-                                {{-- <button type="button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="block w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
-                                    CSV一括登録
-                                </button> --}}
-                                <button type="button" onclick="location.href='{{ route('corporations.showUploadForm') }}'" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
-                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2M8 9l4-5 4 5m1 8h0"/>
-                                        </svg>
-                                    </div>
-                                    CSVアップロード
-                                </button>
+                                @can('admin_corporations')
+                                    <button type="button" onclick="location.href='{{ route('corporations.showUploadForm') }}'" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2M8 9l4-5 4 5m1 8h0"/>
+                                            </svg>
+                                        </div>
+                                        CSVアップロード
+                                    </button>
+                                @else
+                                    <button type="button" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
+                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            <svg class="h-6 w-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </div>
+                                        CSVアップロード
+                                    </button>
+                                @endcan
                             </li>
                             <li>
-                                <button type="button" onclick="location.href='{{ route('corporations.downloadCsv', $filters ?? []) }}'" class="relative w-full items-center py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
-                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2m-1-5-4 5-4-5m9 8h0"/>
-                                        </svg>
-                                    </div>
-                                    CSVダウンロード
-                                </button>
+                                @can('download_corporations')
+                                    <button type="button" onclick="location.href='{{ route('corporations.downloadCsv', $filters ?? []) }}'" class="relative w-full items-center py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2m-1-5-4 5-4-5m9 8h0"/>
+                                            </svg>
+                                        </div>
+                                        CSVダウンロード
+                                    </button>
+                                @else
+                                    <button type="button" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
+                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            <svg class="h-6 w-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </div>
+                                        CSVダウンロード
+                                    </button>
+                                @endcan
                             </li>
                         </ul>
                     </div>
@@ -185,20 +213,16 @@
                             与信限度額
                         </div>
                     </th>
-                    {{-- <th scope="col" class="px-1 py-3 w-auto">
-                        <div class="flex items-center whitespace-nowrap">
-                            最終更新日
-                        </div>
-                    </th> --}}
                     <th scope="col" class="px-1 py-3 w-auto">
                         <div class="flex items-center whitespace-nowrap">
                             顧客数
                         </div>
                     </th>
-
-                    <th scope="col" class="px-1 py-3 w-auto">
-                        <span class="sr-only">削除</span>
-                    </th>
+                    @can('delete_corporations')
+                        <th scope="col" class="px-1 py-3 w-auto">
+                            <span class="sr-only">削除</span>
+                        </th>
+                    @endcan
                 </tr>
             </thead>
             <tbody>
@@ -242,9 +266,6 @@
                                 {{number_format($corporation->credit_limit)}}
                             </div>
                         </td>
-                        {{-- <td class="px-1 py-1 whitespace-nowrap">
-                            {{$corporation->updated_at->format('y-m-d')}}
-                        </td> --}}
                         <td class="px-1 py-1 whitespace-nowrap">
                             <div class="w-[40px] text-right">
                                 {{$corporation->clients_count}}
@@ -262,15 +283,17 @@
                                 </button>
                             </div>
                         </td> --}}
+                        @can('delete_corporations')
+                            <td class="py-1">
+                                <button type="button" data-modal-target="deleteModal-{{$corporation->id}}" data-modal-show="deleteModal-{{$corporation->id}}" class="button-delete-primary">
+                                    <div class="flex items-center">
+                                        <svg aria-hidden="true" class="w-[17px] h-[17px] mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                                        <span class="text-ms ">削除</span>
+                                    </div>
+                                </button>
+                            </td>
+                        @endcan
 
-                        <td class="py-1">
-                            <button type="button" data-modal-target="deleteModal-{{$corporation->id}}" data-modal-show="deleteModal-{{$corporation->id}}" class="button-delete-primary">
-                                <div class="flex items-center">
-                                    <svg aria-hidden="true" class="w-[17px] h-[17px] mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
-                                    <span class="text-ms ">削除</span>
-                                </div>
-                            </button>
-                        </td>
                     </tr>
                     {{-- 削除確認モーダル画面 Start --}}
                     <div id="deleteModal-{{$corporation->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -438,96 +461,10 @@
 
 
 
-{{-- <script>
-    function submitAndUpdateDrawer(corporationsId) {
-        // 保存処理（ここではLocalStorageを使用）
-        localStorage.setItem('updateDrawerId', corporationsId);
-
-        // フォームのsubmit
-        document.getElementById('updateForm-' + corporationsId).submit();
-    }
-</script>
-
-<!-- バリデーションエラー時にDrawerを開くスクリプト -->
-@if ($errors->any())
-    <style>
-        /* オーバーレイのスタイルを定義 */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* グレーで透過させる */
-            /* z-index: 40; Drawerよりも大きな値 */
-        }
-    </style>
-    <script>
-        // ページ遷移後に初回のみ実行するための変数
-        let isValidationProcessed = false;
-
-        document.addEventListener('DOMContentLoaded', function () {
-            let drawerId = localStorage.getItem('updateDrawerId');
-            
-            // ページ遷移後初回のみ実行
-            if (!isValidationProcessed && drawerId !== null) {
-                // オーバーレイを作成
-                const overlay = document.createElement('div');
-                overlay.classList.add('overlay'); // オーバーレイのクラスを追加
-                document.body.appendChild(overlay); // bodyに追加
-
-                // Drawerを表示
-                const drawer = document.getElementById('dupdateModal-' + drawerId);
-                drawer.classList.remove('translate-x-full');
-                localStorage.removeItem('updateDrawerId');
-                console.log(drawerId);
-                
-                // 変数をtrueに設定して初期化を行わないようにする
-                isValidationProcessed = true;
-
-                // bodyにoverflow-hiddenクラスを追加
-                document.body.classList.add('overflow-hidden');
-
-                // Drawerのz-indexよりも大きな値を設定
-                const drawerZIndex = getComputedStyle(drawer).zIndex;
-                const overlayZIndex = parseInt(drawerZIndex) - 1;
-                overlay.style.zIndex = overlayZIndex;
-
-                // オーバーレイをクリックしたときに閉じる
-                overlay.addEventListener('click', function () {
-                    closeDrawer();
-                });
-
-                // ボタンをクリックしたときにも閉じる
-                const closeButton = document.querySelector('[data-drawer-hide="dupdateModal-' + drawerId + '"]');
-                if (closeButton) {
-                    closeButton.addEventListener('click', function () {
-                        closeDrawer();
-                    });
-                }
-
-                function closeDrawer() {
-                    // Drawerを非表示にする
-                    drawer.classList.add('translate-x-full');
-                    
-                    // オーバーレイを削除する
-                    overlay.remove();
-                    
-                    // bodyのoverflow-hiddenクラスを削除
-                    document.body.classList.remove('overflow-hidden');
-                }
-            }
-        });
-    </script>
-@endif --}}
 <script src="https://unpkg.com/scroll-hint@latest/js/scroll-hint.min.js"></script>
 
 <script>
-//   window.addEventListener('DOMContentLoaded', function () {
-//     new ScrollHint('.js-scrollable');
-//   });
-
-new ScrollHint('.js-scrollable', {
-});
+    new ScrollHint('.js-scrollable', {});
 </script>
+
 </x-app-layout>

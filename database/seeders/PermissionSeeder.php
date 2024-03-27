@@ -33,7 +33,7 @@ class PermissionSeeder extends Seeder
         ]);
         Permission::create([
             'permission_code' => '20',
-            'permission_name' => '追加更新',
+            'permission_name' => '参照＋追加更新',
             'description' => '参照＋追加更新のみ可能',
             'created_by' => 1,
             'updated_by' => 1,
@@ -42,7 +42,7 @@ class PermissionSeeder extends Seeder
         ]);
         Permission::create([
             'permission_code' => '30',
-            'permission_name' => '削除',
+            'permission_name' => '参照＋追加更新＋削除',
             'description' => '参照＋追加更新＋削除が可能',
             'created_by' => 1,
             'updated_by' => 1,
@@ -50,7 +50,16 @@ class PermissionSeeder extends Seeder
             'updated_at' => now(),
         ]);
         Permission::create([
-            'permission_code' => '40',
+            'permission_code' => '50',
+            'permission_name' => '参照＋追加更新＋削除＋書出',
+            'description' => '参照＋追加更新＋削除＋書出が可能',
+            'created_by' => 1,
+            'updated_by' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        Permission::create([
+            'permission_code' => '50',
             'permission_name' => '全権限',
             'description' => '参照＋追加更新＋削除＋一括操作が可能',
             'created_by' => 1,
