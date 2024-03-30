@@ -107,25 +107,40 @@ class UserController extends Controller
         //     return redirect()->back()->withErrors($validator)->withInput();
         // }
 
-        $user = new User();
 
-        // 6桁の顧客番号に変換してDBに保存
-        $user->employee_num = str_pad($request->employee_num, 6, '0', STR_PAD_LEFT);
-        // $user->employee_num = $request->employee_num;
-        $user->name = $request->name;
-        $user->kana_name = $request->kana_name;
+        // 社員番号の頭0埋め6桁にする
+        $emploeeNum =  str_pad($request->employee_num, 6, '0', STR_PAD_LEFT);
+
+
+        // プロフ画像のファイル名を生成
+        if ($request->hasFile('profile_image')) {
+            $extension = $request->profile_image->extension();
+            $fileName = $emploeeNum . '_' . 'profile' . '.' . $extension;
+            $imagePath = $request->file('profile_image')->storeAs('users/profile_image', $fileName, 'public');
+        } else {
+            $imagePath = null; // ファイルがアップロードされなかった場合はnullを保存する
+        }
+
+        $user = new User();
+        $user->employee_num = $emploeeNum;
+        $user->last_name = $request->last_name;
+        $user->first_name = $request->first_name;
+        $user->last_kana_name = $request->last_kana_name;
+        $user->first_kana_name = $request->first_kana_name;
         $user->email = $request->email;
         $user->int_phone = $request->int_phone;
         $user->ext_phone = $request->ext_phone;
-        $user->role_id = $request->role_id;
+        // $user->role_id = $request->role_id;
         $user->affiliation1_id = $request->affiliation1_id;
         $user->department_id = $request->department_id;
         $user->affiliation3_id = $request->affiliation3_id;
         $user->employee_status_id = $request->employee_status_id;
         $user->is_enabled = $request->is_enabled;
         $user->password = bcrypt($request->password);
+        $user->profile_image = $imagePath;
         $user->save();
-        return redirect()->route('user.index')->with('success','登録しました');
+
+        return redirect()->route('users.index')->with('success','登録しました');
     }
 
     public function show($id)

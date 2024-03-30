@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;//add
 use App\Observers\GlobalObserver;
+use Illuminate\Notifications\Notification;
 
 class Report extends Model
 {

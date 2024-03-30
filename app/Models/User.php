@@ -13,7 +13,6 @@ use Kyslik\ColumnSortable\Sortable;//add
 use App\Observers\GlobalObserver;
 
 
-
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, Sortable;
@@ -32,7 +31,8 @@ class User extends Authenticatable
         'access_ip',
         'last_login_at',
         'role_id',
-        'employee_status_id'
+        'employee_status_id',
+        'profile_image',
     ];
 
     /**

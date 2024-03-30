@@ -70,7 +70,16 @@
                 @foreach ($unreadNotifications  as $notification)
                 <li class="flex justify-between hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                     {{-- <p  class="block px-4 py-2">{{ $notification->data['notification_data']['reporter'] }}</p> --}}
-                    <a href="{{ $notification->data['notification_data']['action_url'] }}" class="block px-4 py-2">{{ $notification->data['notification_data']['message'] }}</a>
+                    <form action="{{ route('notifications.read', $notification) }}" method="POST" style="display: inline;">
+                        @csrf
+                        <button type="submit" class="{{ is_null($notification->read_at) ? 'un-read' : '' }}">
+                            <div class="flex justify-between hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                <p class="block px-4 py-2">{{ $notification->data['notification_data']['reporter'] }}</p>
+                                <p class="block px-4 py-2">{{ $notification->data['notification_data']['message'] }}</p>
+                            </div>
+                        </button>
+                    </form>
+                    {{-- <a href="{{ $notification->data['notification_data']['action_url'] }}" class="block px-4 py-2">{{ $notification->data['notification_data']['message'] }}</a> --}}
                     <div class="px-4 py-2">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</div>
                 </li>
                 @endforeach
@@ -92,7 +101,8 @@
                         </svg> --}}
                         <div class="">
                             @if(Auth::check())
-                            {{ Auth::user()->name }}
+                            {{ Auth::user()->last_name }}
+                            {{ Auth::user()->first_name }}
                             @endif
                         </div>
                         <div class="ml-1">
@@ -129,7 +139,7 @@
 <div id="accordion-collapse" data-accordion="collapse" class="fixed mt-10 pt-4 dark:bg-gray-800 bg-gray-100 h-screen w-12 overflow-x-hidden hover:w-52 whitespace-nowrap transition-all duration-500 ease-in-out z-40 invisible md:visible border-r border-gray-200 dark:border-gray-700">
 
         <div class="py-4 pl-2">
-        <ul class="space-y-2 font-medium">
+        <ul class="space-y-1">
             <li>
                 <x-nav-link :href="route('dashboard')" :tabindex="-1" :active="request()->routeIs('dashboard')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                     <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg>
@@ -151,7 +161,7 @@
                         @can('view_corporations')
                         <x-nav-link :href="route('corporations.index')" :active="request()->routeIs('corporations.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                             <span class="flex-1 ml-10 whitespace-nowrap">{{ __('法人一覧') }}</span>
-                        </x-nav-link>                            
+                        </x-nav-link>
                         @endcan
                     </li>
                     <li>
@@ -274,7 +284,7 @@
                 </x-nav-link>
             </li>
 
-            <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
+            <ul class="pt-4 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700">
             
                 {{-- <li>
                 <a href="#" class="flex items-center p-2 text-gray-900 transition duration-75 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
@@ -299,7 +309,7 @@
                 <ul  class="hidden py-1 space-y-1" id="accordion-body-90" aria-labelledby="accordion-heading-90">
                     @can('view_users')
                     <li>
-                        <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                             {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
                             <span class="flex-1 ml-10 whitespace-nowrap">{{ __('ユーザ管理') }}</span>
                         </x-nav-link>
@@ -352,7 +362,7 @@
     {{-- <div id="drawer-navigation" class=" top-0 left-2 z-40 h-screen p-4 w-16 transition-all transform duration-500   hover:w-56 overflow-x-hidden bg-white dark:bg-gray-800" tabindex="-1" aria-labelledby="drawer-navigation-label"> --}}
     <div id="drawer-navigation" class="mt-12  fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform -translate-x-full w-60 bg-white dark:bg-gray-800" tabindex="-1" aria-labelledby="drawer-navigation-label">
         <div class="py-4 overflow-y-auto">
-            <ul class="space-y-2 font-medium">
+            <ul class="space-y-1 font-medium">
                 <li>
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                         <svg aria-hidden="true" class="w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg>
@@ -492,7 +502,7 @@
                     </button>
                     <ul id="dropdown-sm-admin" class="hidden py-1 space-y-1">
                         <li>
-                            <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('ユーザ管理') }}</span>
                             </x-nav-link>
                         </li>

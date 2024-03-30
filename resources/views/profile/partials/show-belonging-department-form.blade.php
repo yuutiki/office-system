@@ -14,9 +14,9 @@
         @method('put')
 
         <div>
-            <x-input-label for="company" :value="__('所属1')" />
-            <x-text-input id="company" name="company" type="text" class="mt-1 block w-full" :value="old('company', $user->company->company_name)" disabled/>
-            {{-- <x-input-error :messages="$errors->updatePassword->get('company')" class="mt-2" /> --}}
+            <x-input-label for="affiliation1" :value="__('所属1')" />
+            <x-text-input id="affiliation1" name="affiliation1" type="text" class="mt-1 block w-full" :value="old('affiliation1', $user->affiliation1->affiliation1_name)" disabled/>
+            {{-- <x-input-error :messages="$errors->updatePassword->get('affiliation1')" class="mt-2" /> --}}
         </div>
         <div>
             <x-input-label for="department" :value="__('所属2')" />
@@ -24,9 +24,9 @@
             {{-- <x-input-error :messages="$errors->updatePassword->get('department')" class="mt-2" /> --}}
         </div>
         <div>
-            <x-input-label for="division" :value="__('所属3')" />
-            <x-text-input id="division" name="division" type="text" class="mt-1 block w-full" :value="old('division', $user->affiliation3->affiliation3_name)" disabled/>
-            {{-- <x-input-error :messages="$errors->updatePassword->get('division')" class="mt-2" /> --}}
+            <x-input-label for="affiliation3" :value="__('所属3')" />
+            <x-text-input id="affiliation3" name="affiliation3" type="text" class="mt-1 block w-full" :value="old('affiliation3', $user->affiliation3->affiliation3_name)" disabled/>
+            {{-- <x-input-error :messages="$errors->updatePassword->get('affiliation3')" class="mt-2" /> --}}
         </div>
 
         {{-- <div>

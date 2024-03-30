@@ -10,4 +10,10 @@ class NotificationService
     {
         Notification::send($notifiable, $notification);
     }
+
+
+    public function markAsRead($notification)
+    {
+        $notification->markAsRead();
+    }
 }

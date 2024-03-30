@@ -40,6 +40,7 @@ use App\Http\Controllers\Master\SalesStageController;
 use App\Http\Controllers\Master\SupportTimeController;
 use App\Http\Controllers\Master\SupportTypeController;
 use App\Http\Controllers\Master\TradeStatusController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RoleGroupController;
 use App\Http\Controllers\SupportController;
@@ -111,9 +112,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('/keepfile',KeepfileController::class);
 
     // user関連
-    Route::post('/user/upload', [UserController::class, 'upload'])->name('user.upload');
+    Route::post('/users/upload', [UserController::class, 'upload'])->name('users.upload');
     Route::get('/search-users', [UserController::class, 'searchUsers']);
-    Route::resource('/user', UserController::class);
+    Route::resource('/users', UserController::class);
 
     // product関連
     Route::post('/product/search', [ProductController::class, 'search'])->name('product.search');
@@ -126,7 +127,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/support', '\App\Http\Controllers\SupportController');
 
     // repport関連
-    Route::resource('/reports', '\App\Http\Controllers\ReportController');
+    Route::resource('/reports', ReportController::class);
 
 
     // RoleGroup
@@ -151,6 +152,10 @@ Route::middleware('auth')->group(function () {
     // estimate（見積）
     Route::get('/estimate/generate-pdf', [EstimateController::class, 'generatePdf'])->name('estimate.pdf.generate'); //仮
     Route::resource('/estimate' , EstimateController::class);
+
+    // notification
+    Route::post('/notifications/{notification}/read', [NotificationController::class, 'read'])->name('notifications.read');
+    Route::post('/notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.read-all');
 
 
     Route::resource('/link', '\App\Http\Controllers\LinkController');

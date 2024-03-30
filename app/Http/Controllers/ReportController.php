@@ -17,6 +17,7 @@ use App\Services\NotificationService;
 use Illuminate\Pagination\Paginator;//add
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\NotificationController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -95,7 +96,7 @@ class ReportController extends Controller
         $notificationData = [
             'action_url' => route('reports.show', ['report' => $report->id]), // 例: 日報を表示するURL
             'reporter' => $report->reporter->name,
-            'message' => '新しい日報を登録しました。',
+            'message' => '未読の日報があります',
             // 他の通知に関する情報をここで設定
         ];
 
@@ -137,16 +138,11 @@ class ReportController extends Controller
         $contactTypes = ContactType::all();
         $users = User::all();
 
-        // 通知を取得
-        // $notificationId = $report->notification_id; // 通知IDを取得する方法は、データベース設計に依存します
-
-        // 通知を既読にマーク
-        // $notification = auth()->user()->notifications()->find($notificationId);
-
-
-        // if ($notification) {
-        //     $notification->markAsRead();
+        // // Report の通知を既読にする
+        // if ($report->notification) {
+        //     $this->notificationService->markAsRead($report->notification);
         // }
+
         
         return view('reports.edit',compact('users', 'report', 'reportTypes', 'contactTypes'));
     }
@@ -231,5 +227,12 @@ class ReportController extends Controller
     //     // 必要に応じて選択されたユーザを処理する（例：データベースに保存）
     //     return response()->json(['message' => 'Success']);
     // }
+
+    public function read(DatabaseNotification $notification)
+    {
+        $notification->markAsRead();
+
+        return redirect($notification->data['url']);
+    }
     
 }

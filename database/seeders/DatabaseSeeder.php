@@ -43,9 +43,9 @@ class DatabaseSeeder extends Seeder
         $this->call(ContractChangeTypeSeeder::class);
         $this->call(ContractSheetStatusSeeder::class);
         $this->call(VendorTypeSeeder::class);
-        $this->call(RoleGroupSeeder::class);
         $this->call(FunctionMenuSeeder::class);
         $this->call(PermissionSeeder::class);
+        $this->call(RoleGroupSeeder::class);
 
         $this->call(T_CorporationSeeder::class);
         $this->call(T_ClientSeeder::class);

@@ -14,6 +14,8 @@
         </div>
     </x-slot>
 
+
+
     <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden">
     </div>
 
@@ -35,6 +37,10 @@
                     </div>
                 </div>
 
+                <div class="text-black dark:bg-white w-10">
+                    a
+                    {{ $report->notification }}
+                </div>
                 <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-2">
                     {{-- <div>
                         <label for="user_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">営業担当</label>

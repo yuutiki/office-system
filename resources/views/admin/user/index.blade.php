@@ -14,7 +14,7 @@
     <div class="relative bg-white dark:bg-gray-800 rounded-t-md md:w-auto md:ml-14 md:mr-2 m-auto shadow-md  dark:text-gray-900 mt-4">
         <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
             <div class="w-full md:w-1/2">
-                <form method="GET" action="{{ route('user.index') }}" id="search_form" class="flex items-center">
+                <form method="GET" action="{{ route('users.index') }}" id="search_form" class="flex items-center">
                     @csrf
                     <div class="flex flex-col md:flex-row w-full">
                         <label for="simple-search" class="sr-only">Search</label>
@@ -55,12 +55,12 @@
                                         権限
                                     </h6>
                                     <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-                                        @foreach ($roles as $role)
+                                        {{-- @foreach ($roles as $role)
                                         <li class="flex items-center">
                                             <input id="role-{{ $role->id }}" type="checkbox" name="roles[]" @if(in_array($role->id, $selectedRoles)) checked @endif value="{{$role->id}}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
                                             <label for="role-{{ $role->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $role->role_name }}</label>
                                         </li>                       
-                                        @endforeach
+                                        @endforeach --}}
                                     </ul>
                                     <ul class="border my-2"></ul>
                                     <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
@@ -96,14 +96,14 @@
             </div>
             <div class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
                 @can('storeUpdate_users')
-                <button type="button" onclick="location.href='{{ route('user.create') }}'" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-s rounded-e bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                    <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                    </svg>
-                    {{ __('Add') }}
+                    <button type="button" onclick="location.href='{{ route('users.create') }}'" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-s rounded-e bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                        <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                        </svg>
+                        {{ __('Add') }}
                 </button>
                 @else
-                <button type="button" onclick="location.href='{{ route('user.create') }}'" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-s rounded-e bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-blue-800 cursor-not-allowed" disabled>
+                <button type="button" onclick="location.href='{{ route('users.create') }}'" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-s rounded-e bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-blue-800 cursor-not-allowed" disabled>
                     <svg class="h-4 w-4 mr-2 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                         <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
                     </svg>
@@ -122,38 +122,38 @@
                     <div id="actionsDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-600 dark:divide-gray-600">
                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
                             @can('admin_users')
-                            <li>
-                                {{-- <button type="button" onclick="location.href='{{ route('users.showUploadForm') }}'" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white"> --}}
-                                <button type="button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
-                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2M8 9l4-5 4 5m1 8h0"/>
-                                        </svg>
-                                    </div>
-                                    CSVアップロード
-                                </button>
-                            </li>
+                                <li>
+                                    {{-- <button type="button" onclick="location.href='{{ route('users.showUploadForm') }}'" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white"> --}}
+                                    <button type="button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2M8 9l4-5 4 5m1 8h0"/>
+                                            </svg>
+                                        </div>
+                                        CSVアップロード
+                                    </button>
+                                </li>
                             @else
-                            <li>
-                                <button type="button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
-                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                        <svg class="h-4 w-4 mr-2 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                            <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
-                                        </svg>
-                                    </div>
-                                    CSVアップロード
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
-                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                        <svg class="h-4 w-4 mr-2 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                            <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
-                                        </svg>
-                                    </div>
-                                    CSVダウンロード
-                                </button>
-                            </li>
+                                <li>
+                                    <button type="button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
+                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            <svg class="h-4 w-4 mr-2 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </div>
+                                        CSVアップロード
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
+                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            <svg class="h-4 w-4 mr-2 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </div>
+                                        CSVダウンロード
+                                    </button>
+                                </li>
                             @endcan
 
                         </ul>
@@ -221,14 +221,14 @@
                             </svg>
                         </div>
                     </th>
-                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                    {{-- <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             @sortablelink('role_id','権限')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
                                 <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
                             </svg>
                         </div>
-                    </th>
+                    </th> --}}
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             @sortablelink('last_login_at','最終ログイン日時')
@@ -284,9 +284,9 @@
                         <td class="px-1 py-1 whitespace-nowrap">
                             {{ $user->email }}
                         </td>
-                        <td class="px-1 py-1 whitespace-nowrap">
+                        {{-- <td class="px-1 py-1 whitespace-nowrap">
                             {{ $user->role->role_name }}
-                        </td>
+                        </td> --}}
                         <td class="px-1 py-1 whitespace-nowrap">
                         @if ($user->last_login_at)
                             {{ Carbon\Carbon::parse($user->last_login_at)->diffForHumans() }}
@@ -307,7 +307,6 @@
                                 無効
                             </td>
                         @endif
-
                         <td class="px-1 py-1 whitespace-nowrap">
                             {{ optional($user->updatedBy)->name }}
                         </td>
@@ -348,7 +347,7 @@
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                                     </svg>
                                     <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
-                                    <form action="{{route('user.destroy',$user->id)}}" method="POST" class="text-center m-auto">
+                                    <form action="{{route('users.destroy',$user->id)}}" method="POST" class="text-center m-auto">
                                         @csrf
                                         @method('delete')
                                         <button type="submit" data-modal-hide="deleteModal-{{$user->id}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-2 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-s rounded-e text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
@@ -375,7 +374,7 @@
                                 </svg>
                             </button>
                         </div>
-                        <form id="updateForm-{{$user->id}}" method="POST" action="{{ route('user.update', $user->id) }}">
+                        <form id="updateForm-{{$user->id}}" method="POST" action="{{ route('users.update', $user->id) }}">
                             @csrf
                             @method('PUT')
 
@@ -385,6 +384,12 @@
                                 <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                                 <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">有効</span>
                             </label>
+
+                        @if($user->profile_image)
+                            <img class="w-20 h-20 rounded" src="{{ asset('storage/' . $user->profile_image) }}" alt="プロフィール画像">
+                        @else
+                            <img src="{{ asset('storage/users/profile_image/default.png') }}" alt="デフォルトのプロフィール画像">
+                        @endif
 
                             <div class="w-full flex flex-col col-span-2 mt-4">
                                 <label for="employee_num-{{$user->id}}" class="dark:text-gray-100 text-gray-900 leading-none mt-1">社員番号</label>
@@ -446,7 +451,7 @@
                                 <div class="text-red-500">{{$message}}</div>
                             @enderror
 
-                            <div class="w-full flex flex-col">
+                            {{-- <div class="w-full flex flex-col">
                                 <label for="role_id" class="block mt-4 text-gray-900 dark:text-white">権限</label>
                                 <select name="role_id_{{$user->id}}" id="role_id-{{$user->id}}" value="{{old('role_id')}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
                                     @foreach($roles as $role)
@@ -456,7 +461,7 @@
                             </div>
                             @error('role_id_' . $user->id)
                                 <div class="text-red-500">{{$message}}</div>
-                            @enderror
+                            @enderror --}}
 
                             <div class="w-full flex flex-col">
                                 <label for="affiliation1_id" class="block mt-4 text-gray-900 dark:text-white">所属1</label>
@@ -578,7 +583,7 @@
             </div>
             <!-- Modal body -->
             <div class="p-6 space-y-6 mr-20 mt-4">
-                <form action="{{ route('user.upload') }}" method="POST" enctype="multipart/form-data" class="flex items-center" id="csv_form1">
+                <form action="{{ route('users.upload') }}" method="POST" enctype="multipart/form-data" class="flex items-center" id="csv_form1">
                     @csrf
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="csv_input"></label>
                     <input type="file" name="csv_input"  id="csv_input_file"  class="block w-full text-sm text-gray-900 border border-gray-300 rounded-s rounded-e cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="csv_input_help">

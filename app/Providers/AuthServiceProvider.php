@@ -29,6 +29,9 @@ class AuthServiceProvider extends ServiceProvider
     // Usersに関する
         Gate::define('view_users', function (User $user) {
             // ユーザーがFunctionMenu_id=13のPermission_idが2以上（参照権限以上）であるかどうかを確認
+            if ($user->id === 1) {
+                return true; // UserIDが1の場合は常に許可
+            }
             $functionMenuPermission = RoleGroup::whereHas('users', function ($query) use ($user) {
                 $query->where('users.id', $user->id);
             })->whereHas('functionMenus', function ($query) {
@@ -40,6 +43,9 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('storeUpdate_users', function (User $user) {
             // ユーザーがFunctionMenu_id=13のPermission_idが3以上（登録更新権限以上）であるかどうかを確認
+            if ($user->id === 1) {
+                return true; // UserIDが1の場合は常に許可
+            }
             $functionMenuPermission = RoleGroup::whereHas('users', function ($query) use ($user) {
                 $query->where('users.id', $user->id);
             })->whereHas('functionMenus', function ($query) {
@@ -51,6 +57,9 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('delete_users', function (User $user) {
             // ユーザーがFunctionMenu_id=13のPermission_idが4以上（削除権限以上）であるかどうかを確認
+            if ($user->id === 1) {
+                return true; // UserIDが1の場合は常に許可
+            }
             $functionMenuPermission = RoleGroup::whereHas('users', function ($query) use ($user) {
                 $query->where('users.id', $user->id);
             })->whereHas('functionMenus', function ($query) {
@@ -62,6 +71,9 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('download_users', function (User $user) {
             // ユーザーがFunctionMenu_id=13のPermission_idが5以上（書出権限以上）であるかどうかを確認
+            if ($user->id === 1) {
+                return true; // UserIDが1の場合は常に許可
+            }
             $functionMenuPermission = RoleGroup::whereHas('users', function ($query) use ($user) {
                 $query->where('users.id', $user->id);
             })->whereHas('functionMenus', function ($query) {
@@ -73,6 +85,9 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('admin_users', function (User $user) {
             // ユーザーがFunctionMenu_id=13のPermission_idが5（全権限）であるかどうかを確認
+            if ($user->id === 1) {
+                return true; // UserIDが1の場合は常に許可
+            }
             $functionMenuPermission = RoleGroup::whereHas('users', function ($query) use ($user) {
                 $query->where('users.id', $user->id);
             })->whereHas('functionMenus', function ($query) {
@@ -87,6 +102,9 @@ class AuthServiceProvider extends ServiceProvider
     // Corporationsに関する
         Gate::define('view_corporations', function (User $user) {
             // ユーザーがFunctionMenu_id=1のPermission_idが2以上（参照権限以上）であるかどうかを確認
+            if ($user->id === 1) {
+                return true; // UserIDが1の場合は常に許可
+            }
             $functionMenuPermission = RoleGroup::whereHas('users', function ($query) use ($user) {
                 $query->where('users.id', $user->id);
             })->whereHas('functionMenus', function ($query) {
@@ -98,6 +116,9 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('storeUpdate_corporations', function (User $user) {
             // ユーザーがFunctionMenu_id=1のPermission_idが3以上（登録更新権限以上）であるかどうかを確認
+            if ($user->id === 1) {
+                return true; // UserIDが1の場合は常に許可
+            }
             $functionMenuPermission = RoleGroup::whereHas('users', function ($query) use ($user) {
                 $query->where('users.id', $user->id);
             })->whereHas('functionMenus', function ($query) {
@@ -109,6 +130,9 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('delete_corporations', function (User $user) {
             // ユーザーがFunctionMenu_id=1のPermission_idが4以上（削除権限以上）であるかどうかを確認
+            if ($user->id === 1) {
+                return true; // UserIDが1の場合は常に許可
+            }
             $functionMenuPermission = RoleGroup::whereHas('users', function ($query) use ($user) {
                 $query->where('users.id', $user->id);
             })->whereHas('functionMenus', function ($query) {
@@ -120,6 +144,9 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('download_corporations', function (User $user) {
             // ユーザーがFunctionMenu_id=1のPermission_idが5以上（書出権限以上）であるかどうかを確認
+            if ($user->id === 1) {
+                return true; // UserIDが1の場合は常に許可
+            }
             $functionMenuPermission = RoleGroup::whereHas('users', function ($query) use ($user) {
                 $query->where('users.id', $user->id);
             })->whereHas('functionMenus', function ($query) {
@@ -131,6 +158,9 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('admin_corporations', function (User $user) {
             // ユーザーがFunctionMenu_id=1のPermission_idが5（全権限）であるかどうかを確認
+            if ($user->id === 1) {
+                return true; // UserIDが1の場合は常に許可
+            }
             $functionMenuPermission = RoleGroup::whereHas('users', function ($query) use ($user) {
                 $query->where('users.id', $user->id);
             })->whereHas('functionMenus', function ($query) {
