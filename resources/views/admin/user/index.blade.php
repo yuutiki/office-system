@@ -199,7 +199,7 @@
                     </th>
                     <th scope="col" class="pl-4 py-3 whitespace-nowrap">
                         <div class="flex items-center">
-                            @sortablelink('employee_num','社員番号')
+                            @sortablelink('user_num','社員番号')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
                                 <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
                             </svg>
@@ -207,7 +207,7 @@
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
-                            @sortablelink('name','氏名')
+                            @sortablelink('user_kana_name','氏名')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
                                 <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
                             </svg>
@@ -276,10 +276,10 @@
                             {{ $loop->iteration }}
                         </td>
                         <td class="pl-4 py-1 whitespace-nowrap">
-                            {{ $user->employee_num }}
+                            {{ $user->user_num }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{ $user->name }}
+                            {{ $user->user_name }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
                             {{ $user->email }}
@@ -387,31 +387,31 @@
 
                         @if($user->profile_image)
                             <img class="w-20 h-20 rounded" src="{{ asset('storage/' . $user->profile_image) }}" alt="プロフィール画像">
-                        @else
-                            <img src="{{ asset('storage/users/profile_image/default.png') }}" alt="デフォルトのプロフィール画像">
+                        {{-- @else
+                            <img src="{{ asset('storage/users/profile_image/default.png') }}" alt="デフォルトのプロフィール画像"> --}}
                         @endif
 
                             <div class="w-full flex flex-col col-span-2 mt-4">
-                                <label for="employee_num-{{$user->id}}" class="dark:text-gray-100 text-gray-900 leading-none mt-1">社員番号</label>
-                                <input type="text" maxlength="20" name="employee_num_{{$user->id}}" id="employee_num-{{$user->id}}" value="{{old('employee_num' . $user->id, $user->employee_num)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
+                                <label for="user_num-{{$user->id}}" class="dark:text-gray-100 text-gray-900 leading-none mt-1">ユーザ№</label>
+                                <input type="text" maxlength="20" name="user_num_{{$user->id}}" id="user_num-{{$user->id}}" value="{{old('user_num' . $user->id, $user->user_num)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
                             </div>
-                            @error('employee_num_' . $user->id)
+                            @error('user_num_' . $user->id)
                                 <div class="text-red-500">{{ $message }}</div>
                             @enderror
 
                             <div class="w-full flex flex-col col-span-2 mt-4">
-                                <label for="name-{{$user->id}}" class="dark:text-gray-100 text-gray-900 leading-none mt-1">氏名</label>
-                                <input type="text" maxlength="20" name="name_{{$user->id}}" id="name-{{$user->id}}" value="{{ old('name_' . $user->id, $user->name) }}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
+                                <label for="user_name-{{$user->id}}" class="dark:text-gray-100 text-gray-900 leading-none mt-1">氏名</label>
+                                <input type="text" maxlength="20" name="user_name_{{$user->id}}" id="user_name-{{$user->id}}" value="{{ old('user_name_' . $user->id, $user->user_name) }}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
                             </div>
-                            @error('name_' . $user->id)
+                            @error('user_name_' . $user->id)
                                 <div class="text-red-500">{{ $message }}</div>
                             @enderror
 
                             <div class="w-full flex flex-col col-span-2 mt-4">
-                                <label for="kana_name-{{$user->id}}" class="dark:text-gray-100 text-gray-900 leading-none mt-1">カナ氏名</label>
-                                <input type="text" maxlength="20" name="kana_name_{{$user->id}}" id="kana_name-{{$user->id}}" value="{{old('kana_name_' . $user->id, $user->kana_name)}}" class="dark:bg-white w-auto py-0.5 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
+                                <label for="user_kana_name-{{$user->id}}" class="dark:text-gray-100 text-gray-900 leading-none mt-1">カナ氏名</label>
+                                <input type="text" maxlength="20" name="user_kana_name_{{$user->id}}" id="user_kana_name-{{$user->id}}" value="{{old('user_kana_name_' . $user->id, $user->user_kana_name)}}" class="dark:bg-white w-auto py-0.5 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
                             </div>
-                            @error('kana_name_' . $user->id)
+                            @error('user_kana_name_' . $user->id)
                                 <div class="text-red-500">{{ $message }}</div>
                             @enderror
 

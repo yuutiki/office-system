@@ -13,6 +13,7 @@ class AppNotification extends Notification
     
     protected $contentData;
     protected $notificationData;
+    
 
     /**
      * Create a new notification instance.

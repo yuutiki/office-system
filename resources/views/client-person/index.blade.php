@@ -292,7 +292,7 @@
                             {{$clientPerson->mail}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$clientPerson->tel1}}
+                            {{ $clientPerson->tel1}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
                             @if ($clientPerson->is_billing_receiver)

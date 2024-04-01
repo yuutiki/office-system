@@ -214,6 +214,4 @@
     <script type="text/javascript" src="{{ asset('assets/js/stopTab.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/assets/js/addresssearchbutton.js') }}"></script>
-    {{-- <script type="text/javascript" src="{{ asset('/assets/js/main.js') }}"></script> --}}
-
 </x-app-layout>

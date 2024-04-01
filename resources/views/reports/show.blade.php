@@ -131,5 +131,21 @@
             this.style.height = (this.scrollHeight + 2) + 'px';
         });
     </script>
+
+
+<script>
+// ページが読み込まれた後に一度だけ画面をリロードする関数
+function reloadPage() {
+    // ページをリロードする
+    window.location.reload();
+    console.log('再読み込み');
+}
+
+// ページが読み込まれた後に実行される処理
+window.onload = function() {
+    // ページが読み込まれた後にリロードを実行するために、setTimeoutを使用する
+    setTimeout(reloadPage, 0);
+};
+</script>
     
 </x-app-layout>

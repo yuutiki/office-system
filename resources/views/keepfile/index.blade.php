@@ -262,7 +262,7 @@
                             {{$keepfile->return_at}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$keepfile->user->name}}
+                            {{$keepfile->user->user_name}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
                             @if ($keepfile->is_finished == "0")

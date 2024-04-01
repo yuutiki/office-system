@@ -207,14 +207,98 @@
             <div>
                 <div>
                     <div class="w-full flex flex-col">
-                        <label for="credit_limit" class="dark:text-gray-100 text-gray-900 leading-none mt-4">与信限度額</label>
+                        <label for="credit_limit" class="dark:text-gray-100 text-gray-900 leading-none mt-4 text-sm">更新額</label>
                         <input type="text" form="corporationForm" onblur="formatNumberInput(this);" name="credit_limit" id="credit_limit" value="{{old('credit_limit',$corporation->credit_limit)}}" class="input-primary" placeholder="">
                     </div>
                     @error('credit_limit')
                         <div class="text-red-500">{{$message}}</div>
                     @enderror
                 </div>
-                <div class="h-[550px]">
+                <div>
+                    <div class="w-full flex flex-col">
+                        <label for="credit_limit_reason" class="dark:text-gray-100 text-gray-900 leading-none mt-4 text-sm">評価点（リスク）</label>
+                        <input type="text" form="corporationForm" name="credit_limit_reason" id="credit_limit_reason" value="{{old('credit_limit_reason')}}" class="input-primary" placeholder="">
+                    </div>
+                    @error('credit_limit_reason')
+                        <div class="text-red-500">{{$message}}</div>
+                    @enderror
+                </div>
+                <div>
+                    <div class="w-full flex flex-col">
+                        <label for="credit_limit_reason" class="dark:text-gray-100 text-gray-900 leading-none mt-4 text-sm">評価者（外部/内部）</label>
+                        <input type="text" form="corporationForm" name="credit_limit_reason" id="credit_limit_reason" value="{{old('credit_limit_reason')}}" class="input-primary" placeholder="">
+                    </div>
+                    @error('credit_limit_reason')
+                        <div class="text-red-500">{{$message}}</div>
+                    @enderror
+                </div>
+                <div>
+                    <div class="w-full flex flex-col">
+                        <label for="credit_limit_reason" class="dark:text-gray-100 text-gray-900 leading-none mt-4 text-sm">根拠</label>
+                        <input type="text" form="corporationForm" name="credit_limit_reason" id="credit_limit_reason" value="{{old('credit_limit_reason')}}" class="input-primary" placeholder="">
+                    </div>
+                    @error('credit_limit_reason')
+                        <div class="text-red-500">{{$message}}</div>
+                    @enderror
+                </div>
+
+                <div class="relative overflow-x-auto mt-8">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border border-gray-600">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 mt-8">
+                            <tr>
+                                <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 text-center w-40">
+                                    更新日時
+                                </th>
+                                <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 text-center w-40">
+                                    更新後与信額
+                                </th>
+                                <th scope="col" class="px-6 py-2 whitespace-nowrap border-x border-gray-600 text-center w-40">
+                                    更新者
+                                </th>
+                                <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 text-center">
+                                    根拠
+                                </th>
+                                <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 text-center">
+                                    操作
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{-- @foreach ($users as $user) --}}
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
+                                <td class="px-6 py-2 whitespace-nowrap border border-gray-600">
+                                    {{ '2024-04-01' }}
+                                </td>
+                                <td class="px-2 py-2 text-right border border-gray-600">
+                                    {{ '10,000,000' }}
+                                </td>
+                                <td class="px-2 py-2 text-center border border-gray-600">
+                                    {{ Auth()->user()->last_name }}
+                                </td>
+                                <td class="px-2 py-2 border border-gray-600">
+                                    {{ '大学なので標準です' }}
+                                </td>
+                                <td class="text-center border border-gray-600">
+                                    {{-- <form method="post" action="{{ route('group.delete_user') }}">
+                                        @csrf
+                                        @method('delete')
+                                        <input type="hidden" name="user_id" value="{{ $user->id }}">
+                                        <input type="hidden" name="role_group_id" value="{{ $roleGroup->id }}">
+                                        <button type="submit" class="text-red-500 hover:text-red-700 focus:outline-none">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm0-2a6 6 0 100-12 6 6 0 000 12zm1-7a1 1 0 01-2 0V7a1 1 0 012 0v2z" clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    </form> --}}
+                                </td>
+                            </tr>
+                            {{-- @endforeach --}}
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <div class="h-[350px]">
                     <span class="hidden">ダミー</span>
                 </div>
             </div>

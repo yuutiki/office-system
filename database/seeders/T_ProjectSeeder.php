@@ -33,7 +33,7 @@ class T_ProjectSeeder extends Seeder
             'account_company_id' => '1',
             'account_department_id' => '1',
             'account_affiliation3_id' => '1',
-            'account_user_id' => '1',
+            'account_user_id' => '2',
             'created_by' => '1',
             'updated_by' => '1',
         ]);
@@ -60,7 +60,7 @@ class T_ProjectSeeder extends Seeder
             'account_company_id' => '1',
             'account_department_id' => '1',
             'account_affiliation3_id' => '1',
-            'account_user_id' => '1',
+            'account_user_id' => '2',
             'created_by' => '1',
             'updated_by' => '1',
         ]);
@@ -87,7 +87,7 @@ class T_ProjectSeeder extends Seeder
             'account_company_id' => '1',
             'account_department_id' => '1',
             'account_affiliation3_id' => '1',
-            'account_user_id' => '1',
+            'account_user_id' => '2',
             'created_by' => '1',
             'updated_by' => '1',
         ]);
@@ -114,7 +114,7 @@ class T_ProjectSeeder extends Seeder
             'account_company_id' => '1',
             'account_department_id' => '1',
             'account_affiliation3_id' => '1',
-            'account_user_id' => '1',
+            'account_user_id' => '2',
             'created_by' => '1',
             'updated_by' => '1',
         ]);

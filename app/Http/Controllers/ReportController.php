@@ -60,13 +60,6 @@ class ReportController extends Controller
 
     public function store(ReportStoreRequest $request)
     {
-        // $rules = [
-        //     'title' => 'required|max:255',
-        //     'content' => 'required',
-        // ];
-
-        // $request->validate($rules);
-
         // フォームからの値を変数に格納
         $clientNum = $request->input('client_num');
 
@@ -90,13 +83,13 @@ class ReportController extends Controller
         $request->session()->forget('selected_client_num');
         $request->session()->forget('selected_client_name');
 
-
-
         // 通知の内容を設定
         $notificationData = [
             'action_url' => route('reports.show', ['report' => $report->id]), // 例: 日報を表示するURL
             'reporter' => $report->reporter->name,
             'message' => '未読の日報があります',
+            'source_model' => Report::class,
+            'source_id' => $report->id,
             // 他の通知に関する情報をここで設定
         ];
 
@@ -104,13 +97,11 @@ class ReportController extends Controller
         $userIds = $request->input('selectedRecipientsId',[]);
         $users = User::whereIn('id', $userIds)->get();
 
-
         // 通知の作成
         $notification = new AppNotification($report, $notificationData); // $report を通知データとして渡す
 
         // 通知の送信
         $this->notificationService->sendNotification($users, $notification);
-  
 
 
         return redirect()->route('reports.index')->with('success','正常に登録しました');
@@ -120,6 +111,31 @@ class ReportController extends Controller
     {
         $report = Report::find($id);
         $comments = $report->comments;
+
+        
+    // ログインユーザーの通知を取得し、既読状態にする
+    $user = auth()->user();
+
+    // ログインユーザーの未読通知を取得
+    $unreadNotifications = $user->unreadNotifications;
+
+
+    // 未読通知を走査して対応する通知を既読にする
+    foreach ($unreadNotifications as $notification) {
+        // 通知データをデコード
+        $notificationData = $notification->data;
+
+        // 通知データから関連する報告書の情報を取得する
+        $notificationReportId = $notificationData['notification_data']['source_id'];
+
+        // 通知が特定の報告書に関連しているかチェックする
+        if ($notificationReportId == $report->id) {
+            // 通知が関連している場合は既読状態にする
+            $notification->markAsRead();
+        }
+    }
+
+
         return view('reports.show',compact('report'));
     }
 
@@ -128,6 +144,10 @@ class ReportController extends Controller
     {
         $report = Report::find($id);
         $comments = $report->comments;
+
+
+
+
         return view('reports.show-from-client',compact('report'));
     }
 

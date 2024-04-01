@@ -41,7 +41,7 @@ class SupportController extends Controller
         $productSeriess = ProductSeries::select('id', 'series_name')->get();  //製品シリーズ
         $productVersions = ProductVersion::select('id', 'version_name')->get();  //製品バージョン
         $productCategories = ProductCategory::select('id', 'category_name')->get();  // 製品系統
-        $users = User::select('id', 'name')->get();  //受付対応者用
+        $users = User::select('id', 'user_name')->get();  //受付対応者用
         $supportTimes = SupportTime::select('id', 'time_name')->get(); //サポート時間
         $supportTypes = SupportType::select('id', 'type_name')->get();// サポート種別
 

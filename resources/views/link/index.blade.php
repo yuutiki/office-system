@@ -71,8 +71,8 @@
 
 
 
-    
-        <div class="w-5/6 m-auto relative overflow-x-auto rounded-s rounded-e mt-4 shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-50">
+    <div class="relative bg-white dark:bg-gray-800 rounded-t-md md:w-auto md:ml-14 md:mr-2 m-auto shadow-md  dark:text-gray-900 mt-4">
+        {{-- <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4"> --}}
             <div class="w-full">
                 <!-- Start coding here -->
                 <div class="relative bg-white dark:bg-gray-800">

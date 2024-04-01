@@ -60,6 +60,31 @@ Breadcrumbs::for('dashboard', function ($trail) {
                     $trail->push('CSVアップロード', route('clients.showUploadForm'));
                 });
 
+
+        // ダッシュボード > 製品一覧
+        Breadcrumbs::for('products', function ($trail) {
+            $trail->parent('dashboard');
+            $trail->push('製品一覧', url('products'));
+        });
+
+                // ダッシュボード > 製品一覧 > 新規登録
+                Breadcrumbs::for('createProduct', function ($trail) {
+                    $trail->parent('products');
+                    $trail->push('新規作成', url('products/create'));
+                });
+
+                // ダッシュボード > 製品一覧 > 編集
+                Breadcrumbs::for('editProduct', function ($trail ,$product) {
+                    $trail->parent('products');
+                    $trail->push('編集', url('products/' . $product->id . '/edit'));
+                });
+
+                // ダッシュボード > 製品一覧 > CSVアップロード
+                Breadcrumbs::for('csvUploadProducts', function ($trail) {
+                    $trail->parent('products');
+                    $trail->push('CSVアップロード', url('products/show-upload'));
+                });        
+
         // ダッシュボード > 業者一覧
         Breadcrumbs::for('vendors', function ($trail) {
             $trail->parent('dashboard');

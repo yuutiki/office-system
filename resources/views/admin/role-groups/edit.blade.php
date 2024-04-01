@@ -209,8 +209,8 @@
                         <tbody>
                             @foreach ($users as $user)
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
-                                <td class="px-6 py-2 font-medium whitespace-nowrap border border-gray-600">{{ $user->employee_num }}</td>
-                                <td class="px-2 py-2 text-center border border-gray-600">{{ $user->name }}</td>
+                                <td class="px-6 py-2 font-medium whitespace-nowrap border border-gray-600">{{ $user->user_num }}</td>
+                                <td class="px-2 py-2 text-center border border-gray-600">{{ $user->user_name }}</td>
                                 <td class="px-2 py-2 text-center border border-gray-600">
                                     @if ($user->employee_status_id == 1)
                                         <span class="bg-green-100 text-green-800 text-xs whitespace-nowrap font-medium px-2.5 py-0.5 rounded dark:bg-green-700 dark:text-green-400 border border-green-400">
@@ -459,8 +459,8 @@
                             $('<input>').attr('type', 'checkbox').attr('name', 'user_ids[]').val(user.id).addClass('form-checkbox h-5 w-5 text-blue-600 ml-8 rounded cursor-pointer')
                         )
                     );
-                    row.append($('<td>').text(user.employee_num).addClass('py-2 ml-2'));
-                    row.append($('<td>').text(user.name).addClass('py-2 ml-2'));
+                    row.append($('<td>').text(user.user_num).addClass('py-2 ml-2'));
+                    row.append($('<td>').text(user.user_name).addClass('py-2 ml-2'));
                     row.append($('<td>').text(user.affiliation1.affiliation1_name).addClass('py-2 ml-2'));
                     row.append($('<td>').text(user.department.department_name).addClass('py-2 ml-2'));
                     row.append($('<td>').text(user.affiliation3.affiliation3_name).addClass('py-2 ml-2'));

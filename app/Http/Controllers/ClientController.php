@@ -86,9 +86,9 @@ class ClientController extends Controller
         }
 
         // 初期表示で絞る
-        if (empty($salesUserId)) {
-            $clientsQuery->where('user_id','=', Auth::id());
-        }
+        // if (empty($salesUserId)) {
+        //     $clientsQuery->where('user_id','=', Auth::id());
+        // }
 
         // プルダウンが変更された場合の処理
         if (request()->has('selected_department')) {

@@ -117,10 +117,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('/users', UserController::class);
 
     // product関連
-    Route::post('/product/search', [ProductController::class, 'search'])->name('product.search');
-    Route::post('/product/upload', [ProductController::class, 'upload'])->name('product.upload');
-    Route::get('/get-split-types/{productTypeId}', [ProductController::class, 'getSplitTypes'])->name('product.getSplitTypes');
-    Route::resource('/product', ProductController::class);
+    Route::get('/products/show-upload', [ProductController::class, 'showUploadForm'])->name('products.showUploadForm');
+    Route::post('/products/upload', [ProductController::class, 'upload'])->name('products.upload');
+    Route::post('/products/search', [ProductController::class, 'search'])->name('products.search');
+    Route::get('/get-split-types/{productTypeId}', [ProductController::class, 'getSplitTypes'])->name('products.getSplitTypes');
+    Route::resource('/products', ProductController::class);
 
     // support関連
     Route::post('/support/upload', [SupportController::class, 'upload'])->name('support.upload');

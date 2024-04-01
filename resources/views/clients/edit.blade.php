@@ -411,59 +411,6 @@
                 {{-- 2つ目のタブコンテンツStart --}}
                 <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
                     <p class="text-sm text-gray-500 dark:text-gray-400">請求区分、契約日、解約日、契約金額、サポートページID、PW、暗号、契約備考、契約書添付、契約履歴</p>
-                    <div class="w-full flex flex-col">
-                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約番号</label>
-                        <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約先区分</label>
-                        <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">更新月</label>
-                        <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約種別</label>
-                        <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約日</label>
-                        <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">解約日</label>
-                        <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">契約金額</label>
-                        <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">SPログイン名</label>
-                        <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">SPパスワード</label>
-                        <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">SPパスワード（読み方）</label>
-                        <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">契約備考</label>
-                        <textarea name="non" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="non" value="{{old('non')}}" cols="30" rows="5"></textarea>
-                    </div>
-
-                    <div class="w-full flex flex-col">
-                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-8" autocomplete="new-password">請求区分</label>
-                        <input type="text" name="non" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="non" value="{{old('non',$client->non)}}" placeholder="">
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="non" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">請求備考</label>
-                        <textarea name="non" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="non" value="{{old('non')}}" cols="30" rows="5"></textarea>
-                    </div>
                 </div>
                 {{-- 2つ目のタブコンテンツEnd --}}
 
@@ -624,7 +571,7 @@
 
                 {{-- 4つ目のタブコンテンツStart --}}
                 <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
-                    <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-2">
+                    {{-- <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-2">
                         <div>
                             <label for="test1" class="text-sm text-gray-900 dark:text-white leading-none mt-4">インフラ区分</label>
                             <select id="test1" name="test1" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -811,7 +758,7 @@
                     <div class="w-full flex flex-col">
                         <label for="test14" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">環境備考</label>
                         <textarea name="test14" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="test14" value="{{old('test14')}}" cols="30" rows="5"></textarea>
-                    </div>
+                    </div> --}}
 
                 </div>
                 {{-- 4つ目のタブコンテンツEnd --}}
@@ -1450,92 +1397,157 @@
         // tabs.show('supports');
 
 
-        const csrfToken = "{{ csrf_token() }}";
+//         const csrfToken = "{{ csrf_token() }}";
 
-    // JavaScriptコード内でタブが切り替わる際にAjaxリクエストを送信
-    const tabsElement1 = document.getElementById('myTabs');
-    tabsElement1.addEventListener('click', (event) => {
-    if (event.target.getAttribute('role') === 'tab') {
-        const activeTabId = event.target.getAttribute('id'); // アクティブなタブのIDを取得
-        // Ajaxリクエストを送信
-        fetch('/updateActiveTab', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken // LaravelのCSRFトークンを含める
-            },
-            body: JSON.stringify({ activeTabId })
-        })
-        .then(response => {
-            if (response.ok) {
-                console.log('アクティブなタブが更新されました');
-            } else {
-                console.error('アクティブなタブの更新に失敗しました');
-            }
-        });
-    }
-});
-
-
-const activeTabId = '{{ Session::get('active_tab', 'default_tab_id') }}'; // デフォルトのタブIDを指定
+//     // JavaScriptコード内でタブが切り替わる際にAjaxリクエストを送信
+//     const tabsElement1 = document.getElementById('myTabs');
+//     tabsElement1.addEventListener('click', (event) => {
+//     if (event.target.getAttribute('role') === 'tab') {
+//         const activeTabId = event.target.getAttribute('id'); // アクティブなタブのIDを取得
+//         // Ajaxリクエストを送信
+//         fetch('/updateActiveTab', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 'X-CSRF-TOKEN': csrfToken // LaravelのCSRFトークンを含める
+//             },
+//             body: JSON.stringify({ activeTabId })
+//         })
+//         .then(response => {
+//             if (response.ok) {
+//                 console.log('アクティブなタブが更新されました');
+//             } else {
+//                 console.error('アクティブなタブの更新に失敗しました');
+//             }
+//         });
+//     }
+// });
 
 
-// ページ読み込み時にセッションからアクティブなタブIDを取得
-document.addEventListener('DOMContentLoaded', function() {
-
-    const options = {
-        defaultTabId: activeTabId, // セッションから取得したアクティブなタブIDをデフォルトに設定
-        activeClasses: 'text-blue-600 hover:text-blue-600 dark:text-blue-500 dark:hover:text-blue-400 border-blue-600 dark:border-blue-500',
-        inactiveClasses: 'text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300',
-        onShow: () => {
-            console.log('タブが表示されました');
-        }
-    };
-
-    const tabsElement = document.getElementById('myTabs');
-
-    const tabElements = [
-            {
-                id: 'basic',
-                triggerEl: document.querySelector('#basic-tab'),
-                targetEl: document.querySelector('#basic')
-            },
-            {
-                id: 'dashboard',
-                triggerEl: document.querySelector('#dashboard-tab'),
-                targetEl: document.querySelector('#dashboard')
-            },
-            {
-                id: 'settings',
-                triggerEl: document.querySelector('#settings-tab'),
-                targetEl: document.querySelector('#settings')
-            },
-            {
-                id: 'contacts',
-                triggerEl: document.querySelector('#contacts-tab'),
-                targetEl: document.querySelector('#contacts')
-            },
-            {
-                id: 'reports',
-                triggerEl: document.querySelector('#reports-tab'),
-                targetEl: document.querySelector('#reports')
-            },
-            {
-                id: 'supports',
-                triggerEl: document.querySelector('#supports-tab'),
-                targetEl: document.querySelector('#supports')
-            }
-        ];
-
-        console.log(tabElements);
-    const tabs = new Tabs(tabsElement, tabElements, options);
-    tabs.show(activeTabId);
-});
+// const activeTabId = '{{ Session::get('active_tab', 'default_tab_id') }}'; // デフォルトのタブIDを指定
 
 
+// // ページ読み込み時にセッションからアクティブなタブIDを取得
+// document.addEventListener('DOMContentLoaded', function() {
 
+//     const options = {
+//         defaultTabId: activeTabId, // セッションから取得したアクティブなタブIDをデフォルトに設定
+//         activeClasses: 'text-blue-600 hover:text-blue-600 dark:text-blue-500 dark:hover:text-blue-400 border-blue-600 dark:border-blue-500',
+//         inactiveClasses: 'text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300',
+//         onShow: () => {
+//             console.log('タブが表示されました');
+//         }
+//     };
+
+//     const tabsElement = document.getElementById('myTabs');
+
+//     const tabElements = [
+//             {
+//                 id: 'basic',
+//                 triggerEl: document.querySelector('#basic-tab'),
+//                 targetEl: document.querySelector('#basic')
+//             },
+//             {
+//                 id: 'dashboard',
+//                 triggerEl: document.querySelector('#dashboard-tab'),
+//                 targetEl: document.querySelector('#dashboard')
+//             },
+//             {
+//                 id: 'settings',
+//                 triggerEl: document.querySelector('#settings-tab'),
+//                 targetEl: document.querySelector('#settings')
+//             },
+//             {
+//                 id: 'contacts',
+//                 triggerEl: document.querySelector('#contacts-tab'),
+//                 targetEl: document.querySelector('#contacts')
+//             },
+//             {
+//                 id: 'reports',
+//                 triggerEl: document.querySelector('#reports-tab'),
+//                 targetEl: document.querySelector('#reports')
+//             },
+//             {
+//                 id: 'supports',
+//                 triggerEl: document.querySelector('#supports-tab'),
+//                 targetEl: document.querySelector('#supports')
+//             }
+//         ];
+
+//         console.log(tabElements);
+//     const tabs = new Tabs(tabsElement, tabElements, options);
+//     tabs.show(activeTabId);
+// });
 
     </script>
+
+    <script>
+        // ページがロードされたときに実行される関数
+window.onload = function() {
+    const tabsElement = document.getElementById('myTabs');
+    
+    // create an array of objects with the id, trigger element (eg. button), and the content element
+    const tabElements = [
+        {
+            id: 'basic',
+            triggerEl: document.querySelector('#basic-tab'),
+            targetEl: document.querySelector('#basic'),
+        },
+        {
+            id: 'dashboard',
+            triggerEl: document.querySelector('#dashboard-tab'),
+            targetEl: document.querySelector('#dashboard'),
+        },
+        {
+            id: 'contacts',
+            triggerEl: document.querySelector('#contacts-tab'),
+            targetEl: document.querySelector('#contacts'),
+        },
+        {
+            id: 'settings',
+            triggerEl: document.querySelector('#settings-tab'),
+            targetEl: document.querySelector('#settings'),
+        },
+        {
+            id: 'reports',
+            triggerEl: document.querySelector('#reports-tab'),
+            targetEl: document.querySelector('#reports'),
+        },
+        {
+            id: 'supports',
+            triggerEl: document.querySelector('#supports-tab'),
+            targetEl: document.querySelector('#supports'),
+        },
+    ];
+
+    // ローカルストレージからアクティブなタブIDを取得
+    const activeTabId = localStorage.getItem('activeTabId') || 'settings';
+
+    // オプションとインスタンスオプション
+    const options = {
+        defaultTabId: activeTabId, // ローカルストレージから取得したアクティブなタブIDを設定
+        activeClasses:
+            'text-blue-600 hover:text-blue-600 dark:text-blue-500 dark:hover:text-blue-400 border-blue-600 dark:border-blue-500',
+        inactiveClasses:
+            'text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300',
+        onShow: (id) => {
+            // 新しいタブが表示されたときに、アクティブなタブIDをローカルストレージに保存
+            localStorage.setItem('activeTabId', id);
+        },
+    };
+
+    // インスタンスオプションは変更なし
+    const instanceOptions = {
+      id: 'myTabs',
+      override: true
+    };
+
+    // Tabsオブジェクトの作成
+    const tabs = new Tabs(tabsElement, tabElements, options, instanceOptions);
+};
+    </script>
+
+
 <script type="text/javascript" src="{{ asset('/assets/js/addresssearchbutton.js') }}"></script>
 <script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
 

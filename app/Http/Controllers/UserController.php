@@ -364,7 +364,7 @@ class UserController extends Controller
 
 
         $users = User::with('affiliation1','department','affiliation3')
-        ->where('name', 'like', '%' . $query . '%')
+        ->where('user_name', 'like', '%' . $query . '%')
         ->where('affiliation1_id', 'like', '%' . $affiliation1Id . '%')
         ->where('department_id', 'like', '%' . $departmentId . '%')
         ->where('affiliation3_id', 'like', '%' . $affiliation3Id . '%')

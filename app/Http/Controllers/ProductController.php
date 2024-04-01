@@ -102,45 +102,32 @@ class ProductController extends Controller
         $productTypeId = $request->product_type_id; 
         $productSplitTypeId = $request->product_split_type_id; 
 
-        // 登録処理（トランザクションを開始）
-        DB::beginTransaction();
-        try {
+        // 製品コードを生成
+        $productMaker = ProductMaker::find($productMakerId);
+        $department = Department::find($departmentId);
+        $productType = ProductType::find($productTypeId);
+        $productSplitType = ProductSplitType::find($productSplitTypeId);
 
-            // 製品コードを生成
-            $productMaker = ProductMaker::find($productMakerId);
-            $department = Department::find($departmentId);
-            $productType = ProductType::find($productTypeId);
-            $productSplitType = ProductSplitType::find($productSplitTypeId);
-
-            $productCode = Product::generateProductCode($productMaker, $department, $productType, $productSplitType);
-            
-            $product = new Product();
-            $product->product_maker_id = $productMakerId;
-            $product->department_id = $departmentId;
-            $product->product_type_id = $productTypeId;
-            $product->product_split_type_id = $productSplitTypeId;
-            $product->product_series_id = $request->product_series_id;
-            $product->product_name = $request->product_name;
-            $product->product_short_name = $request->product_short_name;
-            $product->unit_price = $request->unit_price;
-            $product->product_memo1 = $request->product_memo1;
-            $product->product_memo2 = $request->product_memo2;
-            $product->is_stop_selling = $request->is_stop_selling;
-            $product->is_listed = $request->is_listed;
-            $product->product_code = $productCode;
-            $product->save();
-
-            DB::commit();
+        $productCode = Product::generateProductCode($productMaker, $department, $productType, $productSplitType);
+        
+        $product = new Product();
+        $product->product_maker_id = $productMakerId;
+        $product->department_id = $departmentId;
+        $product->product_type_id = $productTypeId;
+        $product->product_split_type_id = $productSplitTypeId;
+        $product->product_series_id = $request->product_series_id;
+        $product->product_name = $request->product_name;
+        $product->product_short_name = $request->product_short_name;
+        $product->unit_price = filter_var($request->unit_price, FILTER_SANITIZE_NUMBER_INT);
+        $product->product_memo1 = $request->product_memo1;
+        $product->product_memo2 = $request->product_memo2;
+        $product->is_stop_selling = $request->is_stop_selling;
+        $product->is_listed = $request->is_listed;
+        $product->product_code = $productCode;
+        $product->save();
 
         // 成功時の処理
-        return redirect()->route('product.index')->with('message', '登録しました。');
-
-        } catch (\Exception $e) {
-        // トランザクションをロールバック
-            DB::rollback();
-        // エラー時の処理
-            return redirect()->back()->with('message', '登録に失敗しました。');
-            }
+        return redirect()->route('products.index')->with('success', '正常に登録しました');
     }
 
     public function show(Product $product)
@@ -200,7 +187,7 @@ class ProductController extends Controller
 
     public function upload(Request $request)
     {
-        $csvFile = $request->file('csv_input');
+        $csvFile = $request->file('csv_upload');
         
         // CSVファイルの一時保存先パス
         $csvPath = $csvFile->getRealPath();
@@ -336,5 +323,12 @@ public function getSplitTypes($productTypeId)
 
         return response()->json($products);
     }
+
+
+    public function showUploadForm()
+    {
+        return view('product.upload-form');
+    }
+
     
 }

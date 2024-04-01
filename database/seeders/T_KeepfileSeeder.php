@@ -18,7 +18,7 @@ class T_KeepfileSeeder extends Seeder
             'return_at' => '2024-10-31',
             'keepfile_memo' => '1494-01-28-00：USB取得',
             'is_finished' => '0',
-            'user_id' => '1'
+            'user_id' => '2'
         ]);
 
         Keepfile::create([
@@ -29,7 +29,7 @@ class T_KeepfileSeeder extends Seeder
             'return_at' => '2024-08-31',
             'keepfile_memo' => '貴社データ共有サービス',
             'is_finished' => '0',
-            'user_id' => '1'
+            'user_id' => '2'
         ]);
 
         Keepfile::create([
@@ -40,7 +40,7 @@ class T_KeepfileSeeder extends Seeder
             'return_at' => '2024-06-30',
             'keepfile_memo' => 'リモート取得',
             'is_finished' => '0',
-            'user_id' => '1'
+            'user_id' => '2'
         ]);
 
         Keepfile::create([
@@ -51,7 +51,7 @@ class T_KeepfileSeeder extends Seeder
             'return_at' => '2024-06-30',
             'keepfile_memo' => 'リモート取得',
             'is_finished' => '0',
-            'user_id' => '1'
+            'user_id' => '2'
         ]);
 
         // Keepfile::create([
@@ -62,7 +62,7 @@ class T_KeepfileSeeder extends Seeder
         //     'return_at' => '2024-03-31',
         //     'keepfile_memo' => 'テスト',
         //     'is_finished' => '0',
-        //     'user_id' => '1'
+        //     'user_id' => '2'
         // ]);
     }
 }

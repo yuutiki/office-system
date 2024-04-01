@@ -59,40 +59,6 @@ $(function() {
     $.fn.autoKana('input[name^="name_"]', 'input[name^="kana_name_"]', {katakana: true});
 });
 
-// $(function(){
-//     $('#clear').click(function(){
-//         $('#clientcorporationform input, #clientcorporationform select, #keepfileform input, #keepfileform select').each(function(){
-//           //checkboxまたはradioボタンの時
-//           if(this.type == 'checkbox' || this.type == 'radio'){
-//             //一括でチェックを外す
-//               this.checked = false;
-//           }
-//           //checkboxまたはradioボタン以外の時
-//           else{
-//             // val値を空にする
-//             $(this).val('');
-//           }
-//         });
-//     });
-// });
-
-
-// $(function(){
-//     $('#clear').click(function(){
-//         $('#keepfileform input, #keepfileform select').each(function(){
-//           //checkboxまたはradioボタンの時
-//           if(this.type == 'checkbox' || this.type == 'radio'){
-//             //一括でチェックを外す
-//               this.checked = false;
-//           }
-//           //checkboxまたはradioボタン以外の時
-//           else{
-//             // val値を空にする
-//             $(this).val('');
-//           }
-//         });
-//     });
-// });
 
 // resetForm.js
 
@@ -156,18 +122,4 @@ window.addEventListener('load', () => {
             $('input[name="selectedIds[]"]').prop('checked', this.checked);
         });
     });
-
-
-    // const autoResizeTextareas = document.querySelectorAll('[data-auto-resize="true"]');
-    // autoResizeTextareas.forEach(textarea => {
-    //     textarea.addEventListener('input', function() {
-    //         this.style.height = 'auto';
-    //         this.style.height = (this.scrollHeight + 2) + 'px';
-    //     });
-    
-    //     textarea.addEventListener('mouseover', function() {
-    //         this.style.height = 'auto';
-    //         this.style.height = (this.scrollHeight + 2) + 'px';
-    //     });
-    // });
 });

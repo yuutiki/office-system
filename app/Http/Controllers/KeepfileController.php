@@ -29,7 +29,11 @@ class KeepfileController extends Controller
         $dayTo = $request->input('day_to');
     
         if (!empty($projectNum)) {
-            $query->where('project_num', 'like', "%{$projectNum}");
+            // Project テーブルからプロジェクト番号を部分一致で検索して該当する ID を取得
+            $projectIds = Project::where('project_num', 'like', "%{$projectNum}%")->pluck('id')->toArray();
+
+            // 取得したプロジェクト ID を使って Keepfile テーブルを検索する
+            $query->whereIn('project_id', $projectIds);
         }
     
         if (!empty($clientName)) {

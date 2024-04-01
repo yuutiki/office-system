@@ -12,15 +12,30 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'employee_num' => '000386',
-            // 'name' => '末久 優(admin)',
-            // 'kana_name' => 'スエヒサ ユウ',
-            'last_name' => 'システム',
-            'first_name' => '管理者',
-            'last_kana_name' => 'システム',
-            'first_kana_name' => 'カンリシャ',
+            'user_num' => '999999',
+            'user_name' => 'システム管理者',
+            'user_kana_name' => 'システムカンリシャ',
             'birth' => '1997-04-23',
             'email' => 'admin@gmail.com',
+            'password' => Hash::make('gPpefPCGU3Md5'),
+            'int_phone' => '415',
+            'ext_phone' => '070-2307-7176',
+            'is_enabled' => 1,
+            'employee_status_id'=> 1,
+            'affiliation1_id'=> 1,
+            'department_id'=> 1,
+            'affiliation3_id'=> 2,
+            'created_by' => 1,
+            'updated_by' => 1,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        User::create([
+            'user_num' => '000386',
+            'user_name' => '末久 優(admin)',
+            'user_kana_name' => 'スエヒサ ユウ',
+            'birth' => '1997-04-23',
+            'email' => 'suehisa@gmail.com',
             'password' => Hash::make('gPpefPCGU3Md5'),
             'int_phone' => '415',
             'ext_phone' => '070-2307-7176',
