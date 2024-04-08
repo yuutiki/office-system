@@ -114,7 +114,7 @@
                     <div>
                         <div class="w-full flex flex-col">
                             <label for="tel1" class="font-normal dark:text-white text-gray-900 leading-none">電話番号</label>
-                            <input type="text" name="tel1" id="tel1" value="{{old('tel1')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="">
+                            <input type="text" name="tel1" id="tel1" onchange="validateAndFormat('tel1')" value="{{old('tel1')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="">
                         </div>
                         @error('tel1')
                             <div class="text-red-500">{{$message}}</div>
@@ -130,7 +130,7 @@
                     <div>
                         <div class="w-full flex flex-col">
                             <label for="fax1" class="font-normal dark:text-white text-gray-900 leading-none">FAX番号</label>
-                            <input type="text" name="fax1" id="fax1" value="{{old('fax1')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="">
+                            <input type="text" name="fax1" id="fax1" onchange="validateAndFormat('fax1')" value="{{old('fax1')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="">
                         </div>
                         @error('fax1')
                             <div class="text-red-500">{{$message}}</div>
@@ -153,7 +153,7 @@
                     <div>
                         <div class="w-full flex flex-col">
                             <label for="phone" class="font-normal dark:text-white text-gray-900 leading-none">携帯番号</label>
-                            <input type="text" name="phone" id="phone" value="{{old('phone')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="">
+                            <input type="text" name="phone" id="phone" onchange="validateAndFormat('phone')" value="{{old('phone')}}" class="w-auto py-1 focus:ring-2 placeholder-gray-500 border border-gray-300 rounded mt-1" placeholder="">
                         </div>
                         @error('phone')
                             <div class="text-red-500">{{$message}}</div>
@@ -418,4 +418,41 @@
             hideModal();
             }
     </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/libphonenumber-js/1.1.10/libphonenumber-js.min.js"></script>
+<script>
+    // バリデーション関数
+    var validateTelNeo = function (value) {
+        return /^[0０]/.test(value) && libphonenumber.isValidNumber(value, 'JP');
+    }
+
+    // 整形関数
+    var formatTel = function (value) {
+        return new libphonenumber.AsYouType('JP').input(value);
+    }
+
+    var validateAndFormat = function (inputId) {
+        var phoneInput = document.getElementById(inputId);
+        if (!phoneInput) {
+            console.error('ERROR: Phone input element not found!');
+            return;
+        }
+        var tel = phoneInput.value.trim().replace(/[０-９]/g, function(char) {
+            // 全角数字を半角に変換
+            return String.fromCharCode(char.charCodeAt(0) - 65248);
+        }).replace(/\D/g, ''); // 数字以外の文字を削除
+        
+        if (!validateTelNeo(tel)) {
+            console.error('ERROR: Invalid phone number!');
+            return;
+        }
+        var formattedTel = formatTel(tel);
+        console.log('Formatted Phone Number:', formattedTel);
+        
+        // 入力フィールドに整形された電話番号を表示
+        phoneInput.value = formattedTel;
+        
+        // 以降 formattedTel を使って登録処理など進める
+    }
+</script>
 </x-app-layout>

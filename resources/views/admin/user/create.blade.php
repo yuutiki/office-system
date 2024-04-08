@@ -13,6 +13,7 @@
     <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
 
 
+
     <div class="max-w-7xl mx-auto px-2 md:pl-14">
         <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
             <ul class="flex flex-wrap -mb-px text-sm text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
@@ -27,9 +28,10 @@
 
 
 
-            <div>
+            <div class="mb-8 w-20 h-20">
                 <!-- プロフィール画像を表示するimg要素 -->
-                <img id="image_preview" src="{{ asset('storage/users/profile_image/default.png') }}" alt="プロフ画像" class="cursor-pointer w-20 h-20 rounded">
+                {{-- <img id="image_preview" src="{{ asset('storage/users/profile_image/default.png') }}" alt="プロフ画像" class="cursor-pointer w-20 h-auto rounded"> --}}
+                <img id="image_preview" src="{{ asset('storage/users/profile_image/default.png') }}" alt="プロフ画像" class="cursor-pointer w-full h-full object-cover rounded">
                 <!-- input要素を隠し、プロフィール画像をクリックしたときに実行されるようにします -->
                 <input type="file" id="profile_image" accept="image/*" class="hidden" form="userForm" name="profile_image">
             </div>

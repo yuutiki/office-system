@@ -194,13 +194,13 @@
                 </div>
                 <div class="grid gap-4 my-4 sm:grid-cols-4">
                     <div>
-                        <label for="account_company_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">計上所属1</label>
-                        <select id="account_company_id" name="account_company_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            @foreach($companies as $company)
-                            <option value="{{ $company->id }}" @selected($company->id == old('account_company_id', Auth::user()->company->id))>{{ $company->company_name }}</option>
+                        <label for="account_affiliation1_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">計上所属1</label>
+                        <select id="account_affiliation1_id" name="account_affiliation1_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            @foreach($affiliation1s as $affiliation1)
+                            <option value="{{ $affiliation1->id }}" @selected($affiliation1->id == old('account_affiliation1_id', Auth::user()->affiliation1->id))>{{ $affiliation1->affiliation1_name }}</option>
                             @endforeach
                         </select>
-                        @error('account_company_id')
+                        @error('account_affiliation1_id')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>

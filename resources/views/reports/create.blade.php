@@ -359,8 +359,8 @@
                     success: function(response) {
                         // 検索結果をカナ名称順にソート
                         response.sort(function(a, b) {
-                            var nameA = a.kana_name.toUpperCase(); // 大文字と小文字を区別しない
-                            var nameB = b.kana_name.toUpperCase(); // 大文字と小文字を区別しない
+                            var nameA = a.user_kana_name.toUpperCase(); // 大文字と小文字を区別しない
+                            var nameB = b.user_kana_name.toUpperCase(); // 大文字と小文字を区別しない
                             if (nameA < nameB) {
                                 return -1;
                             }
@@ -374,7 +374,7 @@
                         response.forEach(function(user) {
                             // 重複するユーザを検索結果から除外する
                             if (!selectedUserIds.includes(user.id)) {
-                                usersHtml += '<div class="selectUser cursor-pointer" data-user-id="' + user.id + '" data-user-name="' + user.name + '">' + user.name + '</div>';
+                                usersHtml += '<div class="selectUser cursor-pointer" data-user-id="' + user.id + '" data-user-name="' + user.user_name + '">' + user.user_name + '</div>';
                             }
                         });
                         $('#searchResults').html(usersHtml);

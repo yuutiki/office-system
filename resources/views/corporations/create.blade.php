@@ -17,9 +17,9 @@
                 <li class="mr-2" role="presentation">
                     <button class="inline-block p-4 border-b-2 rounded-t-md" id="base-tab" data-tabs-target="#base" type="button" role="tab" aria-controls="base" aria-selected="false">基本情報</button>
                 </li>
-                {{-- <li class="mr-2" role="presentation">
+                <li class="mr-2" role="presentation">
                     <button class="inline-block p-4 border-b-2 rounded-t-md" id="credit-tab" data-tabs-target="#credit" type="button" role="tab" aria-controls="credit" aria-selected="false">与信情報</button>
-                </li> --}}
+                </li>
             </ul>
         </div>
         
@@ -174,6 +174,68 @@
                     <span class="hidden">ダミー</span>
                 </div>
             </div>
+
+<!-- タブ -->
+<ul id="tabList">
+    <li><a href="#tab1" data-tab="tab1">Tab 1</a></li>
+    <li><a href="#tab2" data-tab="tab2">Tab 2</a></li>
+    <li><a href="#tab3" data-tab="tab3">Tab 3</a></li>
+</ul>
+
+<!-- タブコンテンツ -->
+<div id="tabContent">
+    <div class="tab-content hidden" id="tab1">Tab 1 content</div>
+    <div class="tab-content hidden" id="tab2">Tab 2 content</div>
+    <div class="tab-content hidden" id="tab3">Tab 3 content</div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var tabs = document.querySelectorAll('[data-tab]');
+    var tabContents = document.querySelectorAll('.tab-content');
+
+    // URLのクエリパラメータを解析して、初期状態のタブを設定
+    var urlParams = new URLSearchParams(window.location.search);
+    var activeTab = urlParams.get('tab');
+    if (activeTab) {
+        var tabContent = document.getElementById(activeTab);
+        if (tabContent) {
+            tabContent.classList.remove('hidden');
+        }
+    }
+
+    // タブがクリックされたときの処理
+    tabs.forEach(function(tab) {
+        tab.addEventListener('click', function(event) {
+            event.preventDefault();
+            var tabId = this.getAttribute('data-tab');
+            showTab(tabId);
+            // URLを更新して状態を反映
+            var state = { tab: tabId };
+            history.pushState(state, '', '?tab=' + tabId);
+        });
+    });
+
+    // ブラウザの戻るボタンで状態を更新する処理
+    window.onpopstate = function(event) {
+        var tabId = event.state ? event.state.tab : null;
+        if (tabId) {
+            showTab(tabId);
+        }
+    };
+
+    // タブを表示する関数
+    function showTab(tabId) {
+        tabContents.forEach(function(tabContent) {
+            if (tabContent.id === tabId) {
+                tabContent.classList.remove('hidden');
+            } else {
+                tabContent.classList.add('hidden');
+            }
+        });
+    }
+});
+</script>
         </div>
     </div>
 

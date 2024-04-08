@@ -56,7 +56,7 @@ class ProjectController extends Controller
 
     public function create()
     {
-        $companies = Company::all();
+        $affiliation1s = Affiliation1::all();
         $departments = Department::all();
         $affiliation3s = Affiliation3::all();
         $users = User::all();
@@ -67,7 +67,7 @@ class ProjectController extends Controller
         $accountingTypes = AccountingType::all();
         $prefectures = Prefecture::all(); //都道府県
 
-        return view('projects.create',compact('accountingPeriods','salesStages','distributionTypes','departments','companies','affiliation3s','projectTypes','accountingTypes','users','prefectures'));
+        return view('projects.create',compact('accountingPeriods','salesStages','distributionTypes','departments','affiliation1s','affiliation3s','projectTypes','accountingTypes','users','prefectures'));
     }
 
     public function store(ProjectStoreRequest $request)

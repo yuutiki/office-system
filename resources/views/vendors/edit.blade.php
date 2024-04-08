@@ -93,8 +93,23 @@
                         </button>
                     </li>
                     <li class="mr-2" role="presentation">
-                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">
+                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="bank-tab" data-tabs-target="#bank" type="button" role="tab" aria-controls="bank" aria-selected="false">
                             口座情報
+                        </button>
+                    </li>
+                    <li class="mr-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="client-tab" data-tabs-target="#client" type="button" role="tab" aria-controls="client" aria-selected="false">
+                            担当顧客
+                        </button>
+                    </li>
+                    <li class="mr-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="person-tab" data-tabs-target="#person" type="button" role="tab" aria-controls="person" aria-selected="false">
+                            担当者
+                        </button>
+                    </li>
+                    <li class="mr-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="item-tab" data-tabs-target="#item" type="button" role="tab" aria-controls="item" aria-selected="false">
+                            取扱製品
                         </button>
                     </li>
                 </ul>
@@ -103,7 +118,7 @@
             {{-- タブコンテンツStart --}}
             <div id="myTabContent">
                 {{-- 1つ目のタブコンテンツStart --}}
-                <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="basic" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="basic" role="tabpanel" aria-labelledby="basic-tab">
                     <div class="grid gap-4 mb-4 sm:grid-cols-5 mt-2">
 
                         <div class="">
@@ -221,9 +236,21 @@
                 {{-- 1つ目のタブコンテンツEnd --}}
 
                 {{-- 2つ目のタブコンテンツStart --}}
-                <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="bank" role="tabpanel" aria-labelledby="bank-tab">
                 </div>
                 {{-- 2つ目のタブコンテンツEnd --}}
+                {{-- 3つ目のタブコンテンツStart --}}
+                <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="person" role="tabpanel" aria-labelledby="person-tab">
+                </div>
+                {{-- 3つ目のタブコンテンツEnd --}}
+                {{-- 4つ目のタブコンテンツStart --}}
+                <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="client" role="tabpanel" aria-labelledby="client-tab">
+                </div>
+                {{-- 4つ目のタブコンテンツEnd --}}
+                {{-- 5つ目のタブコンテンツStart --}}
+                <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="item" role="tabpanel" aria-labelledby="item-tab">
+                </div>
+                {{-- 5つ目のタブコンテンツEnd --}}  
         </div>
     </div>
 </div>
