@@ -50,7 +50,7 @@
         </button>
 
         {{-- 通知ボックス --}}
-        <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider" class="relative flex items-end h-10 p-2.5 my-auto text-sm rounded-sm font-medium px-3 mr-2 text-right text-white focus:ring-2 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none" tabindex="-1" type="button">
+        <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider" class="relative flex items-end h-10 p-2.5 my-auto text-sm rounded-sm font-medium px-3 mr-4 text-right text-white focus:ring-2 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none" tabindex="-1" type="button">
             {{-- <svg class="w-4 h-4 my-auto text-gray-600 dark:text-white focus:text-green-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 10h3.439a.991.991 0 0 1 .908.6 3.978 3.978 0 0 0 7.306 0 .99.99 0 0 1 .908-.6H17M1 10v6a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-6M1 10l2-9h12l2 9M6 4h6M5 7h8"/>
             </svg> --}}
@@ -90,7 +90,8 @@
             </div>
         </div>
 
-        <img class="w-10 h-10 rounded" src="{{ asset('assets/image/usericon.png') }}" alt="Default avatar">
+        <img class="w-8 h-8 rounded" src="{{ asset('storage/' . Auth::user()->profile_image) }}" alt="プロフィール画像">
+
         {{-- ユーザ設定 --}}
         <div class=" sm:flex sm:items-center sm:ml-1">
             <x-dropdown align="right" width="48">
@@ -186,30 +187,6 @@
                 </ul>
             </li>
             <li>
-                <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#accordion-body-2" aria-expanded="false" aria-controls="accordion-body-2">
-                    <svg class="flex-shrink-0 w-6 h-6 text-gray-900 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.079 4.839a3 3 0 0 0-4.255.1M11 18h1.083A3.916 3.916 0 0 0 16 14.083V7A6 6 0 1 0 4 7v7m7 4v-1a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1Zm-7-4V8H3a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h1Zm12-6h1a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-1V8Z"/>
-                    </svg>
-                    <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('サポート管理') }}</span>
-                    <svg data-accordion-icon class="w-3 h-3 mr-1 rotate-270 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6" >
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
-                    </svg>
-                </button>
-                <ul  class="hidden py-1 space-y-1" id="accordion-body-2" aria-labelledby="accordion-heading-2">
-                    <li>
-                        <x-nav-link :href="route('support.index')" :active="request()->routeIs('support.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('サポート一覧') }}</span>
-                        </x-nav-link>
-                    </li>
-                    <li>
-                        <x-nav-link :href="route('contracts.index')" :active="request()->routeIs('contracts.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('契約一覧') }}</span>
-                        </x-nav-link>
-                    </li>
-                </ul>
-            </li>
-
-            <li>
                 <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#accordion-body-3" aria-expanded="false" aria-controls="accordion-body-3">
                     <svg class="flex-shrink-0 w-6 h-6 text-gray-900 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M19.728 10.686c-2.38 2.256-6.153 3.381-9.875 3.381-3.722 0-7.4-1.126-9.571-3.371L0 10.437V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-7.6l-.272.286Z"/>
@@ -248,16 +225,29 @@
                     </li>
                 </ul>
             </li>
-
-            {{-- <li>
-                <x-nav-link :href="route('projects.index')" :active="request()->routeIs('projects.index')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                    <svg class="flex-shrink-0 w-6 h-6 text-gray-900 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M19.728 10.686c-2.38 2.256-6.153 3.381-9.875 3.381-3.722 0-7.4-1.126-9.571-3.371L0 10.437V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-7.6l-.272.286Z"/>
-                        <path d="m.135 7.847 1.542 1.417c3.6 3.712 12.747 3.7 16.635.01L19.605 7.9A.98.98 0 0 1 20 7.652V6a2 2 0 0 0-2-2h-3V3a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v1H2a2 2 0 0 0-2 2v1.765c.047.024.092.051.135.082ZM10 10.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5ZM7 3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1H7V3Z"/>
+            <li>
+                <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#accordion-body-2" aria-expanded="false" aria-controls="accordion-body-2">
+                    <svg class="flex-shrink-0 w-6 h-6 text-gray-900 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.079 4.839a3 3 0 0 0-4.255.1M11 18h1.083A3.916 3.916 0 0 0 16 14.083V7A6 6 0 1 0 4 7v7m7 4v-1a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1Zm-7-4V8H3a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h1Zm12-6h1a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-1V8Z"/>
                     </svg>
-                    <span class="flex-1 pt-1 ml-3 whitespace-nowrap">{{ __('プロジェクト管理') }}</span>
-                </x-nav-link>
-            </li> --}}
+                    <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('サポート管理') }}</span>
+                    <svg data-accordion-icon class="w-3 h-3 mr-1 rotate-270 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6" >
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                    </svg>
+                </button>
+                <ul  class="hidden py-1 space-y-1" id="accordion-body-2" aria-labelledby="accordion-heading-2">
+                    <li>
+                        <x-nav-link :href="route('support.index')" :active="request()->routeIs('support.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('サポート一覧') }}</span>
+                        </x-nav-link>
+                    </li>
+                    <li>
+                        <x-nav-link :href="route('contracts.index')" :active="request()->routeIs('contracts.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('契約一覧') }}</span>
+                        </x-nav-link>
+                    </li>
+                </ul>
+            </li>
             <li>
                 <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.index')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                     <svg class="flex-shrink-0 w-6 h-6 text-gray-900 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -267,14 +257,14 @@
                     <span class="flex-1 pt-1 ml-3 whitespace-nowrap">{{ __('営業報告管理') }}</span>
                 </x-nav-link>
             </li>
-            <li>
+            {{-- <li>
                 <x-nav-link :href="route('dashboard')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                     <svg class="flex-shrink-0 w-6 h-6 text-gray-900 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 5 4 4-4 4m5 0h5M2 1h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1Z"/>
                     </svg>
                     <span class="flex-1 pt-1 ml-3 whitespace-nowrap">{{ __('工数管理') }}</span>
                 </x-nav-link>
-            </li>
+            </li> --}}
             {{-- <li>
                 <x-nav-link :href="route('dashboard')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                     <svg class="flex-shrink-0 w-6 h-6 text-gray-900 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"fill="none" viewBox="0 0 17 18">
@@ -294,13 +284,6 @@
             </li>
 
             <ul class="pt-4 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700">
-            
-                {{-- <li>
-                <a href="#" class="flex items-center p-2 text-gray-900 transition duration-75 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
-                   <svg aria-hidden="true" class="flex-shrink-0 w-5 h-5 text-gray-900 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white dark:text-gray-400" focusable="false" data-prefix="fas" data-icon="gem" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M378.7 32H133.3L256 182.7L378.7 32zM512 192l-107.4-141.3L289.6 192H512zM107.4 50.67L0 192h222.4L107.4 50.67zM244.3 474.9C247.3 478.2 251.6 480 256 480s8.653-1.828 11.67-5.062L510.6 224H1.365L244.3 474.9z"></path></svg>
-                   <span class="ml-4">Upgrade to Pro</span>
-                </a>
-            </li> --}}
             <li>
                 @can('adminOrAbobe')
                 <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#accordion-body-90" aria-expanded="false" aria-controls="accordion-body-90">
@@ -414,6 +397,41 @@
                         </li>
                     </ul>
                 </li>
+
+                <li>
+                    <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" aria-controls="dropdown-sm-project" data-collapse-toggle="dropdown-sm-project">
+                        <svg class="flex-shrink-0 w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M19.728 10.686c-2.38 2.256-6.153 3.381-9.875 3.381-3.722 0-7.4-1.126-9.571-3.371L0 10.437V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-7.6l-.272.286Z"/>
+                            <path d="m.135 7.847 1.542 1.417c3.6 3.712 12.747 3.7 16.635.01L19.605 7.9A.98.98 0 0 1 20 7.652V6a2 2 0 0 0-2-2h-3V3a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v1H2a2 2 0 0 0-2 2v1.765c.047.024.092.051.135.082ZM10 10.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5ZM7 3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1H7V3Z"/>
+                        </svg>
+                        <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('プロジェクト管理') }}</span>
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                    <ul id="dropdown-sm-project" class="hidden py-1 space-y-1">
+                        <li>
+                            <x-nav-link :href="route('projects.index')" :active="request()->routeIs('projects.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('プロジェクト一覧') }}</span>
+                            </x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link :href="route('clients.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('発注情報一覧') }}</span>
+                            </x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link :href="route('clients.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('営業経費一覧') }}</span>
+                            </x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link :href="route('clients.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('社内工数一覧') }}</span>
+                            </x-nav-link>
+                        </li>
+                    </ul>
+                </li>
                 <li>
                     <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" aria-controls="dropdown-sm-support" data-collapse-toggle="dropdown-sm-support">
                         <svg class="flex-shrink-0 w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -438,30 +456,6 @@
                     </ul>
                 </li>
                 <li>
-                    <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" aria-controls="dropdown-sm-project" data-collapse-toggle="dropdown-sm-project">
-                        <svg class="flex-shrink-0 w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M19.728 10.686c-2.38 2.256-6.153 3.381-9.875 3.381-3.722 0-7.4-1.126-9.571-3.371L0 10.437V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-7.6l-.272.286Z"/>
-                            <path d="m.135 7.847 1.542 1.417c3.6 3.712 12.747 3.7 16.635.01L19.605 7.9A.98.98 0 0 1 20 7.652V6a2 2 0 0 0-2-2h-3V3a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v1H2a2 2 0 0 0-2 2v1.765c.047.024.092.051.135.082ZM10 10.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5ZM7 3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1H7V3Z"/>
-                        </svg>
-                        <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('プロジェクト管理') }}</span>
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                        </svg>
-                    </button>
-                    <ul id="dropdown-sm-project" class="hidden py-1 space-y-1">
-                        <li>
-                            <x-nav-link :href="route('projects.index')" :active="request()->routeIs('projects.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('プロジェクト一覧') }}</span>
-                            </x-nav-link>
-                        </li>
-                        <li>
-                            <x-nav-link :href="route('clients.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                                <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('受注情報一覧') }}</span>
-                            </x-nav-link>
-                        </li>
-                    </ul>
-                </li>
-                <li>
                     <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.index')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                         <svg class="flex-shrink-0 w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
@@ -469,20 +463,12 @@
                         <span class="flex-1 pt-1 ml-3 whitespace-nowrap">{{ __('営業報告管理') }}</span>
                     </x-nav-link>
                 </li>
-                <li>
+                {{-- <li>
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                         <svg class="flex-shrink-0 w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 5 4 4-4 4m5 0h5M2 1h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1Z"/>
                         </svg>
                         <span class="flex-1 pt-1 ml-3 whitespace-nowrap">{{ __('工数管理') }}</span>
-                    </x-nav-link>
-                </li>
-                {{-- <li>
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <svg class="flex-shrink-0 w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"fill="none" viewBox="0 0 17 18">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 12v5m5-9v9m5-5v5m5-9v9M1 7l5-6 5 6 5-6"/>
-                        </svg>
-                        <span class="flex-1 pt-1 ml-3 whitespace-nowrap">{{ __('分析画面') }}</span>
                     </x-nav-link>
                 </li> --}}
                 <li>
@@ -496,7 +482,6 @@
                 </li>
                 <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
                 <li>
-                @can('adminOrAbobe')
                     <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-sm-admin" data-collapse-toggle="dropdown-sm-admin" tabindex="-1">
                         <svg class="flex-shrink-0 w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                             <g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
@@ -504,13 +489,19 @@
                               <path d="M10 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
                             </g>
                         </svg>
-                        <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('管理者機能') }}</span>
+                        <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('共通機能') }}</span>
                         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                     </button>
                     <ul id="dropdown-sm-admin" class="hidden py-1 space-y-1">
                         <li>
                             <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('ユーザ管理') }}</span>
+                            </x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link :href="route('role-groups.index')" :active="request()->routeIs('role-groups.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
+                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('権限グループ') }}</span>
                             </x-nav-link>
                         </li>
                         <li>
@@ -528,14 +519,11 @@
                                 <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('製品管理') }}</span>
                             </x-nav-link>
                         </li>
-                    @endcan
-                        @can('systemAdmin')
                         <li>
                             <x-nav-link :href="url('/log-viewer')" :active="request()->routeIs('log-viewer')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('ログ調査') }}</span>
                             </x-nav-link>
                         </li>
-                        @endcan
                     </ul>
                 </li>
             </ul>

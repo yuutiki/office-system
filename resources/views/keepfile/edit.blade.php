@@ -26,13 +26,13 @@
         <div class="hidden md:p-4 p-2 mb-4 rounded bg-gray-50 dark:bg-gray-800" id="base" role="tabpanel" aria-labelledby="base-tab">
             <span class="text-xs  text-gray-900 dark:text-gray-300 block">※返却時は「sdg-sales-ismstensou@systemd.co.jp」をCcに含めてください</span>
 
-            <label class="relative inline-flex items-center cursor-pointer mt-6">
+            <label class="relative inline-flex items-center cursor-pointer my-6">
             <input type="hidden" form="keepfileForm" name="is_finished" id="is_finished" value="0">
-            @if($keepfile->is_finished == 1)
-                <input type="checkbox" form="keepfileForm" name="is_finished" id="is_finished" value="1" class="sr-only peer" checked>
-            @else
-                <input type="checkbox" form="keepfileForm" name="is_finished" id="is_finished" value="1" class="sr-only peer">
-            @endif
+                @if($keepfile->is_finished == 1)
+                    <input type="checkbox" form="keepfileForm" name="is_finished" id="is_finished" value="1" class="sr-only peer" checked>
+                @else
+                    <input type="checkbox" form="keepfileForm" name="is_finished" id="is_finished" value="1" class="sr-only peer">
+                @endif
                 <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                 <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">完了</span>
             </label>
@@ -42,7 +42,7 @@
                     <label for="project_num" class=" dark:text-white text-red-700 leading-none text-sm">プロジェクト№<span class="text-red-500"> *</span></label>
 
                     <div class="relative">
-                        <input type="text" form="keepfileForm" copy-target="true" name="project_num" class="input-primary" id="project_num" value="{{old('project_num', $keepfile->project->project_num)}}"  readonly>
+                        <input type="text" form="keepfileForm" copy-target="true" name="project_num" class="input-secondary" id="project_num" value="{{old('project_num', $keepfile->project->project_num)}}"  readonly>
                         
                         <button id="copy-button" data-tooltip-target="tooltip-copy-copy-button" data-tooltip-placement="left" class="mt-[2px] absolute end-2 top-1/2 -translate-y-1/2 text-gray-500 dark:text-white hover:bg-gray-400 dark:hover:bg-gray-400 dark:bg-gray-500 rounded p-2 inline-flex items-center justify-center">
                             <span id="default-icon">
@@ -104,12 +104,25 @@
                 </div>
             </div>
 
-            <div class="w-full flex flex-col mt-4">
-                <label for="purpose" class="dark:text-white text-red-700 leading-none text-sm">用途<span class="text-red-500"> *</span></label>
-                <input type="text" form="keepfileForm" name="purpose" class="input-primary" id="purpose" value="{{old('purpose',$keepfile->purpose)}}" placeholder="例）バージョンアップ" >
-                @error('purpose')
-                    <div class="text-red-500">{{$message}}</div>
-                @enderror
+            <div class="grid gap-4 md:grid-cols-2 mt-4">
+                <div class="w-full flex flex-col">
+                    <label for="purpose" class="dark:text-white text-red-700 leading-none text-sm">用途<span class="text-red-500"> *</span></label>
+                    <input type="text" form="keepfileForm" name="purpose" class="input-secondary" id="purpose" value="{{old('purpose',$keepfile->purpose)}}" placeholder="例）バージョンアップ" >
+                    @error('purpose')
+                        <div class="text-red-500">{{$message}}</div>
+                    @enderror
+                </div>
+                <div class="w-full flex flex-col">
+                    <label for="depositor" class="text-sm text-gray-900 dark:text-white leading-none">取得者<span class="text-red-500"> *</span></label>
+                    <select id="depositor" form="keepfileForm" name="depositor" class="input-secondary">
+                        @foreach($users as $user)
+                            <option value="{{ $user->id }}" @selected($user->id == old('depositor' ,$keepfile->user_id))>{{ $user->user_name }}</option>
+                        @endforeach
+                    </select>
+                    @error('depositor')
+                        <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+                </div>
             </div>
                 
             <div>
@@ -264,6 +277,81 @@
         </div>
     </div>
 
+    {{-- 添付上書き確認モーダル --}}
+    <div id="confirmModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden animate-slide-in-top">
+        <div class="relative w-full max-w-md max-h-full">
+            <div class="relative bg-white rounded shadow dark:bg-gray-700">
+                <button type="button" onclick="hideConfirmModal()" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                </button>
+
+                <div class="p-6 text-center">
+                    <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                    </svg>
+                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">既存の添付ファイルを上書きしますがよろしいですか？</h3>
+                    <div class="flex justify-center">
+                        {{-- <form method="post" action="{{route('keepfile.update',$keepfile)}}" enctype="multipart/form-data">
+                            @csrf
+                            @method('patch') --}}
+                            <button type="submit" id="confirmButton" class="text-white bg-red-600 hover:bg-red-800 focus:ring-2 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                                はい
+                            </button>
+                        {{-- </form> --}}
+                        <button onclick="hideConfirmModal()" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-2 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                            やっぱやめます
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script>
+    // フォームの送信を制御する
+    document.getElementById('keepfileForm').addEventListener('submit', function(event) {
+        // 既存のファイルが存在し、新しいファイルが添付されている場合にモーダルを表示する
+        if (document.querySelector('input[name="pdf_file"]').value && '{{ $keepfile->pdf_file }}') {
+            event.preventDefault(); // フォームのデフォルトの送信を防止
+            
+            openConfirmModal();
+            
+            // 「はい」ボタンがクリックされたときにフォームを送信する
+            document.getElementById('confirmButton').addEventListener('click', function() {
+                document.getElementById('keepfileForm').submit();
+            });
+        }
+    });
+
+    function openConfirmModal(){
+        const modal = document.getElementById('confirmModal');
+
+        // 背後の操作不可を有効
+        const overlay = document.getElementById('overlay').classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+
+        // モーダルを表示する
+        modal.classList.remove('hidden');
+
+    }
+
+    function hideConfirmModal(){
+        const modal = document.getElementById('confirmModal');
+
+        // 背後の操作不可を解除
+        const overkay = document.getElementById('overlay').classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+
+        // モーダルを非表示にするためのクラスを追加
+        modal.classList.add('hidden');
+
+        const ProjectButton = document.getElementById('searchProjectButton');
+        ProjectButton.focus();
+    }
+</script>
 
 
 

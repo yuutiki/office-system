@@ -11,8 +11,13 @@ shortcut.add("Ctrl+S", function () {
 
 
 shortcut.add("Ctrl+F", function () {
-    // 保存ボタンをクリック
+    // 検索ボタンをクリック
     document.getElementById('search-button').click();
+});
+
+shortcut.add("Ctrl+R", function () {
+    // 検索リセットボタンをクリック
+    document.getElementById('clear').click();
 });
 
 

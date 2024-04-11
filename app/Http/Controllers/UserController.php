@@ -33,7 +33,7 @@ class UserController extends Controller
 
 
         //検索フォームに入力された値を取得
-        $employee_num = $request->input('employee_num');
+        $user_num = $request->input('user_num');
         $user_name = $request->input('user_name');
         $departmentId = $request->input('department_id');
         // $roles1 = $request->input('roles');
@@ -44,10 +44,10 @@ class UserController extends Controller
         $query = User::query();
 
         //もし社員番号があれば
-        if(!empty($employee_num))
+        if(!empty($user_num))
         {
-            // $query->where('employee_num','like',"%{$employee_num}%");
-            $query->where('employee_num','=',$employee_num);
+            // $query->where('user_num','like',"%{$user_num}%");
+            $query->where('user_num','=',$user_num);
         }
 
         if(!empty($departmentId))
@@ -82,7 +82,7 @@ class UserController extends Controller
         $users = $query->sortable()->paginate($per_page);
         $count = $users->total();
 
-        return view('admin.user.index',compact('roles','users','employeeStatuses','employee_num','user_name','selectedRoles','count','affiliation1s','departments','affiliation3s','selectedEmployeeStatues','departmentId'));
+        return view('admin.user.index',compact('roles','users','employeeStatuses','user_num','user_name','selectedRoles','count','affiliation1s','departments','affiliation3s','selectedEmployeeStatues','departmentId'));
     }
 
 
@@ -93,8 +93,10 @@ class UserController extends Controller
         $affiliation3s = Affiliation3::all();
         $roles = Role::orderBy('id','desc')->get();
         $e_statuses = EmployeeStatus::orderBy('id','asc')->get();
+        $maxlength = config('constants.int_phone_maxlength');
 
-        return view('admin.user.create',compact('roles','e_statuses','affiliation1s','departments','affiliation3s'));
+
+        return view('admin.user.create',compact('roles','e_statuses','affiliation1s','departments','affiliation3s','maxlength'));
     }
 
     public function store(Request $request)
@@ -109,7 +111,7 @@ class UserController extends Controller
 
 
         // 社員番号の頭0埋め6桁にする
-        $emploeeNum =  str_pad($request->employee_num, 6, '0', STR_PAD_LEFT);
+        $emploeeNum =  str_pad($request->user_num, 6, '0', STR_PAD_LEFT);
 
 
         // プロフ画像のファイル名を生成
@@ -122,7 +124,7 @@ class UserController extends Controller
         }
 
         $user = new User();
-        $user->employee_num = $emploeeNum;
+        $user->user_num = $emploeeNum;
         $user->last_name = $request->last_name;
         $user->first_name = $request->first_name;
         $user->last_kana_name = $request->last_kana_name;
@@ -205,7 +207,7 @@ class UserController extends Controller
         }
 
         $user=user::find($id);
-        // $user->employee_num = $request->employee_num;
+        // $user->user_num = $request->user_num;
         $user->name = $request->input('name_' . $id);;
         $user->kana_name = $request->input('kana_name_' . $id);
         $user->email = $request->input('email_' . $id);
@@ -216,7 +218,7 @@ class UserController extends Controller
         $user->department_id = $request->input('department_id_' . $id);
         $user->affiliation3_id = $request->input('affiliation3_id_' . $id);
         $user->employee_status_id = $request->input('employee_status_id_' . $id);
-        $user->employee_num = $request->input('employee_num_' . $id);
+        $user->user_num = $request->input('user_num_' . $id);
         $user->is_enabled = $request->input('is_enabled_' . $id);
         $user->access_ip = $request->ip();
 
@@ -277,9 +279,9 @@ class UserController extends Controller
         $interpreter->addObserver(function (array $row) {
             $user = new User();
 
-            $user->employee_num = str_pad($row[0], 6, '0', STR_PAD_LEFT);
-            $user->name = $row[1];
-            $user->kana_name = $row[2];
+            $user->user_num = str_pad($row[0], 6, '0', STR_PAD_LEFT);
+            $user->user_name = $row[1];
+            $user->user_kana_name = $row[2];
             $user->email = $row[3];
             $user->ext_phone = $row[4];
             $user->int_phone = $row[5];
@@ -301,13 +303,13 @@ class UserController extends Controller
             } else {
                 // affiliation3が見つからない場合のエラーハンドリング
             }
-            $roleNum = $row[10];
-            $role = Role::where('role_num', $roleNum)->first();
-            if ($role) {
-                $user->role_id = $role->id;
-            } else {
-                // affiliation3が見つからない場合のエラーハンドリング
-            }
+            // $roleNum = $row[10];
+            // $role = Role::where('role_num', $roleNum)->first();
+            // if ($role) {
+            //     $user->role_id = $role->id;
+            // } else {
+            //     // affiliation3が見つからない場合のエラーハンドリング
+            // }
             $employeeStatusNum = $row[11];
             $employee_status = EmployeeStatus::where('employee_status_num', $employeeStatusNum)->first();
             if ($employee_status) {

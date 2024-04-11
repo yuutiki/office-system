@@ -25,9 +25,9 @@
         {{-- 基本情報タブ --}}
         <div class="hidden md:p-4 p-2 mb-4 rounded bg-gray-50 dark:bg-gray-800" id="base" role="tabpanel" aria-labelledby="base-tab">
 
-            <label class="relative inline-flex items-center cursor-pointer mt-6">
-                <input type="hidden" form="KeepfileForm" name="is_finished" id="is_finished" value="0">
-                <input type="checkbox" form="KeepfileForm" name="is_finished" id="is_finished" value="1" class="sr-only peer">
+            <label class="relative inline-flex items-center cursor-pointer my-6">
+                <input type="hidden" form="keepfileForm" name="is_finished" id="is_finished" value="0">
+                <input type="checkbox" form="keepfileForm" name="is_finished" id="is_finished" value="1" class="sr-only peer">
                 <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                 <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">完了</span>
             </label>
@@ -38,23 +38,23 @@
                 <div class="w-full flex">
                     <div class="w-full flex flex-col">
                         <label for="project_num" class="dark:text-white text-red-700 leading-none text-sm">プロジェクト№<span class="text-red-500"> *</span></label>
-                        <input type="text" form="KeepfileForm" name="project_num" class="w-auto py-1 placeholder-gray-500 border border-gray-300 rounded mt-1" id="project_num" value="{{old('project_num')}}" placeholder="検索してください" required readonly>
+                        <input type="text" form="keepfileForm" name="project_num" class="w-auto py-1 placeholder-gray-500 border border-gray-300 rounded mt-1" id="project_num" value="{{old('project_num')}}" placeholder="検索してください" required readonly>
+                        @error('project_num')
+                            <div class="text-red-500">{{$message}}</div>
+                        @enderror
                     </div>
                     <button type="button" id="searchPJ" onclick="showProjectModal()" class="p-2.5 text-sm font-medium h-[34px] text-white mt-[18px] ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                         </svg>
                     </button>
-                    @error('project_num')
-                        <div class="text-red-500">{{$message}}</div>
-                    @enderror
                 </div>
                 <div class="hidden">
                     <label for="project_id" class="dark:text-gray-100 text-gray-900 leading-none mt-1">プロジェクトID（非表示）</label>
-                    <input type="text" form="KeepfileForm" maxlength="100" name="project_id" id="project_id" value="{{old('project_id')}}" class="dark:bg-gray-400 w-full py-1 border border-gray-700 rounded" tabindex="-1">
+                    <input type="text" form="keepfileForm" maxlength="100" name="project_id" id="project_id" value="{{old('project_id')}}" class="dark:bg-gray-400 w-full py-1 border border-gray-700 rounded" tabindex="-1">
                     @error('project_id')
                         <div class="text-red-500">{{ $message }}</div>
-                    @enderror
+                    @enderror   
                 </div>
                 {{-- <div class="hidden">
                     <label for="account_user" class="dark:text-gray-100 text-gray-900 leading-none mt-1">営業担当（非表示）</label>
@@ -65,7 +65,7 @@
                 </div> --}}
                 <div class="w-full flex flex-col">
                     <label for="client_name" class="dark:text-white text-red-700 leading-none text-sm">顧客名称<span class="text-red-500"> *</span></label>
-                    <input type="text" form="KeepfileForm" name="client_name" class="dark:bg-gray-400 w-full py-1 border border-gray-700 rounded mt-1" id="client_name" value="{{old('client_name')}}" placeholder="" readonly>
+                    <input type="text" form="keepfileForm" name="client_name" class="dark:bg-gray-400 w-full py-1 border border-gray-700 rounded mt-1" id="client_name" value="{{old('client_name')}}" placeholder="" readonly>
                     @error('client_name')
                         <div class="text-red-500">{{$message}}</div>
                     @enderror
@@ -74,7 +74,7 @@
 
             <div class="w-full flex flex-col mt-4">
                 <label for="project_name" class="dark:text-gray-100 text-gray-900 leading-none text-sm">プロジェクト名称<span class="text-red-500"> *</span></label>
-                <input type="text" form="KeepfileForm" maxlength="100" name="project_name" id="project_name" value="{{old('project_name')}}" class="dark:bg-gray-400 w-full py-1 border border-gray-700 rounded mt-1" tabindex="-1" readonly>
+                <input type="text" form="keepfileForm" maxlength="100" name="project_name" id="project_name" value="{{old('project_name')}}" class="dark:bg-gray-400 w-full py-1 border border-gray-700 rounded mt-1" tabindex="-1" readonly>
                 @error('project_name')
                     <div class="text-red-500">{{ $message }}</div>
                 @enderror
@@ -83,31 +83,44 @@
             <div class="grid gap-4 md:grid-cols-2 mt-4">
                 <div class="w-full flex flex-col">
                     <label for="keep_at" class="dark:text-white text-red-700 leading-none text-sm">預託日<span class="text-red-500"> *</span></label>
-                    <input type="date" form="KeepfileForm" min="2000-01-01" max="2100-12-31" name="keep_at" class="input-primary" id="keep_at" value="{{old('keep_at')}}">
+                    <input type="date" form="keepfileForm" min="2000-01-01" max="2100-12-31" name="keep_at" class="input-primary" id="keep_at" value="{{old('keep_at')}}">
                     @error('keep_at')
                         <div class="text-red-500">{{$message}}</div>
                     @enderror
                 </div>
                 <div class="w-full flex flex-col">
                     <label for="return_at" class="dark:text-white text-red-700 leading-none text-sm">消去予定日<span class="text-red-500"> *</span></label>
-                    <input type="date" form="KeepfileForm" min="2000-01-01" max="2100-12-31" name="return_at" class="input-primary" id="return_at" value="{{old('return_at')}}">
+                    <input type="date" form="keepfileForm" min="2000-01-01" max="2100-12-31" name="return_at" class="input-primary" id="return_at" value="{{old('return_at')}}">
                     @error('return_at')
                         <div class="text-red-500">{{$message}}</div>
                     @enderror
                 </div>
             </div>
 
-            <div class="w-full flex flex-col mt-4">
-                <label for="purpose" class="dark:text-white text-red-700 leading-none text-sm">用途<span class="text-red-500"> *</span></label>
-                <input type="text" form="KeepfileForm" name="purpose" class="input-primary" id="purpose" value="{{old('purpose')}}" placeholder="例）バージョンアップ">
-                @error('purpose')
-                    <div class="text-red-500">{{$message}}</div>
-                @enderror
+            <div class="grid gap-4 md:grid-cols-2 mt-4">
+                <div class="w-full flex flex-col">
+                    <label for="purpose" class="dark:text-white text-red-700 leading-none text-sm">用途<span class="text-red-500"> *</span></label>
+                    <input type="text" form="keepfileForm" name="purpose" class="input-secondary" id="purpose" value="{{old('purpose')}}" placeholder="バージョンアップのため">
+                    @error('purpose')
+                        <div class="text-red-500">{{$message}}</div>
+                    @enderror
+                </div>
+                <div class="w-full flex flex-col">
+                    <label for="depositor" class="text-sm text-gray-900 dark:text-white leading-none">取得者<span class="text-red-500"> *</span></label>
+                    <select id="depositor" form="keepfileForm" name="depositor" class="input-secondary">
+                        @foreach($users as $user)
+                            <option value="{{ $user->id }}" @selected($user->id == old('depositor' ,Auth::user()->id))>{{ $user->user_name }}</option>
+                        @endforeach
+                    </select>
+                    @error('depositor')
+                        <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+                </div>
             </div>
 
             <div class="w-full flex flex-col">
                 <label for="keepfile_memo" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">備考</label>
-                <textarea name="keepfile_memo" form="KeepfileForm" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="keepfile_memo" data-auto-resize="true" cols="30" rows="5" placeholder="">{{old('keepfile_memo')}}</textarea>
+                <textarea name="keepfile_memo" form="keepfileForm" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="keepfile_memo" data-auto-resize="true" cols="30" rows="5" placeholder="">{{old('keepfile_memo')}}</textarea>
                 @error('keepfile_memo')
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
@@ -116,7 +129,7 @@
 
             <p class="dark:text-white text-red-700 leading-none text-sm mt-4 mb-1">書類</p>
             <div class="relative flex items-center justify-center w-full">
-                <input type="file" form="KeepfileForm" name="pdf_file" id="pdf_file" accept=".pdf" class="absolute inset-0 w-full h-full opacity-0 z-10 " onchange="displayFileInfo()" />
+                <input type="file" form="keepfileForm" name="pdf_file" id="pdf_file" accept=".pdf" class="absolute inset-0 w-full h-full opacity-0 z-10 " onchange="displayFileInfo()" />
                 <label for="pdf_file" class="dark:bg-gray-900flex flex-col items-center justify-center w-full h-44 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-bray-800 dark:bg-gray-800 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
 
                     <div class="flex flex-col items-center justify-center pt-5 pb-6">
@@ -136,9 +149,9 @@
                 </label>
             </div>
             
-            <form method="post" action="{{route('keepfile.store')}}" enctype="multipart/form-data" id="KeepfileForm">
+            <form method="post" action="{{route('keepfile.store')}}" enctype="multipart/form-data" id="keepfileForm">
                 @csrf
-                <x-primary-button class="mt-4" form-id="KeepfileForm" id="saveButton" onkeydown="stopTab(event)">
+                <x-primary-button class="mt-4" form-id="keepfileForm" id="saveButton" onkeydown="stopTab(event)">
                     保存(S)
                 </x-primary-button>
             </form>
@@ -177,6 +190,7 @@
                         <thead>
                         <tr>
                             <th class="py-1 pl-5 whitespace-nowrap">プロジェクト№</th>
+                            <th class="py-1">顧客名称</th>
                             <th class="py-1">プロジェクト名称</th>
                         </tr>
                         </thead>

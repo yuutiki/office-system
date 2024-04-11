@@ -58,7 +58,7 @@
                                     </svg>
                                 </button>
                                 <!-- Dropdown menu -->
-                                <div id="filterDropdown" class="z-50 hidden w-56 p-3 bg-gray-100 rounded-e rounded-s shadow dark:bg-gray-600">
+                                <div id="filterDropdown" class="z-50 hidden w-56 p-3 bg-gray-100 rounded shadow dark:bg-gray-600">
                                     <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
                                         担当者
                                     </h6>
@@ -82,10 +82,10 @@
                                         </li>                       
                                         @endforeach
                                     </ul> --}}
-                                    <select  name="user_id" class="mt-2 w-auto ml-2 py-1.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <select  name="user_id" class="w-full py-1.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option value=""{{ request('user_id') == '' ? 'selected':'' }}>担当者全て</option>
                                         @foreach($users as $user)
-                                            <option value="{{$user->id}}" {{ request('user_id') == $user->id ? 'selected' : '' }}>{{$user->name}}</option>
+                                            <option value="{{$user->id}}" {{ request('user_id') == $user->id ? 'selected' : '' }}>{{$user->user_name}}</option>
                                         @endforeach
                                     </select>
                                     <ul class="border my-2"></ul>
@@ -94,10 +94,10 @@
                                         返却期限日
                                     </h6>
                                     <!-- 日付の範囲検索 -->
-                                    <div class="relative w-auto mt-2 ml-2">
+                                    <div class="relative w-full mt-2">
                                         <input type="date" min="2000-01-01" max="2100-12-31" name="day_from" value="@if (isset($dayFrom)){{ $dayFrom }}@endif" class="w-full p-1.5 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="顧客名" >
                                     </div>
-                                    <div class="relative w-auto mt-2 ml-2">
+                                    <div class="relative w-full mt-2">
                                         <input type="date" min="2000-01-01" max="2100-12-31" name="day_to" value="@if (isset($dayTo)){{ $dayTo }}@endif" class="w-full p-1.5  text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="顧客名" >
                                     </div>
 
@@ -225,6 +225,11 @@
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
+                            添付
+                        </div>
+                    </th>
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                        <div class="flex items-center">
                             残日数
                         </div>
                     </th>
@@ -276,6 +281,17 @@
                             @endif
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
+                            @if ($keepfile->pdf_file)
+                                <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                    有り
+                                </span>
+                            @else
+                                <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
+                                    なし
+                                </span>
+                            @endif
+                        </td>                        
+                        <td class="px-1 py-1 whitespace-nowrap">
                             @if($keepfile->remaining_days < 0)
                                 <span class="text-fuchsia-300">
                                     期限超過
@@ -300,7 +316,7 @@
                             </div>
                         </td> --}}
                         <td class="py-1">
-                            <button type="button" data-modal-target="deleteModal-{{$keepfile->id}}" data-modal-show="deleteModal-{{$keepfile->id}}" class="button-delete-primary">
+                            <button type="button" data-modal-target="deleteModal-{{$keepfile->id}}" data-modal-show="deleteModal-{{$keepfile->id}}" class="button-delete-primary" tabindex="-1">
                                 <div class="flex">
                                     <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
                                     <span class="text-ms ">削除</span>
@@ -338,11 +354,11 @@
                     </div>
                     {{-- 削除確認モーダル画面 End --}}
                     <!-- 更新drawer --> 
-                    <div id="dupdateModal-{{$keepfile->id}}" class="fixed top-0 right-0 z-50 h-screen p-4 overflow-y-auto transition-transform md:w-1/2 translate-x-full bg-gray-200 dark:bg-gray-800" tabindex="-1" aria-labelledby="dupdateModal-{{$keepfile->id}}">
+                    {{-- <div id="dupdateModal-{{$keepfile->id}}" class="fixed top-0 right-0 z-50 h-screen p-4 overflow-y-auto transition-transform md:w-1/2 translate-x-full bg-gray-200 dark:bg-gray-800" tabindex="-1" aria-labelledby="dupdateModal-{{$keepfile->id}}">
                         <div class="">
                             <h5 id="dupdateModal-{{$keepfile->id}}" class="inline-flex items-center mb-4 font-semibold text-xl text-gray-500 dark:text-gray-400">
                                 サポート詳細
-                                {{-- -{{ $keepfile->title }} --}}
+                                -{{ $keepfile->title }}
                             </h5>
                             <button type="button" data-drawer-hide="dupdateModal-{{$keepfile->id}}" aria-controls="dupdateModal-{{$keepfile->id}}" class="text-gray-400 bg-transparent ml-8 hover:bg-gray-200 hover:text-gray-900 rounded-md text-sm w-8 h-8 absolute top-2.5 end-2.5 inline-flex items-center justify-center dark:hover:bg-gray-600 dark:hover:text-white" >
                                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -350,18 +366,18 @@
                                 </svg>
                             </button>
                         </div>
-                        {{-- <form id="updateForm-{{$keepfile->id}}" method="POST" action="{{ route('keepfile.update', $keepfile->id) }}">
+                        <form id="updateForm-{{$keepfile->id}}" method="POST" action="{{ route('keepfile.update', $keepfile->id) }}">
                             @csrf
-                            @method('PUT') --}}
+                            @method('PUT')
 
-                            {{-- <label class="relative inline-flex items-center cursor-pointer mt-4">
+                            <label class="relative inline-flex items-center cursor-pointer mt-4">
                                 <input type="hidden" name="is_enabled_{{$keepfile->id}}" value="0">
                                 <input type="checkbox" name="is_enabled_{{$keepfile->id}}" id="is_enabled-{{$keepfile->id}}" value="1" class="sr-only peer" {{ old('is_enabled_' . $keepfile->id, $keepfile->is_enabled) == 1 ? 'checked' : '' }}>
                                 <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                                 <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">有効</span>
-                            </label> --}}
+                            </label>
 
-                            {{-- <div class="grid  gap-4 my-4 md:grid-cols-4">
+                            <div class="grid  gap-4 my-4 md:grid-cols-4">
                                 <div class="relative z-0">
                                     <input type="text" id="client_num" name="client_num" value="{{ $keepfile->client->client_num }}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
                                     <label for="client_num" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">顧客番号</label>
@@ -399,19 +415,16 @@
                                 @error('received_at_' . $keepfile->id)
                                     <div class="text-red-500">{{ $message }}</div>
                                 @enderror
-                            </div> --}}
+                            </div>
 
-                            {{-- <div class="w-full flex flex-col">
+                            <div class="w-full flex flex-col">
                                 <label for="request_content-{{$keepfile->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">内容</label>
                                 <textarea name="request_content_{{$keepfile->id}}" id="request_content-{{$keepfile->id}}" class="w-auto py-1 border text-sm border-gray-300 rounded-md mt-1 placeholder-gray-400" data-auto-resize="true"  cols="30" rows="8">{{ old('request_content_' . $keepfile->id , $keepfile->request_content) }}</textarea>
                                 @error('request_content_' . $keepfile->id)
                                     <div class="text-red-500">{{ $message }}</div>
                                 @enderror
-                            </div> --}}
-
-
-
-                            {{-- <div class="grid gap-4 my-4 md:grid-cols-2">
+                            </div>
+                            <div class="grid gap-4 my-4 md:grid-cols-2">
                                 <div class="w-full flex flex-col">
                                     <label for="keepfile_type_id" class="block font-medium text-gray-900 dark:text-white">サポート種別</label>
                                     <select name="keepfile_type_id_{{$keepfile->id}}" id="keepfile_type_id-{{$keepfile->id}}" value="{{old('keepfile_type_id')}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
@@ -423,9 +436,9 @@
                                 @error('keepfile_type_id_' . $keepfile->id)
                                     <div class="text-red-500">{{$message}}</div>
                                 @enderror
-                            </div> --}}
+                            </div>
 
-                            {{-- <ul class=" mt-4 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <ul class=" mt-4 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                 <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                     <div class="flex items-center pl-3">
                                         <input id="is_finished_{{ $keepfile->id }}" name="is_finished_{{ $keepfile->id }}" type="hidden" value="0" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
@@ -454,7 +467,7 @@
                                      <div class="text-red-500">{{ $message }}</div>
                                     @enderror
                                 </li>
-                            </ul> --}}
+                            </ul>
                             <div class="grid grid-cols-2 gap-4 mt-4">
                                 <button type="button" onclick="submitAndUpdateDrawer({{$keepfile->id}})" class="w-full justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-s rounded-e text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     {{ __('Update') }}
@@ -465,7 +478,7 @@
                                 </button>
                             </div>
                         </form>
-                    </div>
+                    </div> --}}
                 @endforeach
             </tbody>
         </table>

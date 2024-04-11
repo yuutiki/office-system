@@ -87,6 +87,7 @@
                 resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
                 resultElement.innerHTML = `
                     <td class="py-2 pl-5 cursor-pointer" onclick="setProject('${result.id}','${result.project_num}', '${result.project_name}', '${result.account_user.name}', '${result.sales_stage.sales_stage_name}','${result.client.client_name}')">${result.project_num}</td>
+                    <td class="py-2 ml-2">${result.client.client_name}</td>
                     <td class="py-2 ml-2">${result.project_name}</td>
                 `;
                 searchResultsProjectContainer.appendChild(resultElement);

@@ -18,7 +18,7 @@ $("form").submit(function() {
   $(":submit", self).prop("disabled", true);
   setTimeout(function() {
     $(":submit", self).prop("disabled", false);
-  }, 10000);
+  }, 3000);
 });
 </script>
 

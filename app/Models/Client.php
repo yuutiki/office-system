@@ -170,6 +170,10 @@ class Client extends Model
     {
         return $this->hasMany(Support::class);
     }
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
     // public function products()
     // {
     //     return $this->belongsToMany(Product::class, 'client_products', 'client_id', 'product_id');

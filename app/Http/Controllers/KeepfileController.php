@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use app\Common\CommonFunction;
+use App\Http\Requests\KeepfileStoreRequest;
+use App\Http\Requests\KeepfileUpdateRequest;
+use App\Models\Client;
 use App\Models\Keepfile;
 use App\Models\Project;
 use App\Models\User;
@@ -37,12 +41,18 @@ class KeepfileController extends Controller
         }
     
         if (!empty($clientName)) {
+            // 全角文字を半角に変換
             $spaceConversion = mb_convert_kana($clientName, 's');
+            // 文字列を単語の配列に分割
             $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
     
-            foreach ($wordArraySearched as $value) {
-                $query->where('clientname', 'like', '%'.$value.'%');
-            }
+            // クライアント名に基づいてクライアントを検索するクエリ
+            $query->whereHas('project.client', function ($query) use ($wordArraySearched) {
+                foreach ($wordArraySearched as $value) {
+                    // 配列内のいずれかの単語に一致するクライアント名を検索
+                    $query->where('client_name', 'like', '%' . $value . '%');
+                }
+            });
         }
     
         if (!empty($userId)) {
@@ -68,33 +78,24 @@ class KeepfileController extends Controller
 
     public function create()
     {
-        return view('keepfile.create');
+        $users = User::all();
+        return view('keepfile.create',compact('users'));
     }
 
-    public function store(Request $request)
+    public function store(KeepfileStoreRequest $request)
     {
-        $inputs = $request->validate([
-            'project_id'=>'required',
-            'purpose'=>'required|max:255',
-            'keep_at'=>'required|max:10',
-            'return_at'=>'required|max:10',
-            'keepfile_memo'=>'max:255',
-            'pdf_file' => ['nullable', 'max:1024', 'mimes:pdf'],
-        ]);
-
         // ファイル名用に取得
         $ClientName = Project::where('id', $request->project_id)->first()->client->client_name;
-
     
-    // PDFファイルがアップロードされた場合のみ保存する
-    if ($request->hasFile('pdf_file')) {
-        // ファイル名を生成
-        $fileName = $request->project_num . '_' . $ClientName . '_' . $request->return_at . '_' . now()->format('YmdHis') . '.pdf';
-        // ファイルを指定した名前で保存
-        $pdfFilePath = $request->file('pdf_file')->storeAs('keepfiles/pdf', $fileName, 'public');
-    } else {
-        $pdfFilePath = null; // ファイルがアップロードされなかった場合はnullを保存する
-    }
+        // PDFファイルがアップロードされた場合のみ保存する
+        if ($request->hasFile('pdf_file')) {
+            // ファイル名を生成
+            $fileName = $request->project_num . '_' . $ClientName . '_' . $request->return_at . '_' . now()->format('YmdHis') . '.pdf';
+            // ファイルを指定した名前で保存
+            $pdfFilePath = $request->file('pdf_file')->storeAs('keepfiles/pdf', $fileName, 'public');
+        } else {
+            $pdfFilePath = null; // ファイルがアップロードされなかった場合はnullを保存する
+        }
 
         $keepfile = new keepfile();
         $keepfile->project_id = $request->project_id;
@@ -104,7 +105,7 @@ class KeepfileController extends Controller
         $keepfile->keepfile_memo = $request->keepfile_memo;
         $keepfile->is_finished = $request->is_finished;
         $keepfile->pdf_file = $pdfFilePath;
-        $keepfile->user_id = auth()->user()->id;
+        $keepfile->user_id = $request->depositor; // 取得者
         $keepfile->save();
         return redirect()->route('keepfile.index')->with('success','正常に登録しました');
     }
@@ -116,6 +117,7 @@ class KeepfileController extends Controller
 
     public function edit(string $id)
     {
+        $users = User::all();
         $keepfile = keepfile::find($id);
     
         // ファイル名とファイルサイズの初期化
@@ -136,42 +138,16 @@ class KeepfileController extends Controller
                 // ファイルサイズを MB に変換
                 $fileSizeMB = $fileSize / (1024 * 1024);
                 // ファイルサイズを人間が読みやすい形式に変換
-                $formattedFileSize = $this->formatBytes($fileSizeMB);
+                $formattedFileSize = CommonFunction::formatBytes($fileSizeMB);
             }
         }
     
-        return view('keepfile.edit', compact('keepfile', 'fileName', 'formattedFileSize'));
+        return view('keepfile.edit', compact('keepfile', 'fileName', 'formattedFileSize','users'));
     }
     
-    /**
-     * ファイルサイズを人間が読みやすい形式に変換します
-     *
-     * @param float $bytes ファイルサイズ (MB 単位)
-     * @return string 人間が読みやすい形式に変換されたファイルサイズ
-     */
-    private function formatBytes(float $bytes): string
-    {
-        if ($bytes >= 1024) {
-            return number_format($bytes / 1024, 2) . ' GB';
-        } elseif ($bytes >= 1) {
-            return number_format($bytes, 2) . ' MB';
-        } else {
-            return number_format($bytes * 1024, 0) . ' KB';
-        }
-    }
-
-    public function update(Request $request, string $id)
+    public function update(KeepfileUpdateRequest $request, string $id)
     {
         $keepfile = keepfile::find($id);
-
-        $request->validate([
-            'project_id'=>'required',
-            'purpose'=>'required|max:255',
-            'keep_at'=>'required|max:10',
-            'return_at'=>'required|max:10',
-            'keepfile_memo'=>'max:255',
-            'pdf_file' => ['nullable', 'max:1024', 'mimes:pdf'],
-        ]);
 
         // 新しいPDFファイルがアップロードされた場合は処理する
         if ($request->hasFile('pdf_file')) {
@@ -180,23 +156,22 @@ class KeepfileController extends Controller
                 Storage::disk('public')->delete($keepfile->pdf_file);
             }
 
-                    // ファイル名用に取得
+            // ファイル名用に取得
             $ClientName = Project::where('id', $request->project_id)->first()->client->client_name;
 
             $fileName = $request->project_num . '_' . $ClientName . '_' . $request->return_at . '_' . now()->format('YmdHis') . '.pdf';
 
-        // ファイルを指定した名前で保存
-        $pdfFilePath = $request->file('pdf_file')->storeAs('keepfiles/pdf', $fileName, 'public');
+            // ファイルを指定した名前で保存
+            $pdfFilePath = $request->file('pdf_file')->storeAs('keepfiles/pdf', $fileName, 'public');
             $keepfile->pdf_file = $pdfFilePath;
         }
 
-        $keepfile->project_id = $request->project_id;
         $keepfile->purpose = $request->purpose;
         $keepfile->keep_at = $request->keep_at;
         $keepfile->return_at = $request->return_at;
         $keepfile->keepfile_memo = $request->keepfile_memo;
         $keepfile->is_finished = $request->is_finished;
-        $keepfile->user_id = auth()->user()->id;
+        $keepfile->user_id = $request->depositor;
         $keepfile->save();
         return redirect()->route('keepfile.edit',$id)->with('success','正常に更新しました');
     }

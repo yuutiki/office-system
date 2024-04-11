@@ -89,4 +89,9 @@ class Project extends Model
     {
         return $this->belongsTo(Corporation::class, 'billing_corporation_id');
     }
+
+    public function keepfiles()
+    {
+        return $this->hasMany(Keepfile::class);
+    }
 }

@@ -98,14 +98,14 @@
             <div class="grid gap-4 mb-4 md:grid-cols-3">
                 <div class="w-full flex flex-col">
                     <label for="ext_phone" class="text-sm dark:text-gray-100 leading-none mt-2">外線番号</label>
-                    <input type="text" form="userForm" name="ext_phone" class="w-auto py-1 placeholder-gray-500 border border-gray-300 rounded mt-1" id="ext_phone" value="{{old('ext_phone')}}" placeholder="例）999-9999-9999">
+                    <input type="text" form="userForm" name="ext_phone" class="w-auto py-1 placeholder-gray-500 border border-gray-300 rounded mt-1" id="ext_phone" value="{{old('ext_phone')}}" placeholder="999-9999-9999">
                 </div>
                 @error('ext_phone')
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
                 <div class="w-full flex flex-col">
                     <label for="int_phone" class="text-sm dark:text-gray-100 leading-none mt-2">内線番号</label>
-                    <input type="text" form="userForm" name="int_phone" class="w-auto py-1 placeholder-gray-500 border border-gray-300 rounded mt-1" id="int_phone" value="{{old('int_phone')}}" placeholder="例）999">
+                    <input type="text" form="userForm" class="w-auto py-1 placeholder-gray-500 border border-gray-300 rounded mt-1" id="int_phone" value="{{old('int_phone')}}" placeholder="999" maxlength="{{ $maxlength }}">
                 </div>
                 @error('int_phone')
                     <div class="text-red-500">{{$message}}</div>
