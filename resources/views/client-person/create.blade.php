@@ -419,7 +419,7 @@
             }
     </script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/libphonenumber-js/1.1.10/libphonenumber-js.min.js"></script>
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/libphonenumber-js/1.1.10/libphonenumber-js.min.js"></script> --}}
 <script>
     // バリデーション関数
     var validateTelNeo = function (value) {

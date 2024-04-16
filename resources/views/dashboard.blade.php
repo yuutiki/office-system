@@ -4,6 +4,9 @@
             {{-- {{ __('Home') }} --}}
             {{ Breadcrumbs::render('dashboard') }}
         </h2>
+        <div class="flex justify-end">
+          <x-message :message="session('message')"/>
+      </div>
     </x-slot>
 
 

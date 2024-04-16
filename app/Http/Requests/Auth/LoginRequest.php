@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -44,8 +45,21 @@ class LoginRequest extends FormRequest
         if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
+            // throw ValidationException::withMessages([
+            //     'email' => trans('auth.failed'),
+            // ]);
+
+            // Check if the email address exists in the database
+            $user = User::where('email', $this->email)->first();
+
+            if ($user === null) {
+                $errorMessage = trans('auth.invalid_email');
+            } else {
+                $errorMessage = trans('auth.invalid_password');
+            }
+
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'credentials' => $errorMessage,
             ]);
         }
 
@@ -56,7 +70,7 @@ class LoginRequest extends FormRequest
             RateLimiter::hit($this->throttleKey());
     
             throw ValidationException::withMessages([
-                'email' => trans('auth.Your account is not active.'),
+                'credentials' => trans('auth.Your account is not active.'),
             ]);
         }
 

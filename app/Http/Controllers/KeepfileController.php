@@ -20,10 +20,18 @@ class KeepfileController extends Controller
     {
         $per_page = 15;
         $user = auth()->user();
-        $users = User::all();
+        $loggedInUserId = Auth::id();
+
+        // ログインユーザがid1以外の場合はid1を除外
+        if ($loggedInUserId !== 1) {
+            $users = User::where('id', '!=', 1)->get();
+        } else {
+            // ログインユーザがid1の場合はid1を含める
+            $users = User::all();
+        }
         
         // フィルタリングクエリを作成
-        $query = Keepfile::where('user_id', $user->id)->sortable()->with('user','project');
+        $query = Keepfile::sortable()->with('user','project');
     
         // 検索フォームの値を取得する
         $projectNum = $request->input('project_num');
@@ -31,6 +39,30 @@ class KeepfileController extends Controller
         $userId = $request->input('user_id');
         $dayFrom = $request->input('day_from');
         $dayTo = $request->input('day_to');
+
+    // ユーザーセレクトボックスの初期値をログインユーザーに設定
+    $selectedUserId = $user->id;
+
+
+
+
+    // プルダウンが変更された場合の処理
+    if (request()->has('selected_user_id')) {
+        $selectedUserId = request('selected_user_id');
+
+        // プルダウンが「事業部全て」以外の場合、検索結果を絞る
+        if ($selectedUserId != 0) {
+            $query->where('user_id', $selectedUserId);
+        }  // 「事業部全て」の場合は何もしない（絞り込み解除）
+
+        // 上記の条件で検索結果を取得
+        $keepfiles = $query->get();
+        
+    } else {
+        // 初期表示の場合、ユーザーの所属に基づいて検索結果を絞る
+        $query->where('user_id', $user)->get();
+    }
+
     
         if (!empty($projectNum)) {
             // Project テーブルからプロジェクト番号を部分一致で検索して該当する ID を取得
@@ -72,7 +104,7 @@ class KeepfileController extends Controller
         $keepfiles = $query->orderby('return_at', 'asc')->paginate($per_page);
         $count = $keepfiles->total();
     
-        return view('keepfile.index', compact('keepfiles', 'user', 'users', 'count', 'projectNum', 'clientName', 'userId', 'dayFrom', 'dayTo'));
+        return view('keepfile.index', compact('keepfiles', 'user', 'users', 'count', 'projectNum', 'clientName', 'selectedUserId', 'dayFrom', 'dayTo'));
     }
 
 

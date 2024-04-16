@@ -2,8 +2,11 @@
 
 namespace App\Console;
 
+use App\Console\Commands\DisableInactiveUsers;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Carbon\Carbon;
+
 
 class Kernel extends ConsoleKernel
 {
@@ -13,6 +16,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
+        $schedule->command(DisableInactiveUsers::class)->daily(); // 毎日実行する例
     }
 
     /**

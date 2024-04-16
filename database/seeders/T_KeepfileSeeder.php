@@ -54,6 +54,17 @@ class T_KeepfileSeeder extends Seeder
             'user_id' => '2'
         ]);
 
+        Keepfile::create([
+            'project_id' => '5',
+            // 'client_name' => '帝京平成大学',
+            'purpose' => '学籍連携不具合調査',
+            'keep_at' => '2024-04-12',
+            'return_at' => '2024-04-30',
+            'keepfile_memo' => '貴学ストレージサービス',
+            'is_finished' => '0',
+            'user_id' => '2'
+        ]);
+
         // Keepfile::create([
         //     'project_num' => '101222-C-C01-0004',
         //     'client_name' => '烏丸大学',

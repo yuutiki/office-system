@@ -46,6 +46,8 @@ use App\Http\Controllers\RoleGroupController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\VendorController;
 use App\Models\Contract;
+use App\Http\Controllers\Auth\PasswordChangeController;
+use App\Http\Controllers\PasswordPolicyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,17 +66,12 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth'])->group(function () {
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-Route::middleware('auth')->group(function () {
 
     // Projects関連
     Route::get('/projects/show-upload', [ProjectController::class, 'showUploadForm'])->name('projects.showUploadForm');
@@ -201,8 +198,12 @@ Route::middleware('auth')->group(function () {
     // Route::post('/save-modal-id', [LinkController::class, 'saveModalId'])->name('save.modal.id');
     // Route::get('/corporations/export', [CorporationController::class, 'exportCsv'])->name('corporations.export');
     // Route::get('/corporations/download/{filename}', [CorporationController::class, 'downloadCsv'])->name('corporations.download');
+
+    Route::resource('/password-policy', PasswordPolicyController::class);
+
 });
 
-Route::get('/dashboard',  [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard',  [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard',  [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
 
 require __DIR__.'/auth.php';

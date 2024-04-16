@@ -46,6 +46,7 @@ class DatabaseSeeder extends Seeder
         $this->call(FunctionMenuSeeder::class);
         $this->call(PermissionSeeder::class);
         $this->call(RoleGroupSeeder::class);
+        $this->call(PasswordPolicySeeder::class);
 
         $this->call(T_CorporationSeeder::class);
         $this->call(T_ClientSeeder::class);

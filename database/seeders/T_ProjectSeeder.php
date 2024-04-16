@@ -118,5 +118,32 @@ class T_ProjectSeeder extends Seeder
             'created_by' => '1',
             'updated_by' => '1',
         ]);
+        Project::create([
+            'client_id' => '5',
+            'project_num' => '999994-C-C01-0001',
+            'project_name' => 'サポート',
+            'sales_stage_id' => '1',
+            'project_type_id' => '1',
+            'accounting_type_id' => '1',
+            'distribution_type_id' => '1',
+            // 'proposed_order_date' => '',
+            // 'proposed_delivery_date' => '',
+            // 'proposed_accounting_date' => '',
+            // 'proposed_payment_date' => '',
+            'billing_corporation_id' => '1',
+            // 'billing_corporation_name' => '',
+            // 'billing_corporation_division_name' => '',
+            // 'billing_corporation_person_name' => '',
+            // 'billing_head_post_code' => '',
+            // 'billing_head_prefecture' => '',
+            // 'billing_head_address1' => '',
+            'project_memo' => '1',
+            'account_company_id' => '1',
+            'account_department_id' => '1',
+            'account_affiliation3_id' => '1',
+            'account_user_id' => '2',
+            'created_by' => '1',
+            'updated_by' => '1',
+        ]);
     }
 }

@@ -81,6 +81,23 @@ class T_CorporationSeeder extends Seeder
             'created_by' => '1',
             'updated_by' => '1',
         ]);
+        Corporation::create([
+            'corporation_num' => '999994',
+            'corporation_name' => '学校法人 帝京平成大学',
+            'corporation_kana_name' => 'ガッコウホウジン テイキョウヘイセイダイガク',
+            'corporation_short_name' => '帝京平成大学',
+            'credit_limit' => '1000000',
+            // 'corporation_memo' => '',
+            // 'corporation_post_code' => '',
+            // 'corporation_prefecture_id' => '',
+            // 'corporation_address1' => '',
+            // 'is_stop_trading' => '',
+            // 'stop_trading_reason' => '',
+            // 'invoice_num' => '',
+            // 'invoice_at' => '',
+            'created_by' => '1',
+            'updated_by' => '1',
+        ]);
     }
 }
 

@@ -197,9 +197,14 @@
                             №
                         </div>
                     </th>
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                        <div class="flex items-center">
+                            
+                        </div>
+                    </th>
                     <th scope="col" class="pl-4 py-3 whitespace-nowrap">
                         <div class="flex items-center">
-                            @sortablelink('user_num','社員番号')
+                            @sortablelink('user_num','ユーザ№')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
                                 <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
                             </svg>
@@ -274,6 +279,16 @@
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600">
                         <td class="pl-4 py-1 whitespace-nowrap">
                             {{ $loop->iteration }}
+                        </td>
+                        <td class="pl-4 py-1 whitespace-nowrap w-20 pr-10">
+                            <button type="button" onclick="location.href='{{route('users.edit', $user)}}'" class="button-edit-primary">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+                                    </svg>
+                                    <span class=" md:block hidden">編集</span>
+                                </div>
+                            </button>
                         </td>
                         <td class="pl-4 py-1 whitespace-nowrap">
                             {{ $user->user_num }}

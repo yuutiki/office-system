@@ -13,7 +13,7 @@
 
     <div class="relative bg-white dark:bg-gray-800 rounded-t-md md:w-auto md:ml-14 md:mr-2 m-auto shadow-md  dark:text-gray-900 mt-4">
         <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
-            <div class="w-full md:w-1/2">
+            <div class="w-full md:w-2/3">
                 <form method="GET" action="{{ route('keepfile.index') }}" id="search_form" class="flex items-center">
                     @csrf
                     <div class="flex flex-col md:flex-row w-full">
@@ -35,16 +35,14 @@
                             <input type="search" id="client_name" name="client_name" value="@if (isset($clientName)){{$clientName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="顧客名称">
                         </div>
 
-                        {{-- <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-                            <select name="product_category_id" id="product_category_id" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="">製品系統</option>
-                                @foreach ($productCategories as $productCategory)
-                                <option value="{{ $productCategory->id }}" @if (isset($productCategoryId) && $productCategoryId == $productCategory->id) selected @endif>
-                                    {{ $productCategory->category_name }}
-                                </option>
+                        <div class="relative w-full mt-2 md:ml-2 md:mt-0">
+                            <select name="selected_user_id" class="w-full py-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option class="text-base" value="0" @if($selectedUserId == 0) selected @endif>担当者全て</option>
+                                @foreach($users as $user)
+                                    <option class="text-base" value="{{ $user->id }}" @if($selectedUserId == $user->id) selected @endif>{{ $user->user_name }}</option>
                                 @endforeach
                             </select>
-                        </div> --}}
+                        </div>
 
                         <div class="flex mt-2 md:mt-0">
                             <div class="w-full md:ml-2">
@@ -59,9 +57,9 @@
                                 </button>
                                 <!-- Dropdown menu -->
                                 <div id="filterDropdown" class="z-50 hidden w-56 p-3 bg-gray-100 rounded shadow dark:bg-gray-600">
-                                    <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
+                                    {{-- <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
                                         担当者
-                                    </h6>
+                                    </h6> --}}
                                     {{-- <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
                                         @foreach ($keepfileTypes as $keepfileType)
                                         <li class="flex items-center">
@@ -82,13 +80,12 @@
                                         </li>                       
                                         @endforeach
                                     </ul> --}}
-                                    <select  name="user_id" class="w-full py-1.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    {{-- <select  name="user_id" class="w-full py-1.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option value=""{{ request('user_id') == '' ? 'selected':'' }}>担当者全て</option>
                                         @foreach($users as $user)
                                             <option value="{{$user->id}}" {{ request('user_id') == $user->id ? 'selected' : '' }}>{{$user->user_name}}</option>
                                         @endforeach
-                                    </select>
-                                    <ul class="border my-2"></ul>
+                                    </select> --}}
 
                                     <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
                                         返却期限日

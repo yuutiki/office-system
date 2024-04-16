@@ -10,10 +10,7 @@ return new class extends Migration
     {
         Schema::create('keepfiles', function (Blueprint $table) {
             $table->id();
-            // $table->string('project_num',17)->comment('プロジェクト№');
-            // $table->string('client_name',100)->comment('顧客名');
             $table->foreignId('project_id')->nullable(true)->comment('プロジェクトID');
-
             $table->string('purpose',50)->comment('用途');
             $table->date('keep_at')->comment('預託日');
             $table->date('return_at')->comment('消去予定日');
@@ -22,11 +19,9 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->comment('担当者'); //本来は担当者だろうが
             $table->text('pdf_file')->nullable(true)->comment('PDFファイル');
             $table->boolean('has_personal_information')->default(1)->comment('個人情報含むフラグ');
-            
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->datetimes();
-
 
             // 資料データ名称、お預かり方法、消去予定延長日、使用USB？
         });

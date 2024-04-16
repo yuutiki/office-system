@@ -58,7 +58,7 @@ $(function() {
     $.fn.autoKana('input[name="corporation_name"]', 'input[name="corporation_kana_name"]', {katakana: true});
     $.fn.autoKana('input[name="client_name"]', 'input[name="client_kana_name"]', {katakana: true});
     $.fn.autoKana('input[name="vendor_name"]', 'input[name="vendor_kana_name"]', {katakana: true});
-    $.fn.autoKana('input[name="name"]', 'input[name="kana_name"]', {katakana: true});
+    $.fn.autoKana('input[name="user_name"]', 'input[name="user_kana_name"]', {katakana: true});
     $.fn.autoKana('input[name="first_name"]', 'input[name="first_name_kana"]', {katakana: true});
     $.fn.autoKana('input[name="last_name"]', 'input[name="last_name_kana"]', {katakana: true});
     $.fn.autoKana('input[name^="name_"]', 'input[name^="kana_name_"]', {katakana: true});

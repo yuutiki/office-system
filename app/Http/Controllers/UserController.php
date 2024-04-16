@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CsvUploadRequest;
+use App\Http\Requests\UserStoreRequest;
+use App\Jobs\SendLoginInformationJob;
+use App\Mail\SendLoginInformation;
 use App\Models\Affiliation1;
 use App\Models\Department;
 use App\Models\Affiliation3;
@@ -18,6 +22,7 @@ use Illuminate\Validation\Rules;
 use Goodby\CSV\Import\Standard\Lexer;
 use Goodby\CSV\Import\Standard\Interpreter;
 use Goodby\CSV\Import\Standard\LexerConfig;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -25,7 +30,6 @@ class UserController extends Controller
     {
         $per_page = 50;
         $users = User::with(['role','affiliation1s','department','affiliation3']);
-        $roles = Role::all();
         $affiliation1s = Affiliation1::all();
         $departments = Department::all();
         $affiliation3s = Affiliation3::all();
@@ -42,6 +46,11 @@ class UserController extends Controller
 
         //検索Query
         $query = User::query();
+
+    // システム管理者でない場合は、id1のユーザーを非表示にする
+    if (!$this->isSysAdmin()) {
+        $query->where('id', '!=', 1);
+    }
 
         //もし社員番号があれば
         if(!empty($user_num))
@@ -63,7 +72,7 @@ class UserController extends Controller
 
             foreach($wordArraySearched as $value) 
             {
-                $query->where('name', 'like', "%{$value}%");
+                $query->where('user_name', 'like', "%{$value}%");
             }
         }
         
@@ -82,8 +91,14 @@ class UserController extends Controller
         $users = $query->sortable()->paginate($per_page);
         $count = $users->total();
 
-        return view('admin.user.index',compact('roles','users','employeeStatuses','user_num','user_name','selectedRoles','count','affiliation1s','departments','affiliation3s','selectedEmployeeStatues','departmentId'));
+        return view('admin.user.index',compact('users','employeeStatuses','user_num','user_name','selectedRoles','count','affiliation1s','departments','affiliation3s','selectedEmployeeStatues','departmentId'));
     }
+
+    private function isSysAdmin()
+    {
+        return Auth::check() && Auth::user()->id === 1;
+    }
+    
 
 
     public function create()
@@ -99,20 +114,10 @@ class UserController extends Controller
         return view('admin.user.create',compact('roles','e_statuses','affiliation1s','departments','affiliation3s','maxlength'));
     }
 
-    public function store(Request $request)
+    public function store(UserStoreRequest $request)
     {
-        // $validator = Validator::make($request->all(),User::$rules);
-
-        // if ($validator->fails()) {
-        //     // バリデーションエラーが発生した場合
-        //     session()->flash('error', '入力内容にエラーがあります。');
-        //     return redirect()->back()->withErrors($validator)->withInput();
-        // }
-
-
         // 社員番号の頭0埋め6桁にする
         $emploeeNum =  str_pad($request->user_num, 6, '0', STR_PAD_LEFT);
-
 
         // プロフ画像のファイル名を生成
         if ($request->hasFile('profile_image')) {
@@ -120,29 +125,50 @@ class UserController extends Controller
             $fileName = $emploeeNum . '_' . 'profile' . '.' . $extension;
             $imagePath = $request->file('profile_image')->storeAs('users/profile_image', $fileName, 'public');
         } else {
-            $imagePath = null; // ファイルがアップロードされなかった場合はnullを保存する
+            $imagePath = 'users/profile_image/default.png'; // ファイルがアップロードされなかった場合はデフォルトを設定する
         }
+
+        // // パスワード作成（生年月日8桁＋A%＋携帯番号下4桁）
+        // $birth = str_replace('-', '', $request->birth); // 生年月日からハイフンを削除する
+        // $phoneLast4Digits = substr($request->ext_phone, -4); // 携帯番号から下4桁を取得する
+        // $password = $birth . 'A%' . $phoneLast4Digits;
+        $password = $this->generateTemporaryPassword($request->birth, $request->ext_phone);
 
         $user = new User();
         $user->user_num = $emploeeNum;
-        $user->last_name = $request->last_name;
-        $user->first_name = $request->first_name;
-        $user->last_kana_name = $request->last_kana_name;
-        $user->first_kana_name = $request->first_kana_name;
+        $user->user_name = $request->user_name;
+        $user->user_kana_name = $request->user_kana_name;
         $user->email = $request->email;
         $user->int_phone = $request->int_phone;
         $user->ext_phone = $request->ext_phone;
-        // $user->role_id = $request->role_id;
+        $user->birth = $request->birth;
         $user->affiliation1_id = $request->affiliation1_id;
         $user->department_id = $request->department_id;
         $user->affiliation3_id = $request->affiliation3_id;
         $user->employee_status_id = $request->employee_status_id;
         $user->is_enabled = $request->is_enabled;
-        $user->password = bcrypt($request->password);
+        $user->password = bcrypt($password);
         $user->profile_image = $imagePath;
+        $user->password_change_required = $request->password_change_required;
         $user->save();
 
+        // ログイン情報メールを送信する
+            // アプリケーションのURLを取得する
+        $url = config('app.url');
+
+        // SendLoginInformationJobジョブをディスパッチする
+        SendLoginInformationJob::dispatch($url, $request->email, $password);
+        // Mail::to($request->email)->send(new SendLoginInformation($url, $request->email, $password)); // SendLoginInformationはメールクラス名
+
         return redirect()->route('users.index')->with('success','登録しました');
+    }
+
+    // 一時パスワードを生成するメソッド（生年月日8桁＋A%＋携帯番号下4桁）
+    private function generateTemporaryPassword($birth, $phone)
+    {
+        $birth = str_replace('-', '', $birth); // 生年月日からハイフンを削除する
+        $phoneLast4Digits = substr($phone, -4); // 携帯番号から下4桁を取得する
+        return $birth . 'A%' . $phoneLast4Digits;
     }
 
     public function show($id)
@@ -154,7 +180,7 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $user=user::find($id);
-        $roles = Role::with('users')->get();
+        // $roles = Role::with('users')->get();
         $e_statuses = EmployeeStatus::with('users')->get();
         $affiliation1s = Affiliation1::all();
         $departments = Department::all();
@@ -162,70 +188,124 @@ class UserController extends Controller
         $e_statuses = EmployeeStatus::all();
         $user_role = $user->role_id;
         $user_e_status = $user->employee_status_id;
-        return view('admin.user.edit',compact('user','roles','user_role','e_statuses','user_e_status','affiliation1s','departments','affiliation3s'));
+
+        $maxlength = config('constants.int_phone_maxlength');
+
+        return view('admin.user.edit',compact('user','user_role','e_statuses','user_e_status','affiliation1s','departments','affiliation3s', 'maxlength',));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        // パスワードが入力されたかどうかをチェック
-        $passwordIsProvided = !empty($request['password_' . $id]);
+        // // パスワードが入力されたかどうかをチェック
+        // $passwordIsProvided = !empty($request['password_' . $id]);
 
-        // バリデーションルールを初期化
-        $rules = User::rules($id);
+        // // バリデーションルールを初期化
+        // $rules = User::rules($id);
 
-        // パスワードが入力された場合、パスワードのバリデーションルールを追加
-        if ($passwordIsProvided) {
-            $rules['password_' . $id] = 'required|string|min:8|confirmed';
+        // // パスワードが入力された場合、パスワードのバリデーションルールを追加
+        // if ($passwordIsProvided) {
+        //     $rules['password_' . $id] = 'required|string|min:8|confirmed';
+        // }
+        
+
+        // // バリデーション実行
+        // $validator = Validator::make($request->all(), $rules);
+
+        //     // カスタム属性名を設定
+        // $validator->setAttributeNames([
+        //     'password_' . $id => 'パスワード',
+        //     'name_' . $id => '氏名',
+        //     'kana_name_' . $id => 'カナ氏名',
+        //     'email_' . $id => 'メールアドレス',
+        //     'int_phone_' . $id => '内線電話番号',
+        //     'ext_phone_' . $id => '外線電話番号',
+        //     'role_id_' . $id => '権限',
+        //     'affiliation1_id_' . $id => '[所属]会社',
+        //     'department_id_' . $id => '[所属]部署',
+        //     'affiliation3_id_' . $id => '[所属]部門',
+        //     'employee_status_id_' . $id => '在職状態',
+        //     'is_enabled_' . $id => '有効フラグ',
+        //     // 他の属性も必要に応じて追加
+        // ]);
+
+
+        // if ($validator->fails()) {
+        //     // バリデーションエラーが発生した場合
+        //     session()->flash('error', '入力内容にエラーがあります。');
+        //     return redirect()->back()->withErrors($validator)->withInput();
+        // }
+
+        // $user=user::find($id);
+        // $user->user_name = $request->input('user_name_' . $id);
+        // $user->user_kana_name = $request->input('user_kana_name_' . $id);
+        // $user->email = $request->input('email_' . $id);
+        // $user->int_phone = $request->input('int_phone_' . $id);
+        // $user->ext_phone = $request->input('ext_phone_' . $id);
+        // $user->affiliation1_id = $request->input('affiliation1_id_' . $id);
+        // $user->department_id = $request->input('department_id_' . $id);
+        // $user->affiliation3_id = $request->input('affiliation3_id_' . $id);
+        // $user->employee_status_id = $request->input('employee_status_id_' . $id);
+        // $user->user_num = $request->input('user_num_' . $id);
+        // $user->is_enabled = $request->input('is_enabled_' . $id);
+        // $user->access_ip = $request->ip();
+
+        // if($request->filled('password_' . $id))
+        // { // パスワード入力があるときだけ変更
+        //     $user->password = bcrypt($request->input('password_' . $id));
+        // }
+
+        // $user=user::find($id);
+        // $user->user_name = $request->input('user_name_' . $id);
+        // $user->user_kana_name = $request->input('user_kana_name_' . $id);
+        // $user->email = $request->input('email_' . $id);
+        // $user->int_phone = $request->input('int_phone_' . $id);
+        // $user->ext_phone = $request->input('ext_phone_' . $id);
+        // $user->affiliation1_id = $request->input('affiliation1_id_' . $id);
+        // $user->department_id = $request->input('department_id_' . $id);
+        // $user->affiliation3_id = $request->input('affiliation3_id_' . $id);
+        // $user->employee_status_id = $request->input('employee_status_id_' . $id);
+        // $user->user_num = $request->input('user_num_' . $id);
+        // $user->is_enabled = $request->input('is_enabled_' . $id);
+        // $user->access_ip = $request->ip();
+
+        // if($request->filled('password_' . $id))
+        // { // パスワード入力があるときだけ変更
+        //     $user->password = bcrypt($request->input('password_' . $id));
+        // }
+
+        $userNum =  str_pad($request->user_num, 6, '0', STR_PAD_LEFT);
+
+        // プロフ画像のファイル名を生成
+        if ($request->hasFile('profile_image')) {
+            $extension = $request->profile_image->extension();
+            $fileName = $userNum . '_' . 'profile' . '.' . $extension;
+            $imagePath = $request->file('profile_image')->storeAs('users/profile_image', $fileName, 'public');
+        } else {
+            $imagePath = 'users/profile_image/default.png'; // ファイルがアップロードされなかった場合はデフォルトを設定する
         }
         
 
-        // バリデーション実行
-        $validator = Validator::make($request->all(), $rules);
-
-            // カスタム属性名を設定
-        $validator->setAttributeNames([
-            'password_' . $id => 'パスワード',
-            'name_' . $id => '氏名',
-            'kana_name_' . $id => 'カナ氏名',
-            'email_' . $id => 'メールアドレス',
-            'int_phone_' . $id => '内線電話番号',
-            'ext_phone_' . $id => '外線電話番号',
-            'role_id_' . $id => '権限',
-            'affiliation1_id_' . $id => '[所属]会社',
-            'department_id_' . $id => '[所属]部署',
-            'affiliation3_id_' . $id => '[所属]部門',
-            'employee_status_id_' . $id => '在職状態',
-            'is_enabled_' . $id => '有効フラグ',
-            // 他の属性も必要に応じて追加
-        ]);
-
-
-        if ($validator->fails()) {
-            // バリデーションエラーが発生した場合
-            session()->flash('error', '入力内容にエラーがあります。');
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        $user=user::find($id);
-        // $user->user_num = $request->user_num;
-        $user->name = $request->input('name_' . $id);;
-        $user->kana_name = $request->input('kana_name_' . $id);
-        $user->email = $request->input('email_' . $id);
-        $user->int_phone = $request->input('int_phone_' . $id);
-        $user->ext_phone = $request->input('ext_phone_' . $id);
-        $user->role_id = $request->input('role_id_' . $id);
-        $user->affiliation1_id = $request->input('affiliation1_id_' . $id);
-        $user->department_id = $request->input('department_id_' . $id);
-        $user->affiliation3_id = $request->input('affiliation3_id_' . $id);
-        $user->employee_status_id = $request->input('employee_status_id_' . $id);
-        $user->user_num = $request->input('user_num_' . $id);
-        $user->is_enabled = $request->input('is_enabled_' . $id);
+        $user = User::find($user->id);
+        $user->user_name = $request->user_name;
+        $user->user_kana_name = $request->user_kana_name;
+        $user->email = $request->email;
+        $user->int_phone = $request->int_phone;
+        $user->ext_phone = $request->ext_phone;
+        $user->affiliation1_id = $request->affiliation1_id;
+        $user->department_id = $request->department_id;
+        $user->affiliation3_id = $request->affiliation3_id;
+        $user->employee_status_id = $request->employee_status_id;
+        $user->user_num = $userNum;
+        $user->is_enabled = $request->is_enabled;
+        $user->password_change_required = $request->password_change_required;
+        $user->birth = $request->birth;
+        $user->profile_image = $imagePath;
         $user->access_ip = $request->ip();
 
-        if($request->filled('password_' . $id))
-        { // パスワード入力があるときだけ変更
-            $user->password = bcrypt($request->input('password_' . $id));
-        }
+        // if($request->filled('password_' . $id))
+        // { // パスワード入力があるときだけ変更
+        //     $user->password = bcrypt($request->input('password_' . $id));
+        // }
 
         $user->save();
         return redirect()->back()->with('success','正常に更新しました');
@@ -240,16 +320,16 @@ class UserController extends Controller
         return redirect()->back()->with('success', $name . 'を正常に削除しました');
     }
 
-    public function upload(Request $request)
+    public function upload(CsvUploadRequest $request)
     {
         
-        $csvValidator = Validator::make($request->all(),User::$uploadRules);
+        // $csvValidator = Validator::make($request->all(),User::$uploadRules);
 
-        if ($csvValidator->fails()) {
-            // バリデーションエラーが発生した場合
-            session()->flash('error', 'CSVファイルを添付してください');
-            return redirect()->back()->withErrors($csvValidator)->withInput();
-        }
+        // if ($csvValidator->fails()) {
+        //     // バリデーションエラーが発生した場合
+        //     session()->flash('error', 'CSVファイルを添付してください');
+        //     return redirect()->back()->withErrors($csvValidator)->withInput();
+        // }
 
         $csvFile = $request->file('csv_input');
         
@@ -371,6 +451,7 @@ class UserController extends Controller
         ->where('department_id', 'like', '%' . $departmentId . '%')
         ->where('affiliation3_id', 'like', '%' . $affiliation3Id . '%')
         ->where('employee_status_id', 1) // 退職者を除外する条件を追加
+        ->where('id', '!=', 1)// システム管理者を除外する条件を追加
         ->get();
         // 検索結果をJSON形式で返す
         return response()->json($users);

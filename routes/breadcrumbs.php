@@ -83,7 +83,7 @@ Breadcrumbs::for('dashboard', function ($trail) {
                 Breadcrumbs::for('csvUploadProducts', function ($trail) {
                     $trail->parent('products');
                     $trail->push('CSVアップロード', url('products/show-upload'));
-                });        
+                });
 
         // ダッシュボード > 業者一覧
         Breadcrumbs::for('vendors', function ($trail) {
@@ -273,16 +273,24 @@ Breadcrumbs::for('dashboard', function ($trail) {
             // });
 
 
-        // ダッシュボード > 権限グループ管理
+        // ダッシュボード > ユーザ一覧
         Breadcrumbs::for('users', function ($trail) {
             $trail->parent('dashboard');
             $trail->push('ユーザ一覧', url('users'));
         });
-                // ダッシュボード > 権限グループ管理 >  グループ新規作成
+                // ダッシュボード > ユーザ一覧 >  ユーザ新規作成
                 Breadcrumbs::for('createUser', function ($trail) {
                     $trail->parent('users');
                     $trail->push('新規作成', route('users.create'));
-                });    
+                });
+                
+                // ダッシュボード > 権限グループ管理 >  グループ編集
+                Breadcrumbs::for('editUser', function ($trail, $user) {
+                    $trail->parent('users');
+                    $trail->push('編集',route('users.edit', $user));
+                });
+
+
 
         // ダッシュボード > 権限グループ管理
         Breadcrumbs::for('roleGroups', function ($trail) {

@@ -63,22 +63,23 @@ class User extends Authenticatable
         'last_login_at'
     ];
 
-    public static function rules($id)
-    {
-        return [
-            'affiliation1_id_' . $id => 'required',
-            'department_id_' . $id => 'required',
-            'affiliation3_id_' . $id => 'required',
-            'int_phone_' . $id => 'size:3',
-            'kana_name_' . $id => 'required|max:50',
-            'name_' . $id => 'required|max:50',
-            // 他のフィールドに対するルールも追加する
-        ];
-    }
 
-    public static $uploadRules = [
-        'csv_input' => 'required|file|mimes:csv,txt',
-    ];
+    // public static function rules($id)
+    // {
+    //     return [
+    //         'affiliation1_id_' . $id => 'required',
+    //         'department_id_' . $id => 'required',
+    //         'affiliation3_id_' . $id => 'required',
+    //         'int_phone_' . $id => 'size:3',
+    //         'kana_name_' . $id => 'required|max:50',
+    //         'name_' . $id => 'required|max:50',
+    //         // 他のフィールドに対するルールも追加する
+    //     ];
+    // }
+
+    // public static $uploadRules = [
+    //     'csv_input' => 'required|file|mimes:csv,txt',
+    // ];
 
     //GlobalObserverに定義されている作成者と更新者を登録するメソッド
     //なお、値を更新せずにupdateをかけても更新者は更新されない。
@@ -88,7 +89,6 @@ class User extends Authenticatable
 
         self::observe(GlobalObserver::class);
     }
-
     
 
     //relation

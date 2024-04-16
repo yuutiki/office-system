@@ -32,7 +32,7 @@ class KeepfileStoreRequest extends FormRequest
             'depositor' => 'required',
             'pdf_file' => 'nullable|file|mimes:pdf|max:1024',
 
-            'has_personal_information' => 'nullable',
+            'has_personal_information' => 'nullable', // 将来実装予定
         ];
     }
 

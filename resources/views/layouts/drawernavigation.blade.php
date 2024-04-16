@@ -285,7 +285,6 @@
 
             <ul class="pt-4 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700">
             <li>
-                @can('adminOrAbobe')
                 <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#accordion-body-90" aria-expanded="false" aria-controls="accordion-body-90">
                     <svg class="flex-shrink-0 w-6 h-6 text-gray-900 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                         <g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
@@ -330,8 +329,13 @@
                             {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
                             <span class="flex-1 ml-10 whitespace-nowrap">{{ __('製品管理') }}</span>
                         </x-nav-link>
-                    </li>  
-                    @endcan
+                    </li>
+                    <li>
+                        <x-nav-link :href="route('password-policy.edit', 1)" :active="request()->routeIs('password-policy.edit', 1)" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                            {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('パスワードポリシー') }}</span>
+                        </x-nav-link>
+                    </li>
                     <li>
                         <x-nav-link :href="url('/log-viewer')" :active="request()->routeIs('log-viewer')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                             {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
@@ -517,6 +521,11 @@
                         <li>
                             <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('製品管理') }}</span>
+                            </x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link :href="route('password-policy.edit', 1)" :active="request()->routeIs('password-policy.edit', 1)" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('パスワードポリシー') }}</span>
                             </x-nav-link>
                         </li>
                         <li>

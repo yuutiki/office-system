@@ -14,6 +14,7 @@ return new class extends Migration
             $table->string('user_name',255)->comment('ユーザ名');
             $table->string('user_kana_name',255)->comment('ユーザカナ名');
             $table->date('birth')->nullable(true)->comment('生年月日');
+            $table->date('employment_at')->nullable(true)->comment('入職年月日');
             $table->string('email',100)->unique()->comment('メールアドレス'); // default
             $table->timestamp('email_verified_at')->nullable(true)->comment('メール認証日時'); // default
             $table->string('password',255)->comment('パスワード'); // default
@@ -26,9 +27,11 @@ return new class extends Migration
             // $table->foreignId('role_id')->default(4)->comment('権限ID'); //追記 rolesテーブル参照
             $table->foreignId('employee_status_id')->default(1)->comment('雇用状態ID');//追記 employee_statusesテーブル参照
             $table->foreignId('affiliation1_id')->comment('第一所属階層ID'); 
-            $table->foreignId('department_id')->comment('事業部ID'); 
+            $table->foreignId('department_id')->comment('第二所属階層ID'); 
             $table->foreignId('affiliation3_id')->comment('第三所属階層ID'); 
-            $table->string('profile_image')->nullable(true)->default('users/profile_image/default.png')->comment('プロフ画像');
+            $table->string('profile_image')->default('users/profile_image/default.png')->comment('プロフ画像');
+            $table->boolean('password_change_required')->default(0)->comment('強制PW変更フラグ'); 
+
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->datetimes();

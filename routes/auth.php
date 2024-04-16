@@ -36,8 +36,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('verify-email', EmailVerificationPromptController::class)
-                ->name('verification.notice');
+    Route::get('verify-email', EmailVerificationPromptController::class)->name('verification.notice');
 
     Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
                 ->middleware(['signed', 'throttle:6,1'])
@@ -47,13 +46,15 @@ Route::middleware('auth')->group(function () {
                 ->middleware('throttle:6,1')
                 ->name('verification.send');
 
-    Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
-                ->name('password.confirm');
+    Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])->name('password.confirm');
 
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-                ->name('logout');
+    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+
+    Route::get('/password/force-update', [PasswordController::class, 'showForceUpdatePasswordForm'])->name('password-force-update.show');
+
+    Route::post('/password/force-update', [PasswordController::class, 'forceUpdate'])->name('password.force.update');
 });

@@ -229,8 +229,8 @@
                     <div>
                         <label for="account_user_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">計上担当者</label>
                         <select id="account_user_id" name="account_user_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            @foreach($users as $user)
-                            <option value="{{ $user->id }}" @selected($user->id == old('account_user_id', Auth::user()->id))>{{ $user->name }}</option>
+                            @foreach($usersFromComposer as $user)
+                            <option value="{{ $user->id }}" @selected($user->id == old('account_user_id', Auth::user()->id))>{{ $user->user_name }}</option>
                             @endforeach
                         </select>
                         @error('account_user_id')

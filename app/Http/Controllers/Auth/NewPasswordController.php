@@ -1,5 +1,7 @@
 <?php
 
+// Password忘れたときの再設定用？
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;

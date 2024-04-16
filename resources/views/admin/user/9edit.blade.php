@@ -179,11 +179,4 @@
     </form>
 </div>
 </div>
-
-    {{-- カナ補完 --}}
-    <script>
-        $(function() {
-            $.fn.autoKana('input[name="name"]', 'input[name="kana_name"]', {katakana: true});
-        });
-    </script>
 </x-app-layout>

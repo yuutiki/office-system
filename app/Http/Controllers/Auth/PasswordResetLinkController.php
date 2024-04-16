@@ -1,5 +1,7 @@
 <?php
 
+// Password忘れたときのリセットリンクを送るメールアドレスを指定する
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
