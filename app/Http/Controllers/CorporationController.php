@@ -12,7 +12,6 @@ use Goodby\CSV\Import\Standard\LexerConfig;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-
 // use Goodby\CSV\Import\Standard\InterpreterConfig;
 use Illuminate\Support\Facades\Response;
 use App\Jobs\ExportCorporationsCsv;
@@ -25,31 +24,34 @@ class CorporationController extends Controller
         {
         // 検索条件を取得してセッションに保存
         Session::put('search_params', $request->all());
+        $searchParams = $request->session()->get('search_params', []);
 
-        $perPage = 100; // １ページごとの表示件数
+        $perPage = config('constants.perPage'); // １ページごとの表示件数
 
         // 検索フォームから検索条件を取得し変数に格納
-        $filters = $request->only(['corporation_num', 'corporation_name']);
+        $filters = $request->only(['corporation_num', 'corporation_name', 'invoice_num']);
 
         // 同じ条件を別の変数にも格納(画面の検索条件入力欄にセットするために利用する)
         $CorporationNum = $filters['corporation_num'] ?? null;
         $CorporationName = $filters['corporation_name'] ?? null;
+        $invoiceNum = $filters['invoice_num'] ?? null;
 
         //上記で$filters変数に格納した検索条件をModelに渡し、検索処理を行う。結果を$corporationsに詰める
         $corporations = Corporation::filter($filters) 
+            ->with('prefecture')
             ->withCount('clients')
             ->sortable()
             ->paginate($perPage);
 
         $count = $corporations->total(); // 検索結果の件数を取得
 
-        return view('corporations.index', compact('corporations', 'count' ,'filters', 'CorporationNum', 'CorporationName'));
+        return view('corporations.index', compact('searchParams', 'corporations', 'count' ,'filters', 'CorporationNum', 'CorporationName','invoiceNum',));
     }
 
     public function create()
     {
         $prefectures = Prefecture::all();
-        return view('corporations.create',compact('prefectures'));
+        return view('corporations.create',compact('prefectures',));
     }
 
     public function store(CorporationStoreRequest $request)
@@ -175,9 +177,9 @@ class CorporationController extends Controller
                 $corporation->corporation_short_name,
                 $corporation->corporation_memo,
                 $corporation->clients_count,
-                $corporation->createdBy->name,
+                optional($corporation->createdBy)->user_name,
                 $corporation->created_at,
-                $corporation->updatedBy->name,
+                optional($corporation->updatedBy)->user_name,
                 $corporation->updated_at,
             ];
         }

@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between">
             <h2 class="text-xl text-gray-900 dark:text-white">
-                {{ Breadcrumbs::render('createKeepfile') }}
+                {{ Breadcrumbs::render('createKeepfile', $searchParams) }}
             </h2>
             <div class="flex justify-end">
                 <x-message :message="session('message')"/>

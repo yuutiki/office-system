@@ -11,6 +11,7 @@ use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use PDF;
 
@@ -18,6 +19,10 @@ class KeepfileController extends Controller
 {
     public function index(Request $request)
     {
+        // 検索条件を取得してセッションに保存
+        Session::put('search_params', $request->all());
+        $searchParams = $request->session()->get('search_params', []);  
+
         $per_page = 15;
         $user = auth()->user();
         

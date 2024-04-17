@@ -7,27 +7,27 @@ Breadcrumbs::for('dashboard', function ($trail) {
 });
 
         // ダッシュボード > 法人一覧
-        Breadcrumbs::for('corporations', function ($trail) {
+        Breadcrumbs::for('corporations', function ($trail, $searchParams) {
             $trail->parent('dashboard');
-            $trail->push('法人一覧', url('corporations'));
+            $trail->push('法人一覧', route('corporations.index', $searchParams));
         });
 
                 // ダッシュボード > 法人一覧 > 新規登録
-                Breadcrumbs::for('createCorporation', function ($trail) {
-                    $trail->parent('corporations');
-                    $trail->push('新規作成', url('corporations/create'));
+                Breadcrumbs::for('createCorporation', function ($trail, $searchParams) {
+                    $trail->parent('corporations', $searchParams);
+                    $trail->push('新規作成', route('corporations.create'));
                 });
 
                 // ダッシュボード > 法人一覧 > 編集
-                Breadcrumbs::for('editCorporation', function ($trail ,$corporation) {
-                    $trail->parent('corporations');
+                Breadcrumbs::for('editCorporation', function ($trail ,$corporation, $searchParams) {
+                    $trail->parent('corporations', $searchParams);
                     $trail->push('編集', url('corporations/' . $corporation->id . '/edit'));
                 });
 
                 // ダッシュボード > 法人一覧 > CSVアップロード
-                Breadcrumbs::for('csvUploadCorporation', function ($trail) {
-                    $trail->parent('corporations');
-                    $trail->push('CSVアップロード', url('corporations/show-upload'));
+                Breadcrumbs::for('csvUploadCorporation', function ($trail, $searchParams) {
+                    $trail->parent('corporations', $searchParams);
+                    $trail->push('CSVアップロード', route('corporations.showUploadForm'));
                 });
 
         // ダッシュボード > 顧客一覧
@@ -232,20 +232,20 @@ Breadcrumbs::for('dashboard', function ($trail) {
 
 
         // ダッシュボード > 預託情報一覧
-        Breadcrumbs::for('keepfiles', function ($trail) {
+        Breadcrumbs::for('keepfiles', function ($trail, $searchParams) {
             $trail->parent('dashboard');
-            $trail->push('預託情報一覧', url('keepfile'));
+            $trail->push('預託情報一覧', route('keepfile.index', $searchParams));
         });
 
                 // ダッシュボード > 預託情報一覧 > 預託情報新規登録
-                Breadcrumbs::for('createKeepfile', function ($trail) {
-                    $trail->parent('keepfiles');
+                Breadcrumbs::for('createKeepfile', function ($trail, $searchParams) {
+                    $trail->parent('keepfiles', $searchParams);
                     $trail->push('新規作成', url('keepfile/create'));
                 });
 
                 // ダッシュボード > 預託情報一覧 > 預託情報編集
-                Breadcrumbs::for('editKeepfile', function ($trail) {
-                    $trail->parent('keepfiles');
+                Breadcrumbs::for('editKeepfile', function ($trail, $searchParams) {
+                    $trail->parent('keepfiles', $searchParams);
                     $trail->push('編集', url('keepfile/edit'));
                 });
 

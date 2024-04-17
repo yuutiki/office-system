@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\View\Composers\LinkComposer;
 use App\View\Composers\NotificationsComposer;
+use App\View\Composers\SearchParamsComposer;
 use App\View\Composers\SystemAdminExcludedUserComposer;
 use Illuminate\Support\Facades\View;
 
@@ -30,5 +31,6 @@ class ViewComposerServiceProvider extends ServiceProvider
         View::composer('layouts.*', NotificationsComposer::class);
 
         View::composer('*', SystemAdminExcludedUserComposer::class);
+        View::composer('*', SearchParamsComposer::class);
     }
 }

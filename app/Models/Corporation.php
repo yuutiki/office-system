@@ -35,7 +35,9 @@ class Corporation extends Model
     public $sortable = [
         'corporation_num',
         'corporation_name',
-        'corporation_kana_name'
+        'corporation_kana_name',
+        'corporation_prefecture_id',
+        'is_stop_trading',
     ];
 
     //GlobalObserverに定義されている作成者と更新者を登録するメソッド
@@ -54,24 +56,17 @@ class Corporation extends Model
             $query->where('corporation_num', 'like', '%' . $filters['corporation_num'] . '%');
         }
 
-        // if (isset($filters['corporation_name'])) {
-        //     $spaceConversion = mb_convert_kana($filters['corporation_name'], 's'); //全角スペース⇒半角スペースへ変換
-        //     $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
-    
-        //     $query->where(function($query) use ($wordArraySearched) {
-        //         foreach ($wordArraySearched as $value) {
-        //             $query->orWhere('corporation_name', 'like', '%' . $value . '%');
-        //             $query->orWhere('corporation_kana_name', 'like', '%' . $value . '%');
-        //         }
-        //     });
-        // }
-
         if (isset($filters['corporation_name'])) {
             $spaceConversion = mb_convert_kana($filters['corporation_name'], 's'); //全角スペース⇒半角スペースへ変換
             // $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
     
             $query->orWhere('corporation_name', 'like', '%' . $spaceConversion . '%');
             $query->orWhere('corporation_kana_name', 'like', '%' . $spaceConversion . '%');
+            $query->orWhere('corporation_short_name', 'like', '%' . $spaceConversion . '%');
+        }
+
+        if (isset($filters['invoice_num'])) {
+            $query->where('invoice_num', 'like', '%' . $filters['invoice_num'] . '%');
         }
     }
 
@@ -116,6 +111,11 @@ class Corporation extends Model
     
 
     // 以下リレーション設定
+    public function prefecture()
+    {
+        return $this->belongsTo(Prefecture::class, 'corporation_prefecture_id', 'id');
+    }
+
     public function clients()
     {
         return $this->hasMany(Client::class);
