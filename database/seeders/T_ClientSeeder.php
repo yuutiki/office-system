@@ -8,9 +8,8 @@ use Illuminate\Database\Seeder;
 
 class T_ClientSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+    use WithoutModelEvents;
+
     public function run(): void
     {
         Client::create([
@@ -155,5 +154,3 @@ class T_ClientSeeder extends Seeder
         ]);
     }
 }
-
-

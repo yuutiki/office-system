@@ -8,6 +8,8 @@ use App\Models\TradeStatus;
 
 class TradeStatusSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
         TradeStatus::create([

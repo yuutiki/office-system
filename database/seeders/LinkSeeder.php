@@ -9,6 +9,8 @@ use App\Models\Link;
 
 class LinkSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
         Link::create([

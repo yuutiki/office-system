@@ -170,7 +170,7 @@
                         </td> --}}
                         <td class="px-1 py-2 whitespace-nowrap">
                             {{-- {{$productSplitType->updatedBy->name}} --}}
-                            {{ optional($productSplitType->updatedBy)->name }}
+                            {{ optional($productSplitType->updatedBy)->user_name }}
                         </td>
                         <td class="px-1 py-2 whitespace-nowrap">
                             {{$productSplitType->updated_at}}

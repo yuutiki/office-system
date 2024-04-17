@@ -85,7 +85,7 @@
                             {{$salesStage->created_by}}
                         </td> --}}
                         <td class="px-1 py-2 whitespace-nowrap">
-                            {{ optional($salesStage->updatedBy)->name }}
+                            {{ optional($salesStage->updatedBy)->user_name }}
                         </td>
                         <td class="px-1 py-2 whitespace-nowrap">
                             {{$salesStage->updated_at}}

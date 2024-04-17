@@ -23,16 +23,26 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'user_num',
+        'user_name',
+        'user_kana_name',
+        'birth',
+        'employment_at',
+        'employee_status_id',
         'email',
+        'int_phone',
+        'ext_phone',
+        'affiliation1_id',
+        // 'affiliation2_id',
+        'department_id',
+        'affiliation3_id',
+        'profile_image',
+
+        'is_enabled',
         'password',
-        'employee_num',
-        'kana_name',
+        'password_change_required',
         'access_ip',
         'last_login_at',
-        'role_id',
-        'employee_status_id',
-        'profile_image',
     ];
 
     /**
@@ -57,9 +67,8 @@ class User extends Authenticatable
 
     //sort
     public $sortable = [
-        'name',
+        'user_name',
         'email',
-        'role_id',
         'last_login_at'
     ];
 

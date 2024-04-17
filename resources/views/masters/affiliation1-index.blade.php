@@ -169,7 +169,7 @@
                         </td>
                         <td class="px-1 py-2 whitespace-nowrap">
                             {{-- {{$affiliation1->updatedBy->name}} --}}
-                            {{ optional($affiliation1->updatedBy)->name }}
+                            {{ optional($affiliation1->updatedBy)->user_name }}
                         </td>
                         <td class="px-1 py-2 whitespace-nowrap">
                             {{$affiliation1->updated_at}}

@@ -8,6 +8,8 @@ use App\Models\Department;
 
 class DepartmentSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
         Department::create([

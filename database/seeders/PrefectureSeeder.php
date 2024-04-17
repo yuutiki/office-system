@@ -8,9 +8,10 @@ use App\Models\Prefecture;
 
 class PrefectureSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
-
         Prefecture::create([
             'prefecture_code' => '01',
             'prefecture_name' => '北海道',

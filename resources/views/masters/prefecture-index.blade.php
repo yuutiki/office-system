@@ -1,17 +1,17 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white leading-tight">
-                都道府県マスタ
-            </h2>
-            <div class="flex justify-end">
-                <x-general-button onclick="location.href='{{route('masters.index')}}'">
-                    戻る
-                </x-general-button>
-                <x-message :message="session('message')"/>
+  <x-slot name="header">
+    <div class="flex justify-between w-5/6">
+        <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex">
+            {{ Breadcrumbs::render('prefectureMaster') }}
+            <div class="ml-4">
+                {{-- {{ $count }}件 --}}
             </div>
-        </div>
-    </x-slot>
+        </h2>
+        <x-message :message="session('message')" />
+    </div>
+</x-slot>
+
+    
 
     <div class="w-5/6 m-auto relative overflow-x-auto rounded-s rounded-e mt-4 shadow-md dark:bg-gray-700 dark:text-gray-800 bg-gray-50">
             <div class="w-full">
@@ -161,7 +161,7 @@
                         </td> --}}
                         <td class="px-1 py-2 whitespace-nowrap">
                             {{-- {{$prefecture->updatedBy->name}} --}}
-                            {{ optional($prefecture->updatedBy)->name }}
+                            {{ optional($prefecture->updatedBy)->user_name }}
                         </td>
                         <td class="px-1 py-2 whitespace-nowrap">
                             {{$prefecture->updated_at}}

@@ -8,6 +8,8 @@ use App\Models\EmployeeStatus;
 
 class EmployeeStatusSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
         EmployeeStatus::create([

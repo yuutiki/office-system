@@ -8,6 +8,8 @@ use App\Models\ProductType;
 
 class ProductTypeSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
         ProductType::create([

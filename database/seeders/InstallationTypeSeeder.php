@@ -8,6 +8,8 @@ use App\Models\InstallationType;
 
 class InstallationTypeSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
         InstallationType::create([

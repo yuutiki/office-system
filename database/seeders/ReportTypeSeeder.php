@@ -8,6 +8,8 @@ use Illuminate\Database\Seeder;
 
 class ReportTypeSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
         reportType::create([

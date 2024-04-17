@@ -8,6 +8,8 @@ use Illuminate\Database\Seeder;
 
 class T_ProjectSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
         Project::create([

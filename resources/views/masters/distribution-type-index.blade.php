@@ -161,7 +161,7 @@
                         </td> --}}
                         <td class="px-1 py-2 whitespace-nowrap">
                             {{-- {{$distributionType->updatedBy->name}} --}}
-                            {{ optional($distributionType->updatedBy)->name }}
+                            {{ optional($distributionType->updatedBy)->user_name }}
                         </td>
                         <td class="px-1 py-2 whitespace-nowrap">
                             {{$distributionType->updated_at}}

@@ -8,6 +8,8 @@ use App\Models\ProductSeries;
 
 class ProductSeriesSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
         ProductSeries::create([

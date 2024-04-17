@@ -8,6 +8,8 @@ use App\Models\ProductSplitType;
 
 class ProductSplitTypeSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
         ProductSplitType::create([

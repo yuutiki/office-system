@@ -8,6 +8,8 @@ use App\Models\ProductVersion;
 
 class ProductVersionSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
         ProductVersion::create([

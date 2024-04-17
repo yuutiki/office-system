@@ -8,6 +8,8 @@ use App\Models\ProductMaker;
 
 class ProductMakerSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
         ProductMaker::create([

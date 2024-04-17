@@ -62,16 +62,22 @@
 
                         <div class="flex mt-2 md:mt-0">
                             {{-- 検索ボタン --}}
-                            <button type="submit" id="search-button" form="search_form" class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" tabindex="1">
-                                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                                </svg>
+                            <button type="submit" id="search-button" form="search_form" class="p-2.5 w-full md:ms-2 text-sm font-medium text-white bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" tabindex="1">
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                    </svg>
+                                    <span class="md:hidden mx-auto">検索</span>
+                                </div>
                             </button>
                             {{-- リセットボタン --}}
-                            <button type="button" value="reset" id="clear" form="search-form" class="p-2.5 ms-2 text-sm font-medium text-white bg-gray-500 rounded border border-gray-500 dark:border-gray-500 hover:bg-gray-600 focus:ring-2 focus:outline-none dark:bg-gray-500 dark:hover:bg-gray-700 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" tabindex="1">
-                                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 1v5h-5M2 19v-5h5m10-4a8 8 0 0 1-14.947 3.97M1 10a8 8 0 0 1 14.947-3.97"/>
-                                </svg>
+                            <button type="button" value="reset" id="clear" form="search-form" class="p-2.5 w-full ms-2 text-sm font-medium text-white bg-gray-500 rounded border border-gray-500 dark:border-gray-500 hover:bg-gray-600 focus:ring-2 focus:outline-none dark:bg-gray-500 dark:hover:bg-gray-700 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" tabindex="1">
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 1v5h-5M2 19v-5h5m10-4a8 8 0 0 1-14.947 3.97M1 10a8 8 0 0 1 14.947-3.97"/>
+                                    </svg>
+                                    <span class="md:hidden mx-auto">リセット</span>
+                                </div>
                             </button>
                         </div>
                     </div>
@@ -154,8 +160,9 @@
 
     <style>
         .active {
-    color: rgb(214, 214, 255);
-}
+        /* color: rgb(214, 214, 255); */
+        text-decoration: underline
+    }
     </style>
 
     <div class="md:w-auto md:ml-14 md:mr-2 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-300 js-scrollable">
@@ -171,12 +178,12 @@
                         <span class="sr-only">編集</span>
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
-                        <button class="flex items-center w-auto" tabindex="-1">
+                        <div class="flex items-center w-auto">
                             @sortablelink('corporation_num','法人№', 'asc')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
                                 <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
                             </svg>
-                        </button>
+                        </div>
                     </th>
                     <th scope="col" class="px-1 py-3 w-auto">
                         <div class="flex items-center whitespace-nowrap">
@@ -237,17 +244,17 @@
                         <td class="pl-1 py-1 whitespace-nowrap">
                             {{$corporation->corporation_num}}
                         </td>
-                        <td class="px-1 py-1 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap w-96">
                             {{$corporation->corporation_name}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
                             {{optional($corporation->prefecture)->prefecture_code .':'}}
                             {{optional($corporation->prefecture)->prefecture_name}}
                         </td>
-                        <td class="px-1 py-1 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap w-44">
                             {{$corporation->invoice_num}}
                         </td>
-                        <td class="px-1 py-1 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap w-44">
                         @if ($corporation->is_stop_trading == 1)
                             <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
                                 取引停止中

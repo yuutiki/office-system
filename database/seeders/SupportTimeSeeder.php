@@ -8,6 +8,8 @@ use Illuminate\Database\Seeder;
 
 class SupportTimeSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
         SupportTime::create([

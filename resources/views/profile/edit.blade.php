@@ -1,15 +1,64 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Profile') }}
-        </h2>
+        <div class="flex justify-between">
+            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
+                {{ Breadcrumbs::render('userProfile') }}
+            </h2>
+            <div class="flex justify-end">
+                <x-message :message="session('message')"/>
+            </div>
+        </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-profile-information-form')
+    <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
+
+
+    <div class="py-12 md:w-auto md:ml-14 md:mr-2 m-auto">
+        <div class="w-full  mx-auto sm:px-6 lg:px-8 space-y-6">
+
+            <div class="grid gap-4 lg:grid-cols-2">
+                <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                    <div class="max-w-xl flex">
+                        <!-- 画像選択用のフォーム -->
+                        <div class="w-36 h-w-36">
+                            <img id="image_preview" src="{{ asset('storage/'. $user->profile_image) }}" alt="プロフ画像" class="cursor-pointer w-full h-full object-cover rounded" onclick="document.getElementById('profile_image').click()">
+                            <input type="file" id="profile_image" accept="image/*" class="hidden" form="userForm" name="profile_image">
+                        </div>
+                        <!-- フォームにトリミング後の画像をセットするための非表示のinput要素 -->
+                        <input type="hidden" id="cropped_image" name="cropped_image" form="userForm">
+                        <div>
+                            <span class="text-white font-semibold ml-4 font-sans text-xl">プロフィール画像</span>
+                            <form method="post" action="{{route('profile.update')}}" enctype="multipart/form-data" id="userForm">
+                                @csrf
+                                @method('PATCH')
+                                <x-primary-button class="ml-4 mt-4" form-id="userForm">
+                                    プロフィール画像を変更
+                                </x-primary-button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg items-center">
+                    {{-- ダークモードスイッチャー --}}
+                    <button id="theme-toggle" type="button" class="h-10 p-2.5 my-auto text-sm rounded-sm text-gray-800 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 dark:focus:ring-gray-700" tabindex="-1">
+                        <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                    </button>
+                    <span class="text-white font-semibold ml-4 font-sans text-xl">テーマ</span>
+                </div>
+            </div>
+
+            <div class="grid gap-4 md:grid-cols-2">
+                <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                    <div class="max-w-xl">
+                        @include('profile.partials.update-profile-information-form')
+                    </div>
+                </div>
+                <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                    <div class="max-w-xl">
+                        @include('profile.partials.show-belonging-department-form')
+                    </div>
                 </div>
             </div>
 
@@ -24,11 +73,124 @@
                     @include('profile.partials.delete-user-form')
                 </div>
             </div> --}}
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.show-belonging-department-form')
+
+        </div>
+    </div>
+
+
+
+
+
+
+        <!-- 画像トリミング Modal -->
+        <div id="imageModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden animate-slide-in-top">
+            {{-- <div id="imageModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full justify-center items-center"> --}}
+            <div class="max-h-full w-full max-w-2xl">
+                <!-- Modal content -->
+                <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
+                    <!-- Modal header -->
+                    <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
+                        <h3 class="text-xl font-medium text-gray-900 dark:text-white">
+                            アイコン編集
+                        </h3>
+                        <button type="button" onclick="hideModal()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                            <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                            </svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div id="cropper_container"></div>
+    
+                    <!-- Modal footer -->
+                    <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                        <button type="button" onclick="setProfileImage()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            完了
+                        </button>
+                        <button type="button" onclick="hideModal()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                            キャンセル
+                        </button> 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+
+        <script>
+            // モーダルを表示するための関数
+            function showModal() {
+                // モーダルの要素を取得
+                const modal = document.getElementById('imageModal');
+                //背後の操作不可を有効
+                const overlay = document.getElementById('overlay').classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+    
+                // モーダルを表示するためのクラスを追加
+                modal.classList.remove('hidden');
+            }
+    
+            // モーダルを非表示にするための関数
+            function hideModal() {
+                // モーダルの要素を取得
+                const modal = document.getElementById('imageModal');
+                //背後の操作不可を解除
+                const overlay = document.getElementById('overlay').classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+    
+                // モーダルを非表示にするためのクラスを削除
+                modal.classList.add('hidden');
+            }
+    
+            // 画像選択時の処理
+            document.getElementById('profile_image').addEventListener('click', function(event) {
+                // ファイル選択用のinput要素をクリックする
+                this.value = null; // ファイルの選択をリセットする（同じファイルを選択した場合もイベントが発火するようにするため）
+            });
+            document.getElementById('profile_image').addEventListener('change', function(event) {
+                var input = event.target;
+                var reader = new FileReader();
+                reader.onload = function() {
+                    var img = document.createElement('img');
+                    img.src = reader.result;
+                    img.id = 'cropper_target';
+                    document.getElementById('cropper_container').innerHTML = '';
+                    document.getElementById('cropper_container').appendChild(img);
+                    showModal();
+                    // Cropper.jsの初期化
+                    var cropper = new Cropper(img, {
+                        aspectRatio: 1 / 1,
+                        viewMode: 1,
+                        dragMode: 'move',
+                        cropBoxResizable: false,
+                        autoCropArea: 0.8,
+                        movable: false,
+                        crop: function(event) {
+                            // トリミングされた画像の情報を取得
+                            var canvas = cropper.getCroppedCanvas();
+                            // トリミング後の画像をプレビューに表示
+                            document.getElementById('cropped_image_preview').src = canvas.toDataURL();
+                        }
+                    });
+                };
+                reader.readAsDataURL(input.files[0]);
+            });
+        
+            // トリミング後の画像をフォームにセットする処理
+            function setProfileImage() {
+                // トリミング対象の画像要素が存在するか確認
+                if (document.getElementById('cropper_target')) {
+                    var canvas = document.getElementById('cropper_target').cropper.getCroppedCanvas();
+                    var dataURL = canvas.toDataURL();
+                    document.getElementById('image_preview').src = dataURL;
+                    // トリミング後の画像をフォームにセット
+                    document.getElementById('cropped_image').value = dataURL;
+                    // モーダルを非表示にする処理を追加する
+                    hideModal();
+                } else {
+                    console.error('トリミング対象の画像要素が見つかりません。');
+                }
+            }
+        </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js" integrity="sha512-6lplKUSl86rUVprDIjiW8DuOniNX8UDoRATqZSds/7t6zCQZfaCe3e5zcGaQwxa8Kpn5RTM9Fvl3X2lLV4grPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </x-app-layout>

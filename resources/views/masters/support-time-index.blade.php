@@ -161,7 +161,7 @@
                         </td> --}}
                         <td class="px-1 py-2 whitespace-nowrap">
                             {{-- {{$supportTime->updatedBy->name}} --}}
-                            {{ optional($supportTime->updatedBy)->name }}
+                            {{ optional($supportTime->updatedBy)->user_name }}
                         </td>
                         <td class="px-1 py-2 whitespace-nowrap">
                             {{$supportTime->updated_at}}

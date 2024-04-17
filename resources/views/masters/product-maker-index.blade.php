@@ -161,7 +161,7 @@
                         </td> --}}
                         <td class="px-1 py-2 whitespace-nowrap">
                             {{-- {{$productMaker->updatedBy->name}} --}}
-                            {{ optional($productMaker->updatedBy)->name }}
+                            {{ optional($productMaker->updatedBy)->user_name }}
                         </td>
                         <td class="px-1 py-2 whitespace-nowrap">
                             {{$productMaker->updated_at}}

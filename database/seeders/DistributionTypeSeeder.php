@@ -8,6 +8,8 @@ use Illuminate\Database\Seeder;
 
 class DistributionTypeSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
         DistributionType::create([

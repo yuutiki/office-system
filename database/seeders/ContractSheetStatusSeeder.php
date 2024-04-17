@@ -8,6 +8,8 @@ use Illuminate\Database\Seeder;
 
 class ContractSheetStatusSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
         ContractSheetStatus::create([

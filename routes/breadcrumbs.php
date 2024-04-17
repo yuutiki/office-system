@@ -133,12 +133,6 @@ Breadcrumbs::for('dashboard', function ($trail) {
                     $trail->push('CSVアップロード', url('client-person/show-upload'));
                 });
 
-        // // ダッシュボード > ユーザ一覧
-        // Breadcrumbs::for('users', function ($trail) {
-        //     $trail->parent('dashboard');
-        //     $trail->push('ユーザ一覧', url('user'));
-        // });
-
         // ダッシュボード > サポート一覧
         Breadcrumbs::for('supports', function ($trail) {
             $trail->parent('dashboard');
@@ -261,6 +255,12 @@ Breadcrumbs::for('dashboard', function ($trail) {
                     $trail->push('顧客種別マスタ', url('client-type'));
                 });
 
+                // ダッシュボード > マスタ一覧 >  都道府県マスタ
+                Breadcrumbs::for('prefectureMaster', function ($trail) {
+                    $trail->parent('masters');
+                    $trail->push('都道府県マスタ', route('prefecture.index'));
+                });
+
             // Breadcrumbs::for('users', function ($trail) {
             //     $trail->parent('home');
             //     $trail->push('Users', route('users'));
@@ -271,7 +271,12 @@ Breadcrumbs::for('dashboard', function ($trail) {
             //     $trail->parent('masters');
             //     $trail->push($book->book_title, url('books/' . $book->id));
             // });
-
+            
+        // ダッシュボード > プロフィール
+        Breadcrumbs::for('userProfile', function ($trail) {
+            $trail->parent('dashboard');
+            $trail->push('アカウント情報', url('profile'));
+        });
 
         // ダッシュボード > ユーザ一覧
         Breadcrumbs::for('users', function ($trail) {
@@ -284,11 +289,17 @@ Breadcrumbs::for('dashboard', function ($trail) {
                     $trail->push('新規作成', route('users.create'));
                 });
                 
-                // ダッシュボード > 権限グループ管理 >  グループ編集
+                // ダッシュボード > ユーザ一覧 >  編集
                 Breadcrumbs::for('editUser', function ($trail, $user) {
                     $trail->parent('users');
                     $trail->push('編集',route('users.edit', $user));
                 });
+
+                // ダッシュボード > ユーザ一覧 > CSVアップロード
+                Breadcrumbs::for('csvUploadUser', function ($trail, $searchParams) {
+                    $trail->parent('users', $searchParams);
+                    $trail->push('CSVアップロード', route('users.showUploadForm'));
+                });                
 
 
 
@@ -307,6 +318,18 @@ Breadcrumbs::for('dashboard', function ($trail) {
                 Breadcrumbs::for('editRoleGroup', function ($trail) {
                     $trail->parent('roleGroups');
                     $trail->push('編集', url('client-type'));
-                });  
+                });
+
+        // // ダッシュボード > マスタ一覧
+        // Breadcrumbs::for('masters', function ($trail, $searchParams) {
+        //     $trail->parent('dashboard');
+        //     $trail->push('マスタ一覧', route('masters.index', $searchParams));
+        // });
+
+        //         // ダッシュボード > 権限グループ管理 >  グループ新規作成
+        //         Breadcrumbs::for('prefectureMaster', function ($trail, $searchParams) {
+        //             $trail->parent('masters', $searchParams);
+        //             $trail->push('都道府県マスタ', route('prefecture.index'));
+        //         });        
 
 // {{ Breadcrumbs::render('hogehoge') }}

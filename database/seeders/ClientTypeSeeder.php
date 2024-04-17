@@ -8,6 +8,8 @@ use App\Models\ClientType;
 
 class ClientTypeSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
         ClientType::create([
@@ -127,4 +129,3 @@ class ClientTypeSeeder extends Seeder
 
     }
 }
-

@@ -26,6 +26,7 @@ class CorporationController extends Controller
         Session::put('search_params', $request->all());
         $searchParams = $request->session()->get('search_params', []);
 
+
         $perPage = config('constants.perPage'); // １ページごとの表示件数
 
         // 検索フォームから検索条件を取得し変数に格納
@@ -42,6 +43,7 @@ class CorporationController extends Controller
             ->withCount('clients')
             ->sortable()
             ->paginate($perPage);
+   
 
         $count = $corporations->total(); // 検索結果の件数を取得
 
@@ -152,7 +154,8 @@ class CorporationController extends Controller
     public function downloadCsv(Request $request)
     {
         // 検索条件を取得
-        $filters = $request->only(['corporation_num', 'corporation_name']);
+        $filters = $request->only(['corporation_num', 'corporation_name', 'invoice_num']);
+
 
         // 検索結果の顧客法人データを取得
         $corporations = Corporation::with(['createdBy', 'updatedBy'])

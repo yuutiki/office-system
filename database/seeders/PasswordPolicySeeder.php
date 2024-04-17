@@ -8,9 +8,8 @@ use Illuminate\Database\Seeder;
 
 class PasswordPolicySeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+    use WithoutModelEvents;
+
     public function run(): void
     {
         PasswordPolicy::create([

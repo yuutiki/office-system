@@ -8,6 +8,8 @@ use App\Models\Keepfile;
 
 class T_KeepfileSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
         Keepfile::create([

@@ -8,6 +8,8 @@ use Illuminate\Database\Seeder;
 
 class SalesStageSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
         SalesStage::create([

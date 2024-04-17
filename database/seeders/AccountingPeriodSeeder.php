@@ -8,6 +8,8 @@ use Illuminate\Database\Seeder;
 
 class AccountingPeriodSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
         AccountingPeriod::create([

@@ -8,6 +8,8 @@ use Illuminate\Database\Seeder;
 
 class SupportTypeSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
         SupportType::create([

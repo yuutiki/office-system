@@ -8,9 +8,8 @@ use Illuminate\Database\Seeder;
 
 class VendorTypeSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+    use WithoutModelEvents;
+
     public function run(): void
     {
         VendorType::create([
@@ -45,7 +44,5 @@ class VendorTypeSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now()
         ]);
-
-
     }
 }

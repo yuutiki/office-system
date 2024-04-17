@@ -8,6 +8,8 @@ use App\Models\Role;
 
 class RoleSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
         Role::create([

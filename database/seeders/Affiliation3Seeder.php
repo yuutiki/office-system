@@ -8,6 +8,8 @@ use Illuminate\Database\Seeder;
 
 class Affiliation3Seeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
         Affiliation3::create([
@@ -48,9 +50,3 @@ class Affiliation3Seeder extends Seeder
         ]);
     }
 }
-
-
-
-
-
-

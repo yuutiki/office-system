@@ -109,6 +109,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/keepfile',KeepfileController::class);
 
     // user関連
+    Route::get('/users/show-upload', [UserController::class, 'showUploadForm'])->name('users.showUploadForm');
     Route::post('/users/upload', [UserController::class, 'upload'])->name('users.upload');
     Route::get('/search-users', [UserController::class, 'searchUsers']);
     Route::resource('/users', UserController::class);

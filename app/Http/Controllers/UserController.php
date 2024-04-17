@@ -47,10 +47,10 @@ class UserController extends Controller
         //検索Query
         $query = User::query();
 
-    // システム管理者でない場合は、id1のユーザーを非表示にする
-    if (!$this->isSysAdmin()) {
-        $query->where('id', '!=', 1);
-    }
+        // システム管理者でない場合は、id1のユーザーを非表示にする
+        if (!$this->isSysAdmin()) {
+            $query->where('id', '!=', 1);
+        }
 
         //もし社員番号があれば
         if(!empty($user_num))
@@ -384,26 +384,10 @@ class UserController extends Controller
         $lexer->parse($csvPath, $interpreter);
     }
 
-    // public function search(Request $request) {
-
-    //     $query = \App\User::query();
-
-    //     if($request->filled('q')) {
-
-    //         $keywords = explode(' ', trim(mb_convert_kana($request->q, 's')));
-
-    //         foreach($keywords as $keyword) {
-
-    //             $query->where('name', 'LIKE', '%'. $keyword .'%');
-
-    //         }
-
-    //     }
-
-    //     $per_page = 10;
-    //     return $query->paginate($per_page);
-
-    // }
+    public function showUploadForm()
+    {
+        return view('admin.user.upload-form');
+    }
 
     public function searchUsers(Request $request)
     {

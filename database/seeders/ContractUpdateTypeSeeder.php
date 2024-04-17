@@ -8,6 +8,8 @@ use Illuminate\Database\Seeder;
 
 class ContractUpdateTypeSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
         ContractUpdateType::create([

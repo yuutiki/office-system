@@ -8,6 +8,8 @@ use Illuminate\Database\Seeder;
 
 class AppMasterSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     /**
      * Run the database seeds.
      */
@@ -22,8 +24,8 @@ class AppMasterSeeder extends Seeder
             'digit' => 2,
             'created_by' => 1,
             'updated_by' => 1,
-            'created_by' => now(),
-            'updated_by' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         AppMaster::create([
             'master_type' => 'ユーザマスタ',
@@ -34,8 +36,8 @@ class AppMasterSeeder extends Seeder
             'digit' => 2,
             'created_by' => 1,
             'updated_by' => 1,
-            'created_by' => now(),
-            'updated_by' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         AppMaster::create([
             'master_type' => 'ユーザマスタ',
@@ -46,8 +48,8 @@ class AppMasterSeeder extends Seeder
             'digit' => 2,
             'created_by' => 1,
             'updated_by' => 1,
-            'created_by' => now(),
-            'updated_by' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         AppMaster::create([
             'master_type' => 'ユーザマスタ',
@@ -58,8 +60,8 @@ class AppMasterSeeder extends Seeder
             'digit' => 2,
             'created_by' => 1,
             'updated_by' => 1,
-            'created_by' => now(),
-            'updated_by' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         AppMaster::create([
             'master_type' => '顧客マスタ',
@@ -70,8 +72,8 @@ class AppMasterSeeder extends Seeder
             'digit' => 2,
             'created_by' => 1,
             'updated_by' => 1,
-            'created_by' => now(),
-            'updated_by' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         AppMaster::create([
             'master_type' => '顧客マスタ',
@@ -82,8 +84,8 @@ class AppMasterSeeder extends Seeder
             'digit' => 2,
             'created_by' => 1,
             'updated_by' => 1,
-            'created_by' => now(),
-            'updated_by' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         AppMaster::create([
             'master_type' => '顧客マスタ',
@@ -94,8 +96,8 @@ class AppMasterSeeder extends Seeder
             'digit' => 2,
             'created_by' => 1,
             'updated_by' => 1,
-            'created_by' => now(),
-            'updated_by' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         AppMaster::create([
             'master_type' => '顧客マスタ',
@@ -106,8 +108,8 @@ class AppMasterSeeder extends Seeder
             'digit' => 2,
             'created_by' => 1,
             'updated_by' => 1,
-            'created_by' => now(),
-            'updated_by' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         // AppMaster::create([
         //     'master_type' => '業者マスタ',
@@ -117,8 +119,8 @@ class AppMasterSeeder extends Seeder
         //     'route' => 'vendor-type.index',
         //     'created_by' => 1,
         //     'updated_by' => 1,
-        //     'created_by' => now(),
-        //     'updated_by' => now(),
+        //     'created_at' => now(),
+        //     'updated_at' => now(),
         // ]);
         AppMaster::create([
             'master_type' => '製品マスタ',
@@ -129,8 +131,8 @@ class AppMasterSeeder extends Seeder
             'digit' => 2,
             'created_by' => 1,
             'updated_by' => 1,
-            'created_by' => now(),
-            'updated_by' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         AppMaster::create([
             'master_type' => '製品マスタ',
@@ -141,8 +143,8 @@ class AppMasterSeeder extends Seeder
             'digit' => 2,
             'created_by' => 1,
             'updated_by' => 1,
-            'created_by' => now(),
-            'updated_by' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         AppMaster::create([
             'master_type' => '製品マスタ',
@@ -153,8 +155,8 @@ class AppMasterSeeder extends Seeder
             'digit' => 2,
             'created_by' => 1,
             'updated_by' => 1,
-            'created_by' => now(),
-            'updated_by' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         AppMaster::create([
             'master_type' => '製品マスタ',
@@ -165,8 +167,8 @@ class AppMasterSeeder extends Seeder
             'digit' => 2,
             'created_by' => 1,
             'updated_by' => 1,
-            'created_by' => now(),
-            'updated_by' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         AppMaster::create([
             'master_type' => '製品マスタ',
@@ -177,8 +179,8 @@ class AppMasterSeeder extends Seeder
             'digit' => 2,
             'created_by' => 1,
             'updated_by' => 1,
-            'created_by' => now(),
-            'updated_by' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         AppMaster::create([
             'master_type' => '製品マスタ',
@@ -189,8 +191,8 @@ class AppMasterSeeder extends Seeder
             'digit' => 2,
             'created_by' => 1,
             'updated_by' => 1,
-            'created_by' => now(),
-            'updated_by' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         AppMaster::create([
             'master_type' => 'プロジェクトマスタ',
@@ -201,8 +203,8 @@ class AppMasterSeeder extends Seeder
             'digit' => 2,
             'created_by' => 1,
             'updated_by' => 1,
-            'created_by' => now(),
-            'updated_by' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         AppMaster::create([
             'master_type' => 'プロジェクトマスタ',
@@ -213,8 +215,8 @@ class AppMasterSeeder extends Seeder
             'digit' => 2,
             'created_by' => 1,
             'updated_by' => 1,
-            'created_by' => now(),
-            'updated_by' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         AppMaster::create([
             'master_type' => 'プロジェクトマスタ',
@@ -225,8 +227,8 @@ class AppMasterSeeder extends Seeder
             'digit' => 2,
             'created_by' => 1,
             'updated_by' => 1,
-            'created_by' => now(),
-            'updated_by' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         AppMaster::create([
             'master_type' => 'プロジェクトマスタ',
@@ -237,8 +239,8 @@ class AppMasterSeeder extends Seeder
             'digit' => 2,
             'created_by' => 1,
             'updated_by' => 1,
-            'created_by' => now(),
-            'updated_by' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         AppMaster::create([
             'master_type' => 'サポートマスタ',
@@ -249,8 +251,8 @@ class AppMasterSeeder extends Seeder
             'digit' => 2,
             'created_by' => 1,
             'updated_by' => 1,
-            'created_by' => now(),
-            'updated_by' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         AppMaster::create([
             'master_type' => 'サポートマスタ',
@@ -261,8 +263,8 @@ class AppMasterSeeder extends Seeder
             'digit' => 2,
             'created_by' => 1,
             'updated_by' => 1,
-            'created_by' => now(),
-            'updated_by' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         AppMaster::create([
             'master_type' => '営業報告マスタ',
@@ -273,8 +275,8 @@ class AppMasterSeeder extends Seeder
             'digit' => 2,
             'created_by' => 1,
             'updated_by' => 1,
-            'created_by' => now(),
-            'updated_by' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         AppMaster::create([
             'master_type' => '営業報告マスタ',
@@ -285,11 +287,8 @@ class AppMasterSeeder extends Seeder
             'digit' => 2,
             'created_by' => 1,
             'updated_by' => 1,
-            'created_by' => now(),
-            'updated_by' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
-
-
-
     }
 }

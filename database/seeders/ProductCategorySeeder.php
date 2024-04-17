@@ -8,6 +8,8 @@ use Illuminate\Database\Seeder;
 
 class ProductCategorySeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
         ProductCategory::create([

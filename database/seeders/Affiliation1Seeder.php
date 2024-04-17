@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Log;
 
 class Affiliation1Seeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
         DB::listen(function ($query) {
