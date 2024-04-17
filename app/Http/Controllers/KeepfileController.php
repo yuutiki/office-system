@@ -20,48 +20,35 @@ class KeepfileController extends Controller
     {
         $per_page = 15;
         $user = auth()->user();
-        $loggedInUserId = Auth::id();
-
-        // ログインユーザがid1以外の場合はid1を除外
-        if ($loggedInUserId !== 1) {
-            $users = User::where('id', '!=', 1)->get();
-        } else {
-            // ログインユーザがid1の場合はid1を含める
-            $users = User::all();
-        }
         
         // フィルタリングクエリを作成
-        $query = Keepfile::sortable()->with('user','project');
+        $keepfileQuery = Keepfile::sortable()->with('user','project');
     
         // 検索フォームの値を取得する
         $projectNum = $request->input('project_num');
         $clientName = $request->input('client_name');
-        $userId = $request->input('user_id');
         $dayFrom = $request->input('day_from');
         $dayTo = $request->input('day_to');
 
-    // ユーザーセレクトボックスの初期値をログインユーザーに設定
-    $selectedUserId = $user->id;
+        // ユーザーセレクトボックスの初期値をログインユーザーに設定
+        $selectedUserId = $user->id;
 
+        // プルダウンが変更された場合の処理
+        if (request()->has('selected_user_id')) {
+            $selectedUserId = request('selected_user_id');
 
+            // プルダウンが「取得者すべて」以外の場合、検索結果を絞る
+            if ($selectedUserId != 0) {
+                $keepfileQuery->where('user_id', $selectedUserId);
+            }  // 「取得者すべて」の場合は何もしない（絞り込み解除）
 
-
-    // プルダウンが変更された場合の処理
-    if (request()->has('selected_user_id')) {
-        $selectedUserId = request('selected_user_id');
-
-        // プルダウンが「事業部全て」以外の場合、検索結果を絞る
-        if ($selectedUserId != 0) {
-            $query->where('user_id', $selectedUserId);
-        }  // 「事業部全て」の場合は何もしない（絞り込み解除）
-
-        // 上記の条件で検索結果を取得
-        $keepfiles = $query->get();
-        
-    } else {
-        // 初期表示の場合、ユーザーの所属に基づいて検索結果を絞る
-        $query->where('user_id', $user)->get();
-    }
+            // 上記の条件で検索結果を取得
+            $keepfiles = $keepfileQuery->get();
+            
+        } else {
+            // 初期表示の場合、ユーザーの所属に基づいて検索結果を絞る
+            $keepfileQuery->where('user_id', $selectedUserId)->get();
+        }
 
     
         if (!empty($projectNum)) {
@@ -69,7 +56,7 @@ class KeepfileController extends Controller
             $projectIds = Project::where('project_num', 'like', "%{$projectNum}%")->pluck('id')->toArray();
 
             // 取得したプロジェクト ID を使って Keepfile テーブルを検索する
-            $query->whereIn('project_id', $projectIds);
+            $keepfileQuery->whereIn('project_id', $projectIds);
         }
     
         if (!empty($clientName)) {
@@ -79,32 +66,32 @@ class KeepfileController extends Controller
             $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
     
             // クライアント名に基づいてクライアントを検索するクエリ
-            $query->whereHas('project.client', function ($query) use ($wordArraySearched) {
+            $keepfileQuery->whereHas('project.client', function ($keepfileQuery) use ($wordArraySearched) {
                 foreach ($wordArraySearched as $value) {
                     // 配列内のいずれかの単語に一致するクライアント名を検索
-                    $query->where('client_name', 'like', '%' . $value . '%');
+                    $keepfileQuery->where('client_name', 'like', '%' . $value . '%');
                 }
             });
         }
     
         if (!empty($userId)) {
-            $query->where('user_id', 'like', "%{$userId}%");
+            $keepfileQuery->where('user_id', 'like', "%{$userId}%");
         }
     
         if (!empty($dayFrom) && !empty($dayTo)) {
-            $query->whereBetween('return_at', [$dayFrom, $dayTo]);
+            $keepfileQuery->whereBetween('return_at', [$dayFrom, $dayTo]);
         }
     
         // 未返却のみのフィルタリング
         if (!$request->has('unreturned_only')) {
-            $query->where('is_finished', 0);
+            $keepfileQuery->where('is_finished', 0);
         }
     
         // 検索結果を取得
-        $keepfiles = $query->orderby('return_at', 'asc')->paginate($per_page);
+        $keepfiles = $keepfileQuery->orderby('return_at', 'asc')->paginate($per_page);
         $count = $keepfiles->total();
     
-        return view('keepfile.index', compact('keepfiles', 'user', 'users', 'count', 'projectNum', 'clientName', 'selectedUserId', 'dayFrom', 'dayTo'));
+        return view('keepfile.index', compact('keepfiles', 'user', 'count', 'projectNum', 'clientName', 'selectedUserId', 'dayFrom', 'dayTo'));
     }
 
 

@@ -1,3 +1,4 @@
 *
 !.gitignore
-!users/profile_image/default.png
+# !users/profile_image/default.png
+!users/

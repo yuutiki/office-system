@@ -322,16 +322,7 @@ class UserController extends Controller
 
     public function upload(CsvUploadRequest $request)
     {
-        
-        // $csvValidator = Validator::make($request->all(),User::$uploadRules);
-
-        // if ($csvValidator->fails()) {
-        //     // バリデーションエラーが発生した場合
-        //     session()->flash('error', 'CSVファイルを添付してください');
-        //     return redirect()->back()->withErrors($csvValidator)->withInput();
-        // }
-
-        $csvFile = $request->file('csv_input');
+        $csvFile = $request->file('csv_upload');
         
         // CSVファイルの一時保存先パス
         $csvPath = $csvFile->getRealPath();
@@ -367,14 +358,9 @@ class UserController extends Controller
             $user->int_phone = $row[5];
             $user->password = bcrypt($row[6]);
 
-
-
             $user->affiliation1_id = $row[7];
             
-            
             $user->department_id = $row[8];
-            
-            
             
             $affiliation3Code = $row[9];
             $affiliation3 = Affiliation3::where('affiliation3_code', $affiliation3Code)->first();
@@ -383,13 +369,7 @@ class UserController extends Controller
             } else {
                 // affiliation3が見つからない場合のエラーハンドリング
             }
-            // $roleNum = $row[10];
-            // $role = Role::where('role_num', $roleNum)->first();
-            // if ($role) {
-            //     $user->role_id = $role->id;
-            // } else {
-            //     // affiliation3が見つからない場合のエラーハンドリング
-            // }
+
             $employeeStatusNum = $row[11];
             $employee_status = EmployeeStatus::where('employee_status_num', $employeeStatusNum)->first();
             if ($employee_status) {

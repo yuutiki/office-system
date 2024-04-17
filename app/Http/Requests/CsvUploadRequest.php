@@ -23,7 +23,7 @@ class CsvUploadRequest extends FormRequest
     {
         return [
             // バリデーションルールを定義
-            'processing_type' => 'required',
+            // 'processing_type' => 'required',
             'csv_upload' => 'required|file|mimes:csv|max:10000', // ファイルが必須で、CSVファイルであること、サイズが10,000KB以下であることをバリデーション
         ];
     }
