@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,6 +36,34 @@ class ProfileController extends Controller
         $request->user()->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    }
+
+    public function updateImage(Request $request)
+    {
+        
+        $userNum = Auth::user()->user_num;
+
+        // プロフ画像のファイル名を生成
+        if ($request->hasFile('profile_image')) {
+            $extension = $request->profile_image->extension();
+            $fileName = $userNum . '_' . 'profile' . '.' . $extension;
+            $imagePath = $request->file('profile_image')->storeAs('users/profile_image', $fileName, 'public');
+
+            $user = User::find(Auth::user()->id);
+            $user->profile_image = $imagePath;
+            $user->save();
+
+            return Redirect::route('profile.edit')->with('success', 'プロフィール画像を更新しました');
+
+        } else {
+            // ファイルがアップロードされていない場合の処理
+            // アップロードなしのメッセージを表示
+            return Redirect::route('profile.edit')->with('error', '画像がアップロードされていません');
+        }
+
+
+
+        // return Redirect::route('profile.edit')->with('success', 'プロフィール画像を更新しました');
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\LoginHistory;
 use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
@@ -74,8 +75,57 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        // デバイスとブラウザを取得
+        $userAgent = $this->userAgent();
+        list($device, $browser) = $this->parseUserAgent($userAgent);
+
+        // ログイン成功時にログイン履歴を保存
+        LoginHistory::create([
+            'user_id' => Auth::user()->id,
+            'device' => $device,
+            'browser' => $browser,
+            'ip_address' => $this->ip(),
+            'logged_in_at' => now(),
+        ]);
+
         RateLimiter::clear($this->throttleKey());
     }
+
+    private function parseUserAgent($userAgent)
+    {
+        // デフォルト値を設定
+        $device = 'Unknown';
+        $browser = 'Unknown';
+
+        // デバイスの判別
+        if (strpos($userAgent, 'Windows') !== false) {
+            $device = 'Windows';
+        } elseif (strpos($userAgent, 'Macintosh') !== false) {
+            $device = 'Mac';
+        } elseif (strpos($userAgent, 'iPhone') !== false) {
+            $device = 'iPhone';
+        } elseif (strpos($userAgent, 'iPad') !== false) {
+            $device = 'iPad';
+        } elseif (strpos($userAgent, 'Android') !== false) {
+            $device = 'Android';
+        }
+
+        // ブラウザの判別
+        if (strpos($userAgent, 'Chrome') !== false) {
+            $browser = 'Chrome';
+        } elseif (strpos($userAgent, 'Safari') !== false) {
+            if (strpos($userAgent, 'Version') !== false) {
+                $browser = 'Safari';
+            }
+        } elseif (strpos($userAgent, 'Firefox') !== false) {
+            $browser = 'Firefox';
+        } elseif (strpos($userAgent, 'Edge') !== false) {
+            $browser = 'Edge';
+        }
+
+        return [$device, $browser];
+    }
+
 
     /**
      * Ensure the login request is not rate limited.

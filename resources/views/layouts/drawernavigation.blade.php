@@ -1,5 +1,5 @@
 {{-- Start 画面上部のナビゲーション --}}
-<div class="flex justify-between  w-full fixed top-0 z-50 bg-gray-100  dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+<div class="flex justify-between  w-full fixed top-0 z-50 bg-gray-100  dark:bg-gray-800 border-b border-gray-300 dark:border-gray-700">
     {{-- スマホ用drawerサイドメニュー表示ボタン --}}
     <div class="flex">
         <div class="flex items-center">

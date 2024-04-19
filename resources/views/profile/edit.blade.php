@@ -20,23 +20,22 @@
                 <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                     <div class="max-w-xl flex">
                         <!-- 画像選択用のフォーム -->
-                        <div class="w-36 h-w-36">
+                        <div class="w-36 h-w-36 border rounded">
                             <img id="image_preview" src="{{ asset('storage/'. $user->profile_image) }}" alt="プロフ画像" class="cursor-pointer w-full h-full object-cover rounded" onclick="document.getElementById('profile_image').click()">
                             <input type="file" id="profile_image" accept="image/*" class="hidden" form="userForm" name="profile_image">
                         </div>
                         <!-- フォームにトリミング後の画像をセットするための非表示のinput要素 -->
                         <input type="hidden" id="cropped_image" name="cropped_image" form="userForm">
                         <div>
-                            <span class="text-white font-semibold ml-4 font-sans text-xl">プロフィール画像</span>
-                            <form method="post" action="{{route('profile.update')}}" enctype="multipart/form-data" id="userForm">
+                            <span class="bg:text-white font-semibold ml-4 font-sans text-xl">プロフィール画像</span>
+                            <form method="post" action="{{route('profile.updateImage')}}" enctype="multipart/form-data" id="userForm">
                                 @csrf
-                                @method('PATCH')
+                                @method('PUT')
                                 <x-primary-button class="ml-4 mt-4" form-id="userForm">
                                     プロフィール画像を変更
                                 </x-primary-button>
                             </form>
                         </div>
-
                     </div>
                 </div>
                 <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg items-center">
@@ -45,7 +44,7 @@
                         <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
                         <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
                     </button>
-                    <span class="text-white font-semibold ml-4 font-sans text-xl">テーマ</span>
+                    <span class="bg:text-white font-semibold ml-4 font-sans text-xl">テーマ</span>
                 </div>
             </div>
 
@@ -73,6 +72,42 @@
                     @include('profile.partials.delete-user-form')
                 </div>
             </div> --}}
+            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                <div class="dark:text-white ">
+                    <h2 class="font-medium mb-3">ログイン履歴</h2>
+                    <ul>
+                        @foreach ($user->loginHistories as $history)
+                            <li class="">
+                                <div class="flex items-center">
+                                    <div>
+                                        @if ($history->device === 'Windows'||'Macintosh')
+                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v5m-3 0h6M4 11h16M5 15h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1Z"/>
+                                        </svg>
+                                        @elseif ($history->device === 'Mobile')
+                                            <svg class="w-6 h-6 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                            </svg>
+                                        @endif
+                                    </div>
+                                    <div class="ml-6">
+                                        {{ $history->logged_in_at }}
+                                        <br>
+                                        {{ $history->device }} の {{ $history->browser }} で
+                                        {{ $history->ip_address }} からログイン
+                                    </div>
+                                </div>
+                                <div class="border-b border-gray-400 my-3"></div>
+                                {{-- <svg class="w-6 h-6 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v5m-3 0h6M4 11h16M5 15h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1Z"/>
+                                  </svg> --}}
+                                  
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
 
         </div>
     </div>

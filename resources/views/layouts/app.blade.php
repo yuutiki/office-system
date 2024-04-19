@@ -73,8 +73,8 @@
 
             <!-- Page Heading -->
             @if (isset($header))
-                <header class="bg-gray-300  dark:bg-gray-800 shadow mt-12">
-                    <div class="md:ml-9 py-4 px-4">
+                <header class="bg-gray-100 dark:bg-gray-800 shadow-md mt-12">
+                    <div class="md:ml-9 py-3 px-4">
                         {{ $header }}
                     </div>
                 </header>

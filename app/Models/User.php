@@ -160,4 +160,9 @@ class User extends Authenticatable
         return $this->belongsToMany(RoleGroup::class, 'user_rolegroup');
     }
 
+    public function loginHistories()
+    {
+        return $this->hasMany(LoginHistory::class);
+    }
+
 }
