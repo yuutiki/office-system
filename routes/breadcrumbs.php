@@ -303,6 +303,11 @@ Breadcrumbs::for('dashboard', function ($trail) {
 
 
 
+
+
+// 共通機能
+
+
         // ダッシュボード > 権限グループ管理
         Breadcrumbs::for('roleGroups', function ($trail) {
             $trail->parent('dashboard');
@@ -319,6 +324,17 @@ Breadcrumbs::for('dashboard', function ($trail) {
                     $trail->parent('roleGroups');
                     $trail->push('編集', url('client-type'));
                 });
+
+        // ダッシュボード > 所属別リンク一覧
+        Breadcrumbs::for('Links', function ($trail) {
+            $trail->parent('dashboard');
+            $trail->push('所属別リンク一覧', url('link'));
+        });
+                // // ダッシュボード > 所属別リンク一覧 >  グループ新規作成
+                // Breadcrumbs::for('createRoleGroup', function ($trail) {
+                //     $trail->parent('Links');
+                //     $trail->push('新規作成', url('role-groups.create'));
+                // });
 
         // // ダッシュボード > マスタ一覧
         // Breadcrumbs::for('masters', function ($trail, $searchParams) {

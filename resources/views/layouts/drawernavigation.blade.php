@@ -90,7 +90,7 @@
             </div>
         </div>
 
-        <img class="w-8 h-8 rounded" src="{{ asset('storage/' . Auth::user()->profile_image) }}" alt="プロフィール画像">
+        <img class="w-8 h-8 rounded" src="{{ asset('storage/' . Auth::user()->profile_image) }}?{{ time() }}" alt="プロフィール画像">
 
         {{-- ユーザ設定 --}}
         <div class=" sm:flex sm:items-center sm:ml-1">
