@@ -9,7 +9,7 @@
         </p>
     </header>
 
-    <form method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('password.update') }}" class="mt-6 space-y-3">
         @csrf
         @method('put')
 
@@ -28,16 +28,14 @@
             <x-text-input id="affiliation3" name="affiliation3" type="text" class="mt-1 block w-full" :value="old('affiliation3', $user->affiliation3->affiliation3_name)" disabled/>
             {{-- <x-input-error :messages="$errors->updatePassword->get('affiliation3')" class="mt-2" /> --}}
         </div>
-        <div>
+        {{-- <div>
             <x-input-label for="affiliation3" :value="__('所属4')" />
             <x-text-input id="affiliation3" name="affiliation3" type="text" class="mt-1 block w-full" :value="old('affiliation3', $user->affiliation3->affiliation3_name)" disabled/>
-            {{-- <x-input-error :messages="$errors->updatePassword->get('affiliation3')" class="mt-2" /> --}}
         </div>
         <div>
             <x-input-label for="affiliation3" :value="__('所属5')" />
             <x-text-input id="affiliation3" name="affiliation3" type="text" class="mt-1 block w-full" :value="old('affiliation3', $user->affiliation3->affiliation3_name)" disabled/>
-            {{-- <x-input-error :messages="$errors->updatePassword->get('affiliation3')" class="mt-2" /> --}}
-        </div>
+        </div> --}}
 
 
         {{-- <div class="flex items-center gap-4">

@@ -24,4 +24,10 @@ class PasswordPolicy extends Model
         'created_by',
         'updated_by',
     ];
+
+    // max_login_attempt のアクセサを定義
+    public function getMaxLoginAttemptAttribute(): int
+    {
+        return $this->attributes['max_login_attempt'] ?? 5; // デフォルト値は5
+    }
 }

@@ -124,6 +124,10 @@ return [
     'uploaded'             => ':attributeのアップロードに失敗しました。',
     'url'                  => ':attributeに正しい形式を指定してください。',
     'uuid'                 => ':attributeに有効なUUIDを指定してください。',
+    'uppercase' => 'パスワードには1つ以上の大文字を含めてください。',
+    'lowercase' => 'パスワードには1つ以上の小文字を含めてください。',
+    'require_numeric' => 'パスワードには1つ以上の数字を含めてください。',
+    'require_symbol' => 'パスワードには1つ以上の記号を含めてください。',
 
 
     // 'accepted' => 'The :attribute field must be accepted.',
@@ -279,11 +283,19 @@ return [
     //     'attribute-name' => [
     //         'rule-name' => 'custom-message',
 
-    'custom' => [
-        '属性名' => [
-            'ルール名' => 'カスタムメッセージ',
-        ],
-    ],
+    // 'custom' => [
+    //     '属性名' => [
+    //         'ルール名' => 'カスタムメッセージ',
+    //     ],
+    // ],
+    // 'custom' => [
+    //     'password' => [
+    //         'The :attribute must be uppercase.' => 'パスワードには少なくとも1つの大文字を含めてください。',
+    //         'The :attribute must be lowercase.' => 'パスワードには少なくとも1つの小文字を含めてください。',
+    //         'The :attribute must contain at least one numeric character.' => 'パスワードには少なくとも1つの数字を含めてください。',
+    //         'require_symbol' => 'パスワードには少なくとも1つの記号を含めてください。',
+    //     ],
+    // ],
 
     /*
     |--------------------------------------------------------------------------

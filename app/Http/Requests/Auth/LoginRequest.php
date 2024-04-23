@@ -4,6 +4,7 @@ namespace App\Http\Requests\Auth;
 
 use App\Models\LoginHistory;
 use App\Models\User;
+use App\Models\PasswordPolicy;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -134,9 +135,14 @@ class LoginRequest extends FormRequest
      */
     public function ensureIsNotRateLimited(): void
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        $passwordPolicy = PasswordPolicy::firstOrFail();
+
+        if (! RateLimiter::tooManyAttempts($this->throttleKey(), $passwordPolicy->max_login_attempt)) {
             return;
         }
+
+        // RateLimiter::hit メソッドを追加
+        RateLimiter::hit($this->throttleKey());
 
         event(new Lockout($this));
 

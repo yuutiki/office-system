@@ -16,7 +16,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->command(DisableInactiveUsers::class)->daily(); // 毎日実行する例
+        // $schedule->command(DisableInactiveUsers::class)->daily(); // 毎日実行する例
+        $schedule->command(DisableInactiveUsers::class)->everyMinute(); 
     }
 
     /**

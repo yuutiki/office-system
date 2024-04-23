@@ -110,6 +110,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/keepfile',KeepfileController::class);
 
     // user関連
+    Route::post('/users/add-role-group', [UserController::class, 'addGroupsToUser'])->name('users.add-role-groups');
     Route::get('/users/show-upload', [UserController::class, 'showUploadForm'])->name('users.showUploadForm');
     Route::post('/users/upload', [UserController::class, 'upload'])->name('users.upload');
     Route::get('/search-users', [UserController::class, 'searchUsers']);
@@ -133,6 +134,7 @@ Route::middleware(['auth'])->group(function () {
     // RoleGroup
     Route::post('/groups/add-users', [RoleGroupController::class, 'addUsersToGroup'])->name('role-groups.add-users');
     Route::delete('/group/delete-user', [RoleGroupController::class, 'deleteUserFromGroup'])->name('group.delete_user');
+    Route::get('/search-role-groups', [RoleGroupController::class, 'searchRoleGroups']);
     Route::resource('role-groups', RoleGroupController::class);
 
 

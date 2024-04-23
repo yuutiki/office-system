@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\LoginHistory;
+use App\Models\PasswordPolicy;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,9 +19,12 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        $user = $request->user();
+        $loginHistories = LoginHistory::where('user_id',$user->id)->orderBy('logged_in_at','desc')->limit(10)->get();
+
+        $passwordPolicy = PasswordPolicy::find(1);
+        // return view('profile.edit', ['user' => $request->user(),]);
+        return view('profile.edit', compact('user','loginHistories','passwordPolicy'));
     }
 
     /**
@@ -58,7 +63,7 @@ class ProfileController extends Controller
         } else {
             // ファイルがアップロードされていない場合の処理
             // アップロードなしのメッセージを表示
-            return Redirect::route('profile.edit')->with('error', '画像がアップロードされていません');
+            return Redirect::route('profile.edit')->with('error', '新しい画像が選択されていません');
         }
 
 

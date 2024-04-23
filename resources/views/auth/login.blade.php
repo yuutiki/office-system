@@ -9,6 +9,9 @@
         <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+            {{-- @if ($errors->has('email'))
+                <div>{{ $errors->first('email') }}</div>
+            @endif --}}
         </div>
 
         <!-- Password -->
@@ -37,6 +40,8 @@
         </div>
         
         <x-input-error :messages="$errors->get('credentials')" class="mt-2" />
+        <x-input-error :messages="$errors->get('email')" class="mt-2" />
+
 
         <div class="flex items-center justify-end mt-4">
             @if (Route::has('password.request'))

@@ -12,6 +12,8 @@ use App\Models\Affiliation3;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\EmployeeStatus;
+use App\Models\RoleGroup;
+use App\Models\UserRolegroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
@@ -22,6 +24,7 @@ use Illuminate\Validation\Rules;
 use Goodby\CSV\Import\Standard\Lexer;
 use Goodby\CSV\Import\Standard\Interpreter;
 use Goodby\CSV\Import\Standard\LexerConfig;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
@@ -189,9 +192,17 @@ class UserController extends Controller
         $user_role = $user->role_id;
         $user_e_status = $user->employee_status_id;
 
+        // 参照中のユーザに紐づく権限グループのIDを取得
+        $roleGroupIdsQuery = DB::table('user_rolegroup')
+        ->where('user_id', $user->id)
+        ->pluck('role_group_id');
+
+        // 権限グループモデルからIDが$roleGroupIdsQueryに含まれる権限グループを取得
+        $roleGroups = RoleGroup::whereIn('id', $roleGroupIdsQuery)->get();
+
         $maxlength = config('constants.int_phone_maxlength');
 
-        return view('admin.user.edit',compact('user','user_role','e_statuses','user_e_status','affiliation1s','departments','affiliation3s', 'maxlength',));
+        return view('admin.user.edit',compact('user','user_role','e_statuses','user_e_status','affiliation1s','departments','affiliation3s', 'maxlength','roleGroups',));
     }
 
     public function update(Request $request, User $user)
@@ -391,33 +402,55 @@ class UserController extends Controller
 
     public function searchUsers(Request $request)
     {
-        // $term = $request->input('q'); // Select2からの検索クエリ
-
-        // // 検索クエリがない場合は全てのユーザーを取得
-        // if (empty($term)) {
-        //     $users = User::all();
-        // } else {
-        //     // もし検索クエリがある場合は、部分一致でユーザーを検索
-        //     $users = User::where('name', 'like', '%' . $term . '%')->get();
-        // }
-    
-        // return response()->json($users);
-
-        $query = $request->input('query');
-        $affiliation1Id = $request->input('affiliation1_id');
-        $departmentId = $request->input('department_id');
-        $affiliation3Id = $request->input('affiliation3_id');
-
+        $userName = $request->user_name;
+        $affiliation1Id = $request->affiliation1_id;
+        $departmentId = $request->department_id;
+        $affiliation3Id = $request->affiliation3_id;
 
         $users = User::with('affiliation1','department','affiliation3')
-        ->where('user_name', 'like', '%' . $query . '%')
-        ->where('affiliation1_id', 'like', '%' . $affiliation1Id . '%')
-        ->where('department_id', 'like', '%' . $departmentId . '%')
-        ->where('affiliation3_id', 'like', '%' . $affiliation3Id . '%')
-        ->where('employee_status_id', 1) // 退職者を除外する条件を追加
-        ->where('id', '!=', 1)// システム管理者を除外する条件を追加
-        ->get();
+            ->where('user_name', 'like', '%' . $userName . '%')
+            ->where('affiliation1_id', 'like', '%' . $affiliation1Id . '%')
+            ->where('department_id', 'like', '%' . $departmentId . '%')
+            ->where('affiliation3_id', 'like', '%' . $affiliation3Id . '%')
+            ->where('employee_status_id', 1) // 退職者を除外する条件を追加
+            ->where('id', '!=', 1)// システム管理者を除外する条件を追加
+            ->get();
+
         // 検索結果をJSON形式で返す
         return response()->json($users);
+    }
+
+    public function addGroupsToUser(Request $request)
+    {
+        // クライアントからのリクエストからグループIDとユーザIDリストを取得
+        $userId = $request->input('user_id');
+        $roleGroupIds = $request->input('role_group_ids');
+    
+        // roleGroupIds が NULL でないことを確認し、ループ処理を行う
+        if (!is_null($roleGroupIds)) {
+            // ユーザIDリストをループし、中間テーブルに登録
+            foreach ($roleGroupIds as $roleGroupId) {
+                // 既存の中間テーブルに同じ組み合わせが存在するかチェック
+                $existingRecord = UserRolegroup::where('user_id', $userId)
+                    ->where('role_group_id', $roleGroupId)
+                    ->exists();
+        
+                // 既存のレコードが存在しない場合のみ新しいレコードを作成
+                if (!$existingRecord) {
+                    UserRolegroup::create([
+                        'user_id' => $userId,
+                        'role_group_id' => $roleGroupId
+                    ]);
+                }
+            }
+        
+            // 登録が成功した場合は成功レスポンスを返す
+            // return response()->json(['message' => 'Users added to group successfully'], 200);
+            return redirect()->back()->with('success', '正常に権限グループを紐づけました');
+        } else {
+            // roleGroupIds が NULL の場合、何もせずにエラーレスポンスを返す
+            // return response()->json(['error' => 'User IDs are required'], 400);
+            return redirect()->back()->with('error', '権限グループIDが必要です');
+        }
     }
 }

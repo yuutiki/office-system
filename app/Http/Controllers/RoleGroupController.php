@@ -76,6 +76,7 @@ class RoleGroupController extends Controller
         // ユーザーIDのクエリを作成
         $userIdsQuery = DB::table('user_rolegroup')
             ->where('role_group_id', $roleGroup->id)
+            ->where('user_id', '!=', 1)// システム管理者を除外する条件を追加
             ->pluck('user_id');
 
         // ユーザーモデルからIDが$userIdsQueryに含まれるユーザーを取得
@@ -188,6 +189,21 @@ class RoleGroupController extends Controller
         UserRolegroup::where('user_id', $userId)->where('role_group_id', $groupId)->delete();
     
         return redirect()->back()->with('success', 'ユーザをグループから削除しました');
+    }
+
+    public function searchRoleGroups(Request $request)
+    {
+        $roleGroupCode = $request->role_group_code;
+        $roleGroupName = $request->role_group_name;
+        $roleGroupEngName = $request->role_group_eng_name;
+
+        $roleGroups = RoleGroup::where('role_group_code', 'like', '%' . $roleGroupCode . '%')
+            ->where('role_group_name', 'like', '%' . $roleGroupName . '%')
+            ->where('role_group_name', 'like', '%' . $roleGroupEngName . '%')
+            ->get();
+
+        // 検索結果をJSON形式で返す
+        return response()->json($roleGroups);
     }
 
 }

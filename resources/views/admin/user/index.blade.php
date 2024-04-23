@@ -291,15 +291,17 @@
                             {{$user->employee_status->employee_status_num}}:
                             {{$user->employee_status->employee_status_name}}
                         </td>
-                        @if($user->is_enabled == '1')
-                            <td class="px-1 py-1 whitespace-nowrap mr-2">
-                                有効
-                            </td>
-                         @else
-                            <td class="px-1 py-1 whitespace-nowrap mr-2 text-fuchsia-300">
-                                無効
-                            </td>
-                        @endif
+                        <td class="px-1 py-1 whitespace-nowrap mr-2">
+                            @if($user->is_enabled == '1')
+                                <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                    有効
+                                </span>
+                            @else
+                                <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
+                                    無効
+                                </span>
+                            @endif
+                        </td>
                         <td class="px-1 py-1 whitespace-nowrap">
                             {{ optional($user->updatedBy)->name }}
                         </td>

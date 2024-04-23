@@ -315,8 +315,8 @@
 
                 <div class="grid gap-4 mb-4 sm:grid-cols-4 mt-2">
                     <div class="">
-                        <label for="query" class="block text-sm dark:text-gray-100 text-gray-900 leading-none">ユーザ名</label>
-                        <input type="text" name="query" id="query" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
+                        <label for="user_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none">ユーザ名</label>
+                        <input type="text" name="user_name" id="user_name" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
                     </div>
 
                     <div>
@@ -425,7 +425,7 @@
 
     // ユーザーを検索する関数
     function searchUsers() {
-        var query = document.getElementById('query').value; // 必要なクエリを設定する
+        var userName = document.getElementById('user_name').value; // 必要なクエリを設定する
         var affiliation1Id = document.getElementById('affiliation1_id').value; // 必要に応じて追加
         var departmentId = document.getElementById('department_id').value; // 必要に応じて追加
         var affiliation3Id = document.getElementById('affiliation3_id').value; // 必要に応じて追加
@@ -434,7 +434,7 @@
             url: '/search-users', // ユーザを検索するエンドポイント
             method: 'GET',
             data: {
-                query: query,
+                user_name: userName,
                 affiliation1_id: affiliation1Id,
                 department_id: departmentId,
                 affiliation3_id: affiliation3Id
