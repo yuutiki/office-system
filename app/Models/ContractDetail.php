@@ -87,4 +87,8 @@ class ContractDetail extends Model
     {
         return $this->belongsTo(ContractSheetStatus::class);
     }
+    public function attachments()
+    {
+        return $this->hasMany(ContractDetailAttachment::class);
+    }
 }

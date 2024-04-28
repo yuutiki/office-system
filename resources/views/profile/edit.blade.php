@@ -24,7 +24,7 @@
                         <div class="w-36 h-w-36 rounded">
                             <img id="image_preview" src="{{ asset('storage/'. $user->profile_image) }}?{{ time() }}" alt="プロフ画像" class="cursor-pointer w-full h-full object-cover rounded drop-shadow-xl" onclick="document.getElementById('profile_image').click()">
                             <input type="file" id="profile_image" accept="image/*" class="hidden" form="userForm" name="profile_image">
-                        </div>
+                        </div>                        
                         {{-- <span class="text-lg font-medium text-gray-900 dark:text-gray-100 ml-4">アカウント画像</span> --}}
 
                         <!-- フォームにトリミング後の画像をセットするための非表示のinput要素 -->
@@ -163,33 +163,25 @@
         <script>
             // モーダルを表示するための関数
             function showModal() {
-                // モーダルの要素を取得
                 const modal = document.getElementById('imageModal');
-                //背後の操作不可を有効
                 const overlay = document.getElementById('overlay').classList.remove('hidden');
                 document.body.classList.add('overflow-hidden');
-    
-                // モーダルを表示するためのクラスを追加
                 modal.classList.remove('hidden');
             }
-    
+        
             // モーダルを非表示にするための関数
             function hideModal() {
-                // モーダルの要素を取得
                 const modal = document.getElementById('imageModal');
-                //背後の操作不可を解除
                 const overlay = document.getElementById('overlay').classList.add('hidden');
                 document.body.classList.remove('overflow-hidden');
-    
-                // モーダルを非表示にするためのクラスを削除
                 modal.classList.add('hidden');
             }
-    
+        
             // 画像選択時の処理
             document.getElementById('profile_image').addEventListener('click', function(event) {
-                // ファイル選択用のinput要素をクリックする
-                this.value = null; // ファイルの選択をリセットする（同じファイルを選択した場合もイベントが発火するようにするため）
+                this.value = null; // ファイルの選択をリセット
             });
+        
             document.getElementById('profile_image').addEventListener('change', function(event) {
                 var input = event.target;
                 var reader = new FileReader();
@@ -200,7 +192,6 @@
                     document.getElementById('cropper_container').innerHTML = '';
                     document.getElementById('cropper_container').appendChild(img);
                     showModal();
-                    // Cropper.jsの初期化
                     var cropper = new Cropper(img, {
                         aspectRatio: 1 / 1,
                         viewMode: 1,
@@ -209,10 +200,9 @@
                         autoCropArea: 0.8,
                         movable: false,
                         crop: function(event) {
-                            // トリミングされた画像の情報を取得
                             var canvas = cropper.getCroppedCanvas();
-                            // トリミング後の画像をプレビューに表示
-                            document.getElementById('cropped_image_preview').src = canvas.toDataURL();
+                            // 画像トリミング後にフォームに画像をセットする処理を有効化する
+                            document.getElementById('cropped_image').value = canvas.toDataURL();
                         }
                     });
                 };
@@ -221,14 +211,10 @@
         
             // トリミング後の画像をフォームにセットする処理
             function setProfileImage() {
-                // トリミング対象の画像要素が存在するか確認
-                if (document.getElementById('cropper_target')) {
-                    var canvas = document.getElementById('cropper_target').cropper.getCroppedCanvas();
-                    var dataURL = canvas.toDataURL();
-                    document.getElementById('image_preview').src = dataURL;
-                    // トリミング後の画像をフォームにセット
-                    document.getElementById('cropped_image').value = dataURL;
-                    // モーダルを非表示にする処理を追加する
+                var cropper = document.getElementById('cropper_target').cropper;
+                if (cropper) {
+                    var canvas = cropper.getCroppedCanvas();
+                    document.getElementById('image_preview').src = canvas.toDataURL();
                     hideModal();
                 } else {
                     console.error('トリミング対象の画像要素が見つかりません。');

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between w-5/6">
-            <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex">
+            <h2 class="text-sm text-lg text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('createContract') }}
             </h2>
             <x-message :message="session('message')" />
@@ -12,14 +12,14 @@
 
     <div class="mx-4 sm:pl-12 lg:w-1/2 lg:mx-auto">
         <!-- 顧客検索ボタン -->
-        <button type="button"  onclick="showModal()" class="md:ml-1 mt-6 mb-2 w-full whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        <button type="button"  onclick="showModal()" class="md:ml-1 mt-12 mb-2 w-full whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
             顧客検索
         </button>
         <div class="grid gap-4 mt-6 mb-4 sm:grid-cols-1">
             <div>
                 <div class="">
-                    <label for="corporation_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人名称</label>
-                    <input type="text" name="corporation_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 " id="corporation_name" value="{{old('corporation_name')}}" placeholder="顧客検索してください" readonly>
+                    <label for="corporation_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人名称</label>
+                    <input type="text" name="corporation_name" class="input-readonly" id="corporation_name" value="{{old('corporation_name')}}" placeholder="顧客検索してください" readonly>
                 </div>
                 @error('corporation_name')
                     <div class="text-red-500">{{ $message }}</div>
@@ -27,7 +27,7 @@
             </div>
             <div class="hidden">
                 <div>
-                    <label for="client_id" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客ID（非表示）</label>
+                    <label for="client_id" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客ID（非表示）</label>
                     <input form="storeForm" type="text" name="client_id" id="client_id" value="{{old('client_id')}}" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1">
                 </div>
                 @error('client_id')
@@ -36,16 +36,16 @@
             </div>
             <div>
                 <div class="">
-                    <label for="client_name" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客名称</label>
-                    <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 " id="client_name" value="{{old('client_name')}}" placeholder="顧客検索してください" readonly>
+                    <label for="client_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客名称</label>
+                    <input type="text" name="client_name" class="input-readonly" id="client_name" value="{{old('client_name')}}" placeholder="顧客検索してください" readonly>
                 </div>
                 @error('client_name')
                     <div class="text-red-500">{{ $message }}</div>
                 @enderror
             </div>
             <div>
-                <label for="department_id" class="block font-semibold  text-gray-900 dark:text-white leading-none md:mt-2">管轄事業部</label>
-                <select id="department_id" name="department_id" class="dark:bg-gray-400 mt-1 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 pointer-events-none" readonly>
+                <label for="department_id" class="block text-sm  text-gray-900 dark:text-white leading-none md:mt-2">管轄事業部</label>
+                <select id="department_id" name="department_id" class="input-readonly" readonly>
                     <option value="">未選択</option>
                     @foreach($departments as $department)
                     <option value="{{ $department->id }}" @selected($department->id == old('department_id'))>{{ $department->department_name }}</option>
@@ -56,8 +56,8 @@
                 @enderror
             </div>
             <div>
-                <label for="contract_type_id" class="font-semibold text-gray-900 dark:text-red-400 leading-none mt-4">契約種別</label>
-                <select form="storeForm" id="contract_type_id" name="contract_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <label for="contract_type_id" class="text-sm text-gray-900 dark:text-red-400 leading-none mt-4">契約種別</label>
+                <select form="storeForm" id="contract_type_id" name="contract_type_id" class="input-primary">
                     <option value="">未選択</option>
                     @foreach($contractTypes as $contractType)
                     <option value="{{ $contractType->id }}" @selected($contractType->id == old('contract_type_id'))>{{ $contractType->contract_type_name }}</option>
@@ -100,15 +100,15 @@
                         <!-- 検索条件入力フォーム -->
                         <div class="grid gap-2 mb-4 sm:grid-cols-3">
                             <div class="w-full flex flex-col mx-2">
-                                <label for="clientName" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">顧客名称</label>
+                                <label for="clientName" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">顧客名称</label>
                                 <input type="text" name="clientName" id="clientName" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded">
                             </div>
                             <div class="w-full flex flex-col mx-2">
-                                <label for="clientNumber" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">顧客番号</label>
+                                <label for="clientNumber" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">顧客番号</label>
                                 <input type="text" name="clientNumber" id="clientNumber" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded">
                             </div>
                             <div class="w-full flex flex-col mx-2">
-                                <label for="departmentId" class="font-semibold  dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
+                                <label for="departmentId" class="text-sm  dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
                                 <select id="departmentId" name="departmentId" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option selected value="">未選択</option>
                                     @foreach($departments as $department)

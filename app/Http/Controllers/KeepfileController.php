@@ -159,10 +159,8 @@ class KeepfileController extends Controller
                 $fileName = basename($filePath);
                 // ファイルサイズを取得 (ファイルサイズはバイト単位)
                 $fileSize = filesize($filePath);
-                // ファイルサイズを MB に変換
-                $fileSizeMB = $fileSize / (1024 * 1024);
                 // ファイルサイズを人間が読みやすい形式に変換
-                $formattedFileSize = CommonFunction::formatBytes($fileSizeMB);
+                $formattedFileSize = CommonFunction::formatBytes($fileSize);
             }
         }
     

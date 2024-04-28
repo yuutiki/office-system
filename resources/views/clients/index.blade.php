@@ -250,7 +250,7 @@
                                 </div>
                             </button>
                         </td>
-                        <td class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$client->client_num}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">

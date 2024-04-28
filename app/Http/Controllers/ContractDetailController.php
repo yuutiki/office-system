@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use app\Common\CommonFunction;
 use App\Http\Requests\ContractDetailStoreRequest;
 use App\Models\Contract;
 use App\Models\ContractChangeType;
 use App\Models\ContractDetail;
+use App\Models\ContractDetailAttachment;
 use App\Models\ContractPartnerType;
 use App\Models\ContractSheetStatus;
 use App\Models\ContractType;
@@ -61,7 +63,7 @@ class ContractDetailController extends Controller
         $contractDetail->save();
         
         // return redirect()->back()->with('success', '正常に登録し詳細画面に遷移しました');
-        return redirect()->route('contracts.details.edit', ['contract' => $contractId, 'detail' => $contractDetail->id])->with('success', '正常に登録し詳細画面に遷移しました');
+        return redirect()->route('contracts.details.edit', ['contract' => $contractId, 'contractDetail' => $contractDetail])->with('success', '正常に登録し詳細画面に遷移しました');
     }
 
     /**
@@ -75,7 +77,7 @@ class ContractDetailController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Contract $contract, ContractDetail $detail)
+    public function edit(Contract $contract, ContractDetail $contractDetail)
     {
         $contractTypes = ContractType::all();
         $contractUpdateTypes = ContractUpdateType::all();
@@ -83,20 +85,20 @@ class ContractDetailController extends Controller
         $contractPartnerTypes = ContractPartnerType::all();
         $contractSheetStatuses = ContractSheetStatus::all();
 
-        // $contract = Contract::findOrFail($contractId);
+        // 契約詳細添付ファイルの一覧を取得
+        $attachments = ContractDetailAttachment::where('contract_detail_id', $contractDetail->id)->get();
 
-        return view('contract-details.edit',compact('contractTypes','contractUpdateTypes','contractChangeTypes','contractPartnerTypes','contractSheetStatuses','contract','detail',));
+        return view('contract-details.edit',compact('contractTypes','contractUpdateTypes','contractChangeTypes','contractPartnerTypes','contractSheetStatuses','contract','contractDetail','attachments'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Contract $contract, ContractDetail $detail)
+    public function update(Request $request, Contract $contract, ContractDetail $contractDetail)
     {
-        $contractDetail = ContractDetail::find($detail->id);
-
+        // $contractDetail = ContractDetail::find($contractDetail->id);
+        
         $contractDetail->contract_id = $contract->id;
-
         $contractDetail->contract_start_at = $request->contract_start_at;
         $contractDetail->contract_end_at = $request->contract_end_at;
         $contractDetail->contract_sheet_status_id = $request->contract_sheet_status_id;
@@ -107,11 +109,32 @@ class ContractDetailController extends Controller
         $contractDetail->target_system = $request->target_system;
         $contractDetail->contract_detail_memo = $request->contract_detail_memo;
         $contractDetail->project_id = $request->project_id;
-
-
         $contractDetail->save();
-        return redirect()->back()->with('success', '正常に登録しました');
+    
+        // 新しいPDFファイルがアップロードされた場合は処理する
+        if ($request->hasFile('attachments')) {
+            $file = $request->file('attachments');
 
+            // オリジナルファイル名を取得
+            $originalFileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            
+            // ファイル名を生成
+            $fileName = $originalFileName . '_' . $request->contract_start_at . '_' . now()->format('YmdHis') . '.pdf';
+
+
+            // ファイルを保存
+            $filePath = $file->storeAs('contract-details/file', $fileName, 'public');
+            $fileSize = $file->getSize();
+
+            // 契約詳細添付ファイルを登録
+            $contractDetailAttachment = new ContractDetailAttachment();
+            $contractDetailAttachment->contract_detail_id = $contractDetail->id;
+            $contractDetailAttachment->file_path = $filePath;
+            $contractDetailAttachment->file_size = $fileSize;
+            $contractDetailAttachment->save();
+        }
+    
+        return redirect()->back()->with('success', '正常に更新しました');
     }
 
     /**

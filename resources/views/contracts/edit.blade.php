@@ -14,30 +14,30 @@
         <div class="mx-4 sm:p-8">
             <div class="grid gap-4 mb-4 md:grid-cols-4">
                 <div class="">
-                    <label class="block font-semibold dark:text-gray-100 text-gray-900 leading-none sm:mt-2 mt-4">顧客番号</label>
-                    <input type="text" name="client_num"  value="{{ $client->client_num }}" class="dark:bg-gray-400 w-full py-0.5 px-1 rounded mt-1" readonly>
+                    <label class="block text-sm dark:text-gray-100 text-gray-900 leading-none sm:mt-2 mt-4">顧客番号</label>
+                    <input type="text" name="client_num"  value="{{ $client->client_num }}" class="input-readonly" readonly>
                 </div>
                 <div class="">
-                    <label class="block font-semibold dark:text-gray-100 text-gray-900 leading-none sm:mt-2">契約連番</label>
-                    <input type="text" name="contract_num" value="{{ $contract->contract_num }}" class="dark:bg-gray-400 w-full py-0.5 px-1 rounded mt-1" readonly>
+                    <label class="block text-sm dark:text-gray-100 text-gray-900 leading-none sm:mt-2">契約連番</label>
+                    <input type="text" name="contract_num" value="{{ $contract->contract_num }}" class="input-readonly" readonly>
                 </div>
             </div>
-            <div class="grid gap-4 mb-4 md:grid-cols-4">
+            <div class="grid gap-4 mb-4 lg:grid-cols-4">
                 <div class="">
-                    <label class="block font-semibold dark:text-gray-100 text-gray-900 leading-none sm:mt-2">法人名称</label>
-                    <input type="text" name="corporation_name" value="{{ $client->corporation->corporation_name }}" class="dark:bg-gray-400 w-full py-0.5 px-1 rounded mt-1" readonly>
+                    <label class="block text-sm dark:text-gray-100 text-gray-900 leading-none sm:mt-2">法人名称</label>
+                    <input type="text" name="corporation_name" value="{{ $client->corporation->corporation_name }}" class="input-readonly" readonly>
                 </div>
                 <div class="">
-                    <label class="block font-semibold dark:text-gray-100 text-gray-900 leading-none sm:mt-2">顧客名称</label>
-                    <input type="text" name="client_name" value="{{ $client->client_name }}" class="dark:bg-gray-400 w-full py-0.5 px-1 rounded mt-1" readonly>
+                    <label class="block text-sm dark:text-gray-100 text-gray-900 leading-none sm:mt-2">顧客名称</label>
+                    <input type="text" name="client_name" value="{{ $client->client_name }}" class="input-readonly" readonly>
                 </div>
                 <div class="">
-                    <label class="block font-semibold dark:text-gray-100 text-gray-900 leading-none sm:mt-2">管轄所属</label>
-                    <input type="text" name="user_name" value="{{ $client->department->department_name }}" class="dark:bg-gray-400 w-full py-0.5 px-1 rounded mt-1" readonly>
+                    <label class="block text-sm dark:text-gray-100 text-gray-900 leading-none sm:mt-2">管轄所属</label>
+                    <input type="text" name="user_name" value="{{ $client->department->department_name }}" class="input-readonly" readonly>
                 </div>
                 <div class="">
-                    <label class="block font-semibold dark:text-gray-100 text-gray-900 leading-none sm:mt-2">営業担当</label>
-                    <input type="text" name="user_name" value="{{ $client->user->name }}" class="dark:bg-gray-400 w-full py-0.5 px-1 rounded mt-1" readonly>
+                    <label class="block text-sm dark:text-gray-100 text-gray-900 leading-none sm:mt-2">営業担当</label>
+                    <input type="text" name="user_name" value="{{ $client->user->user_name }}" class="input-readonly" readonly>
                 </div>
             </div>
 
@@ -52,45 +52,17 @@
                     @if ($client->dealer_id)
                     <li class="mr-2" role="presentation">
                         <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dealer-tab" data-tabs-target="#dealer" type="button" role="tab" aria-controls="dealer" aria-selected="false">ディーラ情報</button>
-                    </li>                        
+                    </li>
                     @endif
                 </ul>
             </div>
 
             <div id="myTabContent">
                 <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    <div class="grid gap-4 mb-4 md:grid-cols-6 grid-cols-2">
-                        <div>
-                            <label for="contract_type_id" class="text-gray-900 dark:text-white leading-none mt-4 text-sm">契約種別<span class="text-red-500"> *</span></label>
-                            <select form="updateForm" id="contract_type_id" name="contract_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="">未選択</option>
-                                @foreach($contractTypes as $contractType)
-                                <option value="{{ $contractType->id }}" @selected($contractType->id == old('contract_type_id', $contract->contract_type_id))>{{ $contractType->contract_type_name }}</option>
-                                @endforeach
-                            </select>
-                            @error('contract_type_id')
-                                <div class="text-red-500">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div>
-                            <div>
-                                <label class="text-gray-900 dark:text-white leading-none mt-4 text-sm">契約先区分(参照)</label>
-                                <input type="text" value="{{ $oldestContractPartnerTypeName }}" class="input-primary" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="grid gap-4 mb-4 md:grid-cols-6 grid-cols-2">
-                        <div>
-                            <label class="text-gray-900 dark:text-white leading-none mt-4 text-sm">初回契約日(参照)</label>
-                            <input type="date" value="{{ $firstContractStartAt }}" class="input-primary" readonly>
-                        </div>
-                        <div>
-                            <label for="cancelled_at" class="text-gray-900 dark:text-white leading-none mt-4 text-sm">解約日</label>
-                            <input type="date" form="updateForm" min="1900-01-01" max="2200-12-31" value="{{ old('cancelled_at', $contract->cancelled_at) }}" name="cancelled_at" class="input-primary">
-                        </div>
+                    <div class="grid gap-4 mb-4 lg:grid-cols-5 grid-cols-1">
                         {{-- <div>
-                            <label for="contract_type_id" class="text-gray-900 dark:text-white leading-none mt-4 text-sm">更新月</label>
-                            <select form="updateForm" id="contract_type_id" name="contract_type_id" class="bg-gray-400 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500 pointer-events-none">
+                            <label for="contract_type_id" class="text-gray-900 dark:text-white leading-none mt-4 text-sm">契約種別<span class="text-red-500"> *</span></label>
+                            <select form="updateForm" id="contract_type_id" name="contract_type_id" class="input-secondary">
                                 <option value="">未選択</option>
                                 @foreach($contractTypes as $contractType)
                                 <option value="{{ $contractType->id }}" @selected($contractType->id == old('contract_type_id', $contract->contract_type_id))>{{ $contractType->contract_type_name }}</option>
@@ -101,17 +73,106 @@
                             @enderror
                         </div> --}}
                         <div>
-                            契約期間: {{ $periodString }}
+                            <div>
+                                <label class="text-gray-900 dark:text-white leading-none mt-4 text-sm">契約種別</label>
+                                <input type="text" value="{{ $contract->contractType->contract_type_name }}" class="input-readonly" readonly>
+                            </div>
                         </div>
-
+                        <div>
+                            <div>
+                                <label class="text-gray-900 dark:text-white leading-none mt-4 text-sm">契約先区分</label>
+                                <input type="text" value="{{ $oldestContractPartnerTypeName }}" class="input-readonly" readonly>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-gray-900 dark:text-white leading-none mt-4 text-sm">初回契約日</label>
+                            <input type="date" value="{{ $firstContractStartAt }}" class="input-readonly" readonly>
+                        </div>
+                        <div>
+                            <label for="cancelled_at" class="text-gray-900 dark:text-white leading-none mt-4 text-sm">解約日</label>
+                            <input type="date" form="updateForm" min="1900-01-01" max="2200-12-31" value="{{ old('cancelled_at', $contract->cancelled_at) }}" name="cancelled_at" class="input-primary">
+                        </div>
+                    </div>
+                    <div>
+                        <span class="text-white">
+                            契約期間: {{ $periodString }}
+                        </span>
                     </div>
 
 
+                    <div class="relative bg-white dark:bg-gray-900 rounded-t-md md:w-auto m-auto shadow-md  dark:text-gray-900 mt-4">
+                        <div class="flex flex-col items-center justify-between px-4 py-2 space-y-1 md:flex-row md:space-y-0 md:space-x-4">
+                            <div class="w-full md:w-1/2">
+                                <span class="dark:text-white">契約詳細</span>
+                            </div>
+                            <div class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-1 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
+                                <button type="button" onclick="location.href='{{ route('contracts.details.create', $contract->id) }}'" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-s rounded-e bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                    <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                                    </svg>
+                                    {{ __('Add') }}
+                                </button>
+                                <div class="flex items-center w-full space-x-3 hidden md:w-auto md:inline-block">
+                                    <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s rounded-e md:w-auto focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
+                                        <svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                                        </svg>
+                                        {{ __('Actions') }}
+                                    </button>
+                                    <div id="actionsDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-600 dark:divide-gray-600">
+                                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
+                                            <li>
+                                                <button type="button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="block w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                                    CSV一括登録
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <form id="bulkDeleteForm" action="{{ route('projectrevenue.bulkDelete') }}" method="POST">
+                                                    @csrf
+                                                    @method('delete') <!-- 隠しフィールドを追加 -->
+                                                    <button type="submit" id="bulkDeleteButton" form="bulkDeleteForm" class="block whitespace-nowrap w-full focus:ring-4 focus:outline-none focus:ring-blue-300 py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                                            <span class="text-ms">一括削除</span>
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    {{-- <div>
+                                        <button id="filterDropdownButton" data-dropdown-toggle="filterDropdown" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s rounded-e md:w-auto focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
+                                            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="w-4 h-4 mr-2 text-gray-400" viewbox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />
+                                            </svg>
+                                            Filter
+                                            <svg class="-mr-1 ml-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                                            </svg>
+                                        </button>
+                                        <!-- Dropdown menu -->
+                                        <div id="filterDropdown" class="z-10 hidden w-56 p-3 bg-white rounded-s rounded-e shadow dark:bg-gray-700">
+                                            <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
+                                                事業部
+                                            </h6>
+                                            <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
+                                                @foreach ($departments as $department)
+                                                <li class="flex items-center">
+                                                    <input id="{{ $department->id }}" type="checkbox" value=""class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                                    <label for="{{ $department->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $department->department_name }}</label>
+                                                </li>                       
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div> --}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     {{-- テーブル表示 --}}
-                    <div class="w-full relative overflow-x-auto shadow-md rounded mx-auto mt-8 boeder-2 bg-gray-300 dark:bg-gray-700">
+                     {{-- <div class="md:w-auto md:ml-14 md:mr-2 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700  dark:text-gray-900 bg-gray-300"> --}}
+
+                    <div class="w-full relative overflow-x-auto shadow-md rounded mx-auto boeder-2 bg-gray-300 dark:bg-gray-700">
                         <table class="w-full text-sm text-left text-gray-800 dark:text-gray-400">
                             {{-- テーブルヘッダ start --}}
-                            <thead class="text-sm text-gray-700 bg-gray-300 dark:bg-gray-700 dark:text-gray-100">
+                            <thead class="text-gray-700 bg-gray-300 dark:bg-gray-700 dark:text-gray-100">
                                 <tr>
                                     <th scope="col" class="pl-4 py-3 w-auto">
                                         <div class="flex items-center whitespace-nowrap">
@@ -124,6 +185,9 @@
                                         <div class="flex items-center whitespace-nowrap">
                                             №
                                         </div>
+                                    </th>
+                                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
+                                        <span class="sr-only">編集</span>
                                     </th>
                                     <th scope="col" class="px-2 py-3 whitespace-nowrap">
                                         <div class="flex items-center">
@@ -155,27 +219,19 @@
                                             新規/更新/変更
                                         </div>
                                     </th>
-                                    {{-- <th scope="col" class="px-2 py-3 whitespace-nowrap">
-                                        <span class="sr-only">編集</span>
-                                    </th> --}}
-                                    <th scope="col" class="px-2 py-1 whitespace-nowrap">
-                                        {{-- <button data-modal-target="storeRevenueModal" data-modal-toggle="storeRevenueModal"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
-                                            <div class="flex items-center">
-                                                <svg class="h-3.5 w-3.5 mr-1.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                    <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                                                    </svg>
-                                                <span class="text-ms">追加</span>
-                                            </div>
-                                        </button> --}}
+                                    <th scope="col" class="px-2 py-3 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            添付
+                                        </div>
                                     </th>
-                                    <th scope="col" class="flex items-center justify-center py-1">
-                                        <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="w-full md:w-auto flex py-1.5 px-4 text-sm m-auto font-medium text-gray-900 focus:outline-none bg-white rounded border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
+                                    {{-- <th scope="col" class="flex items-center py-1">
+                                        <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="w-full md:w-auto flex py-1.5 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
                                             <svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                                 <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
                                             </svg>
                                             Actions
                                         </button>
-                                    </th>
+                                    </th> --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -188,6 +244,16 @@
                                         </td>
                                         <td class="pl-4 py-1 whitespace-nowrap">
                                             {{ $loop->iteration }}
+                                        </td>
+                                        <td class="px-2 py-1 text-center">
+                                            <button id="" onclick="location.href='{{ route('contracts.details.edit', ['contract' => $contract, 'contractDetail' => $contractDetail]) }}'"  class="button-edit-primary" type="button">
+                                                <div class="flex items-center">
+                                                    <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+                                                    </svg>
+                                                    <span class=" md:block hidden">編集</span>
+                                                </div>
+                                            </button>
                                         </td>
                                         <td class="px-2 py-1 whitespace-nowrap">
                                             {{ $contractDetail->contract_start_at }}
@@ -219,22 +285,22 @@
                                                 </span>
                                             @endif
                                         </td>
-                                        <td class="px-2 py-1 text-center">
-                                            <button id="" onclick="location.href='{{ route('contracts.details.edit', ['contract' => $contract, 'detail' => $contractDetail]) }}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-2 py-0.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
-                                                <div class="flex items-center">
-                                                    <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
-                                                    </svg>
-                                                    <span class="text-ms">編集</span>
-                                                </div>
-                                            </button>
+                                        <td class="px-2 py-1 whitespace-nowrap">
+                                            @if ($contractDetail->attachments->isNotEmpty())
+                                                <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                                    有り
+                                                </span>
+                                            @else
+                                                <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
+                                                    なし
+                                                </span>
+                                            @endif
                                         </td>
+
                                         <td class="px-2 py-1">
-                                            <button data-modal-target="deleteModal-{{$contractDetail->id}}" data-modal-toggle="deleteModal-{{$contractDetail->id}}"  class="block m-auto whitespace-nowrap text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded text-sm px-2 py-0.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
+                                            <button data-modal-target="deleteModal-{{$contractDetail->id}}" data-modal-toggle="deleteModal-{{$contractDetail->id}}"  class="button-delete-primary" type="button">
                                                 <div class="flex items-center">
-                                                    <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
-                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z"/>
-                                                    </svg>
+                                                    <svg aria-hidden="true" class="w-[17px] h-[17px] mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
                                                     <span class="text-ms ">削除</span>
                                                 </div>
                                             </button>
@@ -404,7 +470,7 @@
     <!-- 追加drawer --> 
     <div id="dupdateModal" class="fixed top-0 right-0 z-50 h-screen p-4 overflow-y-auto transition-transform md:w-1/2 translate-x-full bg-gray-200 dark:bg-gray-800" tabindex="-1" aria-labelledby="dupdateModal">
         <div class="">
-            <h5 id="dupdateModal" class="inline-flex items-center mb-4 font-semibold text-xl text-gray-500 dark:text-gray-400">
+            <h5 id="dupdateModal" class="inline-flex items-center mb-4 text-sm text-xl text-gray-500 dark:text-gray-400">
                 契約詳細
             </h5>
             <button type="button" data-drawer-hide="dupdateModal" aria-controls="dupdateModal" class="text-gray-400 bg-transparent ml-8 hover:bg-gray-200 hover:text-gray-900 rounded-md text-sm w-8 h-8 absolute top-2.5 end-2.5 inline-flex items-center justify-center dark:hover:bg-gray-600 dark:hover:text-white" >

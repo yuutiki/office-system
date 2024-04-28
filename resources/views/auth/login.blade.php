@@ -41,6 +41,11 @@
         
         <x-input-error :messages="$errors->get('credentials')" class="mt-2" />
         <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        @if (session('session_expired'))
+            <div class="alert alert-danger">
+                <p>{{ session('session_expired') }}</p>
+            </div>
+        @endif
 
 
         <div class="flex items-center justify-end mt-4">

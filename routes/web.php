@@ -145,9 +145,9 @@ Route::middleware(['auth'])->group(function () {
     // contract-detail 関連
     Route::get('contracts/{contract}/details/create', [ContractDetailController::class, 'create'])->name('contracts.details.create');
     Route::post('contracts/{contract}/details/store', [ContractDetailController::class, 'store'])->name('contracts.details.store');
-    Route::get('contracts/{contract}/details/{detail}/edit', [ContractDetailController::class, 'edit'])->name('contracts.details.edit');
+    Route::get('contracts/{contract}/details/{contractDetail}/edit', [ContractDetailController::class, 'edit'])->name('contracts.details.edit');
     // Route::put('/contracts/{contract}/details/{detail}', [ContractDetailController::class, 'update'])->name('contracts.details.update');
-    Route::put('contracts/{contract}/details/{detail}', [ContractDetailController::class, 'update'])->name('contracts.details.update');
+    Route::put('contracts/{contract}/details/{contractDetail}', [ContractDetailController::class, 'update'])->name('contracts.details.update');
     Route::resource('/contracts', ContractController::class);
 
 

@@ -52,8 +52,9 @@ class CorporationController extends Controller
 
     public function create()
     {
-        $prefectures = Prefecture::all();
-        return view('corporations.create',compact('prefectures',));
+        // $prefectures = Prefecture::all();
+        // return view('corporations.create',compact('prefectures',));
+        abort(419);
     }
 
     public function store(CorporationStoreRequest $request)

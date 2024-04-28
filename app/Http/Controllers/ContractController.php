@@ -96,7 +96,7 @@ class ContractController extends Controller
     {
         $contract = Contract::find($contract->id);
 
-        $contract->contract_type_id = $request->contract_type_id;
+        // $contract->contract_type_id = $request->contract_type_id;
         $contract->cancelled_at = $request->cancelled_at;
         $contract->save();
         

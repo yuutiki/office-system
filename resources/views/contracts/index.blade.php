@@ -164,6 +164,9 @@
                         </div>
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
+
+                    </th>
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             @sortablelink('client_num','顧客番号')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
@@ -195,62 +198,40 @@
                             </svg>
                         </div>
                     </th>
-
                 </tr>
             </thead>
             <tbody>
                 @foreach ($contracts as $contract)
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 font-medium hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600 clickable-row">
-                        <td class="pl-4 py-2 whitespace-nowrap">
+                        <td class="pl-4 py-1 whitespace-nowrap">
                             {{ $loop->iteration }}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="pl-4 py-1 whitespace-nowrap">
+                            <button type="button" onclick="location.href='{{route('contracts.edit',$contract)}}'"  class="button-edit-primary">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+                                    </svg>
+                                    <span class=" md:block hidden">編集</span>
+                                </div>
+                            </button>
+                        </td>
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$contract->client->client_num}}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$contract->client->client_name}}
                         </td>
                         <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$contract->contract_num}}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$contract->contractType->contract_type_name}}
                         </td>
-                        <td class="px-1 py-2 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$contract->title}}
                         </td>
-
-                        <td class="pl-4 py-2 whitespace-nowrap">
-                            <button onclick="location.href='{{route('contracts.edit',$contract)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                                <div class="flex">
-                                    <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
-                                    </svg>
-                                    <span class="text-ms">編集</span>
-                                </div>
-                            </button>
-                        </td>
-                        {{-- <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <div class="text-center">
-                                <button class="button-edit" type="button" data-drawer-target="dupdateModal-{{$contract->id}}" data-drawer-body-scrolling="false" data-drawer-show="dupdateModal-{{$contract->id}}" data-drawer-placement="right" aria-controls="dupdateModal-{{$contract->id}}">
-                                    <div class="flex">
-                                        <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
-                                        </svg>
-                                        <span class="text-ms">編集</span>
-                                    </div>
-                                </button>
-                            </div>
-                        </td> --}}
-                        <td class="py-2">
-                            {{-- <button data-modal-target="deleteModal-{{$contract->id}}" data-modal-show="deleteModal-{{$contract->id}}"  class="button-delete" type="button">
-                                <div class="flex">
-                                    <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z"/>
-                                    </svg>
-                                    <span class="text-ms ">削除</span>
-                                </div>
-                            </button> --}}
+                        <td class="py-1">
                             <button type="button" data-modal-target="deleteModal-{{$contract->id}}" data-modal-show="deleteModal-{{$contract->id}}" class="button-delete-primary">
                                 <div class="flex">
                                     <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
@@ -341,122 +322,6 @@
 </div>
 
 
-
-<script>
-    function submitAndUpdateDrawer(supportId) {
-        // 保存処理（ここではLocalStorageを使用）
-        localStorage.setItem('updateDrawerId', supportId);
-
-        // フォームのsubmit
-        document.getElementById('updateForm-' + supportId).submit();
-    }
-</script>
-
-<!-- バリデーションエラー時にDrawerを開くスクリプト -->
-@if ($errors->any())
-    <style>
-        /* オーバーレイのスタイルを定義 */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* グレーで透過させる */
-            /* z-index: 40; Drawerよりも大きな値 */
-        }
-    </style>
-    <script>
-        // ページ遷移後に初回のみ実行するための変数
-        let isValidationProcessed = false;
-
-        document.addEventListener('DOMContentLoaded', function () {
-            let drawerId = localStorage.getItem('updateDrawerId');
-            
-            // ページ遷移後初回のみ実行
-            if (!isValidationProcessed && drawerId !== null) {
-                // オーバーレイを作成
-                const overlay = document.createElement('div');
-                overlay.classList.add('overlay'); // オーバーレイのクラスを追加
-                document.body.appendChild(overlay); // bodyに追加
-
-                // Drawerを表示
-                const drawer = document.getElementById('dupdateModal-' + drawerId);
-                drawer.classList.remove('translate-x-full');
-                localStorage.removeItem('updateDrawerId');
-                console.log(drawerId);
-                
-                // 変数をtrueに設定して初期化を行わないようにする
-                isValidationProcessed = true;
-
-                // bodyにoverflow-hiddenクラスを追加
-                document.body.classList.add('overflow-hidden');
-
-                // Drawerのz-indexよりも大きな値を設定
-                const drawerZIndex = getComputedStyle(drawer).zIndex;
-                const overlayZIndex = parseInt(drawerZIndex) - 1;
-                overlay.style.zIndex = overlayZIndex;
-
-                // オーバーレイをクリックしたときに閉じる
-                overlay.addEventListener('click', function () {
-                    closeDrawer();
-                });
-
-                // ボタンをクリックしたときにも閉じる
-                const closeButton = document.querySelector('[data-drawer-hide="dupdateModal-' + drawerId + '"]');
-                if (closeButton) {
-                    closeButton.addEventListener('click', function () {
-                        closeDrawer();
-                    });
-                }
-
-                function closeDrawer() {
-                    // Drawerを非表示にする
-                    drawer.classList.add('translate-x-full');
-                    
-                    // オーバーレイを削除する
-                    overlay.remove();
-                    
-                    // bodyのoverflow-hiddenクラスを削除
-                    document.body.classList.remove('overflow-hidden');
-                }
-            }
-        });
-    </script>
-@endif
-
-    <script>
-        // document.addEventListener('DOMContentLoaded', function () {
-        // const uploadForm = document.getElementById('csv_form1');
-        // const uploadButton = document.getElementById('upload-button');
-        // const spinner = document.getElementById('spinner');
-        // const uploadOverlay = document.getElementById('uploadOverlay');
-        // const fileInput = document.getElementById('csv_upload_file');
-        // const closeButton = document.getElementById('close_button');
-
-        //     uploadForm.addEventListener('submit', function (event) {
-        //         // ファイルが添付されているかを確認
-        //         if (fileInput.files.length === 0) {
-        //             // ファイル未添付の場合は処理を中止
-        //             event.preventDefault();
-        //             return;
-        //         }
-
-        //         // アップロードボタンを非表示にし、スピナーを表示
-        //         uploadButton.style.display = 'none';
-        //         closeButton.style.display = 'none';
-        //         spinner.style.display = 'block';
-        //         fileInput.readOnly = true;
-
-        //         // 画面をロック
-        //         uploadOverlay.style.display = 'block';
-
-        //         // フォームをサブミット
-        //         uploadForm.submit();
-        //     });
-        // });
-    </script>
-
 {{-- 行がクリックされたときに発火するJavaScript --}}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -480,58 +345,4 @@
 </style>
 
 
-{{-- <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const uploadForm = document.getElementById('csv_form1');
-    const uploadButton = document.getElementById('upload-button');
-    const spinner = document.getElementById('spinner');
-
-    uploadButton.addEventListener('click', function (event) {
-        event.preventDefault();
-
-        // 画面をロック
-        addOverlay();
-
-        // アップロードボタンを非表示にし、スピナーを表示
-        uploadButton.style.display = 'none';
-        spinner.style.display = 'block';
-
-        // フォームをサブミット
-        uploadForm.submit();
-    });
-
-    function addOverlay() {
-        const overlay = document.createElement('div');
-        overlay.id = 'overlay';
-        document.body.appendChild(overlay);
-    }
-
-    function removeOverlay() {
-        const overlay = document.getElementById('overlay');
-        if (overlay) {
-            overlay.parentNode.removeChild(overlay);
-        }
-    }
-
-    // フォームの送信完了時に実行
-    uploadForm.addEventListener('submit', function () {
-        // 画面ロックを解除
-        removeOverlay();
-    });
-});
-</script>
-
-<style>
-    #overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5); /* 透明度を指定できます */
-        z-index: 1000; /* 必要に応じて適切なz-indexを設定してください */
-    }
-</style> --}}
-
-<script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
 </x-app-layout>
