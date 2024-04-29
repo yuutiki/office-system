@@ -71,7 +71,7 @@ class RoleGroupController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(RoleGroup $roleGroup)
+    public function edit(RoleGroup $roleGroup, Request $request)
     {
         // ユーザーIDのクエリを作成
         $userIdsQuery = DB::table('user_rolegroup')
@@ -107,8 +107,10 @@ class RoleGroupController extends Controller
         // $users = User::whereHas('roleGroups', function ($query) use ($roleGroup) {
         //     $query->where('role_groups.id', $roleGroup->id);
         // })->get();
+        $activeTab = $request->query('tab', 'tab1'); // クエリパラメータからタブを取得
 
-        return view('admin.role-groups.edit', compact('roleGroup', 'users', 'affiliation1s', 'departments', 'affiliation3s','functionMenus','permissions',));
+
+        return view('admin.role-groups.edit', compact('roleGroup', 'users', 'affiliation1s', 'departments', 'affiliation3s','functionMenus','permissions','activeTab',));
     }
 
     /**
@@ -131,7 +133,8 @@ class RoleGroupController extends Controller
             $roleGroup->functionMenus()->syncWithoutDetaching([$functionMenuId => ['permission_id' => $permissionId]]);
         }
 
-        return redirect()->route('role-groups.edit', $roleGroup)->with('success','正常に更新しました');
+        // return redirect()->route('role-groups.edit', $roleGroup)->with('success','正常に更新しました');
+        return redirect()->back()->with('success','正常に更新しました');
     }
 
     /**

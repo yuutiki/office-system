@@ -261,7 +261,7 @@
                             {{$report->report_title}}
                         </td>
                         <td class="px-1 py-2 whitespace-nowrap">
-                            {{$report->reporter->name}}
+                            {{$report->reporter->user_name}}
                         </td>
                         <td class="pl-4 py-2 whitespace-nowrap">
                             <button onclick="location.href='{{route('reports.edit',$report)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">

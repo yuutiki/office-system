@@ -27,7 +27,7 @@ option = {
   xAxis: [
     {
       type: 'category',
-      data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+      data: ['11月', '12月', '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月']
     }
   ],
   yAxis: [
@@ -44,7 +44,16 @@ option = {
       emphasis: {
         focus: 'series'
       },
-      data: [120, 132, 101, 134, 90, 230, 210, 60, 89, 123, 56, 325]
+      data: [120, 132, 101, 134, 90, 230, 210, 60, 89, 123, 56, 325],
+        // ラベルを追加
+        label: {
+            show: true, // ラベルを表示する
+            position: 'middle', // ラベルの位置をバーの上に設定
+            formatter: function(params) { // ラベルのフォーマット関数
+                return params.value; // バーの値を表示
+            },
+            color: isDarkMode ? '#ffffff' : '#000000', // テキストの色
+            }
     },
     {
       name: '財務',
@@ -86,3 +95,9 @@ option = {
 };
 
 option && myChart.setOption(option);
+
+// ウィンドウのリサイズイベントを監視
+window.addEventListener('resize', function() {
+    // ウィンドウがリサイズされたときに実行されるコード
+    myChart.resize(); // グラフのサイズを更新
+});

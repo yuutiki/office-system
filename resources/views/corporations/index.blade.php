@@ -10,9 +10,9 @@
             <x-message :message="session('message')" />
         </div>
     </x-slot>
-    @if(isset($filename))
+    {{-- @if(isset($filename))
     <a href="{{ route('corporations.download', ['filename' => $filename]) }}" class="btn btn-primary">CSVダウンロード</a>
-    @endif
+    @endif --}}
 
     <div class="relative bg-white dark:bg-gray-800 rounded-t-md md:w-auto md:ml-14 md:mr-2 m-auto shadow-md  dark:text-gray-900 mt-4">
         <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
@@ -158,13 +158,6 @@
         </div>
     </div>
 
-    <style>
-        .active {
-        /* color: rgb(214, 214, 255); */
-        text-decoration: underline
-    }
-    </style>
-
     <div class="md:w-auto md:ml-14 md:mr-2 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-300 js-scrollable">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-sm text-gray-700 dark:bg-gray-700 dark:text-gray-200">
@@ -287,7 +280,7 @@
                         @endcan
                     </tr>
                     {{-- 削除確認モーダル画面 Start --}}
-                    <div id="deleteModal-{{$corporation->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                    <div id="deleteModal-{{$corporation->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-[300] hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
                         <div class="relative w-full max-w-md max-h-full">
                             <div class="relative bg-white rounded shadow dark:bg-gray-700">
                                 <button data-modal-hide="deleteModal-{{$corporation->id}}" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
@@ -324,5 +317,9 @@
 
 <script src="https://unpkg.com/scroll-hint@latest/js/scroll-hint.min.js"></script>
 <script> new ScrollHint('.js-scrollable', {});</script>
-
+<style>
+    .active {
+        text-decoration: underline
+    }
+</style>
 </x-app-layout>

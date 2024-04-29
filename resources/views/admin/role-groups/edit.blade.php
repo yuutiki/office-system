@@ -38,10 +38,10 @@
         <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
             <ul class="flex flex-wrap -mb-px text-sm text-center" id="myTabContent" data-tabs-toggle="#myTabContent" role="tablist">
                 <li class="mr-2" role="presentation">
-                    <button class="inline-block p-4 border-b-2 rounded-t-md" id="base-tab" data-tabs-target="#base" type="button" role="tab" aria-controls="base" aria-selected="false">グループ情報</button>
+                    <button onclick="changeTab('base')" class="inline-block p-4 border-b-2 rounded-t-md" id="base-tab" data-tabs-target="#base" type="button" role="tab" aria-controls="base"  aria-selected="{{ $activeTab === 'base' ? 'true' : 'false' }}">グループ情報</button>
                 </li>
                 <li class="mr-2" role="presentation">
-                    <button class="inline-block p-4 border-b-2 rounded-t-md" id="user-tab" data-tabs-target="#user" type="button" role="tab" aria-controls="user" aria-selected="false">所属ユーザ</button>
+                    <button onclick="changeTab('user')" class="inline-block p-4 border-b-2 rounded-t-md" id="user-tab" data-tabs-target="#user" type="button" role="tab" aria-controls="user"  aria-selected="{{ $activeTab === 'user' ? 'true' : 'false' }}">所属ユーザ</button>
                 </li>
             </ul>
         </div>
@@ -489,6 +489,53 @@
             item.checked = checkbox.checked;
         });
     }
+</script>
+
+
+<script>
+    function changeTab(tabName) {
+        // タブ切り替え時にクエリパラメータを更新してページ遷移を回避
+        window.history.pushState({ tab: tabName }, '', `?tab=${tabName}`);
+
+        // 全tab切り替えボタンをfalseにする
+        document.querySelectorAll('[role="tab"]').forEach(tabButton => {
+            tabButton.setAttribute('aria-selected', 'false');
+        });
+        // 押下されたtab切り替えボタンのみtrueにする
+        document.getElementById(`${tabName}-tab`).setAttribute('aria-selected', 'true');
+    }
+
+    function changeTabReload(tabName) {
+        // タブ切り替え時にクエリパラメータを更新してページ遷移を回避
+        window.history.pushState({ tab: tabName }, '', `?tab=${tabName}`);
+        // 画面をリロード
+       window.location.reload();
+
+        // ボタンの状態を更新
+        document.querySelectorAll('[role="tab"]').forEach(tabButton => {
+            tabButton.setAttribute('aria-selected', 'false');
+        });
+        document.getElementById(`${tabName}-tab`).setAttribute('aria-selected', 'true');
+    }
+
+    // ページ読み込み時と履歴操作時にタブの状態を復元する
+    window.onload = function() {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const activeTab = urlParams.get('tab');
+        const tabName = activeTab || 'base';
+        changeTab(tabName);
+    };
+
+    // ブラウザの戻る・進む操作時にタブの状態を復元する
+    window.onpopstate = function(event) {
+        if (event.state && event.state.tab) {
+            changeTabReload(event.state.tab);
+        } else {
+            // event.stateがnullまたはtabが存在しない場合はデフォルトのタブを選択する
+            changeTabReload('base');
+        }
+    };
 </script>
 
 <script type="text/javascript" src="{{ asset('assets/js/stopTab.js') }}"></script>

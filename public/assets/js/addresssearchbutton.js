@@ -45,3 +45,19 @@ $('#client_ajaxzip3').on('click', function(){
     
     return false;
 });
+
+$('#project_ajaxzip3').on('click', function(){
+    AjaxZip3.zip2addr('head_post_code','','prefecture_id','head_addre1','', '');
+
+    //成功時に実行する処理
+    AjaxZip3.onSuccess = function() {
+        $('#address').focus();
+    };
+    
+    //失敗時に実行する処理
+    AjaxZip3.onFailure = function() {
+        console.log('郵便番号に該当する住所が見つかりません')
+    };
+    
+    return false;
+});

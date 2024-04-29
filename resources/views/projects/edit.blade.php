@@ -1,17 +1,35 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white whitespace-nowrap overflow-hidden">
+            <h2 class="text-xl text-gray-900 dark:text-white whitespace-nowrap overflow-hidden">
                 {{ Breadcrumbs::render('editProject') }}
             </h2>
             <div class="flex justify-end">
-                <x-general-button onclick="location.href='{{route('projects.index')}}'">
-                    見積作成
-                </x-general-button>
-                <x-general-button onclick="location.href='{{route('projects.index')}}'" class="ml-2">
-                    削除
-                </x-general-button>
                 <x-message :message="session('message')"/>
+            </div>
+            <button id="dropdownActionButton" data-dropdown-toggle="dropdownActions" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
+                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                    <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+                </svg>
+            </button>
+            <!-- Dropdown menu -->
+            <div id="dropdownActions" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-56 dark:bg-gray-700 dark:divide-gray-600">
+                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownActionButton">
+                    <li>
+                        <button type="button" data-modal-target="deleteModal-{{$project->id}}" data-modal-show="deleteModal-{{$project->id}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full dark:text-red-500">
+                            <div class="flex">
+                                <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                                <span class="">削除</span>
+                            </div>
+                        </button>
+                    </li>
+                    <li>
+                        <span class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full">更新日：{{ $project->updated_at }}</span>
+                    </li>
+                    <li>
+                        <span class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full">更新者：{{ $project->updatedBy->user_name }}</span>
+                    </li>
+                </ul>
             </div>
         </div>
     </x-slot>
@@ -24,50 +42,38 @@
             {{-- <button type="button"  onclick="showModal()" class="md:ml-1 md:mt-1 mt-1 mb-2 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 顧客検索
             </button> --}}
-            <div class="grid gap-4 mt-2 mb-4 sm:grid-cols-3">
-                <div class="">
-                    <label for="project_num" class="block font-semibold dark:text-white text-sm text-gray-900 leading-none md:mt-4">プロジェクト№</label>
-                    <input type="text" name="project_num" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="project_num" value="{{old('project_num',$project->project_num)}}" placeholder="登録時に自動採番されます"  form="updateForm" readonly>
-                    @error('project_num')
-                        <div class="text-red-500">{{ $message }}</div>
-                    @enderror
+            <div class="grid gap-4 mt-2 mb-4 sm:grid-cols-3 grid-cols-1">
+                <div class="w-full flex flex-col">
+                    <label for="project_num" class="block dark:text-white text-sm text-gray-900 leading-none md:mt-4">プロジェクト№</label>
+                    <input type="text" name="project_num" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="project_num" value="{{old('project_num',$project->project_num)}}" placeholder="登録時に自動採番されます" readonly>
                 </div>
                 <div class="col-span-2">
-                    <label for="project_name" class="block font-semibold dark:text-white text-sm text-gray-900 leading-none md:mt-4">プロジェクト名称<span class="text-red-500"> *</span></label>
+                    <label for="project_name" class="block dark:text-white text-sm text-gray-900 leading-none md:mt-4">プロジェクト名称<span class="text-red-500"> *</span></label>
                     <input type="text" name="project_name" class="input-secondary" id="project_name" value="{{old('project_name',$project->project_name)}}" placeholder=""  form="updateForm">
                     @error('project_name')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="hidden md:inline-block">
-                    <label for="corporation_name" class="block font-semibold dark:text-white text-sm text-gray-900 leading-none md:mt-1">法人名称</label>
-                    <input type="text" name="corporation_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="corporation_name" value="{{old('corporation_name',$project->client->corporation->corporation_name)}}" placeholder="顧客検索してください" readonly>
-                    @error('corporation_name')
-                        <div class="text-red-500">{{ $message }}</div>
-                    @enderror
+                    <label for="corporation_name" class="block dark:text-white text-sm text-gray-900 leading-none md:mt-1">法人名称</label>
+                    <input type="text" name="corporation_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="corporation_name" value="{{old('corporation_name',$project->client->corporation->corporation_name)}}" readonly>
                 </div>
-                <div class="hidden">
-                    <label for="client_num" class="block font-semibold dark:text-white text-sm text-gray-900 leading-none md:mt-1">顧客番号</label>
+                {{-- <div class="hidden">
+                    <label for="client_num" class="block dark:text-white text-sm text-gray-900 leading-none md:mt-1">顧客番号</label>
                     <input type="text" name="client_num" id="client_num" value="{{old('client_num',$project->client->client_num)}}" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" form="updateForm">
-                </div>
+                </div> --}}
                 <div class="">
-                    <label for="client_name" class="block font-semibold dark:text-white text-sm text-gray-900 leading-none md:mt-1">顧客名称</label>
-                    <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 " id="client_name" value="{{old('client_name',$project->client->client_name)}}" placeholder="顧客検索してください" readonly>
-                    @error('client_name')
-                        <div class="text-red-500">{{ $message }}</div>
-                    @enderror
+                    <label for="client_name" class="block dark:text-white text-sm text-gray-900 leading-none md:mt-1">顧客名称</label>
+                    <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 " id="client_name" value="{{old('client_name',$project->client->client_name)}}" readonly>
                 </div>
                 <div class="hidden md:inline-block">
-                    <label for="department_id" class="block font-semibold text-sm dark:text-white text-gray-900 leading-none md:mt-1">管轄事業部</label>
+                    <label for="department_id" class="block text-sm dark:text-white text-gray-900 leading-none md:mt-1">顧客管轄</label>
                     <select id="department_id" name="department_id" class="dark:bg-gray-400 mt-1 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 pointer-events-none" readonly>
                         <option value="">未選択</option>
                         @foreach($departments as $department)
                         <option value="{{ $department->id }}" @selected($department->id == old('department_id',$project->client->department_id))>{{ $department->department_name }}</option>
                         @endforeach
                     </select>
-                    @error('department_id')
-                        <div class="text-red-500">{{ $message }}</div>
-                    @enderror
                 </div>
             </div>
             <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
@@ -88,7 +94,7 @@
                 <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="grid gap-4 mb-4 md:grid-cols-6 grid-cols-2">
                         <div>
-                            <label for="sales_stage_id" class="font-semibold text-gray-900 text-sm dark:text-white leading-none mt-4">営業段階<span class="text-red-500"> *</span></label>
+                            <label for="sales_stage_id" class="text-gray-900 text-sm dark:text-white leading-none mt-4">営業段階<span class="text-red-500"> *</span></label>
                             <select form="updateForm" id="sales_stage_id" name="sales_stage_id" class="input-primary">
                                 <option value="">未選択</option>
                                 @foreach($salesStages as $salesStage)
@@ -164,27 +170,22 @@
                     </script>
 
                     <div class="grid gap-4 mb-8 md:grid-cols-6 grid-cols-2">
-                            <div class="w-full flex flex-col">
-                                <label for="proposed_order_date" class="dark:text-white text-sm text-gray-900 leading-none mt-1">受注予定月</label>
-                                <input form="updateForm" type="month" min="1900-01" max="2100-12" name="proposed_order_date" value="{{ old('proposed_order_date', \Carbon\Carbon::parse($project->proposed_order_date)->format('Y-m') ?? '') }}" class="input-primary" required>
-                            </div>
-                            <div class="w-full flex flex-col">
-                                <label for="proposed_delivery_date" class="dark:text-white text-sm text-gray-900 leading-none mt-1">納品予定月</label>
-                                <input form="updateForm" type="month" min="1900-01" max="2100-12"  name="proposed_delivery_date" value="{{ old('proposed_delivery_date', \Carbon\Carbon::parse($project->proposed_delivery_date)->format('Y-m') ?? '') }}" class="input-primary" required>
-                            </div>
-                            <div class="w-full flex flex-col">
-                                <label for="proposed_accounting_date" class="dark:text-white text-sm text-gray-900 leading-none mt-1">計上予定月</label>
-                                <input form="updateForm" type="month" min="1900-01" max="2100-12"  name="proposed_accounting_date" value="{{ old('proposed_accounting_date', \Carbon\Carbon::parse($project->proposed_accounting_date)->format('Y-m') ?? '') }}" class="input-primary" required>
-                            </div>
-                            <div class="w-full flex flex-col">
-                                <label for="proposed_payment_date" class="dark:text-white text-sm text-gray-900 leading-none mt-1">入金予定月</label>
-                                <input form="updateForm" type="month" min="1900-01" max="2100-12"  name="proposed_payment_date" value="{{ old('proposed_payment_date', \Carbon\Carbon::parse($project->proposed_payment_date)->format('Y-m') ?? '') }}" class="input-primary" required>
-                            </div>
-                        {{-- </div> --}}
-                        {{-- <div class="w-full flex flex-col">
-                            <label for="total_revenue" class="font-semibold dark:text-white text-sm text-gray-900 leading-none mt-4">会計期別金額（税抜）</label>
-                            <input type="number" name="total_revenue" id="total_revenue" value="" class="bg-yellow-100 w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" disabled>
-                        </div> --}}
+                        <div class="w-full flex flex-col">
+                            <label for="proposed_order_date" class="dark:text-white text-sm text-gray-900 leading-none mt-1">受注予定月</label>
+                            <input form="updateForm" type="month" min="1900-01" max="2100-12" name="proposed_order_date" value="{{ old('proposed_order_date', \Carbon\Carbon::parse($project->proposed_order_date)->format('Y-m') ?? '') }}" class="input-primary" required>
+                        </div>
+                        <div class="w-full flex flex-col">
+                            <label for="proposed_delivery_date" class="dark:text-white text-sm text-gray-900 leading-none mt-1">納品予定月</label>
+                            <input form="updateForm" type="month" min="1900-01" max="2100-12"  name="proposed_delivery_date" value="{{ old('proposed_delivery_date', \Carbon\Carbon::parse($project->proposed_delivery_date)->format('Y-m') ?? '') }}" class="input-primary" required>
+                        </div>
+                        <div class="w-full flex flex-col">
+                            <label for="proposed_accounting_date" class="dark:text-white text-sm text-gray-900 leading-none mt-1">計上予定月</label>
+                            <input form="updateForm" type="month" min="1900-01" max="2100-12"  name="proposed_accounting_date" value="{{ old('proposed_accounting_date', \Carbon\Carbon::parse($project->proposed_accounting_date)->format('Y-m') ?? '') }}" class="input-primary" required>
+                        </div>
+                        <div class="w-full flex flex-col">
+                            <label for="proposed_payment_date" class="dark:text-white text-sm text-gray-900 leading-none mt-1">入金予定月</label>
+                            <input form="updateForm" type="month" min="1900-01" max="2100-12"  name="proposed_payment_date" value="{{ old('proposed_payment_date', \Carbon\Carbon::parse($project->proposed_payment_date)->format('Y-m') ?? '') }}" class="input-primary" required>
+                        </div>
                     </div>
 
                     {{-- テーブル表示 --}}
@@ -265,7 +266,7 @@
                                             </td>
                                             <td class="px-2 py-1">
                                                 <div class="flex justify-between">
-                                                    <button id="updateProductButton" data-modal-target="updateRevenueModal-{{ $projectRevenue['revenue']->id }}" data-modal-show="updateRevenueModal-{{ $projectRevenue['revenue']->id }}"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-2 py-[3px]  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                                                    <button id="updateProductButton" data-modal-target="updateRevenueModal-{{ $projectRevenue['revenue']->id }}" data-modal-show="updateRevenueModal-{{ $projectRevenue['revenue']->id }}"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-sm text-sm px-2 py-[3px]  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
                                                         <div class="flex items-center">
                                                             <svg class="mr-1 w-3 h-3 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
@@ -286,42 +287,6 @@
                                                 </button>
                                             </td> --}}
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                {{-- 削除確認モーダル画面 Start --}}
-                                                <div id="deleteModal-{{$projectRevenue['revenue']->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full animate-slide-in-top justify-center">
-                                                    <div class="relative w-full max-w-md max-h-full">
-                                                        <div class="relative bg-white rounded shadow dark:bg-gray-700">
-                                                            <button data-modal-hide="deleteModal-{{$projectRevenue['revenue']->id}}" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                                                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                                                                </svg>
-                                                                <span class="sr-only">Close modal</span>
-                                                            </button>
-                                                            <div class="p-6 text-center">
-                                                                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                                                                </svg>
-                                                                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
-    
-                                                                <div class="flex justify-center items-center">
-                                                                    <form action="{{route('projectrevenue.destroy',$projectRevenue['revenue']->id)}}" method="POST" class="">
-                                                                        @csrf
-                                                                        @method('delete')
-                                                                        <button type="submit" data-modal-hide="deleteModal-{{$projectRevenue['revenue']->id}}" class="mr-3 text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded text-sm  items-center px-5 py-2.5 text-center">
-                                                                            削除
-                                                                        </button>
-                                                                    </form>
-                                                                    <button data-modal-hide="deleteModal-{{$projectRevenue['revenue']->id}}" type="button" class="items-center text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                                                                        やっぱやめます
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
                                         {{-- 削除確認モーダル画面 End --}}
                                         <!-- 売上編集モーダル　Start -->
                                         <div id="updateRevenueModal-{{ $projectRevenue['revenue']->id }}" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
@@ -330,7 +295,7 @@
                                                 <div class="relative p-4 bg-white rounded shadow dark:bg-gray-800 sm:p-5">
                                                     <!-- Modal header -->
                                                     <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-                                                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                                                        <h3 class="text-lg text-gray-900 dark:text-white">
                                                             売上編集
                                                         </h3>
                                                         <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="updateRevenueModal-{{ $projectRevenue['revenue']->id }}">
@@ -423,15 +388,15 @@
                             <div class="grid gap-2 mt-1 sm:grid-cols-3">
                                 <div class="w-full flex flex-col col-span-3">
                                     <label for="billing_corporation_name" class="dark:text-white text-sm text-gray-900 leading-none mt-1">請求先名</label>
-                                    <input type="text" form="updateForm" name="billing_corporation_name" class="dark:bg-white w-auto py-1 border border-gray-300 rounded mt-1 mb-1" id="billing_corporation_name" value="{{old('billing_corporation_name', $project->billing_corporation_name)}}">
+                                    <input type="text" form="updateForm" name="billing_corporation_name" class="input-secondary" id="billing_corporation_name" value="{{old('billing_corporation_name', $project->billing_corporation_name)}}">
                                 </div>
                                 <div class="w-full flex flex-col col-span-3">
                                     <label for="billing_corporation_division_name" class="dark:text-white text-sm text-gray-900 leading-none mt-1">請求先部署名</label>
-                                    <input type="text" form="updateForm" name="billing_corporation_division_name" class="dark:bg-white w-auto py-1 border border-gray-300 rounded mt-1 mb-1" id="billing_corporation_division_name" value="{{old('billing_corporation_division_name', $project->billing_corporation_division_name)}}">
+                                    <input type="text" form="updateForm" name="billing_corporation_division_name" class="input-secondary" id="billing_corporation_division_name" value="{{old('billing_corporation_division_name', $project->billing_corporation_division_name)}}">
                                 </div>
                                 <div class="w-full flex flex-col col-span-3">
                                     <label for="billing_corporation_person_name" class="dark:text-white text-sm text-gray-900 leading-none mt-1">請求先担当者名</label>
-                                    <input type="text" form="updateForm" name="billing_corporation_person_name" class="dark:bg-white w-auto py-1 border border-gray-300 rounded mt-1 mb-1" id="billing_corporation_person_name" value="{{old('billing_corporation_person_name',$project->billing_corporation_person_name)}}">
+                                    <input type="text" form="updateForm" name="billing_corporation_person_name" class="input-secondary" id="billing_corporation_person_name" value="{{old('billing_corporation_person_name',$project->billing_corporation_person_name)}}">
                                 </div>
                             </div>
 
@@ -439,8 +404,8 @@
                                 <div class="col-span-1">
                                     <label for="head_post_code" class="dark:text-white text-sm text-gray-900 leading-none mt-1" autocomplete="new-password">郵便番号</label>
                                     <div class="relative w-full">
-                                        <input type="text" form="updateForm" name="head_post_code" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded" id="head_post_code" value="{{old('head_post_code', $project->billing_head_post_code)}}" placeholder="">
-                                        <button type="button" id="ajaxzip3" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-[34px] text-white bg-blue-700 rounded-e border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        <input type="text" id="head_post_code" form="updateForm" name="head_post_code" class="input-secondary" value="{{old('head_post_code', $project->billing_head_post_code)}}" placeholder="">
+                                        <button type="button" id="project_ajaxzip3" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-[34px] mt-1 text-white bg-blue-700 rounded-e border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                             <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                             </svg>
@@ -448,8 +413,8 @@
                                     </div>
                                 </div>
                                 <div class="col-span-1">
-                                    <label for="head_prefecture" class="dark:text-white text-sm text-gray-900 leading-none mt-4">都道府県</label>
-                                    <select id="head_prefecture" form="updateForm" name="head_prefecture" class="w-full px-2 py-1.5 text-sm bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <label for="prefecture_id" class="dark:text-white text-sm text-gray-900 leading-none mt-4">都道府県</label>
+                                    <select id="prefecture_id" form="updateForm" name="prefecture_id" class="input-secondary">
                                         <option selected value="">未選択</option>
                                         @foreach($prefectures as $prefecture)
                                             <option value="{{ $prefecture->id }}" @if( $prefecture->id == $project->billing_head_prefecture ) selected @endif>{{ $prefecture->prefecture_code }}:{{ $prefecture->prefecture_name }}</option>
@@ -460,12 +425,13 @@
                                     請求先情報を読み込む
                                 </button>
                             </div>
-                            <div class="grid gap-4 mt-3 mb-4 sm:grid-cols-3">
+                            <div class="grid gap-4 mt-2 mb-4 sm:grid-cols-3">
                                 <div class="col-span-3">
-                                    <label for="head_addre1" class="dark:text-white text-sm text-gray-900 leading-none mt-4">住所</label>
-                                    <input type="text" form="updateForm" name="head_addre1" id="head_addre1" value="{{old('head_addre1',$project->billing_head_address1)}}" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded" placeholder="">
+                                    <label for="head_addre1" class="dark:text-white text-sm text-gray-900 leading-none mt-4">請求先住所</label>
+                                    <input type="text" form="updateForm" name="head_addre1" id="head_addre1" value="{{old('head_addre1',$project->billing_head_address1)}}" class="input-secondary" placeholder="">
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
@@ -521,7 +487,7 @@
                                 <label for="account_company_id" class="text-gray-900 dark:text-white text-sm leading-none mt-4">計上所属1</label>
                                 <select form="updateForm" id="account_company_id" name="account_company_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     @foreach($companies as $company)
-                                    <option value="{{ $company->id }}" @selected($company->id == old('account_company_id', $project->account_company_id))>{{ $company->company_name }}</option>
+                                    <option value="{{ $company->id }}" @selected($company->id == old('account_company_id', $project->account_company_id))>{{ $company->affiliation1_name }}</option>
                                     @endforeach
                                 </select>
                                 @error('account_company_id')
@@ -554,7 +520,7 @@
                                 <label for="account_user_id" class="text-gray-900 dark:text-white text-sm leading-none mt-4">計上担当者</label>
                                 <select form="updateForm" id="account_user_id" name="account_user_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     @foreach($users as $user)
-                                    <option value="{{ $user->id }}" @selected($user->id == old('account_user_id', $project->account_user_id))>{{ $user->name }}</option>
+                                    <option value="{{ $user->id }}" @selected($user->id == old('account_user_id', $project->account_user_id))>{{ $user->user_name }}</option>
                                     @endforeach
                                 </select>
                                 @error('account_user_id')
@@ -607,7 +573,7 @@
                     </li>
                 </ul>
                 <div class="w-full flex flex-col">
-                    <label for="memo" class="font-semibold dark:text-white text-sm text-gray-900 leading-none mt-4">証票備考</label>
+                    <label for="memo" class="dark:text-white text-sm text-gray-900 leading-none mt-4">証票備考</label>
                     <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="auto-resize-textarea-content_2" value="{{old('memo')}}" cols="30" rows="2" data-auto-resize="true"></textarea>
                 </div>
             </div>
@@ -641,15 +607,15 @@
                     <!-- 検索条件入力フォーム -->
                     <div class="grid gap-2 mb-4 sm:grid-cols-3">
                         <div class="w-full flex flex-col mx-2">
-                            <label for="clientName" class="font-semibold dark:text-white text-sm text-gray-900 leading-none mt-4">顧客名称</label>
+                            <label for="clientName" class="dark:text-white text-sm text-gray-900 leading-none mt-4">顧客名称</label>
                             <input type="text" name="clientName" id="clientName" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded">
                         </div>
                         <div class="w-full flex flex-col mx-2">
-                            <label for="clientNumber" class="font-semibold dark:text-white text-sm text-gray-900 leading-none mt-4">顧客番号</label>
+                            <label for="clientNumber" class="dark:text-white text-sm text-gray-900 leading-none mt-4">顧客番号</label>
                             <input type="text" name="clientNumber" id="clientNumber" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded">
                         </div>
                         <div class="w-full flex flex-col mx-2">
-                            <label for="departmentId" class="font-semibold  dark:text-white text-gray-900 leading-none mt-4">管轄事業部</label>
+                            <label for="departmentId" class=" dark:text-white text-gray-900 leading-none mt-4">管轄事業部</label>
                             <select id="departmentId" name="departmentId" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 @foreach($departments as $department)
@@ -714,11 +680,11 @@
                     <div class="grid gap-4 mb-4 sm:grid-cols-2 mt-2">
                     {{-- <div class="flex flex-wrap justify-start mx-5"> --}}
                         <div class="">
-                            <label for="corporationName" class="block font-semibold dark:text-white text-sm text-gray-900 leading-none">法人名称</label>
+                            <label for="corporationName" class="block dark:text-white text-sm text-gray-900 leading-none">法人名称</label>
                             <input type="text" name="corporationName" id="corporationName" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
                         </div>
                         <div class="">
-                            <label for="corporationNumber" class="block font-semibold dark:text-white text-sm text-gray-900 leading-none">法人番号</label>
+                            <label for="corporationNumber" class="block dark:text-white text-sm text-gray-900 leading-none">法人番号</label>
                             <input type="text" name="corporationNumber" id="corporationNumber" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
                         </div>
                     </div>
@@ -758,7 +724,7 @@
             <div class="relative p-4 bg-white rounded shadow dark:bg-gray-800 sm:p-5">
                 <!-- Modal header -->
                 <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                    <h3 class="text-lg text-gray-900 dark:text-white">
                         売上登録
                     </h3>
                     <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="storeRevenueModal">
@@ -824,7 +790,7 @@
             <div class="relative p-4 bg-white rounded shadow dark:bg-gray-800 sm:p-5">
                 <!-- Modal header -->
                 <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                    <h3 class="text-lg text-gray-900 dark:text-white">
                         売上一括登録
                     </h3>
                     <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="insertRevenueModal">
@@ -892,6 +858,39 @@
         </div>
     </div>
     <!-- 売上一括登録モーダル　End -->
+
+    {{-- 削除確認モーダル画面 Start --}}
+    <div id="deleteModal-{{$project->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full animate-slide-in-top justify-center">
+        <div class="relative w-full max-w-md max-h-full">
+            <div class="relative bg-white rounded shadow dark:bg-gray-700">
+                <button data-modal-hide="deleteModal-{{$project->id}}" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+                <div class="p-6 text-center">
+                    <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                    </svg>
+                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
+
+                    <div class="flex justify-center items-center">
+                        <form action="{{route('projects.destroy',$project->id)}}" method="POST" class="">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" data-modal-hide="deleteModal-{{$project->id}}" class="mr-3 text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded text-sm  items-center px-5 py-2.5 text-center">
+                                削除
+                            </button>
+                        </form>
+                        <button data-modal-hide="deleteModal-{{$project->id}}" type="button" class="items-center text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                            やっぱやめます
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     
@@ -1028,15 +1027,6 @@
         }
     </script>
 
-
-<script>
-// var selectedIds;
-
-
-
-</script>
-
-<script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
-<script type="text/javascript" src="{{ asset('/assets/js/addresssearchbutton.js') }}"></script>
-
+    <script src="{{ asset('assets/js/autoresizetextarea.js') }}"></script>
+    <script src="{{ asset('assets/js/addresssearchbutton.js') }}"></script>
 </x-app-layout>

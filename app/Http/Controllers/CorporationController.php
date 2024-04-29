@@ -47,6 +47,7 @@ class CorporationController extends Controller
 
         $count = $corporations->total(); // 検索結果の件数を取得
 
+
         return view('corporations.index', compact('searchParams', 'corporations', 'count' ,'filters', 'CorporationNum', 'CorporationName','invoiceNum',));
     }
 
@@ -79,12 +80,14 @@ class CorporationController extends Controller
         //
     }
 
-    public function edit(string $id)
+    public function edit(string $id, Request $request)
     {
         $corporation = Corporation::find($id);
         $prefectures = Prefecture::all();
+        $activeTab = $request->query('tab', 'tab1'); // クエリパラメータからタブを取得
 
-        return view('corporations.edit',compact('corporation','prefectures',));
+
+        return view('corporations.edit',compact('corporation','prefectures','activeTab',));
     }
 
     public function update(CorporationUpdateRequest $request, string $id)
@@ -95,7 +98,8 @@ class CorporationController extends Controller
 
             // データを更新
             $corporation->fill($request->all())->save();
-            return redirect()->route('corporations.edit', $id)->with('success', '正常に更新されました');
+            // return redirect()->route('corporations.edit', $id)->with('success', '正常に更新されました');
+            return redirect()->back()->with('success', '正常に更新されました');
             
         } catch (ModelNotFoundException $e) {
             // モデルが見つからない場合のエラーメッセージ
@@ -106,25 +110,20 @@ class CorporationController extends Controller
     public function destroy(Request $request, string $id)
     {
         try {
-
-        // 検索条件を取得
-        $searchParams = $request->session()->get('search_params', []);
+            // 検索条件を取得
+            $searchParams = $request->session()->get('search_params', []);
         
             // 子データが存在するか確認
             $Corporation = Corporation::with('clients')->findOrFail($id);
-    
+
             // 子データが存在する場合は削除を中止
             if ($Corporation->clients()->exists()) {
                 return redirect()->back()->with('error', '顧客データが存在するため、削除できません');
             }
-    
-            // 子データが存在しない場合は削除を実行
-            // $Corporation->delete();
-            // return redirect()->back()->with('success', '正常に削除されました');
 
-        // 子データが存在しない場合は削除を実行
-        $Corporation->delete();
-        return redirect()->route('corporations.index', $searchParams)->with('success', '正常に削除されました');            
+            // 子データが存在しない場合は削除を実行
+            $Corporation->delete();
+            return redirect()->route('corporations.index', $searchParams)->with('success', '正常に削除されました');            
 
         } catch (ModelNotFoundException $e) {
             return redirect()->back()->with('error', '対象のデータが見つかりませんでした');

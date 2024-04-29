@@ -307,20 +307,22 @@ public function getSplitTypes($productTypeId)
     //モーダル用の非同期検索ロジック
     public function search(Request $request)
     {
-        $product_name = $request->input('productName');
-        $product_series_id = $request->input('productSeriesId');
-        $product_split_type_id = $request->input('productSplitTypeId');
-
-        $query = Product::query()->orderBy('product_split_type_id','asc')
-        ->where('is_listed', '=',  '1')
-        ->where('product_name', 'LIKE', '%' . $product_name . '%')
-        ->Where('product_series_id', 'LIKE', '%' . $product_series_id . '%');
-        // $product_split_type_id が選択されている場合のみ検索条件に追加
-        if ($product_split_type_id !== null) {
-            $query->where('product_split_type_id', '=', $product_split_type_id);
+        $query = Product::query()->orderBy('product_split_type_id', 'asc')
+            ->where('is_listed', '=',  '1');
+    
+        // 検索条件が指定されている場合のみクエリに追加
+        if ($request->filled('productName')) {
+            $query->where('product_name', 'LIKE', '%' . $request->input('productName') . '%');
         }
-        $products = $query->with('productSplitType','department','productSeries')->get();
-
+        if ($request->filled('productSeriesId')) {
+            $query->where('product_series_id', 'LIKE', '%' . $request->input('productSeriesId') . '%');
+        }
+        if ($request->filled('productSplitTypeId')) {
+            $query->where('product_split_type_id', '=', $request->input('productSplitTypeId'));
+        }
+    
+        $products = $query->with('productSplitType', 'department', 'productSeries')->get();
+    
         return response()->json($products);
     }
 

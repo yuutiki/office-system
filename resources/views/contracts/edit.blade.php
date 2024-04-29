@@ -22,6 +22,7 @@
                     <input type="text" name="contract_num" value="{{ $contract->contract_num }}" class="input-readonly" readonly>
                 </div>
             </div>
+
             <div class="grid gap-4 mb-4 lg:grid-cols-4">
                 <div class="">
                     <label class="block text-sm dark:text-gray-100 text-gray-900 leading-none sm:mt-2">法人名称</label>
@@ -122,9 +123,9 @@
                                     <div id="actionsDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-600 dark:divide-gray-600">
                                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
                                             <li>
-                                                <button type="button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="block w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                                {{-- <button type="button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="block w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
                                                     CSV一括登録
-                                                </button>
+                                                </button> --}}
                                             </li>
                                             <li>
                                                 <form id="bulkDeleteForm" action="{{ route('projectrevenue.bulkDelete') }}" method="POST">
@@ -349,6 +350,9 @@
                         <div class="mt-2 mb-2 px-4">
                         </div> 
                     </div>
+
+
+
                     {{-- テーブルヘッダアクションプルダウン --}}
                     <div id="actionsDropdown" class="hidden  w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 z-50">
                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
@@ -433,8 +437,8 @@
 
                     <div>
                         <div class="w-full flex flex-col">
-                            <label for="project_memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">契約備考</label>
-                            <textarea form="updateForm" name="project_memo" class="w-auto py-1 border border-gray-300 rounded mt-1" data-auto-resize="true" id="auto-resize-textarea-content" value="{{old('project_memo')}}" cols="30" rows="5" data-auto-resize="true">{{old('project_memo')}}</textarea>
+                            <label for="contract_memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">契約備考</label>
+                            <textarea form="updateForm" name="contract_memo" class="w-auto py-1 border border-gray-300 rounded mt-1" data-auto-resize="true" id="auto-resize-textarea-content" value="{{old('contract_memo')}}" cols="30" rows="5" data-auto-resize="true">{{old('contract_memo', $contract->contract_memo)}}</textarea>
                         </div>
 
                         <form id="updateForm" method="post" action="{{route('contracts.update', $contract)}}" enctype="multipart/form-data" autocomplete="new-password">
@@ -467,7 +471,7 @@
 
 
 
-    <!-- 追加drawer --> 
+    {{-- <!-- 追加drawer --> 
     <div id="dupdateModal" class="fixed top-0 right-0 z-50 h-screen p-4 overflow-y-auto transition-transform md:w-1/2 translate-x-full bg-gray-200 dark:bg-gray-800" tabindex="-1" aria-labelledby="dupdateModal">
         <div class="">
             <h5 id="dupdateModal" class="inline-flex items-center mb-4 text-sm text-xl text-gray-500 dark:text-gray-400">
@@ -585,7 +589,7 @@
                 </button>
             </div>
         </form>
-    </div>
+    </div> --}}
 
 
 

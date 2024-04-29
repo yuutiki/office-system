@@ -224,4 +224,6 @@
 
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js" integrity="sha512-6lplKUSl86rUVprDIjiW8DuOniNX8UDoRATqZSds/7t6zCQZfaCe3e5zcGaQwxa8Kpn5RTM9Fvl3X2lLV4grPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        {{-- ダークモードスイッチャー --}}
+        <script src="{{ asset('/assets/js/darkmodeswitcher.js') }}"></script>
 </x-app-layout>

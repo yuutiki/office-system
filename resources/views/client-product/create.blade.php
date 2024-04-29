@@ -456,7 +456,7 @@
             const productSeriesId = document.getElementById('productSeriesId').value;
             const productSplitTypeId = document.getElementById('productSplitTypeId').value;
 
-            fetch('/product/search', {
+            fetch('/products/search', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',

@@ -42,9 +42,29 @@ var option = {
                     shadowBlur: 10,
                     shadowOffsetX: 0,
                     shadowColor: 'rgba(0, 0, 0, 0.5)',
-                }
-            }
+                },
+            },
+            label: {
+                show: true,
+                textStyle: {
+                    padding: [8, 12],
+                    color: isDarkMode ? '#ffffff' : '#000000',
+                    rich: {
+                        sales: {
+                            borderRadius: 5,
+                            borderColor: '#b63a37',
+                            borderWidth: 2,
+                        }
+                    }
+                },
+            },
         }
     ]
 };
 chart.setOption(option);
+
+// ウィンドウのリサイズイベントを監視
+window.addEventListener('resize', function() {
+    // ウィンドウがリサイズされたときに実行されるコード
+    chart.resize(); // グラフのサイズを更新
+});

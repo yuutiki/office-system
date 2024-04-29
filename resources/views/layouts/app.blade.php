@@ -33,12 +33,13 @@
             }
         </script>
         <!-- Scripts -->
-
-
-        
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <!-- jquery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <!-- 郵便番号 -->
         <script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
+        <!-- Darkモード用 -->
         <script>
             // On page load or when changing themes, best to add inline in `head` to avoid FOUC
             if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -47,8 +48,6 @@
                 document.documentElement.classList.remove('dark')
             }
         </script>
-        {{-- ApexCharts  --}}
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
         <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
@@ -63,7 +62,7 @@
         {{-- 横スクロールヒント2/2 --}}
 
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" integrity="sha512-cyzxRvewl+FOKTtpBzYjW6x6IAYUCZy3sGP40hn+DQkqeluGRCax7qztK2ImL64SA+C7kVWdLI6wvdlStawhyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" integrity="sha512-cyzxRvewl+FOKTtpBzYjW6x6IAYUCZy3sGP40hn+DQkqeluGRCax7qztK2ImL64SA+C7kVWdLI6wvdlStawhyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
     </head>
@@ -175,20 +174,19 @@
         </script>
 
         <script>
-// スピードダイヤルを表示/非表示に切り替える関数
-function toggleDialVisibility() {
-    const speedDialButton = document.getElementById('speed-dial-button');
-    speedDialButton.classList.toggle('hidden');
-}
+            // スピードダイヤルを表示/非表示に切り替える関数
+            function toggleDialVisibility() {
+                const speedDialButton = document.getElementById('speed-dial-button');
+                speedDialButton.classList.toggle('hidden');
+            }
 
-// スピードダイヤルトリガーボタンにクリックイベントリスナーを追加
-const dialButton = document.getElementById('dial');
-dialButton.addEventListener('click', toggleDialVisibility);
+            // スピードダイヤルトリガーボタンにクリックイベントリスナーを追加
+            const dialButton = document.getElementById('dial');
+            dialButton.addEventListener('click', toggleDialVisibility);
         </script>
 
 
-        {{-- ダークモードスイッチャー --}}
-        <script src="{{ asset('/assets/js/darkmodeswitcher.js') }}"></script>
+
         {{-- inputのEnter無効化 --}}
         <script src="{{ asset('/assets/js/allinputenterdisable.js') }}"></script>
         {{-- JQUERY --}}

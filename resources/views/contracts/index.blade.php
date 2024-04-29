@@ -202,7 +202,7 @@
             </thead>
             <tbody>
                 @foreach ($contracts as $contract)
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 font-medium hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600 clickable-row">
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600 clickable-row">
                         <td class="pl-4 py-1 whitespace-nowrap">
                             {{ $loop->iteration }}
                         </td>
@@ -222,7 +222,7 @@
                         <td class="px-1 py-1 whitespace-nowrap">
                             {{$contract->client->client_name}}
                         </td>
-                        <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <td class="px-1 py-2 whitespace-nowrap">
                             {{$contract->contract_num}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">

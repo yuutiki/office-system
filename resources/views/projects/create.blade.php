@@ -178,6 +178,9 @@
                     <div class="w-full flex flex-col">
                         <label for="billing_corporation_num" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">請求先法人№</label>
                         <input type="text" name="billing_corporation_num" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 mb-2" id="billing_corporation_num" value="{{old('billing_corporation_num')}}" placeholder="">
+                        @error('billing_corporation_id')
+                            <div class="text-red-500">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="billing_corporation_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">請求先法人名称</label>

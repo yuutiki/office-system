@@ -13,11 +13,8 @@
                 </svg>
             </button>
             <!-- Dropdown menu -->
-            <div id="dropdownActions" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+            <div id="dropdownActions" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-56 dark:bg-gray-700 dark:divide-gray-600">
                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownActionButton">
-                    {{-- <li>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
-                    </li> --}}
                     <li>
                         <button type="button" data-modal-target="deleteModal-{{$corporation->id}}" data-modal-show="deleteModal-{{$corporation->id}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full dark:text-red-500">
                             <div class="flex">
@@ -26,10 +23,13 @@
                             </div>
                         </button>
                     </li>
+                    <li>
+                        <span class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full">更新日：{{ $corporation->updated_at }}</span>
+                    </li>
+                    <li>
+                        <span class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full">更新者：{{ $corporation->updatedBy->user_name }}</span>
+                    </li>
                 </ul>
-                {{-- <div class="py-2">
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Separated link</a>
-                </div> --}}
             </div>
         </div>
     </x-slot>
@@ -39,14 +39,13 @@
         <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
             <ul class="flex flex-wrap -mb-px text-sm text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
                 <li class="mr-2" role="presentation">
-                    <button class="inline-block p-4 border-b-2 rounded-t-md" id="base-tab" data-tabs-target="#base" type="button" role="tab" aria-controls="base" aria-selected="false">基本情報</button>
+                    <button onclick="changeTab('base')" class="inline-block p-4 border-b-2 rounded-t-md {{ $activeTab === 'base' ? 'border-blue-500' : '' }}" id="base-tab" data-tabs-target="#base" type="button" role="tab" aria-controls="base" aria-selected="{{ $activeTab === 'base' ? 'true' : 'false' }}">基本情報</button>
                 </li>
                 <li class="mr-2" role="presentation">
-                    <button class="inline-block p-4 border-b-2 rounded-t-md" id="credit-tab" data-tabs-target="#credit" type="button" role="tab" aria-controls="credit" aria-selected="false">与信情報</button>
+                    <button onclick="changeTab('credit')" class="inline-block p-4 border-b-2 rounded-t-md {{ $activeTab === 'credit' ? 'border-blue-500' : '' }}" id="credit-tab" data-tabs-target="#credit" type="button" role="tab" aria-controls="credit" aria-selected="{{ $activeTab === 'credit' ? 'true' : 'false' }}">与信情報</button>
                 </li>
             </ul>
         </div>
-        
         {{-- 基本情報タブ --}}
         <div class="hidden md:p-4 p-2 mb-4 rounded bg-gray-50 dark:bg-gray-800" id="base" role="tabpanel" aria-labelledby="base-tab">
 
@@ -298,6 +297,58 @@
                 </div>
 
 
+                {{-- <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="p-6 bg-white border-b border-gray-200">
+                            <div class="flex">
+                                <!-- タブボタン -->
+                                <button onclick="changeTab('tab1')" class="px-4 py-2 mx-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">Tab 1</button>
+                                <button onclick="changeTab('tab2')" class="px-4 py-2 mx-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">Tab 2</button>
+                            </div>
+                            <!-- タブコンテンツ -->
+                            <div class="mt-4">
+                                <div id="tab1-content" class="tab-content {{ $activeTab === 'tab1' ? 'block' : 'hidden' }}">
+                                    <h2 class="text-lg font-semibold mb-2">Tab 1 Content</h2>
+                                    <!-- Tab 1 のコンテンツをここに追加 -->
+                                </div>
+                                <div id="tab2-content" class="tab-content {{ $activeTab === 'tab2' ? 'block' : 'hidden' }}">
+                                    <h2 class="text-lg font-semibold mb-2">Tab 2 Content</h2>
+                                    <!-- Tab 2 のコンテンツをここに追加 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                
+                <script>
+                    function changeTab(tabName) {
+                        // タブ切り替え時にクエリパラメータを更新してページ遷移を回避
+                        window.history.pushState({ tab: tabName }, '', `?tab=${tabName}`);
+                        // タブコンテンツの表示切り替え
+                        document.querySelectorAll('.tab-content').forEach(tabContent => {
+                            tabContent.classList.add('hidden');
+                        });
+                        document.getElementById(`${tabName}-content`).classList.remove('hidden');
+                    }
+            
+                    // ページ読み込み時と履歴操作時にタブの状態を復元する
+                    window.onload = function() {
+                        const queryString = window.location.search;
+                        const urlParams = new URLSearchParams(queryString);
+                        const activeTab = urlParams.get('tab');
+                        if (activeTab) {
+                            changeTab(activeTab);
+                        }
+                    };
+            
+                    // ブラウザの戻る・進む操作時にタブの状態を復元する
+                    window.onpopstate = function(event) {
+                        const tabName = event.state ? event.state.tab : 'tab1';
+                        changeTab(tabName);
+                    };
+                </script> --}}
+
                 <div class="h-[350px]">
                     <span class="hidden">ダミー</span>
                 </div>
@@ -367,6 +418,53 @@
 
         }
     </script>
+
+<script>
+    function changeTab(tabName) {
+        // タブ切り替え時にクエリパラメータを更新してページ遷移を回避
+        window.history.pushState({ tab: tabName }, '', `?tab=${tabName}`);
+
+        // 全tab切り替えボタンをfalseにする
+        document.querySelectorAll('[role="tab"]').forEach(tabButton => {
+            tabButton.setAttribute('aria-selected', 'false');
+        });
+        // 押下されたtab切り替えボタンのみtrueにする
+        document.getElementById(`${tabName}-tab`).setAttribute('aria-selected', 'true');
+    }
+
+    function changeTabReload(tabName) {
+        // タブ切り替え時にクエリパラメータを更新してページ遷移を回避
+        window.history.pushState({ tab: tabName }, '', `?tab=${tabName}`);
+        // 画面をリロード
+       window.location.reload();
+
+        // ボタンの状態を更新
+        document.querySelectorAll('[role="tab"]').forEach(tabButton => {
+            tabButton.setAttribute('aria-selected', 'false');
+        });
+        document.getElementById(`${tabName}-tab`).setAttribute('aria-selected', 'true');
+    }
+
+    // ページ読み込み時と履歴操作時にタブの状態を復元する
+    window.onload = function() {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const activeTab = urlParams.get('tab');
+        const tabName = activeTab || 'base';
+        changeTab(tabName);
+    };
+
+    // ブラウザの戻る・進む操作時にタブの状態を復元する
+    window.onpopstate = function(event) {
+        if (event.state && event.state.tab) {
+            changeTabReload(event.state.tab);
+        } else {
+            // event.stateがnullまたはtabが存在しない場合はデフォルトのタブを選択する
+            changeTabReload('base');
+        }
+    };
+</script>
+
 
 
     <script type="text/javascript" src="{{ asset('assets/js/stopTab.js') }}"></script>

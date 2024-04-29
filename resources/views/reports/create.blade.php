@@ -195,7 +195,7 @@
 
     <!-- 顧客検索Modal -->
     <div id="clientSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden animate-slide-in-top">
-        <div class="max-h-full w-full max-w-2xl">
+        <div class="max-h-full w-full max-w-7xl">
             <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
                 <!-- Modal header -->
                 <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
@@ -239,7 +239,7 @@
                         <tr>
                             {{-- <th class="py-1"></th> --}}
                             <th class="py-1 pl-5">顧客名称</th>
-                            <th class="py-1 whitespace-nowrap">顧客番号</th>
+                            <th class="py-1 whitespace-nowrap">顧客№</th>
                             <th class="py-1 whitespace-nowrap">管轄事業部</th>
                         </tr>
                         </thead>

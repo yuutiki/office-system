@@ -174,7 +174,7 @@ class ClientController extends Controller
         $client->user_id = $request->user_id;
         $client->memo = $request->memo;
         $client->dealer_id = $request->dealer_id; // Vendorとリレーションしている
-        $client->is_enduser = $request->has('is_enduser') ? 1 : 0;
+        $client->is_enduser = 1;
         $client->is_supplier = $request->has('is_supplier') ? 1 : 0;
         $client->is_dealer = $request->has('is_dealer') ? 1 : 0;
         $client->is_lease = $request->has('is_lease') ? 1 : 0;
@@ -191,7 +191,7 @@ class ClientController extends Controller
         //
     }
 
-    public function edit(string $id)
+    public function edit(string $id, Request $request)
     {
         $users = User::all();
         $tradeStatuses = TradeStatus::all();
@@ -210,7 +210,10 @@ class ClientController extends Controller
         Session::put('selected_client_name', $client->client_name);
         Session::put('selected_client_id', $client->id);
 
-        return view('clients.edit',compact('departments','users','tradeStatuses','clientTypes','installationTypes','client','reports','prefectures','supports','clientProducts','distributionTypes'));
+        $activeTab = $request->query('tab', 'tab1'); // クエリパラメータからタブを取得
+
+
+        return view('clients.edit',compact('departments','users','tradeStatuses','clientTypes','installationTypes','client','reports','prefectures','supports','clientProducts','distributionTypes','activeTab',));
     }
 
     public function update(ClientStoreRequest $request, string $id)
@@ -236,14 +239,15 @@ class ClientController extends Controller
         $client->user_id = $request->user_id;
         $client->dealer_id = $request->dealer_id; // Vendorとリレーションしている
         $client->memo = $request->memo;
-        $client->is_enduser = $request->has('is_enduser') ? 1 : 0;
-        $client->is_supplier = $request->has('is_supplier') ? 1 : 0;
-        $client->is_dealer = $request->has('is_dealer') ? 1 : 0;
-        $client->is_lease = $request->has('is_lease') ? 1 : 0;
-        $client->is_other_partner = $request->has('is_other_partner') ? 1 : 0;
+        // $client->is_enduser = $request->has('is_enduser') ? 1 : 0;
+        // $client->is_supplier = $request->has('is_supplier') ? 1 : 0;
+        // $client->is_dealer = $request->has('is_dealer') ? 1 : 0;
+        // $client->is_lease = $request->has('is_lease') ? 1 : 0;
+        // $client->is_other_partner = $request->has('is_other_partner') ? 1 : 0;
         $client->save();
 
-        return redirect()->route('clients.edit', $id)->with('success', '正常に変更しました');
+        // return redirect()->route('clients.edit', $id)->with('success', '正常に変更しました');
+        return redirect()->back()->with('success', '正常に変更しました');
     }
 
     public function destroy(string $id)

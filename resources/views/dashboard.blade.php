@@ -426,9 +426,9 @@
           <div class="flex flex-wrap mt-40 ml-10 ">
             <div class="w-full xl:w-full mb-12 xl:mb-0 px-4">
               <div class="relative flex flex-col min-w-0 break-words dark:bg-gray-800 bg-white text-black w-full mb-6 p-6 shadow-lg rounded-lg dark:text-white">
-                <div class="rounded-lg mb-0 px-4 py-3 border-0">
+                <div class="rounded-lg mb-0  border-0">
                   <div class="flex flex-wrap items-center">
-                    <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+                    <div class="relative w-full max-w-full flex-grow flex-1">
                       <h3 class="font-semibold text-base text-blueGray-700">
                         担当顧客サポート状況（直近5件）
                       </h3>
@@ -507,9 +507,9 @@
 
             <div class="w-full xl:w-full mb-12 xl:mb-0 px-4">
               <div class="relative flex flex-col min-w-0 break-words dark:bg-gray-800 dark:text-white text-black bg-white w-full mb-6 p-6 shadow-lg rounded-lg">
-                <div class="rounded-t mb-0 px-4 py-3 border-0">
+                <div class="rounded-t mb-0 border-0">
                   <div class="flex flex-wrap items-center">
-                    <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+                    <div class="relative w-full max-w-full flex-grow flex-1">
                       <h3 class="font-semibold text-base dark:text-white">
                         直近の案件リスト（当月・次月）
                       </h3>

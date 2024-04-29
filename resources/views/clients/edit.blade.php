@@ -58,7 +58,7 @@
                 </div>
             </div>
 
-            <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-2">
+            <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-1">
 
                 <div>
                     <label for="installation_type_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">設置種別</label>
@@ -124,42 +124,42 @@
 
             {{-- タブヘッダStart --}}
             <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
-                <ul class="flex flex-wrap -mb-px text-sm text-center" id="myTabs" data-tabs-toggle="#myTabContent" role="tablist">
+                <ul class="flex flex-wrap -mb-px text-sm text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
                     <li class="mr-2" role="presentation">
-                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="basic-tab" data-tabs-target="#basic" type="button" role="tab" aria-controls="basic" aria-selected="false">
+                        <button onclick="changeTab('base')" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="base-tab" data-tabs-target="#base" type="button" role="tab" aria-controls="base" aria-selected="{{ $activeTab === 'base' ? 'true' : 'false' }}">
                             基本情報
                         </button>
                     </li>
                     <li class="mr-2" role="presentation">
-                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">
+                        <button onclick="changeTab('contracts')" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="contracts-tab" data-tabs-target="#contracts" type="button" role="tab" aria-controls="contracts" aria-selected="{{ $activeTab === 'contracts' ? 'true' : 'false' }}">
                             契約情報
                         </button>
                     </li>
 
                 @if ($client->is_enduser)
                     <li class="mr-2" role="presentation">
-                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts" aria-selected="false">
+                        <button onclick="changeTab('environments')" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="environments-tab" data-tabs-target="#environments" type="button" role="tab" aria-controls="environments" aria-selected="{{ $activeTab === 'environments' ? 'true' : 'false' }}">
                             環境情報
                         </button>
                     </li>
                 @endif
                 @if ($client->is_enduser)
                     <li class="mr-2" role="presentation">
-                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">
+                        <button onclick="changeTab('systems')" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="systems-tab" data-tabs-target="#systems" type="button" role="tab" aria-controls="systems" aria-selected="{{ $activeTab === 'systems' ? 'true' : 'false' }}">
                             導入システム
                         </button>
                     </li>
                 @endif
 
                     <li class="mr-2" role="presentation">
-                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="reports-tab" data-tabs-target="#reports" type="button" role="tab" aria-controls="reports" aria-selected="false">
+                        <button onclick="changeTab('reports')" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="reports-tab" data-tabs-target="#reports" type="button" role="tab" aria-controls="reports" aria-selected="{{ $activeTab === 'reports' ? 'true' : 'false' }}">
                             営業報告
                         </button>
                     </li>
                 
                     @if ($client->is_enduser)
                     <li class="mr-2" role="presentation">
-                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="supports-tab" data-tabs-target="#supports" type="button" role="tab" aria-controls="supports" aria-selected="false">
+                        <button onclick="changeTab('supports')" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="supports-tab" data-tabs-target="#supports" type="button" role="tab" aria-controls="supports" aria-selected="{{ $activeTab === 'supports' ? 'true' : 'false' }}">
                             サポート履歴
                         </button>
                     </li>
@@ -171,7 +171,7 @@
             <div id="myTabContent">
 
                 {{-- 1つ目のタブコンテンツStart --}}
-                <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="basic" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="base" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="grid gap-4 mb-4 sm:grid-cols-5 mt-2">
                         {{-- <div class="">
                             <label for="head_post_code" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">郵便番号</label>
@@ -409,14 +409,14 @@
                 {{-- 1つ目のタブコンテンツEnd --}}
 
                 {{-- 2つ目のタブコンテンツStart --}}
-                <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="contracts" role="tabpanel" aria-labelledby="contracts-tab">
                     <p class="text-sm text-gray-500 dark:text-gray-400">請求区分、契約日、解約日、契約金額、サポートページID、PW、暗号、契約備考、契約書添付、契約履歴</p>
                 </div>
                 {{-- 2つ目のタブコンテンツEnd --}}
 
 
                 {{-- 3つ目のタブコンテンツ(導入システム)Start --}}
-                <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="systems" role="tabpanel" aria-labelledby="systems-tab">
                     <span class="text-white">この顧客のサポート問い合わせ情報の内容が表示されます。ここからサポート情報を登録することもできます。</span>
 
                     {{-- <div class="w-full flex flex-col">
@@ -474,24 +474,11 @@
                                         </div>
                                     </th>
                                     <th scope="col" class="px-2 py-2 whitespace-nowrap">
-                                        {{-- <button class="rounded bg-blue-400 px-3 py-1">追加</button> --}}
-                                        {{-- <button type="button" class=" bg-blue-400 flex items-center justify-center px-3 py-1 text-sm text-white rounded bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
-                                            <svg class="h-3.5 w-3.5 mr-1" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                              <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                                            </svg>
-                                            追加
-                                        </button> --}}
-                                        {{-- <button id="storeProductButton" data-modal-toggle="storeProduct" class="bg-blue-400 flex items-center justify-center px-2 py-1 text-sm text-white rounded bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" type="button">
-                                            <svg class="h-3.5 w-3.5 mr-0.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                                            </svg>
-                                            <span class="text-ms">追加</span>
-                                        </button> --}}
                                         <button onclick="location.href='{{route('client-product.create')}}'" class="bg-blue-400 flex items-center justify-center px-2 py-1 text-sm text-white rounded bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" type="button">
                                             <svg class="h-3.5 w-3.5 mr-0.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                                 <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                                             </svg>
-                                            <span class="text-ms">追加</span>
+                                            <span class="text-sm">追加</span>
                                         </button>
                                     </th>
                                 </tr>
@@ -570,7 +557,7 @@
                 {{-- 3つ目のタブコンテンツEnd --}}
 
                 {{-- 4つ目のタブコンテンツStart --}}
-                <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
+                <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="environments" role="tabpanel" aria-labelledby="environments-tab">
                     {{-- <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-2">
                         <div>
                             <label for="test1" class="text-sm text-gray-900 dark:text-white leading-none mt-4">インフラ区分</label>
@@ -1326,227 +1313,56 @@
         hideDealerModal();
     }
 
-// // タブがクリックされたときにアクティブなタブ情報をローカルストレージに保存
-// document.addEventListener('click', function(event) {
-//     if (event.target.matches('[role="tabpanel"]')) {
-//         const tabId = event.target.getAttribute('aria-controls');
-//         localStorage.setItem('activeTab', tabId);
-//     }
-// });
-
-// // ページが読み込まれたときにローカルストレージからアクティブなタブ情報を取得
-// document.addEventListener('DOMContentLoaded', function() {
-//     const activeTabId = localStorage.getItem('activeTab');
-//     if (activeTabId) {
-//         // アクティブなタブ情報がローカルストレージにある場合、それを使用してアクティブなタブを設定
-//         tabs.show(activeTabId); // "tabs" は前のコードで作成した Tabs オブジェクト
-//     }
-// });
-
-// タブ制御スクリプト
-
-        // const tabsElement = document.getElementById('myTabs');
-
-        // // create an array of objects with the id, trigger element (eg. button), and the content element
-        // const tabElements = [
-        //     {
-        //         id: 'basic',
-        //         triggerEl: document.querySelector('#basic-tab'),
-        //         targetEl: document.querySelector('#basic')
-        //     },
-        //     {
-        //         id: 'dashboard',
-        //         triggerEl: document.querySelector('#dashboard-tab'),
-        //         targetEl: document.querySelector('#dashboard')
-        //     },
-        //     {
-        //         id: 'settings',
-        //         triggerEl: document.querySelector('#settings-tab'),
-        //         targetEl: document.querySelector('#settings')
-        //     },
-        //     {
-        //         id: 'contacts',
-        //         triggerEl: document.querySelector('#contacts-tab'),
-        //         targetEl: document.querySelector('#contacts')
-        //     },
-        //     {
-        //         id: 'reports',
-        //         triggerEl: document.querySelector('#reports-tab'),
-        //         targetEl: document.querySelector('#reports')
-        //     },
-        //     {
-        //         id: 'supports',
-        //         triggerEl: document.querySelector('#supports-tab'),
-        //         targetEl: document.querySelector('#supports')
-        //     }
-        // ];
-
-        // // options with default values
-        // const options = {
-        //     defaultTabId: 'settings',
-        //     activeClasses: 'text-blue-600 hover:text-blue-600 dark:text-blue-500 dark:hover:text-blue-400 border-blue-600 dark:border-blue-500',
-        //     inactiveClasses: 'text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300',
-        //     onShow: () => {
-        //         console.log('tab is shown');
-        //     }
-        // };
-
-        // // const tabs = new Tabs(tabsElement, tabElements, options);
-        // const tabs = new Tabs(document.getElementById('#supports'));
-        // // tabs.getActiveTab()
-        // tabs.show('supports');
-
-
-//         const csrfToken = "{{ csrf_token() }}";
-
-//     // JavaScriptコード内でタブが切り替わる際にAjaxリクエストを送信
-//     const tabsElement1 = document.getElementById('myTabs');
-//     tabsElement1.addEventListener('click', (event) => {
-//     if (event.target.getAttribute('role') === 'tab') {
-//         const activeTabId = event.target.getAttribute('id'); // アクティブなタブのIDを取得
-//         // Ajaxリクエストを送信
-//         fetch('/updateActiveTab', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 'X-CSRF-TOKEN': csrfToken // LaravelのCSRFトークンを含める
-//             },
-//             body: JSON.stringify({ activeTabId })
-//         })
-//         .then(response => {
-//             if (response.ok) {
-//                 console.log('アクティブなタブが更新されました');
-//             } else {
-//                 console.error('アクティブなタブの更新に失敗しました');
-//             }
-//         });
-//     }
-// });
-
-
-// const activeTabId = '{{ Session::get('active_tab', 'default_tab_id') }}'; // デフォルトのタブIDを指定
-
-
-// // ページ読み込み時にセッションからアクティブなタブIDを取得
-// document.addEventListener('DOMContentLoaded', function() {
-
-//     const options = {
-//         defaultTabId: activeTabId, // セッションから取得したアクティブなタブIDをデフォルトに設定
-//         activeClasses: 'text-blue-600 hover:text-blue-600 dark:text-blue-500 dark:hover:text-blue-400 border-blue-600 dark:border-blue-500',
-//         inactiveClasses: 'text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300',
-//         onShow: () => {
-//             console.log('タブが表示されました');
-//         }
-//     };
-
-//     const tabsElement = document.getElementById('myTabs');
-
-//     const tabElements = [
-//             {
-//                 id: 'basic',
-//                 triggerEl: document.querySelector('#basic-tab'),
-//                 targetEl: document.querySelector('#basic')
-//             },
-//             {
-//                 id: 'dashboard',
-//                 triggerEl: document.querySelector('#dashboard-tab'),
-//                 targetEl: document.querySelector('#dashboard')
-//             },
-//             {
-//                 id: 'settings',
-//                 triggerEl: document.querySelector('#settings-tab'),
-//                 targetEl: document.querySelector('#settings')
-//             },
-//             {
-//                 id: 'contacts',
-//                 triggerEl: document.querySelector('#contacts-tab'),
-//                 targetEl: document.querySelector('#contacts')
-//             },
-//             {
-//                 id: 'reports',
-//                 triggerEl: document.querySelector('#reports-tab'),
-//                 targetEl: document.querySelector('#reports')
-//             },
-//             {
-//                 id: 'supports',
-//                 triggerEl: document.querySelector('#supports-tab'),
-//                 targetEl: document.querySelector('#supports')
-//             }
-//         ];
-
-//         console.log(tabElements);
-//     const tabs = new Tabs(tabsElement, tabElements, options);
-//     tabs.show(activeTabId);
-// });
-
     </script>
 
-    <script>
-        // ページがロードされたときに実行される関数
-window.onload = function() {
-    const tabsElement = document.getElementById('myTabs');
-    
-    // create an array of objects with the id, trigger element (eg. button), and the content element
-    const tabElements = [
-        {
-            id: 'basic',
-            triggerEl: document.querySelector('#basic-tab'),
-            targetEl: document.querySelector('#basic'),
-        },
-        {
-            id: 'dashboard',
-            triggerEl: document.querySelector('#dashboard-tab'),
-            targetEl: document.querySelector('#dashboard'),
-        },
-        {
-            id: 'contacts',
-            triggerEl: document.querySelector('#contacts-tab'),
-            targetEl: document.querySelector('#contacts'),
-        },
-        {
-            id: 'settings',
-            triggerEl: document.querySelector('#settings-tab'),
-            targetEl: document.querySelector('#settings'),
-        },
-        {
-            id: 'reports',
-            triggerEl: document.querySelector('#reports-tab'),
-            targetEl: document.querySelector('#reports'),
-        },
-        {
-            id: 'supports',
-            triggerEl: document.querySelector('#supports-tab'),
-            targetEl: document.querySelector('#supports'),
-        },
-    ];
 
-    // ローカルストレージからアクティブなタブIDを取得
-    const activeTabId = localStorage.getItem('activeTabId') || 'settings';
 
-    // オプションとインスタンスオプション
-    const options = {
-        defaultTabId: activeTabId, // ローカルストレージから取得したアクティブなタブIDを設定
-        activeClasses:
-            'text-blue-600 hover:text-blue-600 dark:text-blue-500 dark:hover:text-blue-400 border-blue-600 dark:border-blue-500',
-        inactiveClasses:
-            'text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300',
-        onShow: (id) => {
-            // 新しいタブが表示されたときに、アクティブなタブIDをローカルストレージに保存
-            localStorage.setItem('activeTabId', id);
-        },
+
+<script>
+    function changeTab(tabName) {
+        // タブ切り替え時にクエリパラメータを更新してページ遷移を回避
+        window.history.pushState({ tab: tabName }, '', `?tab=${tabName}`);
+
+        // 全tab切り替えボタンをfalseにする
+        document.querySelectorAll('[role="tab"]').forEach(tabButton => {
+            tabButton.setAttribute('aria-selected', 'false');
+        });
+        // 押下されたtab切り替えボタンのみtrueにする
+        document.getElementById(`${tabName}-tab`).setAttribute('aria-selected', 'true');
+    }
+
+    function changeTabReload(tabName) {
+        // タブ切り替え時にクエリパラメータを更新してページ遷移を回避
+        window.history.pushState({ tab: tabName }, '', `?tab=${tabName}`);
+        // 画面をリロード
+       window.location.reload();
+
+        // ボタンの状態を更新
+        document.querySelectorAll('[role="tab"]').forEach(tabButton => {
+            tabButton.setAttribute('aria-selected', 'false');
+        });
+        document.getElementById(`${tabName}-tab`).setAttribute('aria-selected', 'true');
+    }
+
+    // ページ読み込み時と履歴操作時にタブの状態を復元する
+    window.onload = function() {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const activeTab = urlParams.get('tab');
+        const tabName = activeTab || 'base';
+        changeTab(tabName);
     };
 
-    // インスタンスオプションは変更なし
-    const instanceOptions = {
-      id: 'myTabs',
-      override: true
+    // ブラウザの戻る・進む操作時にタブの状態を復元する
+    window.onpopstate = function(event) {
+        if (event.state && event.state.tab) {
+            changeTabReload(event.state.tab);
+        } else {
+            // event.stateがnullまたはtabが存在しない場合はデフォルトのタブを選択する
+            changeTabReload('base');
+        }
     };
-
-    // Tabsオブジェクトの作成
-    const tabs = new Tabs(tabsElement, tabElements, options, instanceOptions);
-};
-    </script>
-
+</script>
 
 <script type="text/javascript" src="{{ asset('/assets/js/addresssearchbutton.js') }}"></script>
 <script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>

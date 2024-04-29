@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Project;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProjectStoreRequest extends FormRequest
+class ProjectUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,6 @@ class ProjectStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'project_name' => 'required|max:100',
-            'client_num' => 'required',
             'project_name' => 'required|max:100',
             'sales_stage_id' => 'required',
             'project_type_id' => 'required',

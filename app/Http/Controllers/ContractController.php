@@ -98,6 +98,7 @@ class ContractController extends Controller
 
         // $contract->contract_type_id = $request->contract_type_id;
         $contract->cancelled_at = $request->cancelled_at;
+        $contract->contract_memo = $request->contract_memo;
         $contract->save();
         
         return redirect()->back()->with('success', '正常に更新されました');

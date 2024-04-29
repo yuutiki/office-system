@@ -333,7 +333,7 @@
                         <td class="pl-1 py-1 whitespace-nowrap">
                             {{$product->product_code}}
                         </td>
-                        <td class="px-1 py-1 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap w-40">
                             {{$product->productsplittype->split_type_name}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
@@ -350,7 +350,7 @@
                             </span>
                         @endif
                         </td> --}}
-                        <td class="px-1 py-1 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap w-96">
                             {{$product->product_name}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">

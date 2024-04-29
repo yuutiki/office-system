@@ -6,15 +6,11 @@
                 <div class="ml-4">
                     {{ $count }}件
                     {{ number_format($totalAmount) }}円
-                    {{-- <a href="{{ route('corporations.export', $filters ?? []) }}" class="btn btn-primary">CSVダウンロード</a> --}}
                 </div>
             </h2>
             <x-message :message="session('message')" />
         </div>
     </x-slot>
-    @if(isset($filename))
-    <a href="{{ route('corporations.download', ['filename' => $filename]) }}" class="btn btn-primary">CSVダウンロード</a>
-    @endif
 
     <div class="relative bg-white dark:bg-gray-800 rounded-t-md md:w-auto md:ml-14 md:mr-2 m-auto shadow-md  dark:text-gray-900 mt-4">
         <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
@@ -29,7 +25,7 @@
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                 </svg>
                             </div>
-                            <input type="search" id="corporation_num" name="corporation_num" value="@if (isset($CorporationNum)){{$CorporationNum}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="法人№">
+                            <input type="search" id="corporation_num" name="corporation_num" value="@if (isset($CorporationNum)){{$CorporationNum}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="プロジェクト№">
                         </div>
                         <div class="relative w-full mt-2 md:ml-2 md:mt-0">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -37,7 +33,7 @@
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                 </svg>
                             </div>
-                            <input type="search" id="corporation_name" name="corporation_name" value="@if (isset($CorporationName)){{$CorporationName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="法人名称/カナ名称">
+                            <input type="search" id="corporation_name" name="corporation_name" value="@if (isset($CorporationName)){{$CorporationName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="プロジェクト名称">
                         </div>
 
                         {{-- <div class="relative w-full mt-2 md:ml-2 md:mt-0">
@@ -156,7 +152,7 @@
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center w-auto">
-                            @sortablelink('corporation_num','プロジェクト№')
+                            @sortablelink('project_num','プロジェクト№')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                         </div>
                     </th>
@@ -168,13 +164,13 @@
                     </th>
                     <th scope="col" class="px-1 py-3 w-auto">
                         <div class="flex items-center whitespace-nowrap">
-                            @sortablelink('corporation_kana_name','プロジェクト名称')
+                            @sortablelink('project_name','プロジェクト名称')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg></a>
                         </div>
                     </th>
                     <th scope="col" class="px-1 py-3 w-auto">
                         <div class="flex items-center whitespace-nowrap">
-                            @sortablelink('corporation_kana_name','営業段階')
+                            @sortablelink('sales_stage_id','営業段階')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg></a>
                         </div>
                     </th>
@@ -289,4 +285,10 @@
         {{ $projects->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
         </div> 
     </div>
+
+    <style>
+        .active {
+            text-decoration: underline
+        }
+    </style>
 </x-app-layout>

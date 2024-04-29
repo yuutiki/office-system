@@ -14,6 +14,13 @@ class Project extends Model
 {
     use HasFactory,Sortable;
 
+    //ソート用に使うカラムを指定
+    public $sortable = [
+        'project_num',
+        'project_name',
+        'sales_stage_id',
+    ];
+
     //GlobalObserverに定義されている作成者と更新者を登録するメソッド
     //なお、値を更新せずにupdateをかけても更新者は更新されない。
     protected static function boot()
@@ -94,4 +101,14 @@ class Project extends Model
     {
         return $this->hasMany(Keepfile::class);
     }
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id');
+    }
+
 }

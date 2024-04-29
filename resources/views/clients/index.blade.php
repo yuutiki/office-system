@@ -253,10 +253,10 @@
                         <td class="px-1 py-1 whitespace-nowrap">
                             {{$client->client_num}}
                         </td>
-                        <td class="px-1 py-1 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap w-96">
                             {{$client->client_name}}
                         </td>
-                        <td class="px-1 py-1 whitespace-nowrap">
+                        <td class="px-1 py-1 whitespace-nowrap w-96">
                             {{$client->Corporation->corporation_name}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
@@ -512,6 +512,11 @@
 
     .custom-select li:hover {
         background-color: blue;
+    }
+</style>
+<style>
+    .active {
+        text-decoration: underline
     }
 </style>
 </x-app-layout>
