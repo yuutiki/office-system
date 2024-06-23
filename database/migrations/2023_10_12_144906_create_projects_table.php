@@ -34,8 +34,8 @@ return new class extends Migration
                         
             $table->text('project_memo')->nullable(true)->comment('プロジェクト備考');
 
-            $table->foreignId('account_company_id')->comment('計上会社ID'); 
-            $table->foreignId('account_department_id')->comment('計上事業部ID'); 
+            $table->foreignId('account_affiliation1_id')->comment('計上会社ID'); 
+            $table->foreignId('account_affiliation2_id')->comment('計上事業部ID'); 
             $table->foreignId('account_affiliation3_id')->comment('計上所属階層3ID'); 
             $table->foreignId('account_user_id')->comment('計上担当者');
 

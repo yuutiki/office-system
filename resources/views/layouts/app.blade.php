@@ -72,7 +72,7 @@
 
             <!-- Page Heading -->
             @if (isset($header))
-                <header class="bg-gray-100 dark:bg-gray-800 shadow-md mt-12">
+                <header class="fixed top-12 left-0 right-0 z-10 bg-gray-100 dark:bg-gray-800 shadow-md">
                     <div class="md:ml-9 py-3 px-4">
                         {{ $header }}
                     </div>
@@ -80,7 +80,7 @@
             @endif
             
             <!-- Page Content -->
-            <main class="h-auto">
+            <main class="h-auto mt-28">
                 {{ $slot }}
             </main>
 

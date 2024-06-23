@@ -19,9 +19,9 @@
             {{-- <x-input-error :messages="$errors->updatePassword->get('affiliation1')" class="mt-2" /> --}}
         </div>
         <div>
-            <x-input-label for="department" :value="__('所属2')" />
-            <x-text-input id="department" name="department" type="text" class="mt-1 block w-full" :value="old('department', $user->department->department_name)" disabled/>
-            {{-- <x-input-error :messages="$errors->updatePassword->get('department')" class="mt-2" /> --}}
+            <x-input-label for="affiliation2" :value="__('所属2')" />
+            <x-text-input id="affiliation2" name="affiliation2" type="text" class="mt-1 block w-full" :value="old('affiliation2', $user->affiliation2->affiliation2_name)" disabled/>
+            {{-- <x-input-error :messages="$errors->updatePassword->get('affiliation2')" class="mt-2" /> --}}
         </div>
         <div>
             <x-input-label for="affiliation3" :value="__('所属3')" />

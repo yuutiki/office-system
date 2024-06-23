@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;//add
 use Illuminate\Support\Str;
 use App\Observers\GlobalObserver;
-
-
+use Illuminate\Support\Facades\Log;
 
 class Project extends Model
 {
@@ -60,6 +59,91 @@ class Project extends Model
     }
 
 
+
+    
+    // 検索ロジック
+    public function scopeFilter($query, $filters)
+    {
+        if (isset($filters['project_num'])) {
+            $query->where('project_num', 'like', '%' . $filters['project_num'] . '%');
+        }
+
+        if (isset($filters['project_name'])) {
+            $query->where('project_name', 'like', '%' . $filters['project_name'] . '%');
+        }
+
+        if (isset($filters['client_name'])) {
+            $spaceConversion = mb_convert_kana($filters['client_name'], 's');
+            $query->where(function($query) use ($spaceConversion) {
+                $query->orWhere('client_name', 'like', '%' . $spaceConversion . '%')
+                      ->orWhere('client_kana_name', 'like', '%' . $spaceConversion . '%')
+                      ->orWhere('client_short_name', 'like', '%' . $spaceConversion . '%');
+            });
+        }
+
+        if (isset($filters['invoice_num'])) {
+            $query->where('invoice_num', 'like', '%' . $filters['invoice_num'] . '%');
+        }
+
+        if (isset($filters['sales_stage_ids'])) {
+            $query->whereIn('sales_stage_id', $filters['sales_stage_ids']);
+        }
+
+        if (isset($filters['project_type_ids'])) {
+            $query->whereIn('project_type_id', $filters['project_type_ids']);
+        }
+
+        if (isset($filters['accounting_type_ids'])) {
+            $query->whereIn('accounting_type_id', $filters['accounting_type_ids']);
+        }
+
+        if (isset($filters['accounting_period'])) {
+            $accountingPeriod = AccountingPeriod::find($filters['accounting_period']);
+    
+            if ($accountingPeriod) {
+                $query->whereHas('projectRevenues', function($q) use ($accountingPeriod) {
+                    $q->whereBetween('revenue_year_month', [$accountingPeriod->period_start_at, $accountingPeriod->period_end_at]);
+                });
+            }
+        }
+    
+    }
+
+    // 関連する会計期間内の売上合計を取得する
+    public function getTotalPeriodRevenueAttribute()
+    {
+        // デバッグ用：関連付けられた会計期間の開始日と終了日をログに出力する
+        Log::debug('関連付けられた会計期間の開始日: ' . $this->accountingPeriodStart);
+        Log::debug('関連付けられた会計期間の終了日: ' . $this->accountingPeriodEnd);
+
+        // 関連付けられた会計期間が存在しない場合は、0を返す
+        if (is_null($this->accountingPeriodStart) || is_null($this->accountingPeriodEnd)) {
+            return 0;
+        }
+
+        // 関連する会計期間内の売上合計を取得する
+        return $this->projectRevenues()
+            ->whereBetween('revenue_year_month', [$this->accountingPeriodStart, $this->accountingPeriodEnd])
+            ->sum('revenue');
+    }
+
+    // accounting_periodの開始日と終了日をセットするメソッド
+    public function setAccountingPeriodDates($accountingPeriodStart, $accountingPeriodEnd)
+    {
+        $this->accountingPeriodStart = $accountingPeriodStart;
+        $this->accountingPeriodEnd = $accountingPeriodEnd;
+    }
+
+    public function getTotalAllRevenueAttribute()
+    {
+        $totalRevenue = $this->projectRevenues()->sum('revenue');
+
+        return $totalRevenue;
+    }
+
+
+
+    // リレーション
     public function client()
     {
         return $this->belongsTo(Client::class);
@@ -96,7 +180,6 @@ class Project extends Model
     {
         return $this->belongsTo(Corporation::class, 'billing_corporation_id');
     }
-
     public function keepfiles()
     {
         return $this->hasMany(Keepfile::class);
@@ -105,10 +188,8 @@ class Project extends Model
     {
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
-
     public function updatedBy()
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');
     }
-
 }

@@ -47,6 +47,28 @@
                                 </tr>
                                 <tr class="border-b dark:border-gray-700">
                                     <th class="pl-4 border-r dark:border-gray-700 dark:bg-gray-800 w-44">
+                                        処理種別
+                                    </th>
+                                    <th class="dark:bg-gray-700 border-b dark:border-gray-600">
+                                        <div class="flex px-8 py-1.5">
+                                            <div class="flex items-center me-4">
+                                                <input id="inline-3-radio" type="radio" value="parent" name="upload_option" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-300 dark:border-gray-600"  {{ old('upload_option') == 'new' ? 'checked' : '' }}>
+                                                <label for="inline-3-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 whitespace-nowrap">法人情報のみ</label>
+                                            </div>
+                                            <div class="flex items-center me-4">
+                                                <input id="inline-4-radio" type="radio" value="child" name="upload_option" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-300 dark:border-gray-600"  {{ old('upload_option') == 'update' ? 'checked' : '' }}>
+                                                <label for="inline-4-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 whitespace-nowrap">与信情報含む</label>
+                                            </div>
+                                            <div class="md:w-auto md:ml-14">
+                                                @error('upload_option')
+                                                    <div class="text-red-500">{{$message}}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </th>
+                                </tr>
+                                <tr class="border-b dark:border-gray-700">
+                                    <th class="pl-4 border-r dark:border-gray-700 dark:bg-gray-800 w-44">
                                         ヘッダー
                                     </th>
                                     <th class="dark:bg-gray-700 border-b dark:border-gray-600">
@@ -139,6 +161,11 @@
                 </form>
             </div>
             <div class="flex justify-end p-3 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                <button type="submit" form="csv_form1" id="format-download-button"  class=" text-white focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded text-sm px-5 py-2.5 text-center bg-gray-700 hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
+                    <div class="whitespace-nowrap">
+                        雛形ダウンロード
+                    </div>
+                </button>
                 <button type="submit" form="csv_form1" id="upload-button"  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     アップロード
                 </button>
@@ -154,19 +181,19 @@
         </div>
         <div class=" h-40 w-full rounded mt-4 overflow-y-scroll bg-gray-700">
 
-            {{-- @if($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif --}}
-            @if(session()->has('error1') && is_array(session('error1')))
+            {{-- @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif --}}
+            @if(session()->has('validatedErrors') && is_array(session('validatedErrors')))
                 <div class="w-auto mx-2 p-1">
                     <ul>
-                        @foreach (session('error1') as $error)
+                        @foreach (session('validatedErrors') as $error)
                             <li class="text-red-500 p-0.5 border-b border-gray-500">{{ $error }}</li>
                         @endforeach
                     </ul>
@@ -195,13 +222,13 @@
                                 {{-- 列数が合わない場合は、データに「""」に囲まれていない「,」カンマが含まれている可能性があります。 --}}
                             </p>
                         </div>
-                        <div class=" my-auto mr-4">
+                        {{-- <div class=" my-auto mr-4">
                             <button type="submit" form="csv_form1" id="upload-button"  class=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                 <div class="whitespace-nowrap">
                                     雛形ダウンロード
                                 </div>
                             </button>
-                        </div>
+                        </div> --}}
                     </div>
                     <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                         <tr>

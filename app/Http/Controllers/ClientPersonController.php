@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CsvUploadRequest;
+use App\Models\Affiliation2;
 use App\Models\Client;
 use App\Models\ClientPerson;
-use App\Models\Department;
 use App\Models\Prefecture;
 use Illuminate\Http\Request;
 use Goodby\CSV\Import\Standard\Lexer;
@@ -29,8 +29,8 @@ class ClientPersonController extends Controller
     public function create()
     {
         $prefectures = Prefecture::all();
-        $departments = Department::all();
-        return view('client-person.create', compact('prefectures', 'departments'));
+        $affiliation2s = Affiliation2::all();
+        return view('client-person.create', compact('prefectures', 'affiliation2s'));
     }
 
     public function store(Request $request)
@@ -94,8 +94,8 @@ class ClientPersonController extends Controller
     public function edit(ClientPerson $clientPerson)
     {
         $prefectures = Prefecture::all();
-        $departments = Department::all();
-        return view('client-person.edit', compact('prefectures', 'departments', 'clientPerson'));
+        $affiliation2s = Department::all();
+        return view('client-person.edit', compact('prefectures', 'affiliation2s', 'clientPerson'));
     }
 
     public function update(Request $request, ClientPerson $clientPerson)

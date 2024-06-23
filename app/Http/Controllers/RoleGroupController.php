@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Affiliation1;
+use App\Models\Affiliation2;
 use App\Models\Affiliation3;
-use App\Models\Department;
 use App\Models\FunctionMenu;
 use App\Models\Permission;
 use App\Models\RoleGroup;
@@ -84,7 +84,7 @@ class RoleGroupController extends Controller
 
         // ユーザ検索条件を渡す
         $affiliation1s = Affiliation1::all();
-        $departments = Department::all();
+        $affiliation2s = Affiliation2::all();
         $affiliation3s = Affiliation3::all();
 
 
@@ -110,7 +110,7 @@ class RoleGroupController extends Controller
         $activeTab = $request->query('tab', 'tab1'); // クエリパラメータからタブを取得
 
 
-        return view('admin.role-groups.edit', compact('roleGroup', 'users', 'affiliation1s', 'departments', 'affiliation3s','functionMenus','permissions','activeTab',));
+        return view('admin.role-groups.edit', compact('roleGroup', 'users', 'affiliation1s', 'affiliation2s', 'affiliation3s','functionMenus','permissions','activeTab',));
     }
 
     /**

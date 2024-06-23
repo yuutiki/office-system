@@ -59,7 +59,7 @@
             </div>
 
             <div class="text-xs flex justify-end items-center">
-                <p>{{ $report->reporter->name }} • {{ $report->created_at->diffForHumans() }}</p>
+                <p>{{ $report->reporter->user_name }} • {{ $report->created_at->diffForHumans() }}</p>
             </div>
         </div>
     </div>

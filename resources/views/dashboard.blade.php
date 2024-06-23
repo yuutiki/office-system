@@ -223,7 +223,7 @@
                   </div>
                 </div>
 
-                <div class="p-4 flex-auto">
+                <div class=" flex-auto">
                   <!-- Chart -->
                     <div id="main" class="w-auto h-[350px]" ></div>
                 </div>

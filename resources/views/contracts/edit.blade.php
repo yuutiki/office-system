@@ -34,7 +34,7 @@
                 </div>
                 <div class="">
                     <label class="block text-sm dark:text-gray-100 text-gray-900 leading-none sm:mt-2">管轄所属</label>
-                    <input type="text" name="user_name" value="{{ $client->department->department_name }}" class="input-readonly" readonly>
+                    <input type="text" name="user_name" value="{{ $client->affiliation2->affiliation2_name }}" class="input-readonly" readonly>
                 </div>
                 <div class="">
                     <label class="block text-sm dark:text-gray-100 text-gray-900 leading-none sm:mt-2">営業担当</label>
@@ -154,10 +154,10 @@
                                                 事業部
                                             </h6>
                                             <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-                                                @foreach ($departments as $department)
+                                                @foreach ($affiliation2s as $affiliation2)
                                                 <li class="flex items-center">
-                                                    <input id="{{ $department->id }}" type="checkbox" value=""class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                    <label for="{{ $department->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $department->department_name }}</label>
+                                                    <input id="{{ $affiliation2->id }}" type="checkbox" value=""class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                                    <label for="{{ $affiliation2->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $affiliation2->affiliation2_name }}</label>
                                                 </li>                       
                                                 @endforeach
                                             </ul>

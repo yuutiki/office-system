@@ -51,14 +51,14 @@
                         @enderror
                     </div>
                     <div class="w-full flex flex-col">
-                        <label for="department_id" class="text-sm text-gray-900 dark:text-white leading-none">管轄事業部<span class="text-red-500"> *</span></label>
-                        <select id="department_id" name="department_id" class="input-primary">
+                        <label for="affiliation2_id" class="text-sm text-gray-900 dark:text-white leading-none">管轄事業部<span class="text-red-500"> *</span></label>
+                        <select id="affiliation2_id" name="affiliation2_id" class="input-primary">
                             <option selected value="">未選択</option>
-                            @foreach($departments as $department)
-                            <option value="{{ $department->id }}">{{ $department->prefix_code }}：{{ $department->department_name }}</option>
+                            @foreach($affiliation2s as $affiliation2)
+                            <option value="{{ $affiliation2->id }}">{{ $affiliation2->affiliation2_prefix }}：{{ $affiliation2->affiliation2_name }}</option>
                             @endforeach
                         </select>
-                        @error('department_id')
+                        @error('affiliation2_id')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>

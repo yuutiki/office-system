@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('corporation_id')->comment('法人ID'); //add ClientCorporationsテーブル参照
 
 
-            $table->foreignId('department_id')->comment('管轄事業部ID');//Departmentテーブル参照
+            $table->foreignId('affiliation2_id')->comment('管轄事業部ID');// Affiliation2テーブル参照
             // $table->foreignId('user_id')->nullable(true)->comment('営業担当ID');//add Usersテーブル参照
             // $table->foreignId('installation_type_id')->nullable(true)->comment('設置種別ID');//add Installation_typesテーブル参照
             $table->foreignId('vendor_type_id')->nullable(true)->comment('業者種別ID');//add Client_typesテーブル参照

@@ -42,7 +42,7 @@
                 </div>
                 <div class="">
                     <label for="client_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">管轄所属</label>
-                    <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" value="{{ $support->client->department->department_name }}" readonly disabled>
+                    <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" value="{{ $support->client->affiliation2->affiliation2_name }}" readonly disabled>
                 </div>
                 <div class="">
                     <label for="client_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">営業担当</label>
@@ -54,8 +54,8 @@
 
             
                 <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
-                    <div class="whitespace-nowrap">
-                        <div class="text-xl text-white">{{ $support->client->client_num }}</div>
+                    <div class="whitespace-nowrap md:mt-3">
+                        <div class="text-xs text-white">{{ $support->client->client_num }}</div>
                         <div class="text-white">{{ $support->client->client_name }}</div>
                     </div>
                     <div class="flex md:mt-3">
@@ -70,7 +70,7 @@
                     </div>
                     <div class="whitespace-nowrap md:mt-3">
                         <div class="text-xs text-gray-300">管轄事業部</div>
-                        <div class="text-white">{{ $support->client->department->department_name }}</div>
+                        <div class="text-white">{{ $support->client->affiliation2->affiliation2_name }}</div>
                     </div>
                     <div class="whitespace-nowrap md:mt-3">
                         <div class="text-xs text-gray-300">営業担当</div>
@@ -429,11 +429,11 @@
                             <input type="text" name="clientNumber" id="clientNumber" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded">
                         </div>
                         <div class="w-full flex flex-col mx-2">
-                            <label for="departmentCode" class=" dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
-                            <select id="departmentCode" name="departmentCode" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <label for="affiliation2Code" class=" dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
+                            <select id="affiliation2Code" name="affiliation2Code" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
-                                @foreach($departments as $department)
-                                <option value="{{ $department->prefix_code }}">{{ $department->department_name }}</option>
+                                @foreach($affiliation2s as $affiliation2)
+                                <option value="{{ $affiliation2->prefix_code }}">{{ $affiliation2->affiliation2_name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -496,7 +496,7 @@
         function searchCorporation() {
             const clientName = document.getElementById('clientName').value;
             const clientNumber = document.getElementById('clientNumber').value;
-            const departmentCode = document.getElementById('departmentCode').value;
+            const affiliation2Code = document.getElementById('affiliation2Code').value;
 
             fetch('/client/search', {
                 method: 'POST',
@@ -504,7 +504,7 @@
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
-                body: JSON.stringify({ clientName, clientNumber, departmentCode })
+                body: JSON.stringify({ clientName, clientNumber, affiliation2Code })
             })
             .then(response => response.json())
             .then(data => {
@@ -515,20 +515,20 @@
                 const resultElement = document.createElement('tr');
                 resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
                 resultElement.innerHTML = `
-                    <td class="py-2 pl-5 cursor-pointer" onclick="setClient('${result.client_name}', '${result.client_num}', '${result.installation_type_id}', '${result.department_id}', '${result.client_type_id}', '${result.user_id}')">${result.client_name}</td>
+                    <td class="py-2 pl-5 cursor-pointer" onclick="setClient('${result.client_name}', '${result.client_num}', '${result.installation_type_id}', '${result.affiliation2_id}', '${result.client_type_id}', '${result.user_id}')">${result.client_name}</td>
                     <td class="py-2 ml-2">${result.client_num}</td>
-                    <td class="py-2 ml-2">${result.department_name}</td>
+                    <td class="py-2 ml-2">${result.affiliation2_name}</td>
                 `;
                 searchResultsContainer.appendChild(resultElement);
                 });
             });
             }
 
-            function setClient(name, number, installation, department, clienttype, user) {
+            function setClient(name, number, installation, affiliation2, clienttype, user) {
             document.getElementById('client_num').value = number;
             document.getElementById('client_name').value = name;
             document.getElementById('installation_type_id').value = installation;
-            document.getElementById('department').value = department;
+            document.getElementById('affiliation2').value = affiliation2;
             document.getElementById('client_type_id').value = clienttype;
             document.getElementById('user_id').value = user;
 

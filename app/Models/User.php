@@ -33,8 +33,7 @@ class User extends Authenticatable
         'int_phone',
         'ext_phone',
         'affiliation1_id',
-        // 'affiliation2_id',
-        'department_id',
+        'affiliation2_id',
         'affiliation3_id',
         'profile_image',
 
@@ -146,9 +145,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Affiliation1::class);
     }
-    public function department()
+    public function affiliation2()
     {
-        return $this->belongsTo(Department::class);
+        return $this->belongsTo(Affiliation2::class);
     }
     public function affiliation3()
     {

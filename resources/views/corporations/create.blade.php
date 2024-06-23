@@ -4,8 +4,17 @@
             <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
                 {{ Breadcrumbs::render('createCorporation', $searchParams) }}
             </h2>
-            <div class="flex justify-end">
-                <x-message :message="session('message')"/>
+            <div class="flex justify-end items-center space-x-2">
+                <x-message :message="session('message')" />
+
+                <form method="post" action="{{ route('corporations.store') }}" enctype="multipart/form-data" id="corporationForm" class="flex items-center">
+                    @csrf
+                    @can('storeUpdate_corporations')
+                        <x-button-save form-id="corporationForm" id="saveButton" onkeydown="stopTab(event)">
+                            <span class="ml-1 hidden md:inline text-sm">保存</span>
+                        </x-button-save>
+                    @endcan
+                </form>
             </div>
         </div>
     </x-slot>
@@ -53,7 +62,6 @@
             </div>
 
             <div class="grid gap-4 sm:grid-cols-2 mt-6">
-
                 <div>
                     <div class="flex">
                         <div class="w-full flex flex-col">
@@ -84,16 +92,16 @@
             </div>
 
             <div class="grid gap-4 mb-4 sm:grid-cols-5 mt-4">
-                <div class="w-full flex flex-col">
-                    <label for="corporation_post_code" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-1" autocomplete="new-password">郵便番号</label>
-                    <div class="relative w-full">
+                <div class="flex">
+                    <div class="w-full flex flex-col">
+                        <label for="corporation_post_code" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-1" autocomplete="new-password">郵便番号</label>
                         <input type="text" form="corporationForm" name="corporation_post_code" class="input-primary" id="corporation_post_code" value="{{old('corporation_post_code')}}" placeholder="">
-                        <button type="button" id="ajaxzip3" data-form="corporationForm" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-[34px] text-white mt-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 zip2addr-trigger">
-                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                            </svg>
-                        </button>
                     </div>
+                    <button type="button" id="ajaxzip3" data-form="corporationForm" class="p-2.5 text-sm font-medium h-[35px] text-white mt-[21px] ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 zip2addr-trigger">
+                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
+                    </button>
                 </div>
 
                 <div class="w-full flex flex-col">
@@ -131,9 +139,9 @@
                     </button>
                     <div id="tooltip-right" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-1.5 text-sm font-medium text-white bg-gray-900 rounded-xl shadow-sm opacity-0 tooltip dark:bg-gray-600">
                         <span class="text-xs">
-                            取引停止中は検索時に
+                            取引停止中は検索結果に
                             <br>
-                            非表示になります。
+                            表示されなくなります。
                         </span>
                         <div class="tooltip-arrow" data-popper-arrow></div>
                     </div>
@@ -149,13 +157,6 @@
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
             </div>
-            
-            <form id="corporationForm" method="post" action="{{route('corporations.store')}}" enctype="multipart/form-data">
-                @csrf
-                <x-primary-button class="mt-4" form-id="corporationForm" id="saveButton" onkeydown="stopTab(event)">
-                    保存(S)
-                </x-primary-button>
-            </form>
         </div>
 
         {{-- 与信情報タブ --}}
@@ -175,67 +176,67 @@
                 </div>
             </div>
 
-<!-- タブ -->
-<ul id="tabList">
-    <li><a href="#tab1" data-tab="tab1">Tab 1</a></li>
-    <li><a href="#tab2" data-tab="tab2">Tab 2</a></li>
-    <li><a href="#tab3" data-tab="tab3">Tab 3</a></li>
-</ul>
+    <!-- タブ -->
+    <ul id="tabList">
+        <li><a href="#tab1" data-tab="tab1">Tab 1</a></li>
+        <li><a href="#tab2" data-tab="tab2">Tab 2</a></li>
+        <li><a href="#tab3" data-tab="tab3">Tab 3</a></li>
+    </ul>
 
-<!-- タブコンテンツ -->
-<div id="tabContent">
-    <div class="tab-content hidden" id="tab1">Tab 1 content</div>
-    <div class="tab-content hidden" id="tab2">Tab 2 content</div>
-    <div class="tab-content hidden" id="tab3">Tab 3 content</div>
-</div>
+    <!-- タブコンテンツ -->
+    <div id="tabContent">
+        <div class="tab-content hidden" id="tab1">Tab 1 content</div>
+        <div class="tab-content hidden" id="tab2">Tab 2 content</div>
+        <div class="tab-content hidden" id="tab3">Tab 3 content</div>
+    </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    var tabs = document.querySelectorAll('[data-tab]');
-    var tabContents = document.querySelectorAll('.tab-content');
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var tabs = document.querySelectorAll('[data-tab]');
+        var tabContents = document.querySelectorAll('.tab-content');
 
-    // URLのクエリパラメータを解析して、初期状態のタブを設定
-    var urlParams = new URLSearchParams(window.location.search);
-    var activeTab = urlParams.get('tab');
-    if (activeTab) {
-        var tabContent = document.getElementById(activeTab);
-        if (tabContent) {
-            tabContent.classList.remove('hidden');
-        }
-    }
-
-    // タブがクリックされたときの処理
-    tabs.forEach(function(tab) {
-        tab.addEventListener('click', function(event) {
-            event.preventDefault();
-            var tabId = this.getAttribute('data-tab');
-            showTab(tabId);
-            // URLを更新して状態を反映
-            var state = { tab: tabId };
-            history.pushState(state, '', '?tab=' + tabId);
-        });
-    });
-
-    // ブラウザの戻るボタンで状態を更新する処理
-    window.onpopstate = function(event) {
-        var tabId = event.state ? event.state.tab : null;
-        if (tabId) {
-            showTab(tabId);
-        }
-    };
-
-    // タブを表示する関数
-    function showTab(tabId) {
-        tabContents.forEach(function(tabContent) {
-            if (tabContent.id === tabId) {
+        // URLのクエリパラメータを解析して、初期状態のタブを設定
+        var urlParams = new URLSearchParams(window.location.search);
+        var activeTab = urlParams.get('tab');
+        if (activeTab) {
+            var tabContent = document.getElementById(activeTab);
+            if (tabContent) {
                 tabContent.classList.remove('hidden');
-            } else {
-                tabContent.classList.add('hidden');
             }
+        }
+
+        // タブがクリックされたときの処理
+        tabs.forEach(function(tab) {
+            tab.addEventListener('click', function(event) {
+                event.preventDefault();
+                var tabId = this.getAttribute('data-tab');
+                showTab(tabId);
+                // URLを更新して状態を反映
+                var state = { tab: tabId };
+                history.pushState(state, '', '?tab=' + tabId);
+            });
         });
-    }
-});
-</script>
+
+        // ブラウザの戻るボタンで状態を更新する処理
+        window.onpopstate = function(event) {
+            var tabId = event.state ? event.state.tab : null;
+            if (tabId) {
+                showTab(tabId);
+            }
+        };
+
+        // タブを表示する関数
+        function showTab(tabId) {
+            tabContents.forEach(function(tabContent) {
+                if (tabContent.id === tabId) {
+                    tabContent.classList.remove('hidden');
+                } else {
+                    tabContent.classList.add('hidden');
+                }
+            });
+        }
+    });
+    </script>
         </div>
     </div>
 
@@ -256,18 +257,17 @@ document.addEventListener("DOMContentLoaded", function() {
         } else {
             // チェックされていない場合、取引停止理由の入力フィールドを無効化
             stopTradingReasonField.disabled = true;
-        stopTradingReasonField.style.backgroundColor = 'rgba(107, 114, 128, 1)'; 
-
+            stopTradingReasonField.style.backgroundColor = 'rgba(107, 114, 128, 1)'; 
         }
         });
 
         // ページ読み込み時に、チェックボックスの状態に基づいて入力フィールドを有効/無効化
         if (isStopTradingCheckbox.checked) {
-        stopTradingReasonField.disabled = false;
-        stopTradingReasonField.style.backgroundColor = ''; 
+            stopTradingReasonField.disabled = false;
+            stopTradingReasonField.style.backgroundColor = ''; 
         } else {
-        stopTradingReasonField.disabled = true;
-        stopTradingReasonField.style.backgroundColor = 'rgba(107, 114, 128, 1)'; 
+            stopTradingReasonField.disabled = true;
+            stopTradingReasonField.style.backgroundColor = 'rgba(107, 114, 128, 1)'; 
 
         }
     </script>

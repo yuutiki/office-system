@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('display_name')->comment('表示名');
             $table->unsignedInteger('display_order')->comment('表示順');
             $table->string('url')->comment('URL');
-            $table->foreignId('department_id')->comment('事業部ID');
+            $table->foreignId('affiliation2_id')->comment('事業部ID');
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->datetimes();

@@ -25,10 +25,10 @@
                                 <option value="{{$series->id}}">{{$series->series_code}}：{{$series->series_name}}</option>
                             @endforeach
                         </select>
-                        <select  name="department" value="0" class="mt-2 w-auto ml-2 py-1.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <select  name="affiliation2" value="0" class="mt-2 w-auto ml-2 py-1.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">管轄事業部</option>
-                            @foreach($departments as $department)
-                                <option value="{{$department->id}}">{{$department->prefix_code}}：{{$department->department_name}}</option>
+                            @foreach($affiliation2s as $affiliation2)
+                                <option value="{{$affiliation2->id}}">{{$affiliation2->prefix_code}}：{{$affiliation2->affiliation2_name}}</option>
                             @endforeach
                         </select>
                         <select  name="f_is_stop_selling" class="mt-2 w-auto ml-2 py-1.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -121,11 +121,11 @@
                             </select>
                         </div>
                         <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-                            <select name="department" id="department" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <select name="affiliation2" id="affiliation2" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option value="">管轄事業部</option>
-                                @foreach ($departments as $department)
-                                <option value="{{ $department->id }}" @if (isset($departmentId) && $departmentId == $department->id) selected @endif>
-                                    {{$department->prefix_code}}：{{$department->department_name}}
+                                @foreach ($affiliation2s as $affiliation2)
+                                <option value="{{ $affiliation2->id }}" @if (isset($affiliation2Id) && $affiliation2Id == $affiliation2->id) selected @endif>
+                                    {{$affiliation2->affiliation2_prefix}}：{{$affiliation2->affiliation2_name}}
                                 </option>
                                 @endforeach
                             </select>
@@ -359,7 +359,7 @@
                             </div>
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$product->department->department_name}}
+                            {{$product->affiliation2->affiliation2_name}}
                         </td>
                         {{-- <td class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <div class="text-center">
@@ -454,8 +454,8 @@
                                 </div>
 
                                 <div class="relative z-0">
-                                    <input type="text" id="department_id" name="department_id" value="{{ $product->->department->department_name }}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
-                                    <label for="department_id" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">管轄事業部</label>
+                                    <input type="text" id="affiliation2_id" name="affiliation2_id" value="{{ $product->->affiliation2->affiliation2_name }}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
+                                    <label for="affiliation2_id" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">管轄事業部</label>
                                 </div>
                             </div>
 

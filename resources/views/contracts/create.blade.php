@@ -44,14 +44,14 @@
                 @enderror
             </div>
             <div>
-                <label for="department_id" class="block text-sm  text-gray-900 dark:text-white leading-none md:mt-2">管轄事業部</label>
-                <select id="department_id" name="department_id" class="input-readonly" readonly>
+                <label for="affiliation2_id" class="block text-sm  text-gray-900 dark:text-white leading-none md:mt-2">管轄事業部</label>
+                <select id="affiliation2_id" name="affiliation2_id" class="input-readonly" readonly>
                     <option value="">未選択</option>
-                    @foreach($departments as $department)
-                    <option value="{{ $department->id }}" @selected($department->id == old('department_id'))>{{ $department->department_name }}</option>
+                    @foreach($affiliation2s as $affiliation2)
+                    <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == old('affiliation2_id'))>{{ $affiliation2->affiliation2_name }}</option>
                     @endforeach
                 </select>
-                @error('department_id')
+                @error('affiliation2_id')
                     <div class="text-red-500">{{ $message }}</div>
                 @enderror
             </div>
@@ -108,12 +108,12 @@
                                 <input type="text" name="clientNumber" id="clientNumber" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded">
                             </div>
                             <div class="w-full flex flex-col mx-2">
-                                <label for="departmentId" class="text-sm  dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
-                                <select id="departmentId" name="departmentId" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <label for="affiliation2Id" class="text-sm  dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
+                                <select id="affiliation2Id" name="affiliation2Id" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option selected value="">未選択</option>
-                                    @foreach($departments as $department)
-                                    <option value="{{ $department->id }}" @selected($department->id == Auth::user()->department->id)>
-                                        {{ $department->department_name }}
+                                    @foreach($affiliation2s as $affiliation2)
+                                    <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == Auth::user()->affiliation2->id)>
+                                        {{ $affiliation2->affiliation2_name }}
                                     </option>
                                     @endforeach
                                 </select>
@@ -179,7 +179,7 @@
         function searchClient() {
             const clientName = document.getElementById('clientName').value;
             const clientNumber = document.getElementById('clientNumber').value;
-            const departmentId = document.getElementById('departmentId').value;
+            const affiliation2Id = document.getElementById('affiliation2Id').value;
 
             fetch('/client/search', {
                 method: 'POST',
@@ -187,7 +187,7 @@
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
-                body: JSON.stringify({ clientName, clientNumber, departmentId })
+                body: JSON.stringify({ clientName, clientNumber, affiliation2Id })
             })
             .then(response => response.json())
             .then(data => {
@@ -198,20 +198,20 @@
                 const resultElement = document.createElement('tr');
                 resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
                 resultElement.innerHTML = `
-                    <td class="py-2 pl-5 cursor-pointer" onclick="setClient('${result.corporation.corporation_name}', '${result.id}', '${result.client_name}', '${result.department_id}')">${result.client_name}</td>
+                    <td class="py-2 pl-5 cursor-pointer" onclick="setClient('${result.corporation.corporation_name}', '${result.id}', '${result.client_name}', '${result.affiliation2_id}')">${result.client_name}</td>
                     <td class="py-2 ml-2">${result.client_num}</td>
-                    <td class="py-2 ml-2">${result.department.department_name}</td>
+                    <td class="py-2 ml-2">${result.affiliation2.affiliation2_name}</td>
                 `;
                 searchResultsContainer.appendChild(resultElement);
                 });
             });
             }
 
-            function setClient(corporationName, clientId, clientname, department) {
+            function setClient(corporationName, clientId, clientname, affiliation2) {
             document.getElementById('corporation_name').value = corporationName;
             document.getElementById('client_id').value = clientId;
             document.getElementById('client_name').value = clientname;
-            document.getElementById('department_id').value = department;
+            document.getElementById('affiliation2_id').value = affiliation2;
             // document.getElementById('installation_type_id').value = installation;
             // document.getElementById('client_type_id').value = clienttype;
             // document.getElementById('user_id').value = user;

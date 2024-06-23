@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('product_code',13)->comment('製品コード');
             $table->foreignId('product_maker_id')->comment('メーカーID'); //add
-            $table->foreignId('department_id')->comment('事業部ID');
+            $table->foreignId('affiliation2_id')->comment('事業部ID');
             $table->foreignId('product_type_id')->comment('製品種別ID');
             $table->foreignId('product_split_type_id')->comment('製品内訳種別ID');
             $table->foreignId('product_series_id')->comment('製品シリーズID');

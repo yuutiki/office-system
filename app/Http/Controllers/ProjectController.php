@@ -8,7 +8,7 @@ use App\Models\AccountingPeriod;
 use App\Models\AccountingType;
 use App\Models\Affiliation1;
 use App\Models\Client;
-use App\Models\Department;
+use App\Models\Affiliation2;
 use App\Models\DistributionType;
 use App\Models\Affiliation3;
 use App\Models\Prefecture;
@@ -28,41 +28,94 @@ class ProjectController extends Controller
 {
     public function index(Request $request)
     {
-        // 検索条件を取得してセッションに保存
-        Session::put('search_params', $request->all());
-        $searchParams = $request->session()->get('search_params', []);
+        // １ページごとの表示件数
+        $perPage = config('constants.perPage');
 
-        $per_page = 25;
-        $projects = Project::with('salesStage','accountingType','accountUser','projectRevenues',)->sortable()->orderBy('project_num','asc')->paginate($per_page);
-        $count = $projects->count();
-        $users = User::all();
+        // 検索条件とソート条件をセッションに保存
+        $searchParams = $request->all();
+        $request->session()->put('search_params', $searchParams);
+        $request->session()->put('sort_by', $request->input('sort', 'id'));
+        $request->session()->put('sort_direction', $request->input('direction', 'asc'));
 
-        // 初期化
-        $totalAmount = 0;
+        // 検索フォームから検索条件を取得し変数に格納(後でModelの抽出クエリにわたす)
+        $filters = $request->only(['project_num', 'project_name', 'client_name', 'accounting_period', 'sales_stage_ids', 'project_type_ids', 'accounting_type_ids']);
 
-        foreach ($projects as $project) {
-            $project->totalAmount = 0;
-    
-            foreach ($project->projectRevenues as $revenue) {
-                // 各収益を加算
-                $project->totalAmount += $revenue->revenue;
+        // 同じ検索条件を別の変数にも格納(検索画面の入力欄にセットするために利用する)
+        $projectNum = $filters['project_num'] ?? null;
+        $projectName = $filters['project_name'] ?? null;
+        $clientName = $filters['client_name'] ?? null;
+        $selectedAccountingPeriod = $filters['accounting_period'] ?? null;
+        $salesStageIds = $filters['$sales_stage_ids'] ?? [];
+
+        
+        //上記で$filters変数に格納した検索条件をModelに渡し、検索処理を行う。結果を$corporationsに詰める
+        $projectsQuery = Project::filter($filters) 
+            ->with('salesStage', 'accountingType', 'accountUser', 'projectRevenues',)
+            ->sortable()
+            ->orderBy('project_num','asc');
+
+        // 検索結果の件数を取得
+        $count = $projectsQuery->count();
+
+        // ページネーションの適用
+        $projects = $projectsQuery->paginate($perPage);
+
+
+        // 全プロジェクトを取得して指定期間内の売上合計と全期間の売上合計を計算
+        // $allProjects = Project::filter($filters)->with('projectRevenues')->get();
+        // $totalPeriodRevenue = $allProjects->sum('totalPeriodRevenue');
+        // $totalAllRevenue = $allProjects->sum('totalAllRevenue');
+
+        // 合計金額を計算
+        $totalRevenue = 0;
+        if ($selectedAccountingPeriod) {
+            $accountingPeriod = AccountingPeriod::find($selectedAccountingPeriod);
+            if ($accountingPeriod) {
+                $totalRevenue = ProjectRevenue::whereBetween('revenue_year_month', [$accountingPeriod->period_start_at, $accountingPeriod->period_end_at])
+                    ->whereHas('project', function ($query) use ($filters) {
+                        $query->filter($filters);
+                    })
+                    ->sum('revenue');
             }
-    
-            // 合計金額を全体の合計に加算
-            $totalAmount += $project->totalAmount;
         }
 
+
+        // 全プロジェクトを取得して指定期間内の売上合計と全期間の売上合計を計算
+        $totalPeriodRevenue = 0;
+        $totalAllRevenue = 0;
+        if ($selectedAccountingPeriod) {
+            $accountingPeriod = AccountingPeriod::find($selectedAccountingPeriod);
+            if ($accountingPeriod) {
+                $totalPeriodRevenue = ProjectRevenue::whereBetween('revenue_year_month', [$accountingPeriod->period_start_at, $accountingPeriod->period_end_at])
+                    ->whereHas('project', function ($query) use ($filters) {
+                        $query->filter($filters);
+                    })
+                    ->sum('revenue');
+            }
+        }
+
+        $totalAllRevenue = ProjectRevenue::whereHas('project', function ($query) use ($filters) {
+            $query->filter($filters);
+        })->sum('revenue');
+
+        // 各種データの取得
+        $users = User::all();
         $salesStages = SalesStage::all();
         $projectTypes = ProjectType::all();
+        $accountingTypes = AccountingType::all();
         $distributionTypes = DistributionType::all();
-        $accountingPeriods = AccountingPeriod::all();
-        return view('projects.index',compact('accountingPeriods','salesStages','distributionTypes','count','projects','totalAmount','users','projectTypes'));
+        $accountingPeriods = AccountingPeriod::orderBy('period_start_at', 'desc')->get();
+        $affiliation1s = Affiliation1::all();
+        $affiliation2s = Affiliation2::all();
+        $affiliation3s = Affiliation3::all();
+
+        return view('projects.index',compact( 'projectNum', 'projectName', 'totalRevenue', 'totalAllRevenue', 'accountingPeriods', 'filters','selectedAccountingPeriod','salesStages','distributionTypes','count','projects','users','projectTypes','accountingTypes','affiliation1s', 'affiliation2s', 'affiliation3s',));
     }
 
     public function create()
     {
         $affiliation1s = Affiliation1::all();
-        $departments = Department::all();
+        $affiliation2s = Affiliation2::all();
         $affiliation3s = Affiliation3::all();
         $users = User::all();
         $salesStages = SalesStage::all();
@@ -72,7 +125,7 @@ class ProjectController extends Controller
         $accountingTypes = AccountingType::all();
         $prefectures = Prefecture::all(); //都道府県
 
-        return view('projects.create',compact('accountingPeriods','salesStages','distributionTypes','departments','affiliation1s','affiliation3s','projectTypes','accountingTypes','users','prefectures'));
+        return view('projects.create',compact('accountingPeriods','salesStages','distributionTypes','affiliation2s','affiliation1s','affiliation3s','projectTypes','accountingTypes','users','prefectures'));
     }
 
     public function store(ProjectStoreRequest $request)
@@ -102,8 +155,8 @@ class ProjectController extends Controller
         $project->proposed_accounting_date =  Carbon::parse($request->proposed_accounting_date . '-01');
         $project->proposed_payment_date =  Carbon::parse($request->proposed_payment_date . '-01');
         $project->project_memo = $request->project_memo;
-        $project->account_company_id = $request->account_affiliation1_id;
-        $project->account_department_id = $request->account_department_id;
+        $project->account_affiliation1_id = $request->account_affiliation1_id;
+        $project->account_affiliation2_id = $request->account_affiliation2_id;
         $project->account_affiliation3_id = $request->account_affiliation3_id;
         $project->account_user_id = $request->account_user_id;
         $project->save();
@@ -122,7 +175,7 @@ class ProjectController extends Controller
         $project = Project::find($id);
 
         $companies = Affiliation1::all();
-        $departments = Department::all();
+        $affiliation2s = Affiliation2::all();
         $affiliation3s = Affiliation3::all();
         $users = User::all();
         $salesStages = SalesStage::all();
@@ -166,7 +219,7 @@ class ProjectController extends Controller
                 'formatRevenueDate' => $targetDate->format('Y-m'),
             ];
         }
-        return view('projects.edit',compact('project','projectRevenues','accountingPeriods','salesStages','distributionTypes','departments','companies','affiliation3s','projectTypes','accountingTypes','users','revenuesWithPeriod','totalRevenue','prefectures'));
+        return view('projects.edit',compact('project','projectRevenues','accountingPeriods','salesStages','distributionTypes','affiliation2s','companies','affiliation3s','projectTypes','accountingTypes','users','revenuesWithPeriod','totalRevenue','prefectures'));
     }
 
     public function update(ProjectUpdateRequest $request, Project $project)
@@ -193,8 +246,8 @@ class ProjectController extends Controller
         $project->proposed_payment_date = Carbon::parse($request->proposed_payment_date . '-01');
         $project->project_memo = $request->project_memo;
 
-        $project->account_company_id = $request->account_company_id;
-        $project->account_department_id = $request->account_department_id;
+        $project->account_affiliation1_id = $request->account_affiliation1_id;
+        $project->account_affiliation2_id = $request->account_affiliation2_id;
         $project->account_affiliation3_id = $request->account_affiliation3_id;
         $project->account_user_id = $request->account_user_id;
         $project->save();
@@ -218,12 +271,12 @@ class ProjectController extends Controller
     {
         $projectName = $request->input('projectName');
         $projectNumber = $request->input('projectNumber');
-        // $projectDepartment = $request->input('departmentId');
+        // $projectAffiliation2 = $request->input('affiliation2Id');
 
         $query = Project::query()
         ->where('project_name', 'LIKE', '%' . $projectName . '%')
         ->Where('project_num', 'LIKE', '%' . $projectNumber . '%');
-        // ->Where('department_id', 'LIKE', '%' . $projectDepartment . '%');
+        // ->Where('affiliation2_id', 'LIKE', '%' . $projectAffiliation2 . '%');
         $projects = $query->with('salesStage', 'accountUser', 'client')->get();
 
         return response()->json($projects);
@@ -317,8 +370,8 @@ class ProjectController extends Controller
 
             $project->project_memo = $row[17];
 
-            $project->account_company_id = $row[18];
-            $project->account_department_id = $row[19];
+            $project->account_affiliation1_id = $row[18];
+            $project->account_affiliation2_id = $row[19];
             $project->account_affiliation3_id = $row[20];
             $project->account_user_id = $row[21];
             $project->save();

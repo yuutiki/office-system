@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('affiliation1_name',100)->comment('第一所属階層名称');
             $table->string('affiliation1_kana_name',100)->nullable(true)->comment('第一所属階層カナ名称');
             $table->string('affiliation1_eng_name',100)->nullable(true)->comment('第一所属階層英名称');
+            $table->string('affiliation1_name_short',100)->nullable(true)->comment('第一階層所属略称');
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->datetimes();

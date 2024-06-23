@@ -16,7 +16,7 @@ class Link extends Model
         'display_name',
         'display_order',
         'url',
-        'department_id',
+        'affiliation2_id',
         'created_by',
         'updated_by'
     ];
@@ -34,13 +34,13 @@ class Link extends Model
         'display_name',
         'url',
         'display_order',
-        'department_name',
+        'affiliation2_name',
     ];
 
     //relation
-    public function department()
+    public function affiliation2()
     {
-        return $this->belongsTo(Department::class);
+        return $this->belongsTo(Affiliation2::class);
     }
     public function updatedBy()
     {

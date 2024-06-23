@@ -41,10 +41,10 @@
                                 事業部
                             </h6>
                             <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-                                @foreach ($departments as $department)
+                                @foreach ($affiliation2s as $affiliation2)
                                 <li class="flex items-center">
-                                    <input id="{{ $department->id }}" type="checkbox" value=""class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                    <label for="{{ $department->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $department->department_name }}</label>
+                                    <input id="{{ $affiliation2->id }}" type="checkbox" value=""class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                    <label for="{{ $affiliation2->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $affiliation2->affiliation2_name }}</label>
                                 </li>                       
                                 @endforeach
                             </ul>
@@ -96,10 +96,10 @@
                                 事業部
                             </h6>
                             <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-                                @foreach ($departments as $department)
+                                @foreach ($affiliation2s as $affiliation2)
                                 <li class="flex items-center">
-                                    <input id="{{ $department->id }}" type="checkbox" value=""class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                    <label for="{{ $department->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $department->department_name }}</label>
+                                    <input id="{{ $affiliation2->id }}" type="checkbox" value=""class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                    <label for="{{ $affiliation2->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $affiliation2->affiliation2_name }}</label>
                                 </li>                       
                                 @endforeach
                             </ul>
@@ -136,7 +136,7 @@
                     </th> --}}
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
-                            @sortablelink('department_id','管轄事業部')
+                            @sortablelink('affiliation2_id','管轄事業部')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
                                 <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
                             </svg>
@@ -187,7 +187,7 @@
                             {{ $link->display_name }}
                         </td>
                         <td class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ $link->department->department_name }}
+                            {{ $link->affiliation2->affiliation2_name }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
                             {{ $link->display_order }}
@@ -275,14 +275,14 @@
                                 <div class="text-red-500">{{ $message }}</div>
                             @enderror
                             <div class="w-full flex flex-col">
-                                <label for="department_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">対象事業部</label>
-                                <select name="department_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" id="department_id" value="{{old('department_id')}}" required>
-                                    @foreach($departments as $department)
-                                    <option value="{{ $department->id }}"  @selected($department->id == $link->department_id)>{{ $department->department_name }}</option>
+                                <label for="affiliation2_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">対象事業部</label>
+                                <select name="affiliation2_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" id="affiliation2_id" value="{{old('affiliation2_id')}}" required>
+                                    @foreach($affiliation2s as $affiliation2)
+                                    <option value="{{ $affiliation2->id }}"  @selected($affiliation2->id == $link->affiliation2_id)>{{ $affiliation2->affiliation2_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            @error('department_id')
+                            @error('affiliation2_id')
                                 <div class="text-red-500">{{$message}}</div>
                             @enderror
                             <div class="w-full flex flex-col col-span-2">

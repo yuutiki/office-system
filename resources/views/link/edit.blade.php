@@ -41,14 +41,14 @@
                     
                     <div class="grid gap-4 mb-4 md:grid-cols-2 ">
                         <div class="w-full flex flex-col">
-                            <label for="department_id" class="font-semibold dark:text-gray-100 leading-none mt-2">事業部</label>
-                            <select name="department_id" class=" w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="department_id" value="{{old('department_id')}}">
-                                @foreach($departments as $department)
-                                <option value="{{ $department->id }}"  @selected($department->id == $link->department_id)>{{ $department->department_name }}</option>
+                            <label for="affiliation2_id" class="font-semibold dark:text-gray-100 leading-none mt-2">事業部</label>
+                            <select name="affiliation2_id" class=" w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="affiliation2_id" value="{{old('affiliation2_id')}}">
+                                @foreach($affiliation2s as $affiliation2)
+                                <option value="{{ $affiliation2->id }}"  @selected($affiliation2->id == $link->affiliation2_id)>{{ $affiliation2->affiliation2_name }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        @error('department_id')
+                        @error('affiliation2_id')
                             <div class="text-red-500">{{$message}}</div>
                         @enderror
                         <div class="md:flex items-center">

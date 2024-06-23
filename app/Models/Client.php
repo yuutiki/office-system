@@ -35,7 +35,10 @@ class Client extends Model
         'client_num',
         'client_name',
         'client_kana_name',
-        'corporation_id'
+        // 'corporation_id',
+        // 'user_id',
+        // 'user.user_kana_name',
+        // 'corporation.corporation_kana_name'  
     ];
 
     // //バリデーションルールを設定
@@ -183,9 +186,17 @@ class Client extends Model
         return $this->belongsToMany(Product::class, 'client_products');
     }
 
-    public function department()
+    public function affiliation2()
     {
-        return $this->belongsTo(Department::class);
+        return $this->belongsTo(Affiliation2::class);
+    }
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id');
     }
 
 }

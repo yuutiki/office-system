@@ -28,7 +28,7 @@ class UserStoreRequest extends FormRequest
             'employee_status_id' => 'required',
             'email' => 'required|email',
             'affiliation1_id' => 'required',
-            'department_id' => 'required',
+            'affiliation2_id' => 'required',
             'affiliation3_id' => 'required',
             'birth' => 'required',
             'ext_phone' => 'required',

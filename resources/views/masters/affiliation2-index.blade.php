@@ -139,97 +139,97 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($departments as $department)
+                @foreach ($affiliation2s as $affiliation2)
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white dark:hover:bg-gray-600">
                         {{-- <td class="pl-4 py-2 whitespace-nowrap">
                             {{ $loop->iteration }}
                         </td> --}}
                         <td class="pl-4 py-2 whitespace-nowrap">
-                            {{ $department->department_code }}
+                            {{ $affiliation2->affiliation2_code }}
                         </td>
                         <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{$department->department_name}}
+                            {{$affiliation2->affiliation2_name}}
                         </td>
                         {{-- <td class="px-1 py-2 whitespace-nowrap">
-                            {{$department->department_eng_name}}
+                            {{$affiliation2->affiliation2_eng_name}}
                         </td> --}}
                         {{-- <td class="px-1 py-2 whitespace-nowrap">
-                            {{$department->created_at}}
+                            {{$affiliation2->created_at}}
                         </td> --}}
                         {{-- <td class="px-1 py-2 whitespace-nowrap">
-                            {{$department->created_by}}
+                            {{$affiliation2->created_by}}
                         </td> --}}
                         <td class="px-1 py-2 whitespace-nowrap">
-                            {{-- {{$department->updatedBy->name}} --}}
-                            {{ optional($department->updatedBy)->user_name }}
+                            {{-- {{$affiliation2->updatedBy->name}} --}}
+                            {{ optional($affiliation2->updatedBy)->user_name }}
                         </td>
                         <td class="px-1 py-2 whitespace-nowrap">
-                            {{$department->updated_at}}
+                            {{$affiliation2->updated_at}}
                         </td>
                         <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <div class="text-center">
-                                <button class="button-edit" type="button" data-drawer-target="dupdateModal-{{$department->id}}" data-drawer-show="dupdateModal-{{$department->id}}" data-drawer-placement="right" aria-controls="dupdateModal-{{$department->id}}">
+                                <button class="button-edit" type="button" data-drawer-target="dupdateModal-{{$affiliation2->id}}" data-drawer-show="dupdateModal-{{$affiliation2->id}}" data-drawer-placement="right" aria-controls="dupdateModal-{{$affiliation2->id}}">
                                 編集
                                 </button>
                             </div>
                         </td>
                     </tr>
                                     <!-- drawer component -->
-                    <div id="dupdateModal-{{$department->id}}" class="fixed top-0 right-0 z-50 h-screen p-4 overflow-y-auto transition-transform w-[30rem] translate-x-full bg-white  dark:bg-gray-800" tabindex="-1" aria-labelledby="dupdateModal-{{$department->id}}">
+                    <div id="dupdateModal-{{$affiliation2->id}}" class="fixed top-0 right-0 z-50 h-screen p-4 overflow-y-auto transition-transform w-[30rem] translate-x-full bg-white  dark:bg-gray-800" tabindex="-1" aria-labelledby="dupdateModal-{{$affiliation2->id}}">
                         <div class="">
-                            <h5 id="dupdateModal-{{$department->id}}" class="inline-flex items-center mb-4 font-semibold text-xl text-gray-500 dark:text-gray-400">
+                            <h5 id="dupdateModal-{{$affiliation2->id}}" class="inline-flex items-center mb-4 font-semibold text-xl text-gray-500 dark:text-gray-400">
                                 対応種別マスタ編集
                             </h5>
-                            <button type="button" data-drawer-hide="dupdateModal-{{$department->id}}" aria-controls="dupdateModal-{{$department->id}}" class="text-gray-400 bg-transparent ml-8 hover:bg-gray-200 hover:text-gray-900 rounded-md text-sm w-8 h-8 absolute top-2.5 end-2.5 inline-flex items-center justify-center dark:hover:bg-gray-600 dark:hover:text-white" >
+                            <button type="button" data-drawer-hide="dupdateModal-{{$affiliation2->id}}" aria-controls="dupdateModal-{{$affiliation2->id}}" class="text-gray-400 bg-transparent ml-8 hover:bg-gray-200 hover:text-gray-900 rounded-md text-sm w-8 h-8 absolute top-2.5 end-2.5 inline-flex items-center justify-center dark:hover:bg-gray-600 dark:hover:text-white" >
                                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                                 </svg>
                             </button>
                         </div>
-                        <form method="POST" action="{{ route('department.update', $department->id) }}">
+                        <form method="POST" action="{{ route('affiliation2.update', $affiliation2->id) }}">
                           @csrf
                           @method('PUT')
                             <div class="w-full flex flex-col col-span-2 mt-10">
-                                <label for="department_code-{{$department->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">コード</label>
-                                <input type="text" maxlength="2" name="department_code" id="-{{$department->id}}" value="{{old('department_code',$department->department_code)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
+                                <label for="affiliation2_code-{{$affiliation2->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">コード</label>
+                                <input type="text" maxlength="2" name="affiliation2_code" id="-{{$affiliation2->id}}" value="{{old('affiliation2_code',$affiliation2->affiliation2_code)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
                             </div>
-                            @error('department_code')
+                            @error('affiliation2_code')
                             <div class="text-red-500">{{ $message }}</div>
                             @enderror
                             <div class="w-full flex flex-col col-span-2 mt-10">
-                              <label for="prefix_code-{{$department->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">コード</label>
-                              <input type="text" maxlength="2" name="prefix_code" id="-{{$department->id}}" value="{{old('prefix_code',$department->prefix_code)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
+                              <label for="prefix_code-{{$affiliation2->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">コード</label>
+                              <input type="text" maxlength="2" name="prefix_code" id="-{{$affiliation2->id}}" value="{{old('prefix_code',$affiliation2->affiliation2_prefix)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
                           </div>
                           @error('prefix_code')
                           <div class="text-red-500">{{ $message }}</div>
                           @enderror
                             <div class="w-full flex flex-col col-span-2">
-                                <label for="department_name-{{$department->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">名称</label>
-                                <input type="text" maxlength="100" name="department_name" id="department_name-{{$department->id}}" value="{{old('department_name',$department->department_name)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
+                                <label for="affiliation2_name-{{$affiliation2->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">名称</label>
+                                <input type="text" maxlength="100" name="affiliation2_name" id="affiliation2_name-{{$affiliation2->id}}" value="{{old('affiliation2_name',$affiliation2->affiliation2_name)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
                             </div>
-                            @error('department_name')
+                            @error('affiliation2_name')
                               <div class="text-red-500">{{ $message }}</div>
                             @enderror
                             <div class="w-full flex flex-col col-span-2">
-                              <label for="department_kana_name-{{$department->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">英名称</label>
-                              <input type="text" maxlength="100" name="department_kana_name" id="department_kana_name-{{$department->id}}" value="{{old('department_kana_name',$department->department_kana_name)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
+                              <label for="affiliation2_kana_name-{{$affiliation2->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">英名称</label>
+                              <input type="text" maxlength="100" name="affiliation2_kana_name" id="affiliation2_kana_name-{{$affiliation2->id}}" value="{{old('affiliation2_kana_name',$affiliation2->affiliation2_kana_name)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
                             </div>
-                            @error('department_kana_name')
+                            @error('affiliation2_kana_name')
                               <div class="text-red-500">{{ $message }}</div>
                             @enderror
                             <div class="w-full flex flex-col col-span-2">
-                                <label for="department_eng_name-{{$department->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">英名称</label>
-                                <input type="text" maxlength="100" name="department_eng_name" id="department_eng_name-{{$department->id}}" value="{{old('department_eng_name',$department->department_eng_name)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
+                                <label for="affiliation2_eng_name-{{$affiliation2->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">英名称</label>
+                                <input type="text" maxlength="100" name="affiliation2_eng_name" id="affiliation2_eng_name-{{$affiliation2->id}}" value="{{old('affiliation2_eng_name',$affiliation2->affiliation2_eng_name)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
                             </div>
-                            @error('department_eng_name')
+                            @error('affiliation2_eng_name')
                               <div class="text-red-500">{{ $message }}</div>
                             @enderror
 
                             <div class="w-full flex flex-col col-span-2">
-                              <label for="department_short_name-{{$department->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">略称</label>
-                              <input type="text" maxlength="100" name="department_short_name" id="department_short_name-{{$department->id}}" value="{{old('department_short_name',$department->department_short_name)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
+                              <label for="affiliation2_short_name-{{$affiliation2->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">略称</label>
+                              <input type="text" maxlength="100" name="affiliation2_short_name" id="affiliation2_short_name-{{$affiliation2->id}}" value="{{old('affiliation2_short_name',$affiliation2->affiliation2_short_name)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
                             </div>
-                            @error('department_short_name')
+                            @error('affiliation2_short_name')
                               <div class="text-red-500">{{ $message }}</div>
                             @enderror
 
@@ -250,7 +250,7 @@
             </tbody>
         </table>
         <div class="mt-1 mb-1 px-4">
-        {{ $departments->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
+        {{ $affiliation2s->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
         </div> 
     </div>
 </x-app-layout>

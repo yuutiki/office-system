@@ -44,7 +44,7 @@ class AppMasterSeeder extends Seeder
             'master_code' => '101',
             'master_name' => '所属-階層2',
             'master_name_en' => 'ClientType',
-            'route' => 'department.index',
+            'route' => 'affiliation2.index',
             'digit' => 2,
             'created_by' => 1,
             'updated_by' => 1,

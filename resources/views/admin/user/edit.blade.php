@@ -34,10 +34,7 @@
             </div>
 
             <!-- フォームにトリミング後の画像をセットするための非表示のinput要素 -->
-            <input type="hidden" id="cropped_image" name="cropped_image" form="userForm">
-
-            <!-- トリミング後の画像を表示する要素 -->
-            {{-- <img id="cropped_image_preview" src="#" alt="トリミング後の画像" style="display: none;"> --}}
+            <input type="hidden" id="cropped_profile_image" name="cropped_profile_image" form="userForm">
 
             <label class="relative inline-flex items-center cursor-pointer mb-9">
                 <input type="hidden" form="userForm" name="is_enabled" value="0">
@@ -150,14 +147,14 @@
                 @enderror
 
                 <div class="w-full flex flex-col">
-                    <label for="department_id" class="text-sm dark:text-gray-100 leading-none mt-2">所属2</label>
-                    <select form="userForm" name="department_id" class="input-secondary" id="department_id" value="{{old('department_id', $user->department_id)}}">
-                        @foreach($departments as $department)
-                        <option value="{{ $department->id }}" @selected($department->id == $user->department_id)>{{ $department->department_name }}</option>
+                    <label for="affiliation2_id" class="text-sm dark:text-gray-100 leading-none mt-2">所属2</label>
+                    <select form="userForm" name="affiliation2_id" class="input-secondary" id="affiliation2_id" value="{{old('affiliation2_id', $user->affiliation2_id)}}">
+                        @foreach($affiliation2s as $affiliation2)
+                        <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == $user->affiliation2_id)>{{ $affiliation2->affiliation2_name }}</option>
                         @endforeach
                     </select>
                 </div>
-                @error('department_id')
+                @error('affiliation2_id')
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
 
@@ -484,8 +481,8 @@
                     crop: function(event) {
                         // トリミングされた画像の情報を取得
                         var canvas = cropper.getCroppedCanvas();
-                        // トリミング後の画像をプレビューに表示
-                        // document.getElementById('cropped_image_preview').src = canvas.toDataURL();
+                        // 画像トリミング後にフォームに画像をセットする処理を有効化する
+                        document.getElementById('cropped_profile_image').value = canvas.toDataURL();
                     }
                 });
             };
@@ -500,7 +497,8 @@
                 var dataURL = canvas.toDataURL();
                 document.getElementById('image_preview').src = dataURL;
                 // トリミング後の画像をフォームにセット
-                document.getElementById('cropped_image').value = dataURL;
+                document.getElementById('cropped_profile_image').value = dataURL;
+                
                 // モーダルを非表示にする処理を追加する
                 hideImageModal();
             } else {

@@ -19,7 +19,7 @@ class Corporation extends Model
         'corporation_name',
         'corporation_kana_name',
         'corporation_short_name',
-        'credit_limit',
+        // 'credit_limit',
         'corporation_post_code',
         'corporation_prefecture_id',
         'corporation_address1',
@@ -37,6 +37,7 @@ class Corporation extends Model
         'corporation_name',
         'corporation_kana_name',
         'corporation_prefecture_id',
+        'prefecture.prefecture_code',
         'is_stop_trading',
     ];
 
@@ -89,10 +90,6 @@ class Corporation extends Model
         });
     }
 
-
-
-
-
     
 
     // 法人正式名称のsetter（Mutator）を定義
@@ -110,6 +107,89 @@ class Corporation extends Model
     }
     
 
+
+
+
+
+
+
+
+
+
+    //
+    // 以下CSVダウンロードロジック
+    //
+
+    // CSVヘッダーの生成
+    private static function getCsvHeader() : Array
+    {
+        return['ID', '法人番号', '法人正式名', '法人正式カナ名', '法人略称', '法人備考', '顧客数', '作成者', '作成日時', '更新者', '更新日時'];
+    }
+
+    // 出力対象を検索条件から指定
+    public static function searchCorporations($filters, $sortBy, $sortDirection)
+    {
+        return static::with(['createdBy', 'updatedBy', 'prefecture'])
+            ->filter($filters) // scopeFilterメソッドを呼び出している
+            ->orderBy($sortBy, $sortDirection)
+            ->withCount('clients')
+            ->get();
+    }
+
+    // 指定された出力対象を使ってCSVボディの生成
+    public static function generateCsvData($corporations)
+    {
+        // CSVの内容を格納する配列を初期化
+        $csvData = [];
+
+        // 法人データをCSVデータに変換
+        foreach ($corporations as $corporation) {
+            $csvData[] = [
+                $corporation->id,
+                $corporation->corporation_num,
+                $corporation->corporation_name,
+                $corporation->corporation_kana_name,
+                $corporation->corporation_short_name,
+                $corporation->corporation_memo,
+                $corporation->clients_count,
+                optional($corporation->createdBy)->user_name,
+                $corporation->created_at,
+                optional($corporation->updatedBy)->user_name,
+                $corporation->updated_at,
+            ];
+        }
+        return $csvData;
+    }
+
+    // コントローラから検索条件を受取り、CSVファイルを生成
+    public static function downloadCorporationCsv($filters, $sortBy, $sortDirection)
+    {
+        $corporations = static::searchCorporations($filters, $sortBy, $sortDirection);
+        $csvData = static::generateCsvData($corporations);
+        $fileName = '法人データ_' . date('YmdHis') . '.csv';
+    
+        return response()->streamDownload(function () use ($csvData)
+        {
+            $fileHandle = fopen('php://output', 'w'); // php://output ストリームを書き込みモードで開く
+            fprintf($fileHandle, chr(0xEF).chr(0xBB).chr(0xBF)); // BOMなしでUTF-8エンコーディング
+            
+            // ヘッダー行を書き込む
+            fputcsv($fileHandle, static::getCsvHeader());
+    
+            // ボディー行を書き込む
+            foreach ($csvData as $row) {
+                fputcsv($fileHandle, $row);
+            }
+    
+            fclose($fileHandle);
+    
+        },
+        $fileName);
+    }
+
+
+
+
     // 以下リレーション設定
     public function prefecture()
     {
@@ -121,6 +201,11 @@ class Corporation extends Model
         return $this->hasMany(Client::class);
     }
 
+    public function credits()
+    {
+        return $this->hasMany(CorporationCredit::class);
+    }
+
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by', 'id');
@@ -130,5 +215,4 @@ class Corporation extends Model
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');
     }
-
 }

@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('client_num',12)->unique()->comment('顧客番号');
             $table->string('client_name',255)->comment('顧客名称');
             $table->string('client_kana_name',255)->comment('顧客カナ名称');
-            $table->foreignId('department_id')->comment('管轄事業部ID');//Departmentテーブル参照
+            $table->foreignId('affiliation2_id')->comment('管轄事業部ID');//Affiliation2テーブル参照
             $table->foreignId('user_id')->nullable(true)->comment('営業担当ID');// Usersテーブル参照
             $table->foreignId('installation_type_id')->nullable(true)->comment('設置種別ID');// Installation_typesテーブル参照
             $table->foreignId('client_type_id')->nullable(true)->comment('顧客種別ID');// Client_typesテーブル参照

@@ -67,11 +67,11 @@
                     <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 " id="client_name" value="{{old('client_name',$project->client->client_name)}}" readonly>
                 </div>
                 <div class="hidden md:inline-block">
-                    <label for="department_id" class="block text-sm dark:text-white text-gray-900 leading-none md:mt-1">顧客管轄</label>
-                    <select id="department_id" name="department_id" class="dark:bg-gray-400 mt-1 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 pointer-events-none" readonly>
+                    <label for="affiliation2_id" class="block text-sm dark:text-white text-gray-900 leading-none md:mt-1">顧客管轄</label>
+                    <select id="affiliation2_id" name="affiliation2_id" class="dark:bg-gray-400 mt-1 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 pointer-events-none" readonly>
                         <option value="">未選択</option>
-                        @foreach($departments as $department)
-                        <option value="{{ $department->id }}" @selected($department->id == old('department_id',$project->client->department_id))>{{ $department->department_name }}</option>
+                        @foreach($affiliation2s as $affiliation2)
+                        <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == old('affiliation2_id',$project->client->affiliation2_id))>{{ $affiliation2->affiliation2_name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -315,7 +315,7 @@
                                                                         <input type="text" name="modalproject_id" id="modalproject_id" value="{{ $project->id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                                                     </div>
                                                                 </div>
-                                                                @error('department_id')
+                                                                @error('affiliation2_id')
                                                                     <div class="text-red-500">{{$message}}</div>
                                                                 @enderror
                                                             </div>
@@ -326,7 +326,7 @@
                                                                         <input type="month" name="revenue_date" id="revenue_date" min="2000-01" max="2100-12" value="{{old('revenue_date',$projectRevenue['formatRevenueDate'])}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
                                                                     </div>
                                                                 </div>
-                                                                @error('department_id')
+                                                                @error('affiliation2_id')
                                                                     <div class="text-red-500">{{$message}}</div>
                                                                 @enderror
                                                             </div>
@@ -484,24 +484,24 @@
                         </div>
                         <div class="grid gap-4 my-4 sm:grid-cols-4">
                             <div>
-                                <label for="account_company_id" class="text-gray-900 dark:text-white text-sm leading-none mt-4">計上所属1</label>
-                                <select form="updateForm" id="account_company_id" name="account_company_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    @foreach($companies as $company)
-                                    <option value="{{ $company->id }}" @selected($company->id == old('account_company_id', $project->account_company_id))>{{ $company->affiliation1_name }}</option>
+                                <label for="account_affiliation1_id" class="text-gray-900 dark:text-white text-sm leading-none mt-4">計上所属1</label>
+                                <select form="updateForm" id="account_affiliation1_id" name="account_affiliation1_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    @foreach($companies as $affiliation1)
+                                    <option value="{{ $affiliation1->id }}" @selected($affiliation1->id == old('account_affiliation1_id', $project->account_affiliation1_id))>{{ $affiliation1->affiliation1_name }}</option>
                                     @endforeach
                                 </select>
-                                @error('account_company_id')
+                                @error('account_affiliation1_id')
                                     <div class="text-red-500">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div>
-                                <label for="account_department_id" class="text-gray-900 dark:text-white text-sm leading-none mt-4">計上所属2</label>
-                                <select form="updateForm" id="account_department_id" name="account_department_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    @foreach($departments as $department)
-                                    <option value="{{ $department->id }}" @selected($department->id == old('department', $project->account_department_id))>{{ $department->department_name }}</option>
+                                <label for="account_affiliation2_id" class="text-gray-900 dark:text-white text-sm leading-none mt-4">計上所属2</label>
+                                <select form="updateForm" id="account_affiliation2_id" name="account_affiliation2_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    @foreach($affiliation2s as $affiliation2)
+                                    <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == old('affiliation2', $project->account_affiliation2_id))>{{ $affiliation2->affiliation2_name }}</option>
                                     @endforeach
                                 </select>
-                                @error('department')
+                                @error('affiliation2')
                                     <div class="text-red-500">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -587,7 +587,6 @@
 
      <!-- 顧客検索 Modal -->
      <div id="clientSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden animate-slide-in-top">
-    {{-- <div id="clientSearchModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full justify-center items-center"> --}}
         <div class="max-h-full w-full max-w-2xl">
             <!-- Modal content -->
             <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
@@ -615,12 +614,12 @@
                             <input type="text" name="clientNumber" id="clientNumber" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded">
                         </div>
                         <div class="w-full flex flex-col mx-2">
-                            <label for="departmentId" class=" dark:text-white text-gray-900 leading-none mt-4">管轄事業部</label>
-                            <select id="departmentId" name="departmentId" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <label for="affiliation2Id" class=" dark:text-white text-gray-900 leading-none mt-4">管轄事業部</label>
+                            <select id="affiliation2Id" name="affiliation2Id" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
-                                @foreach($departments as $department)
-                                <option value="{{ $department->id }}" @selected($department->id == Auth::user()->department->id)>
-                                    {{ $department->department_name }}
+                                @foreach($affiliation2s as $affiliation2)
+                                <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == Auth::user()->affiliation2->id)>
+                                    {{ $affiliation2->affiliation2_name }}
                                 </option>
                                 @endforeach
                             </select>
@@ -743,7 +742,7 @@
                                     <input type="text" name="modalproject_id" id="modalproject_id" value="{{ $project->id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                 </div>
                             </div>
-                            @error('department_id')
+                            @error('affiliation2_id')
                                 <div class="text-red-500">{{$message}}</div>
                             @enderror
                         </div>
@@ -754,7 +753,7 @@
                                     <input type="month" name="revenue_date" id="revenue_date" min="2000-01" max="2100-12" value="{{old('revenue_date')}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
                                 </div>
                             </div>
-                            @error('department_id')
+                            @error('affiliation2_id')
                                 <div class="text-red-500">{{$message}}</div>
                             @enderror
                         </div>
@@ -809,7 +808,7 @@
                                     <input type="text" name="Insert_modalproject_id" id="Insert_modalproject_id" value="{{ $project->id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                 </div>
                             </div>
-                            @error('department_id')
+                            @error('affiliation2_id')
                                 <div class="text-red-500">{{$message}}</div>
                             @enderror
                         </div>
@@ -820,7 +819,7 @@
                                     <input type="month" name="start_date" id="start_date" min="2000-01" max="2100-12" value="{{old('start_date')}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
                                 </div>
                             </div>
-                            @error('department_id')
+                            @error('affiliation2_id')
                                 <div class="text-red-500">{{$message}}</div>
                             @enderror
                         </div>
@@ -831,7 +830,7 @@
                                     <input type="month" name="end_date" id="end_date" min="2000-01" max="2100-12" value="{{old('end_date')}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
                                 </div>
                             </div>
-                            @error('department_id')
+                            @error('affiliation2_id')
                                 <div class="text-red-500">{{$message}}</div>
                             @enderror
                         </div>
@@ -923,7 +922,7 @@
         function searchClient() {
             const clientName = document.getElementById('clientName').value;
             const clientNumber = document.getElementById('clientNumber').value;
-            const departmentId = document.getElementById('departmentId').value;
+            const affiliation2Id = document.getElementById('affiliation2Id').value;
 
             fetch('/client/search', {
                 method: 'POST',
@@ -931,7 +930,7 @@
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
-                body: JSON.stringify({ clientName, clientNumber, departmentId })
+                body: JSON.stringify({ clientName, clientNumber, affiliation2Id })
             })
             .then(response => response.json())
             .then(data => {
@@ -942,20 +941,20 @@
                 const resultElement = document.createElement('tr');
                 resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
                 resultElement.innerHTML = `
-                    <td class="py-2 pl-5 cursor-pointer" onclick="setClient('${result.client_corporation.corporation_name}', '${result.client_num}', '${result.client_name}', '${result.department_id}')">${result.client_name}</td>
+                    <td class="py-2 pl-5 cursor-pointer" onclick="setClient('${result.client_corporation.corporation_name}', '${result.client_num}', '${result.client_name}', '${result.affiliation2_id}')">${result.client_name}</td>
                     <td class="py-2 ml-2">${result.client_num}</td>
-                    <td class="py-2 ml-2">${result.department.department_name}</td>
+                    <td class="py-2 ml-2">${result.affiliation2.affiliation2_name}</td>
                 `;
                 searchResultsContainer.appendChild(resultElement);
                 });
             });
             }
 
-            function setClient(corporationname, clientnum, clientname, department) {
+            function setClient(corporationname, clientnum, clientname, affiliation2) {
             document.getElementById('corporation_name').value = corporationname;
             document.getElementById('client_num').value = clientnum;
             document.getElementById('client_name').value = clientname;
-            document.getElementById('department_id').value = department;
+            document.getElementById('affiliation2_id').value = affiliation2;
             // document.getElementById('client_num').value = number;
             // document.getElementById('installation_type_id').value = installation;
             // document.getElementById('client_type_id').value = clienttype;

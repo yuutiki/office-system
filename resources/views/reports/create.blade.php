@@ -120,7 +120,7 @@
                         <!-- 検索フォーム -->
                         <div class="w-full flex flex-col">
                             <label for="affiliation1_id" class="dark:text-gray-100 text-gray-900 leading-none mt-1">氏名</label>
-                            <input type="text" id="searchQuery" class="block py-1 mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="ユーザ名で検索">
+                            <input type="text" id="user_name" class="block py-1 mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="ユーザ名で検索">
                         </div>
 
                         <!-- 所属1選択フォーム -->
@@ -136,11 +136,11 @@
 
                         <!-- 部署選択フォーム -->
                         <div class="w-full flex flex-col">
-                            <label for="department_id" class="dark:text-gray-100 text-gray-900 leading-none mt-1">所属2</label>
-                            <select id="department_id" name="department_id" class="block py-1 mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <label for="affiliation2_id" class="dark:text-gray-100 text-gray-900 leading-none mt-1">所属2</label>
+                            <select id="affiliation2_id" name="affiliation2_id" class="block py-1 mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option value="">未選択</option>
-                                @foreach ($departments as $department)
-                                    <option value="{{ $department->id }}" @selected($department->id == old('department_id'))>{{ $department->department_name }}</option>
+                                @foreach ($affiliation2s as $affiliation2)
+                                    <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == old('affiliation2_id'))>{{ $affiliation2->affiliation2_name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -221,12 +221,12 @@
                             <input type="text" name="clientNumber" id="clientNumber" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded">
                         </div>
                         <div class="w-full flex flex-col mx-2">
-                            <label for="departmentId" class=" dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
-                            <select id="departmentId" name="departmentId" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <label for="affiliation2Id" class=" dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
+                            <select id="affiliation2Id" name="affiliation2Id" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
-                                @foreach($departments as $department)
-                                <option value="{{ $department->id }}" @selected($department->id == Auth::user()->department->id)>
-                                    {{ $department->department_name }}
+                                @foreach($affiliation2s as $affiliation2)
+                                <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == Auth::user()->affiliation2->id)>
+                                    {{ $affiliation2->affiliation2_name }}
                                 </option>
                                 @endforeach
                             </select>
@@ -292,7 +292,7 @@
         function searchClient() {
             const clientName = document.getElementById('clientName').value;
             const clientNumber = document.getElementById('clientNumber').value;
-            const departmentId = document.getElementById('departmentId').value;
+            const affiliation2Id = document.getElementById('affiliation2Id').value;
 
             fetch('/client/search', {
                 method: 'POST',
@@ -300,7 +300,7 @@
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
-                body: JSON.stringify({ clientName, clientNumber, departmentId })
+                body: JSON.stringify({ clientName, clientNumber, affiliation2Id })
             })
             .then(response => response.json())
             .then(data => {
@@ -313,7 +313,7 @@
                 resultElement.innerHTML = `
                     <td class="py-2 pl-5 cursor-pointer" onclick="setCorporation('${result.client_name}', '${result.client_num}')">${result.client_name}</td>
                     <td class="py-2 ml-2">${result.client_num}</td>
-                    <td class="py-2 ml-2">${result.department.department_name}</td>
+                    <td class="py-2 ml-2">${result.affiliation2.affiliation2_name}</td>
                 `;
                 searchResultsContainer.appendChild(resultElement);
                 });
@@ -343,17 +343,17 @@
 
             // ユーザを非同期で検索して検索結果表示部分に表示する
             $('#searchUsersButton').click(function() {
-                var searchQuery = $('#searchQuery').val();
+                var userNmae = $('#user_name').val();
                 var affiliation1Id = $('#affiliation1_id').val();
-                var departmentId = $('#department_id').val();
+                var affiliation2Id = $('#affiliation2_id').val();
                 var affiliation3Id = $('#affiliation3_id').val();
                 $.ajax({
                     url: '/search-users',
                     method: 'GET',
                     data: {
-                        query: searchQuery,
+                        user_name: userNmae,
                         affiliation1_id: affiliation1Id,
-                        department_id: departmentId,
+                        affiliation2_id: affiliation2Id,
                         affiliation3_id: affiliation3Id
                     },
                     success: function(response) {

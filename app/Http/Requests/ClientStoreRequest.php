@@ -29,7 +29,7 @@ class ClientStoreRequest extends FormRequest
             'client_type_id' => 'required',
             'trade_status_id' => 'required',
             'installation_type_id' => 'required',
-            'department' => 'required',
+            'affiliation2' => 'required',
         ];
     }
     

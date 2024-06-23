@@ -27,7 +27,7 @@ return new class extends Migration
             // $table->foreignId('role_id')->default(4)->comment('権限ID'); //追記 rolesテーブル参照
             $table->foreignId('employee_status_id')->default(1)->comment('雇用状態ID');//追記 employee_statusesテーブル参照
             $table->foreignId('affiliation1_id')->comment('第一所属階層ID'); 
-            $table->foreignId('department_id')->comment('第二所属階層ID'); 
+            $table->foreignId('affiliation2_id')->comment('第二所属階層ID'); 
             $table->foreignId('affiliation3_id')->comment('第三所属階層ID'); 
             $table->string('profile_image')->default('users/profile_image/default.png')->comment('プロフ画像');
             $table->boolean('password_change_required')->default(0)->comment('強制PW変更フラグ'); 

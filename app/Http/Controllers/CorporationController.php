@@ -15,19 +15,25 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 // use Goodby\CSV\Import\Standard\InterpreterConfig;
 use Illuminate\Support\Facades\Response;
 use App\Jobs\ExportCorporationsCsv;
+use App\Models\CorporationCredit;
 use App\Models\Prefecture;
 use Illuminate\Support\Facades\Session;
 
 class CorporationController extends Controller
 {
     public function index(Request $request)//検索用にrequestを受取る
-        {
+    {
+        // １ページごとの表示件数
+        $perPage = config('constants.perPage');
+
         // 検索条件を取得してセッションに保存
-        Session::put('search_params', $request->all());
-        $searchParams = $request->session()->get('search_params', []);
+        $searchParams = $request->session()->put('search_params', $request->all());
 
-
-        $perPage = config('constants.perPage'); // １ページごとの表示件数
+        // リクエストから並び替えの条件を取得しSessionに保存
+        $request->session()->put([
+            'sort_by' => $request->input('sort', 'id'),
+            'sort_direction' => $request->input('direction', 'asc'),
+        ]);
 
         // 検索フォームから検索条件を取得し変数に格納
         $filters = $request->only(['corporation_num', 'corporation_name', 'invoice_num']);
@@ -38,24 +44,27 @@ class CorporationController extends Controller
         $invoiceNum = $filters['invoice_num'] ?? null;
 
         //上記で$filters変数に格納した検索条件をModelに渡し、検索処理を行う。結果を$corporationsに詰める
-        $corporations = Corporation::filter($filters) 
+        $corporations = Corporation::filter($filters)
             ->with('prefecture')
             ->withCount('clients')
+            ->addSelect(['latest_credit_limit' => CorporationCredit::select('credit_limit')
+                ->whereColumn('corporation_id', 'corporations.id')
+                ->latest()
+                ->limit(1)
+            ])
             ->sortable()
             ->paginate($perPage);
-   
-
-        $count = $corporations->total(); // 検索結果の件数を取得
-
+            
+        // 検索結果の件数を取得
+        $count = $corporations->total();
 
         return view('corporations.index', compact('searchParams', 'corporations', 'count' ,'filters', 'CorporationNum', 'CorporationName','invoiceNum',));
     }
 
     public function create()
     {
-        // $prefectures = Prefecture::all();
-        // return view('corporations.create',compact('prefectures',));
-        abort(419);
+        $prefectures = Prefecture::all();
+        return view('corporations.create',compact('prefectures',));
     }
 
     public function store(CorporationStoreRequest $request)
@@ -82,12 +91,16 @@ class CorporationController extends Controller
 
     public function edit(string $id, Request $request)
     {
-        $corporation = Corporation::find($id);
-        $prefectures = Prefecture::all();
         $activeTab = $request->query('tab', 'tab1'); // クエリパラメータからタブを取得
+        $prefectures = Prefecture::all();
 
+        $corporation = Corporation::findOrFail($id);
+        $credits = CorporationCredit::where('corporation_id',$id)->orderBy('created_at','desc')->get();
 
-        return view('corporations.edit',compact('corporation','prefectures','activeTab',));
+        // 最新の与信情報を取得
+        $latestCredit = $corporation->credits()->orderBy('created_at', 'desc')->first();
+
+        return view('corporations.edit',compact('corporation','prefectures','activeTab','credits', 'latestCredit',));
     }
 
     public function update(CorporationUpdateRequest $request, string $id)
@@ -99,6 +112,17 @@ class CorporationController extends Controller
             // データを更新
             $corporation->fill($request->all())->save();
             // return redirect()->route('corporations.edit', $id)->with('success', '正常に更新されました');
+
+            // // 新規登録用の与信情報の追加
+            // if (!empty($request->input('credit_limit'))) {
+            //     $corporation->credits()->create([
+            //         'credit_limit' => $request->input('credit_limit'),
+            //         'credit_rate' => $request->input('credit_rate'),
+            //         'credit_rater' => $request->input('credit_rater'),
+            //         'credit_reason' => $request->input('credit_reason'),
+            //         // 他の与信情報のカラムを追加
+            //     ]);
+            // }
             return redirect()->back()->with('success', '正常に更新されました');
             
         } catch (ModelNotFoundException $e) {
@@ -146,104 +170,37 @@ class CorporationController extends Controller
 
 
 
-
-
-
-
-    // CSVで検索結果をダウンロードするメソッド
     public function downloadCsv(Request $request)
     {
-        // 検索条件を取得
+        // scopeFilterに渡すための絞り込み条件
         $filters = $request->only(['corporation_num', 'corporation_name', 'invoice_num']);
 
+        // 並び替えの条件を取得
+        $sortBy = session('sort_by', 'id');
+        $sortDirection = session('sort_direction', 'asc');
 
-        // 検索結果の顧客法人データを取得
-        $corporations = Corporation::with(['createdBy', 'updatedBy'])
-        ->filter($filters)
-        ->withCount('clients')
-        ->get();
-
-
-        // CSVのヘッダー行を作成
-        $csvHeader = ['ID', '法人番号', '法人正式名', '法人正式カナ名', '法人略称', '法人備考', '顧客数', '作成者', '作成日時', '更新者', '更新日時'];
-
-        // CSVの内容を格納する配列を初期化
-        $csvData = [];
-
-        // 顧客法人データをCSVデータに変換
-        foreach ($corporations as $corporation) {
-            $csvData[] = [
-                $corporation->id,
-                $corporation->corporation_num,
-                $corporation->corporation_name,
-                $corporation->corporation_kana_name,
-                $corporation->corporation_short_name,
-                $corporation->corporation_memo,
-                $corporation->clients_count,
-                optional($corporation->createdBy)->user_name,
-                $corporation->created_at,
-                optional($corporation->updatedBy)->user_name,
-                $corporation->updated_at,
-            ];
-        }
-
-        // CSVファイルの名前を生成
-        $fileName = '法人データ_' . date('YmdHis') . '.csv';
-        // $fileName = 'corporation_data_' . date('YmdHis') . '.csv';
-
-        // CSVファイルを生成してダウンロード
-        return $this->downloadCsvFile($fileName, $csvHeader, $csvData);
-    }
-
-    // CSVファイルを生成してダウンロード
-    private function downloadCsvFile($fileName, $csvHeader, $csvData)
-    {
-        ob_start();
-        $output = fopen('php://output', 'w');
-    
-        // BOMなしでUTF-8エンコーディング
-        fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
-    
-        // ヘッダー行を書き込む
-        fputcsv($output, $csvHeader);
-    
-        // データを書き込む
-        foreach ($csvData as $row) {
-            fputcsv($output, $row);
-        }
-    
-        fclose($output);
-    
-        $csvContent = ob_get_clean();
-    
-        // レスポンスを生成してダウンロード
-        $headers = [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
-        ];
-    
-        return response()->make($csvContent, 200, $headers);
+        // モデルにビジネスロジックを寄せて、CSVファイルをダウンロード
+        return Corporation::downloadCorporationCsv($filters, $sortBy, $sortDirection);
     }
 
 
-//     public function exportCsv(Request $request)
-// {
-//     $filters = $request->only(['corporation_num', 'corporation_name']);
-//     ExportCorporationsCsv::dispatch($filters);
+    // public function exportCsv(Request $request)
+    // {
+    //     $filters = $request->only(['corporation_num', 'corporation_name']);
+    //     ExportCorporationsCsv::dispatch($filters);
 
-//     // 生成されたファイル名を取得
-//     $filename = 'corporations_' . now()->format('YmdHis') . '.csv';
+    //     // 生成されたファイル名を取得
+    //     $filename = 'corporations_' . now()->format('YmdHis') . '.csv';
 
-//     // ダウンロードページにリダイレクト
-//     return redirect()->route('corporations.index')->with('status', 'エクスポートジョブがディスパッチされました。進捗状況はキューを確認してください。');
-// }
+    //     // ダウンロードページにリダイレクト
+    //     return redirect()->route('corporations.index')->with('status', 'エクスポートジョブがディスパッチされました。進捗状況はキューを確認してください。');
+    // }
 
-//     public function downloadCsv($filename)
-//     {
-//         $path = storage_path('app/' . $filename);
-
-//         return response()->download($path, $filename)->deleteFileAfterSend(true);
-//     }
+    // public function downloadCsv($filename)
+    // {
+    //     $path = storage_path('app/' . $filename);
+    //     return response()->download($path, $filename)->deleteFileAfterSend(true);
+    // }
 
 
 
@@ -257,7 +214,7 @@ class CorporationController extends Controller
 
     public function upload(CorporationUploadRequest $request)
     {
-        session()->forget('error1');
+        session()->forget('validatedErrors');
 
         $csvFile = $request->file('csv_upload');
 
@@ -279,19 +236,13 @@ class CorporationController extends Controller
             return redirect()->back()->with('error', '処理種別が選択されていません。');
         }
         
-        if ($recordCount === false) {
-            // エラーが発生した場合はリダイレクトしない
-            return;
-        }
-
-        if ($recordCount === false) {
-            // エラーが発生した場合はリダイレクトしてエラーメッセージを表示
+        if (!is_numeric($recordCount)) {
+            // エラーが発生し数値以外が返ってきた（例外がスローされた）場合はリダイレクトしてエラーメッセージを表示
             return redirect()->back()->withInput()->with('error', 'エラーがあります');
         }
     
         // 成功時のリダイレクトやメッセージを追加するなどの処理を行う
-        // return redirect()->back()->with('success', $recordCount . '件のデータを正常にアップロードしました。');
-        return redirect()->back()->with('success', '件のデータを正常にアップロードしました。');
+        return redirect()->back()->with('success', $recordCount . '件のデータを正常にアップロードしました。');
     }
 
     private function parseCSVAndSaveToDatabase($csvPath, $operation)
@@ -335,13 +286,13 @@ class CorporationController extends Controller
             // エラーがある場合はトランザクションをロールバックしてエラーメッセージをセッションに保存
             if (!empty($errors)) {
                 DB::rollBack();
-                $existingErrors = session('error1', []);
+                $existingErrors = session('validatedErrors', []);
                 foreach ($errors as $lineNumber => $lineErrors) {
                     foreach ($lineErrors as $error) {
                         $existingErrors[] = "$lineNumber 行目：$error";
                     }
                 }
-                session(['error1' => $existingErrors]);
+                session(['validatedErrors' => $existingErrors]);
     
                 
                 return redirect()->back()->withInput()->with('error', 'エラーがあります');
@@ -351,7 +302,6 @@ class CorporationController extends Controller
             DB::commit();
     
             return $recordCount;
-
     
         } catch (\Exception $e) {
             // トランザクションロールバック
@@ -364,54 +314,54 @@ class CorporationController extends Controller
     {
         $errors = [];
     
-        if (count($row) !== 5) {
-            $errors[] = "$lineNumber 行目：列数が5ではない行があります";
-        }
+        // if (count($row) !== 5) {
+        //     $errors[] = "列数が5ではない行があります";
+        // }
 
         // 法人番号($row[0])に関して
         if (empty($row[0])) {
             // required
-            $errors[] = "$lineNumber 行目：「法人番号」は必須です";
+            $errors[] = " 「法人番号」は必須です";
         } elseif (mb_strlen($row[0]) !== 6) {
             // size=6
-            $errors[] = "$lineNumber 行目：法人番号は6桁でなければなりません";
+            $errors[] = " 「法人番号」は6桁でなければなりません";
         }
 
         if ($operation === 'new' && Corporation::where('corporation_num', $row[0])->exists()) {
-            $errors[] = "$lineNumber 行目：「法人番号」が重複しています";
+            $errors[] = " 「法人番号」が重複しています";
         }
     
         if ($operation === 'update' && !Corporation::where('corporation_num', $row[0])->exists()) {
-            $errors[] = "$lineNumber 行目：更新対象の「法人番号」が存在しません";
+            $errors[] = "更新対象の「法人番号」が存在しません";
         }
 
 
         // 桁数チェック
         if (mb_strlen($row[1]) > 100) {
-            $errors[] = "$lineNumber 行目：法人名称は100文字以下でなければなりません";
+            $errors[] = " 「法人名称」は100文字以下でなければなりません";
         }
         if (mb_strlen($row[2]) > 100) {
-            $errors[] = "$lineNumber 行目：カナ名称は100文字以下でなければなりません";
+            $errors[] = " 「カナ名称」は100文字以下でなければなりません";
         }
         if (mb_strlen($row[3]) > 100) {
-            $errors[] = "$lineNumber 行目：略称は100文字以下でなければなりません";
+            $errors[] = " 「略称」は100文字以下でなければなりません";
         }
         if (mb_strlen($row[4]) > 1000) {
-            $errors[] = "$lineNumber 行目：法人備考は1000文字以下でなければなりません";
+            $errors[] = " 「法人備考」は1000文字以下でなければなりません";
         }
 
         // 型チェック
         if (!is_string($row[1])) {
-            $errors[] = "$lineNumber 行目：法人名称は文字列である必要があります";
+            $errors[] = " 「法人名称」は文字列である必要があります";
         }
         if (!is_string($row[2])) {
-            $errors[] = "$lineNumber 行目：カナ名称は文字列である必要があります";
+            $errors[] = " 「カナ名称」は文字列である必要があります";
         }
         if (!is_string($row[3])) {
-            $errors[] = "$lineNumber 行目：略称は文字列である必要があります";
+            $errors[] = " 「略称」は文字列である必要があります";
         }
         if (!is_string($row[4])) {
-            $errors[] = "$lineNumber 行目：法人備考は文字列である必要があります";
+            $errors[] = " 「法人備考」は文字列である必要があります";
         }
     
 
@@ -439,12 +389,24 @@ class CorporationController extends Controller
     // }
     private function processRow(array $row, $operation)
     {
+        $corporationPrefectureId = $row[6];
+        $prefectureId = Prefecture::where('id', $corporationPrefectureId)->first();
+        if ($prefectureId) {
+            $prefecture = $prefectureId->id;
+        } else {
+            $prefecture = null;
+        }
+
         $data = [
             'corporation_num' => $row[0],
             'corporation_name' => $row[1],
             'corporation_kana_name' => $row[2],
             'corporation_short_name' => $row[3],
-            'corporation_memo' => $row[4],
+            'invoice_num' => $row[4],
+            'corporation_post_code' => $row[5],
+            'corporation_prefecture_id' => $prefecture,
+            'corporation_address1' => $row[7],
+            'corporation_memo' => $row[8],
         ];
 
         if ($operation === 'new') {

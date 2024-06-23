@@ -19,9 +19,9 @@ option = {
     },
   },
   grid: {
-    left: '3%',
-    right: '4%',
-    bottom: '3%',
+    left: '1%',
+    right: '1%',
+    bottom: '1%',
     containLabel: true,
   },
   xAxis: [
@@ -40,7 +40,7 @@ option = {
       name: '学務',
       type: 'bar',
       stack: 'Ad',
-      barWidth:30,
+      barWidth: 30,
       emphasis: {
         focus: 'series'
       },
@@ -98,6 +98,30 @@ option && myChart.setOption(option);
 
 // ウィンドウのリサイズイベントを監視
 window.addEventListener('resize', function() {
-    // ウィンドウがリサイズされたときに実行されるコード
-    myChart.resize(); // グラフのサイズを更新
+  // ウィンドウがリサイズされたときに実行されるコード
+  myChart.resize(); // グラフのサイズを更新
+
+  // ウィンドウの幅に応じてバーの幅を計算し、設定
+  var width = window.innerWidth;
+  var barWidth;
+  if (width < 768) {
+      // スマートフォンサイズの場合
+      barWidth = '20%';
+  } else {
+      // それ以外の場合
+      barWidth = '30%';
+  }
+
+  // 各シリーズのバー幅を更新
+  myChart.setOption({
+      series: [
+          {
+              barWidth: barWidth,
+              label: {
+                  color: isDarkMode ? '#ffffff' : '#000000',
+              }
+          }
+          // 他の series も同様に更新する必要がある場合は、ここに追加する
+      ]
+  });
 });

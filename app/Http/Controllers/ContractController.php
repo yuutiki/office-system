@@ -10,7 +10,7 @@ use App\Models\ContractPartnerType;
 use App\Models\ContractSheetStatus;
 use App\Models\ContractType;
 use App\Models\ContractUpdateType;
-use App\Models\Department;
+use App\Models\Affiliation2;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -28,9 +28,9 @@ class ContractController extends Controller
     public function create()
     {
         $contractTypes = ContractType::all();
-        $departments = Department::all();
+        $affiliation2s = Affiliation2::all();
 
-        return view('contracts.create', compact('contractTypes', 'departments',));
+        return view('contracts.create', compact('contractTypes', 'affiliation2s',));
     }
 
     public function store(Request $request)
@@ -56,7 +56,7 @@ class ContractController extends Controller
     public function edit(Contract $contract)
     {
         $contractTypes = ContractType::all();
-        $departments = Department::all();
+        $affiliation2s = Affiliation2::all();
         $contractUpdateTypes = ContractUpdateType::all();
         $contractChangeTypes = ContractChangeType::all();
         $contractPartnerTypes = ContractPartnerType::all();
@@ -89,7 +89,7 @@ class ContractController extends Controller
         // 契約期間を文字列に整形（例: "1年2ヶ月3日"）
         $periodString = $period->y . '年' . $period->m . 'ヶ月' . $period->d . '日';
 
-        return view('contracts.edit',compact('contractTypes', 'departments', 'departments','client','contract','contractDetails','contractUpdateTypes','contractChangeTypes','contractPartnerTypes','contractSheetStatuses','firstContractStartAt','oldestContractPartnerTypeName','periodString'));
+        return view('contracts.edit',compact('contractTypes', 'affiliation2s', 'client','contract','contractDetails','contractUpdateTypes','contractChangeTypes','contractPartnerTypes','contractSheetStatuses','firstContractStartAt','oldestContractPartnerTypeName','periodString'));
     }
 
     public function update(Request $request, Contract $contract)

@@ -71,14 +71,14 @@
                     @enderror
                 </div>
                 <div>
-                    <label for="department" class="font-semibold  text-gray-900 dark:text-white leading-none mt-4">管轄事業部</label>
-                    <select id="department" name="department" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <label for="affiliation2" class="font-semibold  text-gray-900 dark:text-white leading-none mt-4">管轄事業部</label>
+                    <select id="affiliation2" name="affiliation2" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected value="">未選択</option>
-                        @foreach($departments as $department)
-                            <option value="{{ $department->id }}" @selected( $department->id == $vendor->department_id )>{{ $department->department_name }}</option>
+                        @foreach($affiliation2s as $affiliation2)
+                            <option value="{{ $affiliation2->id }}" @selected( $affiliation2->id == $vendor->affiliation2_id )>{{ $affiliation2->affiliation2_name }}</option>
                         @endforeach
                     </select>
-                    @error('department')
+                    @error('affiliation2')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>

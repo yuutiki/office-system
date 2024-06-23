@@ -28,11 +28,11 @@
                         </div>
 
                         <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-                            <select name="department_id" id="department_id" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" tabindex="1">
+                            <select name="affiliation2_id" id="affiliation2_id" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" tabindex="1">
                                 <option value="">所属</option>
-                                @foreach ($departments as $department)
-                                <option value="{{ $department->id }}" @if (isset($departmentId) && $departmentId == $department->id) selected @endif>
-                                    {{ $department->department_name }}
+                                @foreach ($affiliation2s as $affiliation2)
+                                <option value="{{ $affiliation2->id }}" @if (isset($affiliation2Id) && $affiliation2Id == $affiliation2->id) selected @endif>
+                                    {{ $affiliation2->affiliation2_name }}
                                 </option>
                                 @endforeach
                             </select>

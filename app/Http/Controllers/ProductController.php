@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\User;//add
-use App\Models\Department;//add
+use App\Models\Affiliation2;//add
 use App\Models\ProductMaker;//add
 use App\Models\ProductSeries;//add
 use App\Models\ProductType;//add
@@ -29,12 +29,12 @@ class ProductController extends Controller
         $productSeriess = ProductSeries::all();
         $productTypes = ProductType::all();
         $productSplitTypes = ProductSplitType::all();
-        $departments = Department::all();
+        $affiliation2s = Affiliation2::all();
 
         // 検索formに入力された値を取得
         $productCode = $request->product_code;
         $productName = $request->product_name;
-        $department = $request->department_id;
+        $affiliation2 = $request->affiliation2_id;
         $isStopSelling = $request->is_stop_selling;
         $productSeries = $request->product_series; 
         $productType = $request->product_type; 
@@ -42,7 +42,7 @@ class ProductController extends Controller
 
         //検索Query
         // $query = Product::query();
-        $query = Product::with(['department', 'productSplitType', 'productSeries'])->sortable()->orderBy('product_code', 'asc');
+        $query = Product::with(['affiliation2', 'productSplitType', 'productSeries'])->sortable()->orderBy('product_code', 'asc');
 
         if(!empty($productCode))
         {
@@ -61,22 +61,22 @@ class ProductController extends Controller
         }
 
         $count = $query->count(); // 検索結果の総数を取得
-        // $products = $query->with(['department','productSplitType','productSeries'])->sortable()->orderBy('product_code','asc')->paginate($per_page);
+        // $products = $query->with(['affiliation2','productSplitType','productSeries'])->sortable()->orderBy('product_code','asc')->paginate($per_page);
         $products = $query->paginate($per_page);
 
-        return view('product.index',compact('products','count','users','productCode','productName','productSeriess','productTypes','productSplitTypes','departments'));
+        return view('product.index',compact('products','count','users','productCode','productName','productSeriess','productTypes','productSplitTypes','affiliation2s'));
     }
 
     public function create()
     {
         $users = User::all();
-        $departments = Department::all(); //管轄事業部
+        $affiliation2s = Affiliation2::all(); //管轄事業部
         $productMakers = ProductMaker::all(); //製品メーカ
         $productSeries = ProductSeries::all(); //製品シリーズ
         $productTypes = ProductType::all(); //製品種別
         $productSplitTypes = ProductSplitType::all(); //製品内訳種別
 
-        return view('product.create',compact('users','departments','productMakers','productSeries','productTypes','productSplitTypes'));
+        return view('product.create',compact('users','affiliation2s','productMakers','productSeries','productTypes','productSplitTypes'));
     }
 
     public function store(Request $request)
@@ -85,7 +85,7 @@ class ProductController extends Controller
         // バリデーション
         $request->validate([
             'product_maker_id' => 'required',
-            'department_id' => 'required',
+            'affiliation2_id' => 'required',
             'product_type_id' => 'required',
             'product_split_type_id' => 'required',
             'product_series_id' => 'required',
@@ -98,21 +98,21 @@ class ProductController extends Controller
 
         //この後の登録処理で使用する値を変数に格納する。
         $productMakerId = $request->product_maker_id;
-        $departmentId = $request->department_id;
+        $affiliation2Id = $request->affiliation2_id;
         $productTypeId = $request->product_type_id; 
         $productSplitTypeId = $request->product_split_type_id; 
 
         // 製品コードを生成
         $productMaker = ProductMaker::find($productMakerId);
-        $department = Department::find($departmentId);
+        $affiliation2 = Affiliation2::find($affiliation2Id);
         $productType = ProductType::find($productTypeId);
         $productSplitType = ProductSplitType::find($productSplitTypeId);
 
-        $productCode = Product::generateProductCode($productMaker, $department, $productType, $productSplitType);
+        $productCode = Product::generateProductCode($productMaker, $affiliation2, $productType, $productSplitType);
         
         $product = new Product();
         $product->product_maker_id = $productMakerId;
-        $product->department_id = $departmentId;
+        $product->affiliation2_id = $affiliation2Id;
         $product->product_type_id = $productTypeId;
         $product->product_split_type_id = $productSplitTypeId;
         $product->product_series_id = $request->product_series_id;
@@ -138,13 +138,13 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $users = User::all();
-        $departments = Department::all(); //管轄事業部
+        $affiliation2s = Affiliation2::all(); //管轄事業部
         $productMakers = ProductMaker::all(); //製品メーカ
         $productSeries = ProductSeries::all(); //製品シリーズ
         $productTypes = ProductType::all(); //製品種別
         $productSplitTypes = ProductSplitType::all(); //製品内訳種別
 
-        return view('product.edit',compact('users','departments','productMakers','productSeries','productTypes','productSplitTypes','product'));
+        return view('product.edit',compact('users','affiliation2s','productMakers','productSeries','productTypes','productSplitTypes','product'));
     }
 
     public function update(Request $request, string $id)
@@ -159,7 +159,7 @@ class ProductController extends Controller
         // データ登録処理
 
         $product->product_maker_id = $request->product_maker_id;
-        $product->department_id = $request->department_id;
+        $product->affiliation2_id = $request->affiliation2_id;
         $product->product_type_id = $request->product_type_id;
         $product->product_split_type_id = $request->product_split_type_id;
         $product->product_series_id = $request->product_series_id;
@@ -173,7 +173,7 @@ class ProductController extends Controller
         $product->product_code = $request->product_code;
         $product->save();
 
-        return redirect()->route('product.edit',$id)->with('message', '変更しました');
+        return redirect()->route('products.edit',$id)->with('success', '正常に変更しました');
     }
 
     public function destroy(string $id)
@@ -181,7 +181,7 @@ class ProductController extends Controller
         $product = Product::find($id);
         $product->delete();
 
-        return redirect()->route('product.index')->with('message', '削除しました');
+        return redirect()->route('products.index')->with('success', '正常に削除しました');
     }
 
 
@@ -216,7 +216,7 @@ class ProductController extends Controller
 
     //         // CSV ファイルの各列から値を取得して変数に格納する
     //         $productMakerId = $row[0];
-    //         $departmentId = $row[1];
+    //         $affiliation2Id = $row[1];
     //         $productTypeId = $row[2];
     //         $productSplitTypeId = $row[3];
     //         $productSeries = $row[4];
@@ -231,7 +231,7 @@ class ProductController extends Controller
     //      // CSV行をパースした際に実行する処理を定義
     //         $product = new Product();
     //         $product->product_maker_id = $productMakerId;
-    //         $product->department_id = $departmentId;
+    //         $product->affiliation2_id = $affiliation2Id;
     //         $product->product_type_id = $productTypeId;
     //         $product->product_split_type_id = $productSplitTypeId;
     //         $product->product_series_id = $productSeries;
@@ -244,12 +244,12 @@ class ProductController extends Controller
     //         $product->product_memo2 = $productMemo2;
 
     //         $productMaker = ProductMaker::find($productMakerId);
-    //         $department = Department::find($departmentId);
+    //         $affiliation2 = Affiliation2::find($affiliation2Id);
     //         $productType = ProductType::find($productTypeId);
     //         $productSplitType = ProductSplitType::find($productSplitTypeId);
 
     //         // Product::generateProductCode() メソッドを呼び出し、製品コードを生成
-    //         $productCode = Product::generateProductCode($productMaker, $department, $productType, $productSplitType);
+    //         $productCode = Product::generateProductCode($productMaker, $affiliation2, $productType, $productSplitType);
     //         $product->product_code = $productCode; // 生成した製品コードを設定
 
     //         $product->save();
@@ -269,18 +269,18 @@ class ProductController extends Controller
     
         // 各外部テーブルから関連データを取得
         $productMaker = ProductMaker::where('maker_code', $makerCode)->first();
-        $department = Department::where('prefix_code', $prefixCode)->first();
+        $affiliation2 = Affiliation2::where('affiliation2_prefix', $prefixCode)->first();
         $productType = ProductType::where('type_code', $typeCode)->first();
         $productSplitType = ProductSplitType::where('split_type_code', $splitTypeCode)->first();
         $productSeries = ProductSeries::where('series_code', $seriesCode)->first();
     
         // Product::generateProductCode() メソッドを呼び出し、製品コードを生成
-        $productCode = Product::generateProductCode($productMaker, $department, $productType, $productSplitType);
+        $productCode = Product::generateProductCode($productMaker, $affiliation2, $productType, $productSplitType);
     
         // CSVファイルから取得したデータを使って Product モデルにデータを登録
         $product = new Product();
         $product->product_maker_id = $productMaker->id;
-        $product->department_id = $department->id;
+        $product->affiliation2_id = $affiliation2->id;
         $product->product_type_id = $productType->id;
         $product->product_split_type_id = $productSplitType->id;
         $product->product_series_id = $productSeries->id;
@@ -321,7 +321,7 @@ public function getSplitTypes($productTypeId)
             $query->where('product_split_type_id', '=', $request->input('productSplitTypeId'));
         }
     
-        $products = $query->with('productSplitType', 'department', 'productSeries')->get();
+        $products = $query->with('productSplitType', 'affiliation2', 'productSeries')->get();
     
         return response()->json($products);
     }

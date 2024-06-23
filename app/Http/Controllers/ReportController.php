@@ -10,7 +10,7 @@ use App\Models\Client;//add
 use App\Models\Comment;//add
 use App\Models\Affiliation1;
 use App\Models\ContactType;
-use App\Models\Department;
+use App\Models\Affiliation2;
 use App\Models\ReportType;
 use App\Notifications\AppNotification;
 use App\Services\NotificationService;
@@ -43,19 +43,18 @@ class ReportController extends Controller
 
     public function create()
     {
-        $departments = Department::all();
         $reportTypes = ReportType::all();
         $contactTypes = ContactType::all();
         $users = User::where('employee_status_id', 1)->get();
         $affiliation1s = Affiliation1::all();
-        $departments = Department::all();
+        $affiliation2s = Affiliation2::all();
         $affiliation3s = Affiliation3::all();
 
         $clientNum = Session::get('selected_client_num');
         $clientName = Session::get('selected_client_name');
         // $clientId = Session::get('selected_client_id');
 
-        return view('reports.create',compact('users','departments', 'reportTypes', 'contactTypes', 'clientNum', 'clientName', 'affiliation1s', 'departments', 'affiliation3s'));
+        return view('reports.create',compact('users', 'reportTypes', 'contactTypes', 'clientNum', 'clientName', 'affiliation1s', 'affiliation2s', 'affiliation3s'));
     }
 
     public function store(ReportStoreRequest $request)

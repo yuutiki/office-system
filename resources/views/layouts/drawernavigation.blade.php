@@ -74,7 +74,7 @@
                         @csrf
                         <button type="submit" class="{{ is_null($notification->read_at) ? 'un-read' : '' }}">
                             <div class="flex justify-between hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                <p class="block px-4 py-2">{{ $notification->data['notification_data']['reporter'] }}</p>
+                                <p class="block px-4 py-2">{{ $notification->data['content_data']['reporter']['user_name'] }}</p>
                                 <p class="block px-4 py-2">{{ $notification->data['notification_data']['message'] }}</p>
                             </div>
                         </button>
@@ -214,7 +214,7 @@
                         </x-nav-link>
                     </li>
                     <li>
-                        <x-nav-link :href="route('clients.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                        <x-nav-link :href="route('project-expense.index')" :active="request()->routeIs('project-expense.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                             <span class="flex-1 ml-10 whitespace-nowrap">{{ __('営業経費一覧') }}</span>
                         </x-nav-link>
                     </li>
@@ -425,7 +425,7 @@
                             </x-nav-link>
                         </li>
                         <li>
-                            <x-nav-link :href="route('clients.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                            <x-nav-link :href="route('project-expense.index')" :active="request()->routeIs('project-expense.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                                 <span class="flex-1 ml-10 whitespace-nowrap">{{ __('営業経費一覧') }}</span>
                             </x-nav-link>
                         </li>

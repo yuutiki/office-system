@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Department;
+use App\Models\Affiliation2;
 use App\Models\Link;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,11 +13,11 @@ class LinkController extends Controller
 {
     public function index(Request $request)
     {
-        $departments = Department::all();
+        $affiliation2s = Affiliation2::all();
 
 
         // フィルタリングクエリを作成
-        $query = Link::with('department');
+        $query = Link::with('affiliation2');
 
         // 検索フォームの値を取得する
         $displayName = $request->input('display_name');
@@ -57,14 +57,14 @@ class LinkController extends Controller
 
 
 
-        // $links = Link::with(['department'])->sortable()->orderBy('display_order','asc')->paginate(); 
-        return view('link.index', compact('departments', 'links','displayName'));
+        // $links = Link::with(['affiliation2'])->sortable()->orderBy('display_order','asc')->paginate(); 
+        return view('link.index', compact('affiliation2s', 'links','displayName'));
     }
 
     public function create()
     {
-        $departments = Department::all();
-        return view('link.create', compact('departments'));
+        $affiliation2s = Affiliation2::all();
+        return view('link.create', compact('affiliation2s'));
     }
 
     public function store(Request $request)
@@ -87,15 +87,15 @@ class LinkController extends Controller
     public function edit(String $id)
     {
         $link=Link::find($id);
-        $departments = Department::all();
-        return view('link.edit', compact('departments','link'));
+        $affiliation2s = Affiliation2::all();
+        return view('link.edit', compact('affiliation2s','link'));
     }
 
     public function update(Request $request, Link $link)
     {
         $rules = [
             'display_name' => 'required',
-            'department_id' => 'required',
+            'affiliation2_id' => 'required',
             'display_order' => 'required|numeric',
             'url' => 'required|url',
         ];
@@ -129,7 +129,7 @@ class LinkController extends Controller
     // バリデーションのルールを設定
     $rules = [
         'display_name' => 'required',
-        'department_id' => 'required',
+        'affiliation2_id' => 'required',
         'display_order' => 'required|numeric',
         'url' => 'required|url',
     ];

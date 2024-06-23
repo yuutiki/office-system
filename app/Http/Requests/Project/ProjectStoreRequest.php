@@ -36,7 +36,7 @@ class ProjectStoreRequest extends FormRequest
             'proposed_payment_date' => '',
             'project_memo' => 'max:500',
             'account_affiliation1_id' => 'required',
-            'account_department_id' => 'required',
+            'account_affiliation2_id' => 'required',
             'account_affiliation3_id' => 'required',
             'account_user_id' => 'required',
         ];

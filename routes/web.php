@@ -21,10 +21,10 @@ use App\Http\Livewire\ClientForm;
 use App\Http\Controllers\Master\AccountingPeriodController;
 use App\Http\Controllers\Master\AccountingTypeController;
 use App\Http\Controllers\Master\Affiliation1Controller;
+use App\Http\Controllers\Master\Affiliation2Controller;
 use App\Http\Controllers\Master\Affiliation3Controller;
 use App\Http\Controllers\Master\ClientTypeController;
 use App\Http\Controllers\Master\ContactTypeController;
-use App\Http\Controllers\Master\DepartmentController;
 use App\Http\Controllers\Master\DistributionTypeController;
 use App\Http\Controllers\Master\InstallationTypeController;
 use App\Http\Controllers\Master\PrefectureController;
@@ -47,7 +47,9 @@ use App\Http\Controllers\SupportController;
 use App\Http\Controllers\VendorController;
 use App\Models\Contract;
 use App\Http\Controllers\Auth\PasswordChangeController;
+use App\Http\Controllers\CorporationCreditController;
 use App\Http\Controllers\PasswordPolicyController;
+use App\Http\Controllers\ProjectExpenseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,12 +82,21 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/projects/upload', [ProjectController::class, 'upload'])->name('projects.upload');
     Route::resource('/projects', ProjectController::class);
 
+    // ProjectExpenses関連
+    // Route::get('/project-expense/show-upload', [ProjectExpenseController::class, 'showUploadForm'])->name('project-expense.showUploadForm');
+    // Route::post('/project-expense/search', [ProjectExpenseController::class, 'search'])->name('project-expense.search');
+    // Route::post('/project-expense/upload', [ProjectExpenseController::class, 'upload'])->name('project-expense.upload');
+    Route::resource('/project-expense', ProjectExpenseController::class);
+
     // corporations関連
     Route::get('/corporations/show-upload', [CorporationController::class, 'showUploadForm'])->name('corporations.showUploadForm');
     Route::post('/corporations/upload', [CorporationController::class, 'upload'])->name('corporations.upload');
     Route::get('/corporations/download-csv', [CorporationController::class, 'downloadCsv'])->name('corporations.downloadCsv');
     Route::post('/corporations/search', [CorporationController::class, 'search'])->name('corporations.search');
     Route::resource('/corporations', CorporationController::class);
+
+    // corporationCredits関連
+    Route::resource('/corporation-credits', CorporationCreditController::class);
 
     // clients関連
     Route::get('/clients/show-upload', [ClientController::class, 'showUploadForm'])->name('clients.showUploadForm');
@@ -170,7 +181,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/accounting-period', AccountingPeriodController::class);
     Route::resource('/accounting-type', AccountingTypeController::class);
     Route::resource('/affiliation3', Affiliation3Controller::class);
-    Route::resource('/department', DepartmentController::class);
+    Route::resource('/affiliation2', Affiliation2Controller::class);
     Route::resource('/affiliation1', Affiliation1Controller::class);
     Route::resource('/contact-type', ContactTypeController::class);
     Route::resource('/client-type', ClientTypeController::class);

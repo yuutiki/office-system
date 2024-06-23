@@ -64,14 +64,14 @@
                     </select>
                 </div>
                 <div>
-                    <label for="department" class="text-sm text-gray-900 dark:text-white leading-none mt-4">管轄事業部</label>
-                    <select id="department" name="department" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed pointer-events-none" readonly>
+                    <label for="affiliation2" class="text-sm text-gray-900 dark:text-white leading-none mt-4">管轄事業部</label>
+                    <select id="affiliation2" name="affiliation2" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed pointer-events-none" readonly>
                         <option selected value="">未選択</option>
-                        @foreach($departments as $department)
-                        <option value="{{ $department->id }}" {{ old('department') == $department->id ? 'selected' : '' }}>{{ $department->department_name }}</option>
+                        @foreach($affiliation2s as $affiliation2)
+                        <option value="{{ $affiliation2->id }}" {{ old('affiliation2') == $affiliation2->id ? 'selected' : '' }}>{{ $affiliation2->affiliation2_name }}</option>
                         @endforeach
                     </select>
-                    @error('department')
+                    @error('affiliation2')
                     <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
@@ -115,7 +115,7 @@
                             <select id="f_user_id" name="f_user_id" class="block w-full py-1.5 border bg-gray-50 rounded mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 @foreach($users as $user)
-                                    <option value="{{ $user->id }}" @if($user->id == Auth::user()->id) selected @endif>{{ $user->name }}</option>
+                                    <option value="{{ $user->id }}" @if($user->id == Auth::user()->id) selected @endif>{{ $user->user_name }}</option>
                                 @endforeach
                             </select>
                             @error('f_user_id')
@@ -333,12 +333,12 @@
                             <input type="text" name="clientNumber" id="clientNumber" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded">
                         </div>
                         <div class="w-full flex flex-col mx-2">
-                            <label for="departmentId" class=" dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
-                            <select id="departmentId" name="departmentId" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <label for="affiliation2Id" class=" dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
+                            <select id="affiliation2Id" name="affiliation2Id" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
-                                @foreach($departments as $department)
-                                <option value="{{ $department->id }}" @selected($department->id == Auth::user()->department->id)>
-                                    {{ $department->department_name }}
+                                @foreach($affiliation2s as $affiliation2)
+                                <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == Auth::user()->affiliation2->id)>
+                                    {{ $affiliation2->affiliation2_name }}
                                 </option>
                                 @endforeach
                             </select>
@@ -399,12 +399,12 @@
                                 <input type="text" name="clientNumber" id="clientNumber" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded">
                             </div>
                             <div class="w-full flex flex-col mx-2">
-                                <label for="departmentId" class=" dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
-                                <select id="departmentId" name="departmentId" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <label for="affiliation2Id" class=" dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
+                                <select id="affiliation2Id" name="affiliation2Id" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option selected value="">未選択</option>
-                                    @foreach($departments as $department)
-                                    <option value="{{ $department->id }}" @selected($department->id == Auth::user()->department->id)>
-                                        {{ $department->department_name }}
+                                    @foreach($affiliation2s as $affiliation2)
+                                    <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == Auth::user()->affiliation2->id)>
+                                        {{ $affiliation2->affiliation2_name }}
                                     </option>
                                     @endforeach
                                 </select>
@@ -468,7 +468,7 @@
         function searchClient() {
             const clientName = document.getElementById('clientName').value;
             const clientNumber = document.getElementById('clientNumber').value;
-            const departmentId = document.getElementById('departmentId').value;
+            const affiliation2Id = document.getElementById('affiliation2Id').value;
 
             fetch('/client/search', {
                 method: 'POST',
@@ -476,7 +476,7 @@
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
-                body: JSON.stringify({ clientName, clientNumber, departmentId })
+                body: JSON.stringify({ clientName, clientNumber, affiliation2Id })
             })
             .then(response => response.json())
             .then(data => {
@@ -487,20 +487,20 @@
                 const resultElement = document.createElement('tr');
                 resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
                 resultElement.innerHTML = `
-                    <td class="py-2 pl-5 cursor-pointer" onclick="setClient('${result.client_name}', '${result.client_num}', '${result.installation_type_id}', '${result.department_id}', '${result.client_type_id}', '${result.user_id}')">${result.client_name}</td>
+                    <td class="py-2 pl-5 cursor-pointer" onclick="setClient('${result.client_name}', '${result.client_num}', '${result.installation_type_id}', '${result.affiliation2_id}', '${result.client_type_id}', '${result.user_id}')">${result.client_name}</td>
                     <td class="py-2 ml-2">${result.client_num}</td>
-                    <td class="py-2 ml-2">${result.department.department_name}</td>
+                    <td class="py-2 ml-2">${result.affiliation2.affiliation2_name}</td>
                 `;
                 searchResultsContainer.appendChild(resultElement);
                 });
             });
             }
 
-            function setClient(name, number, installation, department, clienttype, user) {
+            function setClient(name, number, installation, affiliation2, clienttype, user) {
             document.getElementById('client_num').value = number;
             document.getElementById('client_name').value = name;
             document.getElementById('installation_type_id').value = installation;
-            document.getElementById('department').value = department;
+            document.getElementById('affiliation2').value = affiliation2;
             document.getElementById('client_type_id').value = clienttype;
             document.getElementById('user_id').value = user;
 
@@ -537,7 +537,7 @@
     function searchClientPerson() {
         const clientName = document.getElementById('clientName').value;
         const clientNumber = document.getElementById('clientNumber').value;
-        const departmentId = document.getElementById('departmentId').value;
+        const affiliation2Id = document.getElementById('affiliation2Id').value;
 
         fetch('/client/search', {
             method: 'POST',
@@ -545,7 +545,7 @@
             'Content-Type': 'application/json',
             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             },
-            body: JSON.stringify({ clientName, clientNumber, departmentId })
+            body: JSON.stringify({ clientName, clientNumber, affiliation2Id })
         })
         .then(response => response.json())
         .then(data => {
@@ -556,20 +556,20 @@
             const resultElement = document.createElement('tr');
             resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
             resultElement.innerHTML = `
-                <td class="py-2 pl-5 cursor-pointer" onclick="setClient('${result.client_name}', '${result.client_num}', '${result.installation_type_id}', '${result.department_id}', '${result.client_type_id}', '${result.user_id}')">${result.client_name}</td>
+                <td class="py-2 pl-5 cursor-pointer" onclick="setClient('${result.client_name}', '${result.client_num}', '${result.installation_type_id}', '${result.affiliation2_id}', '${result.client_type_id}', '${result.user_id}')">${result.client_name}</td>
                 <td class="py-2 ml-2">${result.client_num}</td>
-                <td class="py-2 ml-2">${result.department.department_name}</td>
+                <td class="py-2 ml-2">${result.affiliation2.affiliation2_name}</td>
             `;
             searchResultsContainer.appendChild(resultElement);
             });
         });
         }
 
-        function setClientPerson(name, number, installation, department, clienttype, user) {
+        function setClientPerson(name, number, installation, affiliation2, clienttype, user) {
         document.getElementById('client_num').value = number;
         document.getElementById('client_name').value = name;
         document.getElementById('installation_type_id').value = installation;
-        document.getElementById('department').value = department;
+        document.getElementById('affiliation2').value = affiliation2;
         document.getElementById('client_type_id').value = clienttype;
         document.getElementById('user_id').value = user;
 

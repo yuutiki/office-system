@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -45,30 +46,40 @@ class ProfileController extends Controller
 
     public function updateImage(Request $request)
     {
-        
         $userNum = Auth::user()->user_num;
+    
+        if ($request->has('cropped_profile_image')) {
 
-        // プロフ画像のファイル名を生成
-        if ($request->hasFile('profile_image')) {
-            $extension = $request->profile_image->extension();
+            // エンコードされた画像データを取得
+            $encodedImage = $request->cropped_profile_image;
+
+            // データURIスキームから拡張子を取得
+            // 第1引数: パターンとして使用する正規表現文字列。
+            // 第2引数: パターンを照合する対象の文字列。
+            // 第3引数: パターンに一致した部分文字列が格納される配列。0番目には全体、1番目には拡張子部分のみ
+            preg_match('#^data:image/(\w+);base64,#i', $encodedImage, $matches);
+            $extension = $matches[1];
+
+            // エンコードされた画像データをデコード
+            $decodedImage = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $encodedImage));
+    
+            // ファイル名を生成
             $fileName = $userNum . '_' . 'profile' . '.' . $extension;
-            $imagePath = $request->file('profile_image')->storeAs('users/profile_image', $fileName, 'public');
-
+            $imagePath = 'users/profile_image/' . $fileName;
+    
+            // 画像を保存
+            Storage::disk('public')->put($imagePath, $decodedImage);
+    
+            // ユーザーのプロフィール画像を更新
             $user = User::find(Auth::user()->id);
             $user->profile_image = $imagePath;
             $user->save();
-
+    
             return Redirect::route('profile.edit')->with('success', 'プロフィール画像を更新しました');
-
         } else {
-            // ファイルがアップロードされていない場合の処理
-            // アップロードなしのメッセージを表示
+            // エンコードされた画像データがリクエストに含まれていない場合の処理
             return Redirect::route('profile.edit')->with('error', '新しい画像が選択されていません');
         }
-
-
-
-        // return Redirect::route('profile.edit')->with('success', 'プロフィール画像を更新しました');
     }
 
     /**

@@ -1,26 +1,21 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
-                営業報告更新
+            <h2 class="text-xl text-gray-900 dark:text-white">
+                {{ Breadcrumbs::render('editreport') }}
             </h2>
             <div class="flex justify-end">
-                <x-general-button onClick="location.href='{{route('reports.index')}}'">
-                    {{-- <x-general-button onclick="location.href='{{route('reports.index')}}'"> --}}
+                {{-- <x-general-button onClick="location.href='{{route('reports.index')}}'">
                     報告一覧へ
-                </x-general-button>
+                </x-general-button> --}}
                 <x-message :message="session('message')"/>
             </div>
         </div>
     </x-slot>
 
-
-
-    <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden">
-    </div>
+    <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
         <div class="mx-4 sm:p-8">
             <form id="reoportForm" method="post" action="{{route('reports.update', $report)}}" enctype="multipart/form-data">
                 @csrf
@@ -67,7 +62,7 @@
                     <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                         <div class="w-full flex flex-col">
                             <label for="report_type_id" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">報告種別</label>
-                            <select id="report_type_id" name="report_type_id" class="block w-48 py-1 mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <select id="report_type_id" name="report_type_id" class="input-primary">
                                 <option value="">未選択</option>
                                 @foreach ($reportTypes as $reportType)
                                 <option value="{{ $reportType->id }}" @selected($reportType->id == old('report_type_id',$report->report_type_id))>{{ $reportType->report_type_name }}</option>
@@ -78,37 +73,37 @@
                         <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-1">
                             <div class="w-full flex flex-col">
                                 <label for="contact_at" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">対応日付</label>
-                                <input type="date" min="2000-01-01" max="2100-12-31" name="contact_at" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 p-locality p-street-address p-extended-address" id="contact_at" value="{{ old('contact_at', now()->format('Y-m-d')) }}" placeholder="">
+                                <input type="date" min="2000-01-01" max="2100-12-31" name="contact_at" class="input-primary" id="contact_at" value="{{ old('contact_at', now()->format('Y-m-d')) }}" placeholder="">
                             </div>
                             <div class="w-full flex flex-col">
                                 <label for="contact_type_id" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">対応形式</label>
-                                <select id="contact_type_id" name="contact_type_id" class="w-auto py-1 mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <select id="contact_type_id" name="contact_type_id" class="input-primary">
                                     <option value="">未選択</option>
                                     @foreach ($contactTypes as $contactType)
                                         <option value="{{ $contactType->id }}" @selected($contactType->id == old('contact_type_id',$report->contact_type_id))>{{ $contactType->contact_type_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="w-full flex flex-col">
+                            <div class="w-full flex flex-col col-span-2">
                                 <label for="client_representative" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">顧客担当者</label>
-                                <input type="text" name="client_representative" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="client_representative" value="{{old('client_representative', $report->client_representative)}}" placeholder="">
+                                <input type="text" name="client_representative" class="input-primary" id="client_representative" value="{{old('client_representative', $report->client_representative)}}" placeholder="">
                             </div>
                         </div>
                         <div class="w-full flex flex-col">
                             <label for="report_title" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">報告タイトル</label>
-                            <input type="text" name="report_title" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="report_title" value="{{old('report_title', $report->report_title)}}" placeholder="">
+                            <input type="text" name="report_title" class="input-primary" id="report_title" value="{{old('report_title', $report->report_title)}}" placeholder="">
                         </div>
                         <div class="relative mb-4 mt-4">
                             <label for="report_content" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">報告内容</label>                       
-                            <textarea name="report_content" id="auto-resize-textarea-report_content"  class="resize-none block w-full py-1 border focus:outline-none focus:ring focus:border-blue-300 rounded mt-1" rows="5">{{old('report_content', $report->report_content)}}</textarea>
+                            <textarea name="report_content" id="auto-resize-textarea-report_content"  class="resize-none block w-full py-1 border focus:outline-none focus:ring focus:border-blue-300 rounded mt-1" rows="5" data-auto-resize="true">{{old('report_content', $report->report_content)}}</textarea>
                         </div>
                         <div class="relative mb-4 mt-4">
                             <label for="report_notice" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">特記事項</label>
-                            <textarea name="report_notice" id="auto-resize-textarea-report_notice"  class="resize-none  block w-full py-1 border focus:outline-none focus:ring focus:border-blue-300 rounded mt-1" rows="5">{{old('report_notice', $report->report_notice)}}</textarea>
+                            <textarea name="report_notice" id="auto-resize-textarea-report_notice"  class="resize-none  block w-full py-1 border focus:outline-none focus:ring focus:border-blue-300 rounded mt-1" rows="5" data-auto-resize="true">{{old('report_notice', $report->report_notice)}}</textarea>
                         </div>
                                         
 
-                        <!-- ユーザ検索フォーム -->
+                        {{-- <!-- ユーザ検索フォーム -->
                         <input type="text" id="userSearch" class="border border-gray-300 rounded px-3 py-1 w-full mb-2" placeholder="ユーザを検索...">
 
                         <!-- ユーザ検索結果のリスト -->
@@ -117,7 +112,7 @@
                             <li data-user-id="{{ $user->id }}">
                                 <label>
                                     <input type="checkbox" class="mr-2"  name="selectedRecipientsId[]" value="{{ $user->id }}">
-                                    {{ $user->name }}
+                                    {{ $user->user_name }}
                                 </label>
                             </li>
                             @endforeach
@@ -126,7 +121,7 @@
                         <!-- 選択済みユーザーのリスト -->
                         <ul id="selectedUserList" class="border border-gray-300 rounded px-3 py-2 h-60 overflow-y-scroll dark:text-white">
                             <!-- ここに選択済みユーザーが追加されます -->
-                        </ul>
+                        </ul> --}}
                     </div>
                 </div>
                 <x-primary-button form-id="reportForm" class="mt-4">
@@ -137,9 +132,8 @@
     </div>
 
 
-    <!-- Extra Large Modal -->
+    {{-- <!-- Extra Large Modal -->
     <div id="clientSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden">
-    {{-- <div id="clientSearchModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full justify-center items-center"> --}}
         <div class=" w-4/5  max-h-full">
             <!-- Modal content -->
             <div class="relative bg-white rounded shadow dark:bg-gray-700">
@@ -172,7 +166,6 @@
                     <table class="w-full mt-4 text-white mb-5 text-left text-sm">
                         <thead>
                         <tr>
-                            {{-- <th class="py-1"></th> --}}
                             <th class="py-1 pl-5">顧客名称</th>
                             <th class="py-1 whitespace-nowrap">顧客番号</th>
                         </tr>
@@ -194,37 +187,9 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
-    <script>
-        const textareaContent = document.getElementById('auto-resize-textarea-report_content');
-        textareaContent.addEventListener('input', function() {
-            // テキストエリアの高さを自動調整
-            this.style.height = 'auto';
-            this.style.height = (this.scrollHeight + 2) + 'px';
-        });
-        textareaContent.addEventListener('mouseover', function() {
-            // テキストエリアの高さを自動調整
-            this.style.height = 'auto';
-            this.style.height = (this.scrollHeight + 2) + 'px';
-        });
-
-        const textareaNotice = document.getElementById('auto-resize-textarea-report_notice');
-        textareaNotice.addEventListener('input', function() {
-            // テキストエリアの高さを自動調整
-            this.style.height = 'auto';
-            this.style.height = (this.scrollHeight + 2) + 'px';
-        });
-        textareaNotice.addEventListener('mouseover', function() {
-            // テキストエリアの高さを自動調整
-            this.style.height = 'auto';
-            this.style.height = (this.scrollHeight + 2) + 'px';
-        });
-    </script>
-
-
-    
-    <script>
+    {{-- <script>
         // モーダルを表示するための関数
         function showModal() {
             // モーダルの要素を取得
@@ -285,126 +250,8 @@
 
             hideModal();
             }
-    </script>
+    </script> --}}
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const userSearchInput = document.getElementById('userSearch');
-      const userList = document.getElementById('userList');
-      const selectedUserList = document.getElementById('selectedUserList');
-      const selectedUsers = [];
-  
-      userSearchInput.addEventListener('input', function() {
-        const searchTerm = this.value.trim().toLowerCase();
-  
-        const users = userList.getElementsByTagName('li');
-        for (const user of users) {
-          const userName = user.textContent.trim().toLowerCase();
-          const userId = user.getAttribute('data-user-id');
-  
-          if (userName.includes(searchTerm) && !selectedUsers.includes(userId)) {
-            user.style.display = "block";
-          } else {
-            user.style.display = "none";
-          }
-        }
-      });
-  
-      userList.addEventListener('click', function(event) {
-        const target = event.target;
-        if (target.tagName === 'LI') {
-          const userId = target.getAttribute('data-user-id');
-          const userName = target.textContent.trim();
-  
-          if (!selectedUsers.includes(userId)) {
-            selectedUsers.push(userId);
-            target.style.display = "none";
-  
-            const listItem = document.createElement('li');
-            listItem.textContent = userName;
-            listItem.setAttribute('data-user-id', userId);
-            listItem.classList.add('selected-user');
-            selectedUserList.appendChild(listItem);
-          }
-        }
-      });
-  
-      selectedUserList.addEventListener('click', function(event) {
-        const target = event.target;
-        if (target.tagName === 'LI') {
-          const userId = target.getAttribute('data-user-id');
-          const userName = target.textContent.trim();
-  
-          const index = selectedUsers.indexOf(userId);
-          if (index !== -1) {
-            selectedUsers.splice(index, 1);
-            userList.querySelector(`li[data-user-id="${userId}"]`).style.display = "block";
-  
-            // ユーザーを右側の欄から左側の欄に戻す
-            selectedUserList.removeChild(target);
-          }
-        }
-      });
-    });
-  </script>
 
-{{-- <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      // ...
-  
-      userList.addEventListener('click', function(event) {
-        const target = event.target;
-        if (target.tagName === 'LI') {
-          const userId = target.getAttribute('data-user-id');
-          const userName = target.textContent.trim();
-  
-          if (!selectedUsers.includes(userId)) {
-            selectedUsers.push(userId);
-            target.style.display = "none";
-  
-            const listItem = document.createElement('li');
-            listItem.textContent = userName;
-            listItem.setAttribute('data-user-id', userId);
-            listItem.classList.add('selected-user');
-            selectedUserList.appendChild(listItem); // 右側の欄に選択済みのユーザを追加
-          }
-        }
-      });
-  
-      // ...
-    });
-  </script> --}}
-{{-- 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-      // ...
-  
-      userList.addEventListener('change', function(event) {
-        const target = event.target;
-        if (target.tagName === 'INPUT' && target.type === 'checkbox') {
-          const userId = target.getAttribute('data-user-id');
-          const userName = target.getAttribute('data-user-name');
-  
-          if (target.checked && !selectedUsers.includes(userId)) {
-            selectedUsers.push(userId);
-  
-            const listItem = document.createElement('li');
-            listItem.textContent = userName;
-            listItem.setAttribute('data-user-id', userId);
-            listItem.classList.add('selected-user');
-            selectedUserList.appendChild(listItem); // 右側の欄に選択済みのユーザを追加
-          } else if (!target.checked && selectedUsers.includes(userId)) {
-            const index = selectedUsers.indexOf(userId);
-            if (index !== -1) {
-              selectedUsers.splice(index, 1);
-            }
-            const selectedUserListItem = selectedUserList.querySelector(`li[data-user-id="${userId}"]`);
-            selectedUserList.removeChild(selectedUserListItem); // 右側の欄から選択解除されたユーザを削除
-          }
-        }
-      });
-  
-      // ...
-    });
-  </script> --}}
+    <script src="{{ asset('assets/js/autoresizetextarea.js') }}"></script>
 </x-app-layout>

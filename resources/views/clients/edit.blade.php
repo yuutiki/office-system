@@ -4,11 +4,44 @@
             <h2 class="text-sm text-xl text-gray-900 dark:text-white">
                 {{ Breadcrumbs::render('editClient', $client) }}
             </h2>
-            <div class="flex justify-end">
-                {{-- <x-general-button onclick="location.href='{{route('clients.index')}}'">
-                    戻る
-                </x-general-button> --}}
-                <x-message :message="session('message')"/>
+            <div class="flex justify-end items-center space-x-2">
+                <x-message :message="session('message')" />
+
+                <form method="post" action="{{ route('clients.update', $client) }}" enctype="multipart/form-data" id="clientForm" class="flex items-center">
+                    @csrf
+                    @method('patch')
+                    @can('storeUpdate_clients')
+                        <x-button-save form-id="clientForm" id="saveButton" onkeydown="stopTab(event)">
+                            <span class="ml-1 hidden md:inline text-sm">更新</span>
+                        </x-button-save>
+                    @endcan
+                </form>
+
+                <button id="dropdownActionButton" data-dropdown-toggle="dropdownActions" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-600" type="button">
+                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                        <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Dropdown menu -->
+            <div id="dropdownActions" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-56 dark:bg-gray-700 dark:divide-gray-600">
+                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownActionButton">
+                    <li>
+                        <button type="button" data-modal-target="deleteModal-{{$client->id}}" data-modal-show="deleteModal-{{$client->id}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full dark:text-red-500" onclick="focusCancel()">
+                            <div class="flex">
+                                <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                                <span class="font-semibold">削除</span>
+                            </div>
+                        </button>
+                    </li>
+                    <li>
+                        <span class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full">更新日：{{ $client->updated_at }}</span>
+                    </li>
+                    <li>
+                        <span class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full">更新者：{{ $client->updatedBy->user_name }}</span>
+                    </li>
+                </ul>
             </div>
         </div>
     </x-slot>
@@ -18,12 +51,12 @@
     <div class="max-w-7xl mx-auto px-2 pb-4 sm:pl-16">
 
         <div class="">
-        <form method="post" action="{{route('clients.update',$client)}}" enctype="multipart/form-data" autocomplete="new-password">
+        {{-- <form method="post" action="{{route('clients.update',$client)}}" enctype="multipart/form-data" autocomplete="new-password">
             @csrf
-            @method('patch')
+            @method('patch') --}}
 
             <div class="relative z-0 mt-8">
-                <input type="text" id="client_num" name="client_num" value="{{old('client_num',$client->client_num)}}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
+                <input type="text" id="client_num" name="client_num" form="clientForm" value="{{old('client_num',$client->client_num)}}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
                 <label for="client_num" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">顧客番号</label>
             </div>
 
@@ -44,14 +77,14 @@
                 </div>
                 <div class="">
                     <label for="client_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2 mt-2">顧客名称</label>
-                    <input type="text" name="client_name" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" id="client_name" value="{{old('client_name',$client->client_name)}}" placeholder="例）烏丸大学">
+                    <input type="text" name="client_name" form="clientForm" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" id="client_name" value="{{old('client_name',$client->client_name)}}" placeholder="例）烏丸大学">
                     @error('client_name')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror                
                 </div>
                 <div class="hidden md:inline-block">
                     <label for="client_kana_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客カナ名称</label>
-                    <input type="text" name="client_kana_name" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" id="client_kana_name" value="{{old('client_kana_name',$client->client_kana_name)}}" placeholder="例）カラスマダイガク">
+                    <input type="text" name="client_kana_name" form="clientForm" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" id="client_kana_name" value="{{old('client_kana_name',$client->client_kana_name)}}" placeholder="例）カラスマダイガク">
                     @error('client_kana_name')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror                
@@ -62,7 +95,7 @@
 
                 <div>
                     <label for="installation_type_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">設置種別</label>
-                    <select id="installation_type_id" name="installation_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <select id="installation_type_id" name="installation_type_id" form="clientForm" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected value="">未選択</option>
                         @foreach($installationTypes as $installationType)
                         <option value="{{ $installationType->id }}" @selected( $installationType->id == $client->installation_type_id)>{{ $installationType->type_name }}</option>
@@ -74,7 +107,7 @@
                 </div>
                 <div>
                     <label for="client_type_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">顧客種別</label>
-                    <select id="client_type_id" name="client_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <select id="client_type_id" name="client_type_id" form="clientForm" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected value="">未選択</option>
                         @foreach($clientTypes as $clientType)
                         <option value="{{ $clientType->id }}" @selected( $clientType->id == $client->client_type_id)>{{ $clientType->client_type_name }}</option>
@@ -86,7 +119,7 @@
                 </div>
                 <div>
                     <label for="trade_status_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">取引状態</label>
-                    <select id="trade_status_id" name="trade_status_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <select id="trade_status_id" name="trade_status_id" form="clientForm" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected value="">未選択</option>
                         @foreach($tradeStatuses as $tradeStatus)
                         <option value="{{ $tradeStatus->id }}" @selected( $tradeStatus->id == $client->trade_status_id )>{{ $tradeStatus->trade_status_name }}</option>
@@ -97,20 +130,20 @@
                     @enderror
                 </div>
                 <div>
-                    <label for="department" class="text-sm  text-gray-900 dark:text-white leading-none mt-4">管轄事業部</label>
-                    <select id="department" name="department" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <label for="affiliation2" class="text-sm  text-gray-900 dark:text-white leading-none mt-4">管轄事業部</label>
+                    <select id="affiliation2" name="affiliation2" form="clientForm" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected value="">未選択</option>
-                        @foreach($departments as $department)
-                            <option value="{{ $department->id }}" @selected( $department->id == $client->department_id )>{{ $department->department_name }}</option>
+                        @foreach($affiliation2s as $affiliation2)
+                            <option value="{{ $affiliation2->id }}" @selected( $affiliation2->id == $client->affiliation2_id )>{{ $affiliation2->affiliation2_name }}</option>
                         @endforeach
                     </select>
-                    @error('department')
+                    @error('affiliation2')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
                 <div>
                     <label for="user_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">営業担当</label>
-                    <select id="user_id" name="user_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <select id="user_id" name="user_id" form="clientForm" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected value="">未選択</option>
                         @foreach($usersFromComposer as $user)
                             <option value="{{ $user->id }}" @selected( $user->id == $client->user_id)>{{ $user->user_name }}</option>
@@ -195,7 +228,7 @@
                             <label for="head_post_code" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">郵便番号</label>
                             {{-- <input type="text" name="head_post_code" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="head_post_code" value="{{old('head_post_code')}}" placeholder="" onKeyUp="AjaxZip3.zip2addr(this,'','head_prefecture','head_addre1','','',false);"> --}}
                             <div class="relative w-full">
-                                <input type="text" name="head_post_code" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="head_post_code" value="{{old('head_post_code', $client->head_post_code)}}" placeholder="">
+                                <input type="text" name="head_post_code" form="clientForm" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="head_post_code" value="{{old('head_post_code', $client->head_post_code)}}" placeholder="">
                                 <button type="button" id="client_ajaxzip3" class="absolute top-0 end-0 p-2.5 text-sm h-[34px] text-white mt-1 bg-blue-700 rounded-e border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
@@ -209,7 +242,7 @@
                         </x-general-button> --}}
                         <div class="">
                             <label for="head_prefecture_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">都道府県</label>
-                            <select id="head_prefecture_id" name="head_prefecture_id" class="w-full py-1.5  text-sm mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <select id="head_prefecture_id" name="head_prefecture_id" form="clientForm" class="w-full py-1.5  text-sm mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 @foreach($prefectures as $prefecture)
                                     <option value="{{ $prefecture->id }}" @if( $prefecture->id == $client->head_prefecture ) selected @endif>{{ $prefecture->prefecture_code }}:{{ $prefecture->prefecture_name }}</option>
@@ -218,7 +251,7 @@
                         </div>
                         <div class="col-span-3">
                             <label for="head_addre1" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表所在地</label>
-                            <input type="text" name="head_addre1" id="head_addre1" value="{{old('head_addre1', $client->head_address1)}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" placeholder="">
+                            <input type="text" name="head_addre1" form="clientForm" id="head_addre1" value="{{old('head_addre1', $client->head_address1)}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" placeholder="">
                         </div>
 
 
@@ -226,12 +259,12 @@
 
                         <div class="">
                             <label for="head_tel" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表TEL（-）</label>
-                            <input type="text" name="head_tel" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_tel" value="{{old('head_tel',$client->head_tel)}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" placeholder="">
+                            <input type="text" name="head_tel" form="clientForm" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_tel" value="{{old('head_tel',$client->head_tel)}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" placeholder="">
                         </div>
     
                         <div class="">
                             <label for="head_fax" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表FAX（-）</label>
-                            <input type="tel" name="head_fax" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_fax" value="{{old('head_fax',$client->head_fax)}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded"  placeholder="">
+                            <input type="tel" name="head_fax" form="clientForm" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_fax" value="{{old('head_fax',$client->head_fax)}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded"  placeholder="">
                         </div>
                     </div>
 
@@ -240,13 +273,13 @@
                     <div class="grid gap-4 mb-1 sm:grid-cols-5 mt-1">
                         <div class="w-full flex flex-col">
                             <label for="students" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">規模（学生数/従業員数）</label>
-                            <input type="number" min="0" name="students" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="students" value="{{old('students',$client->students)}}">
+                            <input type="number" min="0" name="students" form="clientForm" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="students" value="{{old('students',$client->students)}}">
                         </div>
                     </div>
                     <div class="grid gap-4 mb-1 sm:grid-cols-5 mt-1">
                         <div class="w-full flex flex-col">
                             <label for="distribution" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">商流</label>
-                            <select id="distribution_type_id" name="distribution_type_id" class="w-full mt-1 block py-1.5 text-sm bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <select id="distribution_type_id" name="distribution_type_id" form="clientForm" class="w-full mt-1 block py-1.5 text-sm bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 @foreach($distributionTypes as $distributionType)
                                 <option value="{{ $distributionType->id }}" @selected( $distributionType->id == old('distribution_type_id',$client->distribution))>{{ $distributionType->distribution_type_name }}</option>
@@ -303,12 +336,12 @@
                     <div class="grid gap-4 mt-1 mb-4 sm:grid-cols-5">
                         <div class="w-full flex flex-col hidden">
                             <label for="dealer_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">ディーラID（hidden要素）</label>
-                            <input type="text" name="dealer_id" class="w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="dealer_id" value="{{old('dealer_id')}}" placeholder="">
+                            <input type="text" name="dealer_id" form="clientForm" class="w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="dealer_id" value="{{old('dealer_id')}}" placeholder="">
                         </div>
                         <div class="w-full flex flex-col">
                             <label for="vendor_num" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（業者）№</label>
                             <div class="relative w-full">
-                                <input type="text" name="vendor_num" class="dark:bg-gray-400 w-full py-1 border border-gray-300 rounded mt-1" id="vendor_num" value="{{old('vendor_num',optional($client->dealer)->vendor_num)}}" disabled>
+                                <input type="text" name="vendor_num" form="clientForm" class="dark:bg-gray-400 w-full py-1 border border-gray-300 rounded mt-1" id="vendor_num" value="{{old('vendor_num',optional($client->dealer)->vendor_num)}}" disabled>
                                 <button type="button" onclick="showdealerModal()" class="absolute top-0 end-0 p-2.5 text-sm h-[34px] text-white mt-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
@@ -319,18 +352,14 @@
                     
                         <div class="w-full flex flex-col md:col-span-3">
                             <label for="vendor_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（業者）名称</label>
-                            <input type="text" name="vendor_name" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="vendor_name" value="{{old('vendor_name',optional($client->dealer)->vendor_name)}}" disabled>
+                            <input type="text" name="vendor_name" form="clientForm" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="vendor_name" value="{{old('vendor_name',optional($client->dealer)->vendor_name)}}" disabled>
                         </div>
-                    
                     </div>
-                    
-
-
                     
 
                     <div class="w-full flex flex-col">
                         <label for="memo" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">備考</label>
-                        <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="auto-resize-textarea" data-auto-resize="true" value="{{old('memo')}}" cols="30" rows="5">{{old('memo', $client->memo)}}</textarea>
+                        <textarea name="memo" form="clientForm" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="auto-resize-textarea" data-auto-resize="true" value="{{old('memo')}}" cols="30" rows="5">{{old('memo', $client->memo)}}</textarea>
                     </div>
                     {{-- <ul class=" mt-4 items-center w-full text-sm text-gray-900 bg-white border border-gray-200 rounded sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                         <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
@@ -401,10 +430,10 @@
                             @enderror
                         </li>
                     </ul> --}}
-                    <x-primary-button class="mt-4" id="saveButton">
+                    {{-- <x-primary-button class="mt-4" id="saveButton">
                         編集を確定する(s)
                     </x-primary-button>
-                </form>
+                </form> --}}
                 </div>
                 {{-- 1つ目のタブコンテンツEnd --}}
 
@@ -1102,75 +1131,104 @@
         </div>
     </div>
 
-        <!-- ディーラ検索 Modal -->
-        <div id="dealerSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden animate-slide-in-top">
-            {{-- <div id="dealerSearchModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full justify-center items-center"> --}}
-                <div class="max-h-full w-full max-w-2xl">
-                    <!-- Modal content -->
-                    <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
-                        <!-- Modal header -->
-                        <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
-                            <h3 class="text-xl text-gray-900 dark:text-white">
-                                ディーラ検索画面
-                            </h3>
-                            <button type="button" onclick="hideDealerModal()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                                <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                                </svg>
-                                <span class="sr-only">Close modal</span>
-                            </button>
+    <!-- ディーラ検索 Modal -->
+    <div id="dealerSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden animate-slide-in-top">
+        <div class="max-h-full w-full max-w-2xl">
+            <!-- Modal content -->
+            <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl text-gray-900 dark:text-white">
+                        ディーラ検索画面
+                    </h3>
+                    <button type="button" onclick="hideDealerModal()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                        <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <form action="#" method="GET">
+                    <!-- 検索条件入力フォーム -->
+                    <div class="grid gap-4 mb-4 sm:grid-cols-2 mt-2">
+                    {{-- <div class="flex flex-wrap justify-start mx-5"> --}}
+                        <div class="">
+                            <label for="vendorName" class="block text-sm dark:text-gray-100 text-gray-900 leading-none">法人名称</label>
+                            <input type="text" name="vendorName" id="vendorName" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
                         </div>
-                        <!-- Modal body -->
-                        <form action="#" method="GET">
-                            <!-- 検索条件入力フォーム -->
-                            <div class="grid gap-4 mb-4 sm:grid-cols-2 mt-2">
-                            {{-- <div class="flex flex-wrap justify-start mx-5"> --}}
-                                <div class="">
-                                    <label for="vendorName" class="block text-sm dark:text-gray-100 text-gray-900 leading-none">法人名称</label>
-                                    <input type="text" name="vendorName" id="vendorName" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
-                                </div>
-                                <div class="">
-                                    <label for="vendorNumber" class="block text-sm dark:text-gray-100 text-gray-900 leading-none">法人番号</label>
-                                    <input type="text" name="vendorNumber" id="vendorNumber" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
-                                </div>
-                            </div>
-                        </form>
-                        <div class=" max-h-80 overflow-y-auto overflow-x-hidden mt-4">
-                            <table class="w-full mt-4 text-white mb-5 text-left text-sm">
-                                <thead>
-                                <tr>
-                                    {{-- <th class="py-1"></th> --}}
-                                    <th class="py-1 pl-5">法人名称</th>
-                                    <th class="py-1 whitespace-nowrap">法人番号</th>
-                                </tr>
-                                </thead>
-                                <tbody class="" id="searchResultsDealerContainer">                          
-                                        <!-- 検索結果がここに追加されます -->
-                                </tbody>
-                            </table>
+                        <div class="">
+                            <label for="vendorNumber" class="block text-sm dark:text-gray-100 text-gray-900 leading-none">法人番号</label>
+                            <input type="text" name="vendorNumber" id="vendorNumber" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
                         </div>
-                        
-                        <!-- Modal footer -->
-                        <div class="flex justify-between items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                            <div>
-                                <button type="button" onclick="searchDealer()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    検索
-                                </button>
-                                <button type="button" onclick="hideDealerModal()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                                    閉じる
-                                </button>
-                            </div>
-                            <!-- 一括クリアボタン -->
-                            <div class="flex items-center">
-                                <button type="button" onclick="clearAllFields()" class="px-4 py-2 text-sm text-white bg-red-500 rounded hover:bg-red-600 focus:outline-none focus:bg-red-600">
-                                    一括クリア
-                                </button>
-                            </div>
-                        </div>
-
+                    </div>
+                </form>
+                <div class=" max-h-80 overflow-y-auto overflow-x-hidden mt-4">
+                    <table class="w-full mt-4 text-white mb-5 text-left text-sm">
+                        <thead>
+                        <tr>
+                            {{-- <th class="py-1"></th> --}}
+                            <th class="py-1 pl-5">法人名称</th>
+                            <th class="py-1 whitespace-nowrap">法人番号</th>
+                        </tr>
+                        </thead>
+                        <tbody class="" id="searchResultsDealerContainer">                          
+                                <!-- 検索結果がここに追加されます -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Modal footer -->
+                <div class="flex justify-between items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <div>
+                        <button type="button" onclick="searchDealer()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            検索
+                        </button>
+                        <button type="button" onclick="hideDealerModal()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                            閉じる
+                        </button>
+                    </div>
+                    <!-- 一括クリアボタン -->
+                    <div class="flex items-center">
+                        <button type="button" onclick="clearAllFields()" class="px-4 py-2 text-sm text-white bg-red-500 rounded hover:bg-red-600 focus:outline-none focus:bg-red-600">
+                            一括クリア
+                        </button>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- 削除モーダル -->
+    <div id="deleteModal-{{$client->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative w-full max-w-md max-h-full">
+            <div class="relative bg-white rounded shadow dark:bg-gray-700">
+                <button data-modal-hide="deleteModal-{{$client->id}}" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                </button>
+                <div class="p-6 text-center">
+                    <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                    </svg>
+                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
+                    <div class="flex justify-center">
+                        <form action="{{route('clients.destroy',$client->id)}}" method="POST" class="">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" data-modal-hide="deleteModal-{{$client->id}}" class="text-white  bg-red-600 hover:bg-red-800 focus:outline-none font-medium rounded text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 dark:focus:ring-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                                削除
+                            </button>
+                        </form>
+                        <button id="cancelButton-{{$client->id}}" data-modal-hide="deleteModal-{{$client->id}}" type="button" onkeydown="stopTab(event)" class="text-gray-500 bg-white hover:bg-gray-100 focus:outline-none rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                            やっぱやめます
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <script>

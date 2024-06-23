@@ -16,7 +16,9 @@ return new class extends Migration
             $table->string('affiliation3_name',100)->comment('第三階層所属名称');
             $table->string('affiliation3_name_kana',100)->nullable(true)->comment('第三階層所属カナ名称');
             $table->string('affiliation3_name_en',100)->nullable(true)->comment('第三階層所属英名称');
+            $table->string('affiliation3_name_short',100)->nullable(true)->comment('第三階層所属略称');
             $table->foreignId('affiliation2_id')->comment('所属階層2（親）ID');
+            $table->boolean('is_active')->default(1)->comment('有効フラグ');
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->datetimes();

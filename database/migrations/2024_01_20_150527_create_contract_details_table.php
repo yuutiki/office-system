@@ -21,7 +21,7 @@ return new class extends Migration
             $table->decimal('contract_amount',10, 0)->default(0)->comment('契約金額');
             $table->text('contract_detail_memo')->nullable(true)->comment('契約詳細備考');
             $table->text('target_system')->nullable(true)->comment('対象システム');
-            $table->string('contract_pdf')->nullable(true)->comment('契約書PDF');
+            // $table->string('contract_pdf')->nullable(true)->comment('契約書PDF');
             
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');

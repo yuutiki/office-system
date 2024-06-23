@@ -1,21 +1,24 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between w-5/6 whitespace-nowrap">
-            <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex">
+            <h2 class="font-semibold sm:text-lg text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('projects') }}
-                <div class="ml-4">
+                <div class="ml-4 text-sm sm:text-lg">
                     {{ $count }}件
-                    {{ number_format($totalAmount) }}円
+                    {{ number_format($totalAllRevenue) }}円
+                    <span class="block md:inline text-sm">({{ number_format($totalRevenue) }}円)</span>
                 </div>
             </h2>
             <x-message :message="session('message')" />
         </div>
     </x-slot>
 
+    <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
+
     <div class="relative bg-white dark:bg-gray-800 rounded-t-md md:w-auto md:ml-14 md:mr-2 m-auto shadow-md  dark:text-gray-900 mt-4">
         <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
-            <div class="w-full md:w-1/2">
-                <form method="GET" action="{{ route('corporations.index') }}" id="search_form" class="flex items-center">
+            <div class="w-full md:w-5/6">
+                <form method="GET" action="{{ route('projects.index') }}" id="search_form" class="flex items-center">
                     @csrf
                     <div class="flex flex-col md:flex-row w-full">
                         <label for="simple-search" class="sr-only">Search</label>
@@ -25,7 +28,7 @@
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                 </svg>
                             </div>
-                            <input type="search" id="corporation_num" name="corporation_num" value="@if (isset($CorporationNum)){{$CorporationNum}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="プロジェクト№">
+                            <input type="search" id="project_num" name="project_num" value="@if (isset($projectNum)){{$projectNum}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="プロジェクト№">
                         </div>
                         <div class="relative w-full mt-2 md:ml-2 md:mt-0">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -33,19 +36,37 @@
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                 </svg>
                             </div>
-                            <input type="search" id="corporation_name" name="corporation_name" value="@if (isset($CorporationName)){{$CorporationName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="プロジェクト名称">
+                            <input type="search" id="project_name" name="project_name" value="@if (isset($projectName)){{$projectName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="プロジェクト名称">
+                        </div>
+                        <div class="relative w-full mt-2 md:ml-2 md:mt-0">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <input type="search" id="corporation_name" name="corporation_name" value="@if (isset($CorporationName)){{$CorporationName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="顧客/法人名称">
                         </div>
 
-                        {{-- <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-                            <select name="product_category_id" id="product_category_id" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="">製品系統</option>
-                                @foreach ($productCategories as $productCategory)
-                                <option value="{{ $productCategory->id }}" @if (isset($productCategoryId) && $productCategoryId == $productCategory->id) selected @endif>
-                                    {{ $productCategory->category_name }}
+                        <div class="relative w-full mt-2 md:ml-2 md:mt-0">
+                            <select name="selected_department" id="selected_department" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="0">営業担当</option>
+                                {{-- @foreach ($departments as $department)
+                                <option value="{{ $department->id }}" @if($selectedDepartment == $department->id) selected @endif>
+                                    {{ $department->department_name }}
+                                </option>
+                                @endforeach --}}
+                            </select>
+                        </div>
+                        <div class="relative w-full mt-2 md:ml-2 md:mt-0">
+                            <select name="accounting_period" id="accounting_period" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="0">計上期</option>
+                                @foreach ($accountingPeriods as $accountingPeriod)
+                                <option value="{{ $accountingPeriod->id }}" @if($selectedAccountingPeriod == $accountingPeriod->id) selected @endif>
+                                    {{ $accountingPeriod->period_name }}
                                 </option>
                                 @endforeach
                             </select>
-                        </div> --}}
+                        </div>
 
                         <div class="flex mt-2 md:mt-0">
                             {{-- <div class="w-full md:ml-2">
@@ -78,19 +99,185 @@
                                     </div>                                    
                                 </div>
                             </div> --}}
+                            <div class="flex flex-col justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
+                                <button type="button" onclick="showModal()" class="flex w-auto items-center justify-center md:ms-2 px-4 py-2 text-sm font-medium text-white rounded-sm bg-blue-700 hover:bg-blue-800 focus:ring-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                                    {{ __('詳細検索') }}
+                                </button>
+                                <div class="flex mt-2 md:mt-0">
+                                    {{-- 検索ボタン --}}
+                                    <button type="submit" id="search-button" form="search_form" class="p-2.5 w-full md:ms-2 text-sm font-medium text-white bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" tabindex="">
+                                        <div class="flex items-center">
+                                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                            </svg>
+                                            <span class="md:hidden mx-auto">検索</span>
+                                        </div>
+                                    </button>
+                                    {{-- リセットボタン --}}
+                                    <button type="button" value="reset" id="clear" form="search-form" class="p-2.5 w-full ms-2 text-sm font-medium text-white bg-gray-500 rounded border border-gray-500 dark:border-gray-500 hover:bg-gray-600 focus:ring-2 focus:outline-none dark:bg-gray-500 dark:hover:bg-gray-700 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" tabindex="">
+                                        <div class="flex items-center">
+                                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 1v5h-5M2 19v-5h5m10-4a8 8 0 0 1-14.947 3.97M1 10a8 8 0 0 1 14.947-3.97"/>
+                                            </svg>
+                                            <span class="md:hidden mx-auto">リセット</span>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                            {{-- 検索ボタン --}}
-                            <button type="submit" id="search-button" form="search_form" class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                                </svg>
-                            </button>
-                            {{-- リセットボタン --}}
-                            <button type="button" value="reset" id="clear" form="search-form" class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 1v5h-5M2 19v-5h5m10-4a8 8 0 0 1-14.947 3.97M1 10a8 8 0 0 1 14.947-3.97"/>
-                                </svg>
-                            </button>
+                    <!-- 詳細検索 Modal -->
+                    <div id="clientSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center overflow-y-scroll z-50 hidden animate-slide-in-top">
+                        <div class="max-h-full w-full max-w-3xl">
+                            <!-- Modal content -->
+                            <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
+                                <!-- Modal header -->
+                                <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
+                                    <h3 class="text-xl font-medium text-gray-900 dark:text-white">
+                                        詳細検索画面
+                                    </h3>
+                                    <button type="button" onclick="hideModal()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                                        <svg class="w-3 h-3"xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                        </svg>
+                                    </button>
+                                </div>
+
+
+                                <!-- Modal body -->
+                                <div class="grid gap-3 mb-4 sm:grid-cols-3">
+                                    <div class="w-full flex flex-col mx-2">
+                                        <label for="clientName" class="dark:text-white text-sm text-gray-900 leading-none mt-4">計上年月（From）</label>
+                                        <input type="month" name="clientName" id="clientName" class="mt-1 w-full p-2 pl-4 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" tabindex="1">
+                                    </div>
+                                    <div class="w-full flex flex-col mx-2">
+                                        <label for="clientNumber" class="dark:text-white text-sm text-gray-900 leading-none mt-4">計上年月（To）</label>
+                                        <input type="month" name="clientNumber" id="clientNumber" class="mt-1 w-full p-2 pl-4 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" tabindex="1">
+                                    </div>
+                                </div>
+
+                                <label for="" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">営業段階</label>
+                                <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
+                                    @foreach ($salesStages as $salesStage)
+                                        <li class="flex justify-center items-center">
+                                            <input type="checkbox" name="sales_stage_ids[]" value="{{ $salesStage->id }}" @checked(in_array($salesStage->id, $filters['sales_stage_ids'] ?? [])) id="salesStage-{{ $salesStage->id }}" class="sr-only peer" tabindex="1">
+                                            <label for="salesStage-{{ $salesStage->id }}" class="inline-flex justify-between w-full p-2 rounded-lg cursor-pointer text-blue-600 dark:text-blue-500 dark:hover:text-white dark:peer-checked:text-white peer-checked:text-gray-600 border-2 border-gray-200 dark:border-blue-500 peer-checked:border-blue-500 peer-checked:hover:border-blue-500 dark:hover:border-blue-600 bg-white dark:peer-checked:bg-blue-500 hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-blue-600 focus:outline-none peer-focus:ring-2 peer-focus:ring-indigo-500 peer-focus:ring-offset-2 dark:peer-focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                                                <div class="w-full text-sm font-medium text-center">{{ $salesStage->sales_stage_name }}</div>
+                                            </label>
+                                        </li>
+                                    @endforeach
+                                </ul>
+
+                                <label for="" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">プロジェクト種別</label>
+                                <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
+                                    @foreach ($projectTypes as $projectType)
+                                        <li class="flex justify-center items-center">
+                                            <input type="checkbox" name="project_type_ids[]" value="{{ $projectType->id }}" @checked(in_array($projectType->id, $filters['project_type_ids'] ?? [])) id="projectType-{{ $projectType->id }}" value="" class="sr-only peer" tabindex="1">
+                                            <label for="projectType-{{ $projectType->id }}" class="inline-flex  justify-between w-full p-2 rounded-lg cursor-pointer text-blue-600 dark:text-blue-500 dark:hover:text-white dark:peer-checked:text-white peer-checked:text-gray-600   border-2 border-gray-200 dark:border-blue-500 peer-checked:border-blue-500 peer-checked:hover:border-blue-500 dark:hover:border-blue-600   bg-white dark:peer-checked:bg-blue-500  hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-blue-600 focus:outline-none peer-focus:ring-2 peer-focus:ring-indigo-500 peer-focus:ring-offset-2 dark:peer-focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                                                <div class="w-full text-sm font-medium text-center">{{ $projectType->project_type_name }}</div>
+                                            </label>
+                                        </li>
+                                    @endforeach
+                                </ul>
+
+                                <label for="" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">計上種別</label>
+                                <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
+                                    @foreach ($accountingTypes as $accountingType)
+                                        <li class="flex justify-center items-center">
+                                            <input type="checkbox" name="accounting_type_ids[]" value="{{ $accountingType->id }}" @checked(in_array($accountingType->id, $filters['accounting_type_ids'] ?? [])) id="accountingType-{{ $accountingType->id }}" class="sr-only peer" tabindex="1">
+                                            <label for="accountingType-{{ $accountingType->id }}" class="inline-flex justify-between w-full p-2 rounded-lg cursor-pointer text-blue-600 dark:text-blue-500 dark:hover:text-white dark:peer-checked:text-white peer-checked:text-gray-600 border-2 border-gray-200 dark:border-blue-500 peer-checked:border-blue-500 peer-checked:hover:border-blue-500 dark:hover:border-blue-600 bg-white dark:peer-checked:bg-blue-500 hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-blue-600 focus:outline-none peer-focus:ring-2 peer-focus:ring-indigo-500 peer-focus:ring-offset-2 dark:peer-focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                                                <div class="w-full text-sm font-medium text-center">{{ $accountingType->accounting_type_name }}</div>
+                                            </label>
+                                        </li>
+                                    @endforeach
+                                </ul>
+
+
+                                <label for="clientNumber" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">請求種別</label>
+                                <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
+                                    <li class="flex justify-center items-center">
+                                        <input type="checkbox" id="first-billing" value="" class="hidden peer">
+                                        <label for="first-billing" class="inline-flex  justify-between w-full p-2 rounded-lg cursor-pointer text-blue-600 dark:text-blue-500 dark:hover:text-white dark:peer-checked:text-white peer-checked:text-gray-600   border-2 border-gray-200 dark:border-blue-500 peer-checked:border-blue-500 peer-checked:hover:border-blue-500 dark:hover:border-blue-600   bg-white dark:peer-checked:bg-blue-500  hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-blue-600">
+                                            <div class="w-full text-sm font-medium text-center">一括請求</div>
+                                        </label>
+                                    </li>
+                                    <li class="flex justify-center items-center">
+                                        <input type="checkbox" id="second-billing" value="" class="hidden peer">
+                                        <label for="second-billing" class="inline-flex  justify-between w-full p-2 rounded-lg cursor-pointer text-blue-600 dark:text-blue-500 dark:hover:text-white dark:peer-checked:text-white peer-checked:text-gray-600   border-2 border-gray-200 dark:border-blue-500 peer-checked:border-blue-500 peer-checked:hover:border-blue-500 dark:hover:border-blue-600   bg-white dark:peer-checked:bg-blue-500  hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-blue-600">
+                                            <div class="w-full text-sm font-medium text-center">分割請求</div>
+                                        </label>
+                                    </li>
+                                </ul>
+
+                                <label for="" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">計上所属</label>
+                                <div class="grid gap-2 mb-4 md:grid-cols-1 p-2 rounded bg-gray-400 md:ml-2">
+                                    <div class="relative w-full mt-2 md:mt-0">
+                                        <select name="product_category_id" id="product_category_id" class="mt-1 w-full p-2 pl-4 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-400 transition ease-in-out duration-150 placeholder:text-gray-400" tabindex="1">
+                                            <option value="">所属1</option>
+                                            @foreach ($affiliation1s as $affiliation1)
+                                            <option value="{{ $affiliation1->id }}" @if (isset($affiliation1Id) && $affiliation1Id == $affiliation1->id) selected @endif>
+                                                {{ $affiliation1->affiliation1_name }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="relative w-full mt-2 md:mt-0">
+                                        <select name="product_category_id" id="product_category_id" class="block w-full p-2 pl-4 rounded text-sm text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-600 focus:border-blue-500 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-400 transition ease-in-out duration-150" tabindex="1">
+                                            <option value="">所属2</option>
+                                            @foreach ($affiliation2s as $affiliation2)
+                                            <option value="{{ $affiliation2->id }}" @if (isset($affiliation2Id) && $affiliation2Id == $affiliation2->id) selected @endif>
+                                                {{ $affiliation2->department_name }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="relative w-full mt-2 md:mt-0">
+                                        <select name="product_category_id" id="product_category_id" class="block w-full p-2 pl-4 rounded text-sm text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-600 focus:border-blue-500 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-400 transition ease-in-out duration-150" tabindex="1">
+                                            <option value="">所属3</option>
+                                            @foreach ($affiliation3s as $affiliation3)
+                                            <option value="{{ $affiliation3->id }}" @if (isset($affiliation3Id) && $affiliation3Id == $affiliation3->id) selected @endif>
+                                                {{ $affiliation3->affiliation3_name }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="relative w-full mt-2 md:mt-0">
+                                        <select name="product_category_id" id="product_category_id" class="block w-full p-2 pl-4 rounded text-sm text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-600 focus:border-blue-500 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-400 transition ease-in-out duration-150" tabindex="1">
+                                            <option value="">所属4</option>
+                                            <option value="">マネジメント課</option>
+                                            <option value="">テクニカルソリューション課</option>
+                                            {{-- @foreach ($productCategories as $productCategory)
+                                            <option value="{{ $productCategory->id }}" @if (isset($productCategoryId) && $productCategoryId == $productCategory->id) selected @endif>
+                                                {{ $productCategory->category_name }}
+                                            </option>
+                                            @endforeach --}}
+                                        </select>
+                                    </div>
+                                    <div class="relative w-full mt-2 md:mt-0">
+                                        <select name="product_category_id" id="product_category_id" class="block w-full p-2 pl-4 rounded text-sm text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-600 focus:border-blue-500 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-400 transition ease-in-out duration-150" tabindex="1">
+                                            <option value="">所属5</option>
+                                            <option value="">◯◯係</option>
+                                            <option value="">△△係</option>
+                                            {{-- @foreach ($productCategories as $productCategory)
+                                            <option value="{{ $productCategory->id }}" @if (isset($productCategoryId) && $productCategoryId == $productCategory->id) selected @endif>
+                                                {{ $productCategory->category_name }}
+                                            </option>
+                                            @endforeach --}}
+                                        </select>
+                                    </div>
+                                </div>
+                                    
+                                <!-- Modal footer -->
+                                <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                                    <button type="button" onclick="searchClient()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        検索
+                                    </button>
+                                    <button type="button" onclick="hideModal()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                        閉じる
+                                    </button> 
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -233,7 +420,7 @@
                             </div>
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$project->accountUser->name}}
+                            {{$project->accountUser->user_name}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
                             {{$project->distributionType->distribution_type_name}}
@@ -291,4 +478,68 @@
             text-decoration: underline
         }
     </style>
+
+
+
+
+
+
+    <script>
+        // モーダルを表示するための関数
+        function showModal() {
+            // モーダルの要素を取得
+            const modal = document.getElementById('clientSearchModal');
+            //背後の操作不可を有効
+            const overlay = document.getElementById('overlay').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+    
+            // モーダルを表示するためのクラスを追加
+            modal.classList.remove('hidden');
+        }
+    
+        // モーダルを非表示にするための関数
+        function hideModal() {
+            // モーダルの要素を取得
+            const modal = document.getElementById('clientSearchModal');
+            //背後の操作不可を解除
+            const overlay = document.getElementById('overlay').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+    
+            // モーダルを非表示にするためのクラスを削除
+            modal.classList.add('hidden');
+        }
+    
+        // 検索ボタンを押した時の処理
+        function searchClient() {
+            const clientName = document.getElementById('clientName').value;
+            const clientNumber = document.getElementById('clientNumber').value;
+            const departmentId = document.getElementById('departmentId').value;
+    
+            fetch('/client/search', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ clientName, clientNumber, departmentId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const searchResultsContainer = document.getElementById('searchResultsContainer');
+                searchResultsContainer.innerHTML = '';
+    
+                data.forEach(result => {
+                const resultElement = document.createElement('tr');
+                resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
+                resultElement.innerHTML = `
+                    <td class="py-2 pl-5 cursor-pointer" onclick="setClient('${result.client_corporation.corporation_name}', '${result.client_num}', '${result.client_name}', '${result.department_id}')">${result.client_name}</td>
+                    <td class="py-2 ml-2">${result.client_num}</td>
+                    <td class="py-2 ml-2">${result.department.department_name}</td>
+                `;
+                searchResultsContainer.appendChild(resultElement);
+                });
+            });
+            }
+
+    </script>
 </x-app-layout>

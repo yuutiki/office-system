@@ -26,7 +26,8 @@ class CorporationUpdateRequest extends FormRequest
             'corporation_name' => 'required|max:1024',
             'corporation_kana_name' => 'required|max:1024',
             'corporation_short_name' => 'required|max:1024',
-            'credit_limit' => 'numeric',
+            'is_stop_trading' => 'nullable|boolean',
+            'stop_trading_reason' => 'required_if:is_stop_trading,true',
         ];
     }
 

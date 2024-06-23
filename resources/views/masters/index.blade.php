@@ -35,11 +35,11 @@
                             <input type="search" id="client_name" name="client_name" value="@if (isset($clientName)){{$clientName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="顧客名称（カナ）">
                         </div> --}}
                         {{-- <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-                            <select name="selected_department" id="selected_department" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="0"  @if($selectedDepartment == 0) selected @endif>管轄事業部</option>
-                                @foreach ($departments as $department)
-                                <option value="{{ $department->id }}" @if($selectedDepartment == $department->id) selected @endif>
-                                    {{ $department->department_name }}
+                            <select name="selected_affiliation2" id="selected_affiliation2" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="0"  @if($selectedaffiliation2 == 0) selected @endif>管轄事業部</option>
+                                @foreach ($affiliation2s as $affiliation2)
+                                <option value="{{ $affiliation2->id }}" @if($selectedaffiliation2 == $affiliation2->id) selected @endif>
+                                    {{ $affiliation2->affiliation2_name }}
                                 </option>
                                 @endforeach
                             </select>

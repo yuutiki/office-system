@@ -7,7 +7,7 @@ use App\Models\Corporation;//add
 use App\Models\Client;
 use App\Models\ClientProduct;
 use App\Models\User;
-use App\Models\Department;//add
+use App\Models\Affiliation2;//add
 use App\Models\InstallationType;//add
 use App\Models\ClientType;//add
 use App\Models\DistributionType;
@@ -33,14 +33,14 @@ class ClientController extends Controller
 
         // 検索条件用
         $salesUsers = User::all();
-        $departments = Department::all();
+        $affiliation2s = Affiliation2::all();
         $tradeStatuses = TradeStatus::all();
         $clientTypes = ClientType::all();
         $installationTypes = InstallationType::all();
 
         // ログインユーザーの所属を取得
-        $userAffiliation2 = auth()->user()->department_id;
-        $selectedDepartment = $userAffiliation2; // ユーザーの所属を初期値に設定
+        $userAffiliation2 = auth()->user()->affiliation2_id;
+        $selectedAffiliation2 = $userAffiliation2; // ユーザーの所属を初期値に設定
 
         // 検索リクエストを取得し変数に格納
         $request->session()->put([
@@ -51,10 +51,10 @@ class ClientController extends Controller
         $selectedInstallationTypes = $request->input('installation_types', []);
         $clientName = $request->input('client_name');
         $salesUserId = $request->input('user_id');
-        $departmentId = $request->input('department_id');
+        $affiliation2Id = $request->input('affiliation2_id');
 
         // 検索クエリを組み立てる
-        $clientsQuery = Client::with(['corporation','user','tradeStatus','department'])->sortable()->orderBy('client_num','asc');
+        $clientsQuery = Client::with(['corporation','user','tradeStatus','affiliation2'])->sortable()->orderBy('client_num','asc');
 
         if (!empty($selectedTradeStatuses)) {// 取引状態
             $clientsQuery->whereIn('trade_status_id', $selectedTradeStatuses);
@@ -90,29 +90,29 @@ class ClientController extends Controller
         //     $clientsQuery->where('user_id','=', Auth::id());
         // }
 
-        // プルダウンが変更された場合の処理
-        if (request()->has('selected_department')) {
-            $selectedDepartment = request('selected_department');
+        // // プルダウンが変更された場合の処理
+        // if (request()->has('selected_affiliation2')) {
+        //     $selectedAffiliation2 = request('selected_affiliation2');
 
-            // プルダウンが「事業部全て」以外の場合、検索結果を絞る
-            if ($selectedDepartment != 0) {
-                $clientsQuery->where('department_id', $selectedDepartment);
-            }  // 「事業部全て」の場合は何もしない（絞り込み解除）
+        //     // プルダウンが「事業部全て」以外の場合、検索結果を絞る
+        //     if ($selectedAffiliation2 != 0) {
+        //         $clientsQuery->where('affiliation2_id', $selectedAffiliation2);
+        //     }  // 「事業部全て」の場合は何もしない（絞り込み解除）
 
-            // 上記の条件で検索結果を取得
-            $clients = $clientsQuery->get();
+        //     // 上記の条件で検索結果を取得
+        //     $clients = $clientsQuery->get();
             
-        } else {
-            // 初期表示の場合、ユーザーの所属に基づいて検索結果を絞る
-            $clientsQuery->where('department_id', $userAffiliation2)->get();
-        }
+        // } else {
+        //     // 初期表示の場合、ユーザーの所属に基づいて検索結果を絞る
+        //     $clientsQuery->where('affiliation2_id', $userAffiliation2)->get();
+        // }
 
 
 
         $clients = $clientsQuery->paginate($per_page);
         $count = $clients->total();
 
-        return view('clients.index',compact('clients','count','salesUsers', 'departments', 'installationTypes', 'tradeStatuses', 'clientTypes', 'selectedTradeStatuses','selectedClientTypes','selectedInstallationTypes','salesUserId', 'departmentId', 'clientName', 'selectedDepartment'));
+        return view('clients.index',compact('clients','count','salesUsers', 'affiliation2s', 'installationTypes', 'tradeStatuses', 'clientTypes', 'selectedTradeStatuses','selectedClientTypes','selectedInstallationTypes','salesUserId', 'affiliation2Id', 'clientName', 'selectedAffiliation2'));
     }
 
     public function create()
@@ -121,12 +121,12 @@ class ClientController extends Controller
         $installationTypes = InstallationType::all(); //設置種別
         $tradeStatuses = TradeStatus::all(); //取引状態
         $clientTypes = ClientType::all(); //顧客種別
-        $departments = Department::all(); //管轄事業部
+        $affiliation2s = Affiliation2::all(); //管轄事業部
         $prefectures = Prefecture::all(); //都道府県
         $distributionTypes = DistributionType::all();
 
 
-        return view('clients.create',compact('departments','users','tradeStatuses','clientTypes','installationTypes','prefectures','distributionTypes'));
+        return view('clients.create',compact('affiliation2s','users','tradeStatuses','clientTypes','installationTypes','prefectures','distributionTypes'));
     }
 
     public function store(ClientStoreRequest $request)
@@ -138,9 +138,9 @@ class ClientController extends Controller
 
         // フォームからの値を変数に格納
         $corporationNum = $request->input('corporation_num');
-        $departmentId = $request->input('department');
-        $getdepartment = Department::where('id', $departmentId)->first();
-        $prefix_code = $getdepartment->prefix_code;
+        $affiliation2Id = $request->input('affiliation2');
+        $getaffiliation2 = Affiliation2::where('id', $affiliation2Id)->first();
+        $prefix_code = $getaffiliation2->affiliation2_prefix;
 
         $clientNumber = Client::generateClientNumber($corporationNum, $prefix_code);
 
@@ -149,8 +149,8 @@ class ClientController extends Controller
         $corporation = Corporation::where('corporation_num', $corporationNum)->first();
         $corporationId = $corporation->id;
 
-        $department = Department::where('prefix_code', $prefix_code)->first();
-        $departmentId = $department->id;
+        $affiliation2 = Affiliation2::where('affiliation2_prefix', $prefix_code)->first();
+        $affiliation2Id = $affiliation2->id;
 
 
         // 顧客データを保存
@@ -158,7 +158,7 @@ class ClientController extends Controller
         $client->client_num = $clientNumber;// 採番した顧客番号をセット
 
         $client->corporation_id = $corporationId;
-        $client->department_id = $departmentId;
+        $client->affiliation2_id = $affiliation2Id;
         $client->client_name = $request->client_name;
         $client->client_kana_name = $request->client_kana_name;
         $client->head_post_code = $formattedPost; // 変換後の郵便番号をセット
@@ -197,7 +197,7 @@ class ClientController extends Controller
         $tradeStatuses = TradeStatus::all();
         $clientTypes = ClientType::all();
         $installationTypes = InstallationType::all();
-        $departments = Department::all();
+        $affiliation2s = Affiliation2::all();
         $client = Client::find($id);
         $prefectures = Prefecture::all(); //都道府県
         $distributionTypes = DistributionType::all();
@@ -213,7 +213,7 @@ class ClientController extends Controller
         $activeTab = $request->query('tab', 'tab1'); // クエリパラメータからタブを取得
 
 
-        return view('clients.edit',compact('departments','users','tradeStatuses','clientTypes','installationTypes','client','reports','prefectures','supports','clientProducts','distributionTypes','activeTab',));
+        return view('clients.edit',compact('affiliation2s','users','tradeStatuses','clientTypes','installationTypes','client','reports','prefectures','supports','clientProducts','distributionTypes','activeTab',));
     }
 
     public function update(ClientStoreRequest $request, string $id)
@@ -225,14 +225,14 @@ class ClientController extends Controller
         $client->client_name = $request->client_name;
         $client->client_kana_name = $request->client_kana_name;
         $client->head_post_code = $request->head_post_code;
-        $client->head_prefecture = $request->head_prefecture;
+        $client->head_prefecture = $request->head_prefecture_id;
         $client->head_address1 = $request->head_addre1;
         $client->head_tel = $request->head_tel;
         $client->head_fax = $request->head_fax;
         $client->students = $request->students;
 
         $client->distribution = $request->distribution_type_id;
-        $client->department_id = $request->department;
+        $client->affiliation2_id = $request->affiliation2;
         $client->client_type_id = $request->client_type_id;
         $client->installation_type_id = $request->installation_type_id;
         $client->trade_status_id = $request->trade_status_id;
@@ -263,18 +263,18 @@ class ClientController extends Controller
     {
         $clientName = $request->input('clientName');
         $clientNumber = $request->input('clientNumber');
-        $clientDepartment = $request->input('departmentId');
+        $clientAffiliation2 = $request->input('affiliation2Id');
 
         // 検索条件に基づいて顧客データを取得
         // $clients = Client::where('client_name', 'LIKE', '%' . $clientName . '%')
         //     ->where('client_num', 'LIKE', '%' . $clientNumber . '%')
-        //     ->where('department_id', 'LIKE', '%' . $clientDepartment . '%')
+        //     ->where('affiliation2_id', 'LIKE', '%' . $clientAffiliation2 . '%')
         //     ->get();
         $query = Client::query()
         ->where('client_name', 'LIKE', '%' . $clientName . '%')
         ->Where('client_num', 'LIKE', '%' . $clientNumber . '%')
-        ->Where('department_id', 'LIKE', '%' . $clientDepartment . '%');
-        $clients = $query->with('products','department','corporation')->get();
+        ->Where('affiliation2_id', 'LIKE', '%' . $clientAffiliation2 . '%');
+        $clients = $query->with('products','affiliation2','corporation')->get();
 
         return response()->json($clients);
     }
@@ -338,18 +338,18 @@ class ClientController extends Controller
                 } else {
                     // divisionが見つからない場合のエラーハンドリング
                 }
-            $departmentCode = $row[1];
-                $department = Department::where('department_code', $departmentCode)->first();
-                if ($department) {
-                    $client->department_id = $department->id;
+            $affiliation2Code = $row[1];
+                $affiliation2 = Affiliation2::where('affiliation2_code', $affiliation2Code)->first();
+                if ($affiliation2) {
+                    $client->affiliation2_id = $affiliation2->id;
                 } else {
                     // divisionが見つからない場合のエラーハンドリング
                 }
 
             
-            $departmentPrefixCode = $department->prefix_code;
+            $affiliation2PrefixCode = $affiliation2->affiliation2_prefix;
             $corporationNum = $corporation->corporation_num;
-            $clientNumber = Client::generateClientNumber($corporationNum, $departmentPrefixCode);
+            $clientNumber = Client::generateClientNumber($corporationNum, $affiliation2PrefixCode);
             $client->client_num = $clientNumber;
 
             $client->client_name = $row[2];

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Affiliation2;
 use App\Models\Client;
 use App\Models\ClientProduct;
 use App\Models\ClientType;
-use App\Models\Department;
 use App\Models\InstallationType;
 use App\Models\ProductCategory;
 use App\Models\ProductSeries;
@@ -99,12 +99,12 @@ class SupportController extends Controller
         $supportTimes = SupportTime::all(); //サポート所要時間
         $installationTypes = InstallationType::all();
         $clientTypes = ClientType::all();
-        $departments = Department::all();
+        $affiliation2s = Affiliation2::all();
 
         $clientNum = Session::get('selected_client_num');
         $clientName = Session::get('selected_client_name');
 
-        return view('support.create',compact('users','productSeriess','productVersions','productCategories','supportTypes','supportTimes','installationTypes','clientTypes','departments','clientNum','clientName'));
+        return view('support.create',compact('users','productSeriess','productVersions','productCategories','supportTypes','supportTimes','installationTypes','clientTypes','affiliation2s','clientNum','clientName'));
     }
 
     public function store(Request $request)
@@ -192,7 +192,7 @@ class SupportController extends Controller
         $tradeStatuses = TradeStatus::all();
         $clientTypes = ClientType::all();
         $installationTypes = InstallationType::all();
-        $departments = Department::all();
+        $affiliation2s = Affiliation2::all();
         $productSeriess = ProductSeries::all();  //製品シリーズ
         $productVersions = ProductVersion::all();  //製品バージョン
         $productCategories = ProductCategory::all();  // 製品系統
@@ -216,7 +216,7 @@ class SupportController extends Controller
         session()->put('previous_url', url()->previous());
 
 
-        return view('support.edit',compact('users','tradeStatuses','clientTypes','installationTypes','departments','support','productSeriess','productVersions','productCategories','supportTypes','supportTimes', 'clientProducts',));
+        return view('support.edit',compact('users','tradeStatuses','clientTypes','installationTypes','affiliation2s','support','productSeriess','productVersions','productCategories','supportTypes','supportTimes', 'clientProducts',));
     }
 
     public function update(Request $request, string $id)
@@ -417,9 +417,9 @@ class SupportController extends Controller
 
             $support->received_at = $row[1];
 
-            $employeeNum = str_pad($row[2], 6, '0', STR_PAD_LEFT); // 6桁の顧客番号に変換してDBに保存
-            // dd($employeeNum);
-                $user = User::where('employee_num', $employeeNum)->first();
+            $userNum = str_pad($row[2], 6, '0', STR_PAD_LEFT); // 6桁の顧客番号に変換してDBに保存
+            // dd($userNum);
+                $user = User::where('user_num', $userNum)->first();
                 if ($user) {
                     $support->user_id = $user->id;
                 } else {

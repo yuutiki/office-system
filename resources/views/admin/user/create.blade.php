@@ -31,10 +31,10 @@
             </div>
 
             <!-- フォームにトリミング後の画像をセットするための非表示のinput要素 -->
-            <input type="hidden" id="cropped_image" name="cropped_image" form="userForm">
+            <input type="hidden" id="cropped_profile_image" name="cropped_profile_image" form="userForm">
 
             <!-- トリミング後の画像を表示する要素 -->
-            {{-- <img id="cropped_image_preview" src="#" alt="トリミング後の画像" style="display: none;"> --}}
+            {{-- <img id="cropped_profile_image_preview" src="#" alt="トリミング後の画像" style="display: none;"> --}}
 
             <label class="relative inline-flex items-center cursor-pointer mb-9">
                 <input type="hidden" form="userForm" name="is_enabled" value="0">
@@ -114,7 +114,7 @@
                 </div>
                 <div class="w-full flex flex-col">
                     <label for="int_phone" class="text-sm dark:text-gray-100 leading-none mt-2">内線番号</label>
-                    <input type="text" form="userForm" class="input-secondary" id="int_phone" value="{{old('int_phone')}}" placeholder="999" maxlength="{{ $maxlength }}">
+                    <input type="text" form="userForm" name="int_phone" class="input-secondary" id="int_phone" value="{{old('int_phone')}}" placeholder="999" maxlength="{{ $maxlength }}">
                     @error('int_phone')
                         <div class="text-red-500">{{$message}}</div>
                     @enderror
@@ -147,14 +147,14 @@
                 @enderror
 
                 <div class="w-full flex flex-col">
-                    <label for="department_id" class="text-sm dark:text-gray-100 leading-none mt-2">所属2</label>
-                    <select form="userForm" name="department_id" class="input-secondary" id="department_id" value="{{old('department_id')}}">
-                        @foreach($departments as $department)
-                        <option value="{{ $department->id }}">{{ $department->department_name }}</option>
+                    <label for="affiliation2_id" class="text-sm dark:text-gray-100 leading-none mt-2">所属2</label>
+                    <select form="userForm" name="affiliation2_id" class="input-secondary" id="affiliation2_id" value="{{old('affiliation2_id')}}">
+                        @foreach($affiliation2s as $affiliation2)
+                        <option value="{{ $affiliation2->id }}">{{ $affiliation2->affiliation2_name }}</option>
                         @endforeach
                     </select>
                 </div>
-                @error('department_id')
+                @error('affiliation2_id')
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
 
@@ -323,7 +323,7 @@
                         // トリミングされた画像の情報を取得
                         var canvas = cropper.getCroppedCanvas();
                         // トリミング後の画像をプレビューに表示
-                        document.getElementById('cropped_image_preview').src = canvas.toDataURL();
+                        document.getElementById('image_preview').src = canvas.toDataURL();
                     }
                 });
             };
@@ -338,7 +338,7 @@
                 var dataURL = canvas.toDataURL();
                 document.getElementById('image_preview').src = dataURL;
                 // トリミング後の画像をフォームにセット
-                document.getElementById('cropped_image').value = dataURL;
+                document.getElementById('cropped_profile_image').value = dataURL;
                 // モーダルを非表示にする処理を追加する
                 hideModal();
             } else {

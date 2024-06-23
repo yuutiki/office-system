@@ -62,14 +62,14 @@
                     @enderror
                 </div>
                 <div>
-                    <label for="department_id" class="text-sm  text-gray-900 dark:text-white leading-none mt-4">管轄事業部</label>
-                    <select id="department_id" name="department_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <label for="affiliation2_id" class="text-sm  text-gray-900 dark:text-white leading-none mt-4">管轄事業部</label>
+                    <select id="affiliation2_id" name="affiliation2_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option value="">未選択</option>
-                        @foreach($departments as $department)
-                        <option value="{{ $department->id }}" @if( $department->id == $product->department_id ) selected @endif>{{ $department->prefix_code }}：{{ $department->department_name }}</option>
+                        @foreach($affiliation2s as $affiliation2)
+                        <option value="{{ $affiliation2->id }}" @if( $affiliation2->id == $product->affiliation2_id ) selected @endif>{{ $affiliation2->affiliation2_prefix }}：{{ $affiliation2->affiliation2_name }}</option>
                         @endforeach
                     </select>
-                    @error('department_id')
+                    @error('affiliation2_id')
                     <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>

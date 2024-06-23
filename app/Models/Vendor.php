@@ -76,9 +76,9 @@ class Vendor extends Model
     {
         return $this->belongsTo(TradeStatus::class);
     }
-    public function department()
+    public function affiliation2()
     {
-        return $this->belongsTo(Department::class);
+        return $this->belongsTo(Affiliation2::class);
     }
     
 }

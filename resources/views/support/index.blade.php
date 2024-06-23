@@ -140,10 +140,10 @@
                                 事業部
                             </h6>
                             <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-                                @foreach ($departments as $department)
+                                @foreach ($affiliation2s as $affiliation2)
                                 <li class="flex items-center">
-                                    <input id="{{ $department->id }}" type="checkbox" value=""class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                    <label for="{{ $department->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $department->department_name }}</label>
+                                    <input id="{{ $affiliation2->id }}" type="checkbox" value=""class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                    <label for="{{ $affiliation2->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $affiliation2->affiliation2_name }}</label>
                                 </li>                       
                                 @endforeach
                             </ul>
@@ -256,7 +256,7 @@
                             {{$support->title}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$support->user->name}}
+                            {{$support->user->user_name}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap mr-2">
                             {{$support->productSeries->series_name}}
@@ -268,7 +268,7 @@
                             {{$support->productCategory->category_name}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$support->client->user->name}}
+                            {{$support->client->user->user_name}}
                         </td>
                         <td class="pl-4 py-1 whitespace-nowrap">
                             <button onclick="location.href='{{route('support.edit',$support)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
@@ -366,13 +366,13 @@
                                 </div>
 
                                 <div class="relative z-0">
-                                    <input type="text" id="sales_person" name="sales_person" value="{{ $support->client->user->name }}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
+                                    <input type="text" id="sales_person" name="sales_person" value="{{ $support->client->user->user_name }}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
                                     <label for="sales_person" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">営業担当</label>
                                 </div>
 
                                 <div class="relative z-0">
-                                    <input type="text" id="department_id" name="department_id" value="{{ $support->client->department->department_name }}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
-                                    <label for="department_id" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">管轄事業部</label>
+                                    <input type="text" id="affiliation2_id" name="affiliation2_id" value="{{ $support->client->affiliation2->affiliation2_name }}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
+                                    <label for="affiliation2_id" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">管轄事業部</label>
                                 </div>
                             </div>
 
@@ -397,7 +397,7 @@
                                     <label for="user_id" class="block font-medium text-gray-900 dark:text-white">受付対応者</label>
                                     <select name="user_id_{{$support->id}}" id="user_id-{{$support->id}}" value="{{old('user_id')}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                         @foreach($users as $user)
-                                        <option value="{{ $user->id }}"  @selected($user->id == $support->user_id)>{{ $user->name }}</option>
+                                        <option value="{{ $user->id }}"  @selected($user->id == $support->user_id)>{{ $user->user_name }}</option>
                                         @endforeach
                                     </select>
                                 </div>

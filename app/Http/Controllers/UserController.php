@@ -7,7 +7,7 @@ use App\Http\Requests\UserStoreRequest;
 use App\Jobs\SendLoginInformationJob;
 use App\Mail\SendLoginInformation;
 use App\Models\Affiliation1;
-use App\Models\Department;
+use App\Models\Affiliation2;
 use App\Models\Affiliation3;
 use App\Models\User;
 use App\Models\Role;
@@ -26,15 +26,16 @@ use Goodby\CSV\Import\Standard\Interpreter;
 use Goodby\CSV\Import\Standard\LexerConfig;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
     public function index(Request $request)//検索用にrequestを受取る
     {
         $per_page = 50;
-        $users = User::with(['role','affiliation1s','department','affiliation3']);
+        $users = User::with(['role','affiliation1s','affiliation2','affiliation3']);
         $affiliation1s = Affiliation1::all();
-        $departments = Department::all();
+        $affiliation2s = Affiliation2::all();
         $affiliation3s = Affiliation3::all();
         $employeeStatuses = EmployeeStatus::all();
 
@@ -42,7 +43,7 @@ class UserController extends Controller
         //検索フォームに入力された値を取得
         $user_num = $request->input('user_num');
         $user_name = $request->input('user_name');
-        $departmentId = $request->input('department_id');
+        $affiliation2Id = $request->input('affiliation2_id');
         // $roles1 = $request->input('roles');
         $selectedRoles = $request->input('roles', []); 
         $selectedEmployeeStatues = $request->input('employeeStatuses',[]);
@@ -62,9 +63,9 @@ class UserController extends Controller
             $query->where('user_num','=',$user_num);
         }
 
-        if(!empty($departmentId))
+        if(!empty($affiliation2Id))
         {
-            $query->where('department_id','=',$departmentId);
+            $query->where('affiliation2_id','=',$affiliation2Id);
         }
 
         //もしユーザ名があれば
@@ -94,7 +95,7 @@ class UserController extends Controller
         $users = $query->sortable()->paginate($per_page);
         $count = $users->total();
 
-        return view('admin.user.index',compact('users','employeeStatuses','user_num','user_name','selectedRoles','count','affiliation1s','departments','affiliation3s','selectedEmployeeStatues','departmentId'));
+        return view('admin.user.index',compact('users','employeeStatuses','user_num','user_name','selectedRoles','count','affiliation1s','affiliation2s','affiliation3s','selectedEmployeeStatues','affiliation2Id'));
     }
 
     private function isSysAdmin()
@@ -107,26 +108,40 @@ class UserController extends Controller
     public function create()
     {
         $affiliation1s = Affiliation1::all();
-        $departments = Department::all();
+        $affiliation2s = Affiliation2::all();
         $affiliation3s = Affiliation3::all();
         $roles = Role::orderBy('id','desc')->get();
         $e_statuses = EmployeeStatus::orderBy('id','asc')->get();
         $maxlength = config('constants.int_phone_maxlength');
 
 
-        return view('admin.user.create',compact('roles','e_statuses','affiliation1s','departments','affiliation3s','maxlength'));
+        return view('admin.user.create',compact('roles','e_statuses','affiliation1s','affiliation2s','affiliation3s','maxlength'));
     }
 
     public function store(UserStoreRequest $request)
     {
         // 社員番号の頭0埋め6桁にする
-        $emploeeNum =  str_pad($request->user_num, 6, '0', STR_PAD_LEFT);
+        $userNum =  str_pad($request->user_num, 6, '0', STR_PAD_LEFT);
 
         // プロフ画像のファイル名を生成
-        if ($request->hasFile('profile_image')) {
-            $extension = $request->profile_image->extension();
-            $fileName = $emploeeNum . '_' . 'profile' . '.' . $extension;
-            $imagePath = $request->file('profile_image')->storeAs('users/profile_image', $fileName, 'public');
+        if ($request->filled('cropped_profile_image')) {
+            // エンコードされた画像データを取得
+            $encodedImage = $request->cropped_profile_image;
+            
+            // データURIスキームから拡張子を取得
+            preg_match('#^data:image/(\w+);base64,#i', $encodedImage, $matches);
+            $extension = $matches[1];
+
+            // エンコードされた画像データをデコード
+            $decodedImage = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $encodedImage));
+
+            // ファイル名を生成
+            $fileName = $userNum . '_' . 'profile' . '.' . $extension;
+            $imagePath = 'users/profile_image/' . $fileName;
+
+            // 画像を保存
+            Storage::disk('public')->put($imagePath, $decodedImage);
+
         } else {
             $imagePath = 'users/profile_image/default.png'; // ファイルがアップロードされなかった場合はデフォルトを設定する
         }
@@ -138,7 +153,7 @@ class UserController extends Controller
         $password = $this->generateTemporaryPassword($request->birth, $request->ext_phone);
 
         $user = new User();
-        $user->user_num = $emploeeNum;
+        $user->user_num = $userNum;
         $user->user_name = $request->user_name;
         $user->user_kana_name = $request->user_kana_name;
         $user->email = $request->email;
@@ -146,7 +161,7 @@ class UserController extends Controller
         $user->ext_phone = $request->ext_phone;
         $user->birth = $request->birth;
         $user->affiliation1_id = $request->affiliation1_id;
-        $user->department_id = $request->department_id;
+        $user->affiliation2_id = $request->affiliation2_id;
         $user->affiliation3_id = $request->affiliation3_id;
         $user->employee_status_id = $request->employee_status_id;
         $user->is_enabled = $request->is_enabled;
@@ -186,7 +201,7 @@ class UserController extends Controller
         // $roles = Role::with('users')->get();
         $e_statuses = EmployeeStatus::with('users')->get();
         $affiliation1s = Affiliation1::all();
-        $departments = Department::all();
+        $affiliation2s = Affiliation2::all();
         $affiliation3s = Affiliation3::all();
         $e_statuses = EmployeeStatus::all();
         $user_role = $user->role_id;
@@ -202,13 +217,11 @@ class UserController extends Controller
 
         $maxlength = config('constants.int_phone_maxlength');
 
-        return view('admin.user.edit',compact('user','user_role','e_statuses','user_e_status','affiliation1s','departments','affiliation3s', 'maxlength','roleGroups',));
+        return view('admin.user.edit',compact('user','user_role','e_statuses','user_e_status','affiliation1s','affiliation2s','affiliation3s', 'maxlength','roleGroups',));
     }
 
     public function update(Request $request, User $user)
     {
-        // // パスワードが入力されたかどうかをチェック
-        // $passwordIsProvided = !empty($request['password_' . $id]);
 
         // // バリデーションルールを初期化
         // $rules = User::rules($id);
@@ -284,17 +297,8 @@ class UserController extends Controller
         //     $user->password = bcrypt($request->input('password_' . $id));
         // }
 
-        $userNum =  str_pad($request->user_num, 6, '0', STR_PAD_LEFT);
 
-        // プロフ画像のファイル名を生成
-        if ($request->hasFile('profile_image')) {
-            $extension = $request->profile_image->extension();
-            $fileName = $userNum . '_' . 'profile' . '.' . $extension;
-            $imagePath = $request->file('profile_image')->storeAs('users/profile_image', $fileName, 'public');
-        } else {
-            $imagePath = 'users/profile_image/default.png'; // ファイルがアップロードされなかった場合はデフォルトを設定する
-        }
-        
+        $userNum =  str_pad($request->user_num, 6, '0', STR_PAD_LEFT);
 
         $user = User::find($user->id);
         $user->user_name = $request->user_name;
@@ -303,20 +307,43 @@ class UserController extends Controller
         $user->int_phone = $request->int_phone;
         $user->ext_phone = $request->ext_phone;
         $user->affiliation1_id = $request->affiliation1_id;
-        $user->department_id = $request->department_id;
+        $user->affiliation2_id = $request->affiliation2_id;
         $user->affiliation3_id = $request->affiliation3_id;
         $user->employee_status_id = $request->employee_status_id;
         $user->user_num = $userNum;
         $user->is_enabled = $request->is_enabled;
         $user->password_change_required = $request->password_change_required;
         $user->birth = $request->birth;
-        $user->profile_image = $imagePath;
         $user->access_ip = $request->ip();
 
         // if($request->filled('password_' . $id))
         // { // パスワード入力があるときだけ変更
         //     $user->password = bcrypt($request->input('password_' . $id));
         // }
+
+        // プロフ画像のファイル名を生成
+        if ($request->filled('cropped_profile_image')) {
+            // エンコードされた画像データを取得
+            $encodedImage = $request->cropped_profile_image;
+            
+            // データURIスキームから拡張子を取得
+            preg_match('#^data:image/(\w+);base64,#i', $encodedImage, $matches);
+            $extension = $matches[1];
+
+            // エンコードされた画像データをデコード
+            $decodedImage = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $encodedImage));
+
+            // ファイル名を生成
+            $fileName = $userNum . '_' . 'profile' . '.' . $extension;
+            $imagePath = 'users/profile_image/' . $fileName;
+
+            // 画像を保存
+            Storage::disk('public')->put($imagePath, $decodedImage);
+
+            // ユーザーのプロフィール画像を更新
+            $user->profile_image = $imagePath;
+        }
+
 
         $user->save();
         return redirect()->back()->with('success','正常に更新しました');
@@ -371,7 +398,7 @@ class UserController extends Controller
 
             $user->affiliation1_id = $row[7];
             
-            $user->department_id = $row[8];
+            $user->affiliation2_id = $row[8];
             
             $affiliation3Code = $row[9];
             $affiliation3 = Affiliation3::where('affiliation3_code', $affiliation3Code)->first();
@@ -404,13 +431,13 @@ class UserController extends Controller
     {
         $userName = $request->user_name;
         $affiliation1Id = $request->affiliation1_id;
-        $departmentId = $request->department_id;
+        $affiliation2Id = $request->affiliation2_id;
         $affiliation3Id = $request->affiliation3_id;
 
-        $users = User::with('affiliation1','department','affiliation3')
+        $users = User::with('affiliation1','affiliation2','affiliation3')
             ->where('user_name', 'like', '%' . $userName . '%')
             ->where('affiliation1_id', 'like', '%' . $affiliation1Id . '%')
-            ->where('department_id', 'like', '%' . $departmentId . '%')
+            ->where('affiliation2_id', 'like', '%' . $affiliation2Id . '%')
             ->where('affiliation3_id', 'like', '%' . $affiliation3Id . '%')
             ->where('employee_status_id', 1) // 退職者を除外する条件を追加
             ->where('id', '!=', 1)// システム管理者を除外する条件を追加

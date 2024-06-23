@@ -26,7 +26,7 @@ class VendorStoreRequest extends FormRequest
             'vendor_name' => 'required|max:100',
             'vendor_kana_name' => 'required|max:100',
             'vendor_type_id' => 'required',
-            'department' => 'required',
+            'affiliation2' => 'required',
         ];
     }
     

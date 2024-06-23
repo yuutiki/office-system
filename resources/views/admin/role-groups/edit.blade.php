@@ -223,7 +223,7 @@
                                     @endif
                                 </td>
                                 <td class="px-2 py-2 text-center border border-gray-600">{{ $user->affiliation1->affiliation1_name }}</td>
-                                <td class="px-2 py-2 text-center border border-gray-600">{{ $user->department->department_name }}</td>
+                                <td class="px-2 py-2 text-center border border-gray-600">{{ $user->affiliation2->affiliation2_name }}</td>
                                 <td class="px-2 py-2 text-center border border-gray-600">{{ $user->affiliation3->affiliation3_name }}</td>
                                 <td class="text-center border border-gray-600">
                                     <form method="post" action="{{ route('group.delete_user') }}">
@@ -329,11 +329,11 @@
                         </select>
                     </div>
                     <div>
-                        <label for="department_id" class="block font-semibold text-sm dark:text-white text-gray-900 leading-none md:mt-1">所属2</label>
-                        <select id="department_id" name="department_id" class="input-primary">
+                        <label for="affiliation2_id" class="block font-semibold text-sm dark:text-white text-gray-900 leading-none md:mt-1">所属2</label>
+                        <select id="affiliation2_id" name="affiliation2_id" class="input-primary">
                             <option value="">未選択</option>
-                            @foreach($departments as $department)
-                            <option value="{{ $department->id }}" @selected($department->id == old('department_id'))>{{ $department->department_name }}</option>
+                            @foreach($affiliation2s as $affiliation2)
+                            <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == old('affiliation2_id'))>{{ $affiliation2->affiliation2_name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -427,7 +427,7 @@
     function searchUsers() {
         var userName = document.getElementById('user_name').value; // 必要なクエリを設定する
         var affiliation1Id = document.getElementById('affiliation1_id').value; // 必要に応じて追加
-        var departmentId = document.getElementById('department_id').value; // 必要に応じて追加
+        var affiliation2Id = document.getElementById('affiliation2_id').value; // 必要に応じて追加
         var affiliation3Id = document.getElementById('affiliation3_id').value; // 必要に応じて追加
         
         $.ajax({
@@ -436,7 +436,7 @@
             data: {
                 user_name: userName,
                 affiliation1_id: affiliation1Id,
-                department_id: departmentId,
+                affiliation2_id: affiliation2Id,
                 affiliation3_id: affiliation3Id
             },
             success: function (data) {
@@ -462,7 +462,7 @@
                     row.append($('<td>').text(user.user_num).addClass('py-2 ml-2'));
                     row.append($('<td>').text(user.user_name).addClass('py-2 ml-2'));
                     row.append($('<td>').text(user.affiliation1.affiliation1_name).addClass('py-2 ml-2'));
-                    row.append($('<td>').text(user.department.department_name).addClass('py-2 ml-2'));
+                    row.append($('<td>').text(user.affiliation2.affiliation2_name).addClass('py-2 ml-2'));
                     row.append($('<td>').text(user.affiliation3.affiliation3_name).addClass('py-2 ml-2'));
                     tbody.append(row);
                 });
