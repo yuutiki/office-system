@@ -42,30 +42,28 @@
             {{-- <button type="button"  onclick="showModal()" class="md:ml-1 md:mt-1 mt-1 mb-2 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 顧客検索
             </button> --}}
-            <div class="grid gap-4 mt-2 mb-4 sm:grid-cols-3 grid-cols-1">
-                <div class="w-full flex flex-col">
+            <div class="grid gap-3 mt-2 mb-4 sm:grid-cols-3 grid-cols-1">
+                <div class="">
                     <label for="project_num" class="block dark:text-white text-sm text-gray-900 leading-none md:mt-4">プロジェクト№</label>
                     <input type="text" name="project_num" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="project_num" value="{{old('project_num',$project->project_num)}}" placeholder="登録時に自動採番されます" readonly>
                 </div>
-                <div class="col-span-2">
+                <div class="sm:col-span-2">
                     <label for="project_name" class="block dark:text-white text-sm text-gray-900 leading-none md:mt-4">プロジェクト名称<span class="text-red-500"> *</span></label>
                     <input type="text" name="project_name" class="input-secondary" id="project_name" value="{{old('project_name',$project->project_name)}}" placeholder=""  form="updateForm">
                     @error('project_name')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
+                {{-- スマホ画面非表示 --}}
                 <div class="hidden md:inline-block">
                     <label for="corporation_name" class="block dark:text-white text-sm text-gray-900 leading-none md:mt-1">法人名称</label>
                     <input type="text" name="corporation_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="corporation_name" value="{{old('corporation_name',$project->client->corporation->corporation_name)}}" readonly>
                 </div>
-                {{-- <div class="hidden">
-                    <label for="client_num" class="block dark:text-white text-sm text-gray-900 leading-none md:mt-1">顧客番号</label>
-                    <input type="text" name="client_num" id="client_num" value="{{old('client_num',$project->client->client_num)}}" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" form="updateForm">
-                </div> --}}
                 <div class="">
                     <label for="client_name" class="block dark:text-white text-sm text-gray-900 leading-none md:mt-1">顧客名称</label>
                     <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 " id="client_name" value="{{old('client_name',$project->client->client_name)}}" readonly>
                 </div>
+                {{-- スマホ画面非表示 --}}
                 <div class="hidden md:inline-block">
                     <label for="affiliation2_id" class="block text-sm dark:text-white text-gray-900 leading-none md:mt-1">顧客管轄</label>
                     <select id="affiliation2_id" name="affiliation2_id" class="dark:bg-gray-400 mt-1 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 pointer-events-none" readonly>
@@ -141,7 +139,7 @@
                                 <div class="text-red-500">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="">
+                        {{-- <div class="">
                             <div class="relative w-full">
                                 <label for="distribution_type_id" class="text-gray-900 text-sm dark:text-white leading-none">受注確度<span class="text-red-500"> *</span></label>
                                 <input type="number" id="currency-input" class="block py-1 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Enter amount" value="50" required />
@@ -153,7 +151,7 @@
                                 <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-1/2 -translate-x-1/2 -bottom-6">50</span>
                                 <span class="text-sm text-gray-500 dark:text-gray-400 absolute end-0 -bottom-6">100</span>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     <script>
                         // Get the elements
@@ -209,7 +207,7 @@
                                         </th>
                                         <th scope="col" class="px-2 py-1 whitespace-nowrap">
                                             <div class="flex items-center">
-                                                会計期
+                                                期
                                             </div>
                                         </th>
                                         <th scope="col" class="px-2 py-1 whitespace-nowrap">
@@ -219,7 +217,7 @@
                                         </th>
                                         <th scope="col" class="px-2 py-1 whitespace-nowrap">
                                             <div class="flex items-center">
-                                                計上金額
+                                                金額
                                             </div>
                                         </th>
 
@@ -235,8 +233,8 @@
                                             </button>
                                         </th> --}}
                                         <th scope="col" class="flex items-center py-1 whitespace-nowrap">
-                                            <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="w-auto flex py-1.5 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded border border-gray-200 hover:bg-gray-100 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
-                                                <svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                            <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="w-auto flex py-1 px-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded border border-gray-200 hover:bg-gray-100 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
+                                                <svg class="-ml-1 mr-1 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                                     <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
                                                 </svg>
                                                 {{ __('Actions') }}
@@ -364,13 +362,13 @@
                         </div>
     
                         <div class="md:ml-8 md:w-1/2">
-                            <div class="grid gap-4 mt-1 sm:grid-cols-3">
+                            <div class="grid gap-4 mt-1 lg:grid-cols-3 grid-cols-1">
                                 <div class="w-full flex flex-col hidden">
                                     <label for="billing_corporation_id" class="dark:text-white text-sm text-gray-900 leading-none mt-4">請求先法人ID</label>
                                     <input form="updateForm" type="text" name="billing_corporation_id" class="w-auto py-[2px] border border-gray-300 rounded mt-1 mb-1" id="billing_corporation_id" value="{{old('billing_corporation_id',$project->billing_corporation_id)}}" placeholder="">
                                 </div>
-                                <div class="w-full flex flex-col">
-                                    <label for="billing_corporation_num" class="dark:text-white text-sm text-gray-900 leading-none mt-1">請求先法人№</label>
+                                {{-- <div class="w-full flex flex-col">
+                                    <label for="billing_corporation_num" class="dark:text-white text-sm text-gray-900 leading-none sm:mt-1 mt-4">請求先法人№</label>
                                     <div class="relative w-full">
                                         <input type="text" name="billing_corporation_num" class="dark:bg-gray-400 w-full py-1 border border-gray-300 rounded mt-1 mb-1" id="billing_corporation_num" value="{{old('billing_corporation_num', $project->billingCorporation->corporation_num)}}" disabled>
                                         <button type="button" id="" onclick="showCorporationModal()" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-[34px] text-white mt-1 bg-blue-700 rounded-e border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -379,9 +377,22 @@
                                             </svg>
                                         </button>
                                     </div>
+                                </div> --}}
+                                <div class="flex sm:mt-0 mt-4">
+                                    <div class="w-full flex flex-col">
+                                        <label for="billing_corporation_num" class="dark:text-gray-100 text-gray-900 leading-none text-sm">請求先法人№</label>
+                                        <input type="text" form="corporationForm" name="billing_corporation_num" id="billing_corporation_num" value="{{old('billing_corporation_num', $project->billingCorporation->corporation_num)}}" class="input-primary" disabled>
+                                    </div>
+            
+                                    {{-- 法人検索用のボタン --}}
+                                    <button type="button" id="" onclick="showCorporationModal()" class="p-2.5 text-sm font-medium h-[35px] text-white mt-[18px] ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none  dark:bg-blue-600 dark:hover:bg-blue-700  dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                        </svg>
+                                    </button>
                                 </div>
                                 <div class="w-full flex flex-col col-span-2">
-                                    <label for="billing_corporation_name" class="dark:text-white text-sm text-gray-900 leading-none mt-1">請求先法人名</label>
+                                    <label for="billing_corporation_name" class="dark:text-white text-sm text-gray-900 leading-none sm:mt-0">請求先法人名</label>
                                     <input type="text" form="updateForm" name="billing_corporation_name" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1 mb-1" id="billing_corporation_name" value="{{old('billing_corporation_name', optional($project->billingCorporation)->corporation_name)}}" disabled>
                                 </div>
                             </div>
@@ -400,9 +411,13 @@
                                 </div>
                             </div>
 
-                            <div class="grid gap-4 mt-2 sm:grid-cols-3">
-                                <div class="col-span-1">
-                                    <label for="head_post_code" class="dark:text-white text-sm text-gray-900 leading-none mt-1" autocomplete="new-password">郵便番号</label>
+
+                            <div class="grid gap-2 sm:mt-2 mt-4 md:grid-cols-3">
+                                <button type="button" class="rounded bg-gray-400 h-[34px] mt-[22px] hover:bg-gray-600 whitespace-nowrap">
+                                    請求先情報を読み込む
+                                </button>
+                                <div class="w-full flex flex-col col-span-1">
+                                    <label for="head_post_code" class="dark:text-white text-sm text-gray-900 leading-none sm:mt-1" autocomplete="new-password">郵便番号</label>
                                     <div class="relative w-full">
                                         <input type="text" id="head_post_code" form="updateForm" name="head_post_code" class="input-secondary" value="{{old('head_post_code', $project->billing_head_post_code)}}" placeholder="">
                                         <button type="button" id="project_ajaxzip3" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-[34px] mt-1 text-white bg-blue-700 rounded-e border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -412,8 +427,8 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div class="col-span-1">
-                                    <label for="prefecture_id" class="dark:text-white text-sm text-gray-900 leading-none mt-4">都道府県</label>
+                                <div class="w-full flex flex-col col-span-1">
+                                    <label for="prefecture_id" class="dark:text-white text-sm text-gray-900 leading-none mt-1">都道府県</label>
                                     <select id="prefecture_id" form="updateForm" name="prefecture_id" class="input-secondary">
                                         <option selected value="">未選択</option>
                                         @foreach($prefectures as $prefecture)
@@ -421,13 +436,10 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <button type="button" class="rounded bg-gray-400 h-8 mt-6 hover:bg-gray-600 whitespace-nowrap">
-                                    請求先情報を読み込む
-                                </button>
                             </div>
                             <div class="grid gap-4 mt-2 mb-4 sm:grid-cols-3">
-                                <div class="col-span-3">
-                                    <label for="head_addre1" class="dark:text-white text-sm text-gray-900 leading-none mt-4">請求先住所</label>
+                                <div class="w-full flex flex-col col-span-3">
+                                    <label for="head_addre1" class="dark:text-white text-sm text-gray-900 leading-none mt-1">請求先住所</label>
                                     <input type="text" form="updateForm" name="head_addre1" id="head_addre1" value="{{old('head_addre1',$project->billing_head_address1)}}" class="input-secondary" placeholder="">
                                 </div>
                             </div>
@@ -438,43 +450,45 @@
 
 
                     {{-- テーブルヘッダアクションプルダウン --}}
-                    <div id="actionsDropdown" class="hidden  w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 z-50">
+                    <div id="actionsDropdown" class="hidden w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 z-50">
                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
                             <li>
-                                <button data-modal-target="storeRevenueModal" data-modal-toggle="storeRevenueModal"  class="block whitespace-nowrap w-full text-white hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium  text-sm px-2 py-1 text-center m-auto" type="button">
+                                <button data-modal-target="storeRevenueModal" data-modal-toggle="storeRevenueModal" class="block whitespace-nowrap w-full text-white hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-2 py-1 text-center m-auto" type="button">
                                     <div class="flex items-center">
-                                        {{-- <svg class="h-3.5 w-3.5 mr-0.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                                        </svg> --}}
-                                        <span class="text-ms ml-4">追加</span>
+                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                        </svg>
+                                        <span class="ml-4">個別追加</span>
                                     </div>
                                 </button>
                             </li>
                             <li>
-                                <button data-modal-target="insertRevenueModal" data-modal-toggle="insertRevenueModal"  class="block whitespace-nowrap w-full text-white hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium  text-sm px-2 py-1 text-center m-auto" type="button">
+                                <button data-modal-target="insertRevenueModal" data-modal-toggle="insertRevenueModal" class="block whitespace-nowrap w-full text-white hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-2 py-1 text-center m-auto" type="button">
                                     <div class="flex items-center">
-                                        {{-- <svg class="h-3.5 w-3.5 mr-0.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                                        </svg> --}}
-                                        <span class="text-ms ml-4">一括追加</span>
+                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                        </svg>
+                                        <span class="ml-4">一括追加</span>
                                     </div>
                                 </button>
                             </li>
+                            <li class="border-[0.25px] border-white border-opacity-20"></li>
+                            <li>
+                                <form id="bulkDeleteForm" action="{{ route('projectrevenue.bulkDelete') }}" method="POST">
+                                    @csrf
+                                    @method('delete') <!-- 隠しフィールドを追加 -->
+                                    <button type="submit" id="bulkDeleteButton" form="bulkDeleteForm" class="block whitespace-nowrap w-full text-white hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-2 py-1 text-center m-auto">
+                                        <div class="flex items-center dark:text-red-500">
+                                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                            </svg>
+                                            <span class="ml-4 text-base">削除</span>
+                                        </div>
+                                    </button>
+                                </form>
+                            </li>
                         </ul>
-                        <div class="py-1">
-                            <form id="bulkDeleteForm" action="{{ route('projectrevenue.bulkDelete') }}" method="POST">
-                                @csrf
-                                @method('delete') <!-- 隠しフィールドを追加 -->
-                                <button type="submit" id="bulkDeleteButton" form="bulkDeleteForm" class="block whitespace-nowrap w-full text-white hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium  text-sm px-2 py-1 text-center m-auto">
-                                    <div class="flex items-center">
-                                        {{-- <svg class="h-3.5 w-3.5 mr-0.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                                        </svg> --}}
-                                        <span class="text-ms ml-4">一括削除</span>
-                                    </div>
-                                </button>
-                            </form>
-                        </div>
+
                     </div>
 
                     <div>
