@@ -225,29 +225,35 @@
                                       <td class="px-1 border border-gray-600 text-center">1</td>
                                       <td class="px-1 border border-gray-600 hidden"><input type="hidden" name="sort-order-1" value="1"></td>
                                       <td class="px-1 border border-gray-600">
-                                          <div class="flex">
-                                              <input type="text" class="input-estimate w-[130px] text-sm" name="ing-cd-1">
-                                              <button type="button" id="invoiceApi" class="p-2.5 text-sm font-medium h-[34px] items-center text-white ml-1 mt-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none  dark:bg-blue-600 dark:hover:bg-blue-700  dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
-                                                  <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                        <div class="flex">
+                                            <input type="text" class="input-estimate w-[110px] text-xs" name="ing-cd-1">
+                                            <button type="button" id="invoiceApi" class="p-1 ml-1 px-1.5 text-sm font-medium text-white bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                                                <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
                                                   </svg>
-                                              </button>
-                                          </div>
-                                      </td>
-                                      <td class="px-1 border border-gray-600"><div class="flex"><input type="text" class="input-estimate min-w-[400px] text-sm" name="ing-name-1"></div></td>
-                                      <td class="px-1 border border-gray-600"><input type="text" class="input-estimate text-sm" name="ing-maker-1"></td>
-                                      <td class="px-1 border border-gray-600"><input type="text" class="input-estimate w-[110px] text-sm text-right" name="ing-tanka-1" onchange="formatNumber(this); calculateAll(this)"></td>
-                                      <td class="px-1 border border-gray-600"><input type="text" class="input-estimate w-[110px] text-sm text-right" name="ing-genka-1" onchange="formatNumber(this); calculateAll(this)"></td>
-                                      <td class="px-1 border border-gray-600"><input type="number" class="input-estimate w-12 text-sm text-right" name="ing-suryo-1" onchange="calculateAll(this)"></td>
-                                      <td class="px-1 border border-gray-600 readonly-cell"><input type="text" class="input-estimate w-[110px] text-sm readonly-cell pointer-events-none text-right" name="ing-hyojun-1" readonly tabindex="-1"></td>
-                                      <td class="px-1 border border-gray-600 readonly-cell hidden"><input type="text" class="input-estimate  w-[110px] text-sm readonly-cell pointer-events-none text-right" name="ing-hyojungenka-1" readonly tabindex="-1"></td>
-                                      <td class="px-1 border border-gray-600"><input type="text" class="input-estimate w-[110px] text-sm dark:text-red-500 text-right" name="ing-nebiki-1" onchange="formatNebiki(this); calculateAll(this)"></td>
-                                      <td class="px-1 border border-gray-600 readonly-cell"><input type="text" class="input-estimate w-[110px] text-sm readonly-cell pointer-events-none text-right" name="ing-teikyo-1" readonly tabindex="-1"></td>
+                                            </button>
+                                        </div>
+                                    </td>
+                                      <td class="px-1 border border-gray-600"><div class="flex"><input type="text" class="input-estimate min-w-[330px] text-xs" name="ing-name-1"></div></td>
+                                      <td class="px-1 border border-gray-600"><input type="text" class="input-estimate text-xs" name="ing-maker-1"></td>
+                                      <td class="px-1 border border-gray-600"><input type="text" class="input-estimate w-[100px] text-xs text-right" name="ing-tanka-1" onchange="formatNumber(this); calculateAll(this)"></td>
+                                      <td class="px-1 border border-gray-600"><input type="text" class="input-estimate w-[100px] text-xs text-right" name="ing-genka-1" onchange="formatNumber(this); calculateAll(this)"></td>
+                                      <td class="px-1 border border-gray-600"><input type="number" class="input-estimate w-12 text-xs text-right" name="ing-suryo-1" onchange="calculateAll(this)"></td>
+                                      <td class="px-1 border border-gray-600 readonly-cell"><input type="text" class="input-estimate w-[100px] text-xs readonly-cell pointer-events-none text-right" name="ing-hyojun-1" readonly tabindex="-1"></td>
+                                      <td class="px-1 border border-gray-600 readonly-cell hidden"><input type="text" class="input-estimate  w-[100px] text-xs readonly-cell pointer-events-none text-right" name="ing-hyojungenka-1" readonly tabindex="-1"></td>
+                                      <td class="px-1 border border-gray-600"><input type="text" class="input-estimate w-[100px] text-xs dark:text-red-500 text-right" name="ing-nebiki-1" onchange="formatNebiki(this); calculateAll(this)"></td>
+                                      <td class="px-1 border border-gray-600 readonly-cell"><input type="text" class="input-estimate w-[100px] text-xs readonly-cell pointer-events-none text-right" name="ing-teikyo-1" readonly tabindex="-1"></td>
                                       <td class="px-1 border border-gray-600 readonly-cell">
-                                          <input type="text" class="input-estimate-arari w-[110px] text-xs py-0 readonly-cell pointer-events-none text-right block" name="ing-arari-1" readonly tabindex="-1">
-                                          <input type="text" class="input-estimate-arari w-[110px] text-xs py-0 readonly-cell pointer-events-none text-right mt-0" name="ing-arariritu-1" readonly tabindex="-1">
+                                          <input type="text" class="input-estimate-arari w-[100px] text-xs py-0 readonly-cell pointer-events-none text-right block" name="ing-arari-1" readonly tabindex="-1">
+                                          <input type="text" class="input-estimate-arari w-[100px] text-xs py-0 readonly-cell pointer-events-none text-right mt-0" name="ing-arariritu-1" readonly tabindex="-1">
                                       </td>
-                                      <td class="px-1 border border-gray-600"><input type="button" class="button-delete" value="削除" onclick="del(this)" tabindex="-1"></td>
+                                      <td class="px-1 border border-gray-600 text-center">
+                                        <button type="button" class="delete-row p-1 text-sm font-medium text-white bg-red-700 rounded border border-red-700 hover:bg-red-800 focus:outline-none dark:bg-red-600 dark:hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800" onclick="del(this)" tabindex="-1">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </button>
+                                    </td>
                                   </tr>
                               </tbody>
                           </table>
