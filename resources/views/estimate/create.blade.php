@@ -18,8 +18,8 @@
 
     <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="mx-4 sm:p-8">
+    <div class="mx-auto sm:pl-16 pr-3 pl-3 pb-4">
+        {{-- <div class="mx-4 sm:p-8"> --}}
             <form id="form1" method="post" action="{{route('projects.store')}}" enctype="multipart/form-data" autocomplete="new-password">
                 @csrf
                 {{-- <div class="grid gap-4 mb-4 sm:grid-cols-3">
@@ -168,7 +168,357 @@
 
                         <div id="mytable"></div>
 
-                        <div class="grid gap-4 sm:grid-cols-5">
+                        {{-- <label>{{ __('材料') }}
+                            <a onclick = add() class="btn btn-sm btn-light">明細追加</a>
+                            <div id="input_plural">
+                                <div class="flex">
+                                    <input type="text" class="input-primary text-sm" name="ing-name-1">
+                                    <input type="text" class="input-primary ml-2 text-sm" name="ing-size-1">
+                                    <input type="text" class="input-primary ml-2 text-sm" name="ing-maker-1">
+                                    <input type="text" class="input-primary ml-2 text-sm" name="ing-kataban-1">
+                                    <input type="text" class="input-primary ml-2 text-sm" name="ing-tanka-1">
+                                    <input type="button" class="button-delete ml-2" value="削除" onclick="del(this)">
+                                </div>
+                            </div>
+                      </label> --}}
+
+                      <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+
+                      <label>
+                          <a onclick="add()" class="rounded bg-blue-500 py-2 px-1 cursor-pointer text-white">明細追加</a>
+                      </label>
+                      <div class="relative overflow-x-auto mt-4">
+                          <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-200 border border-gray-600">
+                              <thead class="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 mt-8">
+                                  <tr>
+                                      <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600">複製</th>
+                                      <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600"></th>
+                                      <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600">No.</th>
+                                      <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 hidden">並び順</th>
+                                      <th scope="col" class="px-6 py-2 whitespace-nowrap border-x border-gray-600">商品CD</th>
+                                      <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600">品名</th>
+                                      <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600">メーカ</th>
+                                      <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600">標準単価</th>
+                                      <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600">原価/個</th>
+                                      <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600">数量</th>
+                                      <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600">標準価格</th>
+                                      <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600">値引額</th>
+                                      <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600">提供価格</th>
+                                      <th scope="col" class="px-2 py-0.5 whitespace-nowrap border-x border-gray-600 text-xs">粗利額<br>粗利率</th>
+                                      <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600">操作</th>
+                                  </tr>
+                              </thead>
+                              <tbody id="input_plural">
+                                  <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
+                                      <td class="px-1 border border-gray-600 text-center">
+                                          <button type="button" class="copy-row p-1 text-sm font-medium text-white bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800" onclick="copyRow(this)">
+                                              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                              </svg>
+                                          </button>
+                                      </td>
+                                      <td class="px-1 border border-gray-600 text-center drag-handle">
+                                          <svg class="w-6 h-6 text-gray-800 dark:text-white cursor-move" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 20V10m0 10-3-3m3 3 3-3m5-13v10m0-10 3 3m-3-3-3 3"/>
+                                          </svg>
+                                      </td>
+                                      <td class="px-1 border border-gray-600 text-center">1</td>
+                                      <td class="px-1 border border-gray-600 hidden"><input type="hidden" name="sort-order-1" value="1"></td>
+                                      <td class="px-1 border border-gray-600">
+                                          <div class="flex">
+                                              <input type="text" class="input-estimate w-[130px] text-sm" name="ing-cd-1">
+                                              <button type="button" id="invoiceApi" class="p-2.5 text-sm font-medium h-[34px] items-center text-white ml-1 mt-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none  dark:bg-blue-600 dark:hover:bg-blue-700  dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                                                  <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                                  </svg>
+                                              </button>
+                                          </div>
+                                      </td>
+                                      <td class="px-1 border border-gray-600"><div class="flex"><input type="text" class="input-estimate min-w-[400px] text-sm" name="ing-name-1"></div></td>
+                                      <td class="px-1 border border-gray-600"><input type="text" class="input-estimate text-sm" name="ing-maker-1"></td>
+                                      <td class="px-1 border border-gray-600"><input type="text" class="input-estimate w-[110px] text-sm text-right" name="ing-tanka-1" onchange="formatNumber(this); calculateAll(this)"></td>
+                                      <td class="px-1 border border-gray-600"><input type="text" class="input-estimate w-[110px] text-sm text-right" name="ing-genka-1" onchange="formatNumber(this); calculateAll(this)"></td>
+                                      <td class="px-1 border border-gray-600"><input type="number" class="input-estimate w-12 text-sm text-right" name="ing-suryo-1" onchange="calculateAll(this)"></td>
+                                      <td class="px-1 border border-gray-600 readonly-cell"><input type="text" class="input-estimate w-[110px] text-sm readonly-cell pointer-events-none text-right" name="ing-hyojun-1" readonly tabindex="-1"></td>
+                                      <td class="px-1 border border-gray-600 readonly-cell hidden"><input type="text" class="input-estimate  w-[110px] text-sm readonly-cell pointer-events-none text-right" name="ing-hyojungenka-1" readonly tabindex="-1"></td>
+                                      <td class="px-1 border border-gray-600"><input type="text" class="input-estimate w-[110px] text-sm dark:text-red-500 text-right" name="ing-nebiki-1" onchange="formatNebiki(this); calculateAll(this)"></td>
+                                      <td class="px-1 border border-gray-600 readonly-cell"><input type="text" class="input-estimate w-[110px] text-sm readonly-cell pointer-events-none text-right" name="ing-teikyo-1" readonly tabindex="-1"></td>
+                                      <td class="px-1 border border-gray-600 readonly-cell">
+                                          <input type="text" class="input-estimate-arari w-[110px] text-xs py-0 readonly-cell pointer-events-none text-right block" name="ing-arari-1" readonly tabindex="-1">
+                                          <input type="text" class="input-estimate-arari w-[110px] text-xs py-0 readonly-cell pointer-events-none text-right mt-0" name="ing-arariritu-1" readonly tabindex="-1">
+                                      </td>
+                                      <td class="px-1 border border-gray-600"><input type="button" class="button-delete" value="削除" onclick="del(this)" tabindex="-1"></td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                          <div class="mt-4">
+                              <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-200 border border-gray-600">
+                                  <thead class="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                      <tr>
+                                          <th scope="col" class="px-6 py-2 whitespace-nowrap border-x border-gray-600">項目</th>
+                                          <th scope="col" class="px-6 py-2 whitespace-nowrap border-x border-gray-600">金額</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                          <td class="px-6 py-2 border-x border-gray-600">原価合計</td>
+                                          <td class="px-6 py-2 border-x border-gray-600"><span id="total-cost">0</span></td>
+                                      </tr>
+                                      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                          <td class="px-6 py-2 border-x border-gray-600">粗利合計</td>
+                                          <td class="px-6 py-2 border-x border-gray-600"><span id="total-profit">0</span></td>
+                                      </tr>
+                                      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                          <td class="px-6 py-2 border-x border-gray-600">税抜合計</td>
+                                          <td class="px-6 py-2 border-x border-gray-600"><span id="total-without-tax">0</span></td>
+                                      </tr>
+                                      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                          <td class="px-6 py-2 border-x border-gray-600">消費税額</td>
+                                          <td class="px-6 py-2 border-x border-gray-600"><span id="total-tax">0</span></td>
+                                      </tr>
+                                      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                          <td class="px-6 py-2 border-x border-gray-600">税込合計</td>
+                                          <td class="px-6 py-2 border-x border-gray-600"><span id="total-with-tax">0</span></td>
+                                      </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                    
+                      <script>
+                        let rowCount = 1;
+                        
+                        function add() {
+                            rowCount++;
+                            const newRow = document.querySelector('#input_plural tr').cloneNode(true);
+                            newRow.querySelectorAll('input').forEach(input => {
+                                input.value = '';
+                                const nameParts = input.name.split('-');
+                                input.name = `${nameParts[0]}-${nameParts[1]}-${rowCount}`;
+                            });
+                            newRow.querySelector('td:nth-child(3)').textContent = rowCount;
+                            newRow.querySelector('input[type="hidden"]').name = `sort-order-${rowCount}`;
+                            newRow.querySelector('input[type="hidden"]').value = rowCount;
+                            
+                            // 削除ボタンのテキストを設定
+                            const deleteButton = newRow.querySelector('.button-delete');
+                            if (deleteButton) {
+                                deleteButton.value = '削除';
+                            }
+                            
+                            document.querySelector('#input_plural').appendChild(newRow);
+                            updateSortable();
+                            setupInputListeners(); // 追加
+                        }
+                        
+                        function del(button) {
+                            if (document.querySelectorAll('#input_plural tr').length > 1) {
+                                button.closest('tr').remove();
+                                renumberRows();
+                                calculateTotals();
+                            }
+                        }
+                        
+                        function renumberRows() {
+                            document.querySelectorAll('#input_plural tr').forEach((row, index) => {
+                                const rowNumber = index + 1;
+                                row.querySelector('td:nth-child(3)').textContent = rowNumber;
+                                row.querySelector('input[type="hidden"]').name = `sort-order-${rowNumber}`;
+                                row.querySelector('input[type="hidden"]').value = rowNumber;
+                                row.querySelectorAll('input:not([type="hidden"])').forEach(input => {
+                                    const nameParts = input.name.split('-');
+                                    input.name = `${nameParts[0]}-${nameParts[1]}-${rowNumber}`;
+                                });
+                            });
+                            rowCount = document.querySelectorAll('#input_plural tr').length;
+                        }
+                        
+                        function copyRow(button) {
+                            const originalRow = button.closest('tr');
+                            const newRow = originalRow.cloneNode(true);
+                            rowCount++;
+
+                            // No.列の数字を更新
+                            newRow.querySelector('td:nth-child(3)').textContent = rowCount;
+
+                            newRow.querySelector('input[type="hidden"]').name = `sort-order-${rowCount}`;
+                            newRow.querySelector('input[type="hidden"]').value = rowCount;
+                            newRow.querySelectorAll('input:not([type="hidden"])').forEach(input => {
+                                const nameParts = input.name.split('-');
+                                input.name = `${nameParts[0]}-${nameParts[1]}-${rowCount}`;
+                            });
+
+                            // 削除ボタンのテキストを設定
+                            const deleteButton = newRow.querySelector('.button-delete');
+                            if (deleteButton) {
+                                deleteButton.value = '削除';
+                            }
+
+                            originalRow.parentNode.insertBefore(newRow, originalRow.nextSibling);
+                            updateSortable();
+                            renumberRows(); // 全ての行の番号を振り直す
+                            calculateAll(newRow.querySelector('input[name^="ing-suryo-"]'));
+                            setupInputListeners(); // 追加
+                        }
+                        
+                        function formatNumber(input) {
+                            let value = input.value.replace(/[^\d.-]/g, '');
+                            if (value !== '' && !isNaN(value)) {
+                                input.value = Number(value).toLocaleString();
+                            }
+                        }
+                        
+                        function formatNebiki(input) {
+                            let value = input.value.replace(/[^\d.-]/g, '');
+                            if (value !== '' && !isNaN(value)) {
+                                if (value.startsWith('-')) {
+                                    input.value = '-' + Number(value.slice(1)).toLocaleString();
+                                } else {
+                                    input.value = '-' + Number(value).toLocaleString();
+                                }
+                            }
+                        }
+                        
+                        function calculateAll(changedInput) {
+                            const row = changedInput.closest('tr');
+                            const tanka = parseFloat(row.querySelector('input[name^="ing-tanka-"]').value.replace(/,/g, '')) || 0;
+                            const genka = parseFloat(row.querySelector('input[name^="ing-genka-"]').value.replace(/,/g, '')) || 0;
+                            const suryo = parseFloat(row.querySelector('input[name^="ing-suryo-"]').value) || 0;
+                            const nebiki = parseFloat(row.querySelector('input[name^="ing-nebiki-"]').value.replace(/,/g, '')) || 0;
+                        
+                            const hyojun = tanka * suryo;
+                            const hyojungenka = genka * suryo;
+                            const teikyo = hyojun + nebiki;
+                            const arari = teikyo - hyojungenka;
+                            const arariritu = teikyo !== 0 ? (arari / teikyo) * 100 : 0;
+                        
+                            row.querySelector('input[name^="ing-hyojun-"]').value = Math.round(hyojun).toLocaleString();
+                            row.querySelector('input[name^="ing-hyojungenka-"]').value = Math.round(hyojungenka).toLocaleString();
+                            row.querySelector('input[name^="ing-teikyo-"]').value = Math.round(teikyo).toLocaleString();
+                            row.querySelector('input[name^="ing-arari-"]').value = Math.round(arari).toLocaleString();
+                            row.querySelector('input[name^="ing-arariritu-"]').value = arariritu.toFixed(2) + '%';
+                        
+                            calculateTotals();
+                        }
+                        
+                        function calculateTotals() {
+                            let totalCost = 0;
+                            let totalProfit = 0;
+                            let totalWithoutTax = 0;
+                        
+                            document.querySelectorAll('#input_plural tr').forEach(row => {
+                                const genka = parseFloat(row.querySelector('input[name^="ing-genka-"]').value.replace(/,/g, '')) || 0;
+                                const suryo = parseFloat(row.querySelector('input[name^="ing-suryo-"]').value) || 0;
+                                const teikyo = parseFloat(row.querySelector('input[name^="ing-teikyo-"]').value.replace(/,/g, '')) || 0;
+                        
+                                totalCost += genka * suryo;
+                                totalProfit += teikyo - (genka * suryo);
+                                totalWithoutTax += teikyo;
+                            });
+                        
+                            const taxRate = 0.1; // 10%
+                            const totalTax = totalWithoutTax * taxRate;
+                            const totalWithTax = totalWithoutTax + totalTax;
+                        
+                            document.getElementById('total-cost').textContent = Math.round(totalCost).toLocaleString();
+                            document.getElementById('total-profit').textContent = Math.round(totalProfit).toLocaleString();
+                            document.getElementById('total-without-tax').textContent = Math.round(totalWithoutTax).toLocaleString();
+                            document.getElementById('total-tax').textContent = Math.round(totalTax).toLocaleString();
+                            document.getElementById('total-with-tax').textContent = Math.round(totalWithTax).toLocaleString();
+                        }
+                        
+                        function updateSortable() {
+                            const tbody = document.querySelector('#input_plural');
+                            new Sortable(tbody, {
+                                handle: '.drag-handle',
+                                animation: 150,
+                                onEnd: function() {
+                                    renumberRows();
+                                }
+                            });
+                        }
+                        
+                        document.addEventListener('DOMContentLoaded', function() {
+                            updateSortable();
+                            calculateTotals();
+                        });
+                        
+                        // イベントリスナーを追加
+                        document.querySelector('#input_plural').addEventListener('change', function(e) {
+                            if (e.target.matches('input[name^="ing-tanka-"], input[name^="ing-genka-"], input[name^="ing-suryo-"], input[name^="ing-nebiki-"]')) {
+                                calculateAll(e.target);
+                            }
+                        });
+
+                        document.addEventListener('keydown', function(e) {
+                            if (e.key === 'Enter') {
+                                // e.preventDefault(); // デフォルトの Enter キーの動作を防ぐ
+                                moveCell(e.shiftKey ? 'up' : 'down');
+                            }
+                        });
+
+                        function handleKeyDown(e) {
+                            // input要素（textまたはnumber）にフォーカスがあり、かつテーブル内の要素である場合のみ処理を行う
+                            if (e.target.matches('#input_plural input[type="text"], #input_plural input[type="number"]') && e.key === 'Enter') {
+                                e.preventDefault();
+                                moveCell(e.shiftKey ? 'up' : 'down', e.target);
+                            }
+                        }
+
+                        function moveCell(direction, element) {
+                            const currentCell = element.closest('td');
+                            const currentRow = currentCell.parentElement;
+                            const cellIndex = Array.from(currentRow.cells).indexOf(currentCell);
+                            
+                            let targetRow;
+                            if (direction === 'down') {
+                                targetRow = currentRow.nextElementSibling;
+                                if (!targetRow) {
+                                    targetRow = currentRow.parentElement.firstElementChild;
+                                }
+                            } else { // up
+                                targetRow = currentRow.previousElementSibling;
+                                if (!targetRow) {
+                                    targetRow = currentRow.parentElement.lastElementChild;
+                                }
+                            }
+
+                            if (targetRow) {
+                                const targetCell = targetRow.cells[cellIndex];
+                                const targetInput = targetCell.querySelector('input[type="text"], input[type="number"]');
+                                if (targetInput) {
+                                    targetInput.focus();
+                                    targetInput.setSelectionRange(targetInput.value.length, targetInput.value.length);
+                                }
+                            }
+                        }
+
+                        function setupInputListeners() {
+                            const inputs = document.querySelectorAll('#input_plural input[type="text"], #input_plural input[type="number"]');
+                            inputs.forEach(input => {
+                                input.addEventListener('keydown', handleKeyDown);
+                            });
+                        }
+                        </script>
+
+                    <style>
+                        .readonly-cell {
+                            background-color: #f3f4f6;
+                            color: #6b7280;
+                        }
+                        .dark .readonly-cell {
+                            background-color: #374151;
+                            color: #9ca3af;
+                        }
+                        .input-estimate.text-right {
+                            text-align: right;
+                        }
+                        .input-estimate.text-xs {
+                            font-size: 0.75rem; /* テキストサイズを小さくする */
+                        }
+                    </style>
+
+                        {{-- <div class="grid gap-4 sm:grid-cols-5">
                             <div class="">
                                 <label for="client_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-4">税抜合計</label>
                                 <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="totalPrice" value="3,000,000" placeholder="">
@@ -183,7 +533,7 @@
                                 <label for="client_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-1">税込合計</label>
                                 <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="client_name" value="3,300,000" placeholder="">
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="w-full flex flex-col">
                             <label for="memo" class="dark:text-gray-100 text-gray-900 leading-none mt-4">見積備考</label>
@@ -200,7 +550,7 @@
                     </div>
                 </div>
             </form>
-        </div>
+        {{-- </div> --}}
     </div>
 
     <script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script>

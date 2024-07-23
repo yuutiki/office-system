@@ -75,7 +75,7 @@
                 @enderror
             </div>
             <div>
-                <div  class="w-full flex flex-col">
+                <div class="w-full flex flex-col">
                     <label for="corporation_kana_name" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">法人カナ名称<span class="text-red-500"> *</span></label>
                     <input type="text" form="corporationForm" name="corporation_kana_name" class="input-secondary" id="corporation_kana_name" value="{{old('corporation_kana_name',$corporation->corporation_kana_name)}}" placeholder="ガッコウホウジン カラスマガクエン">
                 </div>

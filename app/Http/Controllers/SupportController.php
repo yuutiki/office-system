@@ -307,6 +307,11 @@ class SupportController extends Controller
     //     return response()->json($clients);
     // }
 
+    public function showUploadForm()
+    {
+        return view('support.upload-form');
+    }
+
 
     public function upload(Request $request)
     {

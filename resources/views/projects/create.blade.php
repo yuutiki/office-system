@@ -5,9 +5,6 @@
                 {{ Breadcrumbs::render('createProject') }}
             </h2>
             <div class="flex justify-end">
-                <x-general-button onclick="location.href='{{route('projects.index')}}'">
-                    戻る
-                </x-general-button>
                 <x-message :message="session('message')"/>
             </div>
         </div>

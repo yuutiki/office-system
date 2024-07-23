@@ -144,6 +144,18 @@ Breadcrumbs::for('dashboard', function ($trail) {
                     $trail->push('新規作成', url('support/create'));
                 });
 
+                // ダッシュボード > サポート一覧 > 編集
+                Breadcrumbs::for('editSupport', function ($trail ,$support) {
+                    $trail->parent('supports');
+                    $trail->push('編集', url('supports/' . $support->id . '/edit'));
+                });
+
+                // ダッシュボード > サポート一覧 > CSVアップロード
+                Breadcrumbs::for('csvUploadSupport', function ($trail) {
+                    $trail->parent('supports');
+                    $trail->push('CSVアップロード', route('support.showUploadForm'));
+                });
+
 
         // ダッシュボード > 契約一覧
         Breadcrumbs::for('contracts', function ($trail) {

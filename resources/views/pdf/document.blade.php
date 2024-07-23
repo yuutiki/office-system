@@ -89,7 +89,7 @@
         </table>
     {{-- body --}}
     {{-- footer --}}
-        <div style="margin-top: 20px; border-top: 1px solid #000000; padding-top: 10px;">
+        <div style="margin-top: 20px; border-top: 1px solid #000000; padding-top: 10px; position: absolute; bottom: 30px; width: 100%;">
             <div style="border-bottom: 0.5px solid #000;">
                 <span style="float: left;">合　　計:</span>
                 <span style="float: right; width: 50%;">13000</span>

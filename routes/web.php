@@ -135,6 +135,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/products', ProductController::class);
 
     // support関連
+    Route::get('/support/show-upload', [SupportController::class, 'showUploadForm'])->name('support.showUploadForm');
     Route::post('/support/upload', [SupportController::class, 'upload'])->name('support.upload');
     Route::resource('/support', '\App\Http\Controllers\SupportController');
 

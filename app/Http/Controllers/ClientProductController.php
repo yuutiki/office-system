@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Affiliation2;
 use App\Models\ClientProduct;
 use App\Models\Client;
-use App\Models\Department;
 use App\Models\Product;
 use App\Models\ProductSeries;
 use App\Models\ProductSplitType;
@@ -24,7 +24,7 @@ class ClientProductController extends Controller
     public function create()
     {
         $users = User::all();
-        $departments = Department::all(); //管轄事業部
+        $departments = Affiliation2::all(); //管轄事業部
         $productSeries = ProductSeries::all();
         $productVersions = ProductVersion::orderby('version_code','desc')->get();
         // $productSplitTypes = ProductSplitType::all();

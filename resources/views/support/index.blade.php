@@ -118,8 +118,13 @@
                     <div id="actionsDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-600 dark:divide-gray-600">
                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
                             <li>
-                                <button type="button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="block w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
-                                    CSV一括登録
+                                <button type="button" onclick="location.href='{{ route('support.showUploadForm') }}'" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2M8 9l4-5 4 5m1 8h0"/>
+                                        </svg>
+                                    </div>
+                                    CSVアップロード
                                 </button>
                             </li>
                         </ul>
@@ -164,6 +169,9 @@
                         </div>
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                        <span class="sr-only">編集</span>
+                    </th>
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             @sortablelink('client_num','顧客番号')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
@@ -203,7 +211,6 @@
                             </svg>
                         </div>
                     </th>
-
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             @sortablelink('user_id','受付対応者')
@@ -240,6 +247,16 @@
                         <td class="pl-4 py-1 whitespace-nowrap">
                             {{ $loop->iteration }}
                         </td>
+                        <td class="pl-4 py-1 whitespace-nowrap">
+                            <button type="button" onclick="location.href='{{route('support.edit',$support)}}'"  class="button-edit-primary">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+                                    </svg>
+                                    <span class=" md:block hidden">編集</span>
+                                </div>
+                            </button>
+                        </td>
                         <td class="px-1 py-1 whitespace-nowrap">
                             {{$support->client->client_num}}
                         </td>
@@ -270,17 +287,7 @@
                         <td class="px-1 py-1 whitespace-nowrap">
                             {{$support->client->user->user_name}}
                         </td>
-                        <td class="pl-4 py-1 whitespace-nowrap">
-                            <button onclick="location.href='{{route('support.edit',$support)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                                <div class="flex">
-                                    <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
-                                    </svg>
-                                    <span class="text-ms">編集</span>
-                                </div>
-                            </button>
-                        </td>
-                        <td class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        {{-- <td class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <div class="text-center">
                                 <button class="button-edit" type="button" data-drawer-target="dupdateModal-{{$support->id}}" data-drawer-body-scrolling="false" data-drawer-show="dupdateModal-{{$support->id}}" data-drawer-placement="right" aria-controls="dupdateModal-{{$support->id}}">
                                     <div class="flex">
@@ -291,7 +298,7 @@
                                     </div>
                                 </button>
                             </div>
-                        </td>
+                        </td> --}}
                         <td class="py-1">
                             <button type="button" data-modal-target="deleteModal-{{$support->id}}" data-modal-show="deleteModal-{{$support->id}}" class="button-delete-primary">
                                 <div class="flex">
@@ -331,11 +338,10 @@
                     </div>
                     {{-- 削除確認モーダル画面 End --}}
                     <!-- 更新drawer --> 
-                    <div id="dupdateModal-{{$support->id}}" class="fixed top-0 right-0 z-50 h-screen p-4 overflow-y-auto transition-transform md:w-1/2 translate-x-full bg-gray-200 dark:bg-gray-800" tabindex="-1" aria-labelledby="dupdateModal-{{$support->id}}">
+                    {{-- <div id="dupdateModal-{{$support->id}}" class="fixed top-0 right-0 z-50 h-screen p-4 overflow-y-auto transition-transform md:w-1/2 translate-x-full bg-gray-200 dark:bg-gray-800" tabindex="-1" aria-labelledby="dupdateModal-{{$support->id}}">
                         <div class="">
                             <h5 id="dupdateModal-{{$support->id}}" class="inline-flex items-center mb-4 font-semibold text-xl text-gray-500 dark:text-gray-400">
                                 サポート詳細
-                                {{-- -{{ $support->title }} --}}
                             </h5>
                             <button type="button" data-drawer-hide="dupdateModal-{{$support->id}}" aria-controls="dupdateModal-{{$support->id}}" class="text-gray-400 bg-transparent ml-8 hover:bg-gray-200 hover:text-gray-900 rounded-md text-sm w-8 h-8 absolute top-2.5 end-2.5 inline-flex items-center justify-center dark:hover:bg-gray-600 dark:hover:text-white" >
                                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -346,13 +352,6 @@
                         <form id="updateForm-{{$support->id}}" method="POST" action="{{ route('support.update', $support->id) }}">
                             @csrf
                             @method('PUT')
-
-                            {{-- <label class="relative inline-flex items-center cursor-pointer mt-4">
-                                <input type="hidden" name="is_enabled_{{$support->id}}" value="0">
-                                <input type="checkbox" name="is_enabled_{{$support->id}}" id="is_enabled-{{$support->id}}" value="1" class="sr-only peer" {{ old('is_enabled_' . $support->id, $support->is_enabled) == 1 ? 'checked' : '' }}>
-                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                                <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">有効</span>
-                            </label> --}}
 
                             <div class="grid  gap-4 my-4 md:grid-cols-4">
                                 <div class="relative z-0">
@@ -572,52 +571,6 @@
                                 </li>
                             </ul>
 
-
-
-
-                            {{-- <div class="bg-light px-3 py-2 mb-3 font-semibold dark:text-gray-100">以下は省略可</div>
-
-
-                            <div id="accordion-arrow-icon" data-accordion="open">
-                                <h2 id="accordion-arrow-icon-heading-2">
-                                    <button type="button" class="flex items-center justify-between w-full p-2 rounded font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3" data-accordion-target="#accordion-arrow-icon-body-2{{$support->id}}" aria-expanded="false" aria-controls="accordion-arrow-icon-body-2{{$support->id}}">
-                                        <span>パスワードを変更する</span>
-                                        <svg class="w-4 h-4 shrink-0 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.529 7.988a2.502 2.502 0 0 1 5 .191A2.441 2.441 0 0 1 10 10.582V12m-.01 3.008H10M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                                        </svg>
-                                    </button>
-                                </h2>
-                                <div id="accordion-arrow-icon-body-2{{$support->id}}" class="hidden" aria-labelledby="accordion-arrow-icon-heading-2">
-                                    <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
-                                        <div class="w-full flex flex-col">
-                                            <label class="font-semibold dark:text-gray-100 leading-none mt-2">パスワード</label>
-                                            <input type="password" name="password_{{$support->id}}" autocomplete="new-password" class="form-control w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="password-{{$support->id}}" value="{{old('password_' . $support->id)}}">
-                                        </div>
-                                        @error('password_' . $support->id)
-                                            <div class="text-red-500">{{$message}}</div>
-                                        @enderror
-                                        
-                                        <div class="w-full flex flex-col">
-                                            <label class="font-semibold dark:text-gray-100 leading-none mt-2">パスワード（確認）</label>
-                                            <input type="password" name="password_{{$support->id}}_confirmation" autocomplete="new-password" class="form-control w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="password_confirmation-{{$support->id}}" value="{{old('password_confirmation_' . $support->id)}}">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                             --}}
-                            {{-- <div class="w-full flex flex-col">
-                                <label class="font-semibold dark:text-gray-100 leading-none mt-2">パスワード</label>
-                                <input type="password" name="password_{{$support->id}}" autocomplete="new-password" class="form-control w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="password-{{$support->id}}" value="{{old('password_' . $support->id)}}">
-                            </div>
-                            @error('password_' . $support->id)
-                                <div class="text-red-500">{{$message}}</div>
-                            @enderror
-                            
-                            <div class="w-full flex flex-col">
-                                <label class="font-semibold dark:text-gray-100 leading-none mt-2">パスワード（確認）</label>
-                                <input type="password" name="password_{{$support->id}}_confirmation" autocomplete="new-password" class="form-control w-auto py-1 placeholder-gray-500 border border-gray-300 rounded-md mt-1" id="password_confirmation-{{$support->id}}" value="{{old('password_confirmation_' . $support->id)}}">
-                            </div> --}}
-
                             <div class="grid grid-cols-2 gap-4 mt-4">
                                 <button type="button" onclick="submitAndUpdateDrawer({{$support->id}})" class="w-full justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-s rounded-e text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     {{ __('Update') }}
@@ -628,7 +581,7 @@
                                 </button>
                             </div>
                         </form>
-                    </div>
+                    </div> --}}
                 @endforeach
             </tbody>
         </table>
@@ -637,7 +590,7 @@
         </div> 
     </div>
 
-
+{{-- 
 <!-- CSV一括登録 modal -->
 <div id="defaultModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative w-full max-w-2xl max-h-full">
@@ -654,6 +607,7 @@
                 </button>
             </div>
             <!-- Modal body -->
+
             <div class="p-6 space-y-6 mr-20 mt-4">
                 <form action="{{ route('support.upload') }}" method="POST" enctype="multipart/form-data" class="flex items-center" id="csv_form1">
                     @csrf
@@ -677,7 +631,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
 
 
@@ -764,37 +718,7 @@
     </script>
 @endif
 
-    <script>
-        // document.addEventListener('DOMContentLoaded', function () {
-        // const uploadForm = document.getElementById('csv_form1');
-        // const uploadButton = document.getElementById('upload-button');
-        // const spinner = document.getElementById('spinner');
-        // const uploadOverlay = document.getElementById('uploadOverlay');
-        // const fileInput = document.getElementById('csv_upload_file');
-        // const closeButton = document.getElementById('close_button');
 
-        //     uploadForm.addEventListener('submit', function (event) {
-        //         // ファイルが添付されているかを確認
-        //         if (fileInput.files.length === 0) {
-        //             // ファイル未添付の場合は処理を中止
-        //             event.preventDefault();
-        //             return;
-        //         }
-
-        //         // アップロードボタンを非表示にし、スピナーを表示
-        //         uploadButton.style.display = 'none';
-        //         closeButton.style.display = 'none';
-        //         spinner.style.display = 'block';
-        //         fileInput.readOnly = true;
-
-        //         // 画面をロック
-        //         uploadOverlay.style.display = 'block';
-
-        //         // フォームをサブミット
-        //         uploadForm.submit();
-        //     });
-        // });
-    </script>
 
 {{-- 行がクリックされたときに発火するJavaScript --}}
 <script>
@@ -818,59 +742,6 @@
     }
 </style>
 
-
-{{-- <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const uploadForm = document.getElementById('csv_form1');
-    const uploadButton = document.getElementById('upload-button');
-    const spinner = document.getElementById('spinner');
-
-    uploadButton.addEventListener('click', function (event) {
-        event.preventDefault();
-
-        // 画面をロック
-        addOverlay();
-
-        // アップロードボタンを非表示にし、スピナーを表示
-        uploadButton.style.display = 'none';
-        spinner.style.display = 'block';
-
-        // フォームをサブミット
-        uploadForm.submit();
-    });
-
-    function addOverlay() {
-        const overlay = document.createElement('div');
-        overlay.id = 'overlay';
-        document.body.appendChild(overlay);
-    }
-
-    function removeOverlay() {
-        const overlay = document.getElementById('overlay');
-        if (overlay) {
-            overlay.parentNode.removeChild(overlay);
-        }
-    }
-
-    // フォームの送信完了時に実行
-    uploadForm.addEventListener('submit', function () {
-        // 画面ロックを解除
-        removeOverlay();
-    });
-});
-</script>
-
-<style>
-    #overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5); /* 透明度を指定できます */
-        z-index: 1000; /* 必要に応じて適切なz-indexを設定してください */
-    }
-</style> --}}
 
 <script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
 </x-app-layout>
