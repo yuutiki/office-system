@@ -287,6 +287,10 @@ class ClientPersonController extends Controller
             $errors[] = "$lineNumber 行目：顧客番号は12桁でなければなりません";
         }
 
+        if ($operation === 'new' && !Client::where('client_num', $row[0])->exists()) {
+            $errors[] = "親となる「顧客番号」が存在しません";
+        }
+
         // if ($operation === 'new' && Corporation::where('corporation_num', $row[0])->exists()) {
         //     $errors[] = "$lineNumber 行目：「法人番号」が重複しています";
         // }

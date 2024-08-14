@@ -153,11 +153,10 @@
             </div>
         </div>
         <div class=" h-40 w-full rounded mt-4 overflow-y-scroll bg-gray-700">
-
-            @if(session()->has('error1') && is_array(session('error1')))
+            @if(session()->has('validatedErrors') && is_array(session('validatedErrors')))
                 <div class="w-auto mx-2 p-1">
                     <ul>
-                        @foreach (session('error1') as $error)
+                        @foreach (session('validatedErrors') as $error)
                             <li class="text-red-500 p-0.5 border-b border-gray-500">{{ $error }}</li>
                         @endforeach
                     </ul>

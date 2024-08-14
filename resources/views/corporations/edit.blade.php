@@ -65,8 +65,16 @@
         <div class="hidden md:p-4 p-2 mb-4 rounded bg-gray-50 dark:bg-gray-800" id="base" role="tabpanel" aria-labelledby="base-tab">
             <div class="relative z-0 mt-2">
                 <input type="text" id="corporation_num" value="{{old('corporation_num',$corporation->corporation_num)}}" class="block text-lg px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
-                <label for="corporation_num" name="corporation_num" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">法人番号</label>
+                <label for="corporation_num" name="corporation_num" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">法人No.</label>
             </div>
+            <div class="w-full flex flex-col">
+                <label for="corporation_number" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">法人番号（国税庁）</label>
+                <input type="text" form="corporationForm" name="corporation_number" id="corporation_number" value="{{old('corporation_number',$corporation->corporation_number)}}" class="input-primary" placeholder="123456789123">
+                @error('corporation_number')
+                <div class="text-red-500">{{$message}}</div>
+            @enderror
+            </div>
+
             <div class="w-full flex flex-col">
                 <label for="corporation_name" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">法人名称<span class="text-red-500"> *</span></label>
                 <input type="text" form="corporationForm" name="corporation_name" class="input-secondary" id="corporation_name" value="{{old('corporation_name',$corporation->corporation_name)}}" placeholder="学校法人 烏丸学園">
@@ -93,7 +101,38 @@
                 @enderror
             </div>
 
-            <div class="grid gap-4 sm:grid-cols-2 mt-6">
+
+            <ul class="grid w-full gap-6 lg:grid-cols-3 mt-12">
+                <li class="">
+                    <input type="radio" id="unconfirmed" name="tax_status"  form="corporationForm" value="0" class="hidden peer" {{ $corporation->tax_status == 0 ? 'checked' : '' }} required />
+                    <label for="unconfirmed" class="inline-flex items-center justify-center w-full px-5 py-3 text-gray-500 bg-white border border-gray-200 rounded-md cursor-pointer dark:hover:text-gray-300 dark:border-indigo-700 dark:peer-checked:text-white dark:peer-checked:bg-indigo-700 peer-checked:border-indigo-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700">                           
+                        <div class="block">
+                            <div class="w-full text-md">未確認</div>
+                        </div>
+                    </label>
+                </li>
+                <li>
+                    <input type="radio" id="tax_payer" name="tax_status"  form="corporationForm" value="1" class="hidden peer" {{ $corporation->tax_status == 1 ? 'checked' : '' }}>
+                    <label for="tax_payer" class="inline-flex items-center justify-center w-full px-5 py-3 text-gray-500 bg-white border border-gray-200 rounded-md cursor-pointer dark:hover:text-gray-300 dark:border-indigo-700 dark:peer-checked:text-white dark:peer-checked:bg-indigo-700 peer-checked:border-indigo-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700">
+                        <div class="block">
+                            <div class="w-full text-md">課税事業者</div>
+                        </div>
+                    </label>
+                </li>
+                <li>
+                    <input type="radio" id="tax_exempt" name="tax_status"  form="corporationForm" value="2" class="hidden peer" {{ $corporation->tax_status == 2 ? 'checked' : '' }}>
+                    <label for="tax_exempt" class="inline-flex items-center justify-center w-full px-5 py-3 text-gray-500 bg-white border border-gray-200 rounded-md cursor-pointer dark:hover:text-gray-300 dark:border-indigo-700 dark:peer-checked:text-white dark:peer-checked:bg-indigo-700 peer-checked:border-indigo-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700">
+                        <div class="block">
+                            <div class="w-full text-md">免税事業者</div>
+                        </div>
+                    </label>
+                </li>
+            </ul>
+            @error('tax_status')
+                <div class="text-red-500">{{$message}}</div>
+            @enderror
+
+            <div class="grid gap-4 sm:grid-cols-2">
                 <div>
                     <div class="flex">
                         <div class="w-full flex flex-col">
@@ -229,7 +268,13 @@
                                     根拠
                                 </th>
                                 <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 text-center">
-                                    操作
+                                    評価点
+                                </th>
+                                <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 text-center">
+                                    評価会社
+                                </th>
+                                <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 text-center">
+                                    削除
                                 </th>
                             </tr>
                         </thead>
@@ -248,18 +293,24 @@
                                 <td class="px-2 py-2 border border-gray-600">
                                     {{ $credit->credit_reason }}
                                 </td>
+                                <td class="px-2 py-2 border border-gray-600">
+                                    {{ $credit->credit_rate }}
+                                </td>
+                                <td class="px-2 py-2 border border-gray-600">
+                                    {{ $credit->credit_rater }}
+                                </td>
                                 <td class="text-center border border-gray-600">
-                                    {{-- <form method="post" action="{{ route('group.delete_user') }}">
+                                    <form method="post" action="{{ route('corporation-credits.destroy', $credit) }}">
                                         @csrf
                                         @method('delete')
-                                        <input type="hidden" name="user_id" value="{{ $user->id }}">
-                                        <input type="hidden" name="role_group_id" value="{{ $roleGroup->id }}">
-                                        <button type="submit" class="text-red-500 hover:text-red-700 focus:outline-none">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm0-2a6 6 0 100-12 6 6 0 000 12zm1-7a1 1 0 01-2 0V7a1 1 0 012 0v2z" clip-rule="evenodd" />
+                                        {{-- <input type="hidden" name="user_id" value="{{ $user->id }}"> --}}
+                                        {{-- <input type="hidden" name="role_group_id" value="{{ $roleGroup->id }}"> --}}
+                                        <button type="submit" class="delete-row p-1 text-sm font-medium text-white bg-red-700 rounded border border-red-700 hover:bg-red-800 focus:outline-none dark:bg-red-600 dark:hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800" tabindex="-1">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                             </svg>
                                         </button>
-                                    </form> --}}
+                                    </form>
                                 </td>
                             </tr>
                             @endforeach
@@ -335,7 +386,7 @@
                         <div>
                             <div class="w-full">
                                 <label for="credit_limit" class="dark:text-gray-100 text-gray-900 leading-none mt-4 text-sm">更新額</label>
-                                <input type="text" form="creditForm" onblur="formatNumberInput(this);" name="credit_limit" id="credit_limit" value="{{old('credit_limit', $latestCredit ? $latestCredit->credit_limit : '')}}" class="input-primary text-right" placeholder="">
+                                <input type="text" form="creditForm" onblur="formatNumberInput(this);" name="credit_limit" id="credit_limit" value="{{old('credit_limit', $latestCredit ? $latestCredit->credit_limit : '')}}" class="input-primary text-right" placeholder="" required>
                             </div>
                             @error('credit_limit')
                                 <div class="text-red-500">{{$message}}</div>
@@ -344,7 +395,7 @@
                         <div>
                             <div class="w-full">
                                 <label for="credit_rate" class="dark:text-gray-100 text-gray-900 leading-none mt-4 text-sm">評価点</label>
-                                <input type="number" min="0" max="100" form="creditForm" name="credit_rate" id="credit_rate" value="{{old('credit_rate', $latestCredit ? $latestCredit->credit_rate : '')}}" class="input-primary text-right" placeholder="">
+                                <input type="number" min="0" max="100" form="creditForm" name="credit_rate" id="credit_rate" value="{{old('credit_rate', $latestCredit ? $latestCredit->credit_rate : '')}}" class="input-primary text-right" placeholder="" required>
                             </div>
                             @error('credit_rate')
                                 <div class="text-red-500">{{$message}}</div>
@@ -353,7 +404,7 @@
                         <div class="col-span-3 mr-2">
                             <div class="w-full">
                                 <label for="credit_rater" class="dark:text-gray-100 text-gray-900 leading-none mt-4 text-sm">評価者（外部/内部）</label>
-                                <input type="text" form="creditForm" name="credit_rater" id="credit_rater" value="{{old('credit_rater', $latestCredit ? $latestCredit->credit_rater : '')}}" class="input-primary" placeholder="">
+                                <input type="text" form="creditForm" name="credit_rater" id="credit_rater" value="{{old('credit_rater', $latestCredit ? $latestCredit->credit_rater : '')}}" class="input-primary" placeholder="" required>
                             </div>
                             @error('credit_rater')
                                 <div class="text-red-500">{{$message}}</div>
@@ -363,7 +414,7 @@
                     <div class="mr-2">
                         <div class="w-full flex flex-col">
                             <label for="credit_reason" class="dark:text-gray-100 text-gray-900 leading-none mt-4 text-sm">与信根拠</label>
-                            <input type="text" form="creditForm" name="credit_reason" id="credit_reason" value="{{old('credit_reason', $latestCredit ? $latestCredit->credit_reason : '')}}" class="input-primary" placeholder="">
+                            <input type="text" form="creditForm" name="credit_reason" id="credit_reason" value="{{old('credit_reason', $latestCredit ? $latestCredit->credit_reason : '')}}" class="input-primary" placeholder="" required>
                         </div>
                         @error('credit_reason')
                             <div class="text-red-500">{{$message}}</div>

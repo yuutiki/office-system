@@ -164,8 +164,16 @@ Route::middleware(['auth'])->group(function () {
 
 
     // estimate（見積）
+    // Route::group(['prefix' => 'projects/{projectId}/estimates'], function () {
+    //     Route::get('{estimateId}/edit', [EstimateController::class, 'edit'])->name('estimates.edit');
+    //     Route::put('{estimateId}', [EstimateController::class, 'update'])->name('estimates.update');
+    //     // Route::get('{estimateId}', [EstimateController::class, 'show'])->name('estimates.show');
+    // });
+    Route::get('/estimate/{projectId}/{estimateId}/edit', [EstimateController::class, 'edit'])->name('estimates.edit');
     Route::get('/estimate/generate-pdf', [EstimateController::class, 'generatePdf'])->name('estimate.pdf.generate'); //仮
-    Route::resource('/estimate' , EstimateController::class);
+    Route::get('estimate/{project}/create', [EstimateController::class, 'create'])->name('estimate.create');
+    Route::post('estimate/{project}/store', [EstimateController::class, 'store'])->name('estimate.store');
+    // Route::resource('/estimate' , EstimateController::class);
 
     // notification
     Route::post('/notifications/{notification}/read', [NotificationController::class, 'read'])->name('notifications.read');

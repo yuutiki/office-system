@@ -26,6 +26,7 @@ class CorporationStoreRequest extends FormRequest
             'corporation_name' => 'required|max:1024',
             'corporation_kana_name' => 'required|max:1024',
             'corporation_short_name' => 'required|max:1024',
+            'tax_status' => 'required|integer|in:0,1,2',
             'invoice_num' => ['nullable', 'string', 'size:13', function ($attribute, $value, $fail) {
                 // 入力がある場合は合計が13桁になるかチェック
                 if (!is_null($value)) {

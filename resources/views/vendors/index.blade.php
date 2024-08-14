@@ -149,7 +149,7 @@
         </div>
     </div>
 
-    <div class="md:w-auto md:ml-14 md:mr-2 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700  dark:text-gray-900 bg-gray-300">
+    <div class="md:w-auto md:ml-14 md:mr-2 mb-4 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-300">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-sm text-gray-700 dark:bg-gray-700 dark:text-gray-200">
                 <tr>
@@ -193,7 +193,7 @@
             </thead>
             <tbody>
                 @foreach ($vendors as $vendor)
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 font-medium hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600 clickable-row">
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600 clickable-row">
                         <td class="pl-4 py-1 whitespace-nowrap">
                             {{ $loop->iteration }}
                         </td>
@@ -207,7 +207,7 @@
                                 </div>
                             </button>
                         </td>
-                        <td class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <td class="px-1 py-1 whitespace-nowrap">
                             {{$vendor->vendor_num}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
@@ -220,7 +220,7 @@
                             {{$vendor->affiliation2->affiliation2_name}}
                         </td>
                         <td class="py-1">
-                            <button type="button" data-modal-target="deleteModal-{{$vendor->id}}" data-modal-show="deleteModal-{{$vendor->id}}" class="button-delete-primary">
+                            <button type="button" data-modal-target="deleteModal-{{$vendor->ulid}}" data-modal-show="deleteModal-{{$vendor->ulid}}" class="button-delete-primary">
                                 <div class="flex">
                                     <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
                                     <span class="text-ms ">削除</span>
@@ -228,11 +228,12 @@
                             </button>
                         </td>
                     </tr>
+
                     {{-- 削除確認モーダル画面 Start --}}
-                    <div id="deleteModal-{{$vendor->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                    <div id="deleteModal-{{$vendor->ulid}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
                         <div class="relative w-full max-w-md max-h-full">
                             <div class="relative bg-white rounded-s rounded-e shadow dark:bg-gray-700">
-                                <button data-modal-hide="deleteModal-{{$vendor->id}}" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-s rounded-e text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                                <button data-modal-hide="deleteModal-{{$vendor->ulid}}" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-s rounded-e text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
                                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                                     </svg>
@@ -243,16 +244,16 @@
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                                     </svg>
                                     <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
-                                    <form action="{{route('vendors.destroy',$vendor->id)}}" method="POST" class="text-center m-auto">
+                                    <form action="{{route('vendors.destroy',$vendor->ulid)}}" method="POST" class="text-center m-auto">
                                         @csrf
                                         @method('delete')
-                                        @can('managerOrAbobe')
-                                        <button type="submit" data-modal-hide="deleteModal-{{$vendor->id}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-2 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-s rounded-e text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                                        @can('delete_corporations')
+                                        <button type="submit" data-modal-hide="deleteModal-{{$vendor->ulid}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-2 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-s rounded-e text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
                                             削除
                                         </button>
                                         @endcan
                                     </form>
-                                    <button data-modal-hide="deleteModal-{{$vendor->id}}" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-2 focus:outline-none focus:ring-gray-200 rounded-s rounded-e border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                    <button data-modal-hide="deleteModal-{{$vendor->ulid}}" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-2 focus:outline-none focus:ring-gray-200 rounded-s rounded-e border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                                         やっぱやめます
                                     </button>
                                 </div>

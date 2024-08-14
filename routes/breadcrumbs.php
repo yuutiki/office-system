@@ -192,7 +192,7 @@ Breadcrumbs::for('dashboard', function ($trail) {
         // ダッシュボード > プロジェクト一覧
         Breadcrumbs::for('projects', function ($trail) {
             $trail->parent('dashboard');
-            $trail->push('プロジェクト一覧', url('projects'));
+            $trail->push('PJ一覧', url('projects'));
         });
                 // ダッシュボード > プロジェクト一覧 > プロジェクト新規登録
                 Breadcrumbs::for('createProject', function ($trail) {
@@ -201,10 +201,22 @@ Breadcrumbs::for('dashboard', function ($trail) {
                 });
 
                 // ダッシュボード > プロジェクト一覧 > プロジェクト編集
-                Breadcrumbs::for('editProject', function ($trail) {
+                Breadcrumbs::for('editProject', function ($trail, $project) {
                     $trail->parent('projects');
-                    $trail->push('編集', url('projects/edit'));
+                    $trail->push('PJ編集', route('projects.edit', $project));
                 });
+
+                    // ダッシュボード > プロジェクト一覧 > プロジェクト編集 > 見積新規作成
+                    Breadcrumbs::for('createEstimate', function ($trail, $project) {
+                        $trail->parent('editProject', $project);
+                        $trail->push('見積書新規', route('estimate.create', $project));
+                    });
+
+                    // ダッシュボード > プロジェクト一覧 > プロジェクト編集 > 見積編集
+                    Breadcrumbs::for('editEstimate', function ($trail, $project, $estimate) {
+                        $trail->parent('editProject', $project);
+                        $trail->push('見積書編集', route('estimates.edit', ['projectId' => $project->id, 'estimateId' => $estimate->ulid]));
+                    });
 
                 // ダッシュボード > プロジェクト一覧 > CSVアップロード
                 Breadcrumbs::for('csvUploadProjects', function ($trail) {

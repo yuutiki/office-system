@@ -11,6 +11,7 @@ use App\Models\Client;
 use App\Models\Affiliation2;
 use App\Models\DistributionType;
 use App\Models\Affiliation3;
+use App\Models\Estimate;
 use App\Models\Prefecture;
 use App\Models\Project;
 use App\Models\ProjectRevenue;
@@ -185,6 +186,7 @@ class ProjectController extends Controller
         $accountingTypes = AccountingType::all();
         $prefectures = Prefecture::all(); //都道府県
 
+        $estimates = Estimate::where('project_id', $id)->get();
 
 
         $projectRevenues = ProjectRevenue::where('project_id',$id)->orderBy('revenue_year_month','asc')->get();
@@ -219,7 +221,7 @@ class ProjectController extends Controller
                 'formatRevenueDate' => $targetDate->format('Y-m'),
             ];
         }
-        return view('projects.edit',compact('project','projectRevenues','accountingPeriods','salesStages','distributionTypes','affiliation2s','companies','affiliation3s','projectTypes','accountingTypes','users','revenuesWithPeriod','totalRevenue','prefectures'));
+        return view('projects.edit',compact('project','projectRevenues','accountingPeriods','salesStages','distributionTypes','affiliation2s','companies','affiliation3s','projectTypes','accountingTypes','users','revenuesWithPeriod','totalRevenue','prefectures', 'estimates'));
     }
 
     public function update(ProjectUpdateRequest $request, Project $project)

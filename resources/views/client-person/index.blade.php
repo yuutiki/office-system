@@ -311,7 +311,7 @@
                         </td>
                     @endif
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{ optional($clientPerson->client)->department->department_name}}
+                            {{ optional($clientPerson->client)->affiliation2->affiliation2_name}}
                         </td>
                         {{-- <td class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <div class="text-center">

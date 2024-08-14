@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between">
             <h2 class="text-xl text-gray-900 dark:text-white whitespace-nowrap overflow-hidden">
-                {{ Breadcrumbs::render('editProject') }}
+                {{ Breadcrumbs::render('editProject', $project) }}
             </h2>
             <div class="flex justify-end">
                 <x-message :message="session('message')"/>
@@ -488,7 +488,6 @@
                                 </form>
                             </li>
                         </ul>
-
                     </div>
 
                     <div>
@@ -553,9 +552,210 @@
                 </div>
             </div>
 
+            <!-- 見積タブ -->
             <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="estimate" role="tabpanel" aria-labelledby="estimate-tab">
+
+                <div class="relative bg-white dark:bg-gray-800 rounded-t-md md:w-auto  md:mr-2 m-auto shadow-md  dark:text-gray-900 mt-1">
+                    <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
+
+                        <div class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
+                            <button type="button" id="newEntryButton" onclick="newEstimate()" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-s rounded-e bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                                </svg>
+                                {{ __('Add') }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="md:w-auto md:mr-2 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-300">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="text-sm text-gray-700 dark:bg-gray-700 dark:text-gray-200">
+                            <tr>
+                                <th scope="col" class="pl-4 py-3 w-auto">
+                                    <div class="flex items-center whitespace-nowrap">
+                                        №
+                                    </div>
+                                </th>
+                                <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        
+                                    </div>
+                                </th>
+                                <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        @sortablelink('estimate_num','見積No.')
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
+                                            <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        @sortablelink('estimate_title','件名')
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
+                                            <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        合計金額
+                                    </div>
+                                </th>
+                                <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        @sortablelink('create_at','作成日')
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
+                                            <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        @sortablelink('_at','提出日')
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
+                                            <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        @sortablelink('user_id','ボツ')
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
+                                            <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        @sortablelink('is_finished','作成者')
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
+                                            <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        添付
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($estimates as $estimate)
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600 clickable-row">
+                                    <td class="pl-4 py-1 whitespace-nowrap">
+                                        {{ $loop->iteration }}
+                                    </td>
+                                    <td class="px-1 py-1 whitespace-nowrap">
+                                        <button type="button" onclick="location.href='{{ route('estimates.edit', ['projectId' => $project->id, 'estimateId' => $estimate->ulid]) }}'" class="button-edit-primary">
+                                            <div class="flex items-center">
+                                                <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+                                                </svg>
+                                                <span class="md:block hidden">編集</span>
+                                            </div>
+                                        </button>
+                                    </td>
+                                    <td class="px-1 py-1 whitespace-nowrap">
+                                        {{ $estimate->estimate_num }}
+                                    </td>
+                                    <td class="px-1 py-1 whitespace-nowrap">
+                                        {{ $estimate->estimate_title }}
+                                    </td>
+                                    <td class="px-1 py-1 whitespace-nowrap">
+                                        <div class="text-right w-[65px] ">{{ number_format($estimate->subtotal_amount, 0) }}</div>
+                                    </td>
+                                    <td class="px-1 py-1 whitespace-nowrap">
+                                        {{$estimate->estimate_at}}
+                                    </td>
+                                    <td class="px-1 py-1 whitespace-nowrap">
+                                        {{$estimate->return_at}}
+                                    </td>
+                                    {{-- <td class="px-1 py-1 whitespace-nowrap">
+                                        {{$estimate->user->user_name}}
+                                    </td> --}}
+                                    <td class="px-1 py-1 whitespace-nowrap">
+                                        @if ($estimate->is_finished == "0")
+                                            <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
+                                                未返却
+                                            </span>
+                                        @else
+                                            <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                                返却済
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td class="px-1 py-1 whitespace-nowrap">
+                                        @if ($estimate->pdf_file)
+                                            <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                                有り
+                                            </span>
+                                        @else
+                                            <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
+                                                なし
+                                            </span>
+                                        @endif
+                                    </td>                        
+                                    <td class="px-1 py-1 whitespace-nowrap">
+                                        @if ($estimate->pdf_file)
+                                            <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                                有り
+                                            </span>
+                                        @else
+                                            <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
+                                                なし
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td class="py-1">
+                                        <button type="button" data-modal-target="deleteModal-{{$estimate->id}}" data-modal-show="deleteModal-{{$estimate->id}}" class="button-delete-primary" tabindex="-1">
+                                            <div class="flex">
+                                                <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                                                <span class="text-ms ">削除</span>
+                                            </div>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <div id="deleteModal-{{$estimate->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                    <div class="relative w-full max-w-md max-h-full">
+                                        <div class="relative bg-white rounded-s rounded-e shadow dark:bg-gray-700">
+                                            <button data-modal-hide="deleteModal-{{$estimate->id}}" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-s rounded-e text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                                </svg>
+                                            </button>
+                                            <div class="p-6 text-center">
+                                                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                                </svg>
+                                                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
+                                                {{-- <form action="{{route('estimate.destroy',$estimate->id)}}" method="POST" class="text-center m-auto"> --}}
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button type="submit" data-modal-hide="deleteModal-{{$estimate->id}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-2 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-s rounded-e text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                                                        削除
+                                                    </button>
+                                                {{-- </form> --}}
+                                                <button data-modal-hide="deleteModal-{{$estimate->id}}" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-2 focus:outline-none focus:ring-gray-200 rounded-s rounded-e border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                                    やっぱやめます
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    <div class="mt-1 mb-1 px-4">
+                    {{-- {{ $estimates->withQueryString()->links('vendor.pagination.custum-tailwind') }}   --}}
+                    </div> 
+                </div>
             </div>
 
+            <!-- 証憑タブ -->
             <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="document" role="tabpanel" aria-labelledby="document-tab">
                 <ul class=" mt-4 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                     <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
@@ -1038,6 +1238,17 @@
             document.getElementById('billing_corporation_name').value = name;
             hideCorporationModal();
         }
+
+
+        function newEstimate() {
+    // ローカルストレージをクリア
+    localStorage.removeItem('estimateFormData');
+    
+    // 新規パラメータを追加してリダイレクト
+    var url = "{{ route('estimate.create', $project->id) }}";
+    location.href = url + (url.includes('?') ? '&' : '?') + 'new=true';
+}
+
     </script>
 
     <script src="{{ asset('assets/js/autoresizetextarea.js') }}"></script>

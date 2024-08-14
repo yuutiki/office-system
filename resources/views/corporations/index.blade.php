@@ -48,15 +48,18 @@
                         </div>
                         
                         <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-                            <select name="product_category_id" id="product_category_id" class="block w-full p-2 pl-4 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" tabindex="1">
-                                <option value="">取引状況すべて（仮）</option>
-                                <option value="">取引停止中</option>
-                                <option value="">取引中</option>
-                                {{-- @foreach ($productCategories as $productCategory)
-                                <option value="{{ $productCategory->id }}" @if (isset($productCategoryId) && $productCategoryId == $productCategory->id) selected @endif>
-                                    {{ $productCategory->category_name }}
-                                </option>
-                                @endforeach --}}
+                            <select name="trade_status" id="trade_status" class="block w-full p-2 pl-4 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" tabindex="1">
+                                <option value="">取引状況すべて</option>
+                                <option value="0" @selected($tradeStatus === '0')>取引中</option>
+                                <option value="1" @selected($tradeStatus === '1')>取引停止中</option>
+                            </select>
+                        </div>
+                        <div class="relative w-full mt-2 md:ml-2 md:mt-0">
+                            <select name="tax_status" id="tax_status" class="block w-full p-2 pl-4 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" tabindex="1">
+                                <option value="">課税/免税</option>
+                                <option value="0" @selected($taxStatus === '0')>未確認</option>
+                                <option value="1" @selected($taxStatus === '1')>課税</option>
+                                <option value="2" @selected($taxStatus === '2')>免税</option>
                             </select>
                         </div>
 
@@ -158,8 +161,7 @@
         </div>
     </div>
 
-    <div class="md:w-auto md:ml-14 md:mr-2 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-300">
-    {{-- <div class="md:w-auto md:ml-14 md:mr-2 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-300 js-scrollable"> --}}
+    <div class="md:w-auto md:ml-14 md:mr-2 mb-4 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-300">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-sm text-gray-700 dark:bg-gray-700 dark:text-gray-200">
                 <tr>
@@ -189,6 +191,12 @@
                         <div class="flex items-center whitespace-nowrap text-right">
                             {{-- @sortablelink('corporation_prefecture_id','都道府県') --}}
                             @sortablelink('corporation_prefecture_id','都道府県')
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
+                        </div>
+                    </th>
+                    <th scope="col" class="px-1 py-3 w-auto">
+                        <div class="flex items-center whitespace-nowrap text-right">
+                            @sortablelink('tax_status','課税/免税')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                         </div>
                     </th>
@@ -247,18 +255,33 @@
                             {{optional($corporation->prefecture)->prefecture_name}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap w-44">
+                            @if ($corporation->tax_status == 1)
+                                <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                    課税事業者
+                                </span>
+                            @elseif ($corporation->tax_status == 2)
+                                <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
+                                    免税事業者
+                                </span>
+                            @else
+                                <span class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-400">
+                                    未確認
+                                </span>
+                            @endif
+                        </td>
+                        <td class="px-1 py-1 whitespace-nowrap w-44">
                             {{$corporation->invoice_num}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap w-44">
-                        @if ($corporation->is_stop_trading == 1)
-                            <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
-                                取引停止中
-                            </span>
-                        @else
-                            <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
-                                取引中
-                            </span>
-                        @endif
+                            @if ($corporation->is_stop_trading == 1)
+                                <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
+                                    取引停止中
+                                </span>
+                            @else
+                                <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                    取引中
+                                </span>
+                            @endif
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
                             <div class="w-[65px] text-right">

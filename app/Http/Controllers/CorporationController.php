@@ -36,12 +36,14 @@ class CorporationController extends Controller
         ]);
 
         // 検索フォームから検索条件を取得し変数に格納
-        $filters = $request->only(['corporation_num', 'corporation_name', 'invoice_num']);
+        $filters = $request->only(['corporation_num', 'corporation_name', 'invoice_num', 'trade_status', 'tax_status']);
 
         // 同じ条件を別の変数にも格納(画面の検索条件入力欄にセットするために利用する)
         $CorporationNum = $filters['corporation_num'] ?? null;
         $CorporationName = $filters['corporation_name'] ?? null;
         $invoiceNum = $filters['invoice_num'] ?? null;
+        $tradeStatus = $filters['trade_status'] ?? null;
+        $taxStatus = $filters['tax_status'] ?? null;
 
         //上記で$filters変数に格納した検索条件をModelに渡し、検索処理を行う。結果を$corporationsに詰める
         $corporations = Corporation::filter($filters)
@@ -58,7 +60,7 @@ class CorporationController extends Controller
         // 検索結果の件数を取得
         $count = $corporations->total();
 
-        return view('corporations.index', compact('searchParams', 'corporations', 'count' ,'filters', 'CorporationNum', 'CorporationName','invoiceNum',));
+        return view('corporations.index', compact('searchParams', 'corporations', 'count' ,'filters', 'CorporationNum', 'CorporationName', 'invoiceNum', 'tradeStatus', 'taxStatus'));
     }
 
     public function create()
@@ -247,9 +249,15 @@ class CorporationController extends Controller
 
     private function parseCSVAndSaveToDatabase($csvPath, $operation)
     {
+        // BOMを除去するための処理
+        $bom = pack('H*','EFBBBF'); // UTF-8のBOM
+        if (0 === strncmp($csvPath, $bom, 3)) {
+            $csvPath = substr($csvPath, 3);
+        }
+
         // CSV ファイルの文字コードを自動判定
         $fromCharset = mb_detect_encoding(file_get_contents($csvPath), 'UTF-8, Shift_JIS, EUC-JP, JIS, SJIS-win, UTF-16, Unicode', true);
-        
+
         $config = new LexerConfig();
         $config->setFromCharset($fromCharset)
             ->setEnclosure('"')
@@ -300,7 +308,6 @@ class CorporationController extends Controller
     
             // トランザクションコミット
             DB::commit();
-    
             return $recordCount;
     
         } catch (\Exception $e) {
@@ -389,7 +396,7 @@ class CorporationController extends Controller
     // }
     private function processRow(array $row, $operation)
     {
-        $corporationPrefectureId = $row[6];
+        $corporationPrefectureId = $row[7];
         $prefectureId = Prefecture::where('id', $corporationPrefectureId)->first();
         if ($prefectureId) {
             $prefecture = $prefectureId->id;
@@ -402,11 +409,12 @@ class CorporationController extends Controller
             'corporation_name' => $row[1],
             'corporation_kana_name' => $row[2],
             'corporation_short_name' => $row[3],
-            'invoice_num' => $row[4],
-            'corporation_post_code' => $row[5],
+            'corporation_number' => $row[4],
+            'invoice_num' => $row[5],
+            'corporation_post_code' => $row[6],
             'corporation_prefecture_id' => $prefecture,
-            'corporation_address1' => $row[7],
-            'corporation_memo' => $row[8],
+            'corporation_address1' => $row[8],
+            'corporation_memo' => $row[9],
         ];
 
         if ($operation === 'new') {

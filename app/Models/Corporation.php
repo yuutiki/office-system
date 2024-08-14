@@ -25,6 +25,8 @@ class Corporation extends Model
         'corporation_address1',
         'is_stop_trading',
         'stop_trading_reason',
+        'tax_status',
+        'corporation_number',
         'invoice_num',
         'invoice_at',        
         'corporation_memo',
@@ -68,6 +70,14 @@ class Corporation extends Model
 
         if (isset($filters['invoice_num'])) {
             $query->where('invoice_num', 'like', '%' . $filters['invoice_num'] . '%');
+        }
+
+        if (isset($filters['trade_status'])) {
+            $query->where('is_stop_trading', '=', $filters['trade_status']);
+        }
+
+        if (isset($filters['tax_status'])) {
+            $query->where('tax_status', '=', $filters['tax_status']);
         }
     }
 

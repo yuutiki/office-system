@@ -72,6 +72,9 @@ class CorporationCreditController extends Controller
      */
     public function destroy(CorporationCredit $corporationCredit)
     {
-        //
+        $corporationCredit = CorporationCredit::find($corporationCredit->ulid);
+        $corporationCredit->delete();
+
+        return redirect()->back()->with('success', '正常に削除しました');
     }
 }

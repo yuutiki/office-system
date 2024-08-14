@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('corporations', function (Blueprint $table) {
             $table->id();
             $table->string('corporation_num',6)->unique()->comment('法人№');
+            $table->string('corporation_number',13)->nullable(true)->comment('法人番号');
             $table->string('corporation_name')->comment('法人名称');
             $table->string('corporation_kana_name')->comment('法人カナ名称');
             $table->string('corporation_short_name')->comment('法人略称');
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->foreignId('corporation_prefecture_id')->nullable(true)->comment('法人都道府県コード');
             $table->string('corporation_address1',80)->nullable(true)->comment('法人住所1');
 
+            $table->unsignedTinyInteger('tax_status')->default(0); // 0: unconfirmed, 1: tax_payer, 2: tax_exempt
             $table->boolean('is_stop_trading')->default(0)->comment('取引停止フラグ');
             $table->text('stop_trading_reason')->nullable(true)->comment('取引停止理由');
             $table->string('invoice_num')->nullable(true)->comment('インボイス番号');

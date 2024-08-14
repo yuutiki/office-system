@@ -28,6 +28,7 @@ class CorporationUpdateRequest extends FormRequest
             'corporation_short_name' => 'required|max:1024',
             'is_stop_trading' => 'nullable|boolean',
             'stop_trading_reason' => 'required_if:is_stop_trading,true',
+            'tax_status' => 'required|integer|in:0,1,2',
         ];
     }
 

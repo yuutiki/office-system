@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Observers\GlobalObserver;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;//add
@@ -11,9 +13,46 @@ use Illuminate\Support\Str;//add
 
 class Vendor extends Model
 {
-    use HasFactory;
-    use Sortable;
+    use HasFactory, Sortable, HasUlids;
 
+    protected $keyType = 'ulid'; // 主キーの型をulidに設定
+    protected $primaryKey = 'ulid'; // 主キー名をulidに設定
+    public $incrementing = false; // 自動インクリメントを無効化
+
+    protected $fillable = [
+        'vendor_num',
+        'vendor_name',
+        'vendor_kana_name',
+        'corporation_id',
+        'affiliation2_id',
+        'vendor_type_id',
+        'vendor_post_code',
+        'vendor_prefecture_id',
+        'vendor_address1',
+        'vendor_tel',
+        'vendor_fax',
+        'number_of_employees',
+        'vendor_memo',
+        'vendor_url',
+        'is_supplier',
+        'is_dealer',
+        'is_lease',
+        'is_other_partner',
+        'bank_code',
+        'branch_code',
+        'account_type',
+        'account_number',
+        'account_name',
+    ];
+
+    //GlobalObserverに定義されている作成者と更新者を登録するメソッド
+    //なお、値を更新せずにupdateをかけても更新者は更新されない。
+    protected static function boot()
+    {
+        parent::boot();
+
+        self::observe(GlobalObserver::class);
+    }
 
     public static function generateVendorNumber($corporationNum, $prefix_code)
     {

@@ -1,0 +1,741 @@
+<x-app-layout>
+    <x-slot name="header">
+        <div class="flex justify-between">
+            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
+                {{ Breadcrumbs::render('editEstimate', $project, $estimate) }}
+            </h2>
+            <div class="flex justify-end">
+                {{-- <x-general-button onclick="location.href='{{route('estimates.index')}}'">
+                    戻る
+                </x-general-button> --}}
+                <x-primary-button class="ml-2" form="form1">
+                    更新する
+                </x-primary-button>
+                <x-message :message="session('message')"/>
+            </div>
+        </div>
+    </x-slot>
+
+    <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
+
+    <div class="mx-auto sm:pl-16 pr-3 pl-3 pb-4">
+        {{-- <form id="form1" method="POST" action="{{ route('estimate.update', ['project' => $project, 'estimate' => $estimate]) }}" enctype="multipart/form-data" autocomplete="new-password"> --}}
+            @csrf
+            @method('PUT')
+            <x-primary-button class="ml-2" form="form1">
+                更新する
+            </x-primary-button>
+            <div class="">
+                <label for="estimate_num" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-28 text-sm">見積番号</label>
+                <input type="text" name="estimate_num" class="input-readonly cursor-not-allowed" id="estimate_num" value="{{ $estimate->estimate_num }}" placeholder="登録時に自動採番されます" readonly>
+                @error('estimate_num')
+                    <div class="text-red-500">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="col-span-2">
+                <label for="project_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-1 text-sm">宛名</label>
+                <input type="text" name="project_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="project_name" value="{{ $estimate->project_name }}" placeholder="">
+                @error('project_name')
+                    <div class="text-red-500">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="">
+                <label for="estimate_title" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-1 text-sm">件名</label>
+                <input type="text" name="estimate_title" class="input-primary" id="estimate_title" value="{{ $estimate->estimate_title }}" placeholder="">
+                @error('estimate_title')
+                    <div class="text-red-500">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="grid gap-2 sm:grid-cols-5 text-sm">
+                <div class="">
+                    <label for="delivery_at" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-1">受渡期日</label>
+                    <input type="text" name="delivery_at" class="input-primary" id="delivery_at" value="{{ $estimate->delivery_at }}" placeholder="">
+                    @error('delivery_at')
+                        <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="">
+                    <label for="delivery_place" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-1">受渡場所</label>
+                    <input type="text" name="delivery_place" class="input-primary" id="delivery_place" value="{{ $estimate->delivery_place }}" placeholder="">
+                    @error('delivery_place')
+                        <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="">
+                    <label for="transaction_method" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-1">取引方法</label>
+                    <input type="text" name="transaction_method" class="input-primary" id="transaction_method" value="{{ $estimate->transaction_method }}" placeholder="">
+                    @error('transaction_method')
+                        <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="">
+                    <label for="expiration_at" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-1">有効期限</label>
+                    <input type="text" name="expiration_at" class="input-primary" id="expiration_at" value="{{ $estimate->expiration_at }}" placeholder="">
+                    @error('expiration_at')
+                        <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="">
+                    <label for="estimate_at" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-1">見積作成日</label>
+                    <input type="date" name="estimate_at" class="input-primary" id="estimate_at" value="{{ $estimate->estimate_at }}" placeholder="">
+                    @error('estimate_at')
+                        <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="">
+                    <label for="client_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-1">住所</label>
+                    <input type="text" name="client_name" class="input-primary" id="client_name" value="{{ $estimate->client_name }}" placeholder="">
+                    @error('client_name')
+                        <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="">
+                    <label for="client_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-1">担当者</label>
+                    <input type="text" name="client_name" class="input-primary" id="client_name" value="{{ $estimate->client_name }}" placeholder="">
+                    @error('client_name')
+                        <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+                <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
+                    <li class="mr-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="body-tab" data-tabs-target="#body" type="button" role="tab" aria-controls="body" aria-selected="false">見積書明細</button>
+                    </li>
+                    <li class="mr-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="estimate-separate-sheet-tab" data-tabs-target="#estimate-separate-sheet" type="button" role="tab" aria-controls="estimate-separate-sheet" aria-selected="false">見積書別紙</button>
+                    </li>
+                    <li class="mr-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="order-tab" data-tabs-target="#order" type="button" role="tab" aria-controls="order" aria-selected="false">注文書設定</button>
+                    </li>
+                    <li class="mr-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="estimate-attachment-tab" data-tabs-target="#estimate-attachment" type="button" role="tab" aria-controls="estimate-attachment" aria-selected="false">添付ファイル</button>
+                    </li>
+                    <li class="mr-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="order-tab" data-tabs-target="#order" type="button" role="tab" aria-controls="order" aria-selected="false">決裁情報</button>
+                    </li>
+                </ul>
+            </div>
+
+
+            <div id="myTabContent">
+                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="body" role="tabpanel" aria-labelledby="body-tab">
+
+                    <div id="mytable"></div>
+
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+
+                <label>
+                    <a onclick="add()" class="rounded bg-blue-500 py-2 px-1 cursor-pointer text-white">明細追加</a>
+                </label>
+                <label>
+                    <a onclick="add()" class="rounded bg-blue-500 py-2 px-1 cursor-pointer text-white">CSV出力</a>
+                </label>
+                <div class="relative overflow-x-auto mt-4">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-200 border border-gray-600">
+                        <thead class="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 mt-8">
+                            <tr>
+                                <th scope="col" class="px-1 py-2 whitespace-nowrap border-x border-gray-600 text-center w-[40px]">複製</th>
+                                <th scope="col" class="px-1 py-2 whitespace-nowrap border-x border-gray-600 w-[40px]"></th>
+                                <th scope="col" class="px-1 py-2 whitespace-nowrap border-x border-gray-600 text-center w-[40px]">No.</th>
+                                <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 hidden">並び順</th>
+                                <th scope="col" class="px-6 py-2 whitespace-nowrap border-x border-gray-600 w-[140px]">商品CD*</th>
+                                <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600">品名</th>
+                                <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 w-[100px]">型番</th>
+                                <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 w-[100px]">標準単価</th>
+                                <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 w-[100px]">原価/個*</th>
+                                <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 w-[48px]">数量</th>
+                                <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 w-[100px]">標準価格</th>
+                                {{-- <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 w-[100px]">値引き額</th> --}}
+                                <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 w-[100px]">提供価格</th>
+                                <th scope="col" class="px-2 py-0.5 whitespace-nowrap border-x border-gray-600 text-xs w-[100px]">粗利額*<br>粗利率*</th>
+                                <th scope="col" class="px-1 py-2 whitespace-nowrap border-x border-gray-600 text-center w-[40px]">削除</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="input_plural">
+                            @foreach($estimateDetails as $index => $detail)
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
+
+                                <!-- 複写ボタン -->
+                                <td class="px-1 border border-gray-600 text-center">
+                                    <button type="button" class="copy-row p-1 text-sm font-medium text-white bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800" onclick="copyRow(this)">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                        </svg>
+                                    </button>
+                                </td>
+
+                                <!-- 並び替えボタン -->
+                                <td class="px-1 border border-gray-600 text-center drag-handle">
+                                    <svg class="w-6 h-6 text-gray-800 dark:text-white cursor-move mx-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 20V10m0 10-3-3m3 3 3-3m5-13v10m0-10 3 3m-3-3-3 3"/>
+                                    </svg>
+                                </td>
+
+                                <!-- インデックス -->
+                                <td class="px-0.5 border border-gray-600 text-center">{{ $index + 1 }}</td>
+
+                                <!-- 並び順（sort_order） -->
+                                <td class="px-1 border border-gray-600 hidden">
+                                    <input type="hidden" name="sort-order-{{ $index + 1 }}" value="{{ $index + 1 }}">
+                                </td>
+                                
+                                <!-- 製品コード（product_code） -->
+                                <td class="px-1 border border-gray-600 align-bottom pb-1">
+                                    <div class="flex w-full">
+                                        <input type="text" class="input-estimate w-[110px] text-xs" name="ing-cd-{{ $index + 1 }}" value="{{ $detail->product->product_code }}">
+                                        <button type="button" id="invoiceApi" onclick="showProductModal(this)" class="p-1 ml-0.5 px-1.5 text-sm h-7 mt-1 font-medium text-white bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                                            <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </td>
+
+                                <!-- 製品名称（product_name） -->
+                                <td class="px-1 border border-gray-600 align-bottom pb-1">
+                                    <input type="text" class="input-estimate text-xs w-full" name="product-name-{{ $index + 1 }}" value="{{ $detail->product_name }}">
+                                </td>
+
+                                <!-- 型番（product_model_num） -->
+                                <td class="px-1 border border-gray-600 align-bottom pb-1">
+                                    <input type="text" class="input-estimate text-xs w-full" name="model-number-{{ $index + 1 }}" value="{{ $detail->product_model_num }}">
+                                </td>
+
+                                <!-- 価格/個（unit-price） -->
+                                <td class="px-1 border border-gray-600 align-bottom pb-1">
+                                    <input type="text" class="input-estimate text-xs w-full text-right" name="unit-price-{{ $index + 1 }}" value="{{ number_format($detail->unit_price) }}" step="1" onchange="formatNumber(this); calculateAll(this)" >
+                                </td>
+
+                                <!-- 原価/個（unit-cost) -->
+                                <td class="px-1 border border-gray-600 align-bottom pb-1">
+                                    <input type="text" class="input-estimate text-xs w-full text-right" name="unit-cost-{{ $index + 1 }}" value="{{ number_format($detail->unit_cost) }}" step="1" onchange="formatNumber(this); calculateAll(this)">
+                                </td>
+
+                                <!-- 数量（quantity） -->
+                                <td class="px-1 border border-gray-600 align-bottom pb-1">
+                                    <input type="number" class="input-estimate text-xs w-full text-right" name="quantity-{{ $index + 1 }}" value="{{ $detail->quantity }}" step="1" min="0" max="999" oninput="javascript: this.value = this.value.slice(0, 3);" onchange="calculateAll(this)">
+                                </td>
+
+                                <!-- 値引き前合計価格（standard-pricre）・値引額（discount） -->
+                                <td class="px-1 border border-gray-600 align-bottom pb-1 readonly-cell">
+                                    <div class="flex flex-col">
+                                        <span class="input-estimate-arari min-w-[100px] w-full text-xs readonly-cell text-right py-0.5 block" name="standard-total-{{ $index + 1 }}"></span>
+                                        <input type="text" class="input-estimate min-w-[100px] w-full text-xs dark:text-red-500 text-right py-0.5" name="discount-{{ $index + 1 }}" value="{{number_format($detail->discount) }}" onchange="formatNebiki(this); calculateAll(this)" placeholder="値引額">
+                                    </div>
+                                </td>
+                                {{-- <td class="px-1 border border-gray-600">
+                                    <input type="text" class="input-estimate w-full text-right" name="discount-{{ $index + 1 }}" value="{{ $detail->discount }}" step="1" onchange="calculateAll(this)">
+                                </td>
+                                <td class="px-1 border border-gray-600">
+                                    <input type="number" class="input-estimate w-full text-right" name="offer-price-{{ $index + 1 }}" value="{{ $detail->offer_price }}" step="1">
+                                </td> --}}
+                                {{-- <td class="px-1 border border-gray-600 align-bottom pb-1 readonly-cell">
+                                    <div class="flex flex-col">
+                                        <span class="input-estimate-arari min-w-[100px] w-full text-xs readonly-cell text-right py-0.5 block" data-name="ing-hyojun-{{ $index + 1 }}">{{ number_format($detail->standard_price * $detail->quantity) }}</span>
+                                        <input type="text" class="input-estimate min-w-[100px] w-full text-xs dark:text-red-500 text-right py-0.5" name="discount-{{ $index + 1 }}" value="{{ number_format($detail->discount) }}" onchange="formatNebiki(this); calculateAll(this)" placeholder="値引額">
+                                    </div>
+                                </td> --}}
+                                <td class="px-1 border border-gray-600 readonly-cell"><input type="text" class="input-estimate min-w-[100px] w-full text-xs readonly-cell pointer-events-none text-right" name="ing-teikyo-1" readonly tabindex="-1"></td>
+
+                                <td class="px-1 border border-gray-600 align-bottom pb-1 readonly-cell">
+                                    <div class="flex flex-col">
+                                        <input type="text" class="input-estimate-arari min-w-[100px] w-full text-xs py-0 readonly-cell pointer-events-none text-right block" name="ing-arari-{{ $index + 1 }}" value="{{ number_format($detail->offer_price - ($detail->cost_price * $detail->quantity)) }}" readonly tabindex="-1">
+                                        <input type="text" class="input-estimate-arari min-w-[100px] w-full text-xs py-0 readonly-cell pointer-events-none text-right mt-0" name="ing-arariritu-{{ $index + 1 }}" value="{{ $detail->offer_price > 0 ? number_format((($detail->offer_price - ($detail->cost_price * $detail->quantity)) / $detail->offer_price * 100), 2) : 0 }}%" readonly tabindex="-1">
+                                    </div>
+                                </td>
+                                <td class="px-1 border border-gray-600 text-center">
+                                    <button type="button" class="p-1 text-sm font-medium text-white bg-red-700 rounded border border-red-700 hover:bg-red-800 focus:outline-none dark:bg-red-600 dark:hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800" onclick="removeRow(this)">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    
+                    <div class="mt-4 flex justify-end">
+                        <table class="text-sm text-left text-gray-500 dark:text-gray-200 border border-gray-600">
+                            <tr>
+                                <th class="px-2 py-1 border border-gray-600">合計原価</th>
+                                <td class="px-2 py-1 border border-gray-600">
+                                    <span id="total-cost">0</span>
+                                    <input type="hidden" name="total-cost" id="total-cost-input" value="0">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="px-2 py-1 border border-gray-600">合計金額</th>
+                                <td class="px-2 py-1 border border-gray-600">
+                                    <span id="total-profit">0</span>
+                                    <input type="hidden" name="total_profit" id="total-profit-input" value="0">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="px-2 py-1 border border-gray-600">税抜合計金額</th>
+                                <td class="px-2 py-1 border border-gray-600">
+                                    <span id="total-without-tax">0</span>
+                                    <input type="hidden" name="total_profit" id="total-without-tax-input" value="0">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="px-2 py-1 border border-gray-600">消費税（10%）</th>
+                                <td class="px-2 py-1 border border-gray-600">
+                                    <span id="total-tax">0</span>
+                                    <input type="hidden" name="total_tax" id="total-tax-input" value="0">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="px-2 py-1 border border-gray-600">税込合計金額</th>
+                                <td class="px-2 py-1 border border-gray-600">
+                                    <span id="total-with-tax">0</span>
+                                    <input type="hidden" name="total_with_tax" id="total-with-tax-input" value="0">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="w-full flex flex-col">
+                        <label for="memo" class="dark:text-gray-100 text-gray-900 leading-none mt-4">見積備考</label>
+                        <textarea name="memo" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="auto-resize-textarea-client_memo" value="{{old('memo')}}" cols="30" rows="5">■内容等変更が生じた場合は再度御見積りが必要となります。
+                        ■消費税率が改定される際は別途御見積り致します。</textarea>
+                    </div>
+
+
+                    <!-- Main modal -->
+                    <div id="searchProduct" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden animate-slide-in-top">
+                        <div class="relative p-4 w-full max-w-7xl h-full md:h-auto">
+                            <!-- Modal content -->
+                            <div class="relative p-4 bg-blue-400  rounded dark:bg-gray-800 sm:p-5 shadow-xl ">
+                                <!-- Modal header -->
+                                <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+                                    <h3 class="text-lg text-gray-900 dark:text-white">
+                                        製品検索
+                                    </h3>
+                                    {{-- <button type="button" onclick="hideProductModal()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                        <span class="sr-only">Close modal</span>
+                                    </button> --}}
+                                </div>
+                                <!-- Modal body -->
+                                <form action="#">
+                                    <div class="grid gap-4 mb-4 sm:grid-cols-3">
+                                        <div>
+                                            <label for="productName" class="block mb-2 text-sm text-gray-900 dark:text-white">製品名称</label>
+                                            <input type="text" id="productName" name="productName"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="製品名称">
+                                        </div>
+                                        <div>
+                                            <label for="productSeriesId" class="block mb-2 text-sm text-gray-900 dark:text-white">シリーズ</label>
+                                            <select id="productSeriesId" name="productSeriesId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                                <option selected="" value="">未選択</option>
+                                                @foreach ($productSeries as $productSeries)
+                                                    <option value="{{ $productSeries->id }}" @selected($productSeries->id == old('productSeriesId'))>
+                                                        {{ $productSeries->series_name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label for="productSplitTypeId" class="block mb-2 text-sm text-gray-900 dark:text-white">内訳種別</label>
+                                            <select id="productSplitTypeId" name="productSplitTypeId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                                <option selected="" value="">未選択</option>
+                                                @foreach ($productSplitTypes as $productSplitType)
+                                                    <option value="{{ $productSplitType->id }}" @selected($productSplitType->id == old('productSplitTypeId'))>
+                                                        {{ $productSplitType->split_type_name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class=" max-h-80 overflow-y-auto overflow-x-hidden">
+                                    <table class="w-full mt-4 text-white mb-5 text-left text-sm">
+                                        <thead>
+                                        <tr>
+                                            {{-- <th class="py-1"></th> --}}
+                                            <th class="py-1 pl-5">製品名称</th>
+                                            <th class="py-1 whitespace-nowrap">シリーズ</th>
+                                            <th class="py-1 whitespace-nowrap">内訳種別</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="" id="searchResultsProductContainer">                          
+                                                <!-- 検索結果がここに追加されます -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- Modal footer -->
+                                <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                                    <button type="button" onclick="searchProduct()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        検索
+                                    </button>
+                                    <button type="button" id="closeModalBtn" onclick="hideProductModal()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                        閉じる
+                                    </button> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="estimate-separate-sheet" role="tabpanel" aria-labelledby="estimate-separate-sheet-tab">
+                    <!-- 見積書別紙の内容をここに追加 -->
+                    <p>見積書別紙の内容がここに表示されます。</p>
+                </div>
+                
+                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="order" role="tabpanel" aria-labelledby="order-tab">
+                    <!-- 注文書設定の内容をここに追加 -->
+                    <p>注文書設定の内容がここに表示されます。</p>
+                </div>
+                
+                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="estimate-attachment" role="tabpanel" aria-labelledby="estimate-attachment-tab">
+                    <!-- 添付ファイルの内容をここに追加 -->
+                    <p>添付ファイルの内容がここに表示されます。</p>
+                </div>
+                
+                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="approval" role="tabpanel" aria-labelledby="approval-tab">
+                    <!-- 決裁情報の内容をここに追加 -->
+                    <p>決裁情報の内容がここに表示されます。</p>
+                </div>
+                
+                </div>
+                </form>
+                </div>
+
+                <script>
+                    let currentEditingRow = null;
+                    let rowCount = {{ count($estimateDetails) }};
+                
+                    function add() {
+                        rowCount++;
+                        const newRow = document.querySelector('#input_plural tr').cloneNode(true);
+                        newRow.querySelectorAll('input').forEach(input => {
+                            input.value = '';
+                            const nameParts = input.name.split('-');
+                            input.name = `${nameParts[0]}-${nameParts[1]}-${rowCount}`;
+                        });
+                        newRow.querySelector('td:nth-child(3)').textContent = rowCount;
+                        newRow.querySelector('input[type="hidden"]').name = `sort-order-${rowCount}`;
+                        newRow.querySelector('input[type="hidden"]').value = rowCount;
+                        
+                        document.querySelector('#input_plural').appendChild(newRow);
+                        updateSortable();
+                        setupInputListeners();
+                        calculateAll(newRow.querySelector('input[name^="quantity-"]'));
+                    }
+                
+                    function del(button) {
+                        if (document.querySelectorAll('#input_plural tr').length > 1) {
+                            button.closest('tr').remove();
+                            renumberRows();
+                            calculateTotals();
+                        }
+                    }
+                
+                    function renumberRows() {
+                        document.querySelectorAll('#input_plural tr').forEach((row, index) => {
+                            const rowNumber = index + 1;
+                            row.querySelector('td:nth-child(3)').textContent = rowNumber;
+                            row.querySelector('input[type="hidden"]').name = `sort-order-${rowNumber}`;
+                            row.querySelector('input[type="hidden"]').value = rowNumber;
+                            row.querySelectorAll('input:not([type="hidden"])').forEach(input => {
+                                const nameParts = input.name.split('-');
+                                input.name = `${nameParts[0]}-${nameParts[1]}-${rowNumber}`;
+                            });
+                        });
+                        rowCount = document.querySelectorAll('#input_plural tr').length;
+                    }
+                
+                    function copyRow(button) {
+                        const originalRow = button.closest('tr');
+                        const newRow = originalRow.cloneNode(true);
+                        rowCount++;
+            
+                        newRow.querySelector('td:nth-child(3)').textContent = rowCount;
+            
+                        newRow.querySelector('input[type="hidden"]').name = `sort-order-${rowCount}`;
+                        newRow.querySelector('input[type="hidden"]').value = rowCount;
+                        newRow.querySelectorAll('input:not([type="hidden"])').forEach(input => {
+                            const nameParts = input.name.split('-');
+                            input.name = `${nameParts[0]}-${nameParts[1]}-${rowCount}`;
+                        });
+            
+                        originalRow.parentNode.insertBefore(newRow, originalRow.nextSibling);
+                        updateSortable();
+                        renumberRows();
+                        calculateAll(newRow.querySelector('input[name^="quantity-"]'));
+                        setupInputListeners();
+                    }
+                    
+                    function formatNumber(input) {
+                        let value = input.value.replace(/[^\d.-]/g, '');
+                        if (value !== '' && !isNaN(value)) {
+                            input.value = Number(value).toLocaleString();
+                        }
+                    }
+                    
+                    function calculateAll(changedInput) {
+                        const row = changedInput.closest('tr');
+                        const standardPrice = parseFloat(row.querySelector('input[name^="unit-price"]').value.replace(/,/g, '')) || 0;
+                        const costPrice = parseFloat(row.querySelector('input[name^="unit-cost-"]').value.replace(/,/g, '')) || 0;
+                        const quantity = parseInt(row.querySelector('input[name^="quantity-"]').value) || 0;
+                        const discount = parseFloat(row.querySelector('input[name^="discount-"]').value.replace(/,/g, '').replace('-', '')) || 0;
+
+                        const standardTotal = standardPrice * quantity;
+                        const offerPrice = standardTotal - discount;
+                        const profit = offerPrice - (costPrice * quantity);
+                        const profitRate = offerPrice !== 0 ? (profit / offerPrice) * 100 : 0;
+
+                        // 標準価格の更新（spanタグ）
+                        row.querySelector('span[name^="standard-total-"]').textContent = Math.round(standardTotal).toLocaleString();
+                        
+                        // 提供価格の更新
+                        row.querySelector('input[name^="ing-teikyo-"]').value = Math.round(offerPrice).toLocaleString();
+                        
+                        // 粗利額と粗利率の更新
+                        row.querySelector('input[name^="ing-arari-"]').value = Math.round(profit).toLocaleString();
+                        row.querySelector('input[name^="ing-arariritu-"]').value = profitRate.toFixed(2) + '%';
+
+                        calculateTotals();
+                    }
+
+                    function formatNebiki(input) {
+                        let value = input.value.replace(/[^\d.-]/g, '');
+                        if (value !== '' && !isNaN(value)) {
+                            value = parseFloat(value);
+                            if (value > 0) {
+                                value = -value; // 正の値を負の値に変換
+                            }
+                            input.value = value.toLocaleString();
+                        }
+                    }
+                
+                    function calculateTotals() {
+                        let totalAmount = 0;
+                        let totalCost = 0;
+                        let totalProfit = 0;
+                        let totalDiscount = 0;
+
+                        document.querySelectorAll('#input_plural tr').forEach(row => {
+                            const standardPrice = parseFloat(row.querySelector('input[name^="unit-price-"]').value.replace(/,/g, '')) || 0;
+                            const costPrice = parseFloat(row.querySelector('input[name^="unit-cost-"]').value.replace(/,/g, '')) || 0;
+                            const quantity = parseInt(row.querySelector('input[name^="quantity-"]').value) || 0;
+                            const discount = parseFloat(row.querySelector('input[name^="discount-"]').value.replace(/,/g, '').replace('-', '')) || 0;
+
+                            const offerPrice = (standardPrice * quantity) - discount;
+
+                            totalAmount += offerPrice;
+                            totalCost += costPrice * quantity;
+                            totalProfit += offerPrice - (costPrice * quantity);
+                            totalDiscount += discount;
+                        });
+
+                        const taxAmount = Math.round(totalAmount * 0.1);
+                        const totalWithTax = totalAmount + taxAmount;
+
+                        document.getElementById('total-cost').textContent = Math.round(totalCost).toLocaleString();
+                        document.getElementById('total-profit').textContent = Math.round(totalProfit).toLocaleString();
+                        document.getElementById('total-without-tax').textContent = Math.round(totalAmount).toLocaleString();
+                        document.getElementById('total-tax').textContent = taxAmount.toLocaleString();
+                        document.getElementById('total-with-tax').textContent = Math.round(totalWithTax).toLocaleString();
+
+                        // 隠しフィールドの更新
+                        document.getElementById('total-cost-input').value = Math.round(totalCost);
+                        document.getElementById('total-profit-input').value = Math.round(totalProfit);
+                        document.getElementById('total-without-tax-input').value = Math.round(totalAmount);
+                        document.getElementById('total-tax-input').value = taxAmount;
+                        document.getElementById('total-with-tax-input').value = Math.round(totalWithTax);
+                    }
+                    
+                    function updateSortable() {
+                        const tbody = document.querySelector('#input_plural');
+                        new Sortable(tbody, {
+                            handle: '.drag-handle',
+                            animation: 150,
+                            onEnd: function() {
+                                renumberRows();
+                            }
+                        });
+                    }
+
+                    function setupInputListeners() {
+                        document.querySelectorAll('#input_plural input').forEach(input => {
+                            input.addEventListener('change', function() {
+                                calculateAll(this.closest('tr'));
+                                calculateTotals();
+                            });
+                            input.addEventListener('blur', function() {
+                                if (this.name.startsWith('discount-')) {
+                                    formatNebiki(this);
+                                } else {
+                                    formatNumber(this);
+                                }
+                                calculateAll(this.closest('tr'));
+                                calculateTotals();
+                            });
+                        });
+                    }
+                    
+                    document.addEventListener('DOMContentLoaded', function() {
+                        updateSortable();
+                        
+                        // 各行の計算を実行
+                        document.querySelectorAll('#input_plural tr').forEach(row => {
+                            const quantityInput = row.querySelector('input[name^="quantity-"]');
+                            calculateAll(quantityInput);
+                        });
+                        
+                        // 合計を計算
+                        calculateTotals();
+                        
+                        setupInputListeners();
+                    });
+                    
+
+            
+                    function showProductModal(button) {
+                        currentEditingRow = button.closest('tr');
+                        // ここに製品検索モーダルを表示するロジックを実装
+                    }
+                </script>
+            
+                <style>
+                    .readonly-cell {
+                        background-color: #f3f4f6;
+                        color: #6b7280;
+                    }
+                    .dark .readonly-cell {
+                        background-color: #374151;
+                        color: #9ca3af;
+                    }
+                    .input-estimate.text-right {
+                        text-align: right;
+                    }
+                    .input-estimate.text-xs {
+                        font-size: 0.75rem;
+                    }
+                </style>
+
+
+<script>
+    const overlay = document.getElementById('overlay')
+    const searchProductModal = document.getElementById('searchProduct');
+
+    // 製品検索モーダルを表示するための関数
+    function showProductModal(button) {
+        currentEditingRow = button.closest('tr');
+        overlay.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+        searchProductModal.classList.remove('hidden');
+
+            // モーダル内のコンテンツ要素を取得
+            const modalContent = searchProductModal.querySelector('.bg-blue-400');
+
+            // Tabキーによるフォーカス移動をトラップする関数
+            function trapTabKey(e) {
+                if (e.key === 'Tab') {
+                    const focusableElements = modalContent.querySelectorAll(
+                        'a[href], button:not([disabled]), textarea, input:not([disabled]), select:not([disabled])'
+                    );
+
+                    const firstElement = focusableElements[0];
+                    const lastElement = focusableElements[focusableElements.length - 1];
+
+                    if (e.shiftKey) {
+                        if (document.activeElement === firstElement) {
+                            e.preventDefault();
+                            lastElement.focus();
+                        }
+                    } else {
+                        if (document.activeElement === lastElement) {
+                            e.preventDefault();
+                            firstElement.focus();
+                        }
+                    }
+                }
+            }
+
+            // Tabキーイベントをモーダル内で捕捉
+            modalContent.addEventListener('keydown', trapTabKey);
+
+            // モーダルが開かれたときに最初のフォーカス可能な要素にフォーカスを当てる
+            const productNameInput = document.getElementById('productName');
+            productNameInput.focus();
+        }
+
+        // 製品検索モーダルを非表示にする
+        function hideProductModal() {
+            overlay.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+
+            searchProductModal.classList.add('hidden');
+
+            const ProductButton = document.getElementById('searchProductButton');
+            ProductButton.focus();
+
+            // モーダル内のコンテンツ要素からTabキーイベントリスナーを削除
+            const modalContent = searchProductModal.querySelector('.bg-blue-400');
+            modalContent.removeEventListener('keydown', trapTabKey);
+        }
+
+
+        //製品検索ボタンを押下した際の処理
+        function searchProduct() {
+            const productName = document.getElementById('productName').value;
+            const productSeriesId = document.getElementById('productSeriesId').value;
+            const productSplitTypeId = document.getElementById('productSplitTypeId').value;
+
+            fetch('/products/search', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ productName, productSeriesId, productSplitTypeId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const searchResultsProductContainer = document.getElementById('searchResultsProductContainer');
+                searchResultsProductContainer.innerHTML = '';
+
+                data.forEach(result => {
+                    const resultElement = document.createElement('tr');
+                    resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
+                    resultElement.innerHTML = `
+                        <td class="py-2 pl-5 cursor-pointer" onclick="setProduct('${result.product_name}', '${result.product_series.series_name}', '${result.product_split_type_id}', '${result.product_code}', '${result.unit_price}')">${result.product_name}</td>
+                        <td class="py-2 ml-2">${result.product_series.series_name}</td>
+                        <td class="py-2 ml-2">${result.product_split_type.split_type_name}</td>
+                    `;
+                    searchResultsProductContainer.appendChild(resultElement);
+                });
+            });
+        }
+
+        function setProduct(name, series, split, code, price) {
+            if (currentEditingRow) {
+                currentEditingRow.querySelector('input[name^="ing-cd-"]').value = code;
+                currentEditingRow.querySelector('input[name^="ing-name-"]').value = name;
+                currentEditingRow.querySelector('input[name^="ing-kataban-"]').value = series;
+                
+                // 小数点以下を取り除いて整数に変換し、カンマ区切りの文字列にフォーマット
+                const formattedPrice = parseInt(price).toLocaleString();
+                currentEditingRow.querySelector('input[name^="ing-tanka-"]').value = formattedPrice;
+                
+                currentEditingRow.querySelector('input[name^="ing-genka-"]').value = 0;
+                currentEditingRow.querySelector('input[name^="ing-suryo-"]').value = 1;
+                
+                // 値を更新した後、計算を実行
+                calculateAll(currentEditingRow.querySelector('input[name^="ing-suryo-"]'));
+            }
+
+            hideProductModal();
+            currentEditingRow = null;
+        }
+</script>
+                </x-app-layout>

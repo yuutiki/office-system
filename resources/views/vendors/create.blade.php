@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
+            <h2 class="text-xl text-gray-900 dark:text-white">
                 {{ Breadcrumbs::render('createVendor') }}
             </h2>
             <div class="flex justify-end">
@@ -18,35 +18,41 @@
 
             <form id="form1" method="post" action="{{route('vendors.store')}}" enctype="multipart/form-data" autocomplete="new-password">
                 @csrf
-                <!-- 法人検索ボタン -->
-                <button type="button"  onclick="showModal()" class="md:ml-1 md:mt-1 mt-1 mb-2 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    法人検索
-                </button>
                 <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                    <div class="">
-                        <label for="corporation_num" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人番号<span class="text-red-500"> *</span></label>
-                        <input type="text" name="corporation_num" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" id="corporation_num" value="{{old('corporation_num')}}" placeholder="法人検索してください" readonly>
-                        @error('corporation_num')
-                            <div class="text-red-500">{{ $message }}</div>
-                        @enderror
+
+                    <div class="flex">
+                        <div class="w-full flex flex-col">
+                            <label for="corporation_num" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人番号<span class="text-red-500"> *</span></label>
+                            <input type="text" name="corporation_num" class="input-readonly cursor-not-allowed" id="corporation_num" value="{{old('corporation_num')}}" placeholder="法人検索してください" readonly>
+                            @error('corporation_num')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <!-- 法人検索ボタン -->
+                        <button type="button" id="corporationSearch" onclick="showModal()" class="p-2.5 text-sm font-medium h-[34px] text-white mt-[34px] ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                            </svg>
+                        </button>
                     </div>
-                    <div class="">
-                        <label for="corporation_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人名称<span class="text-red-500"> *</span></label>
-                        <input type="text" name="corporation_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" id="corporation_name" value="{{old('corporation_name')}}" placeholder="法人検索してください" readonly>
+
+                    <div>
+                        <label for="corporation_name" class="block  text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人名称<span class="text-red-500"> *</span></label>
+                        <input type="text" name="corporation_name" class="input-readonly cursor-not-allowed" id="corporation_name" value="{{old('corporation_name')}}" placeholder="法人検索してください" readonly>
                         @error('corporation_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="">
-                        <label for="vendor_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">業者名称<span class="text-red-500"> *</span></label>
-                        <input type="text" name="vendor_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="vendor_name" value="{{old('vendor_name')}}" placeholder="">
+                    <div>
+                        <label for="vendor_name" class="block  text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">業者名称<span class="text-red-500"> *</span></label>
+                        <input type="text" name="vendor_name" class="input-secondary" id="vendor_name" value="{{old('vendor_name')}}" placeholder="">
                         @error('vendor_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="">
-                        <label for="vendor_kana_name" class="block  font-semibold dark:text-gray-100 text-gray-900 leading-none md:mt-2">業者カナ名称<span class="text-red-500"> *</span></label>
-                        <input type="text" name="vendor_kana_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="vendor_kana_name" value="{{old('vendor_kana_name')}}" placeholder="">
+                    <div>
+                        <label for="vendor_kana_name" class="block  text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">業者カナ名称<span class="text-red-500"> *</span></label>
+                        <input type="text" name="vendor_kana_name" class="input-secondary" id="vendor_kana_name" value="{{old('vendor_kana_name')}}" placeholder="">
                         @error('vendor_kana_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
@@ -54,7 +60,7 @@
                 </div>
                 <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-2">
                     <div>
-                        <label for="vendor_type_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">業者種別<span class="text-red-500"> *</span></label>
+                        <label for="vendor_type_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">業者種別<span class="text-red-500"> *</span></label>
                         <select id="vendor_type_id" name="vendor_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">未選択</option>
                             @foreach($vendorTypes as $vendorType)
@@ -66,7 +72,7 @@
                         @enderror
                     </div>
                     {{-- <div>
-                        <label for="trade_status_id" class="font-semibold text-gray-900 dark:text-white leading-none mt-4">業者取引状態<span class="text-red-500"> *</span></label>
+                        <label for="trade_status_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">業者取引状態<span class="text-red-500"> *</span></label>
                         <select id="trade_status_id" name="trade_status_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">未選択</option>
                             @foreach($tradeStatuses as $tradeStatus)
@@ -78,7 +84,7 @@
                         @enderror
                     </div> --}}
                     <div>
-                        <label for="affiliation2" class="font-semibold  text-gray-900 dark:text-white leading-none mt-4">管轄事業部<span class="text-red-500"> *</span></label>
+                        <label for="affiliation2" class="text-sm  text-gray-900 dark:text-white leading-none mt-4">管轄事業部<span class="text-red-500"> *</span></label>
                         <select id="affiliation2" name="affiliation2" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">未選択</option>
                             @foreach($affiliation2s as $affiliation2)
@@ -111,8 +117,8 @@
                 <div id="myTabContent">
                     <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                         <div class="grid gap-4 mb-4 sm:grid-cols-5 mt-2">
-                            <div class="">
-                                <label for="head_post_code" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">郵便番号</label>
+                            <div>
+                                <label for="head_post_code" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">郵便番号</label>
                                 <div class="relative w-full">
                                     <input type="text" name="head_post_code" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="head_post_code" value="{{old('head_post_code')}}" placeholder="">
                                     <button type="button" id="ajaxzip3" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-[34px] text-white mt-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -123,8 +129,8 @@
                                 </div>
                             </div>
 
-                            <div class="">
-                                <label for="head_prefecture" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4 ">都道府県</label>
+                            <div>
+                                <label for="head_prefecture" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">都道府県</label>
                                 <select id="head_prefecture" name="head_prefecture" class="w-full py-1.5  text-sm mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option selected value="">未選択</option>
                                     @foreach($prefectures as $prefecture)
@@ -133,15 +139,15 @@
                                 </select>
                             </div>
                             <div class="col-span-3">
-                                <label for="head_addre1" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">代表所在地</label>
+                                <label for="head_addre1" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表所在地</label>
                                 <input type="text" name="head_addre1" id="head_addre1" value="{{old('head_addre1')}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" placeholder="">
                             </div>
-                            <div class="">
-                                <label for="head_tel" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">代表TEL（-）</label>
+                            <div>
+                                <label for="head_tel" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表TEL（-）</label>
                                 <input type="text" name="head_tel" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_tel" value="{{old('head_tel')}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" placeholder="">
                             </div>
-                            <div class="">
-                                <label for="head_fax" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">代表FAX（-）</label>
+                            <div>
+                                <label for="head_fax" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表FAX（-）</label>
                                 <input type="tel" name="head_fax" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_fax" value="{{old('head_fax')}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded"  placeholder="">
                             </div>
                         </div>
@@ -150,13 +156,13 @@
     
                         <div class="grid gap-4 mb-1 sm:grid-cols-5 mt-1">
                             <div class="w-full flex flex-col">
-                                <label for="number_of_employees" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">従業員数</label>
+                                <label for="number_of_employees" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">従業員数</label>
                                 <input type="number" min="0" name="number_of_employees" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="number_of_employees" value="{{old('number_of_employees')}}">
                             </div>
                         </div>
     
                         <div class="w-full flex flex-col">
-                            <label for="memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">備考</label>
+                            <label for="memo" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">備考</label>
                             <textarea name="memo" data-auto-resize="true" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="auto-resize-textarea-client_memo" value="{{old('memo')}}" cols="30" rows="5">{{old('memo')}}</textarea>
                         </div>
 
@@ -242,12 +248,12 @@
                     <!-- 検索条件入力フォーム -->
                     <div class="grid gap-4 mb-4 sm:grid-cols-2 mt-2">
                     {{-- <div class="flex flex-wrap justify-start mx-5"> --}}
-                        <div class="">
-                            <label for="corporationName" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none">法人名称</label>
+                        <div>
+                            <label for="corporationName" class="block text-sm dark:text-gray-100 text-gray-900 leading-none">法人名称</label>
                             <input type="text" name="corporationName" id="corporationName" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
                         </div>
-                        <div class="">
-                            <label for="corporationNumber" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none">法人番号</label>
+                        <div>
+                            <label for="corporationNumber" class="block text-sm dark:text-gray-100 text-gray-900 leading-none">法人番号</label>
                             <input type="text" name="corporationNumber" id="corporationNumber" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
                         </div>
                     </div>
@@ -261,7 +267,7 @@
                             <th class="py-1 whitespace-nowrap">法人番号</th>
                         </tr>
                         </thead>
-                        <tbody class="" id="searchResultsContainer">                          
+                        <tbody id="searchResultsContainer">                          
                                 <!-- 検索結果がここに追加されます -->
                         </tbody>
                     </table>
