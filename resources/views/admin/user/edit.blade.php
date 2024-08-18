@@ -194,6 +194,19 @@
             </div>
 
             <div class="mt-8">
+                <span class="dark:text-white">印鑑情報</span>
+                <ul class="pt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
+            </div>
+            <!-- 画像選択用のフォーム -->
+            <div class="mb-8 w-20 h-20">
+                <img id="stamp_image_preview" src="{{ asset('storage/'. $user->user_stamp_image) }}?{{ time() }}" alt="印鑑画像" class="cursor-pointer w-full h-full object-cover rounded" onclick="document.getElementById('user_stamp_image').click()">
+                <input type="file" id="user_stamp_image" accept="image/*" class="hidden" form="userForm" name="user_stamp_image">
+            </div>
+
+            <!-- フォームにトリミング後の画像をセットするための非表示のinput要素 -->
+            <input type="hidden" id="cropped_user_stamp_image" name="cropped_user_stamp_image" form="userForm">
+
+            <div class="mt-8">
                 <span class="dark:text-white">ログイン情報</span>
                 <ul class="pt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
             </div>
@@ -308,7 +321,7 @@
 
     </div>
 
-    <!-- 画像トリミング Modal -->
+    <!-- プロフ画像トリミング Modal -->
     <div id="imageModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden animate-slide-in-top">
         <div class="max-h-full w-full max-w-2xl">
             <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
@@ -333,6 +346,38 @@
                         完了
                     </button>
                     <button type="button" onclick="hideImageModal()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                        キャンセル
+                    </button> 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 印鑑画像トリミング Modal -->
+    <div id="stampModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden animate-slide-in-top">
+        <div class="max-h-full w-full max-w-2xl">
+            <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-medium text-gray-900 dark:text-white">
+                        アイコン編集
+                    </h3>
+                    <button type="button" onclick="hideStampImageModal()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                        <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body（トリミング用のコンテナ） -->
+                <div id="cropper_stamp_container"></div>
+
+                <!-- Modal footer -->
+                <div class="flex items-center justify-end p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <button type="button" onclick="setStampImage()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        完了
+                    </button>
+                    <button type="button" onclick="hideStampImageModal()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                         キャンセル
                     </button> 
                 </div>
@@ -424,12 +469,16 @@
         </div>
     </div>
 
+    <script>
+        // 共通変数・定数
+        const overlay = document.getElementById('overlay');
+        const body = document.body;
+    </script>
 
+    {{-- プロフィール用 --}}
     <script>
         // Imageモーダルの要素を取得
         const modal = document.getElementById('imageModal');
-        const overlay = document.getElementById('overlay');
-        const body = document.body;
 
         // Imageモーダルを表示するための関数
         function showImageModal() {
@@ -490,7 +539,7 @@
         });
     
         // トリミング後の画像をフォームにセットする処理（Modal上の完了ボタン押下時に発火）
-        function setProfileImage() {
+        function setStampImage() {
             // トリミング対象の画像要素が存在するか確認
             if (document.getElementById('cropper_target')) {
                 var canvas = document.getElementById('cropper_target').cropper.getCroppedCanvas();
@@ -506,6 +555,89 @@
             }
         }
     </script>
+
+
+    <script>
+        // Imageモーダルの要素を取得
+        const stampImageModal = document.getElementById('stampModal');
+
+        // Imageモーダルを表示するための関数
+        function showStampImageModal() {
+            //背後の操作不可を有効
+            overlay.classList.remove('hidden');
+            body.classList.add('overflow-hidden');
+
+            // StampImageモーダルを表示するためにhiddenを取り除く
+            stampImageModal.classList.remove('hidden');
+        }
+
+        // StampImageモーダルを非表示にするための関数
+        function hideStampImageModal() {
+            //背後の操作不可を解除
+            overlay.classList.add('hidden');
+            body.classList.remove('overflow-hidden');
+
+            // StampImageモーダルを非表示にするためにhiddenを追加
+            stampImageModal.classList.add('hidden');
+        }
+
+        // ファイル選択用のinput要素をクリックした時に発火
+        document.getElementById('user_stamp_image').addEventListener('click', function(event) {
+            // ファイルの選択をリセットする（onchangeなので同じファイルを選択した場合もイベントが発火するようにするため）
+            this.value = null;
+        });
+
+        // ファイル選択用のinput要素が変更されたときに発火
+        document.getElementById('user_stamp_image').addEventListener('change', function(event) {
+            var input = event.target;
+            var reader = new FileReader();
+            reader.onload = function() {
+                var img = document.createElement('img');
+                img.src = reader.result;
+                img.id = 'cropper_target';
+                document.getElementById('cropper_stamp_container').innerHTML = '';
+                document.getElementById('cropper_stamp_container').appendChild(img);
+
+                showStampImageModal();
+
+                // Cropper.jsの初期化（第一引数にimgファイルを渡す、第二引数にオプション）
+                var cropper = new Cropper(img, {
+                    aspectRatio: 1 / 1,
+                    viewMode: 1,
+                    dragMode: 'move',
+                    cropBoxResizable: false,
+                    autoCropArea: 0.8,
+                    movable: false,
+                    crop: function(event) {
+                        // トリミングされた画像の情報を取得
+                        var canvas = cropper.getCroppedCanvas();
+                        // 画像トリミング後にフォームに画像をセットする処理を有効化する
+                        document.getElementById('cropped_user_stamp_image').value = canvas.toDataURL();
+                    }
+                });
+            };
+            reader.readAsDataURL(input.files[0]);
+        });
+    
+        // トリミング後の画像をフォームにセットする処理（Modal上の完了ボタン押下時に発火）
+        function setStampImage() {
+            // トリミング対象の画像要素が存在するか確認
+            if (document.getElementById('cropper_target')) {
+                var canvas = document.getElementById('cropper_target').cropper.getCroppedCanvas();
+                var dataURL = canvas.toDataURL();
+                document.getElementById('stamp_image_preview').src = dataURL;
+                // トリミング後の画像をフォームにセット
+                document.getElementById('cropped_user_stamp_image').value = dataURL;
+                
+                // モーダルを非表示にする処理を追加する
+                hideStampImageModal();
+            } else {
+                console.error('トリミング対象の画像要素が見つかりません。');
+            }
+        }
+    </script>
+
+
 
     <script>
         const overlay2 = document.getElementById('overlay');

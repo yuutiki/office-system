@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Observers\GlobalObserver;
+use Carbon\Carbon;
 
 class AccountingPeriod extends Model
 {
@@ -24,6 +25,13 @@ class AccountingPeriod extends Model
     {
         parent::boot();
         self::observe(GlobalObserver::class);
+    }
+
+    public function getDurationMonthsAttribute()
+    {
+        $start = Carbon::parse($this->period_start_at);
+        $end = Carbon::parse($this->period_end_at);
+        return $start->diffInMonths($end) + 1;
     }
 
     public function updatedBy()

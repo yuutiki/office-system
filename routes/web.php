@@ -48,8 +48,10 @@ use App\Http\Controllers\VendorController;
 use App\Models\Contract;
 use App\Http\Controllers\Auth\PasswordChangeController;
 use App\Http\Controllers\CorporationCreditController;
+use App\Http\Controllers\EstimateAddressController;
 use App\Http\Controllers\PasswordPolicyController;
 use App\Http\Controllers\ProjectExpenseController;
+use App\Models\EstimateAddress;
 
 /*
 |--------------------------------------------------------------------------
@@ -170,8 +172,11 @@ Route::middleware(['auth'])->group(function () {
     //     // Route::get('{estimateId}', [EstimateController::class, 'show'])->name('estimates.show');
     // });
     Route::get('/estimate/{projectId}/{estimateId}/edit', [EstimateController::class, 'edit'])->name('estimates.edit');
-    Route::get('/estimate/generate-pdf', [EstimateController::class, 'generatePdf'])->name('estimate.pdf.generate'); //仮
+    Route::patch('/estimate/{projectId}/{estimateId}/update', [EstimateController::class, 'update'])->name('estimates.update');
+    Route::get('/estimate/{estimate}/pdf', [EstimateController::class, 'generatePdf'])->name('estimate.pdf.preview');
+    Route::get('/estimates/{estimate}/pdf/download', [EstimateController::class, 'downloadPdf'])->name('estimates.pdf.download');
     Route::get('estimate/{project}/create', [EstimateController::class, 'create'])->name('estimate.create');
+    Route::delete('estimate/{estimate}/delete', [EstimateController::class, 'destroy'])->name('estimate.destroy');
     Route::post('estimate/{project}/store', [EstimateController::class, 'store'])->name('estimate.store');
     // Route::resource('/estimate' , EstimateController::class);
 
@@ -209,6 +214,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/support-time', SupportTimeController::class);
     Route::resource('/support-type', SupportTypeController::class);
     Route::resource('/trade-status', TradeStatusController::class);
+    Route::resource('/estimate-address', EstimateAddressController::class);
 
     // Route::resource('/comment', '\App\Http\Controllers\CommentController');
     Route::get('/report/{report_id}/comment', [CommentController::class, 'show'])->name('comment.show');

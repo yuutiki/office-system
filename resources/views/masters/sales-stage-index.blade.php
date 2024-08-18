@@ -75,15 +75,7 @@
                         <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{$salesStage->sales_stage_name}}
                         </td>
-                        {{-- <td class="px-1 py-2 whitespace-nowrap">
-                            {{$salesStage->period_end_at}}
-                        </td> --}}
-                        {{-- <td class="px-1 py-2 whitespace-nowrap">
-                            {{$salesStage->created_at}}
-                        </td> --}}
-                        {{-- <td class="px-1 py-2 whitespace-nowrap">
-                            {{$salesStage->created_by}}
-                        </td> --}}
+
                         <td class="px-1 py-2 whitespace-nowrap">
                             {{ optional($salesStage->updatedBy)->user_name }}
                         </td>

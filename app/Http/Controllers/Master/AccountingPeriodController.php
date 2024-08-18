@@ -12,6 +12,7 @@ class AccountingPeriodController extends Controller
     public function index()
     {
         $accountingPeriods = AccountingPeriod::with('updatedBy')->get();
+        // Modelにアクセサを定義しており、期間開始～終了の月数を追加している（duration_months）
         return view('masters.accounting-period-index',compact('accountingPeriods'));
     }
 

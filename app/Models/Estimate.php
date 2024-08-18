@@ -32,14 +32,6 @@ class Estimate extends Model
         'supervisor_comment_2', 'created_by', 'updated_by'
     ];
 
-    // protected static function boot()
-    // {
-    //     parent::boot();
-    //     static::creating(function ($model) {
-    //         $model->ulid = (string) Str::ulid();
-    //     });
-    // }
-
     public static function generateEstimateNumber($projectId)
     {
         $projectNum = Project::where('id', $projectId)
@@ -59,7 +51,22 @@ class Estimate extends Model
 
         return "$projectNum-$newSerialNumber";
     }
-
+    public function customUser()
+    {
+        return $this->belongsTo(User::class, 'custom_user_id', 'id');
+    }
+    // public function estimateDetails()
+    // {
+    //     return $this->hasMany(EstimateDetail::class, 'custom_user_id', 'id');
+    // }
+    public function estimateAddress()
+    {
+        return $this->belongsTo(EstimateAddress::class, 'estimate_address_id', 'ulid');
+    }
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
     public function details()
     {
         return $this->hasMany(EstimateDetail::class, 'estimate_id', 'ulid');

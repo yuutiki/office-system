@@ -30,6 +30,7 @@ return new class extends Migration
             $table->foreignId('affiliation2_id')->comment('第二所属階層ID'); 
             $table->foreignId('affiliation3_id')->comment('第三所属階層ID'); 
             $table->string('profile_image')->default('users/profile_image/default.png')->comment('プロフ画像');
+            $table->string('user_stamp_image')->default('users/stamp_image/default_user_stamp.png')->comment('個人印鑑画像');
             $table->boolean('password_change_required')->default(0)->comment('強制PW変更フラグ'); 
 
             $table->foreignId('created_by')->nullable(true)->comment('作成者');

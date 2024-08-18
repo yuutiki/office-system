@@ -415,6 +415,7 @@ class CorporationController extends Controller
             'corporation_prefecture_id' => $prefecture,
             'corporation_address1' => $row[8],
             'corporation_memo' => $row[9],
+            'tax_status' => $row[10],
         ];
 
         if ($operation === 'new') {

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\EstimateAddress;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -47,6 +48,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PermissionSeeder::class);
         $this->call(RoleGroupSeeder::class);
         $this->call(PasswordPolicySeeder::class);
+        $this->call(EstimateAddressSeeder::class);
 
         $this->call(T_CorporationSeeder::class);
         $this->call(T_ClientSeeder::class);

@@ -56,9 +56,9 @@
         </div>
 
         <div class="col-span-3">
-            <label for="estimate_title" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">件名</label>
-            <input type="text" form="estimateForm" name="estimate_title" class="input-secondary" id="estimate_title" value="{{ old('estimate_title') }}" placeholder="">
-            @error('estimate_title')
+            <label for="estimate_subject" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">件名</label>
+            <input type="text" form="estimateForm" name="estimate_subject" class="input-secondary" id="estimate_subject" value="{{ old('estimate_subject') }}" placeholder="">
+            @error('estimate_subject')
                 <div class="text-red-500">{{ $message }}</div>
             @enderror
         </div>
@@ -109,9 +109,9 @@
                 <li class="mr-2" role="presentation">
                     <button class="inline-block p-4 border-b-2 rounded-t-lg" id="estimate-print-property-tab" data-tabs-target="#estimate-print-property" type="button" role="tab" aria-controls="estimate-print-property" aria-selected="false">見積書設定</button>
                 </li>
-                <li class="mr-2" role="presentation">
+                {{-- <li class="mr-2" role="presentation">
                     <button class="inline-block p-4 border-b-2 rounded-t-lg" id="estimate-separate-sheet-tab" data-tabs-target="#estimate-separate-sheet" type="button" role="tab" aria-controls="estimate-separate-sheet" aria-selected="false">見積書別紙</button>
-                </li>
+                </li> --}}
                 <li class="mr-2" role="presentation">
                     <button class="inline-block p-4 border-b-2 rounded-t-lg" id="order-tab" data-tabs-target="#order" type="button" role="tab" aria-controls="order" aria-selected="false">注文書設定</button>
                 </li>
@@ -119,7 +119,7 @@
                     <button class="inline-block p-4 border-b-2 rounded-t-lg" id="estimate-attachment-tab" data-tabs-target="#estimate-attachment" type="button" role="tab" aria-controls="estimate-attachment" aria-selected="false">添付ファイル</button>
                 </li>
                 <li class="mr-2" role="presentation">
-                    <button class="inline-block p-4 border-b-2 rounded-t-lg" id="order-tab" data-tabs-target="#order" type="button" role="tab" aria-controls="order" aria-selected="false">決裁情報</button>
+                    <button class="inline-block p-4 border-b-2 rounded-t-lg" id="approval-tab" data-tabs-target="#approval" type="button" role="tab" aria-controls="approval" aria-selected="false">決裁情報</button>
                 </li>
             </ul>
         </div>
@@ -281,8 +281,7 @@
 
             <div class="w-full flex flex-col">
                 <label for="estimate_memo" class="dark:text-gray-100 text-gray-900 leading-none mt-4">見積備考</label>
-                <textarea name="estimate_memo" form="estimateForm" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="auto-resize-textarea-client_estimate_memo" value="{{old('estimate_memo')}}" cols="30" rows="5">■内容等変更が生じた場合は再度御見積りが必要となります。
-                ■消費税率が改定される際は別途御見積り致します。</textarea>
+                <textarea name="estimate_memo" form="estimateForm" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="auto-resize-textarea-client_estimate_memo" cols="30" rows="5">{{ old('estimate_memo', $defaultEstimateMemo) }}</textarea>
             </div>
 
             <!-- Main modal -->
@@ -365,7 +364,7 @@
 
         <!-- 見積設定タブ -->
         <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="estimate-print-property" role="tabpanel" aria-labelledby="estimate-print-property-tab">
-            <div>
+            {{-- <div>
                 <label for="client_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-1">住所</label>
                 <input type="text" name="client_name" class="input-primary" id="client_name" value="3ヶ月" placeholder="">
                 @error('client_name')
@@ -378,29 +377,79 @@
                 @error('client_name')
                     <div class="text-red-500">{{ $message }}</div>
                 @enderror
-            </div>
+            </div> --}}
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label for="client_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-4">見積書表題</label>
-                    <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="client_name" value="御　見　積　書" placeholder="">
-                    @error('client_name')
+                    <label for="estimate_document_title" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-4">見積書表題</label>
+                    <input type="text" form="estimateForm" name="estimate_document_title" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="estimate_document_title" value="御　見　積　書" placeholder="">
+                    @error('estimate_document_title')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
                 <div>
-                    <label for="client_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-4">注文書表題</label>
-                    <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="client_name" value="注　文　書" placeholder="">
-                    @error('client_name')
+                    <label for="order_document_title" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-4">注文書表題</label>
+                    <input type="text" form="estimateForm" name="order_document_title" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="order_document_title" value="注　文　書" placeholder="">
+                    @error('order_document_title')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
+            <div>
+                <label for="estimate_address_id" class="block mb-2 text-sm text-gray-900 dark:text-white">見積住所</label>
+                <select id="estimate_address_id" form="estimateForm" onchange="updateAddress()" name="estimate_address_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    @foreach ($estimateAddresses as $estimateAddress)
+                        <option value="{{ $estimateAddress->ulid }}" 
+                                data-address1="{{ $estimateAddress->estimate_address_1 }}"
+                                data-address2="{{ $estimateAddress->estimate_address_2 }}"
+                                data-address3="{{ $estimateAddress->estimate_address_3 }}"
+                                data-tel="{{ $estimateAddress->estimate_address_tel }}"
+                                data-fax="{{ $estimateAddress->estimate_address_fax }}"
+                                @selected($estimateAddress->ulid == old('estimate_address_id'))>
+                            {{ $estimateAddress->estimate_address_name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            
+            <div id="selectedAddress" class="text-white border rounded p-2 mt-6">
+                <!-- ここに選択された住所情報が表示されます -->
+            </div>
+            
+            <script>
+                function updateAddress() {
+                    var select = document.getElementById("estimate_address_id");
+                    var selectedOption = select.options[select.selectedIndex];
+            
+                    var address1 = selectedOption.getAttribute("data-address1");
+                    var address2 = selectedOption.getAttribute("data-address2");
+                    var address3 = selectedOption.getAttribute("data-address3");
+                    var tel = selectedOption.getAttribute("data-tel");
+                    var fax = selectedOption.getAttribute("data-fax");
+            
+                    var addressHTML = "";
+            
+                    if (address1) addressHTML += address1 + "<br>";
+                    if (address2) addressHTML += address2 + "<br>";
+                    if (address3) addressHTML += address3 + "<br>";
+                    if (tel || fax) {
+                        addressHTML += "TEL: " + (tel ? tel : "") + "&nbsp;&nbsp;&nbsp;FAX: " + (fax ? fax : "") + "<br>";
+                    }
+            
+                    document.getElementById("selectedAddress").innerHTML = addressHTML;
+                }
+            
+                // ページが完全に読み込まれた後に関数を実行
+                document.addEventListener('DOMContentLoaded', function() {
+                    updateAddress();
+                });
+            </script>
+        
         </div>
 
         <!-- 見積別紙タブ -->
-        <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="estimate-separate-sheet" role="tabpanel" aria-labelledby="estimate-separate-sheet-tab">
+        {{-- <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="estimate-separate-sheet" role="tabpanel" aria-labelledby="estimate-separate-sheet-tab">
             <textarea name="estimate_sheet" form="estimateForm" class="w-full h-[800px] py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="auto-resize-textarea-client_memo">{{ old('estimate_sheet') }}</textarea>
-        </div>
+        </div> --}}
 
         <!-- 添付ファイルタブ -->
         <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="estimate-attachment" role="tabpanel" aria-labelledby="estimate-attachment-tab">
@@ -471,13 +520,15 @@
 
 
         <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="order" role="tabpanel" aria-labelledby="order-tab">
-            <button>generatePdf</button>
-            <iframe src="{{ route('estimate.pdf.generate') }}" style="width:600px; height:500px;"></iframe>
+            {{-- <iframe src="{{ route('estimate.pdf.generate') }}" style="width:600px; height:500px;"></iframe> --}}
+        </div>
+        <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="approval" role="tabpanel" aria-labelledby="approval-tab">
+            {{-- <iframe src="{{ route('estimate.pdf.generate') }}" style="width:600px; height:500px;"></iframe> --}}
         </div>
     </div>
     {{-- </div> --}}
 
-
+    
     <script>
         let currentEditingRow = null;
         let rowCount = 1;
@@ -706,7 +757,9 @@
         
         function formatNumber(input) {
             let value = input.value.replace(/[^\d.-]/g, '');
-            if (value !== '' && !isNaN(value)) {
+            if (value === '' || value === '0') {
+                input.value = ''; // 空の値として設定する
+            } else if (!isNaN(value)) {
                 input.value = Number(value).toLocaleString();
             }
         }
@@ -1035,4 +1088,6 @@ document.getElementById('newEntryButton').addEventListener('click', function() {
         max-width: 100%;
         }
     </style>
+
+
 </x-app-layout>

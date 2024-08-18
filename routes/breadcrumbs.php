@@ -285,6 +285,28 @@ Breadcrumbs::for('dashboard', function ($trail) {
                     $trail->push('都道府県マスタ', route('prefecture.index'));
                 });
 
+                // ダッシュボード > マスタ一覧 >  所属階層1一覧
+                Breadcrumbs::for('affiliation1s', function ($trail) {
+                    $trail->parent('masters');
+                    $trail->push('所属階層1一覧', route('affiliation1.index'));
+                });
+
+                    // ダッシュボード > マスタ一覧 >  所属階層1一覧 > 所属階層1新規
+                    Breadcrumbs::for('createAffiliation1', function ($trail) {
+                        $trail->parent('affiliation1s');
+                        $trail->push('所属階層1新規', route('affiliation1.create'));
+                    });
+
+                    // ダッシュボード > マスタ一覧 >  所属階層1一覧 > 所属階層1新規
+                    Breadcrumbs::for('editAffiliation1', function ($trail, $affiliation1) {
+                        $trail->parent('affiliation1s');
+                        $trail->push('所属階層1編集', route('affiliation1.edit', $affiliation1));
+                    });
+
+
+
+                    
+
             // Breadcrumbs::for('users', function ($trail) {
             //     $trail->parent('home');
             //     $trail->push('Users', route('users'));

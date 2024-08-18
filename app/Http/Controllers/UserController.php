@@ -32,7 +32,7 @@ class UserController extends Controller
 {
     public function index(Request $request)//検索用にrequestを受取る
     {
-        $per_page = 50;
+        $per_page = config('constants.perPage');
         $users = User::with(['role','affiliation1s','affiliation2','affiliation3']);
         $affiliation1s = Affiliation1::all();
         $affiliation2s = Affiliation2::all();
@@ -143,7 +143,29 @@ class UserController extends Controller
             Storage::disk('public')->put($imagePath, $decodedImage);
 
         } else {
-            $imagePath = 'users/profile_image/default.png'; // ファイルがアップロードされなかった場合はデフォルトを設定する
+            $profileImagePath = 'users/profile_image/default.png'; // ファイルがアップロードされなかった場合はデフォルトを設定する
+        }
+
+        if ($request->filled('cropped_user_stamp_image')) {
+            // エンコードされた画像データを取得
+            $encodedImage = $request->cropped_user_stamp_image;
+            
+            // データURIスキームから拡張子を取得
+            preg_match('#^data:image/(\w+);base64,#i', $encodedImage, $matches);
+            $extension = $matches[1];
+
+            // エンコードされた画像データをデコード
+            $decodedImage = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $encodedImage));
+
+            // ファイル名を生成
+            $fileName = $userNum . '_' . 'stamp' . '.' . $extension;
+            $imagePath = 'users/stamp_image/' . $fileName;
+
+            // 画像を保存
+            Storage::disk('public')->put($imagePath, $decodedImage);
+
+        } else {
+            $stampImagePath = 'users/stamp_image/default_user_stamp.png'; // ファイルがアップロードされなかった場合はデフォルトを設定する
         }
 
         // // パスワード作成（生年月日8桁＋A%＋携帯番号下4桁）
@@ -166,7 +188,8 @@ class UserController extends Controller
         $user->employee_status_id = $request->employee_status_id;
         $user->is_enabled = $request->is_enabled;
         $user->password = bcrypt($password);
-        $user->profile_image = $imagePath;
+        $user->profile_image = $profileImagePath;
+        $user->user_stamp_image = $stampImagePath;
         $user->password_change_required = $request->password_change_required;
         $user->save();
 
@@ -222,106 +245,10 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
-
-        // // バリデーションルールを初期化
-        // $rules = User::rules($id);
-
-        // // パスワードが入力された場合、パスワードのバリデーションルールを追加
-        // if ($passwordIsProvided) {
-        //     $rules['password_' . $id] = 'required|string|min:8|confirmed';
-        // }
-        
-
-        // // バリデーション実行
-        // $validator = Validator::make($request->all(), $rules);
-
-        //     // カスタム属性名を設定
-        // $validator->setAttributeNames([
-        //     'password_' . $id => 'パスワード',
-        //     'name_' . $id => '氏名',
-        //     'kana_name_' . $id => 'カナ氏名',
-        //     'email_' . $id => 'メールアドレス',
-        //     'int_phone_' . $id => '内線電話番号',
-        //     'ext_phone_' . $id => '外線電話番号',
-        //     'role_id_' . $id => '権限',
-        //     'affiliation1_id_' . $id => '[所属]会社',
-        //     'department_id_' . $id => '[所属]部署',
-        //     'affiliation3_id_' . $id => '[所属]部門',
-        //     'employee_status_id_' . $id => '在職状態',
-        //     'is_enabled_' . $id => '有効フラグ',
-        //     // 他の属性も必要に応じて追加
-        // ]);
-
-
-        // if ($validator->fails()) {
-        //     // バリデーションエラーが発生した場合
-        //     session()->flash('error', '入力内容にエラーがあります。');
-        //     return redirect()->back()->withErrors($validator)->withInput();
-        // }
-
-        // $user=user::find($id);
-        // $user->user_name = $request->input('user_name_' . $id);
-        // $user->user_kana_name = $request->input('user_kana_name_' . $id);
-        // $user->email = $request->input('email_' . $id);
-        // $user->int_phone = $request->input('int_phone_' . $id);
-        // $user->ext_phone = $request->input('ext_phone_' . $id);
-        // $user->affiliation1_id = $request->input('affiliation1_id_' . $id);
-        // $user->department_id = $request->input('department_id_' . $id);
-        // $user->affiliation3_id = $request->input('affiliation3_id_' . $id);
-        // $user->employee_status_id = $request->input('employee_status_id_' . $id);
-        // $user->user_num = $request->input('user_num_' . $id);
-        // $user->is_enabled = $request->input('is_enabled_' . $id);
-        // $user->access_ip = $request->ip();
-
-        // if($request->filled('password_' . $id))
-        // { // パスワード入力があるときだけ変更
-        //     $user->password = bcrypt($request->input('password_' . $id));
-        // }
-
-        // $user=user::find($id);
-        // $user->user_name = $request->input('user_name_' . $id);
-        // $user->user_kana_name = $request->input('user_kana_name_' . $id);
-        // $user->email = $request->input('email_' . $id);
-        // $user->int_phone = $request->input('int_phone_' . $id);
-        // $user->ext_phone = $request->input('ext_phone_' . $id);
-        // $user->affiliation1_id = $request->input('affiliation1_id_' . $id);
-        // $user->department_id = $request->input('department_id_' . $id);
-        // $user->affiliation3_id = $request->input('affiliation3_id_' . $id);
-        // $user->employee_status_id = $request->input('employee_status_id_' . $id);
-        // $user->user_num = $request->input('user_num_' . $id);
-        // $user->is_enabled = $request->input('is_enabled_' . $id);
-        // $user->access_ip = $request->ip();
-
-        // if($request->filled('password_' . $id))
-        // { // パスワード入力があるときだけ変更
-        //     $user->password = bcrypt($request->input('password_' . $id));
-        // }
-
-
         $userNum =  str_pad($request->user_num, 6, '0', STR_PAD_LEFT);
 
         $user = User::find($user->id);
-        $user->user_name = $request->user_name;
-        $user->user_kana_name = $request->user_kana_name;
-        $user->email = $request->email;
-        $user->int_phone = $request->int_phone;
-        $user->ext_phone = $request->ext_phone;
-        $user->affiliation1_id = $request->affiliation1_id;
-        $user->affiliation2_id = $request->affiliation2_id;
-        $user->affiliation3_id = $request->affiliation3_id;
-        $user->employee_status_id = $request->employee_status_id;
-        $user->user_num = $userNum;
-        $user->is_enabled = $request->is_enabled;
-        $user->password_change_required = $request->password_change_required;
-        $user->birth = $request->birth;
-        $user->access_ip = $request->ip();
 
-        // if($request->filled('password_' . $id))
-        // { // パスワード入力があるときだけ変更
-        //     $user->password = bcrypt($request->input('password_' . $id));
-        // }
-
-        // プロフ画像のファイル名を生成
         if ($request->filled('cropped_profile_image')) {
             // エンコードされた画像データを取得
             $encodedImage = $request->cropped_profile_image;
@@ -345,7 +272,50 @@ class UserController extends Controller
         }
 
 
+        if ($request->filled('cropped_user_stamp_image')) {
+            // エンコードされた画像データを取得
+            $encodedImage = $request->cropped_user_stamp_image;
+            
+            // データURIスキームから拡張子を取得
+            preg_match('#^data:image/(\w+);base64,#i', $encodedImage, $matches);
+            $extension = $matches[1];
+
+            // エンコードされた画像データをデコード
+            $decodedImage = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $encodedImage));
+
+            // ファイル名を生成
+            $fileName = $userNum . '_' . 'stamp' . '.' . $extension;
+            $imagePath = 'users/stamp_image/' . $fileName;
+
+            // 画像を保存
+            Storage::disk('public')->put($imagePath, $decodedImage);
+
+            // ユーザーの印鑑画像を更新
+            $user->user_stamp_image = $imagePath;
+        }
+
+        $user->user_name = $request->user_name;
+        $user->user_kana_name = $request->user_kana_name;
+        $user->email = $request->email;
+        $user->int_phone = $request->int_phone;
+        $user->ext_phone = $request->ext_phone;
+        $user->affiliation1_id = $request->affiliation1_id;
+        $user->affiliation2_id = $request->affiliation2_id;
+        $user->affiliation3_id = $request->affiliation3_id;
+        $user->employee_status_id = $request->employee_status_id;
+        $user->user_num = $userNum;
+        $user->is_enabled = $request->is_enabled;
+        $user->password_change_required = $request->password_change_required;
+        $user->birth = $request->birth;
+        $user->access_ip = $request->ip();
         $user->save();
+
+        // if($request->filled('password_' . $id))
+        // { // パスワード入力があるときだけ変更
+        //     $user->password = bcrypt($request->input('password_' . $id));
+        // }
+
+
         return redirect()->back()->with('success','正常に更新しました');
     }
 

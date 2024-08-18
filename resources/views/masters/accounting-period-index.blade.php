@@ -1,13 +1,15 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-900 dark:text-white leading-tight">
-            会計期マスタ
-        </h2>
-        <div class="flex justify-end">
-            <x-general-button onclick="location.href='{{route('masters.index')}}'">
-                戻る
-            </x-general-button>
-            <x-message :message="session('message')"/>
+        <div class="flex justify-between">
+            <h2 class="font-semibold text-xl text-gray-900 dark:text-white leading-tight">
+                会計期マスタ
+            </h2>
+            <div class="flex justify-end">
+                <x-general-button onclick="location.href='{{route('masters.index')}}'">
+                    戻る
+                </x-general-button>
+                <x-message :message="session('message')"/>
+            </div>
         </div>
     </x-slot>
 
@@ -36,16 +38,11 @@
                             終了日
                         </div>
                     </th>
-                    {{-- <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
-                            作成日時
+                            期間
                         </div>
-                    </th> --}}
-                    {{-- <th scope="col" class="px-1 py-3 whitespace-nowrap">
-                        <div class="flex items-center">
-                            作成者
-                        </div>
-                    </th> --}}
+                    </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             更新者
@@ -66,9 +63,7 @@
             <tbody>
                 @foreach ($accountingPeriods as $accountingPeriod)
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white dark:hover:bg-gray-600">
-                        {{-- <td class="pl-4 py-2 whitespace-nowrap">
-                            {{ $loop->iteration }}
-                        </td> --}}
+
                         <td class="pl-4 py-2 whitespace-nowrap">
                             {{ $accountingPeriod->period_name }}
                         </td>
@@ -78,12 +73,17 @@
                         <td class="px-1 py-2 whitespace-nowrap">
                             {{$accountingPeriod->period_end_at}}
                         </td>
-                        {{-- <td class="px-1 py-2 whitespace-nowrap">
-                            {{$accountingPeriod->created_at}}
-                        </td> --}}
-                        {{-- <td class="px-1 py-2 whitespace-nowrap">
-                            {{$accountingPeriod->created_by}}
-                        </td> --}}
+                        <td class="px-1 py-2 whitespace-nowrap">
+                            @if ($accountingPeriod->duration_months === 12)
+                                <span class="">
+                                    {{ $accountingPeriod->duration_months }} ヶ月
+                                </span>
+                            @else
+                                <span class="text-red-600">
+                                    {{ $accountingPeriod->duration_months }} ヶ月
+                                </span>
+                            @endif
+                        </td>
                         <td class="px-1 py-2 whitespace-nowrap">
                             {{-- {{$accountingPeriod->updatedBy->name}} --}}
                             {{ optional($accountingPeriod->updatedBy)->user_name }}

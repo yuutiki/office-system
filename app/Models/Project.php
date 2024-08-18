@@ -168,6 +168,18 @@ class Project extends Model
     {
         return $this->hasmany(AccountingPeriod::class);
     }
+    public function accountAffiliation1()
+    {
+        return $this->belongsTo(Affiliation1::class, 'account_affiliation1_id');
+    }
+    public function accountAffiliation2()
+    {
+        return $this->belongsTo(Affiliation2::class, 'account_affiliation2_id');
+    }
+    public function accountAffiliation3()
+    {
+        return $this->belongsTo(Affiliation3::class, 'account_affiliation3_id');
+    }
     public function accountUser()
     {
         return $this->belongsTo(User::class);

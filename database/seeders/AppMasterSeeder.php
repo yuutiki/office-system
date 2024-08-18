@@ -290,5 +290,17 @@ class AppMasterSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+        AppMaster::create([
+            'master_type' => '見積マスタ',
+            'master_code' => '170',
+            'master_name' => '見積書住所',
+            'master_name_en' => 'estimateAddress',
+            'route' => 'estimate-address.index',
+            'digit' => 2,
+            'created_by' => 1,
+            'updated_by' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }
