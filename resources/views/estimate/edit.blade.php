@@ -533,7 +533,8 @@
                 
                             <!-- Modal body -->
                             <div class="flex-1 flex justify-center overflow-y-auto p-4">
-                                <div id="pdf-viewer" class="w-full max-w-4xl mx-auto"></div>
+                                <div id="pdf-viewer" class="w-full max-w-4xl mx-auto">
+                                </div>
                             </div>
 
                             {{-- Script読み込み --}}
@@ -550,8 +551,6 @@
                         </div>
                     </div>
                 </div>
-                
-                
             </div>
 
     <script>
