@@ -30,7 +30,7 @@ class ViewComposerServiceProvider extends ServiceProvider
 
         View::composer('layouts.*', NotificationsComposer::class);
 
-        View::composer('*', SystemAdminExcludedUserComposer::class);
+        // View::composer('*', SystemAdminExcludedUserComposer::class);
         View::composer('*', SearchParamsComposer::class);
     }
 }

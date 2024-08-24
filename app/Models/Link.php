@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;//add
 use App\Observers\GlobalObserver;
+use App\View\Composers\LinkComposer;
 
 class Link extends Model
 {
@@ -27,6 +28,16 @@ class Link extends Model
     {
         parent::boot();
         self::observe(GlobalObserver::class);
+
+        // モデルが保存（作成または更新）されたとき
+        static::saved(function ($link) {
+            LinkComposer::clearCache();
+        });
+
+        // モデルが削除されたとき
+        static::deleted(function ($link) {
+            LinkComposer::clearCache();
+        });
     }
 
     //sort

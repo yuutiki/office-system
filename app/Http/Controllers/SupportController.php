@@ -428,7 +428,7 @@ class SupportController extends Controller
                 if ($user) {
                     $support->user_id = $user->id;
                 } else {
-
+                    return redirect()->back()->with("error", "紐づくユーザが見つかりません");
                 }
 
             $support->client_user_department = $row[3];

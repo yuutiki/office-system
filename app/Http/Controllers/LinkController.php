@@ -47,7 +47,7 @@ class LinkController extends Controller
         // }
     
         // 検索結果を取得
-        $links = $query->orderby('display_order', 'asc')->paginate();
+        $adminLinks = $query->orderby('display_order', 'asc')->paginate();
 
 
         // dd($links);
@@ -58,7 +58,7 @@ class LinkController extends Controller
 
 
         // $links = Link::with(['affiliation2'])->sortable()->orderBy('display_order','asc')->paginate(); 
-        return view('link.index', compact('affiliation2s', 'links','displayName'));
+        return view('link.index', compact('affiliation2s', 'adminLinks','displayName'));
     }
 
     public function create()

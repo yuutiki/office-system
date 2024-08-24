@@ -178,7 +178,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($links as $link)
+                @foreach ($adminLinks as $link)
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white dark:hover:bg-gray-600">
                         <td class="pl-4 py-1 whitespace-nowrap">
                             {{ $loop->iteration }}

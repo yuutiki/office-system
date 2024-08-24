@@ -38,7 +38,7 @@
                         <div class="relative w-full mt-2 md:ml-2 md:mt-0">
                             <select name="selected_user_id" class="w-full py-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" tabindex="1">
                                 <option class="text-base" value="0" @if($selectedUserId == 0) selected @endif>担当者全て</option>
-                                @foreach($usersFromComposer as $user)
+                                @foreach($users as $user)
                                     <option class="text-base" value="{{ $user->id }}" @if($selectedUserId == $user->id) selected @endif>{{ $user->user_name }}</option>
                                 @endforeach
                             </select>

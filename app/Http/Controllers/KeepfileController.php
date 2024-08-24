@@ -25,6 +25,7 @@ class KeepfileController extends Controller
 
         $per_page = 15;
         $user = auth()->user();
+        $users = User::all();
         
         // フィルタリングクエリを作成
         $keepfileQuery = Keepfile::sortable()->with('user','project');
@@ -96,7 +97,7 @@ class KeepfileController extends Controller
         $keepfiles = $keepfileQuery->orderby('return_at', 'asc')->paginate($per_page);
         $count = $keepfiles->total();
     
-        return view('keepfile.index', compact('keepfiles', 'user', 'count', 'projectNum', 'clientName', 'selectedUserId', 'dayFrom', 'dayTo'));
+        return view('keepfile.index', compact('keepfiles', 'user', 'count', 'projectNum', 'clientName', 'selectedUserId', 'dayFrom', 'dayTo', 'users'));
     }
 
 

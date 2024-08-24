@@ -47,7 +47,7 @@ class CorporationController extends Controller
 
         //上記で$filters変数に格納した検索条件をModelに渡し、検索処理を行う。結果を$corporationsに詰める
         $corporations = Corporation::filter($filters)
-            ->with('prefecture')
+            ->with('prefecture', 'credits')
             ->withCount('clients')
             ->addSelect(['latest_credit_limit' => CorporationCredit::select('credit_limit')
                 ->whereColumn('corporation_id', 'corporations.id')

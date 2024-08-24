@@ -30,6 +30,8 @@ return new class extends Migration
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->datetimes();
+
+            $table->index('corporation_num');
         });
     }
 
