@@ -63,10 +63,11 @@ class CorporationController extends Controller
         return view('corporations.index', compact('searchParams', 'corporations', 'count' ,'filters', 'CorporationNum', 'CorporationName', 'invoiceNum', 'tradeStatus', 'taxStatus'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        $activeTab = $request->query('tab', 'tab1'); // クエリパラメータからタブを取得
         $prefectures = Prefecture::all();
-        return view('corporations.create',compact('prefectures',));
+        return view('corporations.create',compact('prefectures', 'activeTab', ));
     }
 
     public function store(CorporationStoreRequest $request)

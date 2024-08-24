@@ -172,7 +172,7 @@ class VendorController extends Controller
         $vendor->is_other_partner = $request->has('is_other_partner') ? 1 : 0;
         $vendor->save();
 
-        return redirect()->route('vendors.index')->with('success', '正常に登録しました');
+        return redirect()->route('vendors.edit', $vendor->ulid)->with('success', '正常に登録しました');
     }
 
     public function show(Vendor $client)

@@ -12,7 +12,7 @@
                     @method('patch')
                     @can('storeUpdate_corporations')
                         <x-button-save form-id="corporationForm" id="saveButton" onkeydown="stopTab(event)">
-                            <span class="ml-1 hidden md:inline text-sm">更新</span>
+                            {{ __("Update") }}
                         </x-button-save>
                     @endcan
                 </form>
@@ -103,31 +103,32 @@
 
 
             <ul class="grid w-full gap-6 lg:grid-cols-3 mt-12">
-                <li class="">
-                    <input type="radio" id="unconfirmed" name="tax_status"  form="corporationForm" value="0" class="hidden peer" {{ $corporation->tax_status == 0 ? 'checked' : '' }} required />
-                    <label for="unconfirmed" class="inline-flex items-center justify-center w-full px-5 py-3 text-gray-500 bg-white border border-gray-200 rounded-md cursor-pointer dark:hover:text-gray-300 dark:border-indigo-700 dark:peer-checked:text-white dark:peer-checked:bg-indigo-700 peer-checked:border-indigo-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700">                           
+                <li>
+                    <input type="radio" id="unconfirmed" name="tax_status" value="0" class="peer sr-only" {{ $corporation->tax_status == 0 ? 'checked' : '' }} required tabindex="-1">
+                    <label for="unconfirmed" tabindex="0" role="radio" aria-checked="{{ $corporation->tax_status == 0 ? 'true' : 'false' }}" class="inline-flex items-center justify-center w-full px-5 py-3 text-gray-500 bg-white border border-gray-200 rounded-md cursor-pointer dark:hover:text-gray-300 dark:border-indigo-700 dark:peer-checked:text-white dark:peer-checked:bg-indigo-700 peer-checked:border-indigo-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">                           
                         <div class="block">
                             <div class="w-full text-md">未確認</div>
                         </div>
                     </label>
                 </li>
                 <li>
-                    <input type="radio" id="tax_payer" name="tax_status"  form="corporationForm" value="1" class="hidden peer" {{ $corporation->tax_status == 1 ? 'checked' : '' }}>
-                    <label for="tax_payer" class="inline-flex items-center justify-center w-full px-5 py-3 text-gray-500 bg-white border border-gray-200 rounded-md cursor-pointer dark:hover:text-gray-300 dark:border-indigo-700 dark:peer-checked:text-white dark:peer-checked:bg-indigo-700 peer-checked:border-indigo-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700">
+                    <input type="radio" id="tax_payer" name="tax_status" value="1" class="peer sr-only" {{ $corporation->tax_status == 1 ? 'checked' : '' }} tabindex="-1">
+                    <label for="tax_payer" tabindex="0" role="radio" aria-checked="{{ $corporation->tax_status == 1 ? 'true' : 'false' }}" class="inline-flex items-center justify-center w-full px-5 py-3 text-gray-500 bg-white border border-gray-200 rounded-md cursor-pointer dark:hover:text-gray-300 dark:border-indigo-700 dark:peer-checked:text-white dark:peer-checked:bg-indigo-700 peer-checked:border-indigo-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         <div class="block">
                             <div class="w-full text-md">課税事業者</div>
                         </div>
                     </label>
                 </li>
                 <li>
-                    <input type="radio" id="tax_exempt" name="tax_status"  form="corporationForm" value="2" class="hidden peer" {{ $corporation->tax_status == 2 ? 'checked' : '' }}>
-                    <label for="tax_exempt" class="inline-flex items-center justify-center w-full px-5 py-3 text-gray-500 bg-white border border-gray-200 rounded-md cursor-pointer dark:hover:text-gray-300 dark:border-indigo-700 dark:peer-checked:text-white dark:peer-checked:bg-indigo-700 peer-checked:border-indigo-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700">
+                    <input type="radio" id="tax_exempt" name="tax_status" value="2" class="peer sr-only" {{ $corporation->tax_status == 2 ? 'checked' : '' }} tabindex="-1">
+                    <label for="tax_exempt" tabindex="0" role="radio" aria-checked="{{ $corporation->tax_status == 2 ? 'true' : 'false' }}" class="inline-flex items-center justify-center w-full px-5 py-3 text-gray-500 bg-white border border-gray-200 rounded-md cursor-pointer dark:hover:text-gray-300 dark:border-indigo-700 dark:peer-checked:text-white dark:peer-checked:bg-indigo-700 peer-checked:border-indigo-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         <div class="block">
                             <div class="w-full text-md">免税事業者</div>
                         </div>
                     </label>
                 </li>
             </ul>
+
             @error('tax_status')
                 <div class="text-red-500">{{$message}}</div>
             @enderror
@@ -591,6 +592,38 @@
             });
         });
     </script>
+
+<script>
+    // ラジオボタンのタブ移動用
+    document.addEventListener('DOMContentLoaded', function() {
+        const radioLabels = document.querySelectorAll('label[for^="unconfirmed"], label[for^="tax_payer"], label[for^="tax_exempt"]');
+        
+        function updateCheckedState(label) {
+            const associatedRadio = document.getElementById(label.getAttribute('for'));
+            associatedRadio.checked = true;
+            label.setAttribute('aria-checked', 'true');
+            
+            radioLabels.forEach(otherLabel => {
+                if (otherLabel !== label) {
+                    otherLabel.setAttribute('aria-checked', 'false');
+                }
+            });
+        }
+
+        radioLabels.forEach(label => {
+            label.addEventListener('keydown', function(e) {
+                if (e.key === ' ' || e.key === 'Enter') {
+                    e.preventDefault();
+                    updateCheckedState(this);
+                }
+            });
+
+            label.addEventListener('click', function() {
+                updateCheckedState(this);
+            });
+        });
+    });
+</script>
 
     <script type="text/javascript" src="{{ asset('assets/js/stopTab.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>

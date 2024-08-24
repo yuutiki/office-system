@@ -52,5 +52,8 @@ class UserSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now()
         ]);
+
+        // 追加で98人のユーザーを作成（合計100人になるように）
+        User::factory()->count(98)->create();
     }
 }
