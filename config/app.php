@@ -165,6 +165,7 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
+        App\Providers\HelperServiceProvider::class, //add
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
@@ -172,6 +173,7 @@ return [
         App\Providers\ViewComposerServiceProvider::class,
         // Laravel-Mpdf（帳票用）
         Mccarlosen\LaravelMpdf\LaravelMpdfServiceProvider::class,
+        
 
     ])->toArray(),
 

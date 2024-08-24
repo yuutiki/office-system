@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ClientPerson\StoreClientPersonRequest;
 use App\Http\Requests\CsvUploadRequest;
 use App\Models\Affiliation2;
 use App\Models\Client;
@@ -33,23 +34,17 @@ class ClientPersonController extends Controller
         return view('client-person.create', compact('prefectures', 'affiliation2s'));
     }
 
-    public function store(Request $request)
+    public function store(StoreClientPersonRequest $request)
     {
         ////以下にFormRequestのバリデーションを通過した場合の処理を記述////
-        $request->validate([
-            // 'tel1' => 'required',
-            // 'last_name' => 'required'
-        ]);
+        $formattedPost = formatPostalCode($request->head_post_code);
 
-        $inputPost = $request->head_post_code;
-        $formattedPost = Client::formatPostCode($inputPost);
+        $clientId = Client::where('client_num', $request->client_num)->value('id');
 
-        // フォームからの値を変数に格納
-        $clientNum = $request->input('client_num');
-
-        // client_numからclient_idを取得する
-        $client = Client::where('client_num', $clientNum)->first();
-        $clientId = $client->id;
+        if ($clientId === null) {
+            // クライアントが見つからない場合の処理
+            return redirect()->back()->with('error', 'クライアントが見つかりません。');
+        }
 
         // 顧客データを保存
         $clientPerson = new ClientPerson();
@@ -69,8 +64,8 @@ class ClientPersonController extends Controller
         $clientPerson->phone = $request->phone;
         $clientPerson->mail = $request->mail;
 
-        $clientPerson->head_post_code = $request->head_post_code; //変換後の郵便番号をセット
-        $clientPerson->prefecture_id = $request->head_prefecture;
+        $clientPerson->head_post_code = $formattedPost; //変換後の郵便番号をセット
+        $clientPerson->prefecture_id = $request->head_prefecture_id;
         $clientPerson->head_address1 = $request->head_addre1;
         $clientPerson->person_memo = $request->person_memo;
 
@@ -83,7 +78,7 @@ class ClientPersonController extends Controller
         $clientPerson->is_cloud_info_receiver = $request->has('is_cloud_info_receiver') ? 1 : 0;
         $clientPerson->save();
 
-        return redirect()->back()->with('success', '正常に登録しました');
+        return redirect()->route('client-person.edit', $clientPerson->id)->with('success', '正常に登録しました');
     }
 
     public function show(ClientPerson $clientPerson)
@@ -94,7 +89,7 @@ class ClientPersonController extends Controller
     public function edit(ClientPerson $clientPerson)
     {
         $prefectures = Prefecture::all();
-        $affiliation2s = Department::all();
+        $affiliation2s = Affiliation2::all();
         return view('client-person.edit', compact('prefectures', 'affiliation2s', 'clientPerson'));
     }
 
@@ -106,8 +101,7 @@ class ClientPersonController extends Controller
             // 'last_name' => 'required'
         ]);
 
-        $inputPost = $request->head_post_code;
-        $formattedPost = Client::formatPostCode($inputPost);
+        $formattedPost = formatPostalCode($request->head_post_code);
 
         // フォームからの値を変数に格納
         $clientNum = $request->input('client_num');
@@ -134,7 +128,7 @@ class ClientPersonController extends Controller
         $clientPerson->phone = $request->phone;
         $clientPerson->mail = $request->mail;
 
-        $clientPerson->head_post_code = $request->head_post_code; // 変換後の郵便番号をセット
+        $clientPerson->head_post_code = $formattedPost; // 変換後の郵便番号をセット
         $clientPerson->prefecture_id = $request->head_prefecture;
         $clientPerson->head_address1 = $request->head_addre1;
         $clientPerson->person_memo = $request->person_memo;

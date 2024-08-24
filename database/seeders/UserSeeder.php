@@ -30,7 +30,8 @@ class UserSeeder extends Seeder
             'created_by' => 1,
             'updated_by' => 1,
             'created_at' => now(),
-            'updated_at' => now()
+            'updated_at' => now(),
+            'role' => config('sytemadmin.system_admin'),
         ]);
         User::create([
             'user_num' => '000386',

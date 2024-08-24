@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('corporation_credits', function (Blueprint $table) {
             $table->ulid('ulid')->primary();
-            $table->foreignId('corporation_id')->comment('法人ID');
+            $table->foreignUlid('corporation_id')->comment('法人ID');
             $table->decimal('credit_limit', 15, 0)->default(0)->comment('与信限度額');
             $table->integer('credit_rate')->default(0)->comment('与信評価点');
             $table->string('credit_rater', 100)->nullable(true)->comment('与信評価者');

@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('corporations', function (Blueprint $table) {
-            $table->id();
+            $table->ulid('id')->primary();
             $table->string('corporation_num',6)->unique()->comment('法人№');
             $table->string('corporation_number',13)->nullable(true)->comment('法人番号');
             $table->string('corporation_name')->comment('法人名称');

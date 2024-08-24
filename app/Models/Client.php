@@ -139,7 +139,7 @@ class Client extends Model
     //relation
     public function corporation()
     {
-        return $this->belongsTo(Corporation::class);
+        return $this->belongsTo(Corporation::class, 'corporation_id');
     }
     public function dealer() // Vendorとのリレーション
     {

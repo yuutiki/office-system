@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PasswordPolicySeeder::class);
         $this->call(EstimateAddressSeeder::class);
 
-        $this->call(T_CorporationSeeder::class);
+        // $this->call(T_CorporationSeeder::class);
         $this->call(T_ClientSeeder::class);
         $this->call(T_ProjectSeeder::class);
         $this->call(T_KeepfileSeeder::class);

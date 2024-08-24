@@ -26,7 +26,7 @@ class CorporationStoreRequest extends FormRequest
             'corporation_name' => 'required|max:1024',
             'corporation_kana_name' => 'required|max:1024',
             'corporation_short_name' => 'required|max:1024',
-            'tax_status' => 'required|integer|in:0,1,2',
+            'tax_status' => 'nullable|integer|in:0,1,2',
             'invoice_num' => ['nullable', 'string', 'size:13', function ($attribute, $value, $fail) {
                 // 入力がある場合は合計が13桁になるかチェック
                 if (!is_null($value)) {
@@ -35,10 +35,10 @@ class CorporationStoreRequest extends FormRequest
                     }
                 }
             }],
-            'invoice_at' => '',
+            'invoice_at' => 'nullable',
             'is_stop_trading' => 'sometimes|boolean', // チェックボックスの値が存在し、booleanであることを確認
             'stop_trading_reason' => 'required_if:is_stop_trading,1', // is_stop_tradingが1の場合、stop_trading_reasonは必須
-            'credit_limit' => 'numeric',
+            'credit_limit' => 'nullable|numeric',
         ];
     }
 

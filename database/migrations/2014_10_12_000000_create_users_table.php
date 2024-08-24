@@ -33,6 +33,9 @@ return new class extends Migration
             $table->string('user_stamp_image')->default('users/stamp_image/default_user_stamp.png')->comment('個人印鑑画像');
             $table->boolean('password_change_required')->default(0)->comment('強制PW変更フラグ'); 
 
+            $table->string('role')->default('user'); // システム管理者と利用ユーザを区別するためのカラム
+
+            
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->datetimes();

@@ -49,6 +49,7 @@ use App\Models\Contract;
 use App\Http\Controllers\Auth\PasswordChangeController;
 use App\Http\Controllers\CorporationCreditController;
 use App\Http\Controllers\EstimateAddressController;
+use App\Http\Controllers\ModelHistoryController;
 use App\Http\Controllers\PasswordPolicyController;
 use App\Http\Controllers\ProjectExpenseController;
 use App\Models\EstimateAddress;
@@ -215,6 +216,10 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/support-type', SupportTypeController::class);
     Route::resource('/trade-status', TradeStatusController::class);
     Route::resource('/estimate-address', EstimateAddressController::class);
+
+    
+    Route::get('/model-logs', [ModelHistoryController::class, 'index'])->name('logs.index');
+    Route::get('/model-logs/{modelHistory}', [ModelHistoryController::class, 'show'])->name('logs.show');
 
     // Route::resource('/comment', '\App\Http\Controllers\CommentController');
     Route::get('/report/{report_id}/comment', [CommentController::class, 'show'])->name('comment.show');

@@ -97,6 +97,11 @@ class User extends Authenticatable
 
         self::observe(GlobalObserver::class);
     }
+
+    public function isSystemAdmin(): bool
+    {
+        return $this->role === config('sytemadmin.system_admin');
+    }
     
 
     //relation

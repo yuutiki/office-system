@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('installation_type_id')->nullable(true)->comment('設置種別ID');// Installation_typesテーブル参照
             $table->foreignId('client_type_id')->nullable(true)->comment('顧客種別ID');// Client_typesテーブル参照
             $table->foreignId('trade_status_id')->comment('取引状態ID');// Trade_statusesテーブル参照
-            $table->foreignId('corporation_id')->comment('法人ID'); // Corporationsテーブル参照
+            $table->foreignUlid('corporation_id')->comment('法人ID'); // Corporationsテーブル参照
 
             $table->string('head_post_code',80)->nullable(true)->comment('本店郵便番号');
             $table->string('head_prefecture',80)->nullable(true)->comment('本店都道府県');

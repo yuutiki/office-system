@@ -7,12 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;//add
 use Illuminate\Support\Facades\DB;//add
 use App\Observers\GlobalObserver;
-
+use App\Traits\ModelHistoryTrait;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 
 class Corporation extends Model
 {
     use HasFactory;
     use Sortable;//add
+    use ModelHistoryTrait;
+    use HasUlids;
 
     protected $fillable = [
         'corporation_num',
@@ -197,6 +200,13 @@ class Corporation extends Model
         $fileName);
     }
 
+    // protected function getHistoryMeta(): ?array
+    // {
+    //     return [
+    //         'role' => $this->role,
+    //         // その他のメタデータ
+    //     ];
+    // }
 
 
 

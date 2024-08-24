@@ -304,7 +304,6 @@ Breadcrumbs::for('dashboard', function ($trail) {
                     });
 
 
-
                     
 
             // Breadcrumbs::for('users', function ($trail) {
@@ -370,6 +369,19 @@ Breadcrumbs::for('dashboard', function ($trail) {
                     $trail->parent('roleGroups');
                     $trail->push('編集', url('client-type'));
                 });
+
+        // ダッシュボード > ログ一覧
+        Breadcrumbs::for('logs', function ($trail) {
+            $trail->parent('dashboard');
+            $trail->push('操作ログ一覧', route('logs.index'));
+        });
+
+            // ダッシュボード > ログ一覧 > ログ詳細
+            Breadcrumbs::for('showLog', function ($trail, $modelHistory) {
+                $trail->parent('logs');
+                $trail->push('操作ログ詳細', route('logs.show', $modelHistory));
+            });
+
 
         // ダッシュボード > 所属別リンク一覧
         Breadcrumbs::for('Links', function ($trail) {
