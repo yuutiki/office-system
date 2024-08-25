@@ -24,6 +24,9 @@ use Illuminate\Support\Facades\Session;
 use Goodby\CSV\Import\Standard\Lexer;
 use Goodby\CSV\Import\Standard\Interpreter;
 use Goodby\CSV\Import\Standard\LexerConfig;
+use App\Imports\SupportsImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
 
 class SupportController extends Controller
 {
@@ -315,181 +318,106 @@ class SupportController extends Controller
 
     public function upload(Request $request)
     {
-        // ファイルがアップロードされているかチェック
-        if (!$request->hasFile('csv_upload')) {
-        // エラーメッセージをセットしてリダイレクト
-        return redirect()->back()->with('error', 'アップロードするCSVファイルが選択されていません。');
-        }
+        $request->validate([
+            'csv_upload' => 'required|file|mimes:csv,txt|max:10240',
+        ]);
 
-        $csvFile = $request->file('csv_upload');
-
-        // バリデーションルール
-        $rules = [
-            'csv_upload' => 'required|mimes:csv,txt|max:10240', // 最大10MBまでのCSVファイルを許可
-        ];
-
-        // バリデーション実行
-        $validator = Validator::make($request->all(), $rules);
-
-        // バリデーションエラーがある場合
-        if ($validator->fails()) {
-            session()->flash('error', '1入力内容にエラーがあります。');
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+        $file = $request->file('csv_upload');
+        $originalName = $file->getClientOriginalName();
         
-        // CSVファイルの一時保存先パス
-        $csvPath = $csvFile->getRealPath();
-        
-        // CSVデータのパースとデータベースへの登録処理
-        $this->parseCSVAndSaveToDatabase($csvPath);
+        $tempFileName = 'temp_csv_file_' . time() . '.csv';
+        $relativePath = 'temp/' . $tempFileName;
 
-        // 成功時のリダイレクトやメッセージを追加するなどの処理を行う
-        return redirect()->back()->with('success', 'CSVファイルをアップロードしました。');
-    }
-
-    private function parseCSVAndSaveToDatabase($csvPath)
-    {
-        // CSVファイルの文字コードを自動判定
-        $fromCharset = mb_detect_encoding(file_get_contents($csvPath), 'UTF-8, Shift_JIS, EUC-JP, JIS, SJIS-win', true);
-        
-        $config = new LexerConfig();
-        $config->setFromCharset($fromCharset);
-
-        $config->setIgnoreHeaderLine(true) // ヘッダを無視する設定
-        ->setEnclosure('"')
-        ->setDelimiter(',')
-        ->setIgnoreHeaderLine(true);
-
-        $lexer = new Lexer($config);
-        $interpreter = new Interpreter();
-
-        // 列数チェック用の変数
-        $expectedColumnCount = 20; // 期待される列数を設定
-
-        // CSV行をパースした際に実行する処理を定義
-        $interpreter->addObserver(function (array $row) use ($expectedColumnCount) {
-            // データのバリデーション
-            $validator = Validator::make(['csv_row' => $row], [
-                'csv_row' => 'required|array|size:' . $expectedColumnCount,
-            ]);
-
-            // バリデーションエラーがある場合
-            if ($validator->fails()) {
-                // エラーログ出力やエラーメッセージ表示などの処理を行う
-                session()->flash('error', '2入力内容にエラーがあります。');
-
-                return redirect()->back()->with('error', '列数が合っていません。');
-            }
-
-            // 以降の処理は変更なし
-
-            // さらに各列のバリデーションも追加する場合
-            $validator = Validator::make([
-                '0' => $row[0],
-                '1' => $row[1],
-                // 他の列に対するバリデーションルールを追加
-            ], [
-                '0' => 'required', // クライアント番号が整数であることを確認
-                '1' => 'required|date',    // 受信日が日付形式であることを確認
-                // 他の列に対するバリデーションルールを追加
-            ]);
-
-            // バリデーションエラーがある場合
-            if ($validator->fails()) {
-                // エラーログ出力やエラーメッセージ表示などの処理を行う
-                session()->flash('error', '3入力内容にエラーがあります。');
-
-                return redirect()->back()->withErrors($validator)->withInput();
-            }
-
-
-
-
-            $support = new Support();
-
-            $clientNum = $row[0];
-                $client = Client::where('client_num', $clientNum)->first();
-                if ($client) {
-                    $support->client_id = $client->id;
-                } else {
-                    // clientが見つからない場合のエラーハンドリング
-                }
-
-            $clientId = $client->id;
-
-            $requestNumber = Support::generateRequestNumber($clientId);
-            $support->request_num = $requestNumber;
-
-            $support->received_at = $row[1];
-
-            $userNum = str_pad($row[2], 6, '0', STR_PAD_LEFT); // 6桁の顧客番号に変換してDBに保存
-            // dd($userNum);
-                $user = User::where('user_num', $userNum)->first();
-                if ($user) {
-                    $support->user_id = $user->id;
-                } else {
-                    return redirect()->back()->with("error", "紐づくユーザが見つかりません");
-                }
-
-            $support->client_user_department = $row[3];
-            $support->client_user_kana_name = $row[4];
-
-            $ProductSeriesCode = $row[5];
-            $ProductSeriesId = ProductSeries::where('series_code', $ProductSeriesCode)->first();
-            if ($ProductSeriesId) {
-                $support->product_series_id = $ProductSeriesId->id;
-            } else {
-
-            }
-
-            $ProductVersionCode = $row[6];
-            $ProductVersionId = ProductVersion::where('version_code', $ProductVersionCode)->first();
-            if ($ProductVersionId) {
-                $support->product_version_id = $ProductVersionId->id;
-            } else {
-
+        try {
+            $content = file_get_contents($file->getRealPath());
+            if ($content === false) {
+                throw new \Exception("ファイルの読み込みに失敗しました。");
             }
             
-            $ProductCategoryCode = $row[7];
-            $ProductCategoryId = ProductCategory::where('category_code', $ProductCategoryCode)->first();
-            if ($ProductCategoryId) {
-                $support->product_category_id = $ProductCategoryId->id;
-            } else {
-
+            $saved = Storage::disk('local')->put($relativePath, $content);
+            if (!$saved) {
+                throw new \Exception("ファイルの保存に失敗しました。");
             }
 
-            $support->title = $row[8];
-            $support->request_content = $row[9];
-            $support->response_content = $row[10];
-            // $support->proposed_payment_date = Carbon::parse($row[10] . '-01');
-            $support->internal_message = $row[11];
+            $fullPath = storage_path('app/' . $relativePath);
 
-
-            $support->internal_memo1 = $row[12];
-            $support->is_finished = $row[13];
-            $support->is_faq_target = $row[14];
-            $support->is_disclosured = $row[15];
-            $support->is_troubled = $row[16];
-            $support->is_confirmed = $row[17];
-
-            $supportTimeCode = $row[18];
-            $supportTimeId = SupportTime::where('time_code', $supportTimeCode)->first();
-            if ($supportTimeId) {
-                $support->support_time_id = $supportTimeId->id;
-            } else {
-
+            if (!file_exists($fullPath)) {
+                throw new \Exception("保存されたファイルが見つかりません: {$fullPath}");
+            }
+            
+            if (!is_readable($fullPath)) {
+                throw new \Exception("ファイルを読み取れません: {$fullPath}");
             }
 
-            $supportTypeCode = $row[19];
-            $supportTypeId = SupportType::where('type_code', $supportTypeCode)->first();
-            if ($supportTypeId) {
-                $support->support_type_id = $supportTypeId->id;
-            } else {
+            \Log::info("ファイルパス: {$fullPath}");
 
+            $import = new SupportsImport($fullPath);
+            Excel::import($import, $fullPath);
+
+            $skippedRows = count($import->errors()) + count($import->failures());
+            $totalRows = $import->getRowCount();
+            $successRows = $totalRows - $skippedRows;
+
+            $successMessage = "CSVファイルの取り込みが完了しました。";
+            $detailMessage = "ファイル名：'{$originalName}'\n" .
+                             "処理行数: {$totalRows}\n" .
+                             "成功: {$successRows}\n" .
+                             "スキップ: {$skippedRows}";
+    
+            \Log::info($successMessage . "\n" . $detailMessage);
+            
+            if ($skippedRows > 0) {
+                $errorDetails = $this->getErrorDetails($import);
+                \Log::warning("インポート中にスキップされた行があります:\n" . $errorDetails);
+                return redirect()->back()
+                    ->with('success', $successMessage)
+                    ->with('success_details', $detailMessage)
+                    ->with('warning', 'いくつかの行がスキップされました。')
+                    ->with('error_details', $errorDetails);
             }
-            $support->save();
-        });
+    
+            return redirect()->back()
+                ->with('success', $successMessage)
+                ->with('success_details', $detailMessage);
 
-        $lexer->parse($csvPath, $interpreter);
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+            $errorDetails = $this->getValidationErrorDetails($failures);
+            $errorMessage = "CSVファイル '{$originalName}' のバリデーションに失敗しました。";
+            \Log::error($errorMessage . "\n" . $errorDetails);
+            return redirect()->back()->with('error', $errorMessage)->with('error_details', $errorDetails);
+
+        } catch (\Exception $e) {
+            $errorMessage = "CSVファイル '{$originalName}' の処理に失敗しました: " . $e->getMessage();
+            \Log::error('CSV Import Error: ' . $errorMessage);
+            \Log::error($e->getTraceAsString());
+            return redirect()->back()->with('error', $errorMessage);
+
+        } finally {
+            if (Storage::disk('local')->exists($relativePath)) {
+                Storage::disk('local')->delete($relativePath);
+            }
+        }
+    }
+
+    private function getErrorDetails($import)
+    {
+        $details = [];
+        foreach ($import->errors() as $error) {
+            $details[] = "行 {$error->row()}: {$error->error()}";
+        }
+        foreach ($import->failures() as $failure) {
+            $details[] = "行 {$failure->row()}: " . implode(', ', $failure->errors());
+        }
+        return implode("\n", $details);
+    }
+
+    private function getValidationErrorDetails($failures)
+    {
+        $details = [];
+        foreach ($failures as $failure) {
+            $details[] = "行 {$failure->row()}: " . implode(', ', $failure->errors());
+        }
+        return implode("\n", $details);
     }
 }

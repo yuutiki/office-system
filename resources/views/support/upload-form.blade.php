@@ -190,6 +190,24 @@
                 </ul>
             </div>
         @endif --}}
+        @if(session('success_details'))
+            <div class="alert alert-info">
+                <pre class="text-green-500 p-0.5 border-b border-gray-500">{{ session('success_details') }}</pre>
+            </div>
+        @endif
+            @if(session('warning'))
+                <div class="alert alert-warning">
+                    {{ session('warning') }}
+                    @if(session('error_details'))
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#errorDetails">
+                            詳細を表示
+                        </button>
+                        <div class="collapse" id="errorDetails">
+                            <pre class="text-red-500 p-0.5 border-b border-gray-500">{{ session('error_details') }}</pre>
+                        </div>
+                    @endif
+                </div>
+            @endif
             @if(session()->has('validatedErrors') && is_array(session('validatedErrors')))
                 <div class="w-auto mx-2 p-1">
                     <ul>

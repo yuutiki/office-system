@@ -28,7 +28,7 @@
                         <span class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full">更新日：{{ $support->updated_at }}</span>
                     </li>
                     <li>
-                        <span class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full">更新者：{{ $support->updatedBy->user_name }}</span>
+                        <span class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full">更新者：{{ optional($support->updatedBy)->user_name }}</span>
                     </li>
                 </ul>
             </div>
