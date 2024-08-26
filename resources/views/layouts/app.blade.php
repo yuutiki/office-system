@@ -87,41 +87,31 @@
             </main>
 
 
-            <div id="rap" class="fixed bottom-6 md:bottom-12 end-6 group z-[9999]">
+            <div id="rap" class="fixed bottom-11 right-6 z-50">
                 <div id="speed-dial-button" class="flex flex-col items-center hidden mb-4 space-y-2">
-                    <button type="button" onclick="location.href='{{route('reports.create')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 shadow-sm dark:hover:text-white dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
-                        <svg class="w-4 h-4 mx-auto mb-1"  xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
-                            <path d="M14.419 10.581a3.564 3.564 0 0 0-2.574 1.1l-4.756-2.49a3.54 3.54 0 0 0 .072-.71 3.55 3.55 0 0 0-.043-.428L11.67 6.1a3.56 3.56 0 1 0-.831-2.265c.006.143.02.286.043.428L6.33 6.218a3.573 3.573 0 1 0-.175 4.743l4.756 2.491a3.58 3.58 0 1 0 3.508-2.871Z"/>
-                        </svg>
-                        <span class="block mb-px text-xs font-medium">Report</span>
+                    <button type="button" onclick="location.href='{{route('support.create')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 shadow-sm dark:hover:text-white dark:text-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
+                        <span class="block mb-px text-xs font-medium">サポート</span>
                     </button>
-                    <button type="button" onclick="location.href='{{route('keepfile.create')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 shadow-sm dark:hover:text-white dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
-                        <svg class="w-4 h-4 mx-auto mb-1"  xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M5 20h10a1 1 0 0 0 1-1v-5H4v5a1 1 0 0 0 1 1Z"/>
-                            <path d="M18 7H2a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2v-3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Zm-1-2V2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v3h14Z"/>
-                        </svg>
-                        <span class="block mb-px text-xs font-medium">Keepfile</span>
+                    <button type="button" onclick="location.href='{{route('reports.create')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 shadow-sm dark:hover:text-white dark:text-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
+                        <span class="block mb-px text-xs font-medium">営業報告</span>
                     </button>
-                    <button type="button" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 shadow-sm dark:hover:text-white dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
-                        <svg class="w-4 h-4 mx-auto mb-1"  xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M14.707 7.793a1 1 0 0 0-1.414 0L11 10.086V1.5a1 1 0 0 0-2 0v8.586L6.707 7.793a1 1 0 1 0-1.414 1.414l4 4a1 1 0 0 0 1.416 0l4-4a1 1 0 0 0-.002-1.414Z"/>
-                            <path d="M18 12h-2.55l-2.975 2.975a3.5 3.5 0 0 1-4.95 0L4.55 12H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Zm-3 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/>
-                        </svg>
-                        <span class="block mb-px text-xs font-medium">Save</span>
+                    <button type="button" onclick="location.href='{{route('projects.create')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 shadow-sm dark:hover:text-white dark:text-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
+                        <span class="block mb-px text-xs font-medium">プロジェクト</span>
                     </button>
-                    <button type="button" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 shadow-sm dark:hover:text-white dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
-                        <svg class="w-4 h-4 mx-auto mb-1"  xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
-                            <path d="M5 9V4.13a2.96 2.96 0 0 0-1.293.749L.879 7.707A2.96 2.96 0 0 0 .13 9H5Zm11.066-9H9.829a2.98 2.98 0 0 0-2.122.879L7 1.584A.987.987 0 0 0 6.766 2h4.3A3.972 3.972 0 0 1 15 6v10h1.066A1.97 1.97 0 0 0 18 14V2a1.97 1.97 0 0 0-1.934-2Z"/>
-                            <path d="M11.066 4H7v5a2 2 0 0 1-2 2H0v7a1.969 1.969 0 0 0 1.933 2h9.133A1.97 1.97 0 0 0 13 18V6a1.97 1.97 0 0 0-1.934-2Z"/>
-                        </svg>
-                        <span class="block mb-px text-xs font-medium">Copy</span>
+                    <button type="button" onclick="location.href='{{route('keepfile.create')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 shadow-sm dark:hover:text-white dark:text-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
+                        <span class="block mb-px text-xs font-medium">預託情報</span>
+                    </button>
+                    <button type="button" onclick="location.href='{{route('client-person.create')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 shadow-sm dark:hover:text-white dark:text-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
+                        <span class="block mb-px text-xs font-medium">顧客<br>担当者</span>
+                    </button>
+                    <button type="button" onclick="location.href='{{route('dashboard')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 shadow-sm dark:hover:text-white dark:text-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
+                        <span class="block mb-px text-xs font-medium">Home</span>
                     </button>
                 </div>
-                <button type="button" id="dial" onclick="rotateButton()" class="flex items-center justify-center text-white bg-blue-700 rounded-full w-14 h-14 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800">
-                    <svg class="w-5 h-5 transition-transform" id="dial-icon"  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    <span class="sr-only">Open actions menu</span>
+                <button type="button" id="dial" onclick="toggleDialVisibility()" class="relative w-14 h-14 bg-blue-600 rounded-full focus:outline-none">
+                    <span class="block absolute left-4 top-[19px] w-6 h-0.5 bg-white transition-all duration-300 ease-in-out" id="line1"></span>
+                    <span class="block absolute left-4 top-[27px] w-4 h-0.5 bg-white transition-all duration-300 ease-in-out" id="line2"></span>
+                    <span class="block absolute left-4 top-[35px] w-2 h-0.5 bg-white transition-all duration-300 ease-in-out" id="line3"></span>
                 </button>
             </div>
 
@@ -138,54 +128,59 @@
             </footer>
         </div>
 
-        <style>
+        {{-- <style>
             .rotate-45 {
             @apply transform rotate-45;
             transition: transform 0.1s ease; /* ゆっくりと回転するアニメーションを設定 */
         }
-        </style>
+        </style> --}}
 
 
-        <script>
-        function rotateButton() {
-            const icon = document.getElementById('dial-icon');
-            icon.classList.toggle('rotate-45');
+    <script>
+        function toggleDialVisibility() {
+            const speedDialButton = document.getElementById('speed-dial-button');
+            const dial = document.getElementById('dial');
+            const line1 = document.getElementById('line1');
+            const line2 = document.getElementById('line2');
+            const line3 = document.getElementById('line3');
+        
+            speedDialButton.classList.toggle('hidden');
+            dial.classList.toggle('active');
+        
+            if (dial.classList.contains('active')) {
+                line1.classList.remove('top-[19px]','left-3');
+                line1.classList.add('top-[50%]', 'translate-y-[0px]', 'rotate-[-135deg]', 'w-[50%]', 'left-3.5');
+                
+                line2.classList.add('opacity-0');
+
+                line3.classList.remove('top-[35px]','left-3');
+                line3.classList.add('top-[50%]', '-translate-y-[0px]', 'rotate-[135deg]', 'w-[50%]', 'left-3.5');
+            } else {
+                line1.classList.remove('top-[50%]', 'translate-y-[0px]', 'rotate-[-135deg]', 'w-[50%]', 'left-3.5');
+                line1.classList.add('top-[19px]','left-3');
+
+                line2.classList.remove('opacity-0');
+                
+                line3.classList.remove('top-[50%]', '-translate-y-[0px]', 'rotate-[135deg]', 'w-[50%]', 'left-3.5');
+                line3.classList.add('top-[35px]','left-3');
+            }
         }
+        
+        // スクロール時の動作
+        function hideElementOnScroll() {
+            const rap = document.getElementById('rap');
+            const scrollThreshold = 1;
+        
+            window.addEventListener('scroll', function() {
+                const isBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - scrollThreshold;
+                rap.style.display = isBottom ? 'none' : '';
+            });
+        }
+        
+        window.onload = hideElementOnScroll;
+    </script>
 
-            // ページのスクロールを監視し、特定の要素を非表示にする関数
-            function hideElementOnScroll() {
-                var specialElement = document.getElementById('dial');
-                var scrollThreshold = 100; // スクロールの閾値（最下部からの距離）
     
-                // スクロールイベントリスナーの追加
-                window.addEventListener('scroll', function() {
-                    // ページの最下部までスクロールしたかどうかをチェック
-                    var isBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - scrollThreshold;
-    
-                    // 最下部までスクロールした場合は特定の要素を非表示にする
-                    if (isBottom) {
-                        specialElement.style.display = 'none';
-                    } else {
-                        specialElement.style.display = '';
-                    }
-                });
-            }
-    
-            // ページ読み込み時に関数を呼び出す
-            window.onload = hideElementOnScroll;
-        </script>
-
-        <script>
-            // スピードダイヤルを表示/非表示に切り替える関数
-            function toggleDialVisibility() {
-                const speedDialButton = document.getElementById('speed-dial-button');
-                speedDialButton.classList.toggle('hidden');
-            }
-
-            // スピードダイヤルトリガーボタンにクリックイベントリスナーを追加
-            const dialButton = document.getElementById('dial');
-            dialButton.addEventListener('click', toggleDialVisibility);
-        </script>
 
 
 

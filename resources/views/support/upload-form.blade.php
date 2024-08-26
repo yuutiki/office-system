@@ -192,7 +192,7 @@
         @endif --}}
         @if(session('success_details'))
             <div class="alert alert-info">
-                <pre class="text-green-500 p-0.5 border-b border-gray-500">{{ session('success_details') }}</pre>
+                <div class="text-green-500 p-0.5 border-b border-gray-500">{{ session('success_details') }}</div>
             </div>
         @endif
             @if(session('warning'))
@@ -203,16 +203,70 @@
                             詳細を表示
                         </button>
                         <div class="collapse" id="errorDetails">
-                            <pre class="text-red-500 p-0.5 border-b border-gray-500">{{ session('error_details') }}</pre>
+                            <div class="text-red-500 p-0.5 border-b border-gray-500">{{ session('error_details') }}</div>
                         </div>
                     @endif
                 </div>
             @endif
-            @if(session()->has('validatedErrors') && is_array(session('validatedErrors')))
+            {{-- @if(session()->has('validatedErrors') && is_array(session('validatedErrors')))
                 <div class="w-auto mx-2 p-1">
                     <ul>
                         @foreach (session('validatedErrors') as $error)
                             <li class="text-red-500 p-0.5 border-b border-gray-500">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif --}}
+
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                    @if(session('success_details'))
+                        <div>{{ session('success_details') }}</div>
+                    @endif
+                </div>
+            @endif
+            
+            @if(session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                    @if(session('validation_errors'))
+                        <ul>
+                            @foreach(session('validation_errors') as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    @endif
+                </div>
+            @endif
+
+
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                    @if(session('success_details'))
+                        <div>{{ session('success_details') }}</div>
+                    @endif
+                </div>
+            @endif
+
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+            
+            @if(session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+            
+            @if(session('validation_errors'))
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach(session('validation_errors') as $error)
+                            <li>{{ $error }}</li>
                         @endforeach
                     </ul>
                 </div>

@@ -25,6 +25,7 @@ use Goodby\CSV\Import\Standard\Lexer;
 use Goodby\CSV\Import\Standard\Interpreter;
 use Goodby\CSV\Import\Standard\LexerConfig;
 use App\Imports\SupportsImport;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 
@@ -318,106 +319,146 @@ class SupportController extends Controller
 
     public function upload(Request $request)
     {
-        $request->validate([
-            'csv_upload' => 'required|file|mimes:csv,txt|max:10240',
-        ]);
-
-        $file = $request->file('csv_upload');
-        $originalName = $file->getClientOriginalName();
-        
-        $tempFileName = 'temp_csv_file_' . time() . '.csv';
-        $relativePath = 'temp/' . $tempFileName;
-
         try {
-            $content = file_get_contents($file->getRealPath());
-            if ($content === false) {
-                throw new \Exception("ファイルの読み込みに失敗しました。");
-            }
-            
-            $saved = Storage::disk('local')->put($relativePath, $content);
-            if (!$saved) {
-                throw new \Exception("ファイルの保存に失敗しました。");
-            }
+            $request->validate([
+                'csv_upload' => 'required|file|mimes:csv,txt|max:10240',
+            ]);
 
-            $fullPath = storage_path('app/' . $relativePath);
+            $file = $request->file('csv_upload');
+            $originalName = $file->getClientOriginalName();
+            $tempFilePath = $this->saveTempFile($file);
 
-            if (!file_exists($fullPath)) {
-                throw new \Exception("保存されたファイルが見つかりません: {$fullPath}");
-            }
-            
-            if (!is_readable($fullPath)) {
-                throw new \Exception("ファイルを読み取れません: {$fullPath}");
-            }
+            $import = new SupportsImport($tempFilePath);
+            Excel::import($import, $tempFilePath);
 
-            \Log::info("ファイルパス: {$fullPath}");
+            $results = $this->getImportResults($import);
+            $this->logImportResults($results, $originalName);
 
-            $import = new SupportsImport($fullPath);
-            Excel::import($import, $fullPath);
-
-            $skippedRows = count($import->errors()) + count($import->failures());
-            $totalRows = $import->getRowCount();
-            $successRows = $totalRows - $skippedRows;
-
-            $successMessage = "CSVファイルの取り込みが完了しました。";
-            $detailMessage = "ファイル名：'{$originalName}'\n" .
-                             "処理行数: {$totalRows}\n" .
-                             "成功: {$successRows}\n" .
-                             "スキップ: {$skippedRows}";
-    
-            \Log::info($successMessage . "\n" . $detailMessage);
-            
-            if ($skippedRows > 0) {
-                $errorDetails = $this->getErrorDetails($import);
-                \Log::warning("インポート中にスキップされた行があります:\n" . $errorDetails);
-                return redirect()->back()
-                    ->with('success', $successMessage)
-                    ->with('success_details', $detailMessage)
-                    ->with('warning', 'いくつかの行がスキップされました。')
-                    ->with('error_details', $errorDetails);
-            }
-    
+            return $this->handleSuccessfulImport($results, $originalName);
+        } catch (LaravelValidationException $e) {
+            Log::error("File Validation Error: " . $e->getMessage());
             return redirect()->back()
-                ->with('success', $successMessage)
-                ->with('success_details', $detailMessage);
-
-        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
-            $failures = $e->failures();
-            $errorDetails = $this->getValidationErrorDetails($failures);
-            $errorMessage = "CSVファイル '{$originalName}' のバリデーションに失敗しました。";
-            \Log::error($errorMessage . "\n" . $errorDetails);
-            return redirect()->back()->with('error', $errorMessage)->with('error_details', $errorDetails);
-
+                ->withErrors($e->errors())
+                ->withInput()
+                ->with('error', 'ファイルのバリデーションに失敗しました。');
+        } catch (ValidationException $e) {
+            Log::error("CSV Validation Error: " . $e->getMessage());
+            $errors = $this->formatValidationErrors($e->failures());
+            return $this->handleValidationError($errors, $originalName);
         } catch (\Exception $e) {
-            $errorMessage = "CSVファイル '{$originalName}' の処理に失敗しました: " . $e->getMessage();
-            \Log::error('CSV Import Error: ' . $errorMessage);
-            \Log::error($e->getTraceAsString());
-            return redirect()->back()->with('error', $errorMessage);
-
+            Log::error("CSV Import Error: " . $e->getMessage());
+            Log::error($e->getTraceAsString());
+            return $this->handleGeneralError($e, $originalName);
         } finally {
-            if (Storage::disk('local')->exists($relativePath)) {
-                Storage::disk('local')->delete($relativePath);
+            if (isset($tempFilePath) && file_exists($tempFilePath)) {
+                $this->deleteTempFile($tempFilePath);
             }
         }
     }
 
-    private function getErrorDetails($import)
+    private function saveTempFile($file)
     {
-        $details = [];
-        foreach ($import->errors() as $error) {
-            $details[] = "行 {$error->row()}: {$error->error()}";
+        $tempFileName = 'temp_csv_file_' . time() . '.csv';
+        $tempFilePath = storage_path('app/temp/' . $tempFileName);
+        
+        if (!Storage::disk('local')->put('temp/' . $tempFileName, file_get_contents($file->getRealPath()))) {
+            throw new \Exception("ファイルの一時保存に失敗しました。");
         }
-        foreach ($import->failures() as $failure) {
-            $details[] = "行 {$failure->row()}: " . implode(', ', $failure->errors());
-        }
-        return implode("\n", $details);
+
+        return $tempFilePath;
     }
 
-    private function getValidationErrorDetails($failures)
+    private function deleteTempFile($filePath)
     {
-        $details = [];
-        foreach ($failures as $failure) {
-            $details[] = "行 {$failure->row()}: " . implode(', ', $failure->errors());
+        if (file_exists($filePath)) {
+            unlink($filePath);
         }
-        return implode("\n", $details);
     }
+
+    private function getImportResults($import)
+    {
+        return [
+            'totalRows' => $import->getRowCount(),
+            'successRows' => $import->getSuccessCount(),
+            'skippedRows' => count($import->getErrors()),
+        ];
+    }
+
+    private function logImportResults($results, $originalName)
+    {
+        $message = "CSVファイル '{$originalName}' のインポート結果:\n" .
+                   "処理行数: {$results['totalRows']}, " .
+                   "成功: {$results['successRows']}, " .
+                   "スキップ: {$results['skippedRows']}";
+        Log::info($message);
+    }
+
+    private function handleSuccessfulImport($results, $originalName)
+    {
+        $successMessage = "CSVファイル '{$originalName}' のインポートが完了しました。";
+        $detailMessage = "処理行数: {$results['totalRows']}, 成功: {$results['successRows']}, スキップ: {$results['skippedRows']}";
+
+        return redirect()->back()
+            ->with('success', $successMessage)
+            ->with('success_details', $detailMessage);
+    }
+
+    private function handleValidationError($errors, $originalName)
+    {
+        $errorMessage = "CSVファイル '{$originalName}' のバリデーションに失敗しました。";
+        
+        return redirect()->back()
+            ->with('error', $errorMessage)
+            ->with('validation_errors', $errors);
+    }
+
+    private function handleGeneralError($e, $originalName)
+    {
+        $errorMessage = "CSVファイル '{$originalName}' のインポートに失敗しました: " . $e->getMessage();
+        
+        return redirect()->back()
+            ->with('error', $errorMessage);
+    }
+
+    private function formatValidationErrors($failures)
+    {
+        $errors = [];
+        foreach ($failures as $failure) {
+            $row = $failure->row();
+            $attribute = $failure->attribute();
+            $columnName = $this->getColumnName($attribute);
+            foreach ($failure->errors() as $error) {
+                $errors[] = "{$row}行目 {$columnName}列: {$error}";
+            }
+        }
+        return $errors;
+    }
+
+private function getColumnName($attribute)
+{
+    $columnNames = [
+        '0' => '顧客番号',
+        '1' => '受付日',
+        '2' => '社員番号',
+        '3' => '担当者部署',
+        '4' => '担当者名',
+        '5' => 'シリーズ',
+        '6' => 'バージョン',
+        '7' => '系統',
+        '8' => '表題',
+        '9' => '内容',
+        '10' => '回答',
+        '11' => '社内連絡欄',
+        '12' => '社内メモ欄',
+        '13' => '対応完了済',
+        '14' => 'FAQ対象',
+        '15' => '顧客開示',
+        '16' => 'トラブル',
+        '17' => '入力確認',
+        '18' => '所要時間コード',
+        '19' => '種別コード',
+    ];
+
+    return $columnNames[$attribute] ?? $attribute . '列';
+}
 }

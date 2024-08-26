@@ -13,7 +13,7 @@ trait ModelHistoryTrait
 
     protected static function bootModelHistoryTrait(): void
     {
-        $events = ['created', 'updated', 'deleted', 'retrieved'];
+        $events = ['created', 'updated', 'deleted']; // 'retrieved' を削除
 
         foreach ($events as $event) {
             static::$event(function (Model $model) use ($event) {
