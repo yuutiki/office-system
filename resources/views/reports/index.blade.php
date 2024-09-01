@@ -178,7 +178,7 @@
                         </div>
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
-                        <span class="sr-only">参照</span>
+                        <span class="sr-only">確認</span>
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
@@ -241,7 +241,7 @@
                                           <path d="M10 13c4.97 0 9-2.686 9-6s-4.03-6-9-6-9 2.686-9 6 4.03 6 9 6Z"/>
                                         </g>
                                       </svg>
-                                    <span class="text-ms">コメント</span>
+                                    <span class="text-ms">確認</span>
                                 </div>
                             </button>
                         </td>

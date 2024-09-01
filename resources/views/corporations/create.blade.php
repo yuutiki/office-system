@@ -211,7 +211,7 @@
                     <div>
                         <div class="w-full">
                             <label for="credit_limit" class="dark:text-gray-100 text-gray-900 leading-none mt-4 text-sm">与信限度額</label>
-                            <input type="text" form="creditForm" onblur="formatNumberInput(this);" name="credit_limit" id="credit_limit" value="{{ old('credit_limit') }}" class="input-primary text-right" placeholder="" required>
+                            <input type="text" form="corporationForm" onblur="formatNumberInput(this);" name="credit_limit" id="credit_limit" value="{{ old('credit_limit') }}" class="input-primary text-right" placeholder="" required>
                         </div>
                         @error('credit_limit')
                             <div class="text-red-500">{{$message}}</div>
@@ -220,7 +220,7 @@
                     <div>
                         <div class="w-full">
                             <label for="credit_rate" class="dark:text-gray-100 text-gray-900 leading-none mt-4 text-sm">評価点</label>
-                            <input type="number" min="0" max="100" form="creditForm" name="credit_rate" id="credit_rate" value="{{ old('credit_rate') }}" class="input-primary text-right" placeholder="" required>
+                            <input type="number" min="0" max="100" form="corporationForm" name="credit_rate" id="credit_rate" value="{{ old('credit_rate') }}" class="input-primary text-right" placeholder="" required>
                         </div>
                         @error('credit_rate')
                             <div class="text-red-500">{{$message}}</div>
@@ -229,7 +229,7 @@
                     <div class="col-span-3 mr-2">
                         <div class="w-full">
                             <label for="credit_rater" class="dark:text-gray-100 text-gray-900 leading-none mt-4 text-sm">評価者（外部/内部）</label>
-                            <input type="text" form="creditForm" name="credit_rater" id="credit_rater" value="{{ old('credit_rater') }}" class="input-primary" placeholder="" required>
+                            <input type="text" form="corporationForm" name="credit_rater" id="credit_rater" value="{{ old('credit_rater') }}" class="input-primary" placeholder="" required>
                         </div>
                         @error('credit_rater')
                             <div class="text-red-500">{{$message}}</div>
@@ -239,7 +239,7 @@
                 <div class="mr-2 mb-4">
                     <div class="w-full flex flex-col">
                         <label for="credit_reason" class="dark:text-gray-100 text-gray-900 leading-none mt-4 text-sm">与信根拠</label>
-                        <input type="text" form="creditForm" name="credit_reason" id="credit_reason" value="{{ old('credit_reason') }}" class="input-primary" placeholder="" required>
+                        <input type="text" form="corporationForm" name="credit_reason" id="credit_reason" value="{{ old('credit_reason') }}" class="input-primary" placeholder="" required>
                     </div>
                     @error('credit_reason')
                         <div class="text-red-500">{{$message}}</div>

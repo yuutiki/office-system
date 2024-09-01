@@ -397,10 +397,10 @@
         function populateOptions(options) {
             options.forEach(function (option, index) {
                 var li = document.createElement("li");
-                li.textContent = option.name; // ここで適切なプロパティを指定
+                li.textContent = option.user_name; // ここで適切なプロパティを指定
                 li.dataset.value = option.id; // ここで適切なプロパティを指定
                 li.addEventListener("click", function () {
-                    searchInput.value = option.name; // 選択されたオプションの名前をセット
+                    searchInput.value = option.user_name; // 選択されたオプションの名前をセット
                     selectedUserIdInput.value = option.id; // hidden inputに選択されたオプションのidをセット
 
                     // Ajaxリクエストでサーバーに選択されたオプションのidを送信

@@ -22,7 +22,6 @@ class Corporation extends Model
         'corporation_name',
         'corporation_kana_name',
         'corporation_short_name',
-        // 'credit_limit',
         'corporation_post_code',
         'corporation_prefecture_id',
         'corporation_address1',
@@ -31,7 +30,8 @@ class Corporation extends Model
         'tax_status',
         'corporation_number',
         'invoice_num',
-        'invoice_at',        
+        'invoice_at',  
+        'is_active_invoice',
         'corporation_memo',
         'created_by',
         'updated_by',
@@ -75,13 +75,17 @@ class Corporation extends Model
             $query->where('invoice_num', 'like', '%' . $filters['invoice_num'] . '%');
         }
 
-        if (isset($filters['trade_status'])) {
-            $query->where('is_stop_trading', '=', $filters['trade_status']);
+        if (isset($filters['trade_status_ids'])) {
+            $query->whereIn('is_stop_trading', $filters['trade_status_ids']);
         }
 
-        if (isset($filters['tax_status'])) {
-            $query->where('tax_status', '=', $filters['tax_status']);
+        if (isset($filters['tax_status_ids'])) {
+            $query->whereIn('tax_status', $filters['tax_status_ids']);
         }
+
+        // if (isset($filters['tax_status'])) {
+        //     $query->where('tax_status', '=', $filters['tax_status']);
+        // }
     }
 
     public static function storeWithTransaction(array $data)

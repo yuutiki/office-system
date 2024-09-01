@@ -22,14 +22,14 @@
 
                     <div class="flex">
                         <div class="w-full flex flex-col">
-                            <label for="corporation_num" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人番号<span class="text-red-500"> *</span></label>
+                            <label for="corporation_num" class="block text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">法人No.<span class="text-red-500"> *</span></label>
                             <input type="text" name="corporation_num" class="input-readonly cursor-not-allowed" id="corporation_num" value="{{old('corporation_num')}}" placeholder="法人検索してください" readonly>
                             @error('corporation_num')
                                 <div class="text-red-500">{{ $message }}</div>
                             @enderror
                         </div>
                         <!-- 法人検索ボタン -->
-                        <button type="button" id="corporationSearch" onclick="showModal()" class="p-2.5 text-sm font-medium h-[34px] text-white mt-[34px] ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <button type="button" id="corporationSearch" onclick="showModal()" class="p-2.5 text-sm font-medium h-[34px] text-white mt-[34px]  ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                             </svg>
@@ -37,7 +37,7 @@
                     </div>
 
                     <div>
-                        <label for="corporation_name" class="block  text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人名称<span class="text-red-500"> *</span></label>
+                        <label for="corporation_name" class="block  text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">法人名称<span class="text-red-500"> *</span></label>
                         <input type="text" name="corporation_name" class="input-readonly cursor-not-allowed" id="corporation_name" value="{{old('corporation_name')}}" placeholder="法人検索してください" readonly>
                         @error('corporation_name')
                             <div class="text-red-500">{{ $message }}</div>
@@ -58,7 +58,7 @@
                         @enderror
                     </div>
                 </div>
-                <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-2">
+                <div class="grid gap-4 mb-4 lg:grid-cols-5 grid-cols-2">
                     <div>
                         <label for="vendor_type_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">業者種別<span class="text-red-500"> *</span></label>
                         <select id="vendor_type_id" name="vendor_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">

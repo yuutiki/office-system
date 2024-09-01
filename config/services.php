@@ -31,4 +31,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'invoice_api' => [
+        'app_id' => env('INVOICE_API_APP_ID'),
+        'base_url' => env('INVOICE_API_BASE_URL', 'https://web-api.invoice-kohyo.nta.go.jp/1/'),
+    ],
+
 ];

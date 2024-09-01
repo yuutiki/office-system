@@ -31,8 +31,19 @@ class ClientController extends Controller
     {
         $per_page = 50;
 
-        // 検索条件用
-        $salesUsers = User::all();
+        // 現在のログインユーザを取得
+                // @var User $loggedInUser
+        $loggedInUser = Auth::user();
+
+        // UserモデルのisSystemAdmin()メソッドを呼び出す
+        if ($loggedInUser && $loggedInUser->role ==  config('sytemadmin.system_admin')) {
+            // システム管理者を含む全てのユーザーを取得
+            $salesUsers = User::all();
+        } else {
+            // システム管理者を除くユーザーを取得
+            $salesUsers = User::where('role', '!=', config('sytemadmin.system_admin'))->get();
+        }
+
         $affiliation2s = Affiliation2::all();
         $tradeStatuses = TradeStatus::all();
         $clientTypes = ClientType::all();
@@ -274,7 +285,7 @@ class ClientController extends Controller
         ->where('client_name', 'LIKE', '%' . $clientName . '%')
         ->Where('client_num', 'LIKE', '%' . $clientNumber . '%')
         ->Where('affiliation2_id', 'LIKE', '%' . $clientAffiliation2 . '%');
-        $clients = $query->with('products','affiliation2','corporation')->get();
+        $clients = $query->with('products','affiliation2','corporation','user')->get();
 
         return response()->json($clients);
     }

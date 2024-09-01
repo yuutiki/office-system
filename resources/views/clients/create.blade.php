@@ -104,7 +104,7 @@
                         <label for="user_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">営業担当<span class="text-red-500"> *</span></label>
                         <select id="user_id" name="user_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">未選択</option>
-                            @foreach($usersFromComposer as $user)
+                            @foreach($users as $user)
                             <option value="{{ $user->id }}" @selected($user->id == old('user_id', Auth::user()->id))>{{ $user->user_name }}</option>
                             @endforeach
                         </select>

@@ -3,10 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Notification;
 use Illuminate\Notifications\DatabaseNotification;
 
 class NotificationController extends Controller
 {
+    public function index(Request $request)
+    {
+        $notifications = Notification::where('notifiable_id', $request->user()->id)
+            ->with(['creator'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(25);
+        
+        return view('notifications.index', compact('notifications'));
+    }
+
     /**
      * 通知を既読にする
      *

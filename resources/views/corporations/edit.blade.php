@@ -28,7 +28,7 @@
             <div id="dropdownActions" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-60 dark:bg-gray-700 dark:divide-gray-600">
                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownActionButton">
                     <li>
-                        <button type="button" data-modal-target="deleteModal-{{$corporation->id}}" data-modal-show="deleteModal-{{$corporation->id}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full dark:text-red-500" onclick="focusCancel()">
+                        <button type="button" data-modal-target="deleteModal-{{$corporation->id}}" data-modal-show="deleteModal-{{$corporation->id}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full dark:text-red-500">
                             <div class="flex">
                                 <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
                                 <span class="font-semibold">削除</span>
@@ -104,7 +104,7 @@
 
             <ul class="grid w-full gap-6 lg:grid-cols-3 mt-12">
                 <li>
-                    <input type="radio" id="unconfirmed" name="tax_status" value="0" class="peer sr-only" {{ $corporation->tax_status == 0 ? 'checked' : '' }} required tabindex="-1">
+                    <input type="radio" form="corporationForm" id="unconfirmed" name="tax_status" value="0" class="peer sr-only" {{ $corporation->tax_status == 0 ? 'checked' : '' }} required tabindex="-1">
                     <label for="unconfirmed" tabindex="0" role="radio" aria-checked="{{ $corporation->tax_status == 0 ? 'true' : 'false' }}" class="inline-flex items-center justify-center w-full px-5 py-3 text-gray-500 bg-white border border-gray-200 rounded-md cursor-pointer dark:hover:text-gray-300 dark:border-indigo-700 dark:peer-checked:text-white dark:peer-checked:bg-indigo-700 peer-checked:border-indigo-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">                           
                         <div class="block">
                             <div class="w-full text-md">未確認</div>
@@ -112,7 +112,7 @@
                     </label>
                 </li>
                 <li>
-                    <input type="radio" id="tax_payer" name="tax_status" value="1" class="peer sr-only" {{ $corporation->tax_status == 1 ? 'checked' : '' }} tabindex="-1">
+                    <input type="radio" form="corporationForm" id="tax_payer" name="tax_status" value="1" class="peer sr-only" {{ $corporation->tax_status == 1 ? 'checked' : '' }} tabindex="-1">
                     <label for="tax_payer" tabindex="0" role="radio" aria-checked="{{ $corporation->tax_status == 1 ? 'true' : 'false' }}" class="inline-flex items-center justify-center w-full px-5 py-3 text-gray-500 bg-white border border-gray-200 rounded-md cursor-pointer dark:hover:text-gray-300 dark:border-indigo-700 dark:peer-checked:text-white dark:peer-checked:bg-indigo-700 peer-checked:border-indigo-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         <div class="block">
                             <div class="w-full text-md">課税事業者</div>
@@ -120,7 +120,7 @@
                     </label>
                 </li>
                 <li>
-                    <input type="radio" id="tax_exempt" name="tax_status" value="2" class="peer sr-only" {{ $corporation->tax_status == 2 ? 'checked' : '' }} tabindex="-1">
+                    <input type="radio" form="corporationForm" id="tax_exempt" name="tax_status" value="2" class="peer sr-only" {{ $corporation->tax_status == 2 ? 'checked' : '' }} tabindex="-1">
                     <label for="tax_exempt" tabindex="0" role="radio" aria-checked="{{ $corporation->tax_status == 2 ? 'true' : 'false' }}" class="inline-flex items-center justify-center w-full px-5 py-3 text-gray-500 bg-white border border-gray-200 rounded-md cursor-pointer dark:hover:text-gray-300 dark:border-indigo-700 dark:peer-checked:text-white dark:peer-checked:bg-indigo-700 peer-checked:border-indigo-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         <div class="block">
                             <div class="w-full text-md">免税事業者</div>
@@ -136,9 +136,17 @@
             <div class="grid gap-4 sm:grid-cols-2">
                 <div>
                     <div class="flex">
-                        <div class="w-full flex flex-col">
+                        <div class="w-full flex flex-col relative"> <!-- relative クラスを追加 -->
                             <label for="invoice_num" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">インボイス番号</label>
-                            <input type="text" form="corporationForm" name="invoice_num" id="invoice_num" value="{{old('invoice_num',$corporation->invoice_num)}}" class="input-primary" placeholder="T123456789123">
+                            <input type="text" form="corporationForm" name="invoice_num" id="invoice_num" value="{{ old('invoice_num', $corporation->invoice_num) }}" class="input-primary pr-10" placeholder="T123456789123">
+                            <!-- インボイス番号の有効チェックマーク -->
+                            @if ($corporation->invoice_num && $corporation->is_active_invoice)
+                            <span class="absolute right-2 top-10 inline-flex items-center justify-center w-5 h-5 text-sm font-semibold text-white bg-green-500 rounded-full dark:bg-green-500">
+                                <svg class="w-2.5 h-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M1 5.917 5.724 10.5 15 1.5"/>
+                                </svg>
+                            </span>
+                            @endif
                         </div>
 
                         {{-- APIRequest用のボタン --}}
@@ -151,6 +159,11 @@
                     @error('invoice_num')
                         <div class="text-red-500">{{$message}}</div>
                     @enderror
+
+                    @if ($corporation->invoice_num && !$corporation->is_active_invoice)
+                        <div class="text-red-500">無効なインボイス番号です。</div>
+                    @endif
+
                 </div>
                 <div>
                     <div class="w-full flex flex-col">
@@ -330,28 +343,23 @@
 
 
     <!-- 削除モーダル -->
-    <div id="deleteModal-{{$corporation->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div id="deleteModal-{{ $corporation->id }}" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative w-full max-w-md max-h-full">
             <div class="relative bg-white rounded shadow dark:bg-gray-700">
-                <button data-modal-hide="deleteModal-{{$corporation->id}}" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                    </svg>
-                </button>
                 <div class="p-6 text-center">
                     <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                     </svg>
                     <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
                     <div class="flex justify-center">
-                        <form action="{{route('corporations.destroy',$corporation->id)}}" method="POST" class="">
+                        <form action="{{ route('corporations.destroy', $corporation->id) }}" method="POST" class="">
                             @csrf
                             @method('delete')
-                            <button type="submit" data-modal-hide="deleteModal-{{$corporation->id}}" class="text-white  bg-red-600 hover:bg-red-800 focus:outline-none font-medium rounded text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 dark:focus:ring-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
-                                削除
+                            <button type="submit" data-modal-hide="deleteModal-{{ $corporation->id }}" class="text-white  bg-red-600 hover:bg-red-800 focus:outline-none font-medium rounded text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 dark:focus:ring-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                                {{ __('delete') }} <!--削除-->
                             </button>
                         </form>
-                        <button id="cancelButton-{{$corporation->id}}" data-modal-hide="deleteModal-{{$corporation->id}}" type="button" onkeydown="stopTab(event)" class="text-gray-500 bg-white hover:bg-gray-100 focus:outline-none rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                        <button id="cancelButton-{{ $corporation->id }}" data-modal-hide="deleteModal-{{ $corporation->id }}" type="button" data-modal-cancel class="text-gray-500 bg-white hover:bg-gray-100 focus:outline-none rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
                             やっぱやめます
                         </button>
                     </div>
@@ -436,19 +444,12 @@
         </div>
     </div>
 
-
-
-    <script>
-        function focusCancel(corporationId) {
-            setTimeout(() => {
-            const cancelButton = document.getElementById('cancelButton-{{$corporation->id}}');
-            if (cancelButton) {
-                cancelButton.focus();
-            }
-        }, 200); // 100ミリ秒の遅延を設定
-        }
-    </script>
-
+<!-- 削除モーダルの設定 -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        setupModal('deleteModal-{{ $corporation->id }}', '{{ $corporation->id }}');
+    });
+</script>
 
 
     <script>
@@ -626,8 +627,10 @@
 </script>
 
 
-    <script type="text/javascript" src="{{ asset('assets/js/stopTab.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/autoresizetextarea.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/addresssearchbutton.js') }}"></script>
-    {{-- <script type="text/javascript" src="{{ asset('/assets/js/main.js') }}"></script> --}}
+    <script src="{{ asset('assets/js/stopTab.js') }}"></script>
+    <script src="{{ asset('assets/js/autoresizetextarea.js') }}"></script>
+    <script src="{{ asset('assets/js/addresssearchbutton.js') }}"></script>
+    <script src="{{ asset('assets/js/deleteModal.js') }}"></script>
+    {{-- <script src="{{ asset('/assets/js/main.js') }}"></script> --}}
+
 </x-app-layout>

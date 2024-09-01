@@ -27,6 +27,8 @@ return new class extends Migration
             $table->text('stop_trading_reason')->nullable(true)->comment('取引停止理由');
             $table->string('invoice_num')->nullable(true)->comment('インボイス番号');
             $table->string('invoice_at')->nullable(true)->comment('インボイス登録日');
+            $table->boolean('is_active_invoice')->default(0)->comment('有効インボイスフラグ'); //0:未確認　//1:有効
+            
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->datetimes();

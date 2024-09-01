@@ -17,10 +17,18 @@ use Illuminate\Support\Facades\Response;
 use App\Jobs\ExportCorporationsCsv;
 use App\Models\CorporationCredit;
 use App\Models\Prefecture;
+use App\Services\InvoiceApiService;
 use Illuminate\Support\Facades\Session;
 
 class CorporationController extends Controller
 {
+    protected $invoiceService;
+
+    public function __construct(InvoiceApiService $invoiceService)
+    {
+        $this->invoiceService = $invoiceService;
+    }
+
     public function index(Request $request)//検索用にrequestを受取る
     {
         // １ページごとの表示件数
@@ -36,14 +44,15 @@ class CorporationController extends Controller
         ]);
 
         // 検索フォームから検索条件を取得し変数に格納
-        $filters = $request->only(['corporation_num', 'corporation_name', 'invoice_num', 'trade_status', 'tax_status']);
+        $filters = $request->only(['corporation_num', 'corporation_name', 'invoice_num', 'trade_status_ids','tax_status_ids']);
 
         // 同じ条件を別の変数にも格納(画面の検索条件入力欄にセットするために利用する)
         $CorporationNum = $filters['corporation_num'] ?? null;
         $CorporationName = $filters['corporation_name'] ?? null;
         $invoiceNum = $filters['invoice_num'] ?? null;
-        $tradeStatus = $filters['trade_status'] ?? null;
-        $taxStatus = $filters['tax_status'] ?? null;
+        $tradeStatusIds = $filters['trade_status_ids'] ?? [];
+        $taxStatusIds = $filters['tax_status_ids'] ?? [];
+
 
         //上記で$filters変数に格納した検索条件をModelに渡し、検索処理を行う。結果を$corporationsに詰める
         $corporations = Corporation::filter($filters)
@@ -60,7 +69,7 @@ class CorporationController extends Controller
         // 検索結果の件数を取得
         $count = $corporations->total();
 
-        return view('corporations.index', compact('searchParams', 'corporations', 'count' ,'filters', 'CorporationNum', 'CorporationName', 'invoiceNum', 'tradeStatus', 'taxStatus'));
+        return view('corporations.index', compact('searchParams', 'corporations', 'count' ,'filters', 'CorporationNum', 'CorporationName', 'invoiceNum', 'tradeStatusIds', 'taxStatusIds'));
     }
 
     public function create(Request $request)
@@ -72,18 +81,67 @@ class CorporationController extends Controller
 
     public function store(CorporationStoreRequest $request)
     {
-        $result = Corporation::storeWithTransaction($request->except('corporation_num'));
+        // リクエストデータをコピー
+        $data = $request->validated();
 
-        if ($result) {
-            // 作成されたcorporationのIDを取得
-            $corporationId = $result->id;
+        // インボイス番号が入力されている場合のみAPIリクエストを実行
+        if ($invoiceNum = $data['invoice_num'] ?? null) {
+            try {
+                $apiResponse = $this->invoiceService->getInvoiceInfo($invoiceNum);
+
+                // APIレスポンスを確認し、存在すればtrueを格納
+                $exists = !empty($apiResponse['announcement']);
+
+                // is_active_invoice フラグを$dataに追加
+                $data['is_active_invoice'] = $exists;
+                if ($exists && isset($apiResponse['announcement'][0]['registrationDate'])) {
+                    // registrationDate を取得し、invoice_at に設定
+                    $registrationDate = $apiResponse['announcement'][0]['registrationDate'];
+                    $data['invoice_at'] = $registrationDate;
+                } else {
+                    // registrationDate が存在しない場合は null を設定
+                    $data['invoice_at'] = null;
+                }
+            } catch (\Exception $e) {
+                // APIリクエストに失敗した場合のログ記録（開発者向け）
+                \Log::error('APIリクエストに失敗しました: ' . $e->getMessage());
+                
+                // ユーザーには一般的なメッセージを表示
+                return back()->withInput()->with('warning', 'インボイス情報の確認ができませんでした。後ほど再度お試しください。');
+            }
+        } else {
+            // インボイス番号が入力されていない場合
+            $data['is_active_invoice'] = false;
+            $data['invoice_at'] = null;
+        }
+
+        try {
+            $corporation = DB::transaction(function () use ($data, $request) {
+                // storeWithTransaction メソッドを使用して法人情報を登録
+                $corporation = Corporation::storeWithTransaction($data);
+    
+                // 与信情報の登録
+                if (!empty($request->input('credit_limit'))) {
+                    $corporation->credits()->create([
+                        'credit_limit' => $request->input('credit_limit'),
+                        'credit_rate' => $request->input('credit_rate'),
+                        'credit_rater' => $request->input('credit_rater'),
+                        'credit_reason' => $request->input('credit_reason'),
+                        // 他の与信情報のカラムを追加
+                    ]);
+                }
+    
+                return $corporation;
+            });
+    
             // 編集画面へのURLを生成
-            $editUrl = route('corporations.edit', ['corporation' => $corporationId]);
+            $editUrl = route('corporations.edit', ['corporation' => $corporation->id]);
     
             // 生成されたURLにリダイレクト
             return redirect($editUrl)->with('success', '正常に登録しました');
-        } else {
-            return back()->with('error', '登録に失敗しました。');
+        } catch (\Exception $e) {
+            \Log::error('法人情報の登録に失敗しました: ' . $e->getMessage());
+            return back()->withInput()->with('error', '登録に失敗しました。');
         }
     }
 
@@ -108,24 +166,50 @@ class CorporationController extends Controller
 
     public function update(CorporationUpdateRequest $request, string $id)
     {
+        // リクエストデータをコピー
+        $data = $request->validated();
+
         try {
             // モデルを見つけて、存在するか確認
             $corporation = Corporation::findOrFail($id);
 
+            // インボイス番号が入力されている場合のみAPIリクエストを実行
+            if ($invoiceNum = $data['invoice_num'] ?? null) {
+                try {
+                    $apiResponse = $this->invoiceService->getInvoiceInfo($invoiceNum);
+
+                    // APIレスポンスを確認し、存在すればtrueを格納
+                    $exists = !empty($apiResponse['announcement']);
+
+                    // is_active_invoice フラグを$dataに追加
+                    $data['is_active_invoice'] = $exists;
+                    if ($exists && isset($apiResponse['announcement'][0]['registrationDate'])) {
+                        // registrationDate を取得し、invoice_at に設定
+                        $registrationDate = $apiResponse['announcement'][0]['registrationDate'];
+                        $data['invoice_at'] = $registrationDate;
+                    } else {
+                        // registrationDate が存在しない場合は null を設定
+                        $data['invoice_at'] = null;
+                    }
+                } catch (\Exception $e) {
+                    // APIリクエストに失敗した場合のログ記録（開発者向け）
+                    \Log::error('APIリクエストに失敗しました: ' . $e->getMessage());
+                    
+                    // ユーザーには一般的なメッセージを表示
+                    return back()->withInput()->with('warning', '無効なインボイス番号でした');
+                }
+            } else {
+                // インボイス番号が入力されていない場合
+                $data['is_active_invoice'] = false;
+                $data['invoice_at'] = null;
+            }
+
             // データを更新
-            $corporation->fill($request->all())->save();
+            $corporation->fill($data)->save();
             // return redirect()->route('corporations.edit', $id)->with('success', '正常に更新されました');
 
-            // // 新規登録用の与信情報の追加
-            // if (!empty($request->input('credit_limit'))) {
-            //     $corporation->credits()->create([
-            //         'credit_limit' => $request->input('credit_limit'),
-            //         'credit_rate' => $request->input('credit_rate'),
-            //         'credit_rater' => $request->input('credit_rater'),
-            //         'credit_reason' => $request->input('credit_reason'),
-            //         // 他の与信情報のカラムを追加
-            //     ]);
-            // }
+
+
             return redirect()->back()->with('success', '正常に更新されました');
             
         } catch (ModelNotFoundException $e) {

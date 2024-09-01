@@ -73,14 +73,14 @@ class RoleGroupController extends Controller
      */
     public function edit(RoleGroup $roleGroup, Request $request)
     {
-        // ユーザーIDのクエリを作成
-        $userIdsQuery = DB::table('user_rolegroup')
-            ->where('role_group_id', $roleGroup->id)
-            ->where('user_id', '!=', 1)// システム管理者を除外する条件を追加
-            ->pluck('user_id');
-
-        // ユーザーモデルからIDが$userIdsQueryに含まれるユーザーを取得
-        $users = User::whereIn('id', $userIdsQuery)->get();
+        $users = User::whereHas('roleGroups', function ($query) use ($roleGroup) {
+            $query->where('role_groups.id', $roleGroup->id);
+        })
+        ->where('id', '!=', 1) // システム管理者を除外
+        ->with(['affiliation1', 'affiliation2', 'affiliation3'])
+        ->paginate(50);
+    
+        $roleGroup->load(['functionMenus.permission']);
 
         // ユーザ検索条件を渡す
         $affiliation1s = Affiliation1::all();
@@ -118,23 +118,44 @@ class RoleGroupController extends Controller
      */
     public function update(Request $request, RoleGroup $roleGroup)
     {
-        // RoleGroupを更新
-        $roleGroup->update([
-            'role_group_code' => $request->role_group_code,
-            'role_group_name' => $request->role_group_name,
-            'role_group_eng_name' => $request->role_group_eng_name,
-            'role_group_memo' => $request->role_group_memo,
-            // 他の属性をここに追加
-        ]);
-
-        // フォームから送信された権限データを処理して中間テーブルを更新
-        foreach ($request->permissions as $functionMenuId => $permissionId) {
-            // 中間テーブルの行を更新する
-            $roleGroup->functionMenus()->syncWithoutDetaching([$functionMenuId => ['permission_id' => $permissionId]]);
+        DB::beginTransaction();
+    
+        try {
+            // RoleGroupを更新
+            $roleGroup->update([
+                'role_group_code' => $request->role_group_code,
+                'role_group_name' => $request->role_group_name,
+                'role_group_eng_name' => $request->role_group_eng_name,
+                'role_group_memo' => $request->role_group_memo,
+            ]);
+    
+            // 権限データをチャンクで処理
+            $chunkSize = 100; // 調整可能
+            collect($request->permissions)->chunk($chunkSize)->each(function ($chunk) use ($roleGroup) {
+                $updates = [];
+                foreach ($chunk as $functionMenuId => $permissionId) {
+                    $updates[] = [
+                        'role_group_id' => $roleGroup->id,
+                        'function_menu_id' => $functionMenuId,
+                        'permission_id' => $permissionId,
+                    ];
+                }
+                
+                // 一括更新
+                DB::table('function_menu_role_group')->upsert(
+                    $updates,
+                    ['role_group_id', 'function_menu_id'],
+                    ['permission_id']
+                );
+            });
+    
+            DB::commit();
+            return redirect()->back()->with('success', '正常に更新しました');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Update failed: ' . $e->getMessage());
+            return redirect()->back()->with('error', '更新に失敗しました');
         }
-
-        // return redirect()->route('role-groups.edit', $roleGroup)->with('success','正常に更新しました');
-        return redirect()->back()->with('success','正常に更新しました');
     }
 
     /**
@@ -148,35 +169,56 @@ class RoleGroupController extends Controller
     // GroupControllerのaddUsersToGroupメソッド
     public function addUsersToGroup(Request $request)
     {
-        // クライアントからのリクエストからグループIDとユーザIDリストを取得
         $groupId = $request->input('role_group_id');
         $userIds = $request->input('user_ids');
     
-        // userIds が NULL でないことを確認し、ループ処理を行う
-        if (!is_null($userIds)) {
-            // ユーザIDリストをループし、中間テーブルに登録
-            foreach ($userIds as $userId) {
-                // 既存の中間テーブルに同じ組み合わせが存在するかチェック
-                $existingRecord = UserRolegroup::where('role_group_id', $groupId)
-                    ->where('user_id', $userId)
-                    ->exists();
-        
-                // 既存のレコードが存在しない場合のみ新しいレコードを作成
-                if (!$existingRecord) {
-                    UserRolegroup::create([
-                        'role_group_id' => $groupId,
-                        'user_id' => $userId
-                    ]);
-                }
-            }
-        
-            // 登録が成功した場合は成功レスポンスを返す
-            // return response()->json(['message' => 'Users added to group successfully'], 200);
-            return redirect()->back()->with('success', '正常にユーザを紐づけました');
-        } else {
-            // userIds が NULL の場合、何もせずにエラーレスポンスを返す
-            // return response()->json(['error' => 'User IDs are required'], 400);
+        if (empty($userIds)) {
             return redirect()->back()->with('error', 'ユーザIDが必要です');
+        }
+    
+        $chunkSize = 500; // 調整可能
+        $totalAdded = 0;
+    
+        DB::beginTransaction();
+    
+        try {
+            foreach (array_chunk($userIds, $chunkSize) as $chunk) {
+                // 既存のレコードを一括で取得
+                $existingRecords = UserRolegroup::where('role_group_id', $groupId)
+                    ->whereIn('user_id', $chunk)
+                    ->pluck('user_id')
+                    ->toArray();
+    
+                // 新しく追加する必要があるユーザーIDのみをフィルタリング
+                $newUserIds = array_diff($chunk, $existingRecords);
+    
+                if (!empty($newUserIds)) {
+                    // 新しいレコードを一括で作成
+                    $newRecords = array_map(function($userId) use ($groupId) {
+                        return [
+                            'role_group_id' => $groupId,
+                            'user_id' => $userId,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ];
+                    }, $newUserIds);
+    
+                    // 一括挿入
+                    UserRolegroup::insert($newRecords);
+    
+                    $totalAdded += count($newUserIds);
+                }
+    
+                // メモリの解放
+                unset($existingRecords, $newUserIds, $newRecords);
+            }
+    
+            DB::commit();
+            return redirect()->back()->with('success', $totalAdded . '人のユーザを正常に紐づけました');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Failed to add users to group: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'ユーザの紐づけに失敗しました: ' . $e->getMessage());
         }
     }
 

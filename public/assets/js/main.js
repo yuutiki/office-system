@@ -20,40 +20,7 @@ shortcut.add("Ctrl+R", function () {
     document.getElementById('clear').click();
 });
 
-
-
-
-
-
-// // カナ変換（clientcorporation/）
-// $(function() {
-//     $.fn.autoKana('input[name="corporation_name"]', 'input[name="corporation_kana_name"]', {katakana: true});
-// });
-
-// // カナ変換（client/）
-// $(function() {
-//     $.fn.autoKana('input[name="client_name"]', 'input[name="client_kana_name"]', {katakana: true});
-// });
-// $(function() {
-//     $.fn.autoKana('input[name="vendor_name"]', 'input[name="vendor_kana_name"]', {katakana: true});
-// });
-
-// $(function() {
-//     $.fn.autoKana('input[name="name"]', 'input[name="kana_name"]', {katakana: true});
-// });
-
-// $(function() {
-//     $.fn.autoKana('input[name="first_name"]', 'input[name="first_name_kana"]', {katakana: true});
-// });
-
-// $(function() {
-//     $.fn.autoKana('input[name="last_name"]', 'input[name="last_name_kana"]', {katakana: true});
-// });
-
-// $(function() {
-//     $.fn.autoKana('input[name="name_{{$user->id}}"]', 'input[name="kana_name_{{$user->id}}"]', {katakana: true});
-// });
-
+// カナ変換用の関数
 $(function() {
     $.fn.autoKana('input[name="corporation_name"]', 'input[name="corporation_kana_name"]', {katakana: true});
     $.fn.autoKana('input[name="client_name"]', 'input[name="client_kana_name"]', {katakana: true});
@@ -66,7 +33,6 @@ $(function() {
 
 
 // resetForm.js
-
 $(function () {
     $('#clear').click(function () {
         resetForm('#clientcorporationform');

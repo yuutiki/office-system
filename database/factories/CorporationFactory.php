@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Corporation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class CorporationFactory extends Factory
 {
@@ -19,7 +20,7 @@ class CorporationFactory extends Factory
             'corporation_short_name' => $this->faker->company,
             'credit_limit' => $this->faker->numberBetween(100000, 5000000),
             'corporation_memo' => $this->faker->optional()->sentence,
-            'corporation_post_code' => $this->faker->postcode,
+            'corporation_post_code' => $this->generateHyphenatedPostcode(),
             'corporation_prefecture_id' => $this->faker->numberBetween(1, 47),
             'corporation_address1' => $this->faker->address,
             'is_stop_trading' => $this->faker->boolean(10),
@@ -31,5 +32,18 @@ class CorporationFactory extends Factory
             'created_by' => User::factory(),
             'updated_by' => User::factory(),
         ];
+    }
+
+    private function generateHyphenatedPostcode()
+    {
+        $postcode = $this->faker->postcode;
+        
+        // 既にハイフンがある場合を考慮
+        if (Str::contains($postcode, '-')) {
+            return $postcode;
+        }
+
+        // 郵便番号をハイフン付きの形式に変換
+        return substr($postcode, 0, 3) . '-' . substr($postcode, 3);
     }
 }

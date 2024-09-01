@@ -3,9 +3,6 @@
         <div class="flex justify-between w-5/6">
             <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('showReport', $report) }}
-                {{-- <div class="ml-4">
-                    {{ $count }}件
-                </div> --}}
             </h2>
             <x-message :message="session('message')" />
         </div>
@@ -13,11 +10,14 @@
 
 
 
-    <div class="md:w-4/6 mx-auto mt-8">
+    <div class="md:w-4/6 mx-auto mt-8 px-2">
         <div class="bg-white dark:bg-gray-600 dark:text-white rounded-lg p-8 shadow-lg hover:shadow-2xl transition duration-500">
-            <h3 class="text-xl font-semibold">{{ $report->reportType->report_type_name }}</h3>
-            <p class="text-gray-600 dark:text-white">{{ $report->report_title }}</p>
-            <hr class="my-4">
+            <div class="flex items-center">
+                <h3 class="text-xl font-semibold">{{ $report->reportType->report_type_name }}</h3>
+                <p class="text-gray-600 dark:text-white ml-3">{{ $report->contact_at }}</p>
+            </div>
+            <p class="text-gray-600 dark:text-white mt-2">{{ $report->report_title }}</p>
+            <hr class="my-2">
 
             <div class="grid gap-4 sm:grid-cols-2">
                 <div>
@@ -36,10 +36,7 @@
             <hr class="my-4">
             
             <div class="grid gap-4 sm:grid-cols-2">
-                <div>
-                    <p class="text-blue-400 font-semibold text-sm">対応日付</p>
-                    <p class="text-gray-600 dark:text-white">{{ $report->contact_at }}</p>
-                </div>
+
                 <div>
                     <p class="text-blue-400 font-semibold text-sm">対応形式</p>
                     <p class="text-gray-600 dark:text-white">{{ $report->contactType->contact_type_name }}</p>
@@ -73,7 +70,7 @@
             @foreach ($report->comments as $comment)
                 <div class="bg-white shadow-md rounded-md overflow-hidden mt-4 @if ($comment->user_id === Auth::id()) ml-20  @else mr-20 @endif">
                     <div class="px-4 py-1 bg-gray-300 flex @if ($comment->user_id === Auth::id()) justify-end  @else  @endif">
-                        <strong class="text-blue-700 mr-3">{{ $comment->user->name }}</strong>
+                        <strong class="text-blue-700 mr-3">{{ $comment->user->user_name }}</strong>
                         <div>{{ $comment->created_at->diffForHumans() }}</div>
                     </div>
                     <div class="px-4 py-2">

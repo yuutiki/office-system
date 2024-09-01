@@ -182,6 +182,7 @@ Route::middleware(['auth'])->group(function () {
     // Route::resource('/estimate' , EstimateController::class);
 
     // notification
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::post('/notifications/{notification}/read', [NotificationController::class, 'read'])->name('notifications.read');
     Route::post('/notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.read-all');
 
@@ -235,6 +236,9 @@ Route::middleware(['auth'])->group(function () {
     // Route::get('/corporations/download/{filename}', [CorporationController::class, 'downloadCsv'])->name('corporations.download');
 
     Route::resource('/password-policy', PasswordPolicyController::class);
+
+    // routes/web.php
+
 
 });
 

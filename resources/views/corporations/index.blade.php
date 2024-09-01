@@ -82,9 +82,11 @@
         </div>
     </x-slot>
 
+    <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
+
     <div class="relative bg-white dark:bg-gray-800 rounded-t-md md:w-auto md:ml-14 md:mr-2 m-auto shadow-md  dark:text-gray-900 mt-4">
         <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
-            {{-- ヘッダ：検索欄 --}}
+            <!-- ヘッダ：検索欄 -->
             <div class="w-full md:w-3/4">
                 <form method="GET" action="{{ route('corporations.index') }}" id="search_form" class="flex items-center">
                     @csrf
@@ -96,7 +98,7 @@
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                 </svg>
                             </div>
-                            <input type="search" id="corporation_num" name="corporation_num" value="@if (isset($CorporationNum)){{$CorporationNum}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="法人№" tabindex="1">
+                            <input type="search" id="corporation_num" name="corporation_num" value="@if (isset($CorporationNum)){{$CorporationNum}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="法人№">
                         </div>
                         <div class="relative w-full mt-2 md:ml-2 md:mt-0">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -104,7 +106,7 @@
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                 </svg>
                             </div>
-                            <input type="search" id="corporation_name" name="corporation_name" value="@if (isset($CorporationName)){{$CorporationName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="法人名称 / カナ名称 / 法人略称" tabindex="1">
+                            <input type="search" id="corporation_name" name="corporation_name" value="@if (isset($CorporationName)){{$CorporationName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="法人名称 / カナ名称 / 法人略称">
                         </div>
                         <div class="relative w-full mt-2 md:ml-2 md:mt-0">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -112,44 +114,113 @@
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                 </svg>
                             </div>
-                            <input type="search" id="invoice_num" name="invoice_num" value="@if (isset($invoiceNum)){{$invoiceNum}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="インボイス番号" tabindex="1">
-                        </div>
-                        
-                        <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-                            <select name="trade_status" id="trade_status" class="block w-full p-2 pl-4 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" tabindex="1">
-                                <option value="">取引状況すべて</option>
-                                <option value="0" @selected($tradeStatus === '0')>取引中</option>
-                                <option value="1" @selected($tradeStatus === '1')>取引停止中</option>
-                            </select>
-                        </div>
-                        <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-                            <select name="tax_status" id="tax_status" class="block w-full p-2 pl-4 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" tabindex="1">
-                                <option value="">課税/免税</option>
-                                <option value="0" @selected($taxStatus === '0')>未確認</option>
-                                <option value="1" @selected($taxStatus === '1')>課税</option>
-                                <option value="2" @selected($taxStatus === '2')>免税</option>
-                            </select>
+                            <input type="search" id="invoice_num" name="invoice_num" value="@if (isset($invoiceNum)){{$invoiceNum}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="インボイス番号">
                         </div>
 
                         <div class="flex mt-2 md:mt-0">
-                            {{-- 検索ボタン --}}
-                            <button type="submit" id="search-button" form="search_form" class="p-2.5 w-full md:ms-2 text-sm font-medium text-white bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" tabindex="1">
-                                <div class="flex items-center">
-                                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                                    </svg>
-                                    <span class="md:hidden mx-auto">検索</span>
+                            <div class="flex flex-col justify-end  w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
+                                <button type="button" onclick="showModal()" class="flex w-auto items-center justify-center md:ms-2 px-4 py-2 text-sm font-medium text-white rounded-sm bg-indigo-700 hover:bg-indigo-800 focus:ring-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                                    <div class="whitespace-nowrap">{{ __('詳細条件') }}</div>
+                                </button>
+                                <div class="flex mt-4 md:mt-0">
+                                    <!-- 検索ボタン -->
+                                    <button type="submit" id="search-button" form="search_form" class="p-2.5 w-full md:ms-2 text-sm font-medium text-white bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" tabindex="">
+                                        <div class="flex items-center">
+                                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                            </svg>
+                                            <span class="md:hidden mx-auto">検索</span>
+                                        </div>
+                                    </button>
+                                    <!-- リセットボタン -->
+                                    <button type="button" value="reset" id="clear" form="search-form" class="p-2.5 w-full ms-2 text-sm font-medium text-white bg-gray-500 rounded border border-gray-500 dark:border-gray-500 hover:bg-gray-600 focus:ring-2 focus:outline-none dark:bg-gray-500 dark:hover:bg-gray-700 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" tabindex="">
+                                        <div class="flex items-center">
+                                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 1v5h-5M2 19v-5h5m10-4a8 8 0 0 1-14.947 3.97M1 10a8 8 0 0 1 14.947-3.97"/>
+                                            </svg>
+                                            <span class="md:hidden mx-auto">リセット</span>
+                                        </div>
+                                    </button>
                                 </div>
-                            </button>
-                            {{-- リセットボタン --}}
-                            <button type="button" value="reset" id="clear" form="search-form" class="p-2.5 w-full ms-2 text-sm font-medium text-white bg-gray-500 rounded border border-gray-500 dark:border-gray-500 hover:bg-gray-600 focus:ring-2 focus:outline-none dark:bg-gray-500 dark:hover:bg-gray-700 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" tabindex="1">
-                                <div class="flex items-center">
-                                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 1v5h-5M2 19v-5h5m10-4a8 8 0 0 1-14.947 3.97M1 10a8 8 0 0 1 14.947-3.97"/>
-                                    </svg>
-                                    <span class="md:hidden mx-auto">リセット</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 詳細検索 Modal -->
+                    <div id="detailSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center overflow-y-scroll z-50 hidden animate-slide-in-top">
+                        <div class="max-h-full w-full max-w-3xl">
+                            <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
+                                <!-- Modal header -->
+                                <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
+                                    <h3 class="text-xl font-medium text-gray-900 dark:text-white">
+                                        詳細検索画面
+                                    </h3>
+                                    <button type="button" onclick="hideModal()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                                        <svg class="w-3 h-3"xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                        </svg>
+                                    </button>
                                 </div>
-                            </button>
+                                <!-- Modal body -->
+                                <label for="clientNumber" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">課税/免税</label>
+                                <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
+                                    <li class="flex justify-center items-center">
+                                        <input type="checkbox" id="tax_status-1" @checked(in_array(0, $filters['tax_status_ids'] ?? [])) value="0" name="tax_status_ids[]" class="hidden peer">
+                                        <label for="tax_status-1" class="inline-flex  justify-between w-full p-2 rounded-lg cursor-pointer text-blue-600 dark:text-blue-500 dark:hover:text-white dark:peer-checked:text-white peer-checked:text-gray-600   border-2 border-gray-200 dark:border-blue-500 peer-checked:border-blue-500 peer-checked:hover:border-blue-500 dark:hover:border-blue-600   bg-white dark:peer-checked:bg-blue-500  hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-blue-600">
+                                            <div class="w-full text-sm font-medium text-center">未確認</div>
+                                        </label>
+                                    </li>
+                                    <li class="flex justify-center items-center">
+                                        <input type="checkbox" id="tax_status-2" @checked(in_array(1, $filters['tax_status_ids'] ?? [])) value="1" name="tax_status_ids[]" class="hidden peer">
+                                        <label for="tax_status-2" class="inline-flex  justify-between w-full p-2 rounded-lg cursor-pointer text-blue-600 dark:text-blue-500 dark:hover:text-white dark:peer-checked:text-white peer-checked:text-gray-600   border-2 border-gray-200 dark:border-blue-500 peer-checked:border-blue-500 peer-checked:hover:border-blue-500 dark:hover:border-blue-600   bg-white dark:peer-checked:bg-blue-500  hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-blue-600">
+                                            <div class="w-full text-sm font-medium text-center">課税</div>
+                                        </label>
+                                    </li>
+                                    <li class="flex justify-center items-center">
+                                        <input type="checkbox" id="tax_status-3" @checked(in_array(2, $filters['tax_status_ids'] ?? [])) value="2" name="tax_status_ids[]" class="hidden peer">
+                                        <label for="tax_status-3" class="inline-flex  justify-between w-full p-2 rounded-lg cursor-pointer text-blue-600 dark:text-blue-500 dark:hover:text-white dark:peer-checked:text-white peer-checked:text-gray-600   border-2 border-gray-200 dark:border-blue-500 peer-checked:border-blue-500 peer-checked:hover:border-blue-500 dark:hover:border-blue-600   bg-white dark:peer-checked:bg-blue-500  hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-blue-600">
+                                            <div class="w-full text-sm font-medium text-center">免税</div>
+                                        </label>
+                                    </li>
+                                </ul>
+
+                                <label for="clientNumber" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">取引状況</label>
+                                <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
+                                    <li class="flex justify-center items-center">
+                                        <input type="checkbox" id="trade_status-1" @checked(in_array(0, $filters['trade_status_ids'] ?? [])) value="0" name="trade_status_ids[]" class="hidden peer">
+                                        <label for="trade_status-1" class="inline-flex  justify-between w-full p-2 rounded-lg cursor-pointer text-blue-600 dark:text-blue-500 dark:hover:text-white dark:peer-checked:text-white peer-checked:text-gray-600   border-2 border-gray-200 dark:border-blue-500 peer-checked:border-blue-500 peer-checked:hover:border-blue-500 dark:hover:border-blue-600   bg-white dark:peer-checked:bg-blue-500  hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-blue-600">
+                                            <div class="w-full text-sm font-medium text-center">取引中</div>
+                                        </label>
+                                    </li>
+                                    <li class="flex justify-center items-center">
+                                        <input type="checkbox" id="trade_status-2" @checked(in_array(1, $filters['trade_status_ids'] ?? [])) value="1" name="trade_status_ids[]" class="hidden peer">
+                                        <label for="trade_status-2" class="inline-flex  justify-between w-full p-2 rounded-lg cursor-pointer text-blue-600 dark:text-blue-500 dark:hover:text-white dark:peer-checked:text-white peer-checked:text-gray-600   border-2 border-gray-200 dark:border-blue-500 peer-checked:border-blue-500 peer-checked:hover:border-blue-500 dark:hover:border-blue-600   bg-white dark:peer-checked:bg-blue-500  hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-blue-600">
+                                            <div class="w-full text-sm font-medium text-center">取引停止中</div>
+                                        </label>
+                                    </li>
+                                </ul>
+
+                                {{-- <label for="" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">営業段階</label>
+                                <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
+                                    @foreach ($salesStages as $salesStage)
+                                        <li class="flex justify-center items-center">
+                                            <input type="checkbox" name="sales_stage_ids[]" value="{{ $salesStage->id }}" @checked(in_array($salesStage->id, $filters['sales_stage_ids'] ?? [])) id="salesStage-{{ $salesStage->id }}" class="sr-only peer" tabindex="1">
+                                            <label for="salesStage-{{ $salesStage->id }}" class="inline-flex justify-between w-full p-2 rounded-lg cursor-pointer text-blue-600 dark:text-blue-500 dark:hover:text-white dark:peer-checked:text-white peer-checked:text-gray-600 border-2 border-gray-200 dark:border-blue-500 peer-checked:border-blue-500 peer-checked:hover:border-blue-500 dark:hover:border-blue-600 bg-white dark:peer-checked:bg-blue-500 hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-blue-600 focus:outline-none peer-focus:ring-2 peer-focus:ring-indigo-500 peer-focus:ring-offset-2 dark:peer-focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                                                <div class="w-full text-sm font-medium text-center">{{ $salesStage->sales_stage_name }}</div>
+                                            </label>
+                                        </li>
+                                    @endforeach
+                                </ul> --}}
+                                    
+                                <!-- Modal footer -->
+                                <div class="flex items-center justify-end p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                                    <button type="button" onclick="hideModal()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                        閉じる
+                                    </button> 
+                                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        検索
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -337,8 +408,15 @@
                                 </span>
                             @endif
                         </td>
-                        <td class="px-1 py-1 whitespace-nowrap w-44">
+                        <td class="px-1 py-1 whitespace-nowrap w-44 items-center">
                             {{$corporation->invoice_num}}
+                            @if ($corporation->invoice_num && $corporation->is_active_invoice)
+                                <span class="inline-flex items-center justify-center w-5 h-5 me-2 text-sm font-semibold text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">
+                                    <svg class="w-2.5 h-2.5 text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
+                                    </svg>
+                                </span>
+                            @endif
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap w-44">
                             @if ($corporation->is_stop_trading == 1)
@@ -415,4 +493,65 @@
         text-decoration: underline
     }
 </style>
+
+
+
+    <script>
+        // モーダルを表示するための関数
+        function showModal() {
+            // モーダルの要素を取得
+            const modal = document.getElementById('detailSearchModal');
+            //背後の操作不可を有効
+            const overlay = document.getElementById('overlay').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+    
+            // モーダルを表示するためのクラスを追加
+            modal.classList.remove('hidden');
+        }
+    
+        // モーダルを非表示にするための関数
+        function hideModal() {
+            // モーダルの要素を取得
+            const modal = document.getElementById('detailSearchModal');
+            //背後の操作不可を解除
+            const overlay = document.getElementById('overlay').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+    
+            // モーダルを非表示にするためのクラスを削除
+            modal.classList.add('hidden');
+        }
+    
+        // 検索ボタンを押した時の処理
+        function searchClient() {
+            const clientName = document.getElementById('clientName').value;
+            const clientNumber = document.getElementById('clientNumber').value;
+            const departmentId = document.getElementById('departmentId').value;
+    
+            fetch('/client/search', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ clientName, clientNumber, departmentId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const searchResultsContainer = document.getElementById('searchResultsContainer');
+                searchResultsContainer.innerHTML = '';
+    
+                data.forEach(result => {
+                const resultElement = document.createElement('tr');
+                resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
+                resultElement.innerHTML = `
+                    <td class="py-2 pl-5 cursor-pointer" onclick="setClient('${result.client_corporation.corporation_name}', '${result.client_num}', '${result.client_name}', '${result.department_id}')">${result.client_name}</td>
+                    <td class="py-2 ml-2">${result.client_num}</td>
+                    <td class="py-2 ml-2">${result.department.department_name}</td>
+                `;
+                searchResultsContainer.appendChild(resultElement);
+                });
+            });
+            }
+
+    </script>
 </x-app-layout>

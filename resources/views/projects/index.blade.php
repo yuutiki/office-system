@@ -141,7 +141,7 @@
                             </div> --}}
                             <div class="flex flex-col justify-end  w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
                                 <button type="button" onclick="showModal()" class="flex w-auto items-center justify-center md:ms-2 px-4 py-2 text-sm font-medium text-white rounded-sm bg-blue-700 hover:bg-blue-800 focus:ring-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
-                                    <div class="whitespace-nowrap">{{ __('詳細検索') }}</div>
+                                    <div class="whitespace-nowrap">{{ __('詳細条件') }}</div>
                                 </button>
                                 <div class="flex mt-2 md:mt-0">
                                     {{-- 検索ボタン --}}

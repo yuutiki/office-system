@@ -33,7 +33,7 @@
             </ul>
         </div>
         
-        {{-- 基本情報タブ --}}
+        <!-- 基本情報タブ -->
         <div class="hidden md:p-4 p-2 mb-4 rounded bg-gray-50 dark:bg-gray-800" id="base" role="tabpanel" aria-labelledby="base-tab">
 
             <!-- 顧客検索ボタン(画面小) -->

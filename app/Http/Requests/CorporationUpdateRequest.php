@@ -14,24 +14,6 @@ class CorporationUpdateRequest extends FormRequest
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
-     */
-    public function rules(): array
-    {
-        return [
-            'corporation_num' => 'size:6',
-            'corporation_name' => 'required|max:1024',
-            'corporation_kana_name' => 'required|max:1024',
-            'corporation_short_name' => 'required|max:1024',
-            'is_stop_trading' => 'nullable|boolean',
-            'stop_trading_reason' => 'required_if:is_stop_trading,true',
-            'tax_status' => 'required|integer|in:0,1,2',
-        ];
-    }
-
     // prepareForValidation メソッドは、フォームリクエストクラス内で指定したバリデーションの前に呼び出されます。
     public function prepareForValidation()
     {
@@ -56,17 +38,29 @@ class CorporationUpdateRequest extends FormRequest
         }        
     }
 
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'corporation_num' => 'size:6',
+            'corporation_name' => 'required|max:1024',
+            'corporation_kana_name' => 'required|max:1024',
+            'corporation_short_name' => 'required|max:1024',
+            'invoice_num' => ['nullable', 'string', 'size:14', 'regex:/^T\d{13}$/'],
+            'invoice_at' => ['nullable', 'date'],
+            'is_stop_trading' => 'nullable|boolean',
+            'stop_trading_reason' => 'required_if:is_stop_trading,true',
+            'tax_status' => 'required|integer|in:0,1,2',
+        ];
+    }
+
     protected function failedValidation($validator)
     {
         session()->flash('error', '入力内容にエラーがあります。');
         parent::failedValidation($validator);
-    }
-
-
-
-    public function validationData()
-    {
-        // サニタイズ後のデータを取得
-        return $this->all();
     }
 }

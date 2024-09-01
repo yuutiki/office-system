@@ -165,8 +165,10 @@
         <div class="hidden md:p-4 p-2 rounded bg-gray-50 dark:bg-gray-800 mb-4" id="user" role="tabpanel" aria-labelledby="user-tab">
             <div>
                 <div class="relative bg-white dark:bg-gray-700 rounded-t md:w-auto shadow-md  dark:text-gray-900 mt-4 border border-gray-600">
-                    <div class="flex flex-col justify-end p-2 space-y-1 md:flex-row md:space-y-0 md:space-x-4">
-
+                    <div class="flex flex-col justify-between p-2 space-y-1 md:flex-row md:space-y-0 md:space-x-4">
+                        <div class="mt-1 mb-1 px-4">
+                            {{ $users->withQueryString()->links('vendor.pagination.secondary-pagination') }}  
+                        </div> 
                         <!-- ユーザ検索モーダルを表示するボタン -->
                         <div class="flex flex-col items-stretch flex-shrink-0 w-full md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
                             <button type="button"  onclick="showUserSearchModal()" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">

@@ -87,6 +87,7 @@ class ReportController extends Controller
             'action_url' => route('reports.show', ['report' => $report->id]), // 例: 日報を表示するURL
             'reporter' => $report->reporter->name,
             'message' => '未読の日報があります',
+            'content_title' => $report->report_title,
             'source_model' => Report::class,
             'source_id' => $report->id,
             // 他の通知に関する情報をここで設定
