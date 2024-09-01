@@ -113,27 +113,27 @@ class ReportController extends Controller
         $comments = $report->comments;
 
         
-    // ログインユーザーの通知を取得し、既読状態にする
-    $user = auth()->user();
+        // ログインユーザーの通知を取得し、既読状態にする
+        $user = auth()->user();
 
-    // ログインユーザーの未読通知を取得
-    $unreadNotifications = $user->unreadNotifications;
+        // ログインユーザーの未読通知を取得
+        $unreadNotifications = $user->unreadNotifications;
 
 
-    // 未読通知を走査して対応する通知を既読にする
-    foreach ($unreadNotifications as $notification) {
-        // 通知データをデコード
-        $notificationData = $notification->data;
+        // 未読通知を走査して対応する通知を既読にする
+        foreach ($unreadNotifications as $notification) {
+            // 通知データをデコード
+            $notificationData = $notification->data;
 
-        // 通知データから関連する報告書の情報を取得する
-        $notificationReportId = $notificationData['notification_data']['source_id'];
+            // 通知データから関連する報告書の情報を取得する
+            $notificationReportId = $notificationData['notification_data']['source_id'];
 
-        // 通知が特定の報告書に関連しているかチェックする
-        if ($notificationReportId == $report->id) {
-            // 通知が関連している場合は既読状態にする
-            $notification->markAsRead();
+            // 通知が特定の報告書に関連しているかチェックする
+            if ($notificationReportId == $report->id) {
+                // 通知が関連している場合は既読状態にする
+                $notification->markAsRead();
+            }
         }
-    }
 
 
         return view('reports.show',compact('report'));

@@ -331,15 +331,15 @@
                                 document.querySelector('input[name="account_type"]:checked').dispatchEvent(new Event('change'));
                             </script>
                         
-                            <div class="text-lg font-bold text-gray-800 mb-1 flex">口座番号
+                            <div class="text-lg font-bold text-gray-800 mb-1 flex items-center">口座番号
                                 <div class="flex items-center">
-                                    <button data-tooltip-target="tooltip-right" data-tooltip-placement="right" type="button" class="ms-3 mb-2 mr-2 md:mb-0 text-white bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-1.5 py-[1px] text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" tabindex="-1">
+                                    <button data-tooltip-target="tooltip-top" data-tooltip-placement="top" type="button" class="ms-3 mr-2 md:mb-0 text-white bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-1.5 py-[1px] text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" tabindex="-1">
                                         ?
                                     </button>
                                     <div class="text-sm">口座番号が7桁以外の場合は？</div>
                                 </div>
     
-                                <div id="tooltip-right" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-1.5 text-sm font-medium text-white bg-gray-900 rounded-xl shadow-sm opacity-0 tooltip dark:bg-gray-600">
+                                <div id="tooltip-top" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-1.5 text-sm font-medium text-white bg-gray-900 rounded-xl shadow-sm opacity-0 tooltip dark:bg-gray-600">
                                     <span class="text-xs">
                                         ゆうちょ銀行で8桁の場合は最後の「1」を省略、
                                         <br>

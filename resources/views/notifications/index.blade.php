@@ -22,7 +22,6 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-100">
-                    <h2 class="text-2xl font-semibold mb-4">通知一覧</h2>
                     <div class="space-y-4">
                         @foreach ($notifications as $notification)
                             <div class="flex items-center space-x-4 p-4 {{ $notification->read_at ? 'bg-gray-700' : 'bg-gray-500' }} rounded-lg">
@@ -33,6 +32,9 @@
                                     @else
                                         <div class="h-10 w-10 rounded-full bg-gray-500"></div>
                                     @endif
+                                </div>
+                                <div>
+                                    {{ $notification->data['content_data']['reporter']['user_name'] }}
                                 </div>
                                 <div class="flex-grow">
                                     <p class="font-semibold">
