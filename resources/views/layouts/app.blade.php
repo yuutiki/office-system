@@ -149,19 +149,19 @@
         
             if (dial.classList.contains('active')) {
                 line1.classList.remove('top-[19px]','left-3');
-                line1.classList.add('top-[50%]', 'translate-y-[0px]', 'rotate-[-135deg]', 'w-[50%]', 'left-3.5');
+                line1.classList.add('top-[50%]', 'translate-y-[0px]', 'rotate-[-45deg]', 'w-[50%]', 'left-3.5');
                 
                 line2.classList.add('opacity-0');
 
                 line3.classList.remove('top-[35px]','left-3');
-                line3.classList.add('top-[50%]', '-translate-y-[0px]', 'rotate-[135deg]', 'w-[50%]', 'left-3.5');
+                line3.classList.add('top-[50%]', '-translate-y-[0px]', 'rotate-[45deg]', 'w-[50%]', 'left-3.5');
             } else {
-                line1.classList.remove('top-[50%]', 'translate-y-[0px]', 'rotate-[-135deg]', 'w-[50%]', 'left-3.5');
+                line1.classList.remove('top-[50%]', 'translate-y-[0px]', 'rotate-[-45deg]', 'w-[50%]', 'left-3.5');
                 line1.classList.add('top-[19px]','left-3');
 
                 line2.classList.remove('opacity-0');
                 
-                line3.classList.remove('top-[50%]', '-translate-y-[0px]', 'rotate-[135deg]', 'w-[50%]', 'left-3.5');
+                line3.classList.remove('top-[50%]', '-translate-y-[0px]', 'rotate-[45deg]', 'w-[50%]', 'left-3.5');
                 line3.classList.add('top-[35px]','left-3');
             }
         }
