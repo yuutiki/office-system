@@ -40,6 +40,41 @@
     @apply px-0.5 rounded dark:bg-gray-100 border-gray-700 border border-transparent dark:text-gray-900 tracking-widest hover:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 placeholder-gray-400 transition ease-in-out duration-150;
 }
 
+@layer components {
+    .checkbox-label {
+      @apply inline-flex justify-between w-full p-2 rounded-lg cursor-pointer
+             text-blue-600 dark:text-blue-500
+             border-2 border-gray-200 dark:border-blue-500
+             bg-white dark:bg-gray-800
+             transition-colors duration-300;
+    }
+  
+    /* PCでのホバー効果 */
+    @media (hover: hover) and (pointer: fine) {
+      .checkbox-label:hover {
+        @apply bg-gray-50 border-blue-500
+               dark:bg-blue-600 dark:border-blue-600 dark:text-white
+               dark:peer-checked:text-white peer-checked:text-gray-600
+               peer-checked:border-blue-500 peer-checked:hover:border-blue-500 ;
+      }
+    }
+  
+    /* スマートフォンでのアクティブ効果 */
+    @media (hover: none) and (pointer: coarse) {
+      .checkbox-label:active {
+        @apply bg-gray-100 border-blue-600
+               dark:bg-blue-700 dark:border-blue-700 dark:text-white
+               dark:peer-checked:text-white peer-checked:text-gray-600
+               peer-checked:border-blue-500 peer-checked:hover:border-blue-500 ;
+      }
+    }
+  
+    /* チェック状態 (共通) */
+    .peer:checked + .checkbox-label {
+      @apply bg-blue-500 border-blue-500 text-white
+             dark:bg-blue-600 dark:border-blue-600 dark:text-white;
+    }
+  }
 
 
 
