@@ -417,6 +417,17 @@ class UserController extends Controller
         return response()->json($users);
     }
 
+    public function searchUsers2(Request $request)
+    {
+        $search = $request->input('query', '');
+        $users = User::where('name', 'like', "%{$search}%")
+                     ->orWhere('email', 'like', "%{$search}%")
+                     ->limit(50)
+                     ->get(['id', 'name', 'email']);
+        
+        return response()->json($users);
+    }
+
     public function addGroupsToUser(Request $request)
     {
         // クライアントからのリクエストからグループIDとユーザIDリストを取得

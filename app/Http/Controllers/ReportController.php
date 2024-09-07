@@ -31,14 +31,25 @@ class ReportController extends Controller
         $this->notificationService = $notificationService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $per_page = 25;
-        $reports = Report::with('client')->sortable()->orderby('contact_at','desc')->paginate($per_page);
-        $count = $reports->count();
+        $per_page = config('constants.perPage');
+        // $reports = Report::with('client', 'user')->sortable()->orderby('contact_at','desc')->paginate($per_page);
         $user = User::all();
+        $selectedUserId = $request->selected_user_id;
 
-        return view('reports.index',compact('reports' , 'user' , 'count'));
+        //検索Query
+        $reportQuery = Report::with('client')->sortable()->orderby('contact_at','desc');
+
+        if (!empty($selectedUserId)) {
+            $reportQuery->where('user_id', $selectedUserId);
+        }
+
+        $reports = $reportQuery->paginate($per_page);
+        $count = $reports->count();
+
+
+        return view('reports.index',compact('reports' , 'user' , 'count', 'selectedUserId'));
     }
 
     public function create()

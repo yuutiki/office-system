@@ -106,7 +106,7 @@ window.addEventListener('resize', function() {
   var barWidth;
   if (width < 768) {
       // スマートフォンサイズの場合
-      barWidth = '20%';
+      barWidth = '10';
   } else {
       // それ以外の場合
       barWidth = '30%';

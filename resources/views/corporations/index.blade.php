@@ -165,19 +165,19 @@
                                 <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
                                     <li class="flex justify-center items-center">
                                         <input type="checkbox" id="tax_status-1" @checked(in_array(0, $filters['tax_status_ids'] ?? [])) value="0" name="tax_status_ids[]" class="hidden peer">
-                                        <label for="tax_status-1" class="inline-flex  justify-between w-full p-2 rounded-lg cursor-pointer text-blue-600 dark:text-blue-500 dark:hover:text-white dark:peer-checked:text-white peer-checked:text-gray-600   border-2 border-gray-200 dark:border-blue-500 peer-checked:border-blue-500 peer-checked:hover:border-blue-500 dark:hover:border-blue-600   bg-white dark:peer-checked:bg-blue-500  hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-blue-600">
+                                        <label for="tax_status-1" class="checkbox-label">
                                             <div class="w-full text-sm font-medium text-center">未確認</div>
                                         </label>
                                     </li>
                                     <li class="flex justify-center items-center">
                                         <input type="checkbox" id="tax_status-2" @checked(in_array(1, $filters['tax_status_ids'] ?? [])) value="1" name="tax_status_ids[]" class="hidden peer">
-                                        <label for="tax_status-2" class="inline-flex  justify-between w-full p-2 rounded-lg cursor-pointer text-blue-600 dark:text-blue-500 dark:hover:text-white dark:peer-checked:text-white peer-checked:text-gray-600   border-2 border-gray-200 dark:border-blue-500 peer-checked:border-blue-500 peer-checked:hover:border-blue-500 dark:hover:border-blue-600   bg-white dark:peer-checked:bg-blue-500  hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-blue-600">
+                                        <label for="tax_status-2" class="checkbox-label">
                                             <div class="w-full text-sm font-medium text-center">課税</div>
                                         </label>
                                     </li>
                                     <li class="flex justify-center items-center">
                                         <input type="checkbox" id="tax_status-3" @checked(in_array(2, $filters['tax_status_ids'] ?? [])) value="2" name="tax_status_ids[]" class="hidden peer">
-                                        <label for="tax_status-3" class="inline-flex  justify-between w-full p-2 rounded-lg cursor-pointer text-blue-600 dark:text-blue-500 dark:hover:text-white dark:peer-checked:text-white peer-checked:text-gray-600   border-2 border-gray-200 dark:border-blue-500 peer-checked:border-blue-500 peer-checked:hover:border-blue-500 dark:hover:border-blue-600   bg-white dark:peer-checked:bg-blue-500  hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-blue-600">
+                                        <label for="tax_status-3" class="checkbox-label">
                                             <div class="w-full text-sm font-medium text-center">免税</div>
                                         </label>
                                     </li>
@@ -187,13 +187,13 @@
                                 <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
                                     <li class="flex justify-center items-center">
                                         <input type="checkbox" id="trade_status-1" @checked(in_array(0, $filters['trade_status_ids'] ?? [])) value="0" name="trade_status_ids[]" class="hidden peer">
-                                        <label for="trade_status-1" class="inline-flex  justify-between w-full p-2 rounded-lg cursor-pointer text-blue-600 dark:text-blue-500 dark:hover:text-white dark:peer-checked:text-white peer-checked:text-gray-600   border-2 border-gray-200 dark:border-blue-500 peer-checked:border-blue-500 peer-checked:hover:border-blue-500 dark:hover:border-blue-600   bg-white dark:peer-checked:bg-blue-500  hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-blue-600">
+                                        <label for="trade_status-1" class="checkbox-label">
                                             <div class="w-full text-sm font-medium text-center">取引中</div>
                                         </label>
                                     </li>
                                     <li class="flex justify-center items-center">
                                         <input type="checkbox" id="trade_status-2" @checked(in_array(1, $filters['trade_status_ids'] ?? [])) value="1" name="trade_status_ids[]" class="hidden peer">
-                                        <label for="trade_status-2" class="inline-flex  justify-between w-full p-2 rounded-lg cursor-pointer text-blue-600 dark:text-blue-500 dark:hover:text-white dark:peer-checked:text-white peer-checked:text-gray-600   border-2 border-gray-200 dark:border-blue-500 peer-checked:border-blue-500 peer-checked:hover:border-blue-500 dark:hover:border-blue-600   bg-white dark:peer-checked:bg-blue-500  hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-blue-600">
+                                        <label for="trade_status-2" class="checkbox-label">
                                             <div class="w-full text-sm font-medium text-center">取引停止中</div>
                                         </label>
                                     </li>

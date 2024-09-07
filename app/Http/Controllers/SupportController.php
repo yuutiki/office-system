@@ -86,7 +86,7 @@ class SupportController extends Controller
         }
 
         // ページネーション設定
-        $per_page = 50;
+        $per_page = config('constants.perPage');
         $supports = $supportsQuery->paginate($per_page);
         $count = $supports->total(); // ページネーション後の総数を取得
 

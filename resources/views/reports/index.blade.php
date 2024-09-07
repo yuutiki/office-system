@@ -51,6 +51,141 @@
                                 <input type="hidden" name="user_id" id="selectedUserId">
                             </div> --}}
                         {{-- </div> --}}
+                        <input type="hidden" id="selected-user-id" name="selected_user_id" value="{{ $selectedUserId }}">
+                        <div id="user-dropdown" class="relative w-full  md:ml-2 md:mt-0">
+                            <button type="button" id="dropdown-toggle" class="w-full px-4 py-1.5 text-left bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400">
+                              <span id="selected-user-display" class="text-white">
+                                @if($selectedUserId)
+                                    {{ $user->find($selectedUserId)->user_name ?? 'ユーザーを選択' }}
+                                @else
+                                    ユーザーを選択
+                                @endif</span>
+                              <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                  <path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                              </span>
+                            </button>
+                            <div id="dropdown-menu" class="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg hidden">
+                              <div class="p-2">
+                                <input id="user-search" type="text" name="user_id" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-800 dark:text-white" placeholder="ユーザーを検索...">
+                              </div>
+                              <ul id="user-list" class="max-h-60 overflow-auto">
+                                <!-- ユーザーリストはJavaScriptで動的に追加されます -->
+                              </ul>
+                            </div>
+                          </div>
+
+                        <!-- JavaScript -->
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                const dropdownToggle = document.getElementById('dropdown-toggle');
+                                const dropdownMenu = document.getElementById('dropdown-menu');
+                                const userSearch = document.getElementById('user-search');
+                                const userList = document.getElementById('user-list');
+                                const selectedUserDisplay = document.getElementById('selected-user-display');
+                                const selectedUserId = document.getElementById('selected-user-id');
+                            
+                                let debounceTimer;
+                            
+                                function toggleDropdown() {
+                                    dropdownMenu.classList.toggle('hidden');
+                                    if (!dropdownMenu.classList.contains('hidden')) {
+                                        userSearch.focus();
+                                    }
+                                }
+                            
+                                function closeDropdown() {
+                                    dropdownMenu.classList.add('hidden');
+                                }
+                            
+                                function displayUsers(users) {
+                                    userList.innerHTML = '';
+                                    users.forEach((user) => {
+                                        const li = document.createElement('li');
+                                        li.className = 'px-4 py-2 hover:bg-gray-600 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-gray-400 focus:dark:text-blue-400';
+                                        li.setAttribute('tabindex', '0');
+                                        li.setAttribute('role', 'option');
+                                        li.innerHTML = `
+                                            <div class="flex items-center dark:text-white dark:focus:text-blue-400">
+                                                <div>
+                                                    <div class="font-semibold">${user.user_name}</div>
+                                                    <div class="text-sm text-gray-500 dark:text-gray-300">${user.email}</div>
+                                                </div>
+                                            </div>
+                                        `;
+                                        li.addEventListener('click', () => selectUser(user));
+                                        li.addEventListener('keydown', (e) => {
+                                            if (e.key === 'Enter') {
+                                                selectUser(user);
+                                            }
+                                        });
+                                        userList.appendChild(li);
+                                    });
+                            
+                                    makeListItemsTabbable();
+                                }
+                            
+                                function makeListItemsTabbable() {
+                                    const listItems = userList.querySelectorAll('li');
+                                    listItems.forEach((item) => {
+                                        item.setAttribute('tabindex', '0');
+                                    });
+                                }
+                            
+                                function selectUser(user) {
+                                    selectedUserDisplay.textContent = user.user_name;
+                                    selectedUserId.value = user.id;
+                                    closeDropdown();
+                                    userSearch.value = '';
+                                }
+                            
+                                async function fetchUsers(userName = '') {
+                                    try {
+                                        const response = await fetch(`/search-users?user_name=${encodeURIComponent(userName)}`, {
+                                            headers: {
+                                                'X-Requested-With': 'XMLHttpRequest',
+                                                'Accept': 'application/json'
+                                            }
+                                        });
+                                        if (!response.ok) {
+                                            throw new Error('Network response was not ok');
+                                        }
+                                        const users = await response.json();
+                                        displayUsers(users);
+                                    } catch (error) {
+                                        console.error('Error fetching users:', error);
+                                    }
+                                }
+                            
+                                dropdownToggle.addEventListener('click', toggleDropdown);
+                            
+                                userSearch.addEventListener('input', (e) => {
+                                    clearTimeout(debounceTimer);
+                                    debounceTimer = setTimeout(() => {
+                                        fetchUsers(e.target.value);
+                                    }, 300);
+                                });
+                            
+                                userSearch.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Enter') {
+                                        e.preventDefault();
+                                        fetchUsers(e.target.value);
+                                    }
+                                });
+                            
+                                document.addEventListener('click', (e) => {
+                                    if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                                        closeDropdown();
+                                    }
+                                });
+                            
+                                // 初期化時にユーザーデータを取得
+                                fetchUsers();
+                            });
+                            </script>
+
+
                         <div class="flex mt-2 md:mt-0">
                             <div class="w-full md:ml-2">
                                 <button id="filterDropdownButton" data-dropdown-toggle="filterDropdown" class="z-50 flex items-center justify-center w-full px-4 py-2 text-sm text-gray-900 bg-white border border-gray-200 rounded md:w-auto focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
