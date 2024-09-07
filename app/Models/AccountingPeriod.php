@@ -19,6 +19,11 @@ class AccountingPeriod extends Model
         'updated_by'
     ];
 
+    protected $casts = [
+        'period_start_at' => 'datetime',
+        'period_end_at' => 'datetime',
+    ];
+
     //GlobalObserverに定義されている作成者と更新者を登録するメソッド
     //なお、値を更新せずにupdateをかけても更新者は更新されない。
     protected static function boot()
@@ -32,6 +37,13 @@ class AccountingPeriod extends Model
         $start = Carbon::parse($this->period_start_at);
         $end = Carbon::parse($this->period_end_at);
         return $start->diffInMonths($end) + 1;
+    }
+
+    public function scopeCurrentPeriod($query)
+    {
+        return $query->where('period_start_at', '<=', now())
+                     ->where('period_end_at', '>=', now())
+                     ->first();
     }
 
     public function updatedBy()

@@ -4,8 +4,10 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\AccountingPeriod;
 use Illuminate\Http\Request;
 use App\Models\Client;
+use App\Models\Project;
 use App\Models\Support;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -34,7 +36,21 @@ class DashboardController extends Controller
             }
         }
 
-        return view('dashboard',compact('clientCount','mySupports','receivedAtArray'));
+        $currentPeriod = AccountingPeriod::currentPeriod();
+
+        if (!$currentPeriod) {
+            return view('dashboard')->with('error', '現在の計上期が見つかりません。');
+        }
+
+        $totalRevenue = Project::active()
+            ->whereHas('projectRevenues', function ($query) use ($currentPeriod) {
+                $query->whereBetween('revenue_year_month', [$currentPeriod->period_start_at, $currentPeriod->period_end_at]);
+            })
+            ->join('project_revenues', 'projects.id', '=', 'project_revenues.project_id')
+            ->whereBetween('project_revenues.revenue_year_month', [$currentPeriod->period_start_at, $currentPeriod->period_end_at])
+            ->sum('project_revenues.revenue');
+
+        return view('dashboard',compact('clientCount','mySupports','receivedAtArray', 'currentPeriod', 'totalRevenue'));
     }
 
     public function create()

@@ -58,6 +58,11 @@ class Project extends Model
         return $this->projectRevenues->sum('revenue');
     }
 
+    public function scopeActive($query)
+    {
+        return $query->where('sales_stage_id', '!=', '6');
+    }
+
 
 
     
