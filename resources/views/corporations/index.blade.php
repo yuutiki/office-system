@@ -164,19 +164,19 @@
                                 <label for="clientNumber" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">課税/免税</label>
                                 <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
                                     <li class="flex justify-center items-center">
-                                        <input type="checkbox" id="tax_status-1" @checked(in_array(0, $filters['tax_status_ids'] ?? [])) value="0" name="tax_status_ids[]" class="hidden peer">
+                                        <input type="checkbox" id="tax_status-1" @checked(in_array(0, $filters['tax_status_ids'] ?? [])) value="0" name="tax_status_ids[]" class="hidden peer touch-none">
                                         <label for="tax_status-1" class="checkbox-label">
                                             <div class="w-full text-sm font-medium text-center">未確認</div>
                                         </label>
                                     </li>
                                     <li class="flex justify-center items-center">
-                                        <input type="checkbox" id="tax_status-2" @checked(in_array(1, $filters['tax_status_ids'] ?? [])) value="1" name="tax_status_ids[]" class="hidden peer">
+                                        <input type="checkbox" id="tax_status-2" @checked(in_array(1, $filters['tax_status_ids'] ?? [])) value="1" name="tax_status_ids[]" class="hidden peer touch-none">
                                         <label for="tax_status-2" class="checkbox-label">
                                             <div class="w-full text-sm font-medium text-center">課税</div>
                                         </label>
                                     </li>
                                     <li class="flex justify-center items-center">
-                                        <input type="checkbox" id="tax_status-3" @checked(in_array(2, $filters['tax_status_ids'] ?? [])) value="2" name="tax_status_ids[]" class="hidden peer">
+                                        <input type="checkbox" id="tax_status-3" @checked(in_array(2, $filters['tax_status_ids'] ?? [])) value="2" name="tax_status_ids[]" class="hidden peer touch-none">
                                         <label for="tax_status-3" class="checkbox-label">
                                             <div class="w-full text-sm font-medium text-center">免税</div>
                                         </label>

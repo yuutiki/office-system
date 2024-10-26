@@ -129,25 +129,55 @@ class RoleGroupController extends Controller
                 'role_group_memo' => $request->role_group_memo,
             ]);
     
-            // 権限データをチャンクで処理
-            $chunkSize = 100; // 調整可能
-            collect($request->permissions)->chunk($chunkSize)->each(function ($chunk) use ($roleGroup) {
-                $updates = [];
-                foreach ($chunk as $functionMenuId => $permissionId) {
-                    $updates[] = [
+            // 現在のパーミッションを取得
+            $currentPermissions = DB::table('function_menu_role_group')
+                ->where('role_group_id', $roleGroup->id)
+                ->pluck('permission_id', 'function_menu_id')
+                ->toArray();
+    
+            $newPermissions = $request->permissions;
+            $toUpdate = [];
+            $toInsert = [];
+    
+            foreach ($newPermissions as $functionMenuId => $permissionId) {
+                if (isset($currentPermissions[$functionMenuId])) {
+                    if ($currentPermissions[$functionMenuId] != $permissionId) {
+                        $toUpdate[] = [
+                            'role_group_id' => $roleGroup->id,
+                            'function_menu_id' => $functionMenuId,
+                            'permission_id' => $permissionId,
+                        ];
+                    }
+                } else {
+                    $toInsert[] = [
                         'role_group_id' => $roleGroup->id,
                         'function_menu_id' => $functionMenuId,
                         'permission_id' => $permissionId,
                     ];
                 }
-                
-                // 一括更新
-                DB::table('function_menu_role_group')->upsert(
-                    $updates,
-                    ['role_group_id', 'function_menu_id'],
-                    ['permission_id']
-                );
-            });
+            }
+    
+            // 更新
+            foreach ($toUpdate as $item) {
+                DB::table('function_menu_role_group')
+                    ->where('role_group_id', $item['role_group_id'])
+                    ->where('function_menu_id', $item['function_menu_id'])
+                    ->update(['permission_id' => $item['permission_id']]);
+            }
+    
+            // 挿入
+            if (!empty($toInsert)) {
+                DB::table('function_menu_role_group')->insert($toInsert);
+            }
+    
+            // 削除（リクエストに含まれていないものを削除）
+            $toDelete = array_diff_key($currentPermissions, $newPermissions);
+            if (!empty($toDelete)) {
+                DB::table('function_menu_role_group')
+                    ->where('role_group_id', $roleGroup->id)
+                    ->whereIn('function_menu_id', array_keys($toDelete))
+                    ->delete();
+            }
     
             DB::commit();
             return redirect()->back()->with('success', '正常に更新しました');

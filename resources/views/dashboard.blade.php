@@ -23,7 +23,11 @@
                       <div class="flex flex-wrap">
                         <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
                           <h5 class="text-blueGray-400 uppercase font-bold text-xs">
-                            当期案件規模:{{ $currentPeriod->period_name }}
+                            @if( isset($currentPeriod) )
+                                当期案件規模:{{ $currentPeriod->period_name }}
+                            @else
+                                当期案件規模:-
+                            @endif
                           </h5>
                           <span class="font-semibold text-xl text-blueGray-700">
                             {{ number_format($totalRevenue) }}円
@@ -40,7 +44,11 @@
                           <i class="fas fa-arrow-up"></i> 3.48%
                         </span>
                         <span class="whitespace-nowrap">
-                            {{ $currentPeriod->period_start_at->format('Y年m月d日') }} 〜 {{ $currentPeriod->period_end_at->format('Y年m月d日') }}
+                            @if( isset($currentPeriod) )
+                                {{ $currentPeriod->period_start_at->format('Y年m月d日') }} 〜 {{ $currentPeriod->period_end_at->format('Y年m月d日') }}
+                            @else
+                                現在の計上期が設定されていません
+                            @endif
                         </span>
                       </p>
                     </div>

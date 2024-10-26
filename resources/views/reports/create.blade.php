@@ -140,39 +140,39 @@
                 <div class="grid gap-4 mb-4 sm:grid-cols-5">
                     <!-- 検索フォーム -->
                     <div class="w-full flex flex-col">
-                        <label for="affiliation1_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">氏名</label>
+                        <label for="user_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">氏名</label>
                         <input type="text" form="reoportForm" id="user_name" class="input-secondary" placeholder="ユーザ名で検索">
                     </div>
 
                     <!-- 所属1選択フォーム -->
                     <div class="w-full flex flex-col">
-                        <label for="affiliation1_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">所属1</label>
-                        <select id="affiliation1_id" name="affiliation1_id" class="input-secondary">
+                        <label for="user_affiliation1_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">所属1</label>
+                        <select id="user_affiliation1_id" name="user_affiliation1_id" class="input-secondary">
                             <option value="">未選択</option>
                             @foreach ($affiliation1s as $affiliation1)
-                                <option value="{{ $affiliation1->id }}" @selected($affiliation1->id == old('affiliation1_id'))>{{ $affiliation1->affiliation1_name }}</option>
+                                <option value="{{ $affiliation1->id }}" @selected($affiliation1->id == old('user_affiliation1_id'))>{{ $affiliation1->affiliation1_name }}</option>
                             @endforeach
                         </select>
                     </div>
 
                     <!-- 部署選択フォーム -->
                     <div class="w-full flex flex-col">
-                        <label for="affiliation2_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">所属2</label>
-                        <select id="affiliation2_id" name="affiliation2_id" class="input-secondary">
+                        <label for="user_affiliation2_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">所属2</label>
+                        <select id="user_affiliation2_id" name="user_affiliation2_id" class="input-secondary">
                             <option value="">未選択</option>
                             @foreach ($affiliation2s as $affiliation2)
-                                <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == old('affiliation2_id'))>{{ $affiliation2->affiliation2_name }}</option>
+                                <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == old('user_affiliation2_id'))>{{ $affiliation2->affiliation2_name }}</option>
                             @endforeach
                         </select>
                     </div>
 
                     <!-- 所属3選択フォーム -->
                     <div class="w-full flex flex-col">
-                        <label for="affiliation3_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">所属3</label>
-                        <select id="affiliation3_id" name="affiliation3_id" class="input-secondary">
+                        <label for="user_affiliation3_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">所属3</label>
+                        <select id="user_affiliation3_id" name="user_affiliation3_id" class="input-secondary">
                             <option value="">未選択</option>
                             @foreach ($affiliation3s as $affiliation3)
-                                <option value="{{ $affiliation3->id }}" @selected($affiliation3->id == old('affiliation3_id'))>{{ $affiliation3->affiliation3_name }}</option>
+                                <option value="{{ $affiliation3->id }}" @selected($affiliation3->id == old('user_affiliation3_id'))>{{ $affiliation3->affiliation3_name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -210,77 +210,7 @@
     </div>
 
 
-    {{-- <!-- 顧客検索Modal -->
-    <div id="clientSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center hidden animate-slide-in-top px-2 z-[99999]">
-        <div class="max-h-full w-full max-w-7xl">
-            <div class="relative p-2 bg-white rounded shadow dark:bg-gray-700">
-                <!-- Modal header -->
-                <div class="flex items-center justify-between p-2 border-b rounded-t dark:border-gray-600">
-                    <h3 class="text-xl text-gray-900 dark:text-white">
-                        顧客検索画面
-                    </h3>
-                    <!-- 検索結果カウント表示 -->
-                    <div id="searchResultCount" class="text-sm text-gray-600 dark:text-gray-300 mt-2 ml-2"></div>
-                    <button type="button" onclick="hideModal()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                        <svg class="w-3 h-3"xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                        </svg>
-                    </button>
-                </div>
-                <!-- Modal body -->
-                <form action="#" method="GET">
-                    <!-- 検索条件入力フォーム -->
-                    <div class="grid gap-x-2 mb-4 grid-cols-2 sm:grid-cols-3">
-                        <div class="w-full flex flex-col mx-2 pr-2">
-                            <label for="clientName" class="dark:text-gray-100 text-gray-900 leading-none mt-4">顧客名称</label>
-                            <input type="text" form="reoportForm" name="clientName" id="clientName" class="input-secondary">
-                        </div>
-                        <div class="w-full flex flex-col mx-2 pr-2">
-                            <label for="clientNumber" class="dark:text-gray-100 text-gray-900 leading-none mt-4">顧客番号</label>
-                            <input type="text" form="reoportForm" name="clientNumber" id="clientNumber" class="input-secondary">
-                        </div>
-                        <div class="w-full flex flex-col mx-2 pr-2 col-span-2 sm:col-span-1">
-                            <label for="affiliation2Id" class=" dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
-                            <select id="affiliation2Id" name="affiliation2Id" class="input-secondary">
-                                <option selected value="">未選択</option>
-                                @foreach($affiliation2s as $affiliation2)
-                                <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == Auth::user()->affiliation2->id)>
-                                    {{ $affiliation2->affiliation2_name }}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </form>
-                <div class=" max-h-80 overflow-y-auto overflow-x-hidden">
-                    <table class="w-full mt-4 text-white mb-5 text-left text-sm">
-                        <thead>
-                            <tr class="border-b dark:border-gray-400">
-                                <th class="py-1 pl-5">顧客名称</th>
-                                <th class="py-1 whitespace-nowrap">顧客№</th>
-                                <th class="py-1 whitespace-nowrap">事業部</th>
-                            </tr>
-                        </thead>
-                        <tbody class="" id="searchResultsContainer">                          
-                                <!-- 検索結果がここに追加されます -->
-                        </tbody>
-                    </table>
-                </div>
-                
-                <!-- Modal footer -->
-                <div class="flex justify-end items-center p-3 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                    <button type="button" onclick="hideModal()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                        閉じる
-                    </button> 
-                    <button type="button" onclick="searchClient()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        検索
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
-    <!-- ユーザ検索モーダル -->
+    <!-- 顧客検索モーダル -->
     <div id="clientSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center hidden animate-slide-in-top px-2 z-[99999]">
         <div class="max-h-full w-full max-w-7xl">
             <div class="relative p-2 bg-white rounded shadow dark:bg-gray-700">
@@ -354,273 +284,311 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script>
-    // モーダルを表示するための関数
-function showModal() {
-    const modal = document.getElementById('clientSearchModal');
-    const overlay = document.getElementById('overlay');
-    overlay.classList.remove('hidden');
-    document.body.classList.add('overflow-hidden');
-    modal.classList.remove('hidden');
-
-    // モーダル内の最初の入力フィールドにフォーカスを設定
-    setTimeout(() => {
-        const firstInput = modal.querySelector('input, select, button');
-        if (firstInput) firstInput.focus();
-    }, 100);
-
-    // モーダル内の要素にのみタブ移動を制限
-    modal.addEventListener('keydown', trapFocus);
-}
-
-// モーダルを非表示にするための関数
-function hideModal() {
-    const modal = document.getElementById('clientSearchModal');
-    const overlay = document.getElementById('overlay');
-    overlay.classList.add('hidden');
-    document.body.classList.remove('overflow-hidden');
-    modal.classList.add('hidden');
-
-    // イベントリスナーを削除
-    modal.removeEventListener('keydown', trapFocus);
-}
-
-// モーダル外へのフォーカス移動を防ぐ関数（更新版）
-function trapFocus(e) {
-    if (e.key === 'Tab') {
+    <script>
+        // モーダルを表示するための関数
         const modal = document.getElementById('clientSearchModal');
-        const focusableElements = modal.querySelectorAll('input, select, button, [tabindex]:not([tabindex="-1"])');
-        const firstElement = focusableElements[0];
-        const lastElement = focusableElements[focusableElements.length - 1];
+        const overlay = document.getElementById('overlay');
 
-        if (e.shiftKey) {
-            if (document.activeElement === firstElement) {
-                e.preventDefault();
-                lastElement.focus();
-            }
-        } else {
-            if (document.activeElement === lastElement) {
-                e.preventDefault();
-                firstElement.focus();
+        const clientName = document.getElementById('clientName').value;
+        const clientNumber = document.getElementById('clientNumber').value;
+        const affiliation2Id = document.getElementById('affiliation2Id').value;
+
+        function showModal() {
+            overlay.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+            modal.classList.remove('hidden');
+
+            // モーダル内の最初の入力フィールドにフォーカスを設定
+            setTimeout(() => {
+                const firstInput = modal.querySelector('input, select, button');
+                if (firstInput) firstInput.focus();
+            }, 100);
+
+            // モーダル内の要素にのみタブ移動を制限
+            modal.addEventListener('keydown', trapFocus);
+        }
+
+        // モーダルを非表示にするための関数
+        function hideModal() {
+            overlay.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+            modal.classList.add('hidden');
+
+            // イベントリスナーを削除
+            modal.removeEventListener('keydown', trapFocus);
+        }
+
+        // モーダル外へのフォーカス移動を防ぐ関数（更新版）
+        function trapFocus(e) {
+            if (e.key === 'Tab') {
+                const focusableElements = modal.querySelectorAll('input, select, button, [tabindex]:not([tabindex="-1"])');
+                const firstElement = focusableElements[0];
+                const lastElement = focusableElements[focusableElements.length - 1];
+
+                if (e.shiftKey) {
+                    if (document.activeElement === firstElement) {
+                        e.preventDefault();
+                        lastElement.focus();
+                    }
+                } else {
+                    if (document.activeElement === lastElement) {
+                        e.preventDefault();
+                        firstElement.focus();
+                    }
+                }
             }
         }
-    }
-}
 
 
 
-// 検索ボタンを押した時の処理
-function searchClient() {
-    const clientName = document.getElementById('clientName').value;
-    const clientNumber = document.getElementById('clientNumber').value;
-    const affiliation2Id = document.getElementById('affiliation2Id').value;
+        // 検索ボタンを押した時の処理
+        function searchClient() {
 
-    fetch('/client/search', {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({ clientName, clientNumber, affiliation2Id })
-    })
-    .then(response => response.json())
-    .then(data => {
-        const searchResultsContainer = document.getElementById('searchResultsContainer');
-        searchResultsContainer.innerHTML = '';
+            fetch('/client/search', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ clientName, clientNumber, affiliation2Id })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const searchResultsContainer = document.getElementById('searchResultsContainer');
+                searchResultsContainer.innerHTML = '';
 
-        // 検索結果のカウントを表示
-        searchResultCount.textContent = `${data.length}`;
+                // 検索結果のカウントを表示
+                searchResultCount.textContent = `${data.length}`;
 
-        data.forEach((result, index) => {
-            const resultElement = document.createElement('tr');
-            resultElement.classList.add('dark:border-gray-600', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white', 'cursor-pointer', 'border-b');
-            resultElement.setAttribute('tabindex', '0');  // タブ移動可能にする
-            resultElement.setAttribute('role', 'button');  // スクリーンリーダー用にボタンとして認識させる
-            resultElement.setAttribute('aria-label', `${result.client_name} を選択`);  // スクリーンリーダー用の説明
-            resultElement.innerHTML = `
-                <td class="py-2 pl-5 w-96">${result.client_name}</td>
-                <td class="py-2 ml-2 whitespace-nowrap">${result.client_num}</td>
-                <td class="py-2 ml-2">${result.affiliation2.affiliation2_name_short}</td>
-                <td class="py-2 ml-2">${result.user.user_name}</td>
-            `;
-            resultElement.addEventListener('click', () => setCorporation(result.client_name, result.client_num, result.affiliation2.affiliation2_name));
-            resultElement.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    setCorporation(result.client_name, result.client_num, result.affiliation2.affiliation2_name);
+                data.forEach((result, index) => {
+                    const resultElement = document.createElement('tr');
+                    resultElement.classList.add('dark:border-gray-600', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white', 'cursor-pointer', 'border-b');
+                    resultElement.setAttribute('tabindex', '0');  // タブ移動可能にする
+                    resultElement.setAttribute('role', 'button');  // スクリーンリーダー用にボタンとして認識させる
+                    resultElement.setAttribute('aria-label', `${result.client_name} を選択`);  // スクリーンリーダー用の説明
+                    resultElement.innerHTML = `
+                        <td class="py-2 pl-5 w-96">${result.client_name}</td>
+                        <td class="py-2 ml-2 whitespace-nowrap">${result.client_num}</td>
+                        <td class="py-2 ml-2">${result.affiliation2.affiliation2_name_short}</td>
+                        <td class="py-2 ml-2">${result.user.user_name}</td>
+                    `;
+                    resultElement.addEventListener('click', () => setCorporation(result.client_name, result.client_num, result.affiliation2.affiliation2_name));
+                    resultElement.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            setCorporation(result.client_name, result.client_num, result.affiliation2.affiliation2_name);
+                        }
+                    });
+                    searchResultsContainer.appendChild(resultElement);
+                });
+
+                // 検索結果が表示されたら、最初の結果にフォーカスを移動
+                if (data.length > 0) {
+                    searchResultsContainer.firstElementChild.focus();
                 }
             });
-            searchResultsContainer.appendChild(resultElement);
+        }
+
+        function setCorporation(name, number, affiliation2) {
+            document.getElementById('client_num').value = number;
+            document.getElementById('client_name').value = name;
+            document.getElementById('affiliation2_id').value = affiliation2;
+
+            hideModal();
+        }
+
+        // モーダル外の要素のtabindexを設定/解除する関数
+        function setOutsideElementsTabIndex(disable) {
+            const outsideElements = document.querySelectorAll('body > *:not(#clientSearchModal)');
+            outsideElements.forEach(element => {
+                if (disable) {
+                    element.setAttribute('tabindex', '-1');
+                } else {
+                    element.removeAttribute('tabindex');
+                }
+            });
+        }
+
+        // ページ読み込み時にイベントリスナーを設定
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('clientSearchModal');
+            
+            // モーダルが表示されたときの処理
+            modal.addEventListener('show', () => {
+                setOutsideElementsTabIndex(true);
+            });
+
+            // モーダルが非表示になったときの処理
+            modal.addEventListener('hide', () => {
+                setOutsideElementsTabIndex(false);
+            });
         });
-
-        // 検索結果が表示されたら、最初の結果にフォーカスを移動
-        if (data.length > 0) {
-            searchResultsContainer.firstElementChild.focus();
-        }
-    });
-}
-
-function setCorporation(name, number, affiliation2) {
-    document.getElementById('client_num').value = number;
-    document.getElementById('client_name').value = name;
-    document.getElementById('affiliation2_id').value = affiliation2;
-
-    hideModal();
-}
-
-// モーダル外の要素のtabindexを設定/解除する関数
-function setOutsideElementsTabIndex(disable) {
-    const outsideElements = document.querySelectorAll('body > *:not(#clientSearchModal)');
-    outsideElements.forEach(element => {
-        if (disable) {
-            element.setAttribute('tabindex', '-1');
-        } else {
-            element.removeAttribute('tabindex');
-        }
-    });
-}
-
-// ページ読み込み時にイベントリスナーを設定
-document.addEventListener('DOMContentLoaded', () => {
-    const modal = document.getElementById('clientSearchModal');
-    
-    // モーダルが表示されたときの処理
-    modal.addEventListener('show', () => {
-        setOutsideElementsTabIndex(true);
-    });
-
-    // モーダルが非表示になったときの処理
-    modal.addEventListener('hide', () => {
-        setOutsideElementsTabIndex(false);
-    });
-});
-</script>
+    </script>
 
 
 
 
     <script>
-        $(document).ready(function() {
-            // ページ読み込み時にローカルストレージから選択されたユーザのIDを取得して隠しフィールドに設定
-            var selectedUserIds = JSON.parse(localStorage.getItem('selectedUserIds')) || [];
-            $('#selectedUsers').val(selectedUserIds.join(','));
+document.addEventListener('DOMContentLoaded', function() {
+    // ストレージ管理用のオブジェクト
+    var storageManager = {
+        selectedUserIds: JSON.parse(localStorage.getItem('selectedUserIds')) || [],
+        
+        // ストレージ全体を更新
+        updateStorage: function() {
+            localStorage.setItem('selectedUserIds', JSON.stringify(this.selectedUserIds));
+            console.log('ストレージ更新後のselectedUserIds:', this.selectedUserIds);
+        },
 
-            // ページ読み込み時にローカルストレージから選択されたユーザの情報を取得して表示
-            selectedUserIds.forEach(function(userId) {
-                var userName = localStorage.getItem('userName_' + userId);
-                $('#selectedRecipients').prepend('<div class="selectedUser cursor-pointer" data-user-id="' + userId + '">' + userName + '</div>');
-            });
+        // ユーザーを追加
+        addUser: function(userId, userName) {
+            this.selectedUserIds.push(userId);
+            localStorage.setItem('userName_' + userId, userName);
+            this.updateStorage();
+        },
 
-            // ユーザを非同期で検索して検索結果表示部分に表示する
-            $('#searchUsersButton').click(function() {
-                var userNmae = $('#user_name').val();
-                var affiliation1Id = $('#affiliation1_id').val();
-                var affiliation2Id = $('#affiliation2_id').val();
-                var affiliation3Id = $('#affiliation3_id').val();
-                $.ajax({
-                    url: '/search-users',
-                    method: 'GET',
-                    data: {
-                        user_name: userNmae,
-                        affiliation1_id: affiliation1Id,
-                        affiliation2_id: affiliation2Id,
-                        affiliation3_id: affiliation3Id
-                    },
-                    success: function(response) {
-                        // 検索結果をカナ名称順にソート
-                        response.sort(function(a, b) {
-                            var nameA = a.user_kana_name.toUpperCase(); // 大文字と小文字を区別しない
-                            var nameB = b.user_kana_name.toUpperCase(); // 大文字と小文字を区別しない
-                            if (nameA < nameB) {
-                                return -1;
-                            }
-                            if (nameA > nameB) {
-                                return 1;
-                            }
-                            return 0;
-                        });
-                        // 検索結果を表示する部分
-                        var usersHtml = '';
-                        response.forEach(function(user) {
-                            // 重複するユーザを検索結果から除外する
-                            if (!selectedUserIds.includes(user.id)) {
-                                usersHtml += '<div class="selectUser cursor-pointer" data-user-id="' + user.id + '" data-user-name="' + user.user_name + '">' + user.user_name + '</div>';
-                            }
-                        });
-                        $('#searchResults').html(usersHtml);
-                    },
-                    error: function(xhr) {
-                        console.log('検索エラー:', xhr);
-                    }
-                });
-            });
+        // ユーザーを削除
+        removeUser: function(userId) {
+            var index = this.selectedUserIds.indexOf(userId);
+            if (index !== -1) {
+                this.selectedUserIds.splice(index, 1);
+                localStorage.removeItem('userName_' + userId);
+                this.updateStorage();
+            }
+        },
 
-            // 検索結果表示部分のユーザ名をクリックまたはキーボードで選択・移動する
-            $(document).on('click keydown', '.selectUser', function(e) {
-                // キーボードイベントかどうかを確認
-                var isKeyboardEvent = e.type === 'keydown';
+        // ユーザー名を取得
+        getUserName: function(userId) {
+            return localStorage.getItem('userName_' + userId);
+        }
+    };
 
-                // エンターキーが押された場合、またはマウスクリックの場合の処理
-                if (!isKeyboardEvent || (isKeyboardEvent && e.key === 'Enter')) {
-                    var userId = $(this).data('user-id');
-                    var userName = $(this).data('user-name');
-                    // 選択されたユーザを表示
-                    var selectedUsers = $('#selectedRecipients').children('.selectedUser');
-                    var inserted = false;
-                    selectedUsers.each(function() {
-                        var selectedUserName = $(this).text();
-                        if (userName.localeCompare(selectedUserName, 'ja', {sensitivity: 'base'}) < 0) {
-                            $(this).before('<div class="selectedUser cursor-pointer" data-user-id="' + userId + '">' + userName + '</div>');
-                            inserted = true;
-                            return false; // Break the loop
-                        }
-                    });
-                    if (!inserted) {
-                        $('#selectedRecipients').append('<div class="selectedUser cursor-pointer" data-user-id="' + userId + '">' + userName + '</div>');
-                    }
-                    // 選択されたユーザの情報をローカルストレージに保存
-                    selectedUserIds.push(userId);
-                    localStorage.setItem('userName_' + userId, userName);
-                    localStorage.setItem('selectedUserIds', JSON.stringify(selectedUserIds));
-                    // 選択されたユーザを検索結果から削除
-                    $(this).remove();
-                    // 選択されたユーザのIDを隠しフィールドに設定
-                    $('#selectedUsers').val(selectedUserIds.join(','));
-                }
-            });
+    // DOM要素
+    var elements = {
+        selectedUsers: document.getElementById('selectedUsers'),
+        selectedRecipients: document.getElementById('selectedRecipients'),
+        searchResults: document.getElementById('searchResults'),
+        searchButton: document.getElementById('searchUsersButton'),
+        userName: document.getElementById('user_name'),
+        userAffiliation1: document.getElementById('user_affiliation1_id'),
+        userAffiliation2: document.getElementById('user_affiliation2_id'),
+        userAffiliation3: document.getElementById('user_affiliation3_id')
+    };
 
-            // 選択された報告先表示部分のユーザ名をクリックして検索結果に戻す
-            $(document).on('click', '.selectedUser', function() {
-                var userId = $(this).data('user-id');
-                var userName = $(this).text();
-                // 選択されたユーザを検索結果に追加
-                $('#searchResults').append('<div class="selectUser cursor-pointer" data-user-id="' + userId + '" data-user-name="' + userName + '">' + userName + '</div>');
-                // 選択されたユーザの情報をローカルストレージから削除
-                var index = selectedUserIds.indexOf(userId);
-                if (index !== -1) {
-                    selectedUserIds.splice(index, 1);
-                    localStorage.removeItem('userName_' + userId);
-                    localStorage.setItem('selectedUserIds', JSON.stringify(selectedUserIds));
-                }
-                // 選択されたユーザを選択済みの報告先表示部分から削除
-                $(this).remove();
-                // 選択されたユーザのIDを隠しフィールドに設定
-                $('#selectedUsers').val(selectedUserIds.join(','));
-            });
+    // 初期化処理
+    function initialize() {
+        elements.selectedUsers.value = storageManager.selectedUserIds.join(',');
+        storageManager.selectedUserIds.forEach(function(userId) {
+            var userName = storageManager.getUserName(userId);
+            elements.selectedRecipients.insertAdjacentHTML(
+                'afterbegin',
+                '<div class="selectedUser cursor-pointer" data-user-id="' + userId + '">' + userName + '</div>'
+            );
         });
+    }
+
+    // ユーザー検索
+    elements.searchButton.addEventListener('click', function() {
+        var params = new URLSearchParams({
+            user_name: elements.userName.value,
+            affiliation1_id: elements.userAffiliation1.value,
+            affiliation2_id: elements.userAffiliation2.value,
+            affiliation3_id: elements.userAffiliation3.value
+        });
+
+        fetch('/search-users?' + params)
+            .then(response => response.json())
+            .then(function(response) {
+                var filteredUsers = response.filter(function(user) {
+                    return !storageManager.selectedUserIds.some(id => id == user.id);
+                });
+
+                var sortedUsers = filteredUsers.sort(function(a, b) {
+                    return a.user_kana_name.toUpperCase()
+                        .localeCompare(b.user_kana_name.toUpperCase());
+                });
+
+                var usersHtml = sortedUsers
+                    .map(user => 
+                        '<div class="selectUser cursor-pointer" data-user-id="' + 
+                        user.id + '" data-user-name="' + user.user_name + '">' + 
+                        user.user_name + '</div>'
+                    ).join('');
+
+                elements.searchResults.innerHTML = usersHtml;
+            })
+            .catch(function(error) {
+                console.log('検索エラー:', error);
+            });
+    });
+
+    // ユーザー選択処理
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('selectUser')) {
+            handleUserSelection(e.target);
+        }
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.target.classList.contains('selectUser') && e.key === 'Enter') {
+            handleUserSelection(e.target);
+        }
+    });
+
+    function handleUserSelection(element) {
+        var userId = element.dataset.userId;
+        var userName = element.dataset.userName;
+        var selectedUsers = elements.selectedRecipients.querySelectorAll('.selectedUser');
+        var inserted = false;
+
+        for (var i = 0; i < selectedUsers.length; i++) {
+            var selectedUserName = selectedUsers[i].textContent;
+            if (userName.localeCompare(selectedUserName, 'ja', {sensitivity: 'base'}) < 0) {
+                selectedUsers[i].insertAdjacentHTML(
+                    'beforebegin',
+                    '<div class="selectedUser cursor-pointer" data-user-id="' + userId + '">' + 
+                    userName + '</div>'
+                );
+                inserted = true;
+                break;
+            }
+        }
+
+        if (!inserted) {
+            elements.selectedRecipients.insertAdjacentHTML(
+                'beforeend',
+                '<div class="selectedUser cursor-pointer" data-user-id="' + userId + '">' + 
+                userName + '</div>'
+            );
+        }
+
+        storageManager.addUser(userId, userName);
+        element.remove();
+        elements.selectedUsers.value = storageManager.selectedUserIds.join(',');
+    }
+
+    // ユーザー選択解除処理
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('selectedUser')) {
+            var userId = e.target.dataset.userId;
+            var userName = e.target.textContent;
+
+            elements.searchResults.insertAdjacentHTML(
+                'beforeend',
+                '<div class="selectUser cursor-pointer" data-user-id="' + userId + 
+                '" data-user-name="' + userName + '">' + userName + '</div>'
+            );
+
+            storageManager.removeUser(userId);
+            e.target.remove();
+            elements.selectedUsers.value = storageManager.selectedUserIds.join(',');
+        }
+    });
+
+    // 初期化実行
+    initialize();
+});
+
     </script>
 
     <script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>

@@ -155,7 +155,7 @@
                     @csrf
                     @method('patch')
                     <x-primary-button class="mt-4" form-id="corporationForm" id="saveButton" onkeydown="stopTab(event)">
-                        保存(S)
+                        保存
                     </x-primary-button>
                 </form>
             </div>

@@ -29,7 +29,8 @@ class ClientController extends Controller
 {
     public function index(Request $request)
     {
-        $per_page = 50;
+        $perPage = config('constants.perPage');
+        $selectedUserId = $request->selected_user_id;
 
         // 現在のログインユーザを取得
                 // @var User $loggedInUser
@@ -120,10 +121,10 @@ class ClientController extends Controller
 
 
 
-        $clients = $clientsQuery->paginate($per_page);
+        $clients = $clientsQuery->paginate($perPage);
         $count = $clients->total();
 
-        return view('clients.index',compact('clients','count','salesUsers', 'affiliation2s', 'installationTypes', 'tradeStatuses', 'clientTypes', 'selectedTradeStatuses','selectedClientTypes','selectedInstallationTypes','salesUserId', 'affiliation2Id', 'clientName', 'selectedAffiliation2'));
+        return view('clients.index',compact('clients','count','salesUsers', 'affiliation2s', 'installationTypes', 'tradeStatuses', 'clientTypes', 'selectedTradeStatuses','selectedClientTypes','selectedInstallationTypes','salesUserId', 'affiliation2Id', 'clientName', 'selectedAffiliation2', 'selectedUserId'));
     }
 
     public function create()

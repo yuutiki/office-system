@@ -42,8 +42,7 @@ class AccountingPeriod extends Model
     public function scopeCurrentPeriod($query)
     {
         return $query->where('period_start_at', '<=', now())
-                     ->where('period_end_at', '>=', now())
-                     ->first();
+                     ->where('period_end_at', '>=', now());
     }
 
     public function updatedBy()

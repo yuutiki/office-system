@@ -141,7 +141,7 @@ class CorporationController extends Controller
             return redirect($editUrl)->with('success', '正常に登録しました');
         } catch (\Exception $e) {
             \Log::error('法人情報の登録に失敗しました: ' . $e->getMessage());
-            return back()->withInput()->with('error', '登録に失敗しました。');
+            return redirect()->back()->withInput()->with('error', '登録に失敗しました。');
         }
     }
 

@@ -284,6 +284,39 @@
                     <span class="flex-1 pt-1 ml-3 whitespace-nowrap">{{ __('預託管理') }}</span>
                 </x-nav-link>
             </li>
+            <li>
+                <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#workflow-body" aria-expanded="false" aria-controls="workflow-body">
+                    <svg class="flex-shrink-0 w-6 h-6 text-gray-900 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.079 4.839a3 3 0 0 0-4.255.1M11 18h1.083A3.916 3.916 0 0 0 16 14.083V7A6 6 0 1 0 4 7v7m7 4v-1a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1Zm-7-4V8H3a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h1Zm12-6h1a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-1V8Z"/>
+                    </svg>
+                    <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('ワークフロー') }}</span>
+                    <svg data-accordion-icon class="w-3 h-3 mr-1 rotate-270 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6" >
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                    </svg>
+                </button>
+                <ul  class="hidden py-1 space-y-1" id="workflow-body" aria-labelledby="workflow-heading">
+                    <li>
+                        <x-nav-link :href="route('support.index')" :active="request()->routeIs('support.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('テンプレート一覧') }}</span>
+                        </x-nav-link>
+                    </li>
+                    <li>
+                        <x-nav-link :href="route('contracts.index')" :active="request()->routeIs('contracts.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('申請一覧') }}</span>
+                        </x-nav-link>
+                    </li>
+                    <li>
+                        <x-nav-link :href="route('contracts.index')" :active="request()->routeIs('contracts.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('代理申請一覧') }}</span>
+                        </x-nav-link>
+                    </li>
+                    <li>
+                        <x-nav-link :href="route('contracts.index')" :active="request()->routeIs('contracts.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('確認一覧') }}</span>
+                        </x-nav-link>
+                    </li>
+                </ul>
+            </li>
 
             <ul class="pt-4 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700">
             <li>

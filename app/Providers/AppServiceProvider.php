@@ -7,6 +7,7 @@ use App\Observers\GlobalObserver;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Blade;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-
+        Blade::component('add-button', \App\View\Components\AddButton::class);
         // // 「システム管理者」だけに適用
         // Gate::define('systemAdmin', function ($user) {
         //     return ($user->role_id == 1);

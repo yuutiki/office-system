@@ -36,19 +36,22 @@ class DashboardController extends Controller
             }
         }
 
-        $currentPeriod = AccountingPeriod::currentPeriod();
+        $currentPeriod = null;
+        $totalRevenue = 0;
 
-        if (!$currentPeriod) {
-            return view('dashboard')->with('error', '現在の計上期が見つかりません。');
-        }
+        $currentPeriod = AccountingPeriod::currentPeriod()->first();
 
-        $totalRevenue = Project::active()
+
+        if ($currentPeriod) {
+            $totalRevenue = Project::active()
             ->whereHas('projectRevenues', function ($query) use ($currentPeriod) {
                 $query->whereBetween('revenue_year_month', [$currentPeriod->period_start_at, $currentPeriod->period_end_at]);
             })
             ->join('project_revenues', 'projects.id', '=', 'project_revenues.project_id')
             ->whereBetween('project_revenues.revenue_year_month', [$currentPeriod->period_start_at, $currentPeriod->period_end_at])
-            ->sum('project_revenues.revenue');
+            ->sum('project_revenues.revenue') ?? 0;
+        }
+
 
         return view('dashboard',compact('clientCount','mySupports','receivedAtArray', 'currentPeriod', 'totalRevenue'));
     }

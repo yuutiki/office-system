@@ -43,148 +43,33 @@
                                 </option>
                                 @endforeach
                             </select>
-                        </div>
-                        <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-                            <div class="custom-select" id="customSelect">
-                                <input type="text" placeholder="営業担当" autocomplete="off" id="searchInput" name="" value="{{ $salesUserId }}" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <ul id="optionsList" class="z-50 overflow-y-auto dark:bg-gray-700 text-white text-sm h-40 whitespace-nowrap"></ul>
-                                <input type="hidden" name="user_id" id="selectedUserId">
-                            </div> --}}
-                        {{-- </div> --}}
+                        </div> --}}
                         <input type="hidden" id="selected-user-id" name="selected_user_id" value="{{ $selectedUserId }}">
-                        <div id="user-dropdown" class="relative w-full  md:ml-2 md:mt-0">
+                        <div id="user-dropdown" class="relative w-full md:ml-2 md:mt-0">
                             <button type="button" id="dropdown-toggle" class="w-full px-4 py-1.5 text-left bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400">
-                              <span id="selected-user-display" class="text-white">
-                                @if($selectedUserId)
-                                    {{ $user->find($selectedUserId)->user_name ?? 'ユーザーを選択' }}
-                                @else
-                                    ユーザーを選択
-                                @endif</span>
-                              <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                  <path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                              </span>
+                                <span id="selected-user-display" class="text-gray-800 dark:text-white">
+                                    @if($selectedUserId)
+                                        {{ $user->find($selectedUserId)->user_name ?? 'ユーザーを選択' }}
+                                    @else
+                                        ユーザーを選択
+                                    @endif
+                                </span>
+                                <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </span>
                             </button>
                             <div id="dropdown-menu" class="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg hidden">
-                              <div class="p-2">
-                                <input id="user-search" type="text" name="user_id" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-800 dark:text-white" placeholder="ユーザーを検索...">
-                              </div>
-                              <ul id="user-list" class="max-h-60 overflow-auto">
-                                <!-- ユーザーリストはJavaScriptで動的に追加されます -->
-                              </ul>
+                                <div class="p-2">
+                                    <input id="user-search" type="text" name="user_id" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-800 dark:text-white" placeholder="ユーザーを検索...">
+                                </div>
+                                <ul id="user-list" class="max-h-60 overflow-auto">
+                                    <!-- ユーザーリストはJavaScriptで動的に追加されます -->
+                                    {{-- <script src="{{ asset('assets/js/user-dropdown.js') }}"></script> --}}
+                                </ul>
                             </div>
-                          </div>
-
-                        <!-- JavaScript -->
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function() {
-                                const dropdownToggle = document.getElementById('dropdown-toggle');
-                                const dropdownMenu = document.getElementById('dropdown-menu');
-                                const userSearch = document.getElementById('user-search');
-                                const userList = document.getElementById('user-list');
-                                const selectedUserDisplay = document.getElementById('selected-user-display');
-                                const selectedUserId = document.getElementById('selected-user-id');
-                            
-                                let debounceTimer;
-                            
-                                function toggleDropdown() {
-                                    dropdownMenu.classList.toggle('hidden');
-                                    if (!dropdownMenu.classList.contains('hidden')) {
-                                        userSearch.focus();
-                                    }
-                                }
-                            
-                                function closeDropdown() {
-                                    dropdownMenu.classList.add('hidden');
-                                }
-                            
-                                function displayUsers(users) {
-                                    userList.innerHTML = '';
-                                    users.forEach((user) => {
-                                        const li = document.createElement('li');
-                                        li.className = 'px-4 py-2 hover:bg-gray-600 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-gray-400 focus:dark:text-blue-400';
-                                        li.setAttribute('tabindex', '0');
-                                        li.setAttribute('role', 'option');
-                                        li.innerHTML = `
-                                            <div class="flex items-center dark:text-white dark:focus:text-blue-400">
-                                                <div>
-                                                    <div class="font-semibold">${user.user_name}</div>
-                                                    <div class="text-sm text-gray-500 dark:text-gray-300">${user.email}</div>
-                                                </div>
-                                            </div>
-                                        `;
-                                        li.addEventListener('click', () => selectUser(user));
-                                        li.addEventListener('keydown', (e) => {
-                                            if (e.key === 'Enter') {
-                                                selectUser(user);
-                                            }
-                                        });
-                                        userList.appendChild(li);
-                                    });
-                            
-                                    makeListItemsTabbable();
-                                }
-                            
-                                function makeListItemsTabbable() {
-                                    const listItems = userList.querySelectorAll('li');
-                                    listItems.forEach((item) => {
-                                        item.setAttribute('tabindex', '0');
-                                    });
-                                }
-                            
-                                function selectUser(user) {
-                                    selectedUserDisplay.textContent = user.user_name;
-                                    selectedUserId.value = user.id;
-                                    closeDropdown();
-                                    userSearch.value = '';
-                                }
-                            
-                                async function fetchUsers(userName = '') {
-                                    try {
-                                        const response = await fetch(`/search-users?user_name=${encodeURIComponent(userName)}`, {
-                                            headers: {
-                                                'X-Requested-With': 'XMLHttpRequest',
-                                                'Accept': 'application/json'
-                                            }
-                                        });
-                                        if (!response.ok) {
-                                            throw new Error('Network response was not ok');
-                                        }
-                                        const users = await response.json();
-                                        displayUsers(users);
-                                    } catch (error) {
-                                        console.error('Error fetching users:', error);
-                                    }
-                                }
-                            
-                                dropdownToggle.addEventListener('click', toggleDropdown);
-                            
-                                userSearch.addEventListener('input', (e) => {
-                                    clearTimeout(debounceTimer);
-                                    debounceTimer = setTimeout(() => {
-                                        fetchUsers(e.target.value);
-                                    }, 300);
-                                });
-                            
-                                userSearch.addEventListener('keydown', (e) => {
-                                    if (e.key === 'Enter') {
-                                        e.preventDefault();
-                                        fetchUsers(e.target.value);
-                                    }
-                                });
-                            
-                                document.addEventListener('click', (e) => {
-                                    if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
-                                        closeDropdown();
-                                    }
-                                });
-                            
-                                // 初期化時にユーザーデータを取得
-                                fetchUsers();
-                            });
-                            </script>
-
+                        </div>
 
                         <div class="flex mt-2 md:mt-0">
                             <div class="w-full md:ml-2">
@@ -535,199 +420,170 @@
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var selectContainer = document.getElementById("customSelect");
-        var searchInput = document.getElementById("searchInput");
-        var optionsList = document.getElementById("optionsList");
-        var selectedUserIdInput = document.getElementById("selectedUserId");
-        var highlightedOption = null;
+document.addEventListener("DOMContentLoaded", function () {
+    var selectContainer = document.getElementById("customSelect");
+    var searchInput = document.getElementById("searchInput");
+    var optionsList = document.getElementById("optionsList");
+    var selectedUserIdInput = document.getElementById("selectedUserId");
 
-        // カスタムセレクトボックスの表示・非表示
-        selectContainer.addEventListener("click", function () {
-            optionsList.style.display = (optionsList.style.display === "block") ? "none" : "block";
-            searchInput.focus();
-        });
-
-        // 選択肢がクリックされたときの処理
-        optionsList.addEventListener("click", function (event) {
-            // 選択肢がクリックされたら選択肢を非表示にする
-            optionsList.style.display = "none";
-        });
-
-        document.addEventListener("click", function (event) {
-        var selectContainer = document.getElementById("customSelect");
-        var optionsList = document.getElementById("optionsList");
-
-        // クリックされた要素がカスタムセレクトボックス内かどうかを確認
-        var isInsideSelect = event.target.closest("#customSelect");
-
-        if (!isInsideSelect) {
-            // カスタムセレクトボックス外がクリックされた場合は選択肢を非表示にする
-            optionsList.style.display = "none";
-        }
-    });
-
-        // 検索欄の入力に応じてオプションを絞り込む
-        searchInput.addEventListener("input", function () {
-            var searchTerm = searchInput.value.toLowerCase();
-            filterOptions(searchTerm);
-        });
-
-        // キーボードでのオプションの選択
-        searchInput.addEventListener("keydown", function (event) {
-            switch (event.key) {
-                case "ArrowDown":
-                    event.preventDefault();
-                    highlightNextOption();
-                    break;
-                case "ArrowUp":
-                    event.preventDefault();
-                    highlightPreviousOption();
-                    break;
-                case "Enter":
-                    event.preventDefault();
-                    selectHighlightedOption();
-                    break;
-            }
-        });
-
-        // Ajaxを使用して選択肢を取得
-        fetch('/search-users')
-            .then(response => response.json())
-            .then(data => {
-                // 取得したデータをセレクトボックスに追加
-                populateOptions(data);
-            })
-            .catch(error => console.error('Error fetching data:', error));
-
-        // オプションを絞り込む関数
-        function filterOptions(searchTerm) {
-            Array.from(optionsList.children).forEach(function (option) {
-                var optionText = option.innerText.toLowerCase();
-                option.style.display = optionText.includes(searchTerm) ? "block" : "none";
-            });
-            highlightedOption = null; // 絞り込み時にハイライトをリセット
-        }
-
-        // オプションをセレクトボックスに追加する関数
-        function populateOptions(options) {
-            options.forEach(function (option, index) {
-                var li = document.createElement("li");
-                li.textContent = option.name; // ここで適切なプロパティを指定
-                li.dataset.value = option.id; // ここで適切なプロパティを指定
-                li.addEventListener("click", function () {
-                    searchInput.value = option.name; // 選択されたオプションの名前をセット
-                    selectedUserIdInput.value = option.id; // hidden inputに選択されたオプションのidをセット
-
-                    // Ajaxリクエストでサーバーに選択されたオプションのidを送信
-                    sendSelectedOption(option.id);
-
-                    optionsList.style.display = "none";
-                });
-
-                li.addEventListener("mouseenter", function () {
-                    highlightedOption = index;
-                    highlightOption();
-                });
-
-                optionsList.appendChild(li);
-            });
-        }
-
-        // オプションをハイライトする関数
-        function highlightOption() {
-            Array.from(optionsList.children).forEach(function (option, index) {
-                if (index === highlightedOption) {
-                    option.classList.add("highlighted");
-                } else {
-                    option.classList.remove("highlighted");
+    // オプションをセレクトボックスに追加する関数
+    function populateOptions(options) {
+        options.forEach(function (option, index) {
+            var li = document.createElement("li");
+            li.textContent = option.name;
+            li.dataset.value = option.id;
+            
+            // タブ移動のためにtabindexを追加
+            li.setAttribute("tabindex", "0");
+            
+            // キーボードイベントの追加
+            li.addEventListener("keydown", function (event) {
+                switch (event.key) {
+                    case "Enter":
+                    case " ": // スペースキー
+                        event.preventDefault();
+                        selectOption(option);
+                        break;
+                    case "ArrowDown":
+                        event.preventDefault();
+                        focusNextOption(this);
+                        break;
+                    case "ArrowUp":
+                        event.preventDefault();
+                        focusPreviousOption(this);
+                        break;
+                    case "Escape":
+                        event.preventDefault();
+                        closeDropdown();
+                        break;
                 }
             });
-        }
 
-        // 次のオプションをハイライトする関数
-        function highlightNextOption() {
-            highlightedOption = (highlightedOption === null || highlightedOption === optionsList.children.length - 1) ? 0 : highlightedOption + 1;
-            highlightOption();
-        }
+            li.addEventListener("click", function () {
+                selectOption(option);
+            });
 
-        // 前のオプションをハイライトする関数
-        function highlightPreviousOption() {
-            highlightedOption = (highlightedOption === null || highlightedOption === 0) ? optionsList.children.length - 1 : highlightedOption - 1;
-            highlightOption();
-        }
-
-        // ハイライトされているオプションを選択する関数
-        function selectHighlightedOption() {
-            if (highlightedOption !== null) {
-                var selectedOption = optionsList.children[highlightedOption];
-                searchInput.value = selectedOption.innerText;
-                selectedUserIdInput.value = selectedOption.dataset.value;
-
-                // Ajaxリクエストでサーバーに選択されたオプションのidを送信
-                sendSelectedOption(selectedOption.dataset.value);
-
-                optionsList.style.display = "none";
-            }
-        }
-
-        // 選択されたオプションのidをサーバーに送信する関数
-        function sendSelectedOption(selectedId) {
-            // ここでAjaxリクエストを作成してサーバーに選択されたオプションのidを送信
-            // 例えば、fetchやXMLHttpRequestを使用してサーバーに送信できます
-            console.log("Sending selected option id to server:", selectedId);
-        }
-
-        // フォームのサブミット時に選択されたオプションをコンソールに表示
-        document.getElementById("myForm").addEventListener("submit", function (event) {
-            event.preventDefault();
-            console.log("Form submitted. Selected option id:", selectedUserIdInput.value);
-            // ここでフォームを実際にサブミットするか、別途処理を追加することができます
+            optionsList.appendChild(li);
         });
+    }
+
+    // オプションを選択する関数
+    function selectOption(option) {
+        searchInput.value = option.name;
+        selectedUserIdInput.value = option.id;
+        sendSelectedOption(option.id);
+        closeDropdown();
+        searchInput.focus();
+    }
+
+    // 次のオプションにフォーカスを移動
+    function focusNextOption(currentElement) {
+        const nextElement = currentElement.nextElementSibling;
+        if (nextElement) {
+            nextElement.focus();
+        } else {
+            optionsList.firstElementChild.focus();
+        }
+    }
+
+    // 前のオプションにフォーカスを移動
+    function focusPreviousOption(currentElement) {
+        const previousElement = currentElement.previousElementSibling;
+        if (previousElement) {
+            previousElement.focus();
+        } else {
+            optionsList.lastElementChild.focus();
+        }
+    }
+
+    // ドロップダウンを閉じる
+    function closeDropdown() {
+        optionsList.style.display = "none";
+    }
+
+    // 検索欄の入力に応じてオプションを絞り込む
+    searchInput.addEventListener("input", function () {
+        var searchTerm = searchInput.value.toLowerCase();
+        filterOptions(searchTerm);
     });
+
+    // オプションを絞り込む関数
+    function filterOptions(searchTerm) {
+        Array.from(optionsList.children).forEach(function (option) {
+            var optionText = option.innerText.toLowerCase();
+            option.style.display = optionText.includes(searchTerm) ? "block" : "none";
+        });
+    }
+
+    // 選択されたオプションのidをサーバーに送信する関数
+    function sendSelectedOption(selectedId) {
+        console.log("Sending selected option id to server:", selectedId);
+        // ここでAjaxリクエストを実装
+    }
+});
 </script>
 <style>
-    /* スタイルの定義 */
-    .custom-select {
-        position: relative;
-        display: inline-block;
-        width: 200px;
-        /* padding: 10px; */
-        /* border: 1px solid #ccc; */
-        /* border-radius: 5px; */
+    /* ドロップダウンの基本スタイル */
+    #dropdown-menu {
+        background: white;
+    }
+
+    /* リスト項目の基本スタイル */
+    #user-list li {
+        padding: 0.5rem 1rem;
         cursor: pointer;
-        /* background-color: #fff; */
+        color: #1f2937; /* デフォルトの文字色 */
     }
 
-    /* .custom-select input {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        margin-bottom: 5px;
-    } */
-
-    .custom-select ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        border: 1px solid #ccc;
-        border-top: none;
-        border-radius: 0 0 5px 5px;
-        display: none;
+    /* ホバー時のスタイル */
+    #user-list li:hover {
+        background-color: #3b82f6; /* 明るい青 */
+        color: white;
     }
 
-    .custom-select li {
-        padding: 4px;
-        cursor: pointer;
+    /* フォーカス時のスタイル */
+    #user-list li:focus,
+    #user-list li:focus-visible {
+        background-color: #3b82f6;
+        color: white;
+        outline: 2px solid #2563eb;
+        outline-offset: -2px;
     }
 
-    .custom-select li:hover {
-        background-color: blue;
+    /* 選択された項目のスタイル */
+    #user-list li.selected {
+        background-color: #3b82f6;
+        color: white;
+    }
+
+    /* ダークモード対応 */
+    @media (prefers-color-scheme: dark) {
+        #dropdown-menu {
+            background: #1f2937;
+        }
+
+        #user-list li {
+            color: #e5e7eb; /* ダークモードでのデフォルト文字色 */
+        }
+
+        #user-list li:hover {
+            background-color: #4b5563;
+            color: white;
+        }
+
+        #user-list li:focus,
+        #user-list li:focus-visible {
+            background-color: #4b5563;
+            color: white;
+            outline-color: #60a5fa;
+        }
+
+        #user-list li.selected {
+            background-color: #4b5563;
+            color: white;
+        }
     }
 </style>
+
+<script src="{{ asset('assets/js/user-dropdown.js') }}"></script>
 </x-app-layout>

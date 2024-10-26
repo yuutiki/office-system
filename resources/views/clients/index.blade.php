@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between w-5/6">
+        <div class="flex justify-between w-full whitespace-nowrap items-center">
             <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('clients') }}
                 <div class="ml-4">
@@ -8,8 +8,71 @@
                 </div>
             </h2>
             <x-message :message="session('message')" />
+            <div class="flex flex-col flex-shrink-0 space-y-1 w-auto md:flex-row md:space-y-0 md:space-x-3 items-center">
+
+                <x-buttons.add-button :route="route('clients.create')" gate="storeUpdate_clients" :text="__('Add')" />
+
+                <div class="flex items-center w-full space-x-3 hidden md:w-auto md:inline-block">
+                    <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded md:w-auto hover:bg-gray-100 hover:text-blue-700 focus:z-10 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" type="button">
+                        <svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                        </svg>
+                        {{ __('Actions') }}
+                    </button>
+                    <div id="actionsDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-600 dark:divide-gray-600">
+                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
+                            <li>
+                                @can('admin_clients')
+                                    <button type="button" onclick="location.href='{{ route('clients.showUploadForm') }}'" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2M8 9l4-5 4 5m1 8h0"/>
+                                            </svg>
+                                        </div>
+                                        CSVアップロード
+                                    </button>
+                                @else
+                                    <button type="button" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
+                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            <svg class="h-6 w-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </div>
+                                        CSVアップロード
+                                    </button>
+                                @endcan
+                            </li>
+                            <li>
+                                @can('download_clients')
+                                    {{-- <button type="button" onclick="location.href='{{ route('clients.downloadCsv', $filters ?? []) }}'" class="relative w-full items-center py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2m-1-5-4 5-4-5m9 8h0"/>
+                                            </svg>
+                                        </div>
+                                        CSVダウンロード
+                                    </button> --}}
+                                @else
+                                    <button type="button" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
+                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            <svg class="h-6 w-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </div>
+                                        CSVダウンロード
+                                    </button>
+                                @endcan
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </x-slot>
+
+    <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
+
+    {{--  --}}
 
     <div class="relative bg-white dark:bg-gray-800 rounded-t-md md:w-auto md:ml-14 md:mr-2 m-auto shadow-md  dark:text-gray-900 mt-4">
         <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
@@ -24,10 +87,10 @@
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                 </svg>
                             </div>
-                            <input type="search" id="client_name" name="client_name" value="@if (isset($clientName)){{$clientName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="顧客名称（カナ）">
+                            <input type="search" id="client_name" name="client_name" value="@if (isset($clientName)){{$clientName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="顧客名称（カナ）">
                         </div>
                         <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-                            <select name="selected_affiliation2" id="selected_affiliation2" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <select name="selected_affiliation2" id="selected_affiliation2" class="block w-full p-2 pl-4 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400">
                                 <option value="0"  @if($selectedAffiliation2 == 0) selected @endif>管轄事業部</option>
                                 @foreach ($affiliation2s as $affiliation2)
                                 <option value="{{ $affiliation2->id }}" @if($selectedAffiliation2 == $affiliation2->id) selected @endif>
@@ -36,14 +99,35 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-                            <div class="custom-select" id="customSelect">
-                                <input type="text" placeholder="営業担当" autocomplete="off" id="searchInput" name="" value="{{ $salesUserId }}" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <ul id="optionsList" class="z-50 overflow-y-auto dark:bg-gray-700 text-white text-sm h-40 whitespace-nowrap"></ul>
-                                <input type="hidden" name="user_id" id="selectedUserId">
+
+                        <div id="user-dropdown" class="relative w-full md:ml-2 md:mt-0">
+                            <input type="hidden" id="selected-user-id" name="selected_user_id" value="{{ $selectedUserId }}">
+                            <button type="button" id="dropdown-toggle" class="block w-full p-2 pl-4 text-sm text-left text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400">
+                                <span id="selected-user-display" class="text-gray-800 dark:text-white">
+                                    @if($selectedUserId)
+                                        {{ $salesUsers->find($selectedUserId)->user_name ?? 'ユーザーを選択' }}
+                                    @else
+                                        ユーザーを選択
+                                    @endif
+                                </span>
+                                <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </span>
+                            </button>
+                            <div id="dropdown-menu" class="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg hidden">
+                                <div class="p-2">
+                                    <input id="user-search" type="text" name="user_id" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-800 dark:text-white" placeholder="ユーザーを検索...">
+                                </div>
+                                <ul id="user-list" class="max-h-60 overflow-auto">
+                                    <!-- ユーザーリストはJavaScriptで動的に追加されます -->
+                                    {{-- <script src="{{ asset('assets/js/user-dropdown.js') }}"></script> --}}
+                                </ul>
                             </div>
                         </div>
-                        <div class="flex mt-2 md:mt-0">
+
+                        {{-- <div class="flex mt-2 md:mt-0">
                             <div class="w-full md:ml-2">
                                 <button id="filterDropdownButton" data-dropdown-toggle="filterDropdown" class="z-50 flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s rounded-e md:w-auto focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
                                     <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="w-4 h-4 mr-2 text-gray-400" viewbox="0 0 20 20" fill="currentColor">
@@ -54,7 +138,6 @@
                                         <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
                                     </svg>
                                 </button>
-                                <!-- Dropdown menu -->
                                 <div id="filterDropdown" class="z-50 hidden w-2/3 lg:w-1/3 p-3 bg-gray-100 rounded shadow dark:bg-gray-600">
                                     <div class="">
                                         <div class="lg:mr-12">
@@ -84,7 +167,6 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                        {{-- <ul class="border my-2 mx-4"></ul> --}}
                                         <div class="md:mr-12 mt-4 md:mt-0">
                                             <h6 class="mb-1 text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                                 取引状態
@@ -98,7 +180,6 @@
                                                 @endforeach
                                             </ul>
                                         </div>
-                                        {{-- <ul class="border my-2 mx-4"></ul> --}}
                                         <div class="md:mr-12 mt-4 md:mt-0">
                                             <h6 class="mb-1 text-sm font-medium text-gray-900 dark:text-white">
                                                 設置種別
@@ -112,7 +193,6 @@
                                                 @endforeach
                                             </ul>
                                         </div>
-                                        {{-- <ul class="border my-2 mx-4"></ul> --}}
                                         <div class="mt-4 md:mt-0">
                                             <h6 class="mb-1 text-sm font-medium text-gray-900 dark:text-white">
                                                 顧客種別
@@ -130,51 +210,46 @@
                                 </div>
                             </div>
 
-                            {{-- 検索ボタン --}}
                             <button type="submit" id="search-button" form="search_form" class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-s rounded-e border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                 <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                 </svg>
                             </button>
-                            {{-- リセットボタン --}}
                             <button type="button" value="reset" id="clear" form="search-form" class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-s rounded-e border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                 <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 1v5h-5M2 19v-5h5m10-4a8 8 0 0 1-14.947 3.97M1 10a8 8 0 0 1 14.947-3.97"/>
                                 </svg>
                             </button>
+                        </div> --}}
+                        <div class="flex mt-2 md:mt-0">
+                            <div class="flex flex-col justify-end  w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
+                                <button type="button" onclick="showModal()" class="flex w-auto items-center justify-center md:ms-2 px-4 py-2 text-sm font-medium text-white rounded-sm bg-indigo-700 hover:bg-indigo-800 focus:ring-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                                    <div class="whitespace-nowrap">{{ __('詳細条件') }}</div>
+                                </button>
+                                <div class="flex mt-4 md:mt-0">
+                                    <!-- 検索ボタン -->
+                                    <button type="submit" id="search-button" form="search_form" class="p-2.5 w-full md:ms-2 text-sm font-medium text-white bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" tabindex="">
+                                        <div class="flex items-center">
+                                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                            </svg>
+                                            <span class="md:hidden mx-auto">検索</span>
+                                        </div>
+                                    </button>
+                                    <!-- リセットボタン -->
+                                    <button type="button" value="reset" id="clear" form="search-form" class="p-2.5 w-full ms-2 text-sm font-medium text-white bg-gray-500 rounded border border-gray-500 dark:border-gray-500 hover:bg-gray-600 focus:ring-2 focus:outline-none dark:bg-gray-500 dark:hover:bg-gray-700 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" tabindex="">
+                                        <div class="flex items-center">
+                                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 1v5h-5M2 19v-5h5m10-4a8 8 0 0 1-14.947 3.97M1 10a8 8 0 0 1 14.947-3.97"/>
+                                            </svg>
+                                            <span class="md:hidden mx-auto">リセット</span>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
-            </div>
-            <div class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
-                <button type="button" onclick="location.href='{{ route('clients.create') }}'" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-s rounded-e bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                    <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                    </svg>
-                    {{ __('Add') }}
-                </button>
-                <div class="flex items-center w-full space-x-3 hidden md:w-auto md:inline-block">
-                    <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s rounded-e md:w-auto focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
-                        <svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                        </svg>
-                        {{ __('Actions') }}
-                    </button>
-                    <div id="actionsDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-600 dark:divide-gray-600">
-                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
-                            <li>
-                                <button type="button" onclick="location.href='{{ route('clients.showUploadForm') }}'" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
-                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2M8 9l4-5 4 5m1 8h0"/>
-                                        </svg>
-                                    </div>
-                                    CSVアップロード
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -317,206 +392,10 @@
         </div> 
     </div>
 
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var selectContainer = document.getElementById("customSelect");
-        var searchInput = document.getElementById("searchInput");
-        var optionsList = document.getElementById("optionsList");
-        var selectedUserIdInput = document.getElementById("selectedUserId");
-        var highlightedOption = null;
-
-        // カスタムセレクトボックスの表示・非表示
-        selectContainer.addEventListener("click", function () {
-            optionsList.style.display = (optionsList.style.display === "block") ? "none" : "block";
-            searchInput.focus();
-        });
-
-        // 選択肢がクリックされたときの処理
-        optionsList.addEventListener("click", function (event) {
-            // 選択肢がクリックされたら選択肢を非表示にする
-            optionsList.style.display = "none";
-        });
-
-        document.addEventListener("click", function (event) {
-        var selectContainer = document.getElementById("customSelect");
-        var optionsList = document.getElementById("optionsList");
-
-        // クリックされた要素がカスタムセレクトボックス内かどうかを確認
-        var isInsideSelect = event.target.closest("#customSelect");
-
-        if (!isInsideSelect) {
-            // カスタムセレクトボックス外がクリックされた場合は選択肢を非表示にする
-            optionsList.style.display = "none";
+    <style>
+        .active {
+            text-decoration: underline
         }
-    });
-
-        // 検索欄の入力に応じてオプションを絞り込む
-        searchInput.addEventListener("input", function () {
-            var searchTerm = searchInput.value.toLowerCase();
-            filterOptions(searchTerm);
-        });
-
-        // キーボードでのオプションの選択
-        searchInput.addEventListener("keydown", function (event) {
-            switch (event.key) {
-                case "ArrowDown":
-                    event.preventDefault();
-                    highlightNextOption();
-                    break;
-                case "ArrowUp":
-                    event.preventDefault();
-                    highlightPreviousOption();
-                    break;
-                case "Enter":
-                    event.preventDefault();
-                    selectHighlightedOption();
-                    break;
-            }
-        });
-
-        // Ajaxを使用して選択肢を取得
-        fetch('/search-users')
-            .then(response => response.json())
-            .then(data => {
-                // 取得したデータをセレクトボックスに追加
-                populateOptions(data);
-            })
-            .catch(error => console.error('Error fetching data:', error));
-
-        // オプションを絞り込む関数
-        function filterOptions(searchTerm) {
-            Array.from(optionsList.children).forEach(function (option) {
-                var optionText = option.innerText.toLowerCase();
-                option.style.display = optionText.includes(searchTerm) ? "block" : "none";
-            });
-            highlightedOption = null; // 絞り込み時にハイライトをリセット
-        }
-
-        // オプションをセレクトボックスに追加する関数
-        function populateOptions(options) {
-            options.forEach(function (option, index) {
-                var li = document.createElement("li");
-                li.textContent = option.user_name; // ここで適切なプロパティを指定
-                li.dataset.value = option.id; // ここで適切なプロパティを指定
-                li.addEventListener("click", function () {
-                    searchInput.value = option.user_name; // 選択されたオプションの名前をセット
-                    selectedUserIdInput.value = option.id; // hidden inputに選択されたオプションのidをセット
-
-                    // Ajaxリクエストでサーバーに選択されたオプションのidを送信
-                    sendSelectedOption(option.id);
-
-                    optionsList.style.display = "none";
-                });
-
-                li.addEventListener("mouseenter", function () {
-                    highlightedOption = index;
-                    highlightOption();
-                });
-
-                optionsList.appendChild(li);
-            });
-        }
-
-        // オプションをハイライトする関数
-        function highlightOption() {
-            Array.from(optionsList.children).forEach(function (option, index) {
-                if (index === highlightedOption) {
-                    option.classList.add("highlighted");
-                } else {
-                    option.classList.remove("highlighted");
-                }
-            });
-        }
-
-        // 次のオプションをハイライトする関数
-        function highlightNextOption() {
-            highlightedOption = (highlightedOption === null || highlightedOption === optionsList.children.length - 1) ? 0 : highlightedOption + 1;
-            highlightOption();
-        }
-
-        // 前のオプションをハイライトする関数
-        function highlightPreviousOption() {
-            highlightedOption = (highlightedOption === null || highlightedOption === 0) ? optionsList.children.length - 1 : highlightedOption - 1;
-            highlightOption();
-        }
-
-        // ハイライトされているオプションを選択する関数
-        function selectHighlightedOption() {
-            if (highlightedOption !== null) {
-                var selectedOption = optionsList.children[highlightedOption];
-                searchInput.value = selectedOption.innerText;
-                selectedUserIdInput.value = selectedOption.dataset.value;
-
-                // Ajaxリクエストでサーバーに選択されたオプションのidを送信
-                sendSelectedOption(selectedOption.dataset.value);
-
-                optionsList.style.display = "none";
-            }
-        }
-
-        // 選択されたオプションのidをサーバーに送信する関数
-        function sendSelectedOption(selectedId) {
-            // ここでAjaxリクエストを作成してサーバーに選択されたオプションのidを送信
-            // 例えば、fetchやXMLHttpRequestを使用してサーバーに送信できます
-            console.log("Sending selected option id to server:", selectedId);
-        }
-
-        // フォームのサブミット時に選択されたオプションをコンソールに表示
-        document.getElementById("myForm").addEventListener("submit", function (event) {
-            event.preventDefault();
-            console.log("Form submitted. Selected option id:", selectedUserIdInput.value);
-            // ここでフォームを実際にサブミットするか、別途処理を追加することができます
-        });
-    });
-</script>
-<style>
-    /* スタイルの定義 */
-    .custom-select {
-        position: relative;
-        display: inline-block;
-        width: 200px;
-        /* padding: 10px; */
-        /* border: 1px solid #ccc; */
-        /* border-radius: 5px; */
-        cursor: pointer;
-        /* background-color: #fff; */
-    }
-
-    /* .custom-select input {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        margin-bottom: 5px;
-    } */
-
-    .custom-select ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        border: 1px solid #ccc;
-        border-top: none;
-        border-radius: 0 0 5px 5px;
-        display: none;
-    }
-
-    .custom-select li {
-        padding: 4px;
-        cursor: pointer;
-    }
-
-    .custom-select li:hover {
-        background-color: blue;
-    }
-</style>
-<style>
-    .active {
-        text-decoration: underline
-    }
-</style>
+    </style>
+    <script src="{{ asset('assets/js/user-dropdown.js') }}"></script>
 </x-app-layout>
