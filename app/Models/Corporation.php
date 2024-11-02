@@ -125,7 +125,24 @@ class Corporation extends Model
     
 
 
+    /**
+     * 履歴表示用の名称を取得
+     */
+    protected function getHistoryDisplayName(): string
+    {
+        return "{$this->corporation_name}（{$this->corporation_num}）";
+    }
 
+    /**
+     * 履歴に追加のメタ情報を含める場合
+     */
+    protected function getAdditionalHistoryMeta(): array
+    {
+        return [
+            'corporation_num' => $this->corporation_num,
+            // 他の必要な情報
+        ];
+    }
 
 
 

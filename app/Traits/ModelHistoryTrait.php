@@ -69,12 +69,12 @@ trait ModelHistoryTrait
         return static::$disableLogging;
     }
 
+    // 履歴レコードを作成するメソッド
     public function recordHistory(string $operationType): void
     {
         // 操作タイプに応じて変更内容を取得
         $changes = $this->getChangesForHistory($operationType);
 
-        // 履歴レコードを作成
         ModelHistory::create([
             'model' => $this::class,
             'model_type' => $this::class, // ポリモーフィックリレーションのため
@@ -121,16 +121,54 @@ trait ModelHistoryTrait
         return array_diff_key($this->getAttributes(), ['updated_at' => '']);
     }
 
-    protected function getHistoryMeta(): ?array
-    {
-        // オーバーライド可能なメタデータ取得メソッド
-        // デフォルトではnullを返す
-        return null;
-    }
+    // protected function getHistoryMeta(): ?array
+    // {
+    //     // オーバーライド可能なメタデータ取得メソッド
+    //     // デフォルトではnullを返す
+    //     return null;
+    // }
 
     public function histories()
     {
         // モデルの履歴を取得するためのリレーションシップ
         return $this->morphMany(ModelHistory::class, 'model');
+    }
+
+    // メタデータを受取りrecordHistoryに渡すためのメソッド
+    protected function getHistoryMeta(): ?array
+    {
+        $meta = [
+            'display_name' => $this->getDisplayNameForHistory(),
+        ];
+
+        // 追加のメタ情報があれば拡張できるように配列をマージ
+        if (method_exists($this, 'getAdditionalHistoryMeta')) {
+            $meta = array_merge($meta, $this->getAdditionalHistoryMeta());
+        }
+
+        return $meta;
+    }
+
+    /**
+     * 履歴表示用の名称を取得
+     */
+    protected function getDisplayNameForHistory(): string
+    {
+        // モデルごとに表示名の取得ロジックを定義できるようにする
+        if (method_exists($this, 'getHistoryDisplayName')) {
+            return $this->getHistoryDisplayName();
+        }
+
+        // デフォルトの優先順位で名称を取得
+        $nameFields = ['name', 'title', 'display_name', 'full_name', 'company_name', 'customer_name'];
+        
+        foreach ($nameFields as $field) {
+            if (isset($this->attributes[$field])) {
+                return $this->attributes[$field];
+            }
+        }
+
+        // どのフィールドも見つからない場合はIDを返す
+        return "ID: {$this->getKey()}";
     }
 }

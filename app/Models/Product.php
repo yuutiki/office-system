@@ -7,12 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;// add
 use Illuminate\Support\Facades\DB;// add
 use App\Observers\GlobalObserver;
-
+use App\Traits\ModelHistoryTrait;
 
 class Product extends Model
 {
     use HasFactory;
     use Sortable;
+    use ModelHistoryTrait;
 
     protected $fillable = [
         'product_code',
@@ -82,6 +83,26 @@ class Product extends Model
         $productCode = $partialProductCode . $nextSerialNumber;
     
         return $productCode;
+    }
+
+
+    /**
+     * 履歴表示用の名称を取得
+     */
+    protected function getHistoryDisplayName(): string
+    {
+        return "{$this->product_name}（{$this->product_code}）";
+    }
+
+    /**
+     * 履歴に追加のメタ情報を含める場合
+     */
+    protected function getAdditionalHistoryMeta(): array
+    {
+        return [
+            'product_code' => $this->product_code,
+            // 他の必要な情報
+        ];
     }
    
     //relation

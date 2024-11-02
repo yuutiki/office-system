@@ -12,7 +12,7 @@ class ModelHistory extends Model
 
     protected $fillable = [
         'model',
-        'model_type', // この行を追加
+        'model_type',
         'model_id',
         'user_id',
         'operation_type',

@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;//add
 use Kyslik\ColumnSortable\Sortable;//add
 use Illuminate\Support\Str;//add
+use App\Traits\ModelHistoryTrait;
 
 
 class Client extends Model
 {
     use HasFactory;
     use Sortable;//add
+    use ModelHistoryTrait;
 
     protected $fillable = [
         'client_num',

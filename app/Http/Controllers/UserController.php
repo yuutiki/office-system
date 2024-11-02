@@ -315,6 +315,23 @@ class UserController extends Controller
         //     $user->password = bcrypt($request->input('password_' . $id));
         // }
 
+        if ($request->password_change_required)
+        {
+            // ログイン情報メールを送信する
+
+            // アプリケーションのURLを取得する
+            $url = config('app.url');
+
+            // パスワード作成（生年月日8桁＋A%＋携帯番号下4桁）
+            // $birth = str_replace('-', '', $request->birth); // 生年月日からハイフンを削除する
+            // $phoneLast4Digits = substr($request->ext_phone, -4); // 携帯番号から下4桁を取得する
+            // $password = $birth . 'A%' . $phoneLast4Digits;
+            $password = $this->generateTemporaryPassword($request->birth, $request->ext_phone);
+
+            SendLoginInformationJob::dispatch($url, $request->email, $password);
+        }
+
+
 
         return redirect()->back()->with('success','正常に更新しました');
     }

@@ -26,8 +26,11 @@
     "saved.": "保存しました",
     "Delete Account": "ユーザ削除",
     "Delete": "削除",
+    "deleted": "削除",
     "Update": "更新",
+    "updated": "更新",
     "Add": "追加",
+    "created": "追加",
     "Actions": "操作",
     "Cancel": "キャンセル",
     "projectnum": "プロジェクト№",
@@ -45,6 +48,15 @@
     "client_kana": "顧客カナ名称",
     "Home": "ホーム",
     "Masters": "マスタ一覧",
+
+    "Corporation": "法人データ",
+    "Client": "顧客データ",
+    "User": "ユーザーデータ",
+    "Report": "営業報告データ",
+
+
+
+
     "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.": "ユーザ登録時に使用したメールアドレスをご記入ください。パスワードリセット用のリンクをお送りします。",
     "Email Password Reset Link": "メール送信",
     "Ensure your account is using a long, random password to stay secure.": "6文字以上のランダムな英数字及び記号を使用したパスワードにしてください。",
