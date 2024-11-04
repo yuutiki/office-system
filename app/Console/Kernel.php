@@ -27,7 +27,9 @@ class Kernel extends ConsoleKernel
         // $schedule->command(DisableInactiveUsers::class)->daily(); // 毎日実行する例
         $schedule->command(DisableInactiveUsers::class)->daily(); 
 
-        $schedule->command('queue:workers')->runInBackground()->everyMinute();
+        $schedule->exec('nohup php artisan queue:workers > /dev/null 2>&1 & echo $!')
+        ->everyMinute()
+        ->withoutOverlapping();
     }
 
     /**
