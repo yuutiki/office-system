@@ -27,9 +27,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command(DisableInactiveUsers::class)->daily(); // 毎日実行する例
         $schedule->command(DisableInactiveUsers::class)->daily(); 
 
-        // Queue Workersの管理（execを使用）
-        $schedule->exec('nohup php artisan queue:workers >> ' . storage_path('logs/workers/schedule.log') . ' 2>&1 &')
-            ->everyMinute();
+        $schedule->command('queue:workers')->everyMinute();
     }
 
     /**
