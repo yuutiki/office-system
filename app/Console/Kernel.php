@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command(DisableInactiveUsers::class)->daily(); // 毎日実行する例
         $schedule->command(DisableInactiveUsers::class)->daily(); 
 
-        $schedule->command('queue:workers')->everyMinute();
+        $schedule->command('queue:workers')->runInBackground()->everyMinute();
     }
 
     /**
