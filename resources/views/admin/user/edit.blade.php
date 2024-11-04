@@ -1,11 +1,47 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between">
-            <h2 class="text-xl text-gray-900 dark:text-white">
+            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
                 {{ Breadcrumbs::render('editUser', $user) }}
             </h2>
-            <div class="flex justify-end">
+            <div class="flex justify-end items-center space-x-2">
                 <x-message :message="session('message')"/>
+
+                {{-- <form method="post" action="{{ route('corporations.update', $corporation) }}" enctype="multipart/form-data" id="corporationForm" class="flex items-center">
+                    @csrf
+                    @method('patch')
+                    @can('storeUpdate_corporations')
+                        <x-button-save form-id="corporationForm" id="saveButton" onkeydown="stopTab(event)">
+                            {{ __("Update") }}
+                        </x-button-save>
+                    @endcan
+                </form> --}}
+
+                <button id="dropdownActionButton" data-dropdown-toggle="dropdownActions" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-600" type="button">
+                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                        <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+                    </svg>
+                </button>
+
+                <!-- Dropdown menu -->
+                <div id="dropdownActions" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-60 dark:bg-gray-700 dark:divide-gray-600">
+                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownActionButton">
+                        <li>
+                            <button type="button" data-modal-target="deleteModal-{{$user->id}}" data-modal-show="deleteModal-{{$user->id}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full dark:text-red-500">
+                                <div class="flex">
+                                    <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                                    <span class="font-semibold">削除</span>
+                                </div>
+                            </button>
+                        </li>
+                        <li>
+                            <span class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full">更新日：{{ $user->updated_at }}</span>
+                        </li>
+                        <li>
+                            <span class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full">更新者：{{ $user->updatedBy->user_name }}</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </x-slot>
@@ -38,7 +74,7 @@
 
             <label class="relative inline-flex items-center cursor-pointer mb-9">
                 <input type="hidden" form="userForm" name="is_enabled" value="0">
-                <input type="checkbox" form="userForm" name="is_enabled" value="1" checked class="sr-only peer">
+                <input type="checkbox" form="userForm" name="is_enabled" value="1" @checked(old('is_enabled', $user->is_enabled)) class="sr-only peer">
                 <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                 <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">有効</span>
             </label>

@@ -126,6 +126,15 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        // Queue Worker専用のログチャンネルを追加
+        'queue_workers' => [
+            'driver' => 'daily',              // 日別にログファイルを作成
+            'path' => storage_path('logs/workers/queue-workers.log'), 
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 14,                     // 14日間保持
+            'permission' => 0664,             // ファイルパーミッション
+        ],
     ],
 
 ];

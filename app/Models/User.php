@@ -66,6 +66,7 @@ class User extends Authenticatable
 
     //sort
     public $sortable = [
+        'user_num',
         'user_name',
         'email',
         'last_login_at'
@@ -167,6 +168,16 @@ class User extends Authenticatable
     public function loginHistories()
     {
         return $this->hasMany(LoginHistory::class);
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id');
     }
 
 }

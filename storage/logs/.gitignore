@@ -1,2 +1,5 @@
 *
 !.gitignore
+!workers/
+workers/*
+!workers/.gitkeep

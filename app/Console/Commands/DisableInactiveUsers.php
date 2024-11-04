@@ -30,20 +30,24 @@ class DisableInactiveUsers extends Command
     public function handle()
     {
         $dateInactive = PasswordPolicy::value('date_inactive');
-        if ($dateInactive === 0) {
-            return; // 無期限の場合は何もしない
-        }
-
-        $inactiveThreshold = now()->subDays($dateInactive);
-
-        User::where(function ($query) use ($inactiveThreshold) {
-            $query->where('last_login_at', '<=', $inactiveThreshold)
-                ->orWhereNull('last_login_at');
-        })
-        ->update(['is_enabled' => false]); // 有効フラグを無効化する
-
-        Log::info('Inactive users have been disabled.'); // ログを書き出す
-
+        $inactiveThreshold = $dateInactive !== 0 ? now()->subDays($dateInactive) : null;
+    
+        User::where('is_enabled', true)
+            ->where(function ($query) use ($inactiveThreshold) {
+                // 24時間以上経過して未ログインのユーザー
+                $query->where(function ($q) {
+                    $q->whereNull('last_login_at')
+                        ->where('updated_at', '<=', now()->subHours(24));
+                });
+    
+                // 一般的な非アクティブユーザー
+                if ($inactiveThreshold) {
+                    $query->orWhere('last_login_at', '<=', $inactiveThreshold);
+                }
+            })
+            ->update(['is_enabled' => false]);
+    
+        Log::info('Inactive users have been disabled.');
         $this->info('Inactive users have been disabled.');
     }
 }
