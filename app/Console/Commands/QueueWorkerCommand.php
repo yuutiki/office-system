@@ -25,8 +25,8 @@ class QueueWorkerCommand extends Command
         // 環境に応じてコマンドプレフィックスを設定（開発環境ではdocker compose exec）
         $commandPrefix = $this->getCommandPrefix();
         
-        // Worker起動コマンドを生成
-        $baseCommand = "{$commandPrefix}php artisan queue:work";
+        // Worker起動コマンドを生成（nohupを追加）
+        $baseCommand = "{$commandPrefix}nohup php artisan queue:work";
 
         try {
             // Workerの起動処理開始を記録
@@ -42,6 +42,8 @@ class QueueWorkerCommand extends Command
             Log::channel('queue_workers')->info("Starting default priority workers");
             Process::run("{$baseCommand} --queue=default,high {$workerOptions} > /dev/null 2>&1 & echo $!");
             Process::run("{$baseCommand} --queue=default,high {$workerOptions} > /dev/null 2>&1 & echo $!");
+
+            sleep(1); // プロセスの起動を待機
 
             // 起動したWorker数を確認
             $workerCount = Process::run("pgrep -f 'queue:work' | wc -l");
