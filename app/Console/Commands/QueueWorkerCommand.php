@@ -14,111 +14,148 @@ class QueueWorkerCommand extends Command
 
     public function handle()
     {
-        // Workerの実行オプションを設定
+        // 実行環境の情報を収集
+        $environmentInfo = [
+            'timestamp' => now()->format('Y-m-d H:i:s'),
+            'pid' => getmypid(),
+            'ppid' => posix_getppid(),
+            'user' => posix_getpwuid(posix_geteuid())['name'],
+            'pwd' => getcwd(),
+            'php_binary' => PHP_BINARY,
+            'sapi' => php_sapi_name(),
+            'environment' => app()->environment(),
+            'path' => getenv('PATH'),
+        ];
+
+        // 実行環境の情報をログに記録
+        Log::channel('queue_workers')->info("Environment info", $environmentInfo);
+
         $workerOptions = implode(' ', [
-            '--max-time=60',    // 60秒でWorkerを再起動
-            '--memory=256',     // メモリ256MBで再起動
-            '--tries=3',        // ジョブの最大試行回数
-            '--timeout=60',     // 1ジョブの実行時間制限
+            '--max-time=60',
+            '--memory=256',
+            '--tries=3',
+            '--timeout=60',
         ]);
 
-        // 環境に応じてコマンドプレフィックスを設定（開発環境ではdocker compose exec）
         $commandPrefix = $this->getCommandPrefix();
-        
-        // Worker起動コマンドを生成（nohupを追加）
-        $baseCommand = "{$commandPrefix}nohup php artisan queue:work";
-        
-        // プロセスIDを格納する配列
+        $baseCommand = "{$commandPrefix}php artisan queue:work";
+
+        // 起動前の状態を確認
+        $beforeProcesses = $this->getRunningWorkers();
+        Log::channel('queue_workers')->info("Existing workers before start", [
+            'count' => count($beforeProcesses),
+            'processes' => $beforeProcesses
+        ]);
+
         $pids = [];
 
         try {
-            // Workerの起動処理開始を記録
             $startTime = now()->format('Y-m-d H:i:s');
             Log::channel('queue_workers')->info("Starting workers at {$startTime}");
 
-            // 高優先度Worker起動（high -> defaultの順で処理）
+            // 高優先度Worker起動
             Log::channel('queue_workers')->info("Starting high priority workers");
-            $pids[] = $this->startWorker("{$baseCommand} --queue=high,default {$workerOptions}");
-            $pids[] = $this->startWorker("{$baseCommand} --queue=high,default {$workerOptions}");
+            for ($i = 0; $i < 2; $i++) {
+                $pid = $this->startWorker("{$baseCommand} --queue=high,default {$workerOptions}");
+                Log::channel('queue_workers')->info("Started high priority worker", [
+                    'pid' => $pid,
+                    'index' => $i
+                ]);
+                $pids[] = $pid;
+            }
 
-            // 通常優先度Worker起動（default -> highの順で処理）
+            // 通常優先度Worker起動
             Log::channel('queue_workers')->info("Starting default priority workers");
-            $pids[] = $this->startWorker("{$baseCommand} --queue=default,high {$workerOptions}");
-            $pids[] = $this->startWorker("{$baseCommand} --queue=default,high {$workerOptions}");
+            for ($i = 0; $i < 2; $i++) {
+                $pid = $this->startWorker("{$baseCommand} --queue=default,high {$workerOptions}");
+                Log::channel('queue_workers')->info("Started default priority worker", [
+                    'pid' => $pid,
+                    'index' => $i
+                ]);
+                $pids[] = $pid;
+            }
 
-            sleep(1); // プロセスの起動を待機
+            sleep(2); // プロセスの起動を待機
 
-            // 実際に稼働中のWorker数を確認
+            // 起動後の状態を確認
+            $afterProcesses = $this->getRunningWorkers();
             $runningCount = $this->countRunningWorkers($pids);
 
-            // 起動結果をログに記録
-            Log::channel('queue_workers')->info("Workers started successfully", [
+            // 詳細な結果をログに記録
+            Log::channel('queue_workers')->info("Workers status", [
                 'command' => $baseCommand,
-                'worker_count' => $runningCount,
+                'expected_pids' => $pids,
+                'running_count' => $runningCount,
+                'before_processes' => $beforeProcesses,
+                'after_processes' => $afterProcesses,
                 'options' => $workerOptions
             ]);
 
-            // コンソールに結果を表示
-            $this->info("Workers started successfully. Running Count: {$runningCount}");
+            $this->info("Workers started. Expected PIDs: " . implode(', ', $pids));
+            $this->info("Actually running: {$runningCount}");
 
         } catch (\Exception $e) {
-            // エラー発生時のログ記録
             Log::channel('queue_workers')->error("Failed to start workers", [
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
+                'environment' => $environmentInfo
             ]);
             
-            // コンソールにエラーを表示
-            $this->error("Failed to start workers: {$e->getMessage()}");
+            $this->error($e->getMessage());
         }
     }
 
-    /**
-     * Workerを起動し、プロセスIDを取得
-     * 
-     * @param string $command 起動コマンド
-     * @return int プロセスID
-     */
     private function startWorker(string $command): int
     {
-        // Process::runを実行し、実行結果からPIDを取得
-        $process = Process::run("{$command} > /dev/null 2>&1 & echo $!");
-        return (int) trim($process->output()); // プロセスIDを返す
+        $result = Process::run("{$command} > /dev/null 2>&1 & echo $!");
+        $pid = (int) trim($result->output());
+
+        Log::channel('queue_workers')->info("Worker process execution", [
+            'command' => $command,
+            'pid' => $pid,
+            'success' => $result->successful(),
+            'output' => $result->output(),
+            'error' => $result->errorOutput()
+        ]);
+
+        return $pid;
     }
 
-    /**
-     * 稼働中のWorker数を確認
-     * 
-     * @param array $pids プロセスIDのリスト
-     * @return int 現在稼働中のWorker数
-     */
     private function countRunningWorkers(array $pids): int
     {
         $runningCount = 0;
-
         foreach ($pids as $pid) {
-            // 各プロセスIDに対してpsで確認
             $result = Process::run("ps -p {$pid}");
-            if ($result->successful()) {
+            $isRunning = $result->successful();
+            
+            Log::channel('queue_workers')->info("Checking worker process", [
+                'pid' => $pid,
+                'is_running' => $isRunning,
+                'ps_output' => $result->output(),
+                'ps_error' => $result->errorOutput()
+            ]);
+
+            if ($isRunning) {
                 $runningCount++;
             }
         }
-
         return $runningCount;
     }
 
-    /**
-     * 環境に応じたコマンドプレフィックスを取得
-     * 開発環境の場合はdocker compose execを使用
-     */
+    private function getRunningWorkers(): array
+    {
+        $result = Process::run("ps aux | grep '[q]ueue:work'");
+        return array_filter(explode("\n", $result->output()));
+    }
+
     private function getCommandPrefix(): string
     {
-        // APP_ENVがlocalまたはqueue.use_dockerがtrueの場合
-        if (App::environment('local')) {
-            return 'docker compose exec -T app ';  // -Tオプションで疑似TTY割り当てを防止
-        }
+        $isLocal = App::environment('local');
+        Log::channel('queue_workers')->info("Command prefix check", [
+            'is_local' => $isLocal,
+            'app_env' => App::environment()
+        ]);
 
-        // 本番環境の場合は追加のプレフィックスなし
-        return '';
+        return $isLocal ? 'docker compose exec -T app ' : '';
     }
 }

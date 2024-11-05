@@ -7,7 +7,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\File;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -23,13 +23,36 @@ class Kernel extends ConsoleKernel
             File::makeDirectory($logDir, 0775, true);
         }
 
+                // スケジューラー実行時の環境情報を記録
+                Log::info('Schedule starting', [
+                    'timestamp' => now()->format('Y-m-d H:i:s'),
+                    'pid' => getmypid(),
+                    'ppid' => posix_getppid(),
+                    'user' => posix_getpwuid(posix_geteuid())['name'],
+                    'pwd' => getcwd(),
+                    'sapi' => php_sapi_name(),
+                    'argv' => $_SERVER['argv'] ?? []
+                ]);
+
         // $schedule->command('inspire')->hourly();
         // $schedule->command(DisableInactiveUsers::class)->daily(); // 毎日実行する例
         $schedule->command(DisableInactiveUsers::class)->daily(); 
 
-        $schedule->exec('nohup php artisan queue:workers > /dev/null 2>&1 & echo $!')
+        $schedule->command('queue:workers')
+        ->runInBackground()
         ->everyMinute()
-        ->withoutOverlapping();
+        ->before(function () {
+            Log::info('Before queue:workers execution');
+        })
+        ->after(function () {
+            Log::info('After queue:workers execution');
+        })
+        ->onSuccess(function () {
+            Log::info('queue:workers executed successfully');
+        })
+        ->onFailure(function () {
+            Log::error('queue:workers execution failed');
+        });
     }
 
     /**
