@@ -11,6 +11,12 @@ trait ModelHistoryTrait
     protected static $disableLogging = false;
     protected static $loggingStack = [];
 
+    // 除外するカラムのデフォルトリスト
+    protected static $defaultExcludedColumns = [
+        'updated_at',
+        'last_login_at',
+    ];
+
     protected static function bootModelHistoryTrait(): void
     {
         $events = ['created', 'updated', 'deleted']; // 'retrieved' を削除
@@ -100,12 +106,25 @@ trait ModelHistoryTrait
         return null;
     }
 
+    // 除外するカラムを取得するメソッド
+    protected function getExcludedColumns(): array
+    {
+        // モデルで個別に除外カラムを定義できるようにする
+        $modelExcludedColumns = property_exists($this, 'excludeFromHistory')
+            ? $this->excludeFromHistory
+            : [];
+
+        return array_merge(static::$defaultExcludedColumns, $modelExcludedColumns);
+    }
+
     protected function getChangesWithOriginalExcludingUpdatedAt(): array
     {
         $changes = [];
+        $excludedColumns = $this->getExcludedColumns();
+
         foreach ($this->getDirty() as $key => $value) {
-            // updated_atフィールドを除外
-            if ($key !== 'updated_at') {
+            // 除外するカラムリストに含まれていない場合のみ記録
+            if (!in_array($key, $excludedColumns)) {
                 $changes[$key] = [
                     'before' => $this->getOriginal($key),
                     'after' => $value
@@ -117,8 +136,9 @@ trait ModelHistoryTrait
 
     protected function getAttributesExcludingUpdatedAt(): array
     {
-        // updated_atを除く全ての属性を返す
-        return array_diff_key($this->getAttributes(), ['updated_at' => '']);
+        // 除外するカラムを配列に変換してdiff_keyで除外
+        $excludeKeys = array_flip($this->getExcludedColumns());
+        return array_diff_key($this->getAttributes(), $excludeKeys);
     }
 
     // protected function getHistoryMeta(): ?array

@@ -39,14 +39,6 @@
                 <label for="corporation_num" name="corporation_num" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">法人No.</label>
             </div> --}}
             <div class="w-full flex flex-col">
-                <label for="corporation_number" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">法人番号（国税庁）</label>
-                <input type="text" form="corporationForm" name="corporation_number" id="corporation_number" value="{{ old('corporation_number') }}" class="input-primary" placeholder="123456789123">
-                @error('corporation_number')
-                <div class="text-red-500">{{$message}}</div>
-            @enderror
-            </div>
-
-            <div class="w-full flex flex-col">
                 <label for="corporation_name" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">法人名称<span class="text-red-500"> *</span></label>
                 <input type="text" form="corporationForm" name="corporation_name" class="input-secondary" id="corporation_name" value="{{ old('corporation_name') }}" placeholder="学校法人 烏丸学園">
                 @error('corporation_name')
@@ -68,6 +60,13 @@
                     <input type="text" form="corporationForm" name="corporation_short_name" id="corporation_short_name" value="{{ old('corporation_short_name') }}" class="input-secondary" placeholder="烏丸学園">
                 </div>
                 @error('corporation_short_name')
+                    <div class="text-red-500">{{$message}}</div>
+                @enderror
+            </div>
+            <div class="w-full flex flex-col">
+                <label for="corporation_number" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">法人番号（国税庁）</label>
+                <input type="text" form="corporationForm" name="corporation_number" id="corporation_number" value="{{ old('corporation_number') }}" class="input-primary" placeholder="123456789123">
+                @error('corporation_number')
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
             </div>

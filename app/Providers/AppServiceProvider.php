@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Observers\GlobalObserver;
-
+use App\View\Components\Icon;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Database\Eloquent\Model;
@@ -27,24 +27,6 @@ class AppServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Blade::component('add-button', \App\View\Components\AddButton::class);
-        // // 「システム管理者」だけに適用
-        // Gate::define('systemAdmin', function ($user) {
-        //     return ($user->role_id == 1);
-        // });
-
-        // // 「システム管理者」と「管理者」に適用
-        // Gate::define('adminOrAbobe', function ($user) {
-        //     return ($user->role_id <= 2);
-        // });
-
-        // // 「システム管理者」と「管理者」と「マネージャ」に適用
-        // Gate::define('managerOrAbobe', function ($user) {
-        //     return ($user->role_id <= 3);
-        // });
-
-        // // 「システム管理者」と「管理者」と「マネージャ」「一般」に適用
-        // Gate::define('general', function ($user) {
-        //     return ($user->role_id <= 4);
-        // });
+        Blade::component('icon', Icon::class);
     }
 }

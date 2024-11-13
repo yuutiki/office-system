@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CsvUploadRequest;
 use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Jobs\SendLoginInformationJob;
 use App\Mail\SendLoginInformation;
 use App\Models\Affiliation1;
@@ -243,7 +244,7 @@ class UserController extends Controller
         return view('admin.user.edit',compact('user','user_role','e_statuses','user_e_status','affiliation1s','affiliation2s','affiliation3s', 'maxlength','roleGroups',));
     }
 
-    public function update(Request $request, User $user)
+    public function update(UserUpdateRequest $request, User $user)
     {
         $userNum =  str_pad($request->user_num, 6, '0', STR_PAD_LEFT);
 
@@ -328,7 +329,7 @@ class UserController extends Controller
             // $password = $birth . 'A%' . $phoneLast4Digits;
             $password = $this->generateTemporaryPassword($request->birth, $request->ext_phone);
 
-            SendLoginInformationJob::dispatch($url, $request->email, $password);
+            SendLoginInformationJob::dispatch($url, $request->email, $password, $request->locale ?? 'ja');
         }
 
 

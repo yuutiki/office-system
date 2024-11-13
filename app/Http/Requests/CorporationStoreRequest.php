@@ -52,6 +52,10 @@ class CorporationStoreRequest extends FormRequest
             'is_stop_trading' => ['sometimes', 'boolean'], // チェックボックスの値が存在し、booleanであることを確認
             'stop_trading_reason' => ['required_if:is_stop_trading,1', 'string'], // is_stop_tradingが1の場合、stop_trading_reasonは必須
             'credit_limit' => ['nullable', 'numeric'],
+
+            'corporation_post_code' => 'nullable',
+            'corporation_prefecture_id' => 'nullable',
+            'corporation_address1' => 'nullable',
         ];
     }
 

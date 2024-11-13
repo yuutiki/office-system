@@ -25,9 +25,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // 使用するCSSクラス名を定義
     const CLASSES = {
         hidden: 'hidden',
-        listItem: 'px-4 py-2 hover:bg-gray-600 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-gray-400 focus:dark:text-blue-400',
-        userName: 'font-semibold transition-colors duration-150 ease-in-out',
-        focusedUserName: 'text-blue-500 dark:text-blue-400'
+        listItem: 'px-4 py-2 hover:bg-blue-400 cursor-pointer focus:bg-blue-500 focus:text-white transition-colors duration-150 ease-in-out',
+        userName: 'font-semibold',
     };
 
     /**
@@ -52,39 +51,56 @@ document.addEventListener('DOMContentLoaded', function() {
      * @param {Object} user - ユーザー情報オブジェクト
      * @returns {HTMLElement} 作成されたリストアイテム要素
      */
-    function createUserListItem(user) {
+    function createUserListItem(user, isLastItem) {
         const li = document.createElement('li');
+        li.tabIndex = 0;
         li.className = CLASSES.listItem;
-        li.setAttribute('tabindex', '0');
         li.setAttribute('role', 'option');
-        li.innerHTML = `
-            <div class="flex items-center dark:text-white">
-                <div>
-                    <div class="${CLASSES.userName}">${user.user_name}</div>
-                    <div class="text-sm text-gray-500 dark:text-gray-300">${user.email}</div>
-                </div>
-            </div>
-        `;
-        li.addEventListener('click', () => selectUser(user));
+
+            // デバッグ用：フォーカス時の状態を確認
+    li.addEventListener('focus', () => {
+        console.log('Focus received', user.user_name);
+        // 強制的にスタイルを適用（デバッグ用）
+        li.style.backgroundColor = '#3b82f6';
+        li.style.color = 'white';
+    });
+
+    li.addEventListener('blur', () => {
+        console.log('Focus lost', user.user_name);
+        // スタイルを戻す
+        li.style.backgroundColor = '';
+        li.style.color = '';
+    });
+
+    // 最後の要素の場合、Tabキーをトラップする
+    if (isLastItem) {
+        li.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab' && !e.shiftKey) {
+                e.preventDefault();  // Tabキーのデフォルトの動作を防ぐ
+            }
+            if (e.key === 'Enter') {
+                selectUser(user);
+            }
+        });
+    } else {
         li.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 selectUser(user);
             }
         });
-
-        const userNameElement = li.querySelector(`.${CLASSES.userName}`);
-        
-        // フォーカスイベントリスナーを追加
-        li.addEventListener('focus', () => {
-            userNameElement.classList.add(...CLASSES.focusedUserName.split(' '));
-        });
-        
-        // ブラーイベントリスナーを追加
-        li.addEventListener('blur', () => {
-            userNameElement.classList.remove(...CLASSES.focusedUserName.split(' '));
-        });
-        return li;
     }
+
+    li.innerHTML = `
+    <div>
+        <div class="${CLASSES.userName}">${user.user_name}</div>
+        <div class="text-sm">${user.email}</div>
+    </div>
+    `;
+
+    li.addEventListener('click', () => selectUser(user));
+
+    return li;
+}
 
     /**
      * ユーザーリストを表示する
@@ -92,18 +108,23 @@ document.addEventListener('DOMContentLoaded', function() {
      */
     function displayUsers(users) {
         DOM.userList.innerHTML = '';
-        users.forEach((user) => {
-            DOM.userList.appendChild(createUserListItem(user));
+        
+        // 同期的に要素を追加
+        users.forEach((user, index) => {
+            // 最後の要素かどうかを判定してcreateUserListItemに渡す
+            const isLastItem = index === users.length - 1;
+            const li = createUserListItem(user, isLastItem);
+            DOM.userList.appendChild(li);
         });
-        makeListItemsTabbable();
-    }
 
-    /**
-     * リストアイテムをタブで選択可能にする
-     */
-    function makeListItemsTabbable() {
-        DOM.userList.querySelectorAll('li').forEach((item) => {
-            item.setAttribute('tabindex', '0');
+        // フォーカスの設定を確実にするため、次のフレームで実行
+        requestAnimationFrame(() => {
+            const items = DOM.userList.querySelectorAll('li');
+            items.forEach(item => {
+                item.tabIndex = 0;
+                // フォーカス可能であることを明示的に示す
+                item.style.outline = 'none';
+            });
         });
     }
 
@@ -172,11 +193,36 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // フォーカス管理のための関数を追加
+    function initFocusManagement() {
+        // リストのキーボードナビゲーション
+        DOM.userList.addEventListener('keydown', (e) => {
+            const items = Array.from(DOM.userList.querySelectorAll('li'));
+            const currentIndex = items.indexOf(document.activeElement);
+
+            switch(e.key) {
+                case 'ArrowDown':
+                    e.preventDefault();
+                    if (currentIndex < items.length - 1) {
+                        items[currentIndex + 1].focus();
+                    }
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    if (currentIndex > 0) {
+                        items[currentIndex - 1].focus();
+                    }
+                    break;
+            }
+        });
+    }
+
     /**
      * アプリケーションの初期化
      */
     function init() {
         initEventListeners();
+        initFocusManagement(); // フォーカス管理を初期化
         fetchUsers(); // 初期化時にユーザーデータを取得
     }
 

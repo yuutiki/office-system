@@ -11,11 +11,11 @@ use Illuminate\Validation\Rule as ValidationRule;
 use Laravel\Sanctum\HasApiTokens;
 use Kyslik\ColumnSortable\Sortable;//add
 use App\Observers\GlobalObserver;
-
+use App\Traits\ModelHistoryTrait;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, Sortable;
+    use HasApiTokens, HasFactory, Notifiable, Sortable, ModelHistoryTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -73,22 +73,24 @@ class User extends Authenticatable
     ];
 
 
-    // public static function rules($id)
-    // {
-    //     return [
-    //         'affiliation1_id_' . $id => 'required',
-    //         'department_id_' . $id => 'required',
-    //         'affiliation3_id_' . $id => 'required',
-    //         'int_phone_' . $id => 'size:3',
-    //         'kana_name_' . $id => 'required|max:50',
-    //         'name_' . $id => 'required|max:50',
-    //         // 他のフィールドに対するルールも追加する
-    //     ];
-    // }
+    /**
+     * 履歴表示用の名称を取得(ModelHistoryTrait)
+     */
+    protected function getHistoryDisplayName(): string
+    {
+        return "{$this->user_name}（{$this->user_num}）";
+    }
 
-    // public static $uploadRules = [
-    //     'csv_input' => 'required|file|mimes:csv,txt',
-    // ];
+    /**
+     * 履歴に追加のメタ情報を含める場合(ModelHistoryTrait)
+     */
+    protected function getAdditionalHistoryMeta(): array
+    {
+        return [
+            'user_num' => $this->user_num,
+            // 他の必要な情報
+        ];
+    }
 
     //GlobalObserverに定義されている作成者と更新者を登録するメソッド
     //なお、値を更新せずにupdateをかけても更新者は更新されない。

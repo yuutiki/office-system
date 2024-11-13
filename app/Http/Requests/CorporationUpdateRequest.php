@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Utils\PostCodeUtils;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CorporationUpdateRequest extends FormRequest
@@ -18,24 +19,33 @@ class CorporationUpdateRequest extends FormRequest
     public function prepareForValidation()
     {
         $creditLimit = $this->input('credit_limit');
+        $postCode = $this->input('corporation_post_code');
 
-        if ($creditLimit !== null) {
-            $this->merge([
-                'credit_limit' => is_numeric($creditLimit) ? $creditLimit : str_replace(',', '', $creditLimit),
-            ]);
+        $mergeData = [
+            'is_stop_trading' => $this->has('is_stop_trading') ? 1 : 0,
+        ];
+
+        // 郵便番号の整形
+        if ($postCode) {
+            $formattedPostCode = PostCodeUtils::formatPostCode($postCode);
+            // フォーマットに失敗した場合（エラーメッセージが返ってきた場合）は元の値を使用
+            $postCode = $formattedPostCode === "郵便番号の桁数が正しくありません" ? $postCode : $formattedPostCode;
         }
 
-        // is_stop_trading の整形
-        $this->merge([
-            'is_stop_trading' => $this->has('is_stop_trading') ? 1 : 0,
-        ]);
-        
-        // is_stop_trading が0の場合、stop_trading_reason をnullに設定
-        if ($this->is_stop_trading == 0) {
-            $this->merge([
-                'stop_trading_reason' => null,
-            ]);
-        }        
+        // credit_limitの整形
+        if ($creditLimit !== null) {
+            $mergeData['credit_limit'] = is_numeric($creditLimit) 
+                ? $creditLimit 
+                : str_replace(',', '', $creditLimit);
+        }
+
+        // 取引停止理由の制御
+        if (!$this->has('is_stop_trading')) {
+            $mergeData['stop_trading_reason'] = null;
+        }
+
+        $this->merge($mergeData);
+
     }
 
     /**
@@ -55,6 +65,12 @@ class CorporationUpdateRequest extends FormRequest
             'is_stop_trading' => 'nullable|boolean',
             'stop_trading_reason' => 'required_if:is_stop_trading,true',
             'tax_status' => 'required|integer|in:0,1,2',
+            'corporation_memo' => 'nullable',
+            'corporation_tax_num' => 'nullable|size:12|numeric',
+
+            'corporation_post_code' => 'nullable',
+            'corporation_prefecture_id' => 'nullable',
+            'corporation_address1' => 'nullable',
         ];
     }
 

@@ -153,11 +153,11 @@
           <div class="flex flex-wrap">
 
             <div class="w-full xl:w-8/12 xl:mb-0 px-4">
-              <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg dark:bg-gray-800">
+              <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-100 dark:bg-gray-800">
                 <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
                   <div class="flex flex-wrap items-center">
                     <div class="relative w-full max-w-full flex-grow flex-1">
-                      <h2 class="text-white text-xl font-semibold">
+                      <h2 class="dark:text-white text-xl font-semibold">
                         Sales value
                       </h2>
                     </div>
@@ -174,7 +174,7 @@
 
 
             <div class="w-full xl:w-4/12 px-4">
-              <div class="relative flex flex-col min-w-0 break-words dark:bg-gray-800 w-full mb-6 shadow-lg rounded-lg">
+              <div class="relative flex flex-col min-w-0 break-words bg-gray-100 dark:bg-gray-800 w-full mb-6 shadow-lg rounded-lg">
                 <div class="rounded-lg mb-0 px-4 py-3 bg-transparent">
                   <div class="flex flex-wrap items-center">
                     <div class="relative w-full max-w-full flex-grow flex-1">
@@ -197,7 +197,7 @@
           <div class="flex flex-wrap">
             
             <div class="w-full xl:w-8/12 xl:mb-0 px-4">
-              <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg dark:bg-gray-800 p-6">
+              <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-100 dark:bg-gray-800 p-6">
 
                 <div class="flex justify-between items-start w-full">
                   <div class="flex-col items-center">
@@ -240,7 +240,7 @@
 
 
             <div class="w-full xl:w-4/12 px-4">
-              <div class="relative flex flex-col min-w-0 break-words dark:bg-gray-800 w-full mb-6 shadow-lg rounded-lg p-6">
+              <div class="relative flex flex-col min-w-0 break-words bg-gray-100 dark:bg-gray-800 w-full mb-6 shadow-lg rounded-lg p-6">
                 <div class="flex justify-between items-start w-full">
                   <div class="flex-col items-center">
                     <div class="flex items-center mb-1">
@@ -287,7 +287,7 @@
 
 
             <div class="w-full xl:w-4/12 px-4">
-              <div class="relative flex flex-col min-w-0 break-words dark:bg-gray-800 w-full mb-6 p-6 shadow-lg rounded-lg">
+              <div class="relative flex flex-col min-w-0 break-words bg-gray-100 dark:bg-gray-800 w-full mb-6 p-6 shadow-lg rounded-lg">
                 <div class="rounded-t mb-0 px-4 py-3 border-0">
                   <div class="flex flex-wrap items-center">
                     <div class="relative w-full px-4 max-w-full flex-grow flex-1">
@@ -431,7 +431,7 @@
 
           <div class="flex flex-wrap mt-32 md:ml-10 ">
             <div class="w-full xl:w-full xl:mb-0 px-4">
-              <div class="relative flex flex-col min-w-0 break-words dark:bg-gray-800 bg-white text-black w-full mb-6 p-6 shadow-lg rounded-lg dark:text-white">
+              <div class="relative flex flex-col min-w-0 break-words dark:bg-gray-800 bg-gray-100 text-black w-full mb-6 p-6 shadow-lg rounded-lg dark:text-white">
                 <div class="rounded-lg mb-0  border-0">
                   <div class="flex flex-wrap items-center">
                     <div class="relative w-full max-w-full flex-grow flex-1">
@@ -512,7 +512,7 @@
 
 
             <div class="w-full xl:w-full mb-1 xl:mb-0 px-4">
-              <div class="relative flex flex-col min-w-0 break-words dark:bg-gray-800 dark:text-white text-black bg-white w-full mb-6 p-6 shadow-lg rounded-lg">
+              <div class="relative flex flex-col min-w-0 break-words dark:bg-gray-800 dark:text-white text-black bg-gray-100 w-full mb-6 p-6 shadow-lg rounded-lg">
                 <div class="rounded-t mb-0 border-0">
                   <div class="flex flex-wrap items-center">
                     <div class="relative w-full max-w-full flex-grow flex-1">

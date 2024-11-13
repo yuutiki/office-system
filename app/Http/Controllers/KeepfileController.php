@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use app\Common\CommonFunction;
 use App\Http\Requests\KeepfileStoreRequest;
 use App\Http\Requests\KeepfileUpdateRequest;
 use App\Models\Client;
@@ -13,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Number;
 use PDF;
 
 class KeepfileController extends Controller
@@ -161,7 +161,7 @@ class KeepfileController extends Controller
                 // ファイルサイズを取得 (ファイルサイズはバイト単位)
                 $fileSize = filesize($filePath);
                 // ファイルサイズを人間が読みやすい形式に変換
-                $formattedFileSize = CommonFunction::formatBytes($fileSize);
+                $formattedFileSize = Number::fileSize($fileSize, precision: 2);
             }
         }
     

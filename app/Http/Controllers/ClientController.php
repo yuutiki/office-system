@@ -15,6 +15,7 @@ use App\Models\TradeStatus;//add
 use App\Models\Prefecture;//add
 use App\Models\Report;//add
 use App\Models\Support;
+use App\Utils\PostCodeUtils;
 use Illuminate\Http\Request;
 use Illuminate\pagination\paginator;//add
 use Illuminate\Support\Facades\DB;//add
@@ -24,6 +25,7 @@ use Goodby\CSV\Import\Standard\Lexer;
 use Goodby\CSV\Import\Standard\Interpreter;
 use Goodby\CSV\Import\Standard\LexerConfig;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Number;
 
 class ClientController extends Controller
 {
@@ -118,6 +120,7 @@ class ClientController extends Controller
         //     // 初期表示の場合、ユーザーの所属に基づいて検索結果を絞る
         //     $clientsQuery->where('affiliation2_id', $userAffiliation2)->get();
         // }
+        
 
 
 
@@ -146,7 +149,11 @@ class ClientController extends Controller
         ////以下にFormRequestのバリデーションを通過した場合の処理を記述////
 
         $inputPost = $request->head_post_code;
-        $formattedPost = Client::formatPostCode($inputPost);
+        // $formattedPost = Client::formatPostCode($inputPost);
+        $formattedPost = PostCodeUtils::formatPostCode($inputPost);
+
+
+        
 
         // フォームからの値を変数に格納
         $corporationNum = $request->input('corporation_num');

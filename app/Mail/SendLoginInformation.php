@@ -16,15 +16,17 @@ class SendLoginInformation extends Mailable
     public $url;
     public $email;
     public $password;
+    public $locale;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($url, $email, $password)
+    public function __construct($url, $email, $password,  $locale = 'ja')
     {
         $this->url = $url;
         $this->email = $email;
         $this->password = $password;
+        $this->locale = $locale;
     }
 
     /**
@@ -34,7 +36,7 @@ class SendLoginInformation extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Your Login Information',
+            subject: 'OfficeSystemログイン情報',
         );
     }
 

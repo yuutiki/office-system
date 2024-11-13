@@ -15,18 +15,20 @@ class SendLoginInformationJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $url;
-    protected $email;
-    protected $password;
-
+    private $url;
+    private $email;
+    private $password;
+    private $locale;
+ 
     /**
      * Create a new job instance.
      */
-    public function __construct($url, $email, $password)
+    public function __construct($url, $email, $password, $locale = 'ja')
     {
         $this->url = $url;
         $this->email = $email;
         $this->password = $password;
+        $this->locale = $locale;
     }
 
     /**
@@ -34,6 +36,6 @@ class SendLoginInformationJob implements ShouldQueue
      */
     public function handle(): void
     {
-        Mail::to($this->email)->send(new SendLoginInformation($this->url, $this->email, $this->password));        
+        Mail::to($this->email)->send(new SendLoginInformation($this->url, $this->email, $this->password, $this->locale));        
     }
 }

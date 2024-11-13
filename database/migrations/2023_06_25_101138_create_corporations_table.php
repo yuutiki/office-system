@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('corporations', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->string('corporation_num',6)->unique()->comment('法人№');
-            $table->string('corporation_number',13)->nullable(true)->comment('法人番号');
+            $table->string('corporation_tax_num',12)->nullable(true)->comment('法人番号');
             $table->string('corporation_name')->comment('法人名称');
             $table->string('corporation_kana_name')->comment('法人カナ名称');
             $table->string('corporation_short_name')->comment('法人略称');
