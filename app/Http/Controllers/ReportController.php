@@ -18,7 +18,7 @@ use Illuminate\Pagination\Paginator;//add
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\NotificationController;
-
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -104,15 +104,39 @@ class ReportController extends Controller
             // 他の通知に関する情報をここで設定
         ];
 
-        // 日報を登録したユーザーに通知を送信
-        $userIds = $request->input('selectedRecipientsId',[]);
-        $users = User::whereIn('id', $userIds)->get();
+    // 1. 受け取った値の確認
+    \Log::info('Received userIds:', [
+        'raw' => $request->input('selectedRecipientsId'),
+        'type' => gettype($request->input('selectedRecipientsId'))
+    ]);
 
-        // 通知の作成
-        $notification = new AppNotification($report, $notificationData); // $report を通知データとして渡す
+    // 修正後:
+    $userIds = $request->input('selectedRecipientsId', []);
+    if (is_array($userIds) && count($userIds) === 1) {
+        // 配列の最初の要素がカンマ区切りの文字列の場合
+        $userIds = explode(',', $userIds[0]);
+    }
+    \Log::info('User IDs after processing:', ['userIds' => $userIds]);
+
+    // 3. ユーザー取得結果の確認
+    $users = User::whereIn('id', $userIds)->get();
+    \Log::info('Retrieved users:', [
+        'count' => $users->count(),
+        'users' => $users->pluck('id')->toArray()
+    ]);
+
+    // 4. 通知データの確認
+    $notification = new AppNotification($report, $notificationData);
+    \Log::info('Notification data:', [
+        'report_id' => $report->id,
+        'notification_data' => $notificationData
+    ]);
 
         // 通知の送信
         $this->notificationService->sendNotification($users, $notification);
+
+
+        
 
 
         return redirect()->route('reports.index')->with('success','正常に登録しました');
@@ -147,7 +171,19 @@ class ReportController extends Controller
         }
 
 
-        return view('reports.show',compact('report'));
+
+        $notifiableIds = DatabaseNotification::query()
+        ->where('data->notification_data->source_model', 'App\\Models\\Report')
+        ->where('data->notification_data->source_id', $id)
+        ->pluck('notifiable_id')
+        ->all();
+
+        // dd($notifiableIds);
+
+        $recipients = User::whereIn('id', $notifiableIds)->get();
+
+
+        return view('reports.show',compact('report', 'recipients'));
     }
 
     // 顧客情報から飛ぶ画面
@@ -169,13 +205,10 @@ class ReportController extends Controller
         $contactTypes = ContactType::all();
         $users = User::all();
 
-        // // Report の通知を既読にする
-        // if ($report->notification) {
-        //     $this->notificationService->markAsRead($report->notification);
-        // }
+
 
         
-        return view('reports.edit',compact('users', 'report', 'reportTypes', 'contactTypes'));
+        return view('reports.edit',compact('users', 'report', 'reportTypes', 'contactTypes',));
     }
 
     public function update(Request $request, string $id)

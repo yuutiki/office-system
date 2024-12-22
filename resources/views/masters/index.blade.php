@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('masters') }}
                 <div class="ml-4">
-                    {{-- {{ $count }}件 --}}
+                    {{ $count }}件
                 </div>
             </h2>
             <x-message :message="session('message')" />
@@ -14,7 +14,7 @@
     <div class="relative bg-white dark:bg-gray-800 rounded-t-md md:w-auto md:ml-14 md:mr-2 m-auto shadow-md  dark:text-gray-900 mt-4">
         <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
             <div class="w-full md:w-3/4">
-                <form method="GET" action="{{ route('reports.index') }}" id="search_form" class="flex items-center">
+                <form method="GET" action="{{ route('masters.index') }}" id="search_form" class="flex items-center">
                     @csrf
                     <div class="flex flex-col md:flex-row w-full">
                         <label for="simple-search" class="sr-only">Search</label>
@@ -24,98 +24,32 @@
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                 </svg>
                             </div>
-                            <input type="search" id="keywords" name="keywords" value="" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="キーワード">
+                            <input type="search" id="master_code" name="master_code" value="@if (isset($masterCode)){{$masterCode}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="マスターコード">
                         </div>
-                        {{-- <div class="relative w-full mt-2 md:ml-2 md:mt-0">
+                        <div class="relative w-full mt-2 md:ml-2 md:mt-0">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                 </svg>
                             </div>
-                            <input type="search" id="client_name" name="client_name" value="@if (isset($clientName)){{$clientName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="顧客名称（カナ）">
-                        </div> --}}
-                        {{-- <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-                            <select name="selected_affiliation2" id="selected_affiliation2" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="0"  @if($selectedaffiliation2 == 0) selected @endif>管轄事業部</option>
+                            <input type="search" id="master_name" name="master_name" value="@if (isset($masterName)){{$masterName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="マスター名称">
+                        </div>
+
+                        <div class="relative w-full mt-2 md:ml-2 md:mt-0">
+                            <select name="selected_affiliation2" id="selected_affiliation2" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400">
+                                {{-- <option value="0"  @if($selectedaffiliation2 == 0) selected @endif>マスター種別</option>
                                 @foreach ($affiliation2s as $affiliation2)
                                 <option value="{{ $affiliation2->id }}" @if($selectedaffiliation2 == $affiliation2->id) selected @endif>
                                     {{ $affiliation2->affiliation2_name }}
                                 </option>
-                                @endforeach
+                                @endforeach --}}
                             </select>
-                        </div> --}}
-                        <div class="flex mt-2 md:mt-0">
-                            <div class="w-full md:ml-2">
-                                <button id="filterDropdownButton" data-dropdown-toggle="filterDropdown" class="z-50 flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded md:w-auto focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="w-4 h-4 mr-2 text-gray-400" viewbox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />
-                                    </svg>
-                                    {{ __('Filter') }}
-                                    <svg class="-mr-1 ml-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                        <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                                    </svg>
-                                </button>
-                                <!-- Dropdown menu -->
-                                <div id="filterDropdown" class="z-50 hidden w-2/3 md:w-1/3 p-3 bg-gray-100 rounded shadow dark:bg-gray-600">
-                                    <div class="md:flex">
-                                        {{-- <div class="md:mr-12">
-                                            <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
-                                                顧客属性
-                                            </h6>
-                                            <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-                                                <li>
-                                                    <input type="checkbox" id="is_enduser" name="is_enduser" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                                    <label for="is_enduser" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap">エンドユーザ</label>
-                                                </li>
-                                                <li>
-                                                    <input type="checkbox" id="is_dealer" name="is_dealer" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                                    <label for="is_dealer" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap">ディーラ</label>
-                                                </li>
-                                                <li>
-                                                    <input type="checkbox" id="is_supplier" name="is_supplier" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                                    <label for="is_supplier" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap">仕入外注先</label>
-                                                </li>
-                                                <li>
-                                                    <input type="checkbox" id="is_lease" name="is_lease" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                                    <label for="is_lease" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap">リース会社</label>
-                                                </li>
-                                                <li>
-                                                    <input type="checkbox" id="is_other_partner" name="is_other_partner" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                                    <label for="is_other_partner" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap">その他協業</label>
-                                                </li>
-                                            </ul>
-                                        </div> --}}
-                                        {{-- <ul class="border my-2 mx-4"></ul> --}}
-                                        {{-- <div class="md:mr-12 mt-4 md:mt-0">
-                                            <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
-                                                取引状態
-                                            </h6>
-                                            <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-                                                @foreach ($tradeStatuses as $tradeStatus)
-                                                <li class="flex items-center">
-                                                    <input id="trade_status_{{ $tradeStatus->id }}" type="checkbox" name="trade_statuses[]" @if(in_array($tradeStatus->id, $selectedTradeStatuses)) checked @endif value="{{$tradeStatus->id}}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                    <label for="trade_status_{{ $tradeStatus->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap">{{ $tradeStatus->trade_status_name }}</label>
-                                                </li>                       
-                                                @endforeach
-                                            </ul>
-                                        </div> --}}
-                                        {{-- <ul class="border my-2 mx-4"></ul> --}}
-                                    </div>
-                                </div>
-                            </div>
-
-                            {{-- 検索ボタン --}}
-                            <button type="submit" id="search-button" form="search_form" class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                                </svg>
-                            </button>
-                            {{-- リセットボタン --}}
-                            <button type="button" value="reset" id="clear" form="search-form" class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 1v5h-5M2 19v-5h5m10-4a8 8 0 0 1-14.947 3.97M1 10a8 8 0 0 1 14.947-3.97"/>
-                                </svg>
-                            </button>
+                        </div>
+                        <div class="flex mt-4 md:mt-0">
+                            <!-- 検索ボタン -->
+                            <x-buttons.search-button />
+                            <!-- リセットボタン -->
+                            <x-buttons.reset-button />
                         </div>
                     </div>
                 </form>

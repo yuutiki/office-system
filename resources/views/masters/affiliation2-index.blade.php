@@ -2,12 +2,9 @@
     <x-slot name="header">
         <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-gray-900 dark:text-white leading-tight">
-                所属-事業部マスタ
+                {{ Breadcrumbs::render('affiliation2s') }}
             </h2>
             <div class="flex justify-end">
-                <x-general-button onclick="location.href='{{route('masters.index')}}'">
-                    戻る
-                </x-general-button>
                 <x-message :message="session('message')"/>
             </div>
         </div>

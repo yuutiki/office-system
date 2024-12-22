@@ -19,43 +19,32 @@ class KeepfileController extends Controller
 {
     public function index(Request $request)
     {
+        $perPage = config('constants.perPage');
+
         // 検索条件を取得してセッションに保存
         Session::put('search_params', $request->all());
         $searchParams = $request->session()->get('search_params', []);  
 
-        $per_page = 15;
-        $user = auth()->user();
-        $users = User::all();
-        
-        // フィルタリングクエリを作成
-        $keepfileQuery = Keepfile::sortable()->with('user','project');
     
         // 検索フォームの値を取得する
         $projectNum = $request->input('project_num');
         $clientName = $request->input('client_name');
         $dayFrom = $request->input('day_from');
         $dayTo = $request->input('day_to');
+        $selectedUserId = $request->selected_user_id;
 
-        // ユーザーセレクトボックスの初期値をログインユーザーに設定
-        $selectedUserId = $user->id;
-
-        // プルダウンが変更された場合の処理
-        if (request()->has('selected_user_id')) {
-            $selectedUserId = request('selected_user_id');
-
-            // プルダウンが「取得者すべて」以外の場合、検索結果を絞る
-            if ($selectedUserId != 0) {
-                $keepfileQuery->where('user_id', $selectedUserId);
-            }  // 「取得者すべて」の場合は何もしない（絞り込み解除）
-
-            // 上記の条件で検索結果を取得
-            $keepfiles = $keepfileQuery->get();
-            
+        $loggedInUser = Auth::user();
+        // UserモデルのisSystemAdmin()メソッドを呼び出す
+        if ($loggedInUser && $loggedInUser->role ==  config('sytemadmin.system_admin')) {
+            // システム管理者を含む全てのユーザーを取得
+            $salesUsers = User::all();
         } else {
-            // 初期表示の場合、ユーザーの所属に基づいて検索結果を絞る
-            $keepfileQuery->where('user_id', $selectedUserId)->get();
+            // システム管理者を除くユーザーを取得
+            $salesUsers = User::where('role', '!=', config('sytemadmin.system_admin'))->get();
         }
 
+        // フィルタリングクエリを作成
+        $keepfileQuery = Keepfile::sortable()->with('user','project');
     
         if (!empty($projectNum)) {
             // Project テーブルからプロジェクト番号を部分一致で検索して該当する ID を取得
@@ -80,8 +69,8 @@ class KeepfileController extends Controller
             });
         }
     
-        if (!empty($userId)) {
-            $keepfileQuery->where('user_id', 'like', "%{$userId}%");
+        if (!empty($selectedUserId)) {
+            $keepfileQuery->where('user_id', $selectedUserId);
         }
     
         if (!empty($dayFrom) && !empty($dayTo)) {
@@ -94,10 +83,10 @@ class KeepfileController extends Controller
         }
     
         // 検索結果を取得
-        $keepfiles = $keepfileQuery->orderby('return_at', 'asc')->paginate($per_page);
+        $keepfiles = $keepfileQuery->orderby('return_at', 'asc')->paginate($perPage);
         $count = $keepfiles->total();
     
-        return view('keepfile.index', compact('keepfiles', 'user', 'count', 'projectNum', 'clientName', 'selectedUserId', 'dayFrom', 'dayTo', 'users'));
+        return view('keepfile.index', compact('keepfiles', 'count', 'projectNum', 'clientName', 'selectedUserId', 'dayFrom', 'dayTo', 'salesUsers'));
     }
 
 

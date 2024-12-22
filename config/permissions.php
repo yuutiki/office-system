@@ -111,7 +111,7 @@ return [
             'admin' => 6,
         ],
     ],
-    'deposits' => [
+    'keepfiles' => [
         'function_menu_code' => '1110',
         'permissions' => [
             'view' => 2,

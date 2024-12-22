@@ -136,7 +136,7 @@
                         <div class="max-h-full w-full max-w-3xl">
                             <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
                                 <!-- Modal header -->
-                                <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
+                                <div class="flex items-center justify-between p-1 border-b rounded-t dark:border-gray-600">
                                     <h3 class="text-xl font-medium text-gray-900 dark:text-white">
                                         詳細検索画面
                                     </h3>
@@ -147,27 +147,29 @@
                                     </button>
                                 </div>
                                 <!-- Modal body -->
-                                <label for="clientNumber" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">課税/免税</label>
-                                <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
-                                    <li class="flex justify-center items-center">
-                                        <input type="checkbox" id="tax_status-1" @checked(in_array(0, $filters['tax_status_ids'] ?? [])) value="0" name="tax_status_ids[]" class="hidden peer touch-none">
-                                        <label for="tax_status-1" class="checkbox-label">
-                                            <div class="w-full text-sm font-medium text-center">未確認</div>
-                                        </label>
-                                    </li>
-                                    <li class="flex justify-center items-center">
-                                        <input type="checkbox" id="tax_status-2" @checked(in_array(1, $filters['tax_status_ids'] ?? [])) value="1" name="tax_status_ids[]" class="hidden peer touch-none">
-                                        <label for="tax_status-2" class="checkbox-label">
-                                            <div class="w-full text-sm font-medium text-center">課税</div>
-                                        </label>
-                                    </li>
-                                    <li class="flex justify-center items-center">
-                                        <input type="checkbox" id="tax_status-3" @checked(in_array(2, $filters['tax_status_ids'] ?? [])) value="2" name="tax_status_ids[]" class="hidden peer touch-none">
-                                        <label for="tax_status-3" class="checkbox-label">
-                                            <div class="w-full text-sm font-medium text-center">免税</div>
-                                        </label>
-                                    </li>
-                                </ul>
+                                <div class="mt-4">
+                                    <label for="clientNumber" class="dark:text-white text-sm text-gray-900 leading-none mx-2">課税/免税</label>
+                                    <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
+                                        <li class="flex justify-center items-center">
+                                            <input type="checkbox" id="tax_status-1" @checked(in_array(0, $filters['tax_status_ids'] ?? [])) value="0" name="tax_status_ids[]" class="hidden peer touch-none">
+                                            <label for="tax_status-1" class="checkbox-label">
+                                                <div class="w-full text-sm font-medium text-center">未確認</div>
+                                            </label>
+                                        </li>
+                                        <li class="flex justify-center items-center">
+                                            <input type="checkbox" id="tax_status-2" @checked(in_array(1, $filters['tax_status_ids'] ?? [])) value="1" name="tax_status_ids[]" class="hidden peer touch-none">
+                                            <label for="tax_status-2" class="checkbox-label">
+                                                <div class="w-full text-sm font-medium text-center">課税</div>
+                                            </label>
+                                        </li>
+                                        <li class="flex justify-center items-center">
+                                            <input type="checkbox" id="tax_status-3" @checked(in_array(2, $filters['tax_status_ids'] ?? [])) value="2" name="tax_status_ids[]" class="hidden peer touch-none">
+                                            <label for="tax_status-3" class="checkbox-label">
+                                                <div class="w-full text-sm font-medium text-center">免税</div>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </div>
 
                                 <label for="clientNumber" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">取引状況</label>
                                 <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
@@ -198,7 +200,7 @@
                                 </ul> --}}
                                     
                                 <!-- Modal footer -->
-                                <div class="flex items-center justify-end p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                                <div class="flex items-center justify-end p-3 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
                                     <button type="button" onclick="hideModal()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                                         閉じる
                                     </button> 
@@ -377,8 +379,8 @@
                                     <form action="{{ route('corporations.destroy', $corporation->id) }}" method="POST" class="">
                                         @csrf
                                         @method('delete')
-                                        <button type="submit" data-modal-hide="deleteModal-{{ $corporation->id }}" class="text-white  bg-red-600 hover:bg-red-800 focus:outline-none font-medium rounded text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 dark:focus:ring-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
-                                            {{ __('delete') }} <!--削除-->
+                                        <button type="submit" data-modal-hide="deleteModal-{{ $corporation->id }}" class="text-white  bg-red-700 hover:bg-red-800 focus:outline-none font-medium rounded text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 dark:focus:ring-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                                            {{ __('deleted') }} <!--削除-->
                                         </button>
                                     </form>
                                     <button id="cancelButton-{{ $corporation->id }}" data-modal-hide="deleteModal-{{ $corporation->id }}" type="button" data-modal-cancel class="text-gray-500 bg-white hover:bg-gray-100 focus:outline-none rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">

@@ -58,6 +58,10 @@
             <div class="text-xs flex justify-end items-center">
                 <p>{{ $report->reporter->user_name }} • {{ $report->created_at->diffForHumans() }}</p>
             </div>
+
+            @foreach($recipients as $recipient)
+            <p class="text-gray-600 dark:text-white">{{ $recipient->user_name }}</p>
+        @endforeach
         </div>
     </div>
 

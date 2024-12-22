@@ -14,8 +14,8 @@ class AccountingPeriodSeeder extends Seeder
     {
         AccountingPeriod::create([
             'period_name' => '25期',
-            'period_start_at' => '20051001',
-            'period_end_at' => '20060930',
+            'period_start_at' => '2005-10-01',
+            'period_end_at' => '2006-09-30',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
@@ -23,8 +23,8 @@ class AccountingPeriodSeeder extends Seeder
         ]);
         AccountingPeriod::create([
             'period_name' => '26期',
-            'period_start_at' => '20061001',
-            'period_end_at' => '20070930',
+            'period_start_at' => '2006-10-01',
+            'period_end_at' => '2007-09-30',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
@@ -32,8 +32,8 @@ class AccountingPeriodSeeder extends Seeder
         ]);
         AccountingPeriod::create([
             'period_name' => '27期',
-            'period_start_at' => '20071001',
-            'period_end_at' => '20080930',
+            'period_start_at' => '2007-10-01',
+            'period_end_at' => '2008-09-30',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
@@ -41,8 +41,8 @@ class AccountingPeriodSeeder extends Seeder
         ]);
         AccountingPeriod::create([
             'period_name' => '28期',
-            'period_start_at' => '20081001',
-            'period_end_at' => '20090930',
+            'period_start_at' => '2008-10-01',
+            'period_end_at' => '2009-09-30',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
@@ -50,8 +50,8 @@ class AccountingPeriodSeeder extends Seeder
         ]);
         AccountingPeriod::create([
             'period_name' => '29期',
-            'period_start_at' => '20091001',
-            'period_end_at' => '20101031',
+            'period_start_at' => '2009-10-01',
+            'period_end_at' => '2010-10-31',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
@@ -59,8 +59,8 @@ class AccountingPeriodSeeder extends Seeder
         ]);
         AccountingPeriod::create([
             'period_name' => '30期',
-            'period_start_at' => '20101101',
-            'period_end_at' => '20111031',
+            'period_start_at' => '2010-11-01',
+            'period_end_at' => '2011-10-31',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
@@ -68,8 +68,8 @@ class AccountingPeriodSeeder extends Seeder
         ]);
         AccountingPeriod::create([
             'period_name' => '31期',
-            'period_start_at' => '20111101',
-            'period_end_at' => '20121031',
+            'period_start_at' => '2011-11-01',
+            'period_end_at' => '2012-10-31',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
@@ -77,8 +77,8 @@ class AccountingPeriodSeeder extends Seeder
         ]);
         AccountingPeriod::create([
             'period_name' => '32期',
-            'period_start_at' => '20121101',
-            'period_end_at' => '20131031',
+            'period_start_at' => '2012-11-01',
+            'period_end_at' => '2013-10-31',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
@@ -86,8 +86,8 @@ class AccountingPeriodSeeder extends Seeder
         ]);
         AccountingPeriod::create([
             'period_name' => '33期',
-            'period_start_at' => '20131101',
-            'period_end_at' => '20141031',
+            'period_start_at' => '2013-11-01',
+            'period_end_at' => '2014-10-31',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
@@ -95,8 +95,8 @@ class AccountingPeriodSeeder extends Seeder
         ]);
         AccountingPeriod::create([
             'period_name' => '34期',
-            'period_start_at' => '20141101',
-            'period_end_at' => '20151031',
+            'period_start_at' => '2014-11-01',
+            'period_end_at' => '2015-10-31',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
@@ -104,8 +104,8 @@ class AccountingPeriodSeeder extends Seeder
         ]);
         AccountingPeriod::create([
             'period_name' => '35期',
-            'period_start_at' => '20151101',
-            'period_end_at' => '20161031',
+            'period_start_at' => '2015-11-01',
+            'period_end_at' => '2016-10-31',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
@@ -113,8 +113,8 @@ class AccountingPeriodSeeder extends Seeder
         ]);
         AccountingPeriod::create([
             'period_name' => '36期',
-            'period_start_at' => '20161101',
-            'period_end_at' => '20171031',
+            'period_start_at' => '2016-11-01',
+            'period_end_at' => '2017-10-31',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
@@ -122,8 +122,8 @@ class AccountingPeriodSeeder extends Seeder
         ]);
         AccountingPeriod::create([
             'period_name' => '37期',
-            'period_start_at' => '20171101',
-            'period_end_at' => '20181031',
+            'period_start_at' => '2017-11-01',
+            'period_end_at' => '2018-10-31',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
@@ -131,8 +131,8 @@ class AccountingPeriodSeeder extends Seeder
         ]);
         AccountingPeriod::create([
             'period_name' => '38期',
-            'period_start_at' => '20181101',
-            'period_end_at' => '20191031',
+            'period_start_at' => '2018-11-01',
+            'period_end_at' => '2019-10-31',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
@@ -140,8 +140,8 @@ class AccountingPeriodSeeder extends Seeder
         ]);
         AccountingPeriod::create([
             'period_name' => '39期',
-            'period_start_at' => '20191101',
-            'period_end_at' => '20201031',
+            'period_start_at' => '2019-11-01',
+            'period_end_at' => '2020-10-31',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
@@ -149,8 +149,8 @@ class AccountingPeriodSeeder extends Seeder
         ]);
         AccountingPeriod::create([
             'period_name' => '40期',
-            'period_start_at' => '20201101',
-            'period_end_at' => '20211031',
+            'period_start_at' => '2020-11-01',
+            'period_end_at' => '2021-10-31',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
@@ -158,8 +158,8 @@ class AccountingPeriodSeeder extends Seeder
         ]);
         AccountingPeriod::create([
             'period_name' => '41期',
-            'period_start_at' => '20211101',
-            'period_end_at' => '20221031',
+            'period_start_at' => '2021-11-01',
+            'period_end_at' => '2022-10-31',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
@@ -167,8 +167,8 @@ class AccountingPeriodSeeder extends Seeder
         ]);
         AccountingPeriod::create([
             'period_name' => '42期',
-            'period_start_at' => '20221101',
-            'period_end_at' => '20231031',
+            'period_start_at' => '2022-11-01',
+            'period_end_at' => '2023-10-31',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
@@ -176,8 +176,8 @@ class AccountingPeriodSeeder extends Seeder
         ]);
         AccountingPeriod::create([
             'period_name' => '43期',
-            'period_start_at' => '20231101',
-            'period_end_at' => '20241031',
+            'period_start_at' => '2023-11-01',
+            'period_end_at' => '2024-10-31',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
@@ -185,8 +185,8 @@ class AccountingPeriodSeeder extends Seeder
         ]);
         AccountingPeriod::create([
             'period_name' => '44期',
-            'period_start_at' => '20241101',
-            'period_end_at' => '20251031',
+            'period_start_at' => '2024-11-01',
+            'period_end_at' => '2025-10-31',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
@@ -194,8 +194,8 @@ class AccountingPeriodSeeder extends Seeder
         ]);
         AccountingPeriod::create([
             'period_name' => '45期',
-            'period_start_at' => '20251101',
-            'period_end_at' => '20261031',
+            'period_start_at' => '2025-11-01',
+            'period_end_at' => '2026-10-31',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
@@ -203,8 +203,8 @@ class AccountingPeriodSeeder extends Seeder
         ]);
         AccountingPeriod::create([
             'period_name' => '46期',
-            'period_start_at' => '20261101',
-            'period_end_at' => '20271031',
+            'period_start_at' => '2026-11-01',
+            'period_end_at' => '2027-10-31',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
@@ -212,8 +212,8 @@ class AccountingPeriodSeeder extends Seeder
         ]);
         AccountingPeriod::create([
             'period_name' => '47期',
-            'period_start_at' => '20271101',
-            'period_end_at' => '20281031',
+            'period_start_at' => '2027-11-01',
+            'period_end_at' => '2028-10-31',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
@@ -221,8 +221,8 @@ class AccountingPeriodSeeder extends Seeder
         ]);
         AccountingPeriod::create([
             'period_name' => '48期',
-            'period_start_at' => '20281101',
-            'period_end_at' => '20291031',
+            'period_start_at' => '2028-11-01',
+            'period_end_at' => '2029-10-31',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
@@ -230,8 +230,8 @@ class AccountingPeriodSeeder extends Seeder
         ]);
         AccountingPeriod::create([
             'period_name' => '49期',
-            'period_start_at' => '20291101',
-            'period_end_at' => '20301031',
+            'period_start_at' => '2029-11-01',
+            'period_end_at' => '2030-10-31',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
@@ -239,12 +239,13 @@ class AccountingPeriodSeeder extends Seeder
         ]);
         AccountingPeriod::create([
             'period_name' => '50期',
-            'period_start_at' => '20301101',
-            'period_end_at' => '20311031',
+            'period_start_at' => '2030-11-01',
+            'period_end_at' => '2031-10-31',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);
+        
     }
 }

@@ -64,7 +64,7 @@ class ClientController extends Controller
         $selectedClientTypes = $request->input('client_types', []);
         $selectedInstallationTypes = $request->input('installation_types', []);
         $clientName = $request->input('client_name');
-        $salesUserId = $request->input('user_id');
+        $salesUserId = $request->input('selected_user_id');
         $affiliation2Id = $request->input('affiliation2_id');
 
         // 検索クエリを組み立てる
@@ -79,10 +79,12 @@ class ClientController extends Controller
         if (!empty($selectedInstallationTypes)) {// 設置種別
             $clientsQuery->whereIn('installation_type_id', $selectedInstallationTypes);
         }
+        if (!empty($salesUserId)) {
+            $clientsQuery->where('user_id', $salesUserId);
+        }
         if (!empty($clientName)) {
             // Clientモデルからclient_nameをもとにIDを取得
             $clientsQuery = Client::where('client_name', 'like', '%' . $clientName . '%');
-
         }
         // if (!empty($clientName)) {
         //     // Clientモデルからclient_nameをもとにIDを取得
@@ -95,9 +97,7 @@ class ClientController extends Controller
         // }
 
 
-        if (!empty($salesUserId)) {
-            $clientsQuery->where('user_id','=', $salesUserId);
-        }
+
 
         // 初期表示で絞る
         // if (empty($salesUserId)) {

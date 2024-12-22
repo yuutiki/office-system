@@ -21,7 +21,6 @@
     <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
 
     <div class="max-w-7xl mx-auto px-2 md:pl-14">
-
         <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
             <ul class="flex flex-wrap -mb-px text-sm text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
                 <li class="mr-2" role="presentation">
@@ -251,7 +250,7 @@
             <ul class="mt-4 mb-4 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                 <li class="w-full border-b border-gray-200 md:border-b-0 md:border-r dark:border-gray-600">
                     <div class="flex items-center pl-3">
-                        <input id="is_billing_receiver" name="is_billing_receiver" type="checkbox" value="1" {{ old('is_billing_receiver') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                        <input id="is_billing_receiver" form="clientPersonForm" name="is_billing_receiver" type="checkbox" value="1" {{ old('is_billing_receiver') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                         <label for="is_billing_receiver" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">請求先</label>
                     </div>
                     @error('is_billing_receiver')
@@ -260,7 +259,7 @@
                 </li>
                 <li class="w-full border-b border-gray-200 md:border-b-0 md:border-r dark:border-gray-600">
                     <div class="flex items-center pl-3">
-                        <input id="is_payment_receiver" name="is_payment_receiver" type="checkbox" value="1" {{ old('is_payment_receiver') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                        <input id="is_payment_receiver" form="clientPersonForm" name="is_payment_receiver" type="checkbox" value="1" {{ old('is_payment_receiver') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                         <label for="is_payment_receiver" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">支払先</label>
                     </div>
                     @error('is_payment_receiver')
@@ -269,7 +268,7 @@
                 </li>
                 <li class="w-full border-b border-gray-200 md:border-b-0 md:border-r dark:border-gray-600">
                     <div class="flex items-center pl-3">
-                        <input id="is_support_info_receiver" name="is_support_info_receiver" type="checkbox" value="1" {{ old('is_support_info_receiver') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                        <input id="is_support_info_receiver" form="clientPersonForm" name="is_support_info_receiver" type="checkbox" value="1" {{ old('is_support_info_receiver') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                         <label for="is_support_info_receiver" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300 whitespace-nowrap">サポート送付先</label>
                     </div>
                     @error('is_support_info_receiver')
@@ -278,7 +277,7 @@
                 </li>
                 <li class="w-full border-b border-gray-200 md:border-b-0 md:border-r dark:border-gray-600">
                     <div class="flex items-center pl-3">
-                        <input id="is_closing_info_receiver" name="is_closing_info_receiver" type="checkbox" value="1" {{ old('is_closing_info_receiver') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                        <input id="is_closing_info_receiver" form="clientPersonForm" name="is_closing_info_receiver" type="checkbox" value="1" {{ old('is_closing_info_receiver') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                         <label for="is_closing_info_receiver" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300 whitespace-nowrap">休業案内先</label>
                     </div>
                     @error('is_closing_info_receiver')
@@ -287,7 +286,7 @@
                 </li>
                 <li class="w-full border-b border-gray-200 md:border-b-0 md:border-r dark:border-gray-600">
                     <div class="flex items-center pl-3">
-                        <input id="is_exhibition_info_receiver" name="is_exhibition_info_receiver" type="checkbox" value="1" {{ old('is_exhibition_info_receiver') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                        <input id="is_exhibition_info_receiver" form="clientPersonForm" name="is_exhibition_info_receiver" type="checkbox" value="1" {{ old('is_exhibition_info_receiver') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                         <label for="is_exhibition_info_receiver" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300 whitespace-nowrap">展示会案内先</label>
                     </div>
                     @error('is_exhibition_info_receiver')
@@ -296,7 +295,7 @@
                 </li>
                 <li class="w-full dark:border-gray-600">
                     <div class="flex items-center pl-3">
-                        <input id="is_cloud_info_receiver" name="is_cloud_info_receiver" type="checkbox" value="1" {{ old('is_cloud_info_receiver') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                        <input id="is_cloud_info_receiver" form="clientPersonForm" name="is_cloud_info_receiver" type="checkbox" value="1" {{ old('is_cloud_info_receiver') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                         <label for="is_cloud_info_receiver" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300 whitespace-nowrap">クラウド案内先</label>
                     </div>
                     @error('is_cloud_info_receiver')

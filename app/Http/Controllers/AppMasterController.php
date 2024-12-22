@@ -10,10 +10,30 @@ class AppMasterController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $masters = AppMaster::all();
-        return view('masters.index', compact('masters'));
+        $perPage = config('constants.perPage');
+
+        // $masterTypes = MasterType::all();
+
+        // 検索用の値を取得
+        $masterCode = $request->master_code;
+        $masterName = $request->master_name;
+
+        $mastersQuery = AppMaster::sortable();
+
+        if(!empty($masterCode)) {
+            $mastersQuery =AppMaster::where('master_code', $masterCode);
+        }
+
+        if(!empty($masterName)) {
+            $mastersQuery =AppMaster::where('master_name', 'like', '%' . $masterName . '%');
+        }
+
+        $masters = $mastersQuery->paginate($perPage);
+        $count = $masters->total();
+
+        return view('masters.index', compact('masters', 'count', 'masterCode', 'masterName'));
     }
 
     /**

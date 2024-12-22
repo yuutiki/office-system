@@ -406,33 +406,31 @@
         }
     </style>
 
+    <script>
+        // モーダルを表示するための関数
+        function showModal() {
+            // モーダルの要素を取得
+            const modal = document.getElementById('detailSearchModal');
+            //背後の操作不可を有効
+            const overlay = document.getElementById('overlay').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
 
-<script>
-    // モーダルを表示するための関数
-    function showModal() {
-        // モーダルの要素を取得
-        const modal = document.getElementById('detailSearchModal');
-        //背後の操作不可を有効
-        const overlay = document.getElementById('overlay').classList.remove('hidden');
-        document.body.classList.add('overflow-hidden');
+            // モーダルを表示するためのクラスを追加
+            modal.classList.remove('hidden');
+        }
 
-        // モーダルを表示するためのクラスを追加
-        modal.classList.remove('hidden');
-    }
+        // モーダルを非表示にするための関数
+        function hideModal() {
+            // モーダルの要素を取得
+            const modal = document.getElementById('detailSearchModal');
+            //背後の操作不可を解除
+            const overlay = document.getElementById('overlay').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
 
-    // モーダルを非表示にするための関数
-    function hideModal() {
-        // モーダルの要素を取得
-        const modal = document.getElementById('detailSearchModal');
-        //背後の操作不可を解除
-        const overlay = document.getElementById('overlay').classList.add('hidden');
-        document.body.classList.remove('overflow-hidden');
-
-        // モーダルを非表示にするためのクラスを削除
-        modal.classList.add('hidden');
-    }
-</script>
-
+            // モーダルを非表示にするためのクラスを削除
+            modal.classList.add('hidden');
+        }
+    </script>
 
     <script src="{{ asset('assets/js/user-dropdown.js') }}"></script>
 </x-app-layout>

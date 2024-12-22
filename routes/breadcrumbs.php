@@ -192,7 +192,7 @@ Breadcrumbs::for('dashboard', function ($trail) {
         // ダッシュボード > プロジェクト一覧
         Breadcrumbs::for('projects', function ($trail) {
             $trail->parent('dashboard');
-            $trail->push('PJ一覧', url('projects'));
+            $trail->push('プロジェクト一覧', url('projects'));
         });
                 // ダッシュボード > プロジェクト一覧 > プロジェクト新規登録
                 Breadcrumbs::for('createProject', function ($trail) {
@@ -203,7 +203,7 @@ Breadcrumbs::for('dashboard', function ($trail) {
                 // ダッシュボード > プロジェクト一覧 > プロジェクト編集
                 Breadcrumbs::for('editProject', function ($trail, $project) {
                     $trail->parent('projects');
-                    $trail->push('PJ編集', route('projects.edit', $project));
+                    $trail->push('編集', route('projects.edit', $project));
                 });
 
                     // ダッシュボード > プロジェクト一覧 > プロジェクト編集 > 見積新規作成
@@ -291,17 +291,53 @@ Breadcrumbs::for('dashboard', function ($trail) {
                     $trail->push('所属階層1一覧', route('affiliation1.index'));
                 });
 
-                    // ダッシュボード > マスタ一覧 >  所属階層1一覧 > 所属階層1新規
-                    Breadcrumbs::for('createAffiliation1', function ($trail) {
-                        $trail->parent('affiliation1s');
-                        $trail->push('所属階層1新規', route('affiliation1.create'));
-                    });
+                        // ダッシュボード > マスタ一覧 >  所属階層1一覧 > 所属階層1新規
+                        Breadcrumbs::for('createAffiliation1', function ($trail) {
+                            $trail->parent('affiliation1s');
+                            $trail->push('所属階層1新規', route('affiliation1.create'));
+                        });
 
-                    // ダッシュボード > マスタ一覧 >  所属階層1一覧 > 所属階層1新規
-                    Breadcrumbs::for('editAffiliation1', function ($trail, $affiliation1) {
-                        $trail->parent('affiliation1s');
-                        $trail->push('所属階層1編集', route('affiliation1.edit', $affiliation1));
-                    });
+                        // ダッシュボード > マスタ一覧 >  所属階層1一覧 > 所属階層1新規
+                        Breadcrumbs::for('editAffiliation1', function ($trail, $affiliation1) {
+                            $trail->parent('affiliation1s');
+                            $trail->push('所属階層1編集', route('affiliation1.edit', $affiliation1));
+                        });
+
+                // ダッシュボード > マスタ一覧 >  所属階層2一覧
+                Breadcrumbs::for('affiliation2s', function ($trail) {
+                    $trail->parent('masters');
+                    $trail->push('所属階層2一覧', route('affiliation2.index'));
+                });
+
+                        // ダッシュボード > マスタ一覧 >  所属階層2一覧 > 所属階層2新規
+                        Breadcrumbs::for('createAffiliation2', function ($trail) {
+                            $trail->parent('affiliation2s');
+                            $trail->push('所属階層2新規', route('affiliation2.create'));
+                        });
+
+                        // ダッシュボード > マスタ一覧 >  所属階層2一覧 > 所属階層2新規
+                        Breadcrumbs::for('editAffiliation2', function ($trail, $affiliation2) {
+                            $trail->parent('affiliation2s');
+                            $trail->push('所属階層2編集', route('affiliation2.edit', $affiliation2));
+                        });
+
+                // ダッシュボード > マスタ一覧 >  所属階層3一覧
+                Breadcrumbs::for('affiliation3s', function ($trail) {
+                    $trail->parent('masters');
+                    $trail->push('所属階層3一覧', route('affiliation3.index'));
+                });
+
+                        // ダッシュボード > マスタ一覧 >  所属階層3一覧 > 所属階層3新規
+                        Breadcrumbs::for('createAffiliation3', function ($trail) {
+                            $trail->parent('affiliation3s');
+                            $trail->push('所属階層3新規', route('affiliation3.create'));
+                        });
+
+                        // ダッシュボード > マスタ一覧 >  所属階層3一覧 > 所属階層3新規
+                        Breadcrumbs::for('editAffiliation3', function ($trail, $affiliation3) {
+                            $trail->parent('affiliation3s');
+                            $trail->push('所属階層3編集', route('affiliation3.edit', $affiliation3));
+                        });
 
 
                     

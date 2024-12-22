@@ -5,8 +5,7 @@
         <div class="flex items-center">
             <button  class="inline-flex items-center p-1 rounded-sm ml-[1px] text-gray-900 dark:text-gray-500 hover:text-gray-500  dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out" type="button" data-drawer-target="sm-accordion-collapse" data-drawer-toggle="sm-accordion-collapse" aria-controls="sm-accordion-collapse" data-drawer-trigger="hover"  tabindex="-1">
                 <div class="flex items-center">
-
-                    <svg version="1.0" xmlns="http://www.w3.org/2000/svg"  class="h-full w-10 fill-current text-gray-950 dark:fill-gray-300" viewBox="280 200 650 650" preserveAspectRatio="xMidYMid meet">
+                    <svg version="1.0" xmlns="http://www.w3.org/2000/svg"  class="h-full w-10 fill-current text-gray-500 dark:fill-gray-300" viewBox="280 200 650 650" preserveAspectRatio="xMidYMid meet">
                         <g fill="">
                         <path d="M531.70 831.55 c-0.10 -0.10 -0.20 -17.75 -0.20 -39.15 l0 -38.90 8.25 0 c7.10 0 8.25 0.10 8.25 0.75 0 0.65 0.20 0.70 1.15 0.20 1.95 -1.10 11.95 -1.20 15.65 -0.20 3.70 1 6.30 3.40 7.20 6.75 0.70 2.55 0.75 44.55 0.05 46.90 -0.80 2.75 -2.40 4.85 -4.65 6.10 -2 1.15 -2.65 1.25 -9.40 1.25 -4 0 -7.75 -0.20 -8.35 -0.40 l-1.15 -0.40 -0.10 8.60 -0.15 8.65 -8.15 0.05 c-4.50 0 -8.30 -0.10 -8.40 -0.20z m22.95 -30.20 c0.80 -0.55 0.90 -2.05 0.90 -16.75 0 -8.90 -0.15 -16.35 -0.30 -16.60 -0.45 -0.70 -5.45 -0.60 -6.15 0.10 -0.65 0.65 -0.90 31.70 -0.20 32.70 0.75 1.15 4.45 1.55 5.75 0.55z"/>
                         <path d="M442 814.70 c-2.90 -1 -5.25 -3.30 -6.35 -6.15 -0.80 -2.10 -0.90 -4.85 -0.90 -32.05 0 -33.20 0 -33.05 3.25 -36.40 2.75 -2.75 4.45 -3.15 15.55 -3.45 17.70 -0.50 22.50 1.05 24.50 7.95 0.70 2.45 0.65 60.80 -0.05 63.40 -0.85 3.20 -3.45 5.70 -6.90 6.70 -4.10 1.15 -25.75 1.15 -29.10 0z m18.75 -13.40 c0.95 -0.70 1 -1.65 1 -25.25 0 -21.30 -0.10 -24.65 -0.75 -25.05 -0.90 -0.60 -7.50 -0.65 -8.40 -0.05 -0.50 0.30 -0.65 5.30 -0.75 24.20 -0.05 13.10 0 24.30 0.15 24.95 0.25 1.05 0.65 1.20 3.75 1.45 1.95 0.15 3.65 0.30 3.80 0.35 0.15 0.05 0.70 -0.20 1.20 -0.60z"/>
@@ -30,12 +29,7 @@
                 </div>
             </button>
             <!-- Page Heading -->
-            {{-- @if (isset($header))
-                <div class="w-full whitespace-nowrap md:text-base text-xs">
-                    {{ $header }}
-                </div>
-            @endif --}}
-            {{-- <h5 class="ml-2 text-base font-semibold text-gray-700 dark:text-gray-400 hidden md:block">社内システム</h5> --}}
+            <h5 class="ml-2 text-base font-semibold text-gray-700 dark:text-gray-400 hidden md:block">Orphice</h5>
         </div>
     </div>
 
@@ -238,13 +232,12 @@
                 </ul>
             </li>
             <li>
-                <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#accordion-body-2" aria-expanded="false" aria-controls="accordion-body-2">
+                <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#support-body" aria-expanded="false" aria-controls="support-body">
                     <x-icon name="icons/nav-support" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
                     <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('サポート管理') }}</span>
                     <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
-
                 </button>
-                <ul  class="hidden py-1 space-y-1" id="accordion-body-2" aria-labelledby="accordion-heading-2">
+                <ul  class="hidden py-1 space-y-1" id="support-body" aria-labelledby="support-heading">
                     <li>
                         <x-nav-link :href="route('support.index')" :active="request()->routeIs('support.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                             <span class="flex-1 ml-10 whitespace-nowrap">{{ __('サポート一覧') }}</span>
@@ -258,10 +251,20 @@
                 </ul>
             </li>
             <li>
-                <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.index')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#report-body" aria-expanded="false" aria-controls="report-body">
                     <x-icon name="icons/nav-report" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
-                    <span class="flex-1 pt-1 ml-3 whitespace-nowrap">{{ __('営業報告管理') }}</span>
-                </x-nav-link>
+                    <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('営業報告管理') }}</span>
+                    <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
+                </button>
+                <ul  class="hidden py-1 space-y-1" id="report-body" aria-labelledby="report-heading">
+                    @can('view_keepfiles')
+                    <li>
+                        <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('営業報告一覧') }}</span>
+                        </x-nav-link>
+                    </li>
+                    @endcan
+                </ul>
             </li>
             {{-- <li>
                 <x-nav-link :href="route('dashboard')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
@@ -280,10 +283,20 @@
                 </x-nav-link>
             </li> --}}
             <li>
-                <x-nav-link :href="route('keepfile.index')" :active="request()->routeIs('keepfile.index')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#keepfile-body" aria-expanded="false" aria-controls="keepfile-body">
                     <x-icon name="icons/nav-keepfile" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
-                    <span class="flex-1 pt-1 ml-3 whitespace-nowrap">{{ __('預託管理') }}</span>
-                </x-nav-link>
+                    <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('預託管理') }}</span>
+                    <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
+                </button>
+                <ul  class="hidden py-1 space-y-1" id="keepfile-body" aria-labelledby="keepfile-heading">
+                    @can('view_keepfiles')
+                    <li>
+                        <x-nav-link :href="route('keepfile.index')" :active="request()->routeIs('keepfile.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('預託情報一覧') }}</span>
+                        </x-nav-link>
+                    </li>
+                    @endcan
+                </ul>
             </li>
             <li>
                 <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#workflow-body" aria-expanded="false" aria-controls="workflow-body">
