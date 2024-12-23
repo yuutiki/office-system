@@ -18,6 +18,7 @@ use App\Jobs\ExportCorporationsCsv;
 use App\Models\CorporationCredit;
 use App\Models\Prefecture;
 use App\Services\InvoiceApiService;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 
 class CorporationController extends Controller
@@ -31,6 +32,13 @@ class CorporationController extends Controller
 
     public function index(Request $request)//検索用にrequestを受取る
     {
+        $permissions = [
+            'can_create' => Gate::allows('storeUpdate_corporations'),
+            'can_edit' => Gate::allows('storeUpdate_corporations'),
+            'can_delete' => Gate::allows('delete_corporations'),
+            'can_download' => Gate::allows('download_corporations'),
+            'can_admin' => Gate::allows('admin_corporations'),
+        ];
         // １ページごとの表示件数
         $perPage = config('constants.perPage');
 
@@ -69,7 +77,7 @@ class CorporationController extends Controller
         // 検索結果の件数を取得
         $count = $corporations->total();
 
-        return view('corporations.index', compact('searchParams', 'corporations', 'count' ,'filters', 'CorporationNum', 'CorporationName', 'invoiceNum', 'tradeStatusIds', 'taxStatusIds'));
+        return view('corporations.index', compact('searchParams', 'corporations', 'count' ,'filters', 'CorporationNum', 'CorporationName', 'invoiceNum', 'tradeStatusIds', 'taxStatusIds', 'permissions'));
     }
 
     public function create(Request $request)

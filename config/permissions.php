@@ -1,6 +1,7 @@
 <?php
 
 return [
+
     'corporations' => [
         'function_menu_code' => '1000',
         'permissions' => [

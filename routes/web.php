@@ -91,12 +91,47 @@ Route::middleware(['auth'])->group(function () {
     // Route::post('/project-expense/upload', [ProjectExpenseController::class, 'upload'])->name('project-expense.upload');
     Route::resource('/project-expense', ProjectExpenseController::class);
 
-    // corporations関連
-    Route::get('/corporations/show-upload', [CorporationController::class, 'showUploadForm'])->name('corporations.showUploadForm');
-    Route::post('/corporations/upload', [CorporationController::class, 'upload'])->name('corporations.upload');
-    Route::get('/corporations/download-csv', [CorporationController::class, 'downloadCsv'])->name('corporations.downloadCsv');
-    Route::post('/corporations/search', [CorporationController::class, 'search'])->name('corporations.search');
-    Route::resource('/corporations', CorporationController::class);
+    // // corporations関連
+    // // 1. 特別な権限が必要なルート
+    // Route::middleware(['can:admin_corporations'])->group(function () {
+    //     Route::get('/corporations/show-upload', [CorporationController::class, 'showUploadForm'])->name('corporations.showUploadForm');
+    //     Route::post('/corporations/upload', [CorporationController::class, 'upload'])->name('corporations.upload');
+    // });
+
+
+    // Route::middleware(['can:download_corporations'])->group(function () {
+    //     Route::get('/corporations/download-csv', [CorporationController::class, 'downloadCsv'])->name('corporations.downloadCsv');
+    // });
+
+
+    // Route::post('/corporations/search', [CorporationController::class, 'search'])->name('corporations.search');
+
+    // // 3. 基本CRUDルート（個別に権限設定）
+    // Route::get('/corporations', [CorporationController::class, 'index'])
+    //     ->middleware('can:view_corporations')
+    //     ->name('corporations.index');
+
+    // Route::get('/corporations/create', [CorporationController::class, 'create'])
+    //     ->middleware('can:storeUpdate_corporations')
+    //     ->name('corporations.create');
+
+    // Route::post('/corporations', [CorporationController::class, 'store'])
+    //     ->middleware('can:storeUpdate_corporations')
+    //     ->name('corporations.store');
+
+    // Route::get('/corporations/{corporation}/edit', [CorporationController::class, 'edit'])
+    //     ->middleware('can:view_corporations')
+    //     ->name('corporations.edit');
+
+    // Route::put('/corporations/{corporation}', [CorporationController::class, 'update'])
+    //     ->middleware('can:storeUpdate_corporations')
+    //     ->name('corporations.update');
+
+    // Route::delete('/corporations/{corporation}', [CorporationController::class, 'destroy'])
+    //     ->middleware('can:delete_corporations')
+    //     ->name('corporations.destroy');
+
+    // Route::resource('/corporations', CorporationController::class);
 
     // corporationCredits関連
     Route::resource('/corporation-credits', CorporationCreditController::class);

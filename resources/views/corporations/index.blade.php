@@ -276,11 +276,11 @@
                             顧客/業者
                         </div>
                     </th>
-                    @can('delete_corporations')
+                    @if($permissions['can_delete'])
                         <th scope="col" class="px-1 py-3 w-auto">
                             <span class="sr-only">削除</span>
                         </th>
-                    @endcan
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -355,7 +355,7 @@
                                 {{$corporation->clients_count}}
                             </div>
                         </td>
-                        @can('delete_corporations')
+                        @if($permissions['can_delete'])
                             <td class="py-1">
                                 <button type="button" data-modal-target="deleteModal-{{$corporation->id}}" data-modal-show="deleteModal-{{$corporation->id}}" class="button-delete-primary" tabindex="-1">
                                     <div class="flex items-center">
@@ -364,7 +364,7 @@
                                     </div>
                                 </button>
                             </td>
-                        @endcan
+                        @endif
                     </tr>
                 <!-- 削除モーダル -->
                 <div id="deleteModal-{{ $corporation->id }}" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -466,6 +466,7 @@
             });
             }
     </script>
+
     {{-- <script>
         document.addEventListener('DOMContentLoaded', function() {
             setupModal('deleteModal-{{ $corporation->id }}', '{{ $corporation->id }}');

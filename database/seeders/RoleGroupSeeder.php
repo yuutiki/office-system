@@ -46,7 +46,7 @@ class RoleGroupSeeder extends Seeder
         $functionMenus = FunctionMenu::all();
 
         // パーミッションテーブルから権限なしのレコードを取得
-        $permissionNone = Permission::where('permission_code', '00')->first();
+        $permissionNone = Permission::where('permission_code', '10')->first();
 
         // 各FunctionMenuとRoleGroupを関連付ける
         foreach ($functionMenus as $functionMenu) {
