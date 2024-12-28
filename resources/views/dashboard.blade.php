@@ -440,9 +440,11 @@
                       </h3>
                     </div>
                     <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
-                      <button type="button" class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1" onclick="location.href='/support'">
-                      See all
-                      </button>
+                        @can('view_supports')                            
+                            <button type="button" class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1" onclick="location.href='/support'">
+                                {{ __('See all') }}
+                            </button>
+                        @endcan
                     </div>
                   </div>
                 </div>

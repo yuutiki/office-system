@@ -51,10 +51,11 @@ class UserFactory extends Factory
             'updated_by' => 1,
             'created_at' => now(),
             'updated_at' => now(),
-            'role' => $this->faker->randomElement([
-                config('sytemadmin.system_admin'),
-                'user'
-            ]),
+            'role' => 'user',
+            // 'role' => $this->faker->randomElement([
+            //     config('sytemadmin.system_admin'),
+            //     'user'
+            // ]),
         ];
     }
 

@@ -132,6 +132,16 @@ return [
             'admin' => 6,
         ],
     ],
+    'workflows' => [
+        'function_menu_code' => '1111',
+        'permissions' => [
+            'view' => 2,
+            'storeUpdate' => 3,
+            'delete' => 4,
+            'download' => 5,
+            'admin' => 6,
+        ],
+    ],
     'users' => [
         'function_menu_code' => '1120',
         'permissions' => [
@@ -182,4 +192,25 @@ return [
             'admin' => 6,
         ],
     ],
+    'password_policies' => [
+        'function_menu_code' => '9000',
+        'permissions' => [
+            'view' => 2,
+            'storeUpdate' => 3,
+            'delete' => 4,
+            'download' => 5,
+            'admin' => 6,
+        ],
+    ],
+    'operation_logs' => [
+        'function_menu_code' => '9010',
+        'permissions' => [
+            'view' => 2,
+            'storeUpdate' => 3,
+            'delete' => 4,
+            'download' => 5,
+            'admin' => 6,
+        ],
+    ],
+
 ];

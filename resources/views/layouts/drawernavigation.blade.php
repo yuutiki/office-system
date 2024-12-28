@@ -161,345 +161,78 @@
                     <span class="flex-1 pt-1 ml-3 whitespace-nowrap" tabindex="-1">{{ __('ホーム') }}</span>
                 </x-nav-link>
             </li>
-            <li>
-                <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#accordion-body-1" aria-expanded="false" aria-controls="accordion-body-1">
-                    <x-icon name="icons/nav-client" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
-                    <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('取引先管理') }}</span>
-                    <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
-                </button>
-                <ul  class="hidden py-1 space-y-1" id="accordion-body-1" aria-labelledby="accordion-heading-1">
-                    <li>
-                        @can('view_corporations')
-                        <x-nav-link :href="route('corporations.index')" :active="request()->routeIs('corporations.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('法人一覧') }}</span>
-                        </x-nav-link>
-                        @endcan
-                    </li>
-                    <li>
-                        @can('view_clients')
-                            <x-nav-link :href="route('clients.index')" :active="request()->routeIs('clients.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('顧客一覧') }}</span>
-                            </x-nav-link>
-                        @endcan
-                    </li>
-                    <li>
-                        @can('view_vendors')
-                            <x-nav-link :href="route('vendors.index')" :active="request()->routeIs('vendors.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('業者一覧') }}</span>
-                            </x-nav-link>
-                        @endcan
-                    </li>
-                    <li>
-                        @can('view_client_persons')
-                            <x-nav-link :href="route('client-person.index')" :active="request()->routeIs('client-person.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('顧客担当者一覧') }}</span>
-                            </x-nav-link>
-                        @endcan
-                    </li>
-                    <li>
-                        @can('view_vendor_persons')
-                            <x-nav-link :href="route('client-person.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('業者担当者一覧') }}</span>
-                            </x-nav-link>
-                        @endcan
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#accordion-body-3" aria-expanded="false" aria-controls="accordion-body-3">
-                    <x-icon name="icons/nav-project" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
-                    <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('プロジェクト管理') }}</span>
-                    <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
-                </button>
-                <ul  class="hidden py-1 space-y-1" id="accordion-body-3" aria-labelledby="accordion-heading-3">
-                    <li>
-                        @can('view_projects')
-                            <x-nav-link :href="route('projects.index')" :active="request()->routeIs('projects.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('プロジェクト一覧') }}</span>
-                            </x-nav-link>
-                        @endcan
-                    </li>
-                    {{-- <li>
-                        <x-nav-link :href="route('clients.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('受注情報一覧') }}</span>
-                        </x-nav-link>
-                    </li> --}}
-                    <li>
-                         {{-- TODO:functon_menuに発注情報、営業経費、社内工数を追加する --}}
-                        @can('view_projects')
-                            <x-nav-link :href="route('clients.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('発注情報一覧') }}</span>
-                            </x-nav-link>                            
-                        @endcan
-                    </li>
-                    <li>
-                        @can('view_projects')
-                            <x-nav-link :href="route('project-expense.index')" :active="request()->routeIs('project-expense.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('営業経費一覧') }}</span>
-                            </x-nav-link>
-                        @endcan
-                    </li>
-                    <li>
-                        @can('view_projects')
-                            <x-nav-link :href="route('clients.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('社内工数一覧') }}</span>
-                            </x-nav-link>
-                        @endcan
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#support-body" aria-expanded="false" aria-controls="support-body">
-                    <x-icon name="icons/nav-support" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
-                    <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('サポート管理') }}</span>
-                    <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
-                </button>
-                <ul  class="hidden py-1 space-y-1" id="support-body" aria-labelledby="support-heading">
-                    @can('view_supports')
-                        <li>
-                            <x-nav-link :href="route('support.index')" :active="request()->routeIs('support.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('サポート一覧') }}</span>
-                            </x-nav-link>
-                        </li>
-                    @endcan
-                    @can('view_contracts')
-                        <li>
-                            <x-nav-link :href="route('contracts.index')" :active="request()->routeIs('contracts.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('契約一覧') }}</span>
-                            </x-nav-link>
-                        </li>
-                    @endcan
-                </ul>
-            </li>
-            <li>
-                <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#report-body" aria-expanded="false" aria-controls="report-body">
-                    <x-icon name="icons/nav-report" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
-                    <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('営業報告管理') }}</span>
-                    <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
-                </button>
-                <ul  class="hidden py-1 space-y-1" id="report-body" aria-labelledby="report-heading">
-                    @can('view_reports')
-                    <li>
-                        <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('営業報告一覧') }}</span>
-                        </x-nav-link>
-                    </li>
-                    @endcan
-                </ul>
-            </li>
-            {{-- <li>
-                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                    <svg class="flex-shrink-0 w-6 h-6 text-gray-900 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 5 4 4-4 4m5 0h5M2 1h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1Z"/>
-                    </svg>
-                    <span class="flex-1 pt-1 ml-3 whitespace-nowrap">{{ __('工数管理') }}</span>
-                </x-nav-link>
-            </li> --}}
-            {{-- <li>
-                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                    <svg class="flex-shrink-0 w-6 h-6 text-gray-900 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"fill="none" viewBox="0 0 17 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 12v5m5-9v9m5-5v5m5-9v9M1 7l5-6 5 6 5-6"/>
-                    </svg>
-                    <span class="flex-1 pt-1 ml-3 whitespace-nowrap">{{ __('分析画面') }}</span>
-                </x-nav-link>
-            </li> --}}
-            <li>
-                <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#keepfile-body" aria-expanded="false" aria-controls="keepfile-body">
-                    <x-icon name="icons/nav-keepfile" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
-                    <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('預託管理') }}</span>
-                    <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
-                </button>
-                <ul  class="hidden py-1 space-y-1" id="keepfile-body" aria-labelledby="keepfile-heading">
-                    @can('view_keepfiles')
-                    <li>
-                        <x-nav-link :href="route('keepfile.index')" :active="request()->routeIs('keepfile.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('預託情報一覧') }}</span>
-                        </x-nav-link>
-                    </li>
-                    @endcan
-                </ul>
-            </li>
-            <li>
-                <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#workflow-body" aria-expanded="false" aria-controls="workflow-body">
-                    <x-icon name="icons/nav-workflow" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
-                    <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('ワークフロー') }}</span>
-                    <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
-                </button>
-                <ul  class="hidden py-1 space-y-1" id="workflow-body" aria-labelledby="workflow-heading">
-                    <li>
-                        <x-nav-link :href="route('support.index')" :active="request()->routeIs('support.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('テンプレート一覧') }}</span>
-                        </x-nav-link>
-                    </li>
-                    <li>
-                        <x-nav-link :href="route('contracts.index')" :active="request()->routeIs('contracts.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('申請一覧') }}</span>
-                        </x-nav-link>
-                    </li>
-                    <li>
-                        <x-nav-link :href="route('contracts.index')" :active="request()->routeIs('contracts.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('代理申請一覧') }}</span>
-                        </x-nav-link>
-                    </li>
-                    <li>
-                        <x-nav-link :href="route('contracts.index')" :active="request()->routeIs('contracts.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('確認一覧') }}</span>
-                        </x-nav-link>
-                    </li>
-                </ul>
-            </li>
-
-            <ul class="pt-4 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700">
-            <li>
-                <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#accordion-body-90" aria-expanded="false" aria-controls="accordion-body-90">
-                    <x-icon name="icons/nav-setting" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
-                    <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('共通機能') }}</span>
-                    <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
-                </button>
-                <ul  class="hidden py-1 space-y-1" id="accordion-body-90" aria-labelledby="accordion-heading-90">
-                    @can('view_users')
-                        <li>
-                            <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
-                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('ユーザ管理') }}</span>
-                            </x-nav-link>
-                        </li>
-                    @endcan
-                    <li>
-                        <x-nav-link :href="route('role-groups.index')" :active="request()->routeIs('role-groups.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                            {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
-                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('権限グループ') }}</span>
-                        </x-nav-link>
-                    </li>
-                    <li>
-                        @can('view_links')
-                            <x-nav-link :href="route('link.index')" :active="request()->routeIs('link.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
-                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('所属別リンク管理') }}</span>
-                            </x-nav-link>
-                        @endcan
-                    </li>
-                    <li>
-                        @can('view_masters')
-                            <x-nav-link :href="route('masters.index')" :active="request()->routeIs('masters.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
-                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('マスタ管理') }}</span>
-                            </x-nav-link>
-                        @endcan
-                    </li>
-                    <li>
-                        @can('view_products')
-                            <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
-                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('製品管理') }}</span>
-                            </x-nav-link>
-                        @endcan
-                    </li>
-                    <li>
-                        <x-nav-link :href="route('password-policy.edit', 1)" :active="request()->routeIs('password-policy.edit', 1)" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                            {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
-                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('パスワードポリシー') }}</span>
-                        </x-nav-link>
-                    </li>
-                    <li>
-                        <x-nav-link :href="route('logs.index')" :active="request()->routeIs('logs.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                            {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
-                            <span class="flex-1 ml-10 whitespace-nowrap">{{ __('操作ログ') }}</span>
-                        </x-nav-link>
-                    </li>
-                    @if(Auth::user()->role == 'system_admin')
-                        <li>
-                            <x-nav-link :href="url('/log-viewer')" :active="request()->routeIs('log-viewer')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
-                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('システムログ') }}</span>
-                            </x-nav-link>
-                        </li>
-                    @endif
-                </ul>
-            </li>
-        </ul>
-    </div>
-</div>
-
-
-
-
-
-{{-- スマホ画面 --}}    
-    <div id="sm-accordion-collapse" data-accordion="sm-collapse" class="mt-12  fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform -translate-x-full w-60 bg-white dark:bg-gray-800"  tabindex="-1">
-        <div class="py-4 overflow-y-auto">
-            <ul class="space-y-1 font-medium">
+            @canany(['view_corporations', 'view_clients', 'view_vendors', 'view_client_persons', 'view_vendor_persons', ])
                 <li>
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <x-icon name="icons/nav-dashboard" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
-                        <span class="flex-1 pt-1 ml-6 whitespace-nowrap">{{ __('ホーム') }}</span>
-                    </x-nav-link>
-                </li>
-                <li>
-                    <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#sm-client-body" aria-expanded="false" aria-controls="sm-client-body">
+                    <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#accordion-body-1" aria-expanded="false" aria-controls="accordion-body-1">
                         <x-icon name="icons/nav-client" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
                         <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('取引先管理') }}</span>
                         <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
                     </button>
-                    <ul class="hidden py-1 space-y-1" id="sm-client-body" aria-labelledby="sm-client-heading">
+                    <ul  class="hidden py-1 space-y-1" id="accordion-body-1" aria-labelledby="accordion-heading-1">
                         <li>
                             @can('view_corporations')
-                            <x-nav-link :href="route('corporations.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('法人一覧') }}</span>
+                            <x-nav-link :href="route('corporations.index')" :active="request()->routeIs('corporations.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('法人一覧') }}</span>
                             </x-nav-link>
                             @endcan
                         </li>
                         <li>
                             @can('view_clients')
-                                <x-nav-link :href="route('clients.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                    <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('顧客一覧') }}</span>
+                                <x-nav-link :href="route('clients.index')" :active="request()->routeIs('clients.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                    <span class="flex-1 ml-10 whitespace-nowrap">{{ __('顧客一覧') }}</span>
                                 </x-nav-link>
                             @endcan
                         </li>
                         <li>
-                            @can('view_vendors')                                
-                                <x-nav-link :href="route('vendors.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                    <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('業者一覧') }}</span>
+                            @can('view_vendors')
+                                <x-nav-link :href="route('vendors.index')" :active="request()->routeIs('vendors.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                    <span class="flex-1 ml-10 whitespace-nowrap">{{ __('業者一覧') }}</span>
                                 </x-nav-link>
                             @endcan
                         </li>
                         <li>
                             @can('view_client_persons')
-                                <x-nav-link :href="route('client-person.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                    <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('顧客担当者一覧') }}</span>
+                                <x-nav-link :href="route('client-person.index')" :active="request()->routeIs('client-person.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                    <span class="flex-1 ml-10 whitespace-nowrap">{{ __('顧客担当者一覧') }}</span>
                                 </x-nav-link>
                             @endcan
                         </li>
                         <li>
                             @can('view_vendor_persons')
-                                <x-nav-link :href="route('client-person.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                    <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('業者担当者一覧') }}</span>
+                                <x-nav-link :href="route('client-person.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                    <span class="flex-1 ml-10 whitespace-nowrap">{{ __('業者担当者一覧') }}</span>
                                 </x-nav-link>
                             @endcan
                         </li>
                     </ul>
                 </li>
-
+            @endcanany
+            @canany(['view_projects', 'view', 'delete'])
                 <li>
-                    <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#sm-project-body" aria-expanded="false" aria-controls="sm-project-body">
+                    <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#accordion-body-3" aria-expanded="false" aria-controls="accordion-body-3">
                         <x-icon name="icons/nav-project" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
                         <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('プロジェクト管理') }}</span>
                         <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
                     </button>
-                    <ul class="hidden py-1 space-y-1" id="sm-project-body" aria-labelledby="sm-project-heading">
+                    <ul  class="hidden py-1 space-y-1" id="accordion-body-3" aria-labelledby="accordion-heading-3">
                         <li>
                             @can('view_projects')
-                                <x-nav-link :href="route('projects.index')" :active="request()->routeIs('projects.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <x-nav-link :href="route('projects.index')" :active="request()->routeIs('projects.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                                     <span class="flex-1 ml-10 whitespace-nowrap">{{ __('プロジェクト一覧') }}</span>
                                 </x-nav-link>
                             @endcan
                         </li>
+                        {{-- <li>
+                            <x-nav-link :href="route('clients.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('受注情報一覧') }}</span>
+                            </x-nav-link>
+                        </li> --}}
                         <li>
-                            {{-- TODO:maintenance --}}
+                            {{-- TODO:functon_menuに発注情報、営業経費、社内工数を追加する --}}
                             @can('view_projects')
                                 <x-nav-link :href="route('clients.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                                     <span class="flex-1 ml-10 whitespace-nowrap">{{ __('発注情報一覧') }}</span>
-                                </x-nav-link>
+                                </x-nav-link>                            
                             @endcan
                         </li>
                         <li>
@@ -518,36 +251,40 @@
                         </li>
                     </ul>
                 </li>
+            @endcanany
+            @canany(['view_supports', 'view_contracts'])
                 <li>
-                    <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#sm-support-body" aria-expanded="false" aria-controls="sm-support-body">
+                    <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#support-body" aria-expanded="false" aria-controls="support-body">
                         <x-icon name="icons/nav-support" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
                         <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('サポート管理') }}</span>
                         <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
                     </button>
-                    <ul class="hidden py-1 space-y-1" id="sm-support-body" aria-labelledby="sm-support-heading">
-                        <li>
-                            @can('view_supports')
+                    <ul  class="hidden py-1 space-y-1" id="support-body" aria-labelledby="support-heading">
+                        @can('view_supports')
+                            <li>
                                 <x-nav-link :href="route('support.index')" :active="request()->routeIs('support.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                                    <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('サポート一覧') }}</span>
+                                    <span class="flex-1 ml-10 whitespace-nowrap">{{ __('サポート一覧') }}</span>
                                 </x-nav-link>
-                            @endcan
-                        </li>
-                        <li>
-                            @can('view_contracts')
+                            </li>
+                        @endcan
+                        @can('view_contracts')
+                            <li>
                                 <x-nav-link :href="route('contracts.index')" :active="request()->routeIs('contracts.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
-                                    <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('契約一覧') }}</span>
+                                    <span class="flex-1 ml-10 whitespace-nowrap">{{ __('契約一覧') }}</span>
                                 </x-nav-link>
-                            @endcan
-                        </li>
+                            </li>
+                        @endcan
                     </ul>
                 </li>
+            @endcanany
+            @canany(['view_reports',])
                 <li>
-                    <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#sm-report-body" aria-expanded="false" aria-controls="sm-report-body">
+                    <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#report-body" aria-expanded="false" aria-controls="report-body">
                         <x-icon name="icons/nav-report" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
                         <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('営業報告管理') }}</span>
                         <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
                     </button>
-                    <ul  class="hidden py-1 space-y-1" id="sm-report-body" aria-labelledby="sm-report-heading">
+                    <ul  class="hidden py-1 space-y-1" id="report-body" aria-labelledby="report-heading">
                         @can('view_reports')
                         <li>
                             <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
@@ -557,21 +294,31 @@
                         @endcan
                     </ul>
                 </li>
-                {{-- <li>
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <svg class="flex-shrink-0 w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 5 4 4-4 4m5 0h5M2 1h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1Z"/>
-                        </svg>
-                        <span class="flex-1 pt-1 ml-3 whitespace-nowrap">{{ __('工数管理') }}</span>
-                    </x-nav-link>
-                </li> --}}
+            @endcanany
+            {{-- <li>
+                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                    <svg class="flex-shrink-0 w-6 h-6 text-gray-900 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 5 4 4-4 4m5 0h5M2 1h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1Z"/>
+                    </svg>
+                    <span class="flex-1 pt-1 ml-3 whitespace-nowrap">{{ __('工数管理') }}</span>
+                </x-nav-link>
+            </li> --}}
+            {{-- <li>
+                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                    <svg class="flex-shrink-0 w-6 h-6 text-gray-900 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"fill="none" viewBox="0 0 17 18">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 12v5m5-9v9m5-5v5m5-9v9M1 7l5-6 5 6 5-6"/>
+                    </svg>
+                    <span class="flex-1 pt-1 ml-3 whitespace-nowrap">{{ __('分析画面') }}</span>
+                </x-nav-link>
+            </li> --}}
+            @canany(['view_keepfiles',])
                 <li>
-                    <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#sm-keepfile-body" aria-expanded="false" aria-controls="sm-keepfile-body">
+                    <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#keepfile-body" aria-expanded="false" aria-controls="keepfile-body">
                         <x-icon name="icons/nav-keepfile" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
                         <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('預託管理') }}</span>
                         <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
                     </button>
-                    <ul  class="hidden py-1 space-y-1" id="sm-keepfile-body" aria-labelledby="sm-keepfile-heading">
+                    <ul  class="hidden py-1 space-y-1" id="keepfile-body" aria-labelledby="keepfile-heading">
                         @can('view_keepfiles')
                         <li>
                             <x-nav-link :href="route('keepfile.index')" :active="request()->routeIs('keepfile.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
@@ -581,13 +328,15 @@
                         @endcan
                     </ul>
                 </li>
+            @endcanany
+            @canany(['view_workflows',])
                 <li>
-                    <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#sm-workflow-body" aria-expanded="false" aria-controls="sm-workflow-body">
+                    <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#workflow-body" aria-expanded="false" aria-controls="workflow-body">
                         <x-icon name="icons/nav-workflow" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
                         <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('ワークフロー') }}</span>
                         <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
                     </button>
-                    <ul  class="hidden py-1 space-y-1" id="sm-workflow-body" aria-labelledby="sm-workflow-heading">
+                    <ul  class="hidden py-1 space-y-1" id="workflow-body" aria-labelledby="workflow-heading">
                         <li>
                             <x-nav-link :href="route('support.index')" :active="request()->routeIs('support.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                                 <span class="flex-1 ml-10 whitespace-nowrap">{{ __('テンプレート一覧') }}</span>
@@ -610,57 +359,360 @@
                         </li>
                     </ul>
                 </li>
-                <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
+            @endcanany
+
+            <ul class="pt-4 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700">
+
+            @canany(['view_users', 'view_role_groups', 'view_links', 'view_masters', 'view_password_policies', 'view_operation_logs',])
                 <li>
-                    <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#sm-admin-body" aria-expanded="false" aria-controls="sm-admin-body">
+                    <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#accordion-body-90" aria-expanded="false" aria-controls="accordion-body-90">
                         <x-icon name="icons/nav-setting" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
                         <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('共通機能') }}</span>
                         <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
                     </button>
-                   <ul  class="hidden py-1 space-y-1" id="sm-admin-body" aria-labelledby="sm-admin-heading">
+                    <ul  class="hidden py-1 space-y-1" id="accordion-body-90" aria-labelledby="accordion-heading-90">
                         <li>
-                            <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('ユーザ管理') }}</span>
-                            </x-nav-link>
+                            @can('view_users')
+                                <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
+                                    <span class="flex-1 ml-10 whitespace-nowrap">{{ __('ユーザ管理') }}</span>
+                                </x-nav-link>
+                            @endcan
                         </li>
                         <li>
-                            <x-nav-link :href="route('role-groups.index')" :active="request()->routeIs('role-groups.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
-                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('権限グループ') }}</span>
-                            </x-nav-link>
+                            @can('view_role_groups')
+                                <x-nav-link :href="route('role-groups.index')" :active="request()->routeIs('role-groups.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
+                                    <span class="flex-1 ml-10 whitespace-nowrap">{{ __('権限グループ') }}</span>
+                                </x-nav-link>
+                            @endcan
                         </li>
                         <li>
-                            <x-nav-link :href="route('link.index')" :active="request()->routeIs('link.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('所属別リンク管理') }}</span>
-                            </x-nav-link>
+                            @can('view_links')
+                                <x-nav-link :href="route('link.index')" :active="request()->routeIs('link.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
+                                    <span class="flex-1 ml-10 whitespace-nowrap">{{ __('所属別リンク管理') }}</span>
+                                </x-nav-link>
+                            @endcan
                         </li>
                         <li>
-                            <x-nav-link :href="route('masters.index')" :active="request()->routeIs('masters.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('マスタ管理') }}</span>
-                            </x-nav-link>
+                            @can('view_masters')
+                                <x-nav-link :href="route('masters.index')" :active="request()->routeIs('masters.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
+                                    <span class="flex-1 ml-10 whitespace-nowrap">{{ __('マスタ管理') }}</span>
+                                </x-nav-link>
+                            @endcan
                         </li>
                         <li>
-                            <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('製品管理') }}</span>
-                            </x-nav-link>
+                            @can('view_products')
+                                <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
+                                    <span class="flex-1 ml-10 whitespace-nowrap">{{ __('製品管理') }}</span>
+                                </x-nav-link>
+                            @endcan
                         </li>
                         <li>
-                            <x-nav-link :href="route('password-policy.edit', 1)" :active="request()->routeIs('password-policy.edit', 1)" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('パスワードポリシー') }}</span>
-                            </x-nav-link>
+                            @can('view_password_policies')
+                                <x-nav-link :href="route('password-policy.edit', 1)" :active="request()->routeIs('password-policy.edit', 1)" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
+                                    <span class="flex-1 ml-10 whitespace-nowrap">{{ __('パスワードポリシー') }}</span>
+                                </x-nav-link>
+                            @endcan
                         </li>
                         <li>
-                            <x-nav-link :href="route('logs.index')" :active="request()->routeIs('logs.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('操作ログ') }}</span>
-                            </x-nav-link>
+                            @can('view_operation_logs')
+                                <x-nav-link :href="route('logs.index')" :active="request()->routeIs('logs.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
+                                    <span class="flex-1 ml-10 whitespace-nowrap">{{ __('操作ログ') }}</span>
+                                </x-nav-link>
+                            @endcan
                         </li>
-                        <li>
-                            <x-nav-link :href="url('/log-viewer')" :active="request()->routeIs('log-viewer')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('システムログ') }}</span>
-                            </x-nav-link>
-                        </li>
+                        @if(Auth::user()->role == 'system_admin')
+                            <li>
+                                <x-nav-link :href="url('/log-viewer')" :active="request()->routeIs('log-viewer')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
+                                    <span class="flex-1 ml-10 whitespace-nowrap">{{ __('システムログ') }}</span>
+                                </x-nav-link>
+                            </li>
+                        @endif
                     </ul>
                 </li>
+            @endcanany
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+{{-- スマホ画面 --}}    
+    <div id="sm-accordion-collapse" data-accordion="sm-collapse" class="mt-12  fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform -translate-x-full w-60 bg-white dark:bg-gray-800"  tabindex="-1">
+        <div class="py-4 overflow-y-auto">
+            <ul class="space-y-1 font-medium">
+                <li>
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <x-icon name="icons/nav-dashboard" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
+                        <span class="flex-1 pt-1 ml-6 whitespace-nowrap">{{ __('ホーム') }}</span>
+                    </x-nav-link>
+                </li>
+                @canany(['view_corporations', 'view_clients', 'view_vendors', 'view_client_persons', 'view_vendor_persons', ])
+                    <li>
+                        <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#sm-client-body" aria-expanded="false" aria-controls="sm-client-body">
+                            <x-icon name="icons/nav-client" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
+                            <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('取引先管理') }}</span>
+                            <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
+                        </button>
+                        <ul class="hidden py-1 space-y-1" id="sm-client-body" aria-labelledby="sm-client-heading">
+                            <li>
+                                @can('view_corporations')
+                                <x-nav-link :href="route('corporations.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('法人一覧') }}</span>
+                                </x-nav-link>
+                                @endcan
+                            </li>
+                            <li>
+                                @can('view_clients')
+                                    <x-nav-link :href="route('clients.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('顧客一覧') }}</span>
+                                    </x-nav-link>
+                                @endcan
+                            </li>
+                            <li>
+                                @can('view_vendors')                                
+                                    <x-nav-link :href="route('vendors.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('業者一覧') }}</span>
+                                    </x-nav-link>
+                                @endcan
+                            </li>
+                            <li>
+                                @can('view_client_persons')
+                                    <x-nav-link :href="route('client-person.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('顧客担当者一覧') }}</span>
+                                    </x-nav-link>
+                                @endcan
+                            </li>
+                            <li>
+                                @can('view_vendor_persons')
+                                    <x-nav-link :href="route('client-person.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('業者担当者一覧') }}</span>
+                                    </x-nav-link>
+                                @endcan
+                            </li>
+                        </ul>
+                    </li>
+                @endcanany
+
+                @canany(['view_projects', ])
+                    <li>
+                        <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#sm-project-body" aria-expanded="false" aria-controls="sm-project-body">
+                            <x-icon name="icons/nav-project" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
+                            <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('プロジェクト管理') }}</span>
+                            <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
+                        </button>
+                        <ul class="hidden py-1 space-y-1" id="sm-project-body" aria-labelledby="sm-project-heading">
+                            <li>
+                                @can('view_projects')
+                                    <x-nav-link :href="route('projects.index')" :active="request()->routeIs('projects.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        <span class="flex-1 ml-10 whitespace-nowrap">{{ __('プロジェクト一覧') }}</span>
+                                    </x-nav-link>
+                                @endcan
+                            </li>
+                            <li>
+                                {{-- TODO:maintenance --}}
+                                @can('view_projects')
+                                    <x-nav-link :href="route('clients.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                        <span class="flex-1 ml-10 whitespace-nowrap">{{ __('発注情報一覧') }}</span>
+                                    </x-nav-link>
+                                @endcan
+                            </li>
+                            <li>
+                                @can('view_projects')
+                                    <x-nav-link :href="route('project-expense.index')" :active="request()->routeIs('project-expense.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                        <span class="flex-1 ml-10 whitespace-nowrap">{{ __('営業経費一覧') }}</span>
+                                    </x-nav-link>
+                                @endcan
+                            </li>
+                            <li>
+                                @can('view_projects')
+                                    <x-nav-link :href="route('clients.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                        <span class="flex-1 ml-10 whitespace-nowrap">{{ __('社内工数一覧') }}</span>
+                                    </x-nav-link>
+                                @endcan
+                            </li>
+                        </ul>
+                    </li>
+                @endcanany
+                @canany(['view_supports', 'view_contracts',])
+                    <li>
+                        <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#sm-support-body" aria-expanded="false" aria-controls="sm-support-body">
+                            <x-icon name="icons/nav-support" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
+                            <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('サポート管理') }}</span>
+                            <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
+                        </button>
+                        <ul class="hidden py-1 space-y-1" id="sm-support-body" aria-labelledby="sm-support-heading">
+                            <li>
+                                @can('view_supports')
+                                    <x-nav-link :href="route('support.index')" :active="request()->routeIs('support.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                        <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('サポート一覧') }}</span>
+                                    </x-nav-link>
+                                @endcan
+                            </li>
+                            <li>
+                                @can('view_contracts')
+                                    <x-nav-link :href="route('contracts.index')" :active="request()->routeIs('contracts.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                        <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('契約一覧') }}</span>
+                                    </x-nav-link>
+                                @endcan
+                            </li>
+                        </ul>
+                    </li>
+                @endcanany
+                @canany(['view_reports',])
+                    <li>
+                        <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#sm-report-body" aria-expanded="false" aria-controls="sm-report-body">
+                            <x-icon name="icons/nav-report" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
+                            <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('営業報告管理') }}</span>
+                            <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
+                        </button>
+                        <ul  class="hidden py-1 space-y-1" id="sm-report-body" aria-labelledby="sm-report-heading">
+                            <li>
+                                @can('view_reports')
+                                    <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                        <span class="flex-1 ml-10 whitespace-nowrap">{{ __('営業報告一覧') }}</span>
+                                    </x-nav-link>
+                                @endcan
+                            </li>
+                        </ul>
+                    </li>
+                @endcanany
+                {{-- <li>
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('#')" class="flex w-full items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <svg class="flex-shrink-0 w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 5 4 4-4 4m5 0h5M2 1h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1Z"/>
+                        </svg>
+                        <span class="flex-1 pt-1 ml-3 whitespace-nowrap">{{ __('工数管理') }}</span>
+                    </x-nav-link>
+                </li> --}}
+                @canany(['view_keepfiles',], )
+                    <li>
+                        <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#sm-keepfile-body" aria-expanded="false" aria-controls="sm-keepfile-body">
+                            <x-icon name="icons/nav-keepfile" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
+                            <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('預託管理') }}</span>
+                            <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
+                        </button>
+                        <ul  class="hidden py-1 space-y-1" id="sm-keepfile-body" aria-labelledby="sm-keepfile-heading">
+                            <li>
+                                @can('view_keepfiles')
+                                    <x-nav-link :href="route('keepfile.index')" :active="request()->routeIs('keepfile.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                        <span class="flex-1 ml-10 whitespace-nowrap">{{ __('預託情報一覧') }}</span>
+                                    </x-nav-link>
+                                @endcan
+                            </li>
+                        </ul>
+                    </li>
+                @endcanany
+                @canany(['view_workflows',])
+                    <li>
+                        <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#sm-workflow-body" aria-expanded="false" aria-controls="sm-workflow-body">
+                            <x-icon name="icons/nav-workflow" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
+                            <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('ワークフロー') }}</span>
+                            <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
+                        </button>
+                        <ul  class="hidden py-1 space-y-1" id="sm-workflow-body" aria-labelledby="sm-workflow-heading">
+                            <li>
+                                <x-nav-link :href="route('support.index')" :active="request()->routeIs('support.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                    <span class="flex-1 ml-10 whitespace-nowrap">{{ __('テンプレート一覧') }}</span>
+                                </x-nav-link>
+                            </li>
+                            <li>
+                                <x-nav-link :href="route('contracts.index')" :active="request()->routeIs('contracts.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                    <span class="flex-1 ml-10 whitespace-nowrap">{{ __('申請一覧') }}</span>
+                                </x-nav-link>
+                            </li>
+                            <li>
+                                <x-nav-link :href="route('contracts.index')" :active="request()->routeIs('contracts.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                    <span class="flex-1 ml-10 whitespace-nowrap">{{ __('代理申請一覧') }}</span>
+                                </x-nav-link>
+                            </li>
+                            <li>
+                                <x-nav-link :href="route('contracts.index')" :active="request()->routeIs('contracts.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                    <span class="flex-1 ml-10 whitespace-nowrap">{{ __('確認一覧') }}</span>
+                                </x-nav-link>
+                            </li>
+                        </ul>
+                    </li>
+                @endcanany
+                <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
+
+                @canany(['view_users', 'view_role_groups', 'view_links', 'view_masters', 'view_password_policies', 'view_operation_logs',])
+                    <li>
+                        <button type="button" class="flex items-center w-full pt-1 pr-1 pb-2 pl-1 text-sm  text-gray-900 transition duration-75 rounded-sm group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#sm-admin-body" aria-expanded="false" aria-controls="sm-admin-body">
+                            <x-icon name="icons/nav-setting" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-gray-400" />
+                            <span class="flex-1 pt-1 ml-3 text-left whitespace-nowrap">{{ __('共通機能') }}</span>
+                            <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
+                        </button>
+                        <ul  class="hidden py-1 space-y-1" id="sm-admin-body" aria-labelledby="sm-admin-heading">
+                            <li>
+                                @can('view_users')
+                                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('ユーザ管理') }}</span>
+                                    </x-nav-link>
+                                @endcan
+                            </li>
+                            <li>
+                                @can('view_role_groups')
+                                    <x-nav-link :href="route('role-groups.index')" :active="request()->routeIs('role-groups.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
+                                        <span class="flex-1 ml-10 whitespace-nowrap">{{ __('権限グループ') }}</span>
+                                    </x-nav-link>
+                                @endcan
+                            </li>
+                            <li>
+                                @can('view_links')
+                                    <x-nav-link :href="route('link.index')" :active="request()->routeIs('link.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('所属別リンク管理') }}</span>
+                                    </x-nav-link>
+                                @endcan
+                            </li>
+                            <li>
+                                @can('view_masters')
+                                    <x-nav-link :href="route('masters.index')" :active="request()->routeIs('masters.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('マスタ管理') }}</span>
+                                    </x-nav-link>
+                                @endcan
+                            </li>
+                            <li>
+                                @can('view_products')
+                                    <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('製品管理') }}</span>
+                                    </x-nav-link>
+                                @endcan
+                            </li>
+                            <li>
+                                @can('view_password_policies')
+                                    <x-nav-link :href="route('password-policy.edit', 1)" :active="request()->routeIs('password-policy.edit', 1)" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        <span class="flex-1 ml-10 whitespace-nowrap">{{ __('パスワードポリシー') }}</span>
+                                    </x-nav-link>
+                                @endcan
+                            </li>
+                            <li>
+                                @can('view_operation_logs')
+                                    <x-nav-link :href="route('logs.index')" :active="request()->routeIs('logs.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        <span class="flex-1 ml-10 whitespace-nowrap">{{ __('操作ログ') }}</span>
+                                    </x-nav-link>
+                                @endcan
+                            </li>
+                            <li>
+                                @if (Auth::user()->role == 'system_admin')
+                                    <x-nav-link :href="url('/log-viewer')" :active="request()->routeIs('log-viewer')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('システムログ') }}</span>
+                                    </x-nav-link>
+                                @endif
+                            </li>
+                        </ul>
+                    </li>
+                @endcanany
             </ul>
         </div>
     </div>
