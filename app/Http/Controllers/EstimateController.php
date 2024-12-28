@@ -201,6 +201,7 @@ class EstimateController extends Controller
 
             // 親モデルのデータを更新
             $estimate->estimate_subject = $request->estimate_subject;
+            $estimate->estimate_recipient = $request->estimate_recipient;
             $estimate->estimate_at = $request->estimate_at;
             $estimate->submit_at = $request->submit_at;
             $estimate->total_without_tax = str_replace(',', '', $request->total_without_tax);

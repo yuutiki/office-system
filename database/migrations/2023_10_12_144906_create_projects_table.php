@@ -23,7 +23,7 @@ return new class extends Migration
             $table->dateTime('proposed_accounting_date')->nullable(true)->comment('計上予定月');
             $table->dateTime('proposed_payment_date')->nullable(true)->comment('入金予定月');
 
-            $table->foreignId('billing_corporation_id')->comment('請求先法人ID');
+            $table->foreignUlid('billing_corporation_id')->comment('請求先法人ID');
             $table->string('billing_corporation_name')->nullable(true)->comment('請求先名');
             $table->string('billing_corporation_division_name')->nullable(true)->comment('請求先部署名');
             $table->string('billing_corporation_person_name')->nullable(true)->comment('請求先担当者名');

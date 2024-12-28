@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\NotificationController;
 use App\Models\Notification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class ReportController extends Controller
@@ -95,49 +96,39 @@ class ReportController extends Controller
 
         // 通知の内容を設定
         $notificationData = [
+            'notification_title' => '新しい営業報告が登録されました。',
+            'notification_body' => $report->report_title,
+            'notification_type' => '0', // システム通知
+            'notification_category'=> '',
+            'importance'=> 0, // 通常
             'action_url' => route('reports.show', ['report' => $report->id]), // 例: 日報を表示するURL
-            'reporter' => $report->reporter->name,
-            'message' => '未読の日報があります',
-            'content_title' => $report->report_title,
-            'source_model' => Report::class,
-            'source_id' => $report->id,
             // 他の通知に関する情報をここで設定
         ];
 
-    // 1. 受け取った値の確認
-    \Log::info('Received userIds:', [
-        'raw' => $request->input('selectedRecipientsId'),
-        'type' => gettype($request->input('selectedRecipientsId'))
-    ]);
+        $notificationFrom = [
+            'id' => $report->reporter->id,
+            'name' => $report->reporter->user_name,
+            'affiliation1' => $report->reporter->affiliation1_id,
+            'email' => $report->reporter->email,
+            'image' =>$report->reporter->profile_image,
+            // 必要に応じて他のユーザー情報を追加
+        ];
 
-    // 修正後:
-    $userIds = $request->input('selectedRecipientsId', []);
-    if (is_array($userIds) && count($userIds) === 1) {
-        // 配列の最初の要素がカンマ区切りの文字列の場合
-        $userIds = explode(',', $userIds[0]);
-    }
-    \Log::info('User IDs after processing:', ['userIds' => $userIds]);
+        // 修正後:
+        $userIds = $request->input('selectedRecipientsId', []);
+        if (is_array($userIds) && count($userIds) === 1) {
+            // 配列の最初の要素がカンマ区切りの文字列の場合
+            $userIds = explode(',', $userIds[0]);
+        }
 
-    // 3. ユーザー取得結果の確認
-    $users = User::whereIn('id', $userIds)->get();
-    \Log::info('Retrieved users:', [
-        'count' => $users->count(),
-        'users' => $users->pluck('id')->toArray()
-    ]);
+        // 3. ユーザー取得結果の確認
+        $users = User::whereIn('id', $userIds)->get();
 
-    // 4. 通知データの確認
-    $notification = new AppNotification($report, $notificationData);
-    \Log::info('Notification data:', [
-        'report_id' => $report->id,
-        'notification_data' => $notificationData
-    ]);
+        // 4. 通知データの確認
+        $notification = new AppNotification($notificationData, $notificationFrom);
 
         // 通知の送信
         $this->notificationService->sendNotification($users, $notification);
-
-
-        
-
 
         return redirect()->route('reports.index')->with('success','正常に登録しました');
     }
@@ -154,19 +145,41 @@ class ReportController extends Controller
         // ログインユーザーの未読通知を取得
         $unreadNotifications = $user->unreadNotifications;
 
+        // dd($unreadNotifications);
 
         // 未読通知を走査して対応する通知を既読にする
         foreach ($unreadNotifications as $notification) {
-            // 通知データをデコード
-            $notificationData = $notification->data;
-
-            // 通知データから関連する報告書の情報を取得する
-            $notificationReportId = $notificationData['notification_data']['source_id'];
-
-            // 通知が特定の報告書に関連しているかチェックする
-            if ($notificationReportId == $report->id) {
-                // 通知が関連している場合は既読状態にする
-                $notification->markAsRead();
+            // $notification->data が配列かどうかを確認
+            $notificationData = is_array($notification->data) ? $notification->data : json_decode($notification->data, true);
+        
+            // notification_dataが存在し、配列形式の場合に処理を続行
+            if (is_array($notificationData) && isset($notificationData['notification_data'])) {
+                $notificationDataEntries = $notificationData['notification_data'];
+        
+                // notification_data が単一の場合、配列化する
+                if (!is_array($notificationDataEntries) || isset($notificationDataEntries['source_id'])) {
+                    $notificationDataEntries = [$notificationDataEntries];
+                }
+        
+                // 複数の notification_data を走査
+                foreach ($notificationDataEntries as $entry) {
+                    // 必須キーをチェック
+                    if (isset($entry['source_id'])) {
+                        $notificationReportId = $entry['source_id'];
+        
+                        // 該当する報告書IDと一致する場合
+                        if ($notificationReportId == $report->id) {
+                            // 通知を既読状態にする
+                            $notification->markAsRead();
+        
+                            // 必要に応じて、ループを終了
+                            break;
+                        }
+                    }
+                }
+            } else {
+                // ログまたはデバッグ情報を記録
+                Log::warning('Invalid notification data structure: ', ['data' => $notification->data]);
             }
         }
 

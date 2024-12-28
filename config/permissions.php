@@ -12,6 +12,16 @@ return [
             'admin' => 6,
         ],
     ],
+    'corporation_credits' => [
+        'function_menu_code' => '1001',
+        'permissions' => [
+            'view' => 2,
+            'storeUpdate' => 3,
+            'delete' => 4,
+            'download' => 5,
+            'admin' => 6,
+        ],
+    ],
     'clients' => [
         'function_menu_code' => '1010',
         'permissions' => [
@@ -92,7 +102,7 @@ return [
             'admin' => 6,
         ],
     ],
-    'sales_reports' => [
+    'reports' => [
         'function_menu_code' => '1090',
         'permissions' => [
             'view' => 2,

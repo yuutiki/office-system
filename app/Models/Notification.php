@@ -12,6 +12,13 @@ class Notification extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
+    protected $fillable = [
+        'type',
+        'data',
+        'source_model',
+        'source_id',
+    ];
+
     protected $casts = [
         'data' => 'array',
         'read_at' => 'datetime',
@@ -26,4 +33,6 @@ class Notification extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
+
 }

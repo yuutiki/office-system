@@ -25,7 +25,7 @@ class Estimate extends Model
     }
 
     protected $fillable = [
-        'project_id', 'estimate_num', 'estimate_title', 'estimate_at', 'submit_at',
+        'project_id', 'estimate_num', 'estimate_subject', 'estimate_at', 'submit_at',
         'subtotal_amount', 'tax_amount', 'total_amount', 'delivery_place',
         'delivery_at', 'transaction_method', 'expiration_at', 'estimate_memo',
         'estimate_sheet', 'approval_info', 'supervisor_comment_1',

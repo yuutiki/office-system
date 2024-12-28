@@ -237,15 +237,15 @@ class T_CorporationSeeder extends Seeder
             // ... 他の既存のデータ ...
         ];
 
-        // イベントを一時的に無効化
-        Corporation::withoutEvents(function () use ($existingCorporations) {
-            // 既存のデータを作成
-            foreach ($existingCorporations as $corp) {
-                Corporation::create($corp);
-            }
+        // // イベントを一時的に無効化
+        // Corporation::withoutEvents(function () use ($existingCorporations) {
+        //     // 既存のデータを作成
+        //     foreach ($existingCorporations as $corp) {
+        //         Corporation::create($corp);
+        //     }
 
-            // 追加で994件のデータを生成（合計1000件になるように）
-            Corporation::factory()->count(994)->create();
-        });
+        //     // 追加で994件のデータを生成（合計1000件になるように）
+        //     Corporation::factory()->count(994)->create();
+        // });
     }
 }

@@ -237,8 +237,8 @@ class T_ClientSeeder extends Seeder
                 'updated_by' => 1,
             ]);
         }
-        // 追加で994件のデータを生成（合計1000件になるように）
-        Corporation::factory()->count(994)->create();
+        // // 追加で994件のデータを生成（合計1000件になるように）
+        // Corporation::factory()->count(994)->create();
     }
     
 }

@@ -21,6 +21,14 @@ class FunctionMenuSeeder extends Seeder
             'updated_at' => now(),
         ]);
         FunctionMenu::create([
+            'function_menu_code' => '1001',
+            'function_menu_name' => '法人与信管理',
+            'created_by' => 1,
+            'updated_by' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        FunctionMenu::create([
             'function_menu_code' => '1010',
             'function_menu_name' => '顧客管理',
             'created_by' => 1,
@@ -143,6 +151,22 @@ class FunctionMenuSeeder extends Seeder
         FunctionMenu::create([
             'function_menu_code' => '1160',
             'function_menu_name' => 'マスタ管理',
+            'created_by' => 1,
+            'updated_by' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        FunctionMenu::create([
+            'function_menu_code' => '9000',
+            'function_menu_name' => 'パスワードポリシー',
+            'created_by' => 1,
+            'updated_by' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        FunctionMenu::create([
+            'function_menu_code' => '9010',
+            'function_menu_name' => '操作ログ',
             'created_by' => 1,
             'updated_by' => 1,
             'created_at' => now(),

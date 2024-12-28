@@ -107,7 +107,7 @@
             </div>
 
             <div class="hidden p-4 mb-2 rounded bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                <div class="grid gap-4 mb-4 md:grid-cols-4 grid-cols-2">
+                <div class="grid gap-2 mb-4 md:grid-cols-4 grid-cols-1">
                     <div>
                         <label for="sales_stage_id" class="text-gray-900 text-sm dark:text-white leading-none mt-4">営業段階<span class="text-red-500"> *</span></label>
                         <select form="corporationForm" id="sales_stage_id" name="sales_stage_id" class="input-primary">
@@ -184,7 +184,7 @@
                     rangeInput.addEventListener('input', updateCurrencyInput);
                 </script>
 
-                <div class="grid gap-4 mb-8 md:grid-cols-4 grid-cols-2">
+                <div class="grid gap-2 mb-8 md:grid-cols-4 grid-cols-1">
                     <div class="w-full flex flex-col">
                         <label for="proposed_order_date" class="dark:text-white text-sm text-gray-900 leading-none mt-1">受注予定月</label>
                         <input form="corporationForm" type="month" min="1900-01" max="2100-12" name="proposed_order_date" value="{{ old('proposed_order_date', \Carbon\Carbon::parse($project->proposed_order_date)->format('Y-m') ?? '') }}" class="input-primary" required>
@@ -649,7 +649,7 @@
                                         {{ $estimate->estimate_num }}
                                     </td>
                                     <td class="px-1 py-1 whitespace-nowrap">
-                                        {{ $estimate->estimate_title }}
+                                        {{ $estimate->estimate_subject }}
                                     </td>
                                     <td class="px-1 py-1 whitespace-nowrap">
                                         <div class="text-right w-[65px] ">{{ number_format($estimate->subtotal_amount, 0) }}</div>

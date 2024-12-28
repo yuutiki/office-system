@@ -162,12 +162,32 @@ class SupportController extends Controller
         $request->session()->forget('selected_client_name');
 
 
+        // // 通知の内容を設定
+        // $notificationData = [
+        //     'action_url' => route('support.edit', ['support' => $support->id]), // 例: サポート履歴を表示するURL
+        //     'reporter' => $support->user->user_name,
+        //     'message' => '新しいサポート履歴が登録されました。',
+        //     // 他の通知に関する情報をここで設定
+        // ];
+
         // 通知の内容を設定
         $notificationData = [
-            'action_url' => route('support.edit', ['support' => $support->id]), // 例: サポート履歴を表示するURL
-            'reporter' => $support->user->name,
-            'message' => '新しいサポート履歴が登録されました。',
+            'notification_title' => '新しいサポート履歴が登録されました。',
+            'notification_body' => $support->title,
+            'notification_type' => '0', // システム通知
+            'notification_category'=> '',
+            'importance'=> 0, // 通常
+            'action_url' => route('support.edit', ['support' => $support->id]),// 例: 日報を表示するURL
             // 他の通知に関する情報をここで設定
+        ];
+
+        $notificationFrom = [
+            'id' => $support->user->id,
+            'name' => $support->user->user_name,
+            'affiliation1' => $support->user->affiliation1_id,
+            'email' => $support->user->email,
+            'image' =>$support->user->profile_image,
+            // 必要に応じて他のユーザー情報を追加
         ];
 
         // 日報を登録したユーザーに通知を送信
@@ -175,7 +195,7 @@ class SupportController extends Controller
         $userEigyou = User::find($user);
 
         // 通知の作成
-        $notification = new AppNotification($support, $notificationData); // $support を通知データとして渡す
+        $notification = new AppNotification($notificationData, $notificationFrom); // $support を通知データとして渡す
 
         // 通知の送信
         $this->notificationService->sendNotification($userEigyou, $notification);

@@ -11,18 +11,18 @@ class AppNotification extends Notification
 {
     use Queueable;
     
-    protected $contentData;
     protected $notificationData;
+    protected $notificationFrom;
     
 
     /**
      * Create a new notification instance.
      * Informationモデル (=お知らせ) を受け取る
      */
-    public function __construct($contentData, $notificationData)
+    public function __construct($notificationData, $notificationFrom)
     {
-        $this->contentData = $contentData;
         $this->notificationData = $notificationData;
+        $this->notificationFrom = $notificationFrom;
     }
 
     /**
@@ -57,8 +57,8 @@ class AppNotification extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'content_data' => $this->contentData,
             'notification_data' => $this->notificationData,
+            'notification_from' => $this->notificationFrom,
             'notification' => $this, // 通知自体をビューに渡す
         ];
     }

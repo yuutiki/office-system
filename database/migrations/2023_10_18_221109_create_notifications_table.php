@@ -13,11 +13,12 @@ return new class extends Migration
             $table->string('type');
             $table->morphs('notifiable');
             $table->text('data');
-            $table->timestamp('read_at')->nullable();
-            $table->string('source_model')->nullable(true)->comment('通知元Model');
-            $table->foreignId('source_id')->nullable(true)->comment('通知元ID');
-            $table->foreignId('created_by')->nullable(true)->comment('作成者');
-            $table->foreignId('updated_by')->nullable(true)->comment('更新者');
+            $table->dateTime('read_at')->nullable();
+            // $table->string('source_model')->nullable(true)->comment('通知元Model');
+            // $table->foreignId('source_id')->nullable(true)->comment('通知元ID');
+            // $table->foreignId('notification_from')->nullable(true)->comment('通知元ユーザーID');
+            // $table->foreignId('created_by')->nullable(true)->comment('作成者');
+            // $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->datetimes();
         });
     }

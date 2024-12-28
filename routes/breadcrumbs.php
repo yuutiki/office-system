@@ -6,6 +6,12 @@ Breadcrumbs::for('dashboard', function ($trail) {
     $trail->push('ホーム', route('dashboard'));
 });
 
+        // ダッシュボード > メッセージ一覧
+        Breadcrumbs::for('notifications', function ($trail) {
+            $trail->parent('dashboard');
+            $trail->push('通知一覧', route('notifications.index'));
+        });
+
         // ダッシュボード > 法人一覧
         Breadcrumbs::for('corporations', function ($trail, $searchParams) {
             $trail->parent('dashboard');
@@ -192,7 +198,7 @@ Breadcrumbs::for('dashboard', function ($trail) {
         // ダッシュボード > プロジェクト一覧
         Breadcrumbs::for('projects', function ($trail) {
             $trail->parent('dashboard');
-            $trail->push('プロジェクト一覧', url('projects'));
+            $trail->push('案件一覧', url('projects'));
         });
                 // ダッシュボード > プロジェクト一覧 > プロジェクト新規登録
                 Breadcrumbs::for('createProject', function ($trail) {
@@ -206,16 +212,16 @@ Breadcrumbs::for('dashboard', function ($trail) {
                     $trail->push('編集', route('projects.edit', $project));
                 });
 
-                    // ダッシュボード > プロジェクト一覧 > プロジェクト編集 > 見積新規作成
+                    // ダッシュボード > プロジェクト一覧 > プロジェクト編集 > 見積新規
                     Breadcrumbs::for('createEstimate', function ($trail, $project) {
                         $trail->parent('editProject', $project);
-                        $trail->push('見積書新規', route('estimate.create', $project));
+                        $trail->push('見積新規', route('estimate.create', $project));
                     });
 
                     // ダッシュボード > プロジェクト一覧 > プロジェクト編集 > 見積編集
                     Breadcrumbs::for('editEstimate', function ($trail, $project, $estimate) {
                         $trail->parent('editProject', $project);
-                        $trail->push('見積書編集', route('estimates.edit', ['projectId' => $project->id, 'estimateId' => $estimate->ulid]));
+                        $trail->push('見積編集', route('estimates.edit', ['projectId' => $project->id, 'estimateId' => $estimate->ulid]));
                     });
 
                 // ダッシュボード > プロジェクト一覧 > CSVアップロード

@@ -8,13 +8,46 @@
                 <form id="estimateForm" method="POST" action="{{ route('estimates.update', ['projectId' => $project, 'estimateId' => $estimate]) }}" enctype="multipart/form-data" autocomplete="new-password">
                     @csrf
                     @method('patch')
-                    <x-primary-button class="ml-2" form="estimateForm">
-                        更新する
-                    </x-primary-button>
+                    <x-buttons.save-button form-id="estimateForm" id="saveButton" onkeydown="stopTab(event)">
+                        {{ __("Update") }}
+                    </x-buttons.save-button>
                 </form>
-                <button onclick="estimatePreview()" class="text-white ml-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-sm text-sm px-5 py-2.5 me-2  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                {{-- <button onclick="estimatePreview()" class="text-white ml-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-sm text-xs px-3.5 py-1.5  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                     見積印刷
+                </button> --}}
+                <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center ml-2 w-full sm:px-3.5 py-1.5 text-sm font-medium text-white bg-white border border-gray-200 rounded md:w-auto hover:bg-gray-100 hover:text-blue-700 focus:z-10 dark:bg-blue-600 dark:text-white dark:border-blue-600 dark:hover:text-white dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" type="button">
+                    {{-- <svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                    </svg> --}}
+                    <svg class="w-5 h-5 ml-2 mr-2 sm:ml-0 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z"/>
+                    </svg>
+                    <span class="hidden sm:inline text-sm">{{ __('Print') }}</span>
                 </button>
+                <div id="actionsDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-600 dark:divide-gray-600">
+                    <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
+                        <li>
+                            <button type="button" onclick="estimatePreview()" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2M8 9l4-5 4 5m1 8h0"/>
+                                    </svg>
+                                </div>
+                                見積書印刷
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" onclick="location.href='{{ route('corporations.downloadCsv', $filters ?? []) }}'" class="relative w-full items-center py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2m-1-5-4 5-4-5m9 8h0"/>
+                                    </svg>
+                                </div>
+                                注文書印刷
+                            </button>
+                        </li>
+                    </ul>
+                </div>
                 <x-message :message="session('message')"/>
             </div>
         </div>
@@ -22,15 +55,53 @@
 
     <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
 
-    <div class="mx-auto sm:pl-16 pr-3 pl-3 pb-4">
+    <div class="mx-auto md:pl-16 pr-3 pl-3 pb-4 xl:w-5/6">
         {{-- <form id="form1" method="POST" action="{{ route('estimate.update', ['project' => $project, 'estimate' => $estimate]) }}" enctype="multipart/form-data" autocomplete="new-password">
             @csrf
             @method('PUT')
             <x-primary-button class="ml-2" form="form1">
                 更新する
             </x-primary-button> --}}
+            <div class="rounded border-gray-500 border mb-4 overflow-x-auto">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <tbody class="">
+                        <tr class="border-b dark:border-gray-700">
+                            <th class="pl-4 border-r dark:border-gray-700 dark:bg-gray-800 w-44 whitespace-nowrap pr-2">
+                                法人名称
+                            </th>
+                            <th class="dark:bg-gray-700 border-b dark:border-gray-600">
+                                <div class="flex px-2 py-1.5">
+                                    <div class="flex items-center mr-12 ">
+                                        <div class=" text-sm font-medium text-gray-900 dark:text-gray-300  whitespace-nowrap">{{ $project->client->corporation->corporation_name }}</div>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                        <tr class="border-b dark:border-gray-700">
+                            <th class="pl-4 border-r dark:border-gray-700 dark:bg-gray-800 w-44 whitespace-nowrap pr-2">
+                                顧客名称
+                            </th>
+                            <th class="dark:bg-gray-700 border-b dark:border-gray-600">
+                                <div class="flex px-2 py-1.5">
+                                    <div class=" text-sm font-medium text-gray-900 dark:text-gray-300  whitespace-nowrap">{{ $project->client->client_name }}</div>
+                                </div>
+                            </th>
+                        </tr>
+                        <tr class="border-b dark:border-gray-700">
+                            <th class="pl-4 border-r dark:border-gray-700 dark:bg-gray-800 w-44 whitespace-nowrap pr-2">
+                                プロジェクト名称
+                            </th>
+                            <th class="dark:bg-gray-700 border-b dark:border-gray-600">
+                                <div class="flex px-2 py-1.5">
+                                    <div class=" text-sm font-medium text-gray-900 dark:text-gray-300  whitespace-nowrap">{{ $project->project_name }}</div>
+                                </div>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-            <div class="grid gap-3 lg:grid-cols-3 grid-cols-1 mt-2">
+            {{-- <div class="grid gap-3 lg:grid-cols-3 grid-cols-1 mt-2">
                 <div>
                     <label for="corporation_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none ">法人名称</label>
                     <input type="text" name="corporation_name" class="input-readonly" value="{{ old('corporation_name', $project->client->corporation->corporation_name) }}" readonly>
@@ -43,9 +114,9 @@
                     <label for="project_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none">プロジェクト名称</label>
                     <input type="text" name="project_name" class="input-readonly" value="{{ old('project_name', $project->project_name) }}" readonly>
                 </div>
-            </div>
+            </div> --}}
     
-            <div class="grid gap-y-1 lg:gap-x-3 lg:grid-cols-3 grid-cols-1 mt-6">
+            <div class="grid gap-y-1 lg:gap-x-3 lg:grid-cols-4 grid-cols-1 mt-6">
                 <div class="">
                     <label for="estimate_num" class="block text-sm dark:text-gray-100 text-gray-900 leading-none">見積番号</label>
                     <input type="text" form="estimateForm" name="estimate_num" class="input-readonly cursor-not-allowed" id="estimate_num" value="{{ $estimate->estimate_num }}" placeholder="登録時に自動採番されます" readonly>
@@ -60,45 +131,25 @@
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
+                <div class="">
+                    <label for="estimate_at" class="block text-sm dark:text-gray-100 text-gray-900 leading-none">見積作成日</label>
+                    <input type="date" form="estimateForm" name="estimate_at" class="input-primary" id="estimate_at" value="{{ old('estimate_at', $estimate->estimate_at) }}" placeholder="">
+                    @error('estimate_at')
+                        <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+                </div>
             </div>
     
             <div class="col-span-3">
-                <label for="estimate_subject" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">件名</label>
+                <label for="estimate_subject" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">見積件名</label>
                 <input type="text" form="estimateForm" name="estimate_subject" class="input-secondary" id="estimate_subject" value="{{ old('estimate_subject',  $estimate->estimate_subject) }}" placeholder="">
                 @error('estimate_subject')
                     <div class="text-red-500">{{ $message }}</div>
                 @enderror
             </div>
 
-            <div class="grid gap-2 lg:grid-cols-5 grid-cols-2 text-sm mt-2">
-                <div class="">
-                    <label for="delivery_at" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-1">受渡期日</label>
-                    <input type="text" form="estimateForm" name="delivery_at" class="input-primary" id="delivery_at" value="{{ old('delivery_at', $estimate->delivery_at) }}" placeholder="">
-                    @error('delivery_at')
-                        <div class="text-red-500">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="">
-                    <label for="delivery_place" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-1">受渡場所</label>
-                    <input type="text" form="estimateForm" name="delivery_place" class="input-primary" id="delivery_place" value="{{ old('delivery_place', $estimate->delivery_place) }}" placeholder="">
-                    @error('delivery_place')
-                        <div class="text-red-500">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="">
-                    <label for="transaction_method" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-1">取引方法</label>
-                    <input type="text" form="estimateForm" name="transaction_method" class="input-primary" id="transaction_method" value="{{ old('transaction_method', $estimate->transaction_method) }}" placeholder="">
-                    @error('transaction_method')
-                        <div class="text-red-500">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="">
-                    <label for="expiration_at" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-1">有効期限</label>
-                    <input type="text" form="estimateForm" name="expiration_at" class="input-primary" id="expiration_at" value="{{ old('expiration_at', $estimate->expiration_at) }}" placeholder="">
-                    @error('expiration_at')
-                        <div class="text-red-500">{{ $message }}</div>
-                    @enderror
-                </div>
+            {{-- <div class="grid gap-2 lg:grid-cols-5 grid-cols-2 text-sm mt-2">
+
                 <div class="">
                     <label for="estimate_at" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-1">見積作成日</label>
                     <input type="date" form="estimateForm" name="estimate_at" class="input-primary" id="estimate_at" value="{{ old('estimate_at', $estimate->estimate_at) }}" placeholder="">
@@ -106,7 +157,7 @@
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
-            </div>
+            </div> --}}
 
             <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
                 <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
@@ -395,38 +446,37 @@
 
                 <!-- 見積設定タブ -->
                 <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="estimate-print-property" role="tabpanel" aria-labelledby="estimate-print-property-tab">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label for="user_position_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-1">担当者役職名</label>
-                            <input type="text" form="estimateForm" name="user_position_name" class="input-primary" id="user_position_name" value="{{ $estimate->user_position_name }}" placeholder="">
-                            @error('user_position_name')
+                    <div class="grid md:grid-cols-4 grid-cols-1  gap-2">
+                        <div class="">
+                            <label for="delivery_at" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-1">受渡期日</label>
+                            <input type="text" form="estimateForm" name="delivery_at" class="input-primary" id="delivery_at" value="{{ old('delivery_at', $estimate->delivery_at) }}" placeholder="">
+                            @error('delivery_at')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="">
+                            <label for="delivery_place" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-1">受渡場所</label>
+                            <input type="text" form="estimateForm" name="delivery_place" class="input-primary" id="delivery_place" value="{{ old('delivery_place', $estimate->delivery_place) }}" placeholder="">
+                            @error('delivery_place')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="">
+                            <label for="transaction_method" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-1">取引方法</label>
+                            <input type="text" form="estimateForm" name="transaction_method" class="input-primary" id="transaction_method" value="{{ old('transaction_method', $estimate->transaction_method) }}" placeholder="">
+                            @error('transaction_method')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="">
+                            <label for="expiration_at" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-1">有効期限</label>
+                            <input type="text" form="estimateForm" name="expiration_at" class="input-primary" id="expiration_at" value="{{ old('expiration_at', $estimate->expiration_at) }}" placeholder="">
+                            @error('expiration_at')
                                 <div class="text-red-500">{{ $message }}</div>
                             @enderror
                         </div>
                         <div>
-                            <label for="custom_user_id" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-1">カスタム担当者</label>
-                            <select form="estimateForm" name="custom_user_id" id="custom_user_id" class="input-primary">
-                                <option value="">未選択</option>
-                                @foreach ($users as $user)
-                                    <option value="{{ $user->id }}" @selected($user->id == old('custom_user_id', $estimate->custom_user_id))>{{ $user->user_name }}</option>
-                                @endforeach
-                            </select>
-                            @error('custom_user_id')
-                                <div class="text-red-500">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label for="estimate_document_title" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-4">見積書表題</label>
-                            <input type="text" form="estimateForm" name="estimate_document_title" class="input-secondary" id="estimate_document_title" value="{{ old('estimate_document_title', $estimate->estimate_document_title) }}" placeholder="">
-                            @error('estimate_document_title')
-                                <div class="text-red-500">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div>
-                            <label for="estimate_address_id" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-4">見積住所</label>
+                            <label for="estimate_address_id" class="block dark:text-gray-100 text-gray-900 leading-none">見積住所</label>
                             <select id="estimate_address_id" form="estimateForm" onchange="updateAddress()" name="estimate_address_id" class="input-secondary">
                                 @foreach ($estimateAddresses as $estimateAddress)
                                     <option value="{{ $estimateAddress->ulid }}" 
@@ -443,7 +493,34 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div>
+                            <label for="user_position_name" class="block dark:text-gray-100 text-gray-900 leading-none">担当者役職名</label>
+                            <input type="text" form="estimateForm" name="user_position_name" class="input-primary" id="user_position_name" value="{{ $estimate->user_position_name }}" placeholder="">
+                            @error('user_position_name')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div>
+                            <label for="custom_user_id" class="block dark:text-gray-100 text-gray-900 leading-none">カスタム担当者</label>
+                            <select form="estimateForm" name="custom_user_id" id="custom_user_id" class="input-primary">
+                                <option value="">未選択</option>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}" @selected($user->id == old('custom_user_id', $estimate->custom_user_id))>{{ $user->user_name }}</option>
+                                @endforeach
+                            </select>
+                            @error('custom_user_id')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div>
+                            <label for="estimate_document_title" class="block dark:text-gray-100 text-gray-900 leading-none">見積書表題</label>
+                            <input type="text" form="estimateForm" name="estimate_document_title" class="input-secondary" id="estimate_document_title" value="{{ old('estimate_document_title', $estimate->estimate_document_title) }}" placeholder="">
+                            @error('estimate_document_title')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
+
 
                     
                     <div class="text-white border rounded p-2 mt-6">
