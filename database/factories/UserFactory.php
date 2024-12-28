@@ -62,7 +62,7 @@ class UserFactory extends Factory
     protected function generateUniqueUserNum()
     {
         do {
-            $userNum = str_pad($this->faker->numberBetween(1, 999998), 6, '0', STR_PAD_LEFT);
+            $userNum = str_pad($this->faker->numberBetween(1, 999997), 6, '0', STR_PAD_LEFT);
         } while (User::where('user_num', $userNum)->exists());
 
         return $userNum;
