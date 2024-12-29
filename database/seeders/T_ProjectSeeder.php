@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Corporation;
 use App\Models\Project;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -12,6 +13,13 @@ class T_ProjectSeeder extends Seeder
 
     public function run(): void
     {
+        $corporation0 = Corporation::where('corporation_num', '999990')->first();
+        $corporation1 = Corporation::where('corporation_num', '999991')->first();
+        $corporation2 = Corporation::where('corporation_num', '999992')->first();
+        $corporation3 = Corporation::where('corporation_num', '999993')->first();
+        $corporation4 = Corporation::where('corporation_num', '999994')->first();
+
+
         Project::create([
             'client_id' => '1',
             'project_num' => '999990-C-C01-0001',
@@ -24,7 +32,7 @@ class T_ProjectSeeder extends Seeder
             // 'proposed_delivery_date' => '',
             // 'proposed_accounting_date' => '',
             // 'proposed_payment_date' => '',
-            'billing_corporation_id' => '1',
+            'billing_corporation_id' => $corporation0->id,
             // 'billing_corporation_name' => '',
             // 'billing_corporation_division_name' => '',
             // 'billing_corporation_person_name' => '',
@@ -51,7 +59,7 @@ class T_ProjectSeeder extends Seeder
             // 'proposed_delivery_date' => '',
             // 'proposed_accounting_date' => '',
             // 'proposed_payment_date' => '',
-            'billing_corporation_id' => '1',
+            'billing_corporation_id' => $corporation1->id,
             // 'billing_corporation_name' => '',
             // 'billing_corporation_division_name' => '',
             // 'billing_corporation_person_name' => '',
@@ -78,7 +86,7 @@ class T_ProjectSeeder extends Seeder
             // 'proposed_delivery_date' => '',
             // 'proposed_accounting_date' => '',
             // 'proposed_payment_date' => '',
-            'billing_corporation_id' => '1',
+            'billing_corporation_id' => $corporation2->id,
             // 'billing_corporation_name' => '',
             // 'billing_corporation_division_name' => '',
             // 'billing_corporation_person_name' => '',
@@ -105,7 +113,7 @@ class T_ProjectSeeder extends Seeder
             // 'proposed_delivery_date' => '',
             // 'proposed_accounting_date' => '',
             // 'proposed_payment_date' => '',
-            'billing_corporation_id' => '1',
+            'billing_corporation_id' => $corporation3->id,
             // 'billing_corporation_name' => '',
             // 'billing_corporation_division_name' => '',
             // 'billing_corporation_person_name' => '',
@@ -132,7 +140,7 @@ class T_ProjectSeeder extends Seeder
             // 'proposed_delivery_date' => '',
             // 'proposed_accounting_date' => '',
             // 'proposed_payment_date' => '',
-            'billing_corporation_id' => '1',
+            'billing_corporation_id' => $corporation4->id,
             // 'billing_corporation_name' => '',
             // 'billing_corporation_division_name' => '',
             // 'billing_corporation_person_name' => '',

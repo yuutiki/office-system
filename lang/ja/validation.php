@@ -321,7 +321,7 @@ return [
         "corporation_kana_name" => "法人カナ名称",
         "corporation_short_name" => "法人略称",
 
-        "client_num" => "顧客№",
+        "client_num" => "顧客No.",
         "client_name" => "顧客名称",
         "client_kana_name" => "顧客カナ名称",
         "client_type_id" => "顧客種別",
@@ -337,6 +337,13 @@ return [
         "invoice_num" => "インボイス番号",
         "is_stop_trading" => "取引停止フラグ",
         "stop_trading_reason" => "取引停止理由",
+
+        "report_type_id" => "報告種別",
+        "contact_at" => "対応日付",
+        "contact_type_id" => "対応形式",
+        "report_title" => "報告タイトル",
+        "report_content" => "報告内容",
+        "report_notice" => "特記事項",
     ],
 
 ];

@@ -125,33 +125,35 @@
                 <div class="grid gap-2 mb-4 sm:grid-cols-5">
                     <div class="w-full flex flex-col">
                         <label for="proposed_order_date" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-2">受注予定月</label>
-                        <input type="month" min="1900-01" max="2100-12" name="proposed_order_date" value="{{ old('proposed_order_date') }}" class="input-primary">
+                        <input type="month" min="1900-01" max="2100-12" name="proposed_order_date" id="proposed_order_date" value="{{ old('proposed_order_date') }}" class="input-primary">
                     </div>
                     @error('proposed_order_date')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror
                     <div class="w-full flex flex-col">
                         <label for="proposed_delivery_date" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-2">納品予定月</label>
-                        <input type="month" min="1900-01" max="2100-12" name="proposed_delivery_date" value="{{ old('proposed_delivery_date') }}" class="input-primary">
+                        <input type="month" min="1900-01" max="2100-12" name="proposed_delivery_date" id="proposed_delivery_date" value="{{ old('proposed_delivery_date') }}" class="input-primary">
                     </div>
                     @error('proposed_delivery_date')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror
                     <div class="w-full flex flex-col">
                         <label for="proposed_accounting_date" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-2">検収/計上予定月</label>
-                        <input type="month" min="1900-01" max="2100-12"  name="proposed_accounting_date" value="{{ old('proposed_accounting_date') }}" class="input-primary">
+                        <input type="month" min="1900-01" max="2100-12" name="proposed_accounting_date" id="proposed_accounting_date" value="{{ old('proposed_accounting_date') }}" class="input-primary">
                     </div>
                     @error('proposed_accounting_date')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror
                     <div class="w-full flex flex-col">
                         <label for="proposed_payment_date" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-2">入金予定月</label>
-                        <input type="month" min="1900-01" max="2100-12"  name="proposed_payment_date" value="{{ old('proposed_payment_date') }}" class="input-primary">
+                        <input type="month" min="1900-01" max="2100-12" name="proposed_payment_date" id="proposed_payment_date" value="{{ old('proposed_payment_date') }}" class="input-primary">
                     </div>
                     @error('proposed_payment_date')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
+
+
 
                 {{-- <div class="grid gap-2 mb-4 sm:grid-cols-4">
                     <div class="w-full flex flex-col">
@@ -519,6 +521,40 @@
             document.getElementById('billing_corporation_name').value = name;
             hideCorporationModal();
         }
+    </script>
+
+
+{{-- 4つの日付入力欄で入力が完了しフォーカスが外れたら次の入力欄に値をコピーする --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const dateFields = [
+            'proposed_order_date',
+            'proposed_delivery_date',
+            'proposed_accounting_date',
+            'proposed_payment_date'
+        ];
+    
+        dateFields.forEach((fieldId, index) => {
+            if (index === 0) return; // 最初のフィールドはスキップ
+    
+            const currentField = document.getElementById(fieldId);
+            const previousField = document.getElementById(dateFields[index - 1]);
+    
+            // 前のフィールドの値が変更されたときに、次のフィールドに値をセット
+            previousField.addEventListener('blur', function() {
+                // 入力値が不完全な場合は処理しない
+                if (!this.value.match(/^\d{4}-\d{2}$/)) return;
+                if (!currentField.value) { // 現在のフィールドが空の場合のみ
+                    currentField.value = this.value;
+                }
+            });
+    
+            // ページ読み込み時に、前のフィールドに値があり現在のフィールドが空の場合、値をコピー
+            if (previousField.value && !currentField.value) {
+                currentField.value = previousField.value;
+            }
+        });
+    });
     </script>
 
 <script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>

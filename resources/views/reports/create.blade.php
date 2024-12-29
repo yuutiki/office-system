@@ -80,7 +80,7 @@
                     <div class="w-full flex flex-col">
                         <label for="contact_at" class="text-sm dark:text-red-500 text-red-700 leading-none">対応日付<span class="text-red-500">*</span></label>
                         <input type="date" form="reoportForm" min="2000-01-01" max="2100-12-31" name="contact_at" class="input-primary" id="contact_at" value="{{ old('contact_at', now()->format('Y-m-d')) }}" placeholder="">
-                        @error('report_type_id')
+                        @error('contact_at')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
@@ -92,7 +92,7 @@
                                 <option value="{{ $contactType->id }}" @selected($contactType->id == old('contact_type_id'))>{{ $contactType->contact_type_name }}</option>
                             @endforeach
                         </select>
-                        @error('report_type_id')
+                        @error('contact_type_id')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
