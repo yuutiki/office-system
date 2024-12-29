@@ -282,7 +282,7 @@ class ClientController extends Controller
     {
         $clientName = $request->input('clientName');
         $clientNumber = $request->input('clientNumber');
-        $clientAffiliation2 = $request->input('affiliation2Id');
+        $clientAffiliation2 = $request->input('affiliation2Id');    
 
         // 検索条件に基づいて顧客データを取得
         // $clients = Client::where('client_name', 'LIKE', '%' . $clientName . '%')
@@ -292,7 +292,7 @@ class ClientController extends Controller
         $query = Client::query()
         ->where('client_name', 'LIKE', '%' . $clientName . '%')
         ->Where('client_num', 'LIKE', '%' . $clientNumber . '%')
-        ->Where('affiliation2_id', 'LIKE', '%' . $clientAffiliation2 . '%');
+        ->Where('affiliation2_id', $clientAffiliation2);
         $clients = $query->with('products','affiliation2','corporation','user')->get();
 
         return response()->json($clients);

@@ -67,7 +67,7 @@
                     <div class="w-full flex flex-col">
                         <label for="report_type_id" class="text-sm dark:text-red-500 text-red-700 leading-none">報告種別<span class="text-red-500">*</span></label>
                         <select id="report_type_id" form="reoportForm" name="report_type_id" class="input-primary">
-                            <option value="">未選択</option>
+                            <option value="">---</option>
                             @foreach ($reportTypes as $reportType)
                                 <option value="{{ $reportType->id }}" @selected($reportType->id == old('report_type_id'))>{{ $reportType->report_type_name }}</option>
                             @endforeach
@@ -87,7 +87,7 @@
                     <div class="w-full flex flex-col">
                         <label for="contact_type_id" class="text-sm dark:text-red-500 text-red-700 leading-none">対応形式<span class="text-red-500">*</span></label>
                         <select id="contact_type_id" form="reoportForm" name="contact_type_id" class="input-primary">
-                            <option value="">未選択</option>
+                            <option value="">---</option>
                             @foreach ($contactTypes as $contactType)
                                 <option value="{{ $contactType->id }}" @selected($contactType->id == old('contact_type_id'))>{{ $contactType->contact_type_name }}</option>
                             @endforeach
@@ -289,9 +289,7 @@
         const modal = document.getElementById('clientSearchModal');
         const overlay = document.getElementById('overlay');
 
-        const clientName = document.getElementById('clientName').value;
-        const clientNumber = document.getElementById('clientNumber').value;
-        const affiliation2Id = document.getElementById('affiliation2Id').value;
+
 
         function showModal() {
             overlay.classList.remove('hidden');
@@ -343,6 +341,9 @@
 
         // 検索ボタンを押した時の処理
         function searchClient() {
+            const clientName = document.getElementById('clientName').value;
+            const clientNumber = document.getElementById('clientNumber').value;
+            const affiliation2Id = document.getElementById('affiliation2Id').value;
 
             fetch('/client/search', {
                 method: 'POST',

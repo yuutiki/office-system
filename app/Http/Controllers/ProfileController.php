@@ -47,35 +47,40 @@ class ProfileController extends Controller
     public function updateImage(Request $request)
     {
         $userNum = Auth::user()->user_num;
+        $encodedImage = $request->input('cropped_profile_image');
     
-        if ($request->has('cropped_profile_image')) {
-
+        if (!empty($encodedImage)) {
+    
             // エンコードされた画像データを取得
-            $encodedImage = $request->cropped_profile_image;
-
+            // $encodedImage = $request->cropped_profile_image;
+    
             // データURIスキームから拡張子を取得
             // 第1引数: パターンとして使用する正規表現文字列。
             // 第2引数: パターンを照合する対象の文字列。
             // 第3引数: パターンに一致した部分文字列が格納される配列。0番目には全体、1番目には拡張子部分のみ
-            preg_match('#^data:image/(\w+);base64,#i', $encodedImage, $matches);
-            $extension = $matches[1];
-
-            // エンコードされた画像データをデコード
-            $decodedImage = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $encodedImage));
+            if (preg_match('#^data:image/(\w+);base64,#i', $encodedImage, $matches)) {
+                $extension = $matches[1];
     
-            // ファイル名を生成
-            $fileName = $userNum . '_' . 'profile' . '.' . $extension;
-            $imagePath = 'users/profile_image/' . $fileName;
+                // エンコードされた画像データをデコード
+                $decodedImage = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $encodedImage));
     
-            // 画像を保存
-            Storage::disk('public')->put($imagePath, $decodedImage);
+                // ファイル名を生成
+                $fileName = $userNum . '_' . 'profile' . '.' . $extension;
+                $imagePath = 'users/profile_image/' . $fileName;
     
-            // ユーザーのプロフィール画像を更新
-            $user = User::find(Auth::user()->id);
-            $user->profile_image = $imagePath;
-            $user->save();
+                // 画像を保存
+                Storage::disk('public')->put($imagePath, $decodedImage);
     
-            return Redirect::route('profile.edit')->with('success', 'プロフィール画像を更新しました');
+                // ユーザーのプロフィール画像を更新
+                $user = User::find(Auth::user()->id);
+                $user->profile_image = $imagePath;
+                $user->save();
+    
+                return Redirect::route('profile.edit')->with('success', 'プロフィール画像を更新しました');
+            } else {
+                // データURI形式が不正な場合
+                return Redirect::route('profile.edit')->with('error', '画像データの形式が正しくありません');
+            }
         } else {
             // エンコードされた画像データがリクエストに含まれていない場合の処理
             return Redirect::route('profile.edit')->with('error', '新しい画像が選択されていません');

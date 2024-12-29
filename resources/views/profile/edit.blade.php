@@ -208,24 +208,96 @@
                 reader.readAsDataURL(input.files[0]);
             });
         
-            // トリミング後の画像をフォームにセットする処理
+            // // トリミング後の画像をフォームにセットする処理
+            // function setProfileImage() {
+            //     var cropper = document.getElementById('cropper_target').cropper;
+            //     if (cropper) {
+            //         var canvas = cropper.getCroppedCanvas();
+            //         // トリミング後の画像をプレビューに表示
+            //         document.getElementById('image_preview').src = canvas.toDataURL();
+            //         // トリミング後の画像をフォームにセット
+            //         document.getElementById('cropped_profile_image').value = canvas.toDataURL();
+
+            //         hideModal();
+
+            //         // フォームの送信
+            //         // document.getElementById('userForm').submit();
+            //     } else {
+            //         console.error('トリミング対象の画像要素が見つかりません。');
+            //     }
+            // }
+
+
+
+
+            // function setProfileImage() {
+            //     var cropper = document.getElementById('cropper_target').cropper;
+            //     if (cropper) {
+            //         // トリミング後のCanvasを取得
+            //         var canvas = cropper.getCroppedCanvas();
+
+            //         // 圧縮処理: Canvas を JPEG フォーマットで圧縮
+            //         canvas.toBlob(
+            //             function (blob) {
+            //                 console.log('圧縮後の画像サイズ:', blob.size / 1024, 'KB');
+            //                 // 圧縮後の画像をプレビューに表示
+            //                 var compressedImageUrl = URL.createObjectURL(blob);
+            //                 document.getElementById('image_preview').src = compressedImageUrl;
+
+            //                 // 圧縮後の画像をBase64に変換してフォームにセット
+            //                 var reader = new FileReader();
+            //                 reader.onload = function () {
+            //                     document.getElementById('cropped_profile_image').value = reader.result;
+            //                 };
+            //                 reader.readAsDataURL(blob);
+
+            //                 // モーダルを閉じる
+            //                 hideModal();
+            //             },
+            //             'image/jpeg', // 圧縮フォーマット
+            //             0.8 // 圧縮品質（0.1～1.0 の範囲で指定、値が小さいほど圧縮率が高い）
+            //         );
+            //     } else {
+            //         console.error('トリミング対象の画像要素が見つかりません。');
+            //     }
+            // }
+
+
+
             function setProfileImage() {
-                var cropper = document.getElementById('cropper_target').cropper;
-                if (cropper) {
-                    var canvas = cropper.getCroppedCanvas();
-                    // トリミング後の画像をプレビューに表示
-                    document.getElementById('image_preview').src = canvas.toDataURL();
-                    // トリミング後の画像をフォームにセット
-                    document.getElementById('cropped_profile_image').value = canvas.toDataURL();
+    var cropper = document.getElementById('cropper_target').cropper;
+    if (cropper) {
+        // トリミング後のCanvasを取得
+        var canvas = cropper.getCroppedCanvas();
 
-                    hideModal();
+        // 背景が透過している場合でも正しく処理するためにPNG形式を使用
+        canvas.toBlob(
+            function (blob) {
+                console.log('圧縮後の画像サイズ:', blob.size / 1024, 'KB');
 
-                    // フォームの送信
-                    // document.getElementById('userForm').submit();
-                } else {
-                    console.error('トリミング対象の画像要素が見つかりません。');
-                }
-            }
+                // 圧縮後の画像をプレビューに表示
+                var compressedImageUrl = URL.createObjectURL(blob);
+                document.getElementById('image_preview').src = compressedImageUrl;
+
+                // 圧縮後の画像をBase64に変換してフォームにセット
+                var reader = new FileReader();
+                reader.onload = function () {
+                    document.getElementById('cropped_profile_image').value = reader.result;
+                };
+                reader.readAsDataURL(blob);
+
+                // モーダルを閉じる
+                hideModal();
+            },
+            'image/png', // PNG形式で保存（透過対応）
+            1.0 // 圧縮品質（PNGの場合は品質指定は無視される）
+        );
+    } else {
+        console.error('トリミング対象の画像要素が見つかりません。');
+    }
+}
+
+
         </script>
 
     
