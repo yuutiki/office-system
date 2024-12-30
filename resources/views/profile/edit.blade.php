@@ -230,56 +230,55 @@
 
 
 
-            // function setProfileImage() {
-            //     var cropper = document.getElementById('cropper_target').cropper;
-            //     if (cropper) {
-            //         // トリミング後のCanvasを取得
-            //         var canvas = cropper.getCroppedCanvas();
 
-            //         // 圧縮処理: Canvas を JPEG フォーマットで圧縮
-            //         canvas.toBlob(
-            //             function (blob) {
-            //                 console.log('圧縮後の画像サイズ:', blob.size / 1024, 'KB');
-            //                 // 圧縮後の画像をプレビューに表示
-            //                 var compressedImageUrl = URL.createObjectURL(blob);
-            //                 document.getElementById('image_preview').src = compressedImageUrl;
-
-            //                 // 圧縮後の画像をBase64に変換してフォームにセット
-            //                 var reader = new FileReader();
-            //                 reader.onload = function () {
-            //                     document.getElementById('cropped_profile_image').value = reader.result;
-            //                 };
-            //                 reader.readAsDataURL(blob);
-
-            //                 // モーダルを閉じる
-            //                 hideModal();
-            //             },
-            //             'image/jpeg', // 圧縮フォーマット
-            //             0.8 // 圧縮品質（0.1～1.0 の範囲で指定、値が小さいほど圧縮率が高い）
-            //         );
-            //     } else {
-            //         console.error('トリミング対象の画像要素が見つかりません。');
-            //     }
-            // }
-
-
-
+// TODO: VPSを契約するまではjpegにして圧縮する暫定対応とする。
+// VPSにしたら上のコメントアウトしているシンプルなJSにする。現在は圧縮後の画像が1MB以上であればjpegで、それよりも下であれば元の拡張子のまま保持する。
             function setProfileImage() {
-    var cropper = document.getElementById('cropper_target').cropper;
-    if (cropper) {
-        // トリミング後のCanvasを取得
-        var canvas = cropper.getCroppedCanvas();
+                var cropper = document.getElementById('cropper_target').cropper;
+                if (cropper) {
+                    // トリミング後のCanvasを取得
+                    var canvas = cropper.getCroppedCanvas();
+                    
+                    // まず元のフォーマットで試す
+                    canvas.toBlob(
+                        function (originalBlob) {
+                            const maxSize = 1 * 1024 * 1024; // 1MB
+                            
+                            if (originalBlob.size <= maxSize) {
+                                // 1MB以下なら元のフォーマットのまま処理
+                                processImage(originalBlob);
+                            } else {
+                                // 1MBより大きい場合はJPEGで圧縮して試す
+                                canvas.toBlob(
+                                    function (jpegBlob) {
+                                        if (jpegBlob.size > maxSize) {
+                                            alert('画像の圧縮後のサイズが1MBを超えています。より小さい画像を選択してください。');
+                                            return;
+                                        }
+                                        processImage(jpegBlob);
+                                    },
+                                    'image/jpeg',
+                                    0.75
+                                );
+                            }
+                        },
+                        cropper.element.type // 元の画像のMIMEタイプを使用
+                    );
+                } else {
+                    console.error('トリミング対象の画像要素が見つかりません。');
+                }
+            }
 
-        // 背景が透過している場合でも正しく処理するためにPNG形式を使用
-        canvas.toBlob(
-            function (blob) {
-                console.log('圧縮後の画像サイズ:', blob.size / 1024, 'KB');
+            // 画像の処理を行う共通関数
+            function processImage(blob) {
+                console.log('処理する画像のサイズ:', blob.size / 1024, 'KB');
+                console.log('画像のタイプ:', blob.type);
 
                 // 圧縮後の画像をプレビューに表示
                 var compressedImageUrl = URL.createObjectURL(blob);
                 document.getElementById('image_preview').src = compressedImageUrl;
 
-                // 圧縮後の画像をBase64に変換してフォームにセット
+                // 画像をBase64に変換してフォームにセット
                 var reader = new FileReader();
                 reader.onload = function () {
                     document.getElementById('cropped_profile_image').value = reader.result;
@@ -288,17 +287,10 @@
 
                 // モーダルを閉じる
                 hideModal();
-            },
-            'image/png', // PNG形式で保存（透過対応）
-            1.0 // 圧縮品質（PNGの場合は品質指定は無視される）
-        );
-    } else {
-        console.error('トリミング対象の画像要素が見つかりません。');
-    }
-}
-
-
+            }
         </script>
+
+        
 
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js" integrity="sha512-6lplKUSl86rUVprDIjiW8DuOniNX8UDoRATqZSds/7t6zCQZfaCe3e5zcGaQwxa8Kpn5RTM9Fvl3X2lLV4grPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
