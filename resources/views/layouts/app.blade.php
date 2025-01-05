@@ -80,6 +80,8 @@
                     </div>
                 </header>
             @endif
+
+            <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
             
             <!-- Page Content -->
             <main class="h-auto mt-28">

@@ -10,9 +10,6 @@ class AppMasterSeeder extends Seeder
 {
     use WithoutModelEvents;
 
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         AppMaster::create([
@@ -21,6 +18,18 @@ class AppMasterSeeder extends Seeder
             'master_name' => '都道府県',
             'master_name_en' => 'ProductMaker',
             'route' => 'prefecture.index',
+            'digit' => 2,
+            'created_by' => 1,
+            'updated_by' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        AppMaster::create([
+            'master_type' => '共通マスタ',
+            'master_code' => '990',
+            'master_name' => '所属別リンク',
+            'master_name_en' => 'Links by affiliation',
+            'route' => 'link.index',
             'digit' => 2,
             'created_by' => 1,
             'updated_by' => 1,
@@ -66,7 +75,7 @@ class AppMasterSeeder extends Seeder
         AppMaster::create([
             'master_type' => '顧客マスタ',
             'master_code' => '110',
-            'master_name' => '顧客種別マスタ',
+            'master_name' => '顧客種別',
             'master_name_en' => 'ClientType',
             'route' => 'client-type.index',
             'digit' => 2,

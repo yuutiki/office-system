@@ -87,7 +87,7 @@
     <div class="relative bg-white dark:bg-gray-800 rounded-t-md md:w-auto md:ml-14 md:mr-2 m-auto shadow-md  dark:text-gray-900 mt-4">
         <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
             <!-- ヘッダ：検索欄 -->
-            <div class="w-full md:w-3/4">
+            <div class="w-full">
                 <form method="GET" action="{{ route('corporations.index') }}" id="search_form" class="flex items-center">
                     @csrf
                     <div class="flex flex-col md:flex-row w-full">

@@ -1,84 +1,134 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between w-5/6">
+        <div class="flex justify-between">
             <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('showReport', $report) }}
             </h2>
             <x-message :message="session('message')" />
+            <div class="flex justify-end items-center space-x-2">
+                <x-message :message="session('message')" />
+                <x-button-save  onclick="location.href='{{route('reports.edit', $report)}}'">
+                    {{ __('編集') }}
+                </x-button-save>
+            </div>
         </div>
     </x-slot>
 
-
-
-    <div class="md:w-4/6 mx-auto mt-8 px-2">
-        <div class="bg-white dark:bg-gray-600 dark:text-white rounded-lg p-8 shadow-lg hover:shadow-2xl transition duration-500">
-            <div class="flex items-center">
-                <h3 class="text-xl font-semibold">{{ $report->reportType->report_type_name }}</h3>
-                <p class="text-gray-600 dark:text-white ml-3">{{ $report->contact_at }}</p>
-            </div>
-            <p class="text-gray-600 dark:text-white mt-2">{{ $report->report_title }}</p>
-            <hr class="my-2">
-
-            <div class="grid gap-4 sm:grid-cols-2">
-                <div>
-                    <div class="flex items-center">
-                        <p class="text-blue-400 font-semibold text-sm mr-2 ">取引先</p>
-                        <div class="rounded-md bg-blue-400 w-auto px-2 py-1 font-semibold text-center text-xs">{{ $report->client->tradeStatus->trade_status_name }}</div>
-                    </div>
-
-                    <p class="text-gray-600 dark:text-white">{{ $report->client->client_num }}：{{ $report->client->client_name }}</p>
-                </div>
-                <div>
-                    <p class="text-blue-400 font-semibold text-sm">取引先担当者</p>
-                    <p class="text-gray-600 dark:text-white">{{ $report->client_representative }}</p>
-                </div>
-            </div>
-            <hr class="my-4">
-            
-            <div class="grid gap-4 sm:grid-cols-2">
-
-                <div>
-                    <p class="text-blue-400 font-semibold text-sm">対応形式</p>
-                    <p class="text-gray-600 dark:text-white">{{ $report->contactType->contact_type_name }}</p>
-                </div>
-            </div>
-
-            <div class="my-4">
-                <p class="text-blue-400 font-semibold text-sm">報告内容</p>
-                <hr class="my-1">
-                <p class="text-gray-600 dark:text-white whitespace-pre-wrap">{{ $report->report_content }}</p>
-            </div>
-
-            <div class="my-4">
-                <p class="text-blue-400 font-semibold text-sm">特記事項</p>
-                <hr class="my-1">
-                <p class="text-gray-600 dark:text-white whitespace-pre-wrap">{{ $report->report_notice }}</p>
-            </div>
-
-            <div class="text-xs flex justify-end items-center">
-                <p>{{ $report->reporter->user_name }} • {{ $report->created_at->diffForHumans() }}</p>
-            </div>
-
-            @foreach($recipients as $recipient)
-            <p class="text-gray-600 dark:text-white">{{ $recipient->user_name }}</p>
-        @endforeach
+    <div class="mx-auto px-3 pb-4 md:w-5/6">
+        <div class="rounded border-gray-500 border mb-4 overflow-x-auto">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <tbody class="">
+                    <tr class="border-b dark:border-gray-700">
+                        <th class="pl-4 pr-2 border-r dark:border-gray-700 dark:bg-gray-800 whitespace-nowrap">
+                            報告種別
+                        </th>
+                        <th class="dark:bg-gray-700 border-b dark:border-gray-600">
+                            <div class="flex px-2 py-1.5">
+                                <div class="flex items-center mr-12 ">
+                                    <div class=" text-sm font-medium text-gray-900 dark:text-gray-300  whitespace-nowrap">{{ optional($report->reportType)->report_type_name }}</div>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                    <tr class="border-b dark:border-gray-700">
+                        <th class="pl-4 pr-2 border-r dark:border-gray-700 dark:bg-gray-800 whitespace-nowrap">
+                            報告タイトル
+                        </th>
+                        <th class="dark:bg-gray-700 border-b dark:border-gray-600">
+                            <div class="flex px-2 py-1.5">
+                                <div class=" text-sm font-medium text-gray-900 dark:text-gray-300  whitespace-nowrap">{{ $report->report_title }}</div>
+                            </div>
+                        </th>
+                    </tr>
+                    <tr class="border-b dark:border-gray-700">
+                        <th class="pl-4 pr-2 border-r dark:border-gray-700 dark:bg-gray-800 whitespace-nowrap">
+                            対応日付/形式
+                        </th>
+                        <th class="dark:bg-gray-700 border-b dark:border-gray-600">
+                            <div class="flex px-2 py-1.5">
+                                <div class=" text-sm font-medium text-gray-900 dark:text-gray-300  whitespace-nowrap">{{ $report->contact_at }}/{{ optional($report->contactType)->contact_type_name }}</div>
+                            </div>
+                        </th>
+                    </tr>
+                    <tr class="border-b dark:border-gray-700">
+                        <th class="pl-4 pr-2 border-r dark:border-gray-700 dark:bg-gray-800 whitespace-nowrap">
+                            取引先
+                        </th>
+                        <th class="dark:bg-gray-700 border-b dark:border-gray-600">
+                            <div class="sm:flex px-2 py-1.5 items-center">
+                                <div class=" text-sm font-medium text-gray-900 dark:text-gray-300  whitespace-nowrap">{{ $report->client->client_num }}：{{ $report->client->client_name }}</div>
+                                <span class="bg-blue-100 text-blue-800 text-xs font-medium sm:mx-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                    {{ $report->client->tradeStatus->trade_status_name }}
+                                </span>
+                            </div>
+                        </th>
+                    </tr>
+                    <tr class="border-b dark:border-gray-700">
+                        <th class="pl-4 pr-2 border-r dark:border-gray-700 dark:bg-gray-800 whitespace-nowrap">
+                            取引先担当者
+                        </th>
+                        <th class="dark:bg-gray-700 border-b dark:border-gray-600">
+                            <div class="sm:flex px-2 py-1.5 items-center">
+                                <div class=" text-sm font-medium text-gray-900 dark:text-gray-300  whitespace-nowrap">{{ $report->client_representative }}</div>
+                            </div>
+                        </th>
+                    </tr>
+                    <tr class="border-b dark:border-gray-700">
+                        <th class="pl-4 pr-2 border-r dark:border-gray-700 dark:bg-gray-800 whitespace-nowrap">
+                            報告内容
+                        </th>
+                        <th class="dark:bg-gray-700 border-b dark:border-gray-600">
+                            <div class="flex px-2 py-1.5">
+                                <div class=" text-sm font-medium text-gray-900 dark:text-gray-300  whitespace-pre-wrap">{{ $report->report_content }}</div>
+                            </div>
+                        </th>
+                    </tr>
+                    <tr class="border-b dark:border-gray-700">
+                        <th class="pl-4 pr-2 border-r dark:border-gray-700 dark:bg-gray-800 whitespace-nowrap">
+                            特記事項
+                        </th>
+                        <th class="dark:bg-gray-700 border-b dark:border-gray-600">
+                            <div class="flex px-2 py-1.5">
+                                <div class=" text-sm font-medium text-gray-900 dark:text-gray-300  whitespace-pre-wrap">{{ $report->report_notice }}</div>
+                            </div>
+                        </th>
+                    </tr>
+                    <tr class="border-b dark:border-gray-700">
+                        <th class="pl-4 pr-2 border-r dark:border-gray-700 dark:bg-gray-800 whitespace-nowrap">
+                            報告者
+                        </th>
+                        <th class="dark:bg-gray-700 border-b dark:border-gray-600">
+                            <div class="flex px-2 py-1.5">
+                                <div class=" text-sm font-medium text-gray-900 dark:text-gray-300  whitespace-pre-wrap">{{ $report->reporter->user_name }} • {{ $report->updated_at->diffForHumans() }}</div>
+                            </div>
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
+    @foreach($recipients as $recipient)
+        <p class="text-gray-600 dark:text-white">{{ $recipient->user_name }}</p>
+    @endforeach
+
+
     {{-- コメント参照 --}}
-    <div class="md:w-4/6 flex justify-center  md:mx-auto mt-8">
+    <div class="md:w-5/6 flex justify-center md:mx-auto mt-8">
         <div class="w-full mx-auto">
             <h3 class="mt-8 ml-2 text-lg font-semibold dark:text-white">コメント</h3>
             <hr class="my-2">
     
             @foreach ($report->comments as $comment)
-                <div class="bg-white shadow-md rounded-md overflow-hidden mt-4 @if ($comment->user_id === Auth::id()) ml-20  @else mr-20 @endif">
-                    <div class="px-4 py-1 bg-gray-300 flex @if ($comment->user_id === Auth::id()) justify-end  @else  @endif">
-                        <strong class="text-blue-700 mr-3">{{ $comment->user->user_name }}</strong>
-                        <div>{{ $comment->created_at->diffForHumans() }}</div>
-                    </div>
-                    <div class="px-4 py-2">
-                        <p class="text-gray-800 whitespace-pre-wrap">{{$comment->content}}</p>
+                <div class="flex @if ($comment->user_id === Auth::id()) justify-end @else justify-start @endif mt-4">
+                    <div class="bg-white shadow-md rounded-md overflow-hidden w-auto">
+                        <div class="px-4 py-1 bg-gray-300 flex @if ($comment->user_id === Auth::id()) justify-end @endif">
+                            <strong class="text-blue-700 mr-3">{{ $comment->user->user_name }}</strong>
+                            <div>{{ $comment->created_at->diffForHumans() }}</div>
+                        </div>
+                        <div class="px-4 py-2">
+                            <p class="text-gray-800 whitespace-pre-wrap">{{ $comment->content }}</p>
+                        </div>
                     </div>
                 </div>
             @endforeach

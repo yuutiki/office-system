@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between w-5/6">
             <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex">
-                {{ Breadcrumbs::render('masters') }}
+                {{ Breadcrumbs::render('app-settings') }}
                 <div class="ml-4">
                     {{ $count }}件
                 </div>
@@ -97,13 +97,13 @@
 
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
-                            @sortablelink('master_code','マスタコード')
+                            @sortablelink('setting_code','設定コード')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg></a>
                         </div>
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
-                            @sortablelink('master_name','マスタ名称')
+                            @sortablelink('setting_name','設定名称')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                         </div>
                     </th>
@@ -112,20 +112,20 @@
                     </th> --}}
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
-                            @sortablelink('master_type','マスタ種別')
+                            @sortablelink('setting_type','設定種別')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                         </div>
                     </th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($masters as $master)
+                @foreach ($appSettings as $setting)
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600 clickable-row">
                         <td class="pl-4 py-1 whitespace-nowrap w-14">
                             {{ $loop->iteration }}
                         </td>
                         <td class="pl-4 py-1 whitespace-nowrap w-20 pr-10">
-                            <button onclick="location.href='{{route($master['route'])}}'" class="button-edit-primary" type="button">
+                            <button onclick="location.href='{{route($setting['route'], 1)}}'" class="button-edit-primary" type="button">
                                 <div class="flex items">
                                     <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
@@ -135,16 +135,16 @@
                             </button>
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{ $master->master_code }}
+                            {{ $setting->setting_code }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{ $master->master_name }}
+                            {{ $setting->setting_name }}
                         </td>
                         {{-- <td class="px-1 py-1 whitespace-nowrap">
-                            {{ $master->digit }}
+                            {{ $setting->digit }}
                         </td> --}}
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{ $master->master_type }}
+                            {{ $setting->setting_type }}
                         </td>
                     </tr>
                 @endforeach

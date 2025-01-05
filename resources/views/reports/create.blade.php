@@ -6,19 +6,25 @@
             </h2>
             <div class="flex justify-end items-center space-x-2">
                 <x-message :message="session('message')" />
-                <form method="post" action="{{ route('reports.store') }}" enctype="multipart/form-data" id="reoportForm" class="">
+                <form method="post" action="{{ route('reports.store') }}" enctype="multipart/form-data" id="reoportForm" class="flex">
                     @csrf
-                    {{-- @can('storeUpdate_corporations') --}}
-                        <x-button-save form-id="reoportForm" id="saveButton" onkeydown="stopTab(event)">
-                            <span class="ml-1 hidden md:inline text-sm">登録</span>
-                        </x-button-save>
-                    {{-- @endcan --}}
+                    <x-button-save form-id="reoportForm" id="saveButton" onkeydown="stopTab(event)">
+                        {{ __('登録') }}
+                    </x-button-save>
+
+                    <x-button-save form-id="reoportForm" id="saveButton" class="ml-2 dark:bg-orange-400" onclick="document.getElementById('isDraft').value = '1'; document.getElementById('reportForm').submit();">
+                        {{ __('下書き') }}
+                    </x-button-save>
                 </form>
             </div>
         </div>
     </x-slot>
 
-    <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
+    {{-- <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div> --}}
+
+
+    {{-- 下書きフラグ用の隠しフィールド --}}
+    <input type="hidden" form="reoportForm" name="is_draft" id="isDraft" value="0">
 
     <div class="max-w-7xl mx-auto px-2 md:pl-14">
         <!-- 顧客検索ボタン(画面小) -->
@@ -29,8 +35,13 @@
         <div class="grid gap-4 mb-4 sm:grid-cols-3">
             <div class="flex md:mt-4">
                 <div class="w-full flex flex-col">
-                    <label for="client_num" class="font-normal text-sm dark:text-red-500 text-red-700 leading-none">顧客№<span class="text-red-500"> *</span></label>
-                    <input type="text" form="reoportForm" form="reoportForm" name="client_num" id="client_num" value="{{ old('client_num', $clientNum) }}" class="input-readonly pointer-events-none" placeholder="" readonly>
+                    <label for="client_num" class="text-sm dark:text-gray-100 text-gray-900 leading-none">顧客No.<span class="text-red-500 ml-2">*</span></label>
+                    <input type="text" form="reoportForm" name="client_num" id="client_num" value="{{ old('client_num', $clientNum) }}" class="input-readonly @error('client_num') input-error @enderror" placeholder="" readonly tabindex="-1">
+                    <div class="text-red-500 text-xs sm:min-h-[1.5rem]">
+                        @error('client_num')
+                            {{ $message }}
+                        @enderror
+                    </div>
                 </div>
                 <!-- 顧客検索ボタン(画面中～) -->
                 <button type="button" onclick="showModal()" data-form="reoportForm" class="p-2.5 text-sm font-medium h-[35px] text-white mt-[18px] ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 zip2addr-trigger hidden sm:block">
@@ -40,17 +51,16 @@
                 </button>
             </div>
             <div class="w-full flex flex-col md:mt-4">
-                <label for="client_name" class="font-normal text-sm dark:text-red-500 text-red-700 leading-none">顧客名称<span class="text-red-500"> *</span></label>
-                <input type="text" form="reoportForm" form="reoportForm" name="client_name" id="client_name" value="{{ old('client_name', $clientName) }}" class="input-readonly pointer-events-none" placeholder="" readonly>
+                <label for="client_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none">顧客名称<span class="text-red-500 ml-2">*</span></label>
+                <input type="text" form="reoportForm" form="reoportForm" name="client_name" id="client_name" value="{{ old('client_name', $clientName) }}" class="input-readonly" placeholder="" readonly tabindex="-1">
             </div>
             <div class="w-full flex flex-col md:mt-4">
-                <label for="affiliation2_id" class="font-normal text-sm dark:text-red-500 text-red-700 leading-none">管轄事業部<span class="text-red-500"> *</span></label>
-                <input type="text" form="reoportForm" form="reoportForm" name="affiliation2_id" id="affiliation2_id" value="{{ old('affiliation2_id') }}" class="input-readonly pointer-events-none" placeholder="" readonly>
+                <label for="sales_user" class="text-sm dark:text-gray-100 text-gray-900 leading-none">営業担当<span class="text-red-500 ml-2">*</span></label>
+                <input type="text" form="reoportForm" form="reoportForm" name="sales_user" id="sales_user" value="{{ old('sales_user', $salesUser) }}" class="input-readonly" placeholder="" readonly tabindex="-1">
             </div>
-            @error('client_num')
-                <div class="text-red-500">{{$message}}</div>
-            @enderror
-        </div>  
+
+        </div>
+
         <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
             <ul class="flex flex-wrap -mb-px text-sm text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
                 <li class="mr-2" role="presentation">
@@ -59,165 +69,218 @@
             </ul>
         </div>
         
-        <div id="myTabContent">
-            <div class="hidden md:p-4 p-2 mb-4 rounded bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+        <div class="hidden md:p-4 p-2 mb-4 rounded bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 
-                <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-1 mt-4">
-
-                    <div class="w-full flex flex-col">
-                        <label for="report_type_id" class="text-sm dark:text-red-500 text-red-700 leading-none">報告種別<span class="text-red-500">*</span></label>
-                        <select id="report_type_id" form="reoportForm" name="report_type_id" class="input-primary">
-                            <option value="">---</option>
-                            @foreach ($reportTypes as $reportType)
-                                <option value="{{ $reportType->id }}" @selected($reportType->id == old('report_type_id'))>{{ $reportType->report_type_name }}</option>
-                            @endforeach
-                        </select>
+            <div class="grid gap-4 lg:grid-cols-5 grid-cols-1 mt-4 items-end">
+                <!-- 報告種別 -->
+                <div class="w-full flex flex-col">
+                    <label for="report_type_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none">報告種別<span class="text-red-500 ml-2">*</span></label>
+                    <select id="report_type_id" form="reoportForm" name="report_type_id" class="input-primary">
+                        <option value="">---</option>
+                        @foreach ($reportTypes as $reportType)
+                            <option value="{{ $reportType->id }}" @selected($reportType->id == old('report_type_id'))>{{ $reportType->report_type_name }}</option>
+                        @endforeach
+                    </select>
+                    <div class="text-red-500 text-xs sm:min-h-[1.5rem]">
                         @error('report_type_id')
-                            <div class="text-red-500">{{ $message }}</div>
-                        @enderror                    
+                            {{ $message }}
+                        @enderror
                     </div>
-
-                    <div class="w-full flex flex-col">
-                        <label for="contact_at" class="text-sm dark:text-red-500 text-red-700 leading-none">対応日付<span class="text-red-500">*</span></label>
-                        <input type="date" form="reoportForm" min="2000-01-01" max="2100-12-31" name="contact_at" class="input-primary" id="contact_at" value="{{ old('contact_at', now()->format('Y-m-d')) }}" placeholder="">
+                </div>
+            
+                <!-- 対応日付 -->
+                <div class="w-full flex flex-col">
+                    <label for="contact_at" class="text-sm dark:text-gray-100 text-gray-900 leading-none">対応日付<span class="text-red-500 ml-2">*</span></label>
+                    <input type="date" form="reoportForm" min="2000-01-01" max="2100-12-31" name="contact_at" class="input-primary" id="contact_at" value="{{ old('contact_at', now()->format('Y-m-d')) }}" placeholder="">
+                    <div class="text-red-500 text-xs sm:min-h-[1.5rem]">
                         @error('contact_at')
-                            <div class="text-red-500">{{ $message }}</div>
+                            {{ $message }}
                         @enderror
                     </div>
-                    <div class="w-full flex flex-col">
-                        <label for="contact_type_id" class="text-sm dark:text-red-500 text-red-700 leading-none">対応形式<span class="text-red-500">*</span></label>
-                        <select id="contact_type_id" form="reoportForm" name="contact_type_id" class="input-primary">
-                            <option value="">---</option>
-                            @foreach ($contactTypes as $contactType)
-                                <option value="{{ $contactType->id }}" @selected($contactType->id == old('contact_type_id'))>{{ $contactType->contact_type_name }}</option>
-                            @endforeach
-                        </select>
+                </div>
+            
+                <!-- 対応形式 -->
+                <div class="w-full flex flex-col">
+                    <label for="contact_type_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none">対応形式<span class="text-red-500 ml-2">*</span></label>
+                    <select id="contact_type_id" form="reoportForm" name="contact_type_id" class="input-primary">
+                        <option value="">---</option>
+                        @foreach ($contactTypes as $contactType)
+                            <option value="{{ $contactType->id }}" @selected($contactType->id == old('contact_type_id'))>{{ $contactType->contact_type_name }}</option>
+                        @endforeach
+                    </select>
+                    <div class="text-red-500 text-xs sm:min-h-[1.5rem]">
                         @error('contact_type_id')
-                            <div class="text-red-500">{{ $message }}</div>
+                            {{ $message }}
                         @enderror
                     </div>
-                    <div class="w-full flex flex-col">
-                        <label for="client_representative" class="text-sm dark:text-gray-100 text-gray-900 leading-none">先方担当者</label>
-                        <input type="text" form="reoportForm" name="client_representative" class="input-primary" id="client_representative" value="{{ old('client_representative') }}" placeholder="">
+                </div>
+            
+                <!-- 先方担当者 -->
+                <div class="w-full flex flex-col">
+                    <label for="client_representative" class="text-sm dark:text-gray-100 text-gray-900 leading-none">先方担当者</label>
+                    <input type="text" form="reoportForm" name="client_representative" class="input-primary w-full" id="client_representative" value="{{ old('client_representative') }}">
+                    <div class="text-red-500 text-xs sm:min-h-[1.5rem]">
+                        @error('client_representative')
+                            {{ $message }}
+                        @enderror
                     </div>
                 </div>
-
-                <div>
-                    <div class="w-full flex flex-col">
-                        <label for="report_title" class="text-sm dark:text-red-500 text-red-700 leading-none mt-8">報告タイトル<span class="text-red-500">*</span></label>
-                        <input type="text" form="reoportForm" name="report_title" class="input-primary" id="report_title" value="{{ old('report_title') }}" placeholder="">
-                    </div>
-                    @error('report_title')
-                        <div class="text-red-500">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div>
-                    <div class="w-full flex flex-col">
-                        <label for="report_content" class="text-sm dark:text-red-500 text-red-700 leading-none mt-4">報告内容<span class="text-red-500">*</span></label>
-                        <textarea name="report_content" form="reoportForm" id="auto-resize-textarea-content" data-auto-resize="true" class="input-secondary" value="{{ old('report_content') }}" rows="5"></textarea>
-                    </div>
-                    @error('report_content')
-                        <div class="text-red-500">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div>
-                    <div class="w-full flex flex-col">
-                        <label for="report_notice" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">特記事項</label>
-                        <textarea name="report_notice" form="reoportForm" id="auto-resize-textarea-notice" data-auto-resize="true" class="input-secondary" value="{{ old('report_notice') }}" rows="5"></textarea>
-                    </div>
-                    @error('report_notice')
-                        <div class="text-red-500">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="mt-8">
-                    <span class="dark:text-white">報告先設定</span>
-                    <ul class="pt-4 space-y-2 border-t border-gray-200 dark:border-gray-700"></ul>
-                </div>
-
-                <div class="grid gap-4 mb-4 sm:grid-cols-5">
-                    <!-- 検索フォーム -->
-                    <div class="w-full flex flex-col">
-                        <label for="user_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">氏名</label>
-                        <input type="text" form="reoportForm" id="user_name" class="input-secondary" placeholder="ユーザ名で検索">
-                    </div>
-
-                    <!-- 所属1選択フォーム -->
-                    <div class="w-full flex flex-col">
-                        <label for="user_affiliation1_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">所属1</label>
-                        <select id="user_affiliation1_id" name="user_affiliation1_id" class="input-secondary">
-                            <option value="">未選択</option>
-                            @foreach ($affiliation1s as $affiliation1)
-                                <option value="{{ $affiliation1->id }}" @selected($affiliation1->id == old('user_affiliation1_id'))>{{ $affiliation1->affiliation1_name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <!-- 部署選択フォーム -->
-                    <div class="w-full flex flex-col">
-                        <label for="user_affiliation2_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">所属2</label>
-                        <select id="user_affiliation2_id" name="user_affiliation2_id" class="input-secondary">
-                            <option value="">未選択</option>
-                            @foreach ($affiliation2s as $affiliation2)
-                                <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == old('user_affiliation2_id'))>{{ $affiliation2->affiliation2_name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <!-- 所属3選択フォーム -->
-                    <div class="w-full flex flex-col">
-                        <label for="user_affiliation3_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">所属3</label>
-                        <select id="user_affiliation3_id" name="user_affiliation3_id" class="input-secondary">
-                            <option value="">未選択</option>
-                            @foreach ($affiliation3s as $affiliation3)
-                                <option value="{{ $affiliation3->id }}" @selected($affiliation3->id == old('user_affiliation3_id'))>{{ $affiliation3->affiliation3_name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    {{-- <button id="searchUsersButton" type="button">検索</button> --}}
-                    <div class="w-full flex justify-self-end  flex-col  mt-auto">
-                        <button type="button" id="searchUsersButton" class="md:ml-1 md:mt-1 w-full h-10 md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            ユーザ検索
-                        </button>
+            
+                <!-- 報告者 -->
+                <div class="w-full flex flex-col">
+                    <label for="reporter_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none">報告者</label>
+                    <input type="text" form="reoportForm" name="reporter_name" class="input-readonly" id="reporter_name" value="{{ old('reporter_name', Auth::user()->user_name) }}" readonly tabindex="-1">
+                    <div class="text-red-500 text-xs sm:min-h-[1.5rem]">
+                        @error('reporter_name')
+                            {{ $message }}
+                        @enderror
                     </div>
                 </div>
-
-                <div class="md:flex md:flex-row">
-                    <!-- 検索結果表示部分 -->
-                    <div class=" md:w-1/2">
-                        <div class="text-white">検索結果</div>
-                        <div id="searchResults" class="text-white border h-48 overflow-y-scroll p-2 text-base rounded">
-                            <!-- 検索結果はここに表示されます -->
-                        </div>
-                    </div>
-                    
-                    <!-- 選択された報告先表示部分 -->
-                    <div class=" md:w-1/2">
-                        <div class="text-white md:ml-3 mt-3 md:mt-0">報告先</div>
-                        <div id="selectedRecipients" class="text-white border overflow-y-scroll h-48  md:mt-0 p-2 md:ml-3 rounded">
-                            <!-- 選択された報告先はここに表示されます -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 選択されたユーザのIDを保持する隠しフィールド -->
-                <input type="hidden" form="reoportForm" id="selectedUsers" name="selectedRecipientsId[]">
             </div>
+            
+
+            <div>
+                <div class="w-full flex flex-col">
+                    <label for="report_title" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">報告タイトル<span class="text-red-500 ml-2">*</span></label>
+                    <input type="text" form="reoportForm" name="report_title" class="input-primary @error('report_title') input-error @enderror" id="report_title" value="{{ old('report_title') }}" placeholder="">
+                </div>
+                <div class="text-red-500 text-xs sm:min-h-[1.5rem]">
+                    @error('report_title')
+                        {{ $message }}
+                    @enderror
+                </div>
+            </div>
+
+            <div>
+                <div class="w-full flex flex-col">
+                    <label for="report_content" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">報告内容<span class="text-red-500 ml-2">*</span></label>
+                    <textarea name="report_content" form="reoportForm" id="auto-resize-textarea-content" data-auto-resize="true" class="input-secondary @error('report_content') input-error @enderror" value="{{ old('report_content') }}" rows="5"></textarea>
+                </div>
+                <div class="text-red-500 text-xs sm:min-h-[1.5rem]">
+                    @error('report_content')
+                        {{ $message }}
+                    @enderror
+                </div>
+            </div>
+
+            <div>
+                <div class="w-full flex flex-col mb-4">
+                    <label for="report_notice" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">特記事項</label>
+                    <textarea name="report_notice" form="reoportForm" id="auto-resize-textarea-notice" data-auto-resize="true" class="input-secondary" value="{{ old('report_notice') }}" rows="5"></textarea>
+                </div>
+                @error('report_notice')
+                    <div class="text-red-500">{{ $message }}</div>
+                @enderror
+            </div>
+
+
+
+            <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                <div class="flex md:mt-4">
+                    <div class="w-full flex flex-col">
+                        <label for="project_num" class="text-sm dark:text-gray-100 text-gray-900 leading-none">プロジェクトNo.</label>
+                        <input type="text" form="reoportForm" name="project_num" id="project_num" value="{{ old('project_num', $clientNum) }}" class="input-readonly" placeholder="" readonly tabindex="-1">
+                    </div>
+                    <!-- 顧客検索ボタン(画面中～) -->
+                    <button type="button" onclick="showModal()" data-form="reoportForm" class="p-2.5 text-sm font-medium h-[35px] text-white mt-[18px] ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 zip2addr-trigger hidden sm:block">
+                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="w-full flex flex-col md:mt-4">
+                    <label for="project_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none">プロジェクト名称</label>
+                    <input type="text" form="reoportForm" form="reoportForm" name="project_name" id="project_name" value="{{ old('project_name', $clientName) }}" class="input-readonly" placeholder="" readonly tabindex="-1">
+                </div>
+            </div>
+
+
+
+            <div class="mt-8">
+                <span class="dark:text-white">報告先設定</span>
+                <ul class="pt-4 space-y-2 border-t border-gray-200 dark:border-gray-700"></ul>
+            </div>
+
+            <div class="grid gap-4 mb-4 sm:grid-cols-5">
+                <!-- 検索フォーム -->
+                <div class="w-full flex flex-col">
+                    <label for="user_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">氏名</label>
+                    <input type="text" form="reoportForm" id="user_name" class="input-secondary" placeholder="ユーザ名で検索">
+                </div>
+
+                <!-- 所属1選択フォーム -->
+                <div class="w-full flex flex-col">
+                    <label for="user_affiliation1_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">所属1</label>
+                    <select id="user_affiliation1_id" name="user_affiliation1_id" class="input-secondary">
+                        <option value="">未選択</option>
+                        @foreach ($affiliation1s as $affiliation1)
+                            <option value="{{ $affiliation1->id }}" @selected($affiliation1->id == old('user_affiliation1_id'))>{{ $affiliation1->affiliation1_name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- 部署選択フォーム -->
+                <div class="w-full flex flex-col">
+                    <label for="user_affiliation2_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">所属2</label>
+                    <select id="user_affiliation2_id" name="user_affiliation2_id" class="input-secondary">
+                        <option value="">未選択</option>
+                        @foreach ($affiliation2s as $affiliation2)
+                            <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == old('user_affiliation2_id'))>{{ $affiliation2->affiliation2_name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- 所属3選択フォーム -->
+                <div class="w-full flex flex-col">
+                    <label for="user_affiliation3_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">所属3</label>
+                    <select id="user_affiliation3_id" name="user_affiliation3_id" class="input-secondary">
+                        <option value="">未選択</option>
+                        @foreach ($affiliation3s as $affiliation3)
+                            <option value="{{ $affiliation3->id }}" @selected($affiliation3->id == old('user_affiliation3_id'))>{{ $affiliation3->affiliation3_name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                {{-- <button id="searchUsersButton" type="button">検索</button> --}}
+                <div class="w-full flex justify-self-end  flex-col  mt-auto">
+                    <button type="button" id="searchUsersButton" class="md:ml-1 md:mt-1 w-full h-10 md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        ユーザ検索
+                    </button>
+                </div>
+            </div>
+
+            <div class="md:flex md:flex-row">
+                <!-- 検索結果表示部分 -->
+                <div class=" md:w-1/2">
+                    <div class="text-white">検索結果</div>
+                    <div id="searchResults" class="text-white border h-48 overflow-y-scroll p-2 text-base rounded">
+                        <!-- 検索結果はここに表示されます -->
+                    </div>
+                </div>
+                
+                <!-- 選択された報告先表示部分 -->
+                <div class=" md:w-1/2">
+                    <div class="text-white md:ml-3 mt-3 md:mt-0">報告先</div>
+                    <div id="selectedRecipients" class="text-white border overflow-y-scroll h-48  md:mt-0 p-2 md:ml-3 rounded">
+                        <!-- 選択された報告先はここに表示されます -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 選択されたユーザのIDを保持する隠しフィールド -->
+            <input type="hidden" form="reoportForm" id="selectedUsers" name="selectedRecipientsId[]">
         </div>
     </div>
 
 
-    <!-- 顧客検索モーダル -->
+    <!-- Client検索モーダル -->
     <div id="clientSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center hidden animate-slide-in-top px-2 z-[99999]">
         <div class="max-h-full w-full max-w-7xl">
             <div class="relative p-2 bg-white rounded shadow dark:bg-gray-700">
                 <!-- モーダル header -->
                 <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
                     <h3 class="text-xl font-medium text-gray-900 dark:text-white">
-                        顧客検索画面
+                        顧客検索
                     </h3>
                     <div class="text-white font-medium ml-4 flex">
                         <div id="searchResultCount"><!-- 検索結果件数をJSで取得し表示 --></div>
@@ -231,22 +294,22 @@
                     </button>
                 </div>
                 <!-- 検索条件入力フォーム -->
-                <div class="grid gap-x-2 mb-4 grid-cols-2 sm:grid-cols-3">
+                <div class="grid gap-x-2 mb-4 grid-cols-1 sm:grid-cols-3">
                     <div class="w-full flex flex-col mx-2 pr-2">
                         <label for="clientName" class="dark:text-gray-100 text-gray-900 leading-none mt-4">顧客名称</label>
                         <input type="text" form="reoportForm" name="clientName" id="clientName" class="input-secondary">
                     </div>
                     <div class="w-full flex flex-col mx-2 pr-2">
-                        <label for="clientNumber" class="dark:text-gray-100 text-gray-900 leading-none mt-4">顧客番号</label>
+                        <label for="clientNumber" class="dark:text-gray-100 text-gray-900 leading-none mt-4">顧客No.</label>
                         <input type="text" form="reoportForm" name="clientNumber" id="clientNumber" class="input-secondary">
                     </div>
-                    <div class="w-full flex flex-col mx-2 pr-2 col-span-2 sm:col-span-1">
-                        <label for="affiliation2Id" class=" dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
-                        <select id="affiliation2Id" name="affiliation2Id" class="input-secondary">
-                            <option selected value="">未選択</option>
-                            @foreach($affiliation2s as $affiliation2)
-                            <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == Auth::user()->affiliation2->id)>
-                                {{ $affiliation2->affiliation2_name }}
+                    <div class="w-full flex flex-col mx-2 pr-2">
+                        <label for="userId" class=" dark:text-gray-100 text-gray-900 leading-none mt-4">営業担当</label>
+                        <select id="userId" name="userId" class="input-secondary">
+                            <option selected value="">---</option>
+                            @foreach($users as $user)
+                            <option value="{{ $user->id }}" @selected($user->id == Auth::user()->id)>
+                                {{ $user->user_name }}
                             </option>
                             @endforeach
                         </select>
@@ -283,13 +346,10 @@
     </div>
 
 
-
     <script>
         // モーダルを表示するための関数
         const modal = document.getElementById('clientSearchModal');
         const overlay = document.getElementById('overlay');
-
-
 
         function showModal() {
             overlay.classList.remove('hidden');
@@ -343,7 +403,7 @@
         function searchClient() {
             const clientName = document.getElementById('clientName').value;
             const clientNumber = document.getElementById('clientNumber').value;
-            const affiliation2Id = document.getElementById('affiliation2Id').value;
+            const userId = document.getElementById('userId').value;
 
             fetch('/client/search', {
                 method: 'POST',
@@ -351,7 +411,7 @@
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
-                body: JSON.stringify({ clientName, clientNumber, affiliation2Id })
+                body: JSON.stringify({ clientName, clientNumber, userId })
             })
             .then(response => response.json())
             .then(data => {
@@ -373,11 +433,11 @@
                         <td class="py-2 ml-2">${result.affiliation2.affiliation2_name_short}</td>
                         <td class="py-2 ml-2">${result.user.user_name}</td>
                     `;
-                    resultElement.addEventListener('click', () => setCorporation(result.client_name, result.client_num, result.affiliation2.affiliation2_name));
+                    resultElement.addEventListener('click', () => setCorporation(result.client_name, result.client_num, result.user.user_name));
                     resultElement.addEventListener('keydown', (e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
                             e.preventDefault();
-                            setCorporation(result.client_name, result.client_num, result.affiliation2.affiliation2_name);
+                            setCorporation(result.client_name, result.client_num, result.user.user_name);
                         }
                     });
                     searchResultsContainer.appendChild(resultElement);
@@ -390,10 +450,10 @@
             });
         }
 
-        function setCorporation(name, number, affiliation2) {
+        function setCorporation(name, number, salesUser) {
             document.getElementById('client_num').value = number;
             document.getElementById('client_name').value = name;
-            document.getElementById('affiliation2_id').value = affiliation2;
+            document.getElementById('sales_user').value = salesUser;
 
             hideModal();
         }
@@ -426,170 +486,166 @@
         });
     </script>
 
-
-
-
     <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // ストレージ管理用のオブジェクト
-    var storageManager = {
-        selectedUserIds: JSON.parse(localStorage.getItem('selectedUserIds')) || [],
-        
-        // ストレージ全体を更新
-        updateStorage: function() {
-            localStorage.setItem('selectedUserIds', JSON.stringify(this.selectedUserIds));
-            console.log('ストレージ更新後のselectedUserIds:', this.selectedUserIds);
-        },
+        document.addEventListener('DOMContentLoaded', function() {
+            // ストレージ管理用のオブジェクト
+            var storageManager = {
+                selectedUserIds: JSON.parse(localStorage.getItem('selectedUserIds')) || [],
+                
+                // ストレージ全体を更新
+                updateStorage: function() {
+                    localStorage.setItem('selectedUserIds', JSON.stringify(this.selectedUserIds));
+                    console.log('ストレージ更新後のselectedUserIds:', this.selectedUserIds);
+                },
 
-        // ユーザーを追加
-        addUser: function(userId, userName) {
-            this.selectedUserIds.push(userId);
-            localStorage.setItem('userName_' + userId, userName);
-            this.updateStorage();
-        },
+                // ユーザーを追加
+                addUser: function(userId, userName) {
+                    this.selectedUserIds.push(userId);
+                    localStorage.setItem('userName_' + userId, userName);
+                    this.updateStorage();
+                },
 
-        // ユーザーを削除
-        removeUser: function(userId) {
-            var index = this.selectedUserIds.indexOf(userId);
-            if (index !== -1) {
-                this.selectedUserIds.splice(index, 1);
-                localStorage.removeItem('userName_' + userId);
-                this.updateStorage();
+                // ユーザーを削除
+                removeUser: function(userId) {
+                    var index = this.selectedUserIds.indexOf(userId);
+                    if (index !== -1) {
+                        this.selectedUserIds.splice(index, 1);
+                        localStorage.removeItem('userName_' + userId);
+                        this.updateStorage();
+                    }
+                },
+
+                // ユーザー名を取得
+                getUserName: function(userId) {
+                    return localStorage.getItem('userName_' + userId);
+                }
+            };
+
+            // DOM要素
+            var elements = {
+                selectedUsers: document.getElementById('selectedUsers'),
+                selectedRecipients: document.getElementById('selectedRecipients'),
+                searchResults: document.getElementById('searchResults'),
+                searchButton: document.getElementById('searchUsersButton'),
+                userName: document.getElementById('user_name'),
+                userAffiliation1: document.getElementById('user_affiliation1_id'),
+                userAffiliation2: document.getElementById('user_affiliation2_id'),
+                userAffiliation3: document.getElementById('user_affiliation3_id')
+            };
+
+            // 初期化処理
+            function initialize() {
+                elements.selectedUsers.value = storageManager.selectedUserIds.join(',');
+                storageManager.selectedUserIds.forEach(function(userId) {
+                    var userName = storageManager.getUserName(userId);
+                    elements.selectedRecipients.insertAdjacentHTML(
+                        'afterbegin',
+                        '<div class="selectedUser cursor-pointer" data-user-id="' + userId + '">' + userName + '</div>'
+                    );
+                });
             }
-        },
 
-        // ユーザー名を取得
-        getUserName: function(userId) {
-            return localStorage.getItem('userName_' + userId);
-        }
-    };
-
-    // DOM要素
-    var elements = {
-        selectedUsers: document.getElementById('selectedUsers'),
-        selectedRecipients: document.getElementById('selectedRecipients'),
-        searchResults: document.getElementById('searchResults'),
-        searchButton: document.getElementById('searchUsersButton'),
-        userName: document.getElementById('user_name'),
-        userAffiliation1: document.getElementById('user_affiliation1_id'),
-        userAffiliation2: document.getElementById('user_affiliation2_id'),
-        userAffiliation3: document.getElementById('user_affiliation3_id')
-    };
-
-    // 初期化処理
-    function initialize() {
-        elements.selectedUsers.value = storageManager.selectedUserIds.join(',');
-        storageManager.selectedUserIds.forEach(function(userId) {
-            var userName = storageManager.getUserName(userId);
-            elements.selectedRecipients.insertAdjacentHTML(
-                'afterbegin',
-                '<div class="selectedUser cursor-pointer" data-user-id="' + userId + '">' + userName + '</div>'
-            );
-        });
-    }
-
-    // ユーザー検索
-    elements.searchButton.addEventListener('click', function() {
-        var params = new URLSearchParams({
-            user_name: elements.userName.value,
-            affiliation1_id: elements.userAffiliation1.value,
-            affiliation2_id: elements.userAffiliation2.value,
-            affiliation3_id: elements.userAffiliation3.value
-        });
-
-        fetch('/search-users?' + params)
-            .then(response => response.json())
-            .then(function(response) {
-                var filteredUsers = response.filter(function(user) {
-                    return !storageManager.selectedUserIds.some(id => id == user.id);
+            // ユーザー検索
+            elements.searchButton.addEventListener('click', function() {
+                var params = new URLSearchParams({
+                    user_name: elements.userName.value,
+                    affiliation1_id: elements.userAffiliation1.value,
+                    affiliation2_id: elements.userAffiliation2.value,
+                    affiliation3_id: elements.userAffiliation3.value
                 });
 
-                var sortedUsers = filteredUsers.sort(function(a, b) {
-                    return a.user_kana_name.toUpperCase()
-                        .localeCompare(b.user_kana_name.toUpperCase());
-                });
+                fetch('/search-users?' + params)
+                    .then(response => response.json())
+                    .then(function(response) {
+                        var filteredUsers = response.filter(function(user) {
+                            return !storageManager.selectedUserIds.some(id => id == user.id);
+                        });
 
-                var usersHtml = sortedUsers
-                    .map(user => 
-                        '<div class="selectUser cursor-pointer" data-user-id="' + 
-                        user.id + '" data-user-name="' + user.user_name + '">' + 
-                        user.user_name + '</div>'
-                    ).join('');
+                        var sortedUsers = filteredUsers.sort(function(a, b) {
+                            return a.user_kana_name.toUpperCase()
+                                .localeCompare(b.user_kana_name.toUpperCase());
+                        });
 
-                elements.searchResults.innerHTML = usersHtml;
-            })
-            .catch(function(error) {
-                console.log('検索エラー:', error);
+                        var usersHtml = sortedUsers
+                            .map(user => 
+                                '<div class="selectUser cursor-pointer" data-user-id="' + 
+                                user.id + '" data-user-name="' + user.user_name + '">' + 
+                                user.user_name + '</div>'
+                            ).join('');
+
+                        elements.searchResults.innerHTML = usersHtml;
+                    })
+                    .catch(function(error) {
+                        console.log('検索エラー:', error);
+                    });
             });
-    });
 
-    // ユーザー選択処理
-    document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('selectUser')) {
-            handleUserSelection(e.target);
-        }
-    });
+            // ユーザー選択処理
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('selectUser')) {
+                    handleUserSelection(e.target);
+                }
+            });
 
-    document.addEventListener('keydown', function(e) {
-        if (e.target.classList.contains('selectUser') && e.key === 'Enter') {
-            handleUserSelection(e.target);
-        }
-    });
+            document.addEventListener('keydown', function(e) {
+                if (e.target.classList.contains('selectUser') && e.key === 'Enter') {
+                    handleUserSelection(e.target);
+                }
+            });
 
-    function handleUserSelection(element) {
-        var userId = element.dataset.userId;
-        var userName = element.dataset.userName;
-        var selectedUsers = elements.selectedRecipients.querySelectorAll('.selectedUser');
-        var inserted = false;
+            function handleUserSelection(element) {
+                var userId = element.dataset.userId;
+                var userName = element.dataset.userName;
+                var selectedUsers = elements.selectedRecipients.querySelectorAll('.selectedUser');
+                var inserted = false;
 
-        for (var i = 0; i < selectedUsers.length; i++) {
-            var selectedUserName = selectedUsers[i].textContent;
-            if (userName.localeCompare(selectedUserName, 'ja', {sensitivity: 'base'}) < 0) {
-                selectedUsers[i].insertAdjacentHTML(
-                    'beforebegin',
-                    '<div class="selectedUser cursor-pointer" data-user-id="' + userId + '">' + 
-                    userName + '</div>'
-                );
-                inserted = true;
-                break;
+                for (var i = 0; i < selectedUsers.length; i++) {
+                    var selectedUserName = selectedUsers[i].textContent;
+                    if (userName.localeCompare(selectedUserName, 'ja', {sensitivity: 'base'}) < 0) {
+                        selectedUsers[i].insertAdjacentHTML(
+                            'beforebegin',
+                            '<div class="selectedUser cursor-pointer" data-user-id="' + userId + '">' + 
+                            userName + '</div>'
+                        );
+                        inserted = true;
+                        break;
+                    }
+                }
+
+                if (!inserted) {
+                    elements.selectedRecipients.insertAdjacentHTML(
+                        'beforeend',
+                        '<div class="selectedUser cursor-pointer" data-user-id="' + userId + '">' + 
+                        userName + '</div>'
+                    );
+                }
+
+                storageManager.addUser(userId, userName);
+                element.remove();
+                elements.selectedUsers.value = storageManager.selectedUserIds.join(',');
             }
-        }
 
-        if (!inserted) {
-            elements.selectedRecipients.insertAdjacentHTML(
-                'beforeend',
-                '<div class="selectedUser cursor-pointer" data-user-id="' + userId + '">' + 
-                userName + '</div>'
-            );
-        }
+            // ユーザー選択解除処理
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('selectedUser')) {
+                    var userId = e.target.dataset.userId;
+                    var userName = e.target.textContent;
 
-        storageManager.addUser(userId, userName);
-        element.remove();
-        elements.selectedUsers.value = storageManager.selectedUserIds.join(',');
-    }
+                    elements.searchResults.insertAdjacentHTML(
+                        'beforeend',
+                        '<div class="selectUser cursor-pointer" data-user-id="' + userId + 
+                        '" data-user-name="' + userName + '">' + userName + '</div>'
+                    );
 
-    // ユーザー選択解除処理
-    document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('selectedUser')) {
-            var userId = e.target.dataset.userId;
-            var userName = e.target.textContent;
+                    storageManager.removeUser(userId);
+                    e.target.remove();
+                    elements.selectedUsers.value = storageManager.selectedUserIds.join(',');
+                }
+            });
 
-            elements.searchResults.insertAdjacentHTML(
-                'beforeend',
-                '<div class="selectUser cursor-pointer" data-user-id="' + userId + 
-                '" data-user-name="' + userName + '">' + userName + '</div>'
-            );
-
-            storageManager.removeUser(userId);
-            e.target.remove();
-            elements.selectedUsers.value = storageManager.selectedUserIds.join(',');
-        }
-    });
-
-    // 初期化実行
-    initialize();
-});
-
+            // 初期化実行
+            initialize();
+        });
     </script>
 
     <script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>

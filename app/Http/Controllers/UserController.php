@@ -42,12 +42,14 @@ class UserController extends Controller
 
 
         //検索フォームに入力された値を取得
-        $user_num = $request->input('user_num');
-        $user_name = $request->input('user_name');
-        $affiliation2Id = $request->input('affiliation2_id');
-        // $roles1 = $request->input('roles');
-        $selectedRoles = $request->input('roles', []); 
-        $selectedEmployeeStatues = $request->input('employeeStatuses',[]);
+        $filters = $request->only(['user_num', 'user_name', 'affiliation2_id','employee_status_ids']);
+
+        // 同じ条件を別の変数にも格納(画面の検索条件入力欄にセットするために利用する)
+        $userNum = $filters['user_num'] ?? null;
+        $userName = $filters['user_name'] ?? null;
+        $affiliation2Id = $filters['affiliation2_id'] ?? null;
+        $employeeStatusIds = $filters['employee_status_ids'] ?? [];
+
 
         //検索Query
         $query = User::query();
@@ -58,10 +60,10 @@ class UserController extends Controller
         }
 
         //もし社員番号があれば
-        if(!empty($user_num))
+        if(!empty($userNum))
         {
-            // $query->where('user_num','like',"%{$user_num}%");
-            $query->where('user_num','=',$user_num);
+            // $query->where('user_num','like',"%{$userNum}%");
+            $query->where('user_num','LIKE', '%' . $userNum . '%');
         }
 
         if(!empty($affiliation2Id))
@@ -70,9 +72,9 @@ class UserController extends Controller
         }
 
         //もしユーザ名があれば
-        if($user_name)
+        if($userName)
         {
-            $spaceConversion = mb_convert_kana($user_name, 's'); //全角スペース⇒半角スペースへ変換
+            $spaceConversion = mb_convert_kana($userName, 's'); //全角スペース⇒半角スペースへ変換
             $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
 
             foreach($wordArraySearched as $value) 
@@ -88,15 +90,15 @@ class UserController extends Controller
         }
 
         //もし在職状態があれば
-        if(!empty($selectedEmployeeStatues))
+        if(!empty($employeeStatusIds))
         {
-            $query->whereIn('employee_status_id', $selectedEmployeeStatues);
+            $query->whereIn('employee_status_id', $employeeStatusIds);
         }
 
         $users = $query->sortable()->paginate($per_page);
         $count = $users->total();
 
-        return view('admin.user.index',compact('users','employeeStatuses','user_num','user_name','selectedRoles','count','affiliation1s','affiliation2s','affiliation3s','selectedEmployeeStatues','affiliation2Id'));
+        return view('admin.user.index',compact('users', 'employeeStatuses', 'userNum', 'userName', 'count', 'affiliation1s','affiliation2s','affiliation3s','employeeStatusIds','affiliation2Id', 'filters'));
     }
 
     private function isSysAdmin()

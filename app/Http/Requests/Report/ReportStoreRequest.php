@@ -21,14 +21,39 @@ class ReportStoreRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'contact_at' => 'required',
-            'contact_type_id' => 'required',
-            'report_type_id' => 'required',
-            'report_title' => 'required|max:5000',
-            'report_content' => 'required|max:5000',
-            'client_representative' => 'max:100',
+
+        // 下書きかどうかで必須チェックを分岐
+        $isDraft = $this->boolean('is_draft');
+
+        // 基本のバリデーション
+        $rules = [
+            'client_num' => ['required'],
+            'is_draft' => ['required', 'boolean'],
         ];
+
+        // 下書きではない場合の追加バリデーション
+        if (!$isDraft) {
+            $rules = array_merge($rules, [
+                'report_type_id' => ['required', 'exists:report_types,id'],
+                'contact_type_id' => ['required', 'exists:contact_types,id'],
+                'contact_at' => ['required', 'date'],
+                'report_title' => ['required', 'string', 'max:500'],
+                'report_content' => ['required', 'string', 'max:5000'],
+                // 'selectedRecipientsId' => ['required', 'array'],
+                // 'selectedRecipientsId.*' => ['exists:users,id'],
+            ]);
+        }
+
+        return $rules;
+
+        // return [
+        //     'contact_at' => 'required',
+        //     'contact_type_id' => 'required',
+        //     'report_type_id' => 'required',
+        //     'report_title' => 'required|max:5000',
+        //     'report_content' => 'required|max:5000',
+        //     'client_representative' => 'max:100',
+        // ];
     }
 
     protected function failedValidation($validator)

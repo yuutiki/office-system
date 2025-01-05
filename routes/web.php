@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AppSettingController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KeepfileController; //add
@@ -178,6 +179,24 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/support', '\App\Http\Controllers\SupportController');
 
     // repport関連
+    Route::get('/report/{report_id}/comment', [CommentController::class, 'show'])->name('comment.show');
+    Route::post('/report/{report_id}/comment', [CommentController::class, 'store'])->name('comment.store');
+
+    Route::get('/report/{report_id}/client', [ReportController::class, 'showFromClient'])->name('report.showFromClient');
+    Route::prefix('reports')->group(function () {
+        // 通常の新規作成ルート
+        Route::get('/create', [ReportController::class, 'create'])
+            ->name('reports.create');
+    
+        // 顧客からの新規作成ルート
+        Route::get('/create/{client}', [ReportController::class, 'createFromClient'])
+            ->name('reports.createFromClient')
+            ->whereNumber('client'); // clientのIDが数値であることを保証
+    
+        // 保存処理用のルート（共通）
+        Route::post('/', [ReportController::class, 'store'])
+            ->name('reports.store');
+    });
     Route::resource('/reports', ReportController::class);
 
 
@@ -258,9 +277,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/model-logs/{modelHistory}', [ModelHistoryController::class, 'show'])->name('logs.show');
 
     // Route::resource('/comment', '\App\Http\Controllers\CommentController');
-    Route::get('/report/{report_id}/comment', [CommentController::class, 'show'])->name('comment.show');
-    Route::post('/report/{report_id}/comment', [CommentController::class, 'store'])->name('comment.store');
-    Route::get('/report/{report_id}/client', [ReportController::class, 'showFromClient'])->name('report.showFromClient');
+
     Route::post('/bulk-insert-revenues', [ProjectRevenueController::class, 'bulkInsert'])->name('projectrevenue.bulkInsert');
     Route::delete('/bulk-delete-revenues', [ProjectRevenueController::class, 'bulkDelete'])->name('projectrevenue.bulkDelete');
 
@@ -273,6 +290,14 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/password-policy', PasswordPolicyController::class);
 
     // routes/web.php
+
+    Route::resource('/app-settings', AppSettingController::class);
+    // Route::resource('/affiliation-level-settings', AppSettingController::class);
+    // Route::resource('/app-settings', AppSettingController::class);
+
+    Route::get('/licenses', function () {
+        return view('licenses');
+     });
 
 
 });

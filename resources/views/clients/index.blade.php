@@ -74,14 +74,14 @@
 
     {{--  --}}
 
-    <div class="relative bg-white dark:bg-gray-800 rounded-t-md md:w-auto md:ml-14 md:mr-2 m-auto shadow-md  dark:text-gray-900 mt-4">
-        <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
-            <div class="w-full md:w-3/4">
+    <div class="relative bg-white dark:bg-gray-800 rounded-t-md lg:w-auto md:ml-14 lg:mr-2 m-auto shadow-md  dark:text-gray-900 mt-4">
+        <div class="flex flex-col items-center justify-between p-4 space-y-3 lg:flex-row  lg:space-y-0 lg:space-x-3">
+            <div class="w-full">
                 <form method="GET" action="{{ route('clients.index') }}" id="search_form" class="flex items-center">
                     @csrf
-                    <div class="flex flex-col md:flex-row w-full">
+                    <div class="flex flex-col lg:flex-row w-full">
                         <label for="simple-search" class="sr-only">Search</label>
-                        <div class="relative w-full mt-2 md:ml-2 md:mt-0">
+                        <div class="relative w-full mt-2 lg:ml-2 lg:mt-0">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
@@ -89,7 +89,7 @@
                             </div>
                             <input type="search" id="client_name" name="client_name" value="@if (isset($clientName)){{$clientName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="顧客名称（カナ）">
                         </div>
-                        <div class="relative w-full mt-2 md:ml-2 md:mt-0">
+                        <div class="relative w-full mt-2 lg:ml-2 lg:mt-0">
                             <select name="selected_affiliation2" id="selected_affiliation2" class="block w-full p-2 pl-4 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400">
                                 <option value="0"  @if($selectedAffiliation2 == 0) selected @endif>管轄事業部</option>
                                 @foreach ($affiliation2s as $affiliation2)
@@ -100,10 +100,10 @@
                             </select>
                         </div>
 
-                        <div id="user-dropdown" class="relative w-full md:ml-2 md:mt-0">
+                        <div id="user-dropdown" class="relative w-full lg:ml-2 mt-2 lg:mt-0">
                             <input type="hidden" id="selected-user-id" name="selected_user_id" value="{{ $selectedUserId }}">
                             <button type="button" id="dropdown-toggle" class="block w-full p-2 pl-4 text-sm text-left text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400">
-                                <span id="selected-user-display" class="text-gray-800 dark:text-white">
+                                <span id="selected-user-display" class="text-gray-800 dark:text-white whitespace-nowrap">
                                     @if($selectedUserId)
                                         {{ $salesUsers->find($selectedUserId)->user_name ?? 'ユーザーを選択' }}
                                     @else
@@ -127,12 +127,12 @@
                             </div>
                         </div>
 
-                        <div class="flex mt-2 md:mt-0">
-                            <div class="flex flex-col justify-end  w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
-                                <button type="button" onclick="showModal()" class="flex w-auto items-center justify-center md:ms-2 px-4 py-2 text-sm font-medium text-white rounded-sm bg-indigo-700 hover:bg-indigo-800 focus:ring-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                        <div class="flex mt-2 lg:mt-0">
+                            <div class="flex flex-col justify-end  w-full space-y-2 lg:w-auto lg:flex-row lg:space-y-0 lg:items-center lg:space-x-3">
+                                <button type="button" onclick="showModal()" class="flex w-auto items-center justify-center lg:ms-2 px-4 py-2 text-sm font-medium text-white rounded-sm bg-indigo-700 hover:bg-indigo-800 focus:ring-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
                                     <div class="whitespace-nowrap">{{ __('詳細条件') }}</div>
                                 </button>
-                                <div class="flex mt-4 md:mt-0">
+                                <div class="flex mt-4 lg:mt-0">
                                     <!-- 検索ボタン -->
                                     <x-buttons.search-button />
                                     <!-- リセットボタン -->
@@ -262,7 +262,7 @@
         </div>
     </div>
 
-    <div class="md:w-auto md:ml-14 md:mr-2 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-300">
+    <div class="md:w-auto md:ml-14 lg:mr-2 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-300">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-sm text-gray-700 dark:bg-gray-700 dark:text-gray-200">
                 <tr>

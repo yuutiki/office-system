@@ -18,7 +18,7 @@ return new class extends Migration
             $table->ipAddress('ip_address')->nullable()->comment('IPアドレス');
             $table->text('user_agent')->nullable()->comment('ユーザーエージェント');
             $table->json('meta')->nullable()->comment('追加のメタデータ');
-            $table->timestamps();
+            $table->datetimes();
 
             $table->index(['model', 'model_id']);
         });

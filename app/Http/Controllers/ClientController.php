@@ -282,19 +282,27 @@ class ClientController extends Controller
     {
         $clientName = $request->input('clientName');
         $clientNumber = $request->input('clientNumber');
-        $clientAffiliation2 = $request->input('affiliation2Id');    
-
-        // 検索条件に基づいて顧客データを取得
-        // $clients = Client::where('client_name', 'LIKE', '%' . $clientName . '%')
-        //     ->where('client_num', 'LIKE', '%' . $clientNumber . '%')
-        //     ->where('affiliation2_id', 'LIKE', '%' . $clientAffiliation2 . '%')
-        //     ->get();
-        $query = Client::query()
-        ->where('client_name', 'LIKE', '%' . $clientName . '%')
-        ->Where('client_num', 'LIKE', '%' . $clientNumber . '%')
-        ->Where('affiliation2_id', $clientAffiliation2);
-        $clients = $query->with('products','affiliation2','corporation','user')->get();
-
+        $salesUser = $request->input('userId');    
+    
+        $query = Client::query();
+    
+        // clientName が空でない場合のみ条件を追加
+        if (!empty($clientName)) {
+            $query->where('client_name', 'LIKE', '%' . $clientName . '%');
+        }
+    
+        // clientNumber が空でない場合のみ条件を追加
+        if (!empty($clientNumber)) {
+            $query->where('client_num', 'LIKE', '%' . $clientNumber . '%');
+        }
+    
+        // salesUser が空でない場合のみ条件を追加
+        if (!empty($salesUser)) {
+            $query->where('user_id', $salesUser);
+        }
+    
+        $clients = $query->with('products', 'affiliation2', 'corporation', 'user')->get();
+    
         return response()->json($clients);
     }
 

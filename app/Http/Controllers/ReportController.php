@@ -62,12 +62,30 @@ class ReportController extends Controller
         $affiliation2s = Affiliation2::all();
         $affiliation3s = Affiliation3::all();
 
-        $clientNum = Session::get('selected_client_num');
-        $clientName = Session::get('selected_client_name');
-        // $clientId = Session::get('selected_client_id');
+        $clientNum = '';
+        $clientName = '';
+        $salesUser = '';
 
-        return view('reports.create',compact('users', 'reportTypes', 'contactTypes', 'clientNum', 'clientName', 'affiliation1s', 'affiliation2s', 'affiliation3s'));
+        return view('reports.create',compact('users', 'reportTypes', 'contactTypes', 'clientNum', 'clientName', 'salesUser', 'affiliation1s', 'affiliation2s', 'affiliation3s'));
     }
+
+    public function createFromClient(Client $client)
+    {
+        $reportTypes = ReportType::all();
+        $contactTypes = ContactType::all();
+        $users = User::where('employee_status_id', 1)->get();
+        $affiliation1s = Affiliation1::all();
+        $affiliation2s = Affiliation2::all();
+        $affiliation3s = Affiliation3::all();
+
+        $clientNum = $client->client_num;
+        $clientName = $client->client_name;
+        $salesUser = $client->user->user_name;
+
+        return view('reports.create',compact('users', 'reportTypes', 'contactTypes', 'clientNum', 'clientName', 'salesUser', 'affiliation1s', 'affiliation2s', 'affiliation3s'));
+    }
+
+
 
     public function store(ReportStoreRequest $request)
     {
@@ -87,6 +105,7 @@ class ReportController extends Controller
         $report->report_content = $request->input('report_content');
         $report->report_notice = $request->input('report_notice');
         $report->client_representative = $request->input('client_representative');
+        $report->is_draft = $request->input('is_draft');
         $report->user_id = auth()->id();//ログインユーザのIDを取得
 
         $report->save();
@@ -205,9 +224,6 @@ class ReportController extends Controller
         $report = Report::find($id);
         $comments = $report->comments;
 
-
-
-
         return view('reports.show-from-client',compact('report'));
     }
 
@@ -218,9 +234,6 @@ class ReportController extends Controller
         $contactTypes = ContactType::all();
         $users = User::all();
 
-
-
-        
         return view('reports.edit',compact('users', 'report', 'reportTypes', 'contactTypes',));
     }
 
@@ -273,20 +286,6 @@ class ReportController extends Controller
         return redirect()->route('user.show', ['user' => $userId]);
     }
 
-
-    // public function search(Request $request)
-    // {
-    //     $query = $request->input('query');
-        
-    //     // ユーザ名、所属1、所属2、所属3のいずれかに検索クエリがマッチするユーザを取得
-    //     $users = User::where('name', 'like', '%' . $query . '%')
-    //                  ->orWhere('company_id', 'like', '%' . $query . '%')
-    //                  ->orWhere('department_id', 'like', '%' . $query . '%')
-    //                  ->orWhere('affiliation3_id', 'like', '%' . $query . '%')
-    //                  ->get();
-                     
-    //     return view('partials.user_search_results', ['users' => $users]);
-    // }
 
     // ユーザを検索して検索結果を返す
     public function searchUsers(Request $request)

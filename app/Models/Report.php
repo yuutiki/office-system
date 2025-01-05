@@ -10,8 +10,23 @@ use Illuminate\Notifications\Notification;
 
 class Report extends Model
 {
-    use HasFactory;
-    use Sortable;//add
+    use HasFactory, Sortable;
+
+    protected $fillable = [
+        'client_id',
+        'report_type_id',
+        'contact_at',
+        'contact_type_id',
+        'report_title',
+        'report_content',
+        'report_notice',
+        'is_draft',
+    ];
+
+    // 型変換の定義
+    protected $casts = [
+        'is_draft' => 'boolean',
+    ];
 
     public static $rulesEdit = [
         'report_title' => 'required|max:255',
@@ -26,11 +41,32 @@ class Report extends Model
         self::observe(GlobalObserver::class);
     }
 
-    // 報告に関連する報告者（投稿者）のリレーションok
-    public function reporter()
+    // アクセス制御の定義
+    protected static function booted()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        // 下書きは作成者のみが閲覧可能
+        static::addGlobalScope('accessControl', function ($query) {
+            if (auth()->check()) {
+                $query->where(function ($q) {
+                    $q->where('is_draft', false)
+                      ->orWhere(function ($q) {
+                          $q->where('is_draft', true)
+                               ->where('user_id', auth()->id());
+                      });
+                });
+            }
+        });
     }
+
+
+
+
+
+
+
+
+
+
 
     // 中間テーブルreport_to_recipientsを介して報告内容が報告先（受信者）と関連するリレーションok
     public function recipients()
@@ -45,12 +81,10 @@ class Report extends Model
     {
         return $this->hasMany(Comment::class, 'report_id');
     }
-
     public function client()
     {
         return $this->belongsTo(Client::class);
     }
-
     public function reportType()
     {
         return $this->belongsTo(ReportType::class);
@@ -58,5 +92,10 @@ class Report extends Model
     public function contactType()
     {
         return $this->belongsTo(ContactType::class);
+    }
+    // 報告に関連する報告者（投稿者）のリレーションok
+    public function reporter()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

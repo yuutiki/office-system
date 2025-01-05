@@ -262,6 +262,12 @@
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
+                            @sortablelink('is_draft','ステータス')
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
+                        </div>
+                    </th>
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                        <div class="flex items-center">
                             @sortablelink('contact_at','対応日付')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                         </div>
@@ -325,23 +331,34 @@
                                 </div>
                             </button>
                         </td>
+                        <td class="px-1 py-1 whitespace-nowrap mr-2">
+                            @if($report->is_draft)
+                                <span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-400 border border-yellow-400">
+                                    下書き
+                                </span>
+                            @else
+                                <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                    報告済み
+                                </span>
+                            @endif
+                        </td>
                         <td class="px-1 py-1 text-gray-900 whitespace-nowrap dark:text-white">
-                            {{$report->contact_at}}
+                            {{ $report->contact_at }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$report->reportType->report_type_name}}
+                            {{ optional($report->reportType)->report_type_name }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$report->client->client_num}}
+                            {{ $report->client->client_num }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$report->client->client_name}}
+                            {{ $report->client->client_name }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$report->report_title}}
+                            {{ $report->report_title }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$report->reporter->user_name}}
+                            {{ $report->reporter->user_name }}
                         </td>
                         <td class="pl-4 py-1 whitespace-nowrap">
                             <button onclick="location.href='{{route('reports.edit',$report)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-sm text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">

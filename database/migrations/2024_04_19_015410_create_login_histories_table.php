@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('browser');
             $table->string('ip_address');
             $table->timestamp('logged_in_at')->nullable();
-            $table->timestamps();
+            $table->datetimes();
         });
     }
 

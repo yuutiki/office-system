@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Contract;
+use Diglactic\Breadcrumbs\Breadcrumbs;
 
 Breadcrumbs::for('dashboard', function ($trail) {
     $trail->push('ホーム', route('dashboard'));
@@ -430,11 +431,23 @@ Breadcrumbs::for('dashboard', function ($trail) {
             $trail->parent('dashboard');
             $trail->push('所属別リンク一覧', url('link'));
         });
-                // // ダッシュボード > 所属別リンク一覧 >  グループ新規作成
-                // Breadcrumbs::for('createRoleGroup', function ($trail) {
-                //     $trail->parent('Links');
-                //     $trail->push('新規作成', url('role-groups.create'));
-                // });
+
+
+        Breadcrumbs::for('app-settings', function ($tail) {
+            $tail->parent('dashboard');
+            $tail->push('システム設定一覧', route('app-settings.index'));
+        });
+
+            Breadcrumbs::for('affiliation-level-setting', function ($tail) {
+                $tail->parent('app-settings');
+                $tail->push('所属階層利用設定', route('app-settings.index'));
+            });
+
+            Breadcrumbs::for('password-policy-setting', function ($tail) {
+                $tail->parent('app-settings');
+                $tail->push('パスワードポリシー設定', route('password-policy.edit', 1));
+            });
+
 
         // // ダッシュボード > マスタ一覧
         // Breadcrumbs::for('masters', function ($trail, $searchParams) {
