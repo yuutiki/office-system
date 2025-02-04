@@ -23,7 +23,7 @@
 
     <div class="max-w-7xl mx-auto px-2 md:pl-14">
         <!-- 顧客検索ボタン(画面小) -->
-        <button type="button"  onclick="showModal()" class="md:ml-1 md:mt-1 mt-1 mb-4 w-full md:w-auto whitespace-nowrap sm:hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        <button type="button" onclick="ClientSearchModal.show('clientSearchModal1')" class="md:ml-1 md:mt-1 mt-1 mb-4 w-full md:w-auto whitespace-nowrap sm:hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
             顧客検索
         </button>
 
@@ -34,7 +34,7 @@
                     <input type="text" form="reoportForm" name="client_num" id="client_num" value="{{ old('client_num', $report->client->client_num) }}" class="input-readonly pointer-events-none" placeholder="" readonly>
                 </div>
                 <!-- 顧客検索ボタン(画面中～) -->
-                <button type="button" onclick="showModal()" data-form="reoportForm" class="p-2.5 text-sm font-medium h-[35px] text-white mt-[18px] ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 zip2addr-trigger hidden sm:block">
+                <button type="button" onclick="ClientSearchModal.show('clientSearchModal1')" data-form="reoportForm" class="p-2.5 text-sm font-medium h-[35px] text-white mt-[18px] ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 zip2addr-trigger hidden sm:block">
                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                     </svg>
@@ -44,13 +44,13 @@
                 <label for="client_name" class="font-normal text-sm dark:text-red-500 text-red-700 leading-none">顧客名称<span class="text-red-500"> *</span></label>
                 <input type="text" form="reoportForm" name="client_name" id="client_name" value="{{ old('client_name', $report->client->client_name) }}" class="input-readonly pointer-events-none" placeholder="" readonly>
             </div>
-            <div class="w-full flex flex-col lg:mt-4">
+            {{-- <div class="w-full flex flex-col lg:mt-4">
                 <label for="affiliation2_id" class="font-normal text-sm dark:text-red-500 text-red-700 leading-none">管轄事業部<span class="text-red-500"> *</span></label>
                 <input type="text" form="reoportForm" name="affiliation2_id" id="affiliation2_id" value="{{ old('affiliation2_id', $report->client->affiliation2->affiliation2_name) }}" class="input-readonly pointer-events-none" placeholder="" readonly>
-            </div>
+            </div> --}}
             <div class="w-full flex flex-col lg:mt-4">
-                <label for="affiliation2_id" class="font-normal text-sm dark:text-red-500 text-red-700 leading-none">営業担当<span class="text-red-500"> *</span></label>
-                <input type="text" form="reoportForm" name="affiliation2_id" id="affiliation2_id" value="{{ old('affiliation2_id', $report->client->user->user_name) }}" class="input-readonly pointer-events-none" placeholder="" readonly>
+                <label for="sales_user" class="font-normal text-sm dark:text-red-500 text-red-700 leading-none">営業担当<span class="text-red-500"> *</span></label>
+                <input type="text" form="reoportForm" name="sales_user" id="sales_user" value="{{ old('sales_user', $report->client->user->user_name) }}" class="input-readonly pointer-events-none" placeholder="" readonly>
             </div>
             @error('client_num')
                 <div class="text-red-500">{{$message}}</div>
@@ -166,127 +166,26 @@
         </div>
     </div>
 
-
-    {{-- <!-- Extra Large Modal -->
-    <div id="clientSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden">
-        <div class=" w-4/5  max-h-full">
-            <!-- Modal content -->
-            <div class="relative bg-white rounded shadow dark:bg-gray-700">
-                <!-- Modal header -->
-                <div class="flex items-center justify-between p-5 border-b rounded dark:border-gray-600">
-                    <h3 class="text-xl font-medium text-gray-900 dark:text-white">
-                        顧客検索画面
-                    </h3>
-                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                        <svg class="w-3 h-3"  onclick="hideModal()"xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                        </svg>
-                    </button>
-                </div>
-                <!-- Modal body -->
-                <form action="#" method="GET">
-                    <!-- 検索条件入力フォーム -->
-                    <div class="flex flex-wrap justify-start mx-5">
-                        <div class="w-full flex flex-col">
-                            <label for="clientName" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">顧客名称</label>
-                            <input type="text" name="clientName" id="clientName" class="w-auto mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
-                        </div>
-                        <div class="w-full flex flex-col">
-                            <label for="clientNumber" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">顧客番号</label>
-                            <input type="text" name="clientNumber" id="clientNumber" class="w-auto mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
-                        </div>
-                    </div>
-                </form>
-                <div class=" max-h-80 overflow-y-auto overflow-x-hidden">
-                    <table class="w-full mt-4 text-white mb-5 text-left text-sm">
-                        <thead>
-                        <tr>
-                            <th class="py-1 pl-5">顧客名称</th>
-                            <th class="py-1 whitespace-nowrap">顧客番号</th>
-                        </tr>
-                        </thead>
-                        <tbody class="" id="searchResultsContainer">                          
-                                <!-- 検索結果がここに追加されます -->
-                        </tbody>
-                    </table>
-                </div>
-                
-                <!-- Modal footer -->
-                <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                    <button type="button" onclick="searchClient()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        検索
-                    </button>
-                    <button type="button" onclick="hideModal()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                        閉じる
-                    </button> 
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
-    {{-- <script>
-        // モーダルを表示するための関数
-        function showModal() {
-            // モーダルの要素を取得
-            const modal = document.getElementById('clientSearchModal');
-            //背後の操作不可を有効
-            const overlay = document.getElementById('overlay').classList.remove('hidden');
-            document.body.classList.add('overflow-hidden');
-
-            // モーダルを表示するためのクラスを追加
-            modal.classList.remove('hidden');
+    {{-- 各画面のBladeテンプレート --}}
+    <x-modals.client-search-modal
+        modalId="clientSearchModal1"
+        screenId="order_entry"
+        :users="$users"
+        onSelectCallback="handleClientSelect"
+    />
+        
+        
+        
+    <script>
+        // コールバック関数の定義
+        function handleClientSelect(client) {
+            document.getElementById('client_num').value = client.client_num;
+            document.getElementById('client_name').value = client.client_name;
+            document.getElementById('sales_user').value = client.user.user_name;
         }
-
-        // モーダルを非表示にするための関数
-        function hideModal() {
-            // モーダルの要素を取得
-            const modal = document.getElementById('clientSearchModal');
-            //背後の操作不可を解除
-            const overlay = document.getElementById('overlay').classList.add('hidden');
-            document.body.classList.remove('overflow-hidden');
-
-            // モーダルを非表示にするためのクラスを削除
-            modal.classList.add('hidden');
-        }
-
-        // 検索ボタンを押した時の処理
-        function searchClient() {
-            const clientName = document.getElementById('clientName').value;
-            const clientNumber = document.getElementById('clientNumber').value;
-
-            fetch('/client/search', {
-                method: 'POST',
-                headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({ clientName, clientNumber })
-            })
-            .then(response => response.json())
-            .then(data => {
-                const searchResultsContainer = document.getElementById('searchResultsContainer');
-                searchResultsContainer.innerHTML = '';
-
-                data.forEach(result => {
-                const resultElement = document.createElement('tr');
-                resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
-                resultElement.innerHTML = `
-                    <td class="py-2 pl-5 cursor-pointer" onclick="setCorporation('${result.client_name}', '${result.client_num}')">${result.client_name}</td>
-                    <td class="py-2 ml-2">${result.client_num}</td>
-                `;
-                searchResultsContainer.appendChild(resultElement);
-                });
-            });
-            }
-
-            function setCorporation(name, number) {
-            document.getElementById('client_num').value = number;
-            document.getElementById('client_name').value = name;
-
-            hideModal();
-            }
-    </script> --}}
-
-
+        // モーダルのコールバック関数を設定
+        window.clientSearchModal1_onSelect = handleClientSelect;
+    </script>
+    <script src="{{ asset('/assets/js/modal/client-search-modal.js') }}"></script>
     <script src="{{ asset('assets/js/autoresizetextarea.js') }}"></script>
 </x-app-layout>

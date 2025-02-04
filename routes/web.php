@@ -48,6 +48,7 @@ use App\Http\Controllers\SupportController;
 use App\Http\Controllers\VendorController;
 use App\Models\Contract;
 use App\Http\Controllers\Auth\PasswordChangeController;
+use App\Http\Controllers\ClientSearchModalDisplayItemController;
 use App\Http\Controllers\CorporationCreditController;
 use App\Http\Controllers\EstimateAddressController;
 use App\Http\Controllers\ModelHistoryController;
@@ -244,6 +245,19 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/link', '\App\Http\Controllers\LinkController');
     Route::resource('/client-product' , '\App\Http\Controllers\ClientProductController');
     Route::resource('/projectrevenue' , '\App\Http\Controllers\ProjectRevenueController');
+
+
+    Route::post('/api/client-search', [ClientSearchModalDisplayItemController::class, 'search'])
+    ->name('api.client.search');
+
+
+    // サポート履歴入力画面にて非同期で顧客情報を取得するエンドポイント
+    Route::get('/api/client/{clientId}', [ClientController::class, 'getClientInfo'])->name('api.client.info');
+
+
+
+
+
 
 
     //マスタ系

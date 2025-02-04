@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Report;
+namespace App\Http\Requests\Support;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ReportStoreRequest extends FormRequest
+class SupportUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,11 +17,10 @@ class ReportStoreRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
-
         // 下書きかどうかで必須チェックを分岐
         $isDraft = $this->boolean('is_draft');
 
@@ -34,13 +33,15 @@ class ReportStoreRequest extends FormRequest
         // 下書きではない場合の追加バリデーション
         if (!$isDraft) {
             $rules = array_merge($rules, [
-                'report_type_id' => ['required', 'exists:report_types,id'],
-                'contact_type_id' => ['required', 'exists:contact_types,id'],
-                'contact_at' => ['required', 'date'],
-                'report_title' => ['required', 'string', 'max:500'],
-                'report_content' => ['required', 'string', 'max:5000'],
-                // 'selectedRecipientsId' => ['required', 'array'],
-                // 'selectedRecipientsId.*' => ['exists:users,id'],
+                'client_num' => ['required', 'size:12'],
+                'f_received_at' => ['required'],
+                'f_title' => ['required', 'max:500'],
+                'f_support_type_id' => ['required',],
+                'f_support_time_id' => ['required',],
+                'f_user_id' => ['required',],
+                'f_product_series_id' => ['required',],
+                'f_product_version_id' => ['required',],
+                'f_product_category_id' => ['required',],
             ]);
         }
 

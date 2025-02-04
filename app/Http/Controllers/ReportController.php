@@ -53,7 +53,7 @@ class ReportController extends Controller
         return view('reports.index',compact('reports' , 'user' , 'count', 'selectedUserId'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $reportTypes = ReportType::all();
         $contactTypes = ContactType::all();
@@ -61,12 +61,14 @@ class ReportController extends Controller
         $affiliation1s = Affiliation1::all();
         $affiliation2s = Affiliation2::all();
         $affiliation3s = Affiliation3::all();
+        $selectedUserId = $request->selected_user_id;
+
 
         $clientNum = '';
         $clientName = '';
         $salesUser = '';
 
-        return view('reports.create',compact('users', 'reportTypes', 'contactTypes', 'clientNum', 'clientName', 'salesUser', 'affiliation1s', 'affiliation2s', 'affiliation3s'));
+        return view('reports.create',compact('users', 'reportTypes', 'contactTypes', 'clientNum', 'clientName', 'salesUser', 'affiliation1s', 'affiliation2s', 'affiliation3s', 'selectedUserId'));
     }
 
     public function createFromClient(Client $client)

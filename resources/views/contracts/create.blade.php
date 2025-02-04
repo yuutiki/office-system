@@ -12,7 +12,7 @@
 
     <div class="mx-4 sm:pl-12 lg:w-1/2 lg:mx-auto">
         <!-- 顧客検索ボタン -->
-        <button type="button"  onclick="showModal()" class="md:ml-1 mt-12 mb-2 w-full whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        <button type="button" onclick="ClientSearchModal.show('clientSearchModal1')" class="md:ml-1 mt-12 mb-2 w-full whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
             顧客検索
         </button>
         <div class="grid gap-4 mt-6 mb-4 sm:grid-cols-1">
@@ -78,79 +78,33 @@
     </div>
 
 
-     <!-- 顧客検索 Modal -->
-     <div id="clientSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden animate-slide-in-top">
-        {{-- <div id="clientSearchModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full justify-center items-center"> --}}
-            <div class="max-h-full w-full max-w-2xl">
-                <!-- Modal content -->
-                <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
-                    <!-- Modal header -->
-                    <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
-                        <h3 class="text-xl font-medium text-gray-900 dark:text-white">
-                            顧客検索画面
-                        </h3>
-                        <button type="button" onclick="hideModal()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                            <svg class="w-3 h-3"xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                            </svg>
-                        </button>
-                    </div>
-                    <!-- Modal body -->
-                    <form action="{{ route('corporations.search') }}" method="GET">
-                        <!-- 検索条件入力フォーム -->
-                        <div class="grid gap-2 mb-4 sm:grid-cols-3">
-                            <div class="w-full flex flex-col mx-2">
-                                <label for="clientName" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">顧客名称</label>
-                                <input type="text" name="clientName" id="clientName" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded">
-                            </div>
-                            <div class="w-full flex flex-col mx-2">
-                                <label for="clientNumber" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">顧客番号</label>
-                                <input type="text" name="clientNumber" id="clientNumber" class="w-auto mt-1 mr-3 py-1 placeholder-gray-400 border border-gray-300 rounded">
-                            </div>
-                            <div class="w-full flex flex-col mx-2">
-                                <label for="affiliation2Id" class="text-sm  dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
-                                <select id="affiliation2Id" name="affiliation2Id" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option selected value="">未選択</option>
-                                    @foreach($affiliation2s as $affiliation2)
-                                    <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == Auth::user()->affiliation2->id)>
-                                        {{ $affiliation2->affiliation2_name }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </form>
-                    <div class=" max-h-80 overflow-y-auto overflow-x-hidden">
-                        <table class="w-full mt-4 text-white mb-5 text-left text-sm">
-                            <thead>
-                            <tr>
-                                {{-- <th class="py-1"></th> --}}
-                                <th class="py-1 pl-5">顧客名称</th>
-                                <th class="py-1 whitespace-nowrap">顧客番号</th>
-                                <th class="py-1 whitespace-nowrap">管轄事業部</th>
-                            </tr>
-                            </thead>
-                            <tbody class="" id="searchResultsContainer">                          
-                                    <!-- 検索結果がここに追加されます -->
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <!-- Modal footer -->
-                    <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                        <button type="button" onclick="searchClient()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            検索
-                        </button>
-                        <button type="button" onclick="hideModal()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                            閉じる
-                        </button> 
-                    </div>
-                </div>
-            </div>
-        </div>
-
+    <x-modals.client-search-modal
+        modalId="clientSearchModal1"
+        screenId="order_entry"
+        :users="$users"
+        onSelectCallback="handleClientSelect"
+    />
 
     <script>
+        // コールバック関数の定義
+        function handleClientSelect(client) {
+            // document.getElementById('client_num').value = client.client_num;
+            document.getElementById('corporation_name').value = client.corporation.corporation_name;
+            document.getElementById('client_id').value = client.id;
+            document.getElementById('client_name').value = client.client_name;
+            document.getElementById('affiliation2_id').value = client.affiliation2_id;
+            // document.getElementById('sales_user').value = client.user.user_name;
+        }
+
+        // モーダルのコールバック関数を設定
+        window.clientSearchModal1_onSelect = handleClientSelect;
+    </script>
+
+    <script src="{{ asset('/assets/js/modal/client-search-modal.js') }}"></script>
+
+
+
+    {{-- <script>
         // モーダルを表示するための関数
         function showModal() {
             // モーダルの要素を取得
@@ -218,8 +172,6 @@
 
             hideModal();
             }
-    </script>
-
-{{-- <script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script> --}}
+    </script> --}}
 
 </x-app-layout>

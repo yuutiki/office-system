@@ -20,15 +20,12 @@
         </div>
     </x-slot>
 
-    {{-- <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div> --}}
-
-
     {{-- 下書きフラグ用の隠しフィールド --}}
     <input type="hidden" form="reoportForm" name="is_draft" id="isDraft" value="0">
 
     <div class="max-w-7xl mx-auto px-2 md:pl-14">
-        <!-- 顧客検索ボタン(画面小) -->
-        <button type="button"  onclick="showModal()" class="md:ml-1 md:mt-1 mt-1 mb-4 w-full md:w-auto whitespace-nowrap sm:hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        <!-- 顧客検索ボタン(画面：小) -->
+        <button type="button" onclick="ClientSearchModal.show('clientSearchModal1')" class="md:ml-1 md:mt-1 mt-1 mb-4 w-full md:w-auto whitespace-nowrap sm:hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
             顧客検索
         </button>
 
@@ -43,8 +40,8 @@
                         @enderror
                     </div>
                 </div>
-                <!-- 顧客検索ボタン(画面中～) -->
-                <button type="button" onclick="showModal()" data-form="reoportForm" class="p-2.5 text-sm font-medium h-[35px] text-white mt-[18px] ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 zip2addr-trigger hidden sm:block">
+                <!-- 顧客検索ボタン(画面：中～) -->
+                <button type="button" onclick="ClientSearchModal.show('clientSearchModal1')" data-form="reoportForm" class="p-2.5 text-sm font-medium h-[35px] text-white mt-[18px] ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 zip2addr-trigger hidden sm:block">
                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                     </svg>
@@ -252,16 +249,16 @@
             <div class="md:flex md:flex-row">
                 <!-- 検索結果表示部分 -->
                 <div class=" md:w-1/2">
-                    <div class="text-white">検索結果</div>
-                    <div id="searchResults" class="text-white border h-48 overflow-y-scroll p-2 text-base rounded">
+                    <div class="dark:text-white">検索結果</div>
+                    <div id="searchResults" class="dark:text-white border h-48 overflow-y-scroll p-2 text-base rounded border-gray-900">
                         <!-- 検索結果はここに表示されます -->
                     </div>
                 </div>
                 
                 <!-- 選択された報告先表示部分 -->
                 <div class=" md:w-1/2">
-                    <div class="text-white md:ml-3 mt-3 md:mt-0">報告先</div>
-                    <div id="selectedRecipients" class="text-white border overflow-y-scroll h-48  md:mt-0 p-2 md:ml-3 rounded">
+                    <div class="dark:text-white md:ml-3 mt-3 md:mt-0">報告先</div>
+                    <div id="selectedRecipients" class="dark:text-white border overflow-y-scroll h-48 md:mt-0 p-2 md:ml-3 rounded border-gray-900">
                         <!-- 選択された報告先はここに表示されます -->
                     </div>
                 </div>
@@ -273,113 +270,51 @@
     </div>
 
 
-    <!-- Client検索モーダル -->
-    <div id="clientSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center hidden animate-slide-in-top px-2 z-[99999]">
-        <div class="max-h-full w-full max-w-7xl">
-            <div class="relative p-2 bg-white rounded shadow dark:bg-gray-700">
-                <!-- モーダル header -->
-                <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
-                    <h3 class="text-xl font-medium text-gray-900 dark:text-white">
-                        顧客検索
-                    </h3>
-                    <div class="text-white font-medium ml-4 flex">
-                        <div id="searchResultCount"><!-- 検索結果件数をJSで取得し表示 --></div>
-                        <span>件</span>
-                    </div>
-                    <button type="button" onclick="hideModal()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                        <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                        </svg>
-                        <span class="sr-only">Close modal</span>
-                    </button>
-                </div>
-                <!-- 検索条件入力フォーム -->
-                <div class="grid gap-x-2 mb-4 grid-cols-1 sm:grid-cols-3">
-                    <div class="w-full flex flex-col mx-2 pr-2">
-                        <label for="clientName" class="dark:text-gray-100 text-gray-900 leading-none mt-4">顧客名称</label>
-                        <input type="text" form="reoportForm" name="clientName" id="clientName" class="input-secondary">
-                    </div>
-                    <div class="w-full flex flex-col mx-2 pr-2">
-                        <label for="clientNumber" class="dark:text-gray-100 text-gray-900 leading-none mt-4">顧客No.</label>
-                        <input type="text" form="reoportForm" name="clientNumber" id="clientNumber" class="input-secondary">
-                    </div>
-                    <div class="w-full flex flex-col mx-2 pr-2">
-                        <label for="userId" class=" dark:text-gray-100 text-gray-900 leading-none mt-4">営業担当</label>
-                        <select id="userId" name="userId" class="input-secondary">
-                            <option selected value="">---</option>
-                            @foreach($users as $user)
-                            <option value="{{ $user->id }}" @selected($user->id == Auth::user()->id)>
-                                {{ $user->user_name }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <button type="button" onclick="searchClient()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    検索
-                </button>
 
-                <div class="max-h-80 overflow-x-auto mt-4 rounded border dark:border-gray-600">
-                    <table class="w-full text-white text-left text-sm">
-                        <thead class="sticky top-0 bg-white dark:bg-gray-600 border-l dark:border-gray-600">
-                            <tr class="whitespace-nowrap">
-
-                                <th class="py-3 pl-5 whitespace-nowrap">顧客名称</th>
-                                <th class="py-3 whitespace-nowrap">顧客No.</th>
-                                <th class="py-3 whitespace-nowrap">所属2</th>
-                                <th class="py-3 whitespace-nowrap">営業担当</th>
-                            </tr>
-                        </thead>
-                        <tbody id="searchResultsContainer" class="overflow-y-auto whitespace-nowrap">
-                            <!-- 検索結果がここに追加されます -->
-                        </tbody>
-                    </table>
-                </div>
-                <!-- モーダル footer -->
-                <div class="flex justify-end items-center p-2 mt-2 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                    <button type="button" onclick="hideModal()" onkeydown="stopTab(event)" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                        閉じる
-                    </button> 
-                </div>
-            </div>
-        </div>
-    </div>
+    {{-- 各画面のBladeテンプレート --}}
+    <x-modals.client-search-modal
+        modalId="clientSearchModal1"
+        screenId="order_entry"
+        :users="$users"
+        onSelectCallback="handleClientSelect"
+    />
 
 
-    <script>
+
+    {{-- <script>
         // モーダルを表示するための関数
-        const modal = document.getElementById('clientSearchModal');
+        const clientSearchModal = document.getElementById('clientSearchModal');
         const overlay = document.getElementById('overlay');
 
         function showModal() {
             overlay.classList.remove('hidden');
             document.body.classList.add('overflow-hidden');
-            modal.classList.remove('hidden');
+            clientSearchModal.classList.remove('hidden');
 
             // モーダル内の最初の入力フィールドにフォーカスを設定
             setTimeout(() => {
-                const firstInput = modal.querySelector('input, select, button');
+                const firstInput = clientSearchModal.querySelector('input, select, button');
                 if (firstInput) firstInput.focus();
             }, 100);
 
             // モーダル内の要素にのみタブ移動を制限
-            modal.addEventListener('keydown', trapFocus);
+            clientSearchModal.addEventListener('keydown', trapFocus);
         }
 
         // モーダルを非表示にするための関数
         function hideModal() {
             overlay.classList.add('hidden');
             document.body.classList.remove('overflow-hidden');
-            modal.classList.add('hidden');
+            clientSearchModal.classList.add('hidden');
 
             // イベントリスナーを削除
-            modal.removeEventListener('keydown', trapFocus);
+            clientSearchModal.removeEventListener('keydown', trapFocus);
         }
 
         // モーダル外へのフォーカス移動を防ぐ関数（更新版）
         function trapFocus(e) {
             if (e.key === 'Tab') {
-                const focusableElements = modal.querySelectorAll('input, select, button, [tabindex]:not([tabindex="-1"])');
+                const focusableElements = clientSearchModal.querySelectorAll('input, select, button, [tabindex]:not([tabindex="-1"])');
                 const firstElement = focusableElements[0];
                 const lastElement = focusableElements[focusableElements.length - 1];
 
@@ -397,56 +332,115 @@
             }
         }
 
+        // 検索ボタンと結果メッセージの要素を取得
+        const searchButton = document.querySelector('button[onclick="searchClient()"]');
+        const searchResultsArea = document.getElementById('searchResultsContainer').parentElement;
+
+        // 検索結果なしメッセージのHTML
+        const noResultsMessage = document.createElement('div');
+        noResultsMessage.className = 'p-4 text-center dark:text-gray-300 text-gray-700';
+        noResultsMessage.textContent = '検索条件に合致する結果がありません。';
+
+        // 検索ボタンのローディング状態を制御する関数
+        function setLoadingState(isLoading) {
+            if (isLoading) {
+                searchButton.disabled = true;
+                searchButton.innerHTML = `
+                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    検索中...
+                `;
+            } else {
+                searchButton.disabled = false;
+                searchButton.innerHTML = '検索';
+            }
+        }        
+
 
 
         // 検索ボタンを押した時の処理
         function searchClient() {
             const clientName = document.getElementById('clientName').value;
             const clientNumber = document.getElementById('clientNumber').value;
-            const userId = document.getElementById('userId').value;
+            const userId = document.getElementById('selected-user-id').value;
+            const searchResultsContainer = document.getElementById('searchResultsContainer');
+            const searchResultCount = document.getElementById('searchResultCount');
+
+            // ローディング状態を開始
+            setLoadingState(true);
 
             fetch('/client/search', {
                 method: 'POST',
                 headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
                 body: JSON.stringify({ clientName, clientNumber, userId })
             })
             .then(response => response.json())
             .then(data => {
-                const searchResultsContainer = document.getElementById('searchResultsContainer');
                 searchResultsContainer.innerHTML = '';
 
                 // 検索結果のカウントを表示
                 searchResultCount.textContent = `${data.length}`;
 
-                data.forEach((result, index) => {
-                    const resultElement = document.createElement('tr');
-                    resultElement.classList.add('dark:border-gray-600', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white', 'cursor-pointer', 'border-b');
-                    resultElement.setAttribute('tabindex', '0');  // タブ移動可能にする
-                    resultElement.setAttribute('role', 'button');  // スクリーンリーダー用にボタンとして認識させる
-                    resultElement.setAttribute('aria-label', `${result.client_name} を選択`);  // スクリーンリーダー用の説明
-                    resultElement.innerHTML = `
-                        <td class="py-2 pl-5 w-96">${result.client_name}</td>
-                        <td class="py-2 ml-2 whitespace-nowrap">${result.client_num}</td>
-                        <td class="py-2 ml-2">${result.affiliation2.affiliation2_name_short}</td>
-                        <td class="py-2 ml-2">${result.user.user_name}</td>
-                    `;
-                    resultElement.addEventListener('click', () => setCorporation(result.client_name, result.client_num, result.user.user_name));
-                    resultElement.addEventListener('keydown', (e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            setCorporation(result.client_name, result.client_num, result.user.user_name);
-                        }
+                if (data.length === 0) {
+                    // 検索結果が0件の場合
+                    searchResultsContainer.appendChild(noResultsMessage.cloneNode(true));
+                } else {
+                    // 検索結果がある場合
+                    data.forEach((result, index) => {
+                        const resultElement = document.createElement('tr');
+                        resultElement.classList.add(
+                            'dark:border-gray-600',
+                            'hover:bg-blue-400',
+                            'focus:bg-blue-400',  // フォーカス時の背景色
+                            'focus:outline-none', // デフォルトのoutlineを消す
+                            'focus:ring-blue-500', // リングの色
+                            'dark:text-white',
+                            'text-gray-900',
+                            'border-b-white',
+                            'cursor-pointer',
+                            'border'
+                        );
+                        resultElement.setAttribute('tabindex', '0');
+                        resultElement.setAttribute('role', 'button');
+                        resultElement.setAttribute('aria-label', `${result.client_name} を選択`);
+                        resultElement.innerHTML = `
+                            <td class="py-2 px-5 w-96">${result.client_name}</td>
+                            <td class="py-2 px-5 ml-2 whitespace-nowrap">${result.client_num}</td>
+                            <td class="py-2 px-5 ml-2">${result.affiliation2.affiliation2_name_short}</td>
+                            <td class="py-2 px-5 ml-2">${result.user.user_name}</td>
+                        `;
+                        resultElement.addEventListener('click', () => setCorporation(result.client_name, result.client_num, result.user.user_name));
+                        resultElement.addEventListener('keydown', (e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                setCorporation(result.client_name, result.client_num, result.user.user_name);
+                            }
+                        });
+                        searchResultsContainer.appendChild(resultElement);
                     });
-                    searchResultsContainer.appendChild(resultElement);
-                });
 
-                // 検索結果が表示されたら、最初の結果にフォーカスを移動
-                if (data.length > 0) {
-                    searchResultsContainer.firstElementChild.focus();
+                    // 検索結果が表示されたら、最初の結果にフォーカスを移動
+                    if (data.length > 0) {
+                        searchResultsContainer.firstElementChild.focus();
+                    }
                 }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                searchResultsContainer.innerHTML = '';
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'p-4 text-center text-red-600 dark:text-red-400';
+                errorMessage.textContent = '検索中にエラーが発生しました。';
+                searchResultsContainer.appendChild(errorMessage);
+            })
+            .finally(() => {
+                // ローディング状態を解除
+                setLoadingState(false);
             });
         }
 
@@ -472,19 +466,21 @@
 
         // ページ読み込み時にイベントリスナーを設定
         document.addEventListener('DOMContentLoaded', () => {
-            const modal = document.getElementById('clientSearchModal');
+            const clientSearchModal = document.getElementById('clientSearchModal');
             
             // モーダルが表示されたときの処理
-            modal.addEventListener('show', () => {
+            clientSearchModal.addEventListener('show', () => {
                 setOutsideElementsTabIndex(true);
             });
 
             // モーダルが非表示になったときの処理
-            modal.addEventListener('hide', () => {
+            clientSearchModal.addEventListener('hide', () => {
                 setOutsideElementsTabIndex(false);
             });
         });
-    </script>
+    </script> --}}
+
+    
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -648,6 +644,22 @@
         });
     </script>
 
-    <script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/assets/js/stopTab.js') }}"></script>
+
+
+    <script>
+        // コールバック関数の定義
+        function handleClientSelect(client) {
+            document.getElementById('client_num').value = client.client_num;
+            document.getElementById('client_name').value = client.client_name;
+            document.getElementById('sales_user').value = client.user.user_name;
+        }
+
+        // モーダルのコールバック関数を設定
+        window.clientSearchModal1_onSelect = handleClientSelect;
+    </script>
+    <script src="{{ asset('/assets/js/modal/client-search-modal.js') }}"></script>
+
+    <script src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
+    <script src="{{ asset('/assets/js/stopTab.js') }}"></script>
+
 </x-app-layout>

@@ -11,6 +11,7 @@ use App\Models\ContractSheetStatus;
 use App\Models\ContractType;
 use App\Models\ContractUpdateType;
 use App\Models\Affiliation2;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -29,8 +30,9 @@ class ContractController extends Controller
     {
         $contractTypes = ContractType::all();
         $affiliation2s = Affiliation2::all();
+        $users = User::all();
 
-        return view('contracts.create', compact('contractTypes', 'affiliation2s',));
+        return view('contracts.create', compact('contractTypes', 'affiliation2s', 'users',));
     }
 
     public function store(Request $request)

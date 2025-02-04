@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between w-5/6">
+        <div class="flex justify-between w-full whitespace-nowrap items-center">
             <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('supports') }}
                 <div class="ml-4">
@@ -8,12 +8,71 @@
                 </div>
             </h2>
             <x-message :message="session('message')" />
+            <div class="flex flex-col flex-shrink-0 space-y-1 w-auto md:flex-row md:space-y-0 md:space-x-3 items-center">
+
+                <x-buttons.add-button :route="route('support.create')" gate="storeUpdate_supports" :text="__('Add')" />
+
+                <div class="flex items-center w-full space-x-3 hidden md:w-auto md:inline-block">
+                    <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded md:w-auto hover:bg-gray-100 hover:text-blue-700 focus:z-10 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" type="button">
+                        <svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                        </svg>
+                        {{ __('Actions') }}
+                    </button>
+                    <div id="actionsDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-600 dark:divide-gray-600">
+                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
+                            <li>
+                                @can('admin_clients')
+                                    <button type="button" onclick="location.href='{{ route('support.showUploadForm') }}'" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2M8 9l4-5 4 5m1 8h0"/>
+                                            </svg>
+                                        </div>
+                                        CSVアップロード
+                                    </button>
+                                @else
+                                    <button type="button" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
+                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            <svg class="h-6 w-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </div>
+                                        CSVアップロード
+                                    </button>
+                                @endcan
+                            </li>
+                            <li>
+                                @can('download_clients')
+                                    {{-- <button type="button" onclick="location.href='{{ route('clients.downloadCsv', $filters ?? []) }}'" class="relative w-full items-center py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2m-1-5-4 5-4-5m9 8h0"/>
+                                            </svg>
+                                        </div>
+                                        CSVダウンロード
+                                    </button> --}}
+                                @else
+                                    <button type="button" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
+                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            <svg class="h-6 w-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </div>
+                                        CSVダウンロード
+                                    </button>
+                                @endcan
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </x-slot>
 
     <div class="relative bg-white dark:bg-gray-800 rounded-t-md md:w-auto md:ml-14 md:mr-2 m-auto shadow-md  dark:text-gray-900 mt-4">
         <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
-            <div class="w-full md:w-1/2">
+            <div class="w-full">
                 <form method="GET" action="{{ route('support.index') }}" id="search_form" class="flex items-center">
                     @csrf
                     <div class="flex flex-col md:flex-row w-full">
@@ -24,7 +83,7 @@
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                 </svg>
                             </div>
-                            <input type="search" id="keywords" name="keywords" value="@if (isset($keywords)){{$keywords}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="キーワード">
+                            <input type="search" id="keywords" name="keywords" value="@if (isset($keywords)){{$keywords}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="キーワード">
                         </div>
                         <div class="relative w-full mt-2 md:ml-2 md:mt-0">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -32,124 +91,116 @@
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                 </svg>
                             </div>
-                            <input type="search" id="client_name" name="client_name" value="@if (isset($clientName)){{$clientName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="顧客名称">
+                            <input type="search" id="client_name" name="client_name" value="@if (isset($clientName)){{$clientName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="顧客名称">
                         </div>
-
-                        {{-- <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-                            <select name="product_category_id" id="product_category_id" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="">製品系統</option>
-                                @foreach ($productCategories as $productCategory)
-                                <option value="{{ $productCategory->id }}" @if (isset($productCategoryId) && $productCategoryId == $productCategory->id) selected @endif>
-                                    {{ $productCategory->category_name }}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div> --}}
 
                         <div class="flex mt-2 md:mt-0">
-                            <div class="w-full md:ml-2">
-                                <button id="filterDropdownButton" data-dropdown-toggle="filterDropdown" class="z-50 flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s rounded-e md:w-auto focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="w-4 h-4 mr-2 text-gray-400" viewbox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />
-                                    </svg>
-                                    {{ __('Filter') }}
-                                    <svg class="-mr-1 ml-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                        <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                                    </svg>
+                            <div class="flex flex-col justify-end  w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
+                                <button type="button" onclick="showModal()" class="flex w-auto items-center justify-center md:ms-2 px-4 py-2 text-sm font-medium text-white rounded-sm bg-indigo-700 hover:bg-indigo-800 focus:ring-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                                    <div class="whitespace-nowrap">{{ __('詳細条件') }}</div>
                                 </button>
-                                <!-- Dropdown menu -->
-                                <div id="filterDropdown" class="z-50 hidden w-56 p-3 bg-gray-100 rounded-e rounded-s shadow dark:bg-gray-600">
-                                    <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
-                                        サポート種別
-                                    </h6>
-                                    <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-                                        @foreach ($supportTypes as $supportType)
-                                        <li class="flex items-center">
-                                            <input id="supportType-{{ $supportType->id }}" type="checkbox" name="support_types[]" @if(in_array($supportType->id, $selectedSupportTypes)) checked @endif value="{{$supportType->id}}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                            <label for="supportType-{{ $supportType->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $supportType->type_name }}</label>
-                                        </li>                       
-                                        @endforeach
-                                    </ul>
-                                    <ul class="border my-2"></ul>
-                                    <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
-                                        製品系統
-                                    </h6>
-                                    <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-                                        @foreach ($productCategories as $productCategory)
-                                        <li class="flex items-center">
-                                            <input id="category-{{ $productCategory->id }}" type="checkbox" name="product_categories[]" @if(in_array($productCategory->id, $selectedProductCategories)) checked @endif value="{{$productCategory->id}}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                            <label for="category-{{ $productCategory->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $productCategory->category_name }}</label>
-                                        </li>                       
-                                        @endforeach
-                                    </ul>
+                                <div class="flex mt-4 md:mt-0">
+                                    <!-- 検索ボタン -->
+                                    <x-buttons.search-button />
+                                    <!-- リセットボタン -->
+                                    <x-buttons.reset-button />
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="flex mt-4 md:mt-0">
-                                <!-- 検索ボタン -->
-                                <x-buttons.search-button />
-                                <!-- リセットボタン -->
-                                <x-buttons.reset-button />
+                        <!-- 詳細検索 Modal -->
+                        <div id="detailSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center overflow-y-scroll z-50 hidden animate-slide-in-top">
+                            <div class="max-h-full w-full max-w-3xl">
+                                <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
+                                    <!-- Modal header -->
+                                    <div class="flex items-center justify-between p-1 border-b rounded-t dark:border-gray-600">
+                                        <h3 class="text-xl font-medium text-gray-900 dark:text-white">
+                                            詳細検索画面
+                                        </h3>
+                                        <button type="button" onclick="hideModal()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                                            <svg class="w-3 h-3"xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <!-- Modal body -->
+                                    <div class="mt-4">
+                                        <label for="clientNumber" class="dark:text-white text-sm text-gray-900 leading-none mx-2">課税/免税</label>
+                                        <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
+                                            <li class="flex justify-center items-center">
+                                                <input type="checkbox" id="tax_status-1" @checked(in_array(0, $filters['tax_status_ids'] ?? [])) value="0" name="tax_status_ids[]" class="hidden peer touch-none">
+                                                <label for="tax_status-1" class="checkbox-label">
+                                                    <div class="w-full text-sm font-medium text-center">未確認</div>
+                                                </label>
+                                            </li>
+                                            <li class="flex justify-center items-center">
+                                                <input type="checkbox" id="tax_status-2" @checked(in_array(1, $filters['tax_status_ids'] ?? [])) value="1" name="tax_status_ids[]" class="hidden peer touch-none">
+                                                <label for="tax_status-2" class="checkbox-label">
+                                                    <div class="w-full text-sm font-medium text-center">課税</div>
+                                                </label>
+                                            </li>
+                                            <li class="flex justify-center items-center">
+                                                <input type="checkbox" id="tax_status-3" @checked(in_array(2, $filters['tax_status_ids'] ?? [])) value="2" name="tax_status_ids[]" class="hidden peer touch-none">
+                                                <label for="tax_status-3" class="checkbox-label">
+                                                    <div class="w-full text-sm font-medium text-center">免税</div>
+                                                </label>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <label for="clientNumber" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">サポート種別</label>
+                                    <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
+                                        @foreach ($supportTypes as $supportType)
+                                            <li class="flex justify-center items-center">
+                                                <input type="checkbox" id="supportType-{{ $supportType->id }}" 
+                                                    @checked(in_array($supportType->id, $selectedSupportTypes ?? [])) 
+                                                    value="{{ $supportType->id }}" 
+                                                    name="support_types[]" 
+                                                    class="hidden peer touch-none">
+                                                <label for="supportType-{{ $supportType->id }}" class="checkbox-label">
+                                                    <div class="w-full text-sm font-medium text-center">{{ $supportType->type_name }}</div>
+                                                </label>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+
+
+                                    <label for="clientNumber" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">製品系統</label>
+
+
+                                    <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
+                                        @foreach ($productCategories as $productCategory)
+                                            <li class="flex justify-center items-center">
+                                                <input type="checkbox" id="category-{{ $productCategory->id }}" 
+                                                    @checked(in_array($productCategory->id, $selectedProductCategories ?? [])) 
+                                                    value="{{ $productCategory->id }}" 
+                                                    name="product_categories[]" 
+                                                    class="hidden peer touch-none">
+                                                <label for="category-{{ $productCategory->id }}" class="checkbox-label">
+                                                    <div class="w-full text-sm font-medium text-center">{{ $productCategory->category_name }}</div>
+                                                </label>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+
+                                        
+                                    <!-- Modal footer -->
+                                    <div class="flex items-center justify-end p-3 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                                        <button type="button" onclick="hideModal()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                            閉じる
+                                        </button> 
+                                        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                            検索
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
                     </div>
                 </form>
             </div>
-            <div class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
-                <button type="button" onclick="location.href='{{ route('support.create') }}'" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-s rounded-e bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                    <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                    </svg>
-                    {{ __('Add') }}
-                </button>
-                <div class="flex items-center w-full space-x-3 hidden md:w-auto md:inline-block">
-                    <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s rounded-e md:w-auto focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
-                        <svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                        </svg>
-                        {{ __('Actions') }}
-                    </button>
-                    <div id="actionsDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-600 dark:divide-gray-600">
-                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
-                            <li>
-                                <button type="button" onclick="location.href='{{ route('support.showUploadForm') }}'" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
-                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2M8 9l4-5 4 5m1 8h0"/>
-                                        </svg>
-                                    </div>
-                                    CSVアップロード
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                    {{-- <div>
-                        <button id="filterDropdownButton" data-dropdown-toggle="filterDropdown" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s rounded-e md:w-auto focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
-                            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="w-4 h-4 mr-2 text-gray-400" viewbox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />
-                            </svg>
-                            Filter
-                            <svg class="-mr-1 ml-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                            </svg>
-                        </button>
-                        <!-- Dropdown menu -->
-                        <div id="filterDropdown" class="z-10 hidden w-56 p-3 bg-white rounded-s rounded-e shadow dark:bg-gray-700">
-                            <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
-                                事業部
-                            </h6>
-                            <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-                                @foreach ($affiliation2s as $affiliation2)
-                                <li class="flex items-center">
-                                    <input id="{{ $affiliation2->id }}" type="checkbox" value=""class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                    <label for="{{ $affiliation2->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $affiliation2->affiliation2_name }}</label>
-                                </li>                       
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div> --}}
-                </div>
-            </div>
+
         </div>
     </div>
 
@@ -252,38 +303,38 @@
                             </button>
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$support->client->client_num}}
+                            {{ $support->client->client_num }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$support->client->client_name}}
+                            {{ $support->client->client_name }}
                         </td>
                         <td class="pl-4 py-1 whitespace-nowrap">
-                            {{$support->received_at}}
+                            {{ $support->received_at }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap font-medium">
-                            {{$support->supportType->type_name}}
+                            {{ optional($support->supportType)->type_name }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap font-semibold">
-                            {{$support->title}}
+                            {{ $support->title }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$support->user->user_name}}
+                            {{ optional($support->user)->user_name }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap mr-2">
-                            {{$support->productSeries->series_name}}
+                            {{ optional($support->productSeries)->series_name }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$support->productVersion->version_name}}
+                            {{ optional($support->productVersion)->version_name }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$support->productCategory->category_name}}
+                            {{ optional($support->productCategory)->category_name }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$support->client->user->user_name}}
+                            {{ optional($support->client->user)->user_name }}
                         </td>
                         {{-- <td class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <div class="text-center">
-                                <button class="button-edit" type="button" data-drawer-target="dupdateModal-{{$support->id}}" data-drawer-body-scrolling="false" data-drawer-show="dupdateModal-{{$support->id}}" data-drawer-placement="right" aria-controls="dupdateModal-{{$support->id}}">
+                                <button class="button-edit" type="button" data-drawer-target="dupdateModal-{{ $support->id}}" data-drawer-body-scrolling="false" data-drawer-show="dupdateModal-{{ $support->id}}" data-drawer-placement="right" aria-controls="dupdateModal-{{ $support->id}}">
                                     <div class="flex">
                                         <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
@@ -294,7 +345,7 @@
                             </div>
                         </td> --}}
                         <td class="py-1">
-                            <button type="button" data-modal-target="deleteModal-{{$support->id}}" data-modal-show="deleteModal-{{$support->id}}" class="button-delete-primary">
+                            <button type="button" data-modal-target="deleteModal-{{ $support->id}}" data-modal-show="deleteModal-{{ $support->id}}" class="button-delete-primary">
                                 <div class="flex">
                                     <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
                                     <span class="text-ms ">削除</span>
@@ -735,6 +786,64 @@
         background-color: #f0f0f0; /* 任意の背景色 */
     }
 </style>
+
+<script>
+    // モーダルを表示するための関数
+    function showModal() {
+        // モーダルの要素を取得
+        const modal = document.getElementById('detailSearchModal');
+        //背後の操作不可を有効
+        const overlay = document.getElementById('overlay').classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+
+        // モーダルを表示するためのクラスを追加
+        modal.classList.remove('hidden');
+    }
+
+    // モーダルを非表示にするための関数
+    function hideModal() {
+        // モーダルの要素を取得
+        const modal = document.getElementById('detailSearchModal');
+        //背後の操作不可を解除
+        const overlay = document.getElementById('overlay').classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+
+        // モーダルを非表示にするためのクラスを削除
+        modal.classList.add('hidden');
+    }
+
+    // 検索ボタンを押した時の処理
+    function searchClient() {
+        const clientName = document.getElementById('clientName').value;
+        const clientNumber = document.getElementById('clientNumber').value;
+        const departmentId = document.getElementById('departmentId').value;
+
+        fetch('/client/search', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ clientName, clientNumber, departmentId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const searchResultsContainer = document.getElementById('searchResultsContainer');
+            searchResultsContainer.innerHTML = '';
+
+            data.forEach(result => {
+            const resultElement = document.createElement('tr');
+            resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
+            resultElement.innerHTML = `
+                <td class="py-2 pl-5 cursor-pointer" onclick="setClient('${result.client_corporation.corporation_name}', '${result.client_num}', '${result.client_name}', '${result.department_id}')">${result.client_name}</td>
+                <td class="py-2 ml-2">${result.client_num}</td>
+                <td class="py-2 ml-2">${result.department.department_name}</td>
+            `;
+            searchResultsContainer.appendChild(resultElement);
+            });
+        });
+        }
+</script>
 
 
 <script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>

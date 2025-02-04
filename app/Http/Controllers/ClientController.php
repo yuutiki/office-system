@@ -8,6 +8,7 @@ use App\Models\Client;
 use App\Models\ClientProduct;
 use App\Models\User;
 use App\Models\Affiliation2;//add
+use App\Models\ClientSearchModalDisplayItem;
 use App\Models\InstallationType;//add
 use App\Models\ClientType;//add
 use App\Models\DistributionType;
@@ -277,34 +278,80 @@ class ClientController extends Controller
         return redirect()->route('clients.index')->with('success', '正常に削除しました');
     }
 
-    //モーダル用の非同期検索ロジック
-    public function search(Request $request)
+    public function getClientInfo($clientId)
     {
-        $clientName = $request->input('clientName');
-        $clientNumber = $request->input('clientNumber');
-        $salesUser = $request->input('userId');    
-    
-        $query = Client::query();
-    
-        // clientName が空でない場合のみ条件を追加
-        if (!empty($clientName)) {
-            $query->where('client_name', 'LIKE', '%' . $clientName . '%');
+        $client = Client::with(['clientType', 'installationType', 'affiliation2', 'user', 'tradeStatus', 'corporation', 'clientProducts.product', 'clientProducts.productVersion', 'clientProducts.product.productSeries'])
+            ->where('id', $clientId)
+            ->first();
+
+        if (!$client) {
+            return response()->json(['error' => 'Client not found'], 404);
         }
-    
-        // clientNumber が空でない場合のみ条件を追加
-        if (!empty($clientNumber)) {
-            $query->where('client_num', 'LIKE', '%' . $clientNumber . '%');
-        }
-    
-        // salesUser が空でない場合のみ条件を追加
-        if (!empty($salesUser)) {
-            $query->where('user_id', $salesUser);
-        }
-    
-        $clients = $query->with('products', 'affiliation2', 'corporation', 'user')->get();
-    
-        return response()->json($clients);
+
+        return response()->json($client);
     }
+
+    // //モーダル用の非同期検索ロジック
+    // public function search(Request $request)
+    // {
+    //     $clientName = $request->input('clientName');
+    //     $clientNumber = $request->input('clientNumber');
+    //     $salesUser = $request->input('userId');    
+    
+    //     $query = Client::query();
+    
+    //     // clientName が空でない場合のみ条件を追加
+    //     if (!empty($clientName)) {
+    //         $query->where('client_name', 'LIKE', '%' . $clientName . '%');
+    //     }
+    
+    //     // clientNumber が空でない場合のみ条件を追加
+    //     if (!empty($clientNumber)) {
+    //         $query->where('client_num', 'LIKE', '%' . $clientNumber . '%');
+    //     }
+    
+    //     // salesUser が空でない場合のみ条件を追加
+    //     if (!empty($salesUser)) {
+    //         $query->where('user_id', $salesUser);
+    //     }
+    
+    //     $clients = $query->with('products', 'affiliation2', 'corporation', 'user')->get();
+    
+    //     return response()->json($clients);
+    // }
+
+    public function search(Request $request)
+{
+    // 既存の検索ロジックを活用しつつ、新しい要件に対応
+    $query = Client::query();
+
+    if (!empty($request->client_name)) {
+        $query->where('client_name', 'LIKE', '%' . $request->client_name . '%');
+    }
+
+    if (!empty($request->client_number)) {
+        $query->where('client_num', 'LIKE', '%' . $request->client_number . '%');
+    }
+
+    if (!empty($request->user_id)) {
+        $query->where('user_id', $request->user_id);
+    }
+
+    // Eager Loadingは維持
+    $clients = $query->with('products', 'affiliation2', 'corporation', 'user')->get();
+
+    // 画面IDに応じた表示項目を取得
+    $displayItems = ClientSearchModalDisplayItem::where('screen_id', $request->screen_id)
+        ->where('is_visible', true)
+        ->orderBy('display_order')
+        ->get();
+
+    // 新しいレスポンス形式に合わせて返却
+    return response()->json([
+        'results' => $clients,
+        'displayItems' => $displayItems
+    ]);
+}
 
     public function updateActiveTab(Request $request)
     {

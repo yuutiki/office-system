@@ -35,6 +35,8 @@
 
             <div class="grid gap-4 md:grid-cols-2">
 
+
+
                 <div class="w-full flex">
                     <div class="w-full flex flex-col">
                         <label for="project_num" class="dark:text-white text-red-700 leading-none text-sm">プロジェクト№<span class="text-red-500"> *</span></label>
@@ -240,6 +242,4 @@
     <script type="text/javascript" src="{{ asset('assets/js/stopTab.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/assets/js/searchProject.js') }}"></script>
-
-
 </x-app-layout>

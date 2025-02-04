@@ -132,4 +132,9 @@ class Product extends Model
         return $this->belongsToMany(Client::class, 'client_products');
     }
 
+    public function clientProducts()
+    {
+        return $this->hasMany(ClientProduct::class);
+    }
+
 }

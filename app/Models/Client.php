@@ -188,6 +188,11 @@ class Client extends Model
         return $this->belongsToMany(Product::class, 'client_products');
     }
 
+    public function clientProducts()
+    {
+        return $this->hasMany(ClientProduct::class);
+    }
+
     public function affiliation2()
     {
         return $this->belongsTo(Affiliation2::class);

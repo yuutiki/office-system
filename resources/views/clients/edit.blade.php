@@ -860,7 +860,7 @@
                                             {{$report->contact_at}}
                                         </td>
                                         <td class="px-2 py-2 whitespace-nowrap">
-                                            {{$report->reporttype->report_type_name}}
+                                            {{-- {{$report->reportType->report_type_name}} --}}
                                         </td>
                                         <td class="px-2 py-2 whitespace-nowrap">
                                             {{$report->report_title}}

@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'officesystem') }}</title>
+        <title>{{ config('app.name', 'Orphice') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -25,7 +25,7 @@
             <div class="w-full max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden rounded-lg">
                 {{ $slot }}
             </div>
-            <div class="text-white mt-5">{{ 'Office System' }}</div>
+            <div class="text-white mt-5">{{ 'Orphice' }}</div>
         </div>
     </body>
 </html>

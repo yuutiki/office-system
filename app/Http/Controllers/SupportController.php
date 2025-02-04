@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Support\SupportStoreRequest;
 use App\Models\Affiliation2;
 use App\Models\Client;
 use App\Models\ClientProduct;
@@ -105,30 +106,16 @@ class SupportController extends Controller
         $clientTypes = ClientType::all();
         $affiliation2s = Affiliation2::all();
 
+        $clientId = Session::get('selected_client_id');
         $clientNum = Session::get('selected_client_num');
         $clientName = Session::get('selected_client_name');
 
-        return view('support.create',compact('users','productSeriess','productVersions','productCategories','supportTypes','supportTimes','installationTypes','clientTypes','affiliation2s','clientNum','clientName'));
+        return view('support.create',compact('users','productSeriess','productVersions','productCategories','supportTypes','supportTimes','installationTypes','clientTypes','affiliation2s','clientNum','clientName','clientId'));
     }
 
-    public function store(Request $request)
+    public function store(SupportStoreRequest $request)
     {
-
-        // バリデーションの実行(Model)
-        $validator = Validator::make($request->all(), Support::$rules);
-
-        if ($validator->fails()) {
-            // バリデーションエラーが発生した場合
-            session()->flash('error', '入力内容にエラーがあります。');
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        // フォームからの値を変数に格納
-        $clientNum = $request->input('client_num');
-        
-        // client_numからclient_idを取得する
-        $client = Client::where('client_num', $clientNum)->first();
-        $clientId = $client->id;
+        $clientId = $request->input('client_id');
 
         //問合せ連番を採番
         $requestNumber = Support::generateRequestNumber($clientId);
@@ -137,38 +124,31 @@ class SupportController extends Controller
         $support = new Support();
         $support->client_id = $clientId; // 予めclient_numから取得したclient_idをセット
         $support->request_num = $requestNumber;// 採番した問合せ連番をセット
-        $support->received_at = $request->f_received_at;
-        $support->title = $request->f_title;
-        $support->request_content = $request->f_request_content;
-        $support->response_content = $request->f_response_content;
-        $support->internal_message = $request->f_internal_message;
-        $support->internal_memo1 = $request->f_internal_memo1;
-        $support->support_type_id = $request->f_support_type_id;
-        $support->support_time_id = $request->f_support_time_id;
-        $support->user_id = $request->f_user_id;// 受付対応者
-        $support->client_user_department = $request->f_client_user_department;
-        $support->client_user_kana_name = $request->f_client_user_kana_name;
-        $support->product_series_id = $request->f_product_series_id;
-        $support->product_version_id = $request->f_product_version_id;
-        $support->product_category_id = $request->f_product_category_id;
-        $support->is_finished = $request->has('f_is_finished') ? 1 : 0;
-        $support->is_disclosured = $request->has('f_is_disclosured') ? 1 : 0;
-        $support->is_confirmed = $request->has('f_is_confirmed') ? 1 : 0;
-        $support->is_troubled = $request->has('f_is_troubled') ? 1 : 0;
-        $support->is_faq_target = $request->has('f_is_faq_target') ? 1 : 0;
+        $support->received_at = $request->received_at;
+        $support->title = $request->title;
+        $support->request_content = $request->request_content;
+        $support->response_content = $request->response_content;
+        $support->internal_message = $request->internal_message;
+        $support->internal_memo1 = $request->internal_memo1;
+        $support->user_id = $request->user_id;// 受付対応者
+        $support->client_user_department = $request->client_user_department;
+        $support->client_user_kana_name = $request->client_user_kana_name;
+
+        $support->support_type_id = $request->support_type_id;
+        $support->support_time_id = $request->support_time_id;
+        $support->product_series_id = $request->product_series_id;
+        $support->product_version_id = $request->product_version_id;
+        $support->product_category_id = $request->product_category_id;
+        $support->is_finished = $request->has('is_finished') ? 1 : 0;
+        $support->is_disclosured = $request->has('is_disclosured') ? 1 : 0;
+        $support->is_confirmed = $request->has('is_confirmed') ? 1 : 0;
+        $support->is_troubled = $request->has('is_troubled') ? 1 : 0;
+        $support->is_faq_target = $request->has('is_faq_target') ? 1 : 0;
         $support->save();
 
+        $request->session()->forget('selected_client_id');
         $request->session()->forget('selected_client_num');
         $request->session()->forget('selected_client_name');
-
-
-        // // 通知の内容を設定
-        // $notificationData = [
-        //     'action_url' => route('support.edit', ['support' => $support->id]), // 例: サポート履歴を表示するURL
-        //     'reporter' => $support->user->user_name,
-        //     'message' => '新しいサポート履歴が登録されました。',
-        //     // 他の通知に関する情報をここで設定
-        // ];
 
         // 通知の内容を設定
         $notificationData = [
