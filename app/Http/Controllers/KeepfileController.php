@@ -86,14 +86,14 @@ class KeepfileController extends Controller
         $keepfiles = $keepfileQuery->orderby('return_at', 'asc')->paginate($perPage);
         $count = $keepfiles->total();
     
-        return view('keepfile.index', compact('keepfiles', 'count', 'projectNum', 'clientName', 'selectedUserId', 'dayFrom', 'dayTo', 'salesUsers'));
+        return view('keepfiles.index', compact('keepfiles', 'count', 'projectNum', 'clientName', 'selectedUserId', 'dayFrom', 'dayTo', 'salesUsers'));
     }
 
 
     public function create()
     {
         $users = User::all();
-        return view('keepfile.create',compact('users'));
+        return view('keepfiles.create',compact('users'));
     }
 
     public function store(KeepfileStoreRequest $request)
@@ -121,7 +121,7 @@ class KeepfileController extends Controller
         $keepfile->pdf_file = $pdfFilePath;
         $keepfile->user_id = $request->depositor; // 取得者
         $keepfile->save();
-        return redirect()->route('keepfile.index')->with('success','正常に登録しました');
+        return redirect()->route('keepfiles.index')->with('success','正常に登録しました');
     }
 
     public function show($id)
@@ -154,7 +154,7 @@ class KeepfileController extends Controller
             }
         }
     
-        return view('keepfile.edit', compact('keepfile', 'fileName', 'formattedFileSize','users'));
+        return view('keepfiles.edit', compact('keepfile', 'fileName', 'formattedFileSize','users'));
     }
     
     public function update(KeepfileUpdateRequest $request, string $id)
@@ -185,14 +185,14 @@ class KeepfileController extends Controller
         $keepfile->is_finished = $request->is_finished;
         $keepfile->user_id = $request->depositor;
         $keepfile->save();
-        return redirect()->route('keepfile.edit',$id)->with('success','正常に更新しました');
+        return redirect()->route('keepfiles.edit',$id)->with('success','正常に更新しました');
     }
 
     public function destroy(string $id)
     {
         $keepfile = keepfile::find($id);
         $keepfile->delete();
-        return redirect()->route('keepfile.index')->with('success', '正常に削除しました');
+        return redirect()->route('keepfiles.index')->with('success', '正常に削除しました');
     }
 
     public function deletePdf($id)

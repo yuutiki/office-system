@@ -193,6 +193,9 @@ const ClientSearchModal = {
         inputs.forEach(input => {
             input.value = '';
         });
+
+        document.getElementById(`${modalId}_selected_user_display`).textContent = '営業担当を選択';
+
         
         const firstInput = modal.querySelector('input, select');
         if (firstInput) firstInput.focus();

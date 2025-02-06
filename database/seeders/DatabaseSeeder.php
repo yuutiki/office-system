@@ -51,17 +51,11 @@ class DatabaseSeeder extends Seeder
         $this->call(EstimateAddressSeeder::class);
         $this->call(AppSettingSeeder::class);
         $this->call(ClientSearchModalDisplayItemsSeeder::class);
+        $this->call(ProjectSearchModalDisplayItemsSeeder::class);
 
         // $this->call(T_CorporationSeeder::class);
         $this->call(T_ClientSeeder::class);
         $this->call(T_ProjectSeeder::class);
         $this->call(T_KeepfileSeeder::class);
-
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
     }
 }

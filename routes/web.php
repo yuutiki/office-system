@@ -247,13 +247,12 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/projectrevenue' , '\App\Http\Controllers\ProjectRevenueController');
 
 
-    Route::post('/api/client-search', [ClientSearchModalDisplayItemController::class, 'search'])
-    ->name('api.client.search');
+    // Route::post('/api/client-search', [ClientSearchModalDisplayItemController::class, 'search'])->name('api.client.search');
+
 
 
     // サポート履歴入力画面にて非同期で顧客情報を取得するエンドポイント
     Route::get('/api/client/{clientId}', [ClientController::class, 'getClientInfo'])->name('api.client.info');
-
 
 
 

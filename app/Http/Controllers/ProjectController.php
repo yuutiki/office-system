@@ -15,6 +15,7 @@ use App\Models\Estimate;
 use App\Models\Prefecture;
 use App\Models\Project;
 use App\Models\ProjectRevenue;
+use App\Models\ProjectSearchModalDisplayItem;
 use App\Models\ProjectType;
 use App\Models\SalesStage;
 use App\Models\User;
@@ -110,7 +111,7 @@ class ProjectController extends Controller
         $affiliation2s = Affiliation2::all();
         $affiliation3s = Affiliation3::all();
 
-        return view('projects.index',compact( 'projectNum', 'projectName', 'totalRevenue', 'totalAllRevenue', 'accountingPeriods', 'filters','selectedAccountingPeriod','salesStages','distributionTypes','count','projects','users','projectTypes','accountingTypes','affiliation1s', 'affiliation2s', 'affiliation3s',));
+        return view('projects.index',compact( 'projectNum', 'projectName', 'totalRevenue', 'totalAllRevenue', 'accountingPeriods', 'filters','selectedAccountingPeriod','salesStages','distributionTypes','count','projects','users','projectTypes','accountingTypes','affiliation1s', 'affiliation2s', 'affiliation3s', 'clientName'));
     }
 
     public function create()
@@ -269,19 +270,102 @@ class ProjectController extends Controller
     }
 
     //モーダル用の非同期検索ロジック
+    // public function search(Request $request)
+    // {
+    //     $projectName = $request->input('projectName');
+    //     $projectNumber = $request->input('projectNumber');
+    //     // $projectAffiliation2 = $request->input('affiliation2Id');
+
+    //     $query = Project::query()
+    //     ->where('project_name', 'LIKE', '%' . $projectName . '%')
+    //     ->Where('project_num', 'LIKE', '%' . $projectNumber . '%');
+    //     // ->Where('affiliation2_id', 'LIKE', '%' . $projectAffiliation2 . '%');
+    //     $projects = $query->with('salesStage', 'accountUser', 'client')->get();
+
+    //     return response()->json($projects);
+    // }
+
+    
+
     public function search(Request $request)
     {
-        $projectName = $request->input('projectName');
-        $projectNumber = $request->input('projectNumber');
-        // $projectAffiliation2 = $request->input('affiliation2Id');
+        try {
+            // 検索クエリの構築
+            $query = Project::query()
+                ->with(['accountUser', 'salesStage', 'client']); // ユーザー情報をEagerロード
 
-        $query = Project::query()
-        ->where('project_name', 'LIKE', '%' . $projectName . '%')
-        ->Where('project_num', 'LIKE', '%' . $projectNumber . '%');
-        // ->Where('affiliation2_id', 'LIKE', '%' . $projectAffiliation2 . '%');
-        $projects = $query->with('salesStage', 'accountUser', 'client')->get();
+            // 各検索条件の適用
+            if ($request->filled('project_name')) {
+                $query->where('project_name', 'like', '%' . $request->project_name . '%');
+            }
 
-        return response()->json($projects);
+            if ($request->filled('project_num')) {
+                $query->where('project_num', 'like', '%' . $request->project_num . '%');
+            }
+
+
+            // 顧客名での検索
+            // whereHasを使用してリレーション先のテーブルで検索
+            if ($request->filled('client_name')) {
+                $spaceConversion = mb_convert_kana($request->client_name, 's');
+                $query->whereHas('client', function($query) use ($spaceConversion) {
+                    $query->where(function($q) use ($spaceConversion) {
+                        $q->orWhere('client_name', 'like', '%' . $spaceConversion . '%')
+                        ->orWhere('client_kana_name', 'like', '%' . $spaceConversion . '%');
+                        // ->orWhere('client_short_name', 'like', '%' . $spaceConversion . '%');
+                    });
+                });
+            }
+    
+
+            if ($request->filled('user_id')) {
+                $query->where('account_user_id', $request->user_id);
+            }
+
+            // 検索結果の取得
+            $results = $query->get();
+
+            // 表示項目の取得
+            $displayItems = ProjectSearchModalDisplayItem::where('screen_id', $request->screen_id)
+                ->where('is_visible', true)
+                ->orderBy('display_order')
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'column_key' => $item->column_key,
+                        'display_name' => $item->display_name
+                    ];
+                });
+
+            return response()->json([
+                'results' => $results,
+                'displayItems' => $displayItems
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Project search error: ' . $e->getMessage());
+            return response()->json([
+                'error' => '検索処理中にエラーが発生しました。',
+                'details' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+    private function getDisplayItemsByScreenId($screenId)
+    {
+        // 画面ごとの表示項目定義
+        $displayConfigs = [
+            'project_list' => [
+                ['column_key' => 'project_num', 'display_name' => 'プロジェクトコード'],
+                ['column_key' => 'project_name', 'display_name' => 'プロジェクト名'],
+                ['column_key' => 'sales_stage.sales_stage_name', 'display_name' => 'ステータス'],
+                ['column_key' => 'account_user.user_name', 'display_name' => '担当者'],
+            ],
+            // 他の画面の表示設定...
+        ];
+
+        return $displayConfigs[$screenId] ?? $displayConfigs['project_list'];
     }
 
 

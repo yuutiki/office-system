@@ -79,10 +79,12 @@ class Project extends Model
 
         if (isset($filters['client_name'])) {
             $spaceConversion = mb_convert_kana($filters['client_name'], 's');
-            $query->where(function($query) use ($spaceConversion) {
-                $query->orWhere('client_name', 'like', '%' . $spaceConversion . '%')
-                      ->orWhere('client_kana_name', 'like', '%' . $spaceConversion . '%')
-                      ->orWhere('client_short_name', 'like', '%' . $spaceConversion . '%');
+            $query->whereHas('client', function($query) use ($spaceConversion) {
+                $query->where(function($q) use ($spaceConversion) {
+                    $q->orWhere('client_name', 'like', '%' . $spaceConversion . '%')
+                    ->orWhere('client_kana_name', 'like', '%' . $spaceConversion . '%');
+                    // ->orWhere('client_short_name', 'like', '%' . $spaceConversion . '%');
+                });
             });
         }
 

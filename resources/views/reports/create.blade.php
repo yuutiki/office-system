@@ -179,7 +179,7 @@
                         <input type="text" form="reoportForm" name="project_num" id="project_num" value="{{ old('project_num', $clientNum) }}" class="input-readonly" placeholder="" readonly tabindex="-1">
                     </div>
                     <!-- 顧客検索ボタン(画面中～) -->
-                    <button type="button" onclick="showModal()" data-form="reoportForm" class="p-2.5 text-sm font-medium h-[35px] text-white mt-[18px] ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 zip2addr-trigger hidden sm:block">
+                    <button type="button" onclick="ProjectSearchModal.show('projectSearchModal1')" data-form="reoportForm" class="p-2.5 text-sm font-medium h-[35px] text-white mt-[18px] ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 zip2addr-trigger hidden sm:block">
                         <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                         </svg>
@@ -278,6 +278,32 @@
         :users="$users"
         onSelectCallback="handleClientSelect"
     />
+
+
+    <x-modals.project-search-modal 
+        modalId="projectSearchModal1" 
+        screenId="keepfile_create" 
+        :users="$users" 
+        onSelectCallback="handleProjectSelect" 
+    />
+
+
+    <script>
+        // プロジェクト選択時の処理を定義
+        function handleProjectSelect(project) {
+            // 選択されたプロジェクトの情報を各フィールドに設定
+            document.getElementById('project_num').value = project.project_num;
+            document.getElementById('project_name').value = project.project_name;
+            // document.getElementById('client_name').value = project.client.client_name;
+            // document.getElementById('project_manager').value = project.user.user_name;
+        }
+        
+        // モーダルのコールバック関数を設定
+        window.projectSearchModal1_onSelect = handleProjectSelect;
+    </script>
+
+    {{-- プロジェクト検索モーダルのJavaScript --}}
+    <script src="{{ asset('/assets/js/modal/project-search-modal.js') }}"></script>
 
 
 

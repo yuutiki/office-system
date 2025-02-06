@@ -6,14 +6,18 @@
             </h2>
             <div class="flex justify-end">
                 <x-message :message="session('message')"/>
+                <form method="post" action="{{route('keepfile.store')}}" enctype="multipart/form-data" id="keepfileForm">
+                    @csrf
+                    <x-button-save form-id="keepfileForm" id="saveButton" onkeydown="stopTab(event)">
+                        {{ __('save') }}
+                    </x-button-save>
+                </form>
             </div>
         </div>
     </x-slot>
 
-    <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
-
-
     <div class="max-w-7xl mx-auto px-2 md:pl-14">
+
         <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
             <ul class="flex flex-wrap -mb-px text-sm text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
                 <li class="mr-2" role="presentation">
@@ -24,7 +28,6 @@
         
         {{-- 基本情報タブ --}}
         <div class="hidden md:p-4 p-2 mb-4 rounded bg-gray-50 dark:bg-gray-800" id="base" role="tabpanel" aria-labelledby="base-tab">
-
             <label class="relative inline-flex items-center cursor-pointer my-6">
                 <input type="hidden" form="keepfileForm" name="is_finished" id="is_finished" value="0">
                 <input type="checkbox" form="keepfileForm" name="is_finished" id="is_finished" value="1" class="sr-only peer">
@@ -32,11 +35,7 @@
                 <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">完了</span>
             </label>
 
-
             <div class="grid gap-4 md:grid-cols-2">
-
-
-
                 <div class="w-full flex">
                     <div class="w-full flex flex-col">
                         <label for="project_num" class="dark:text-white text-red-700 leading-none text-sm">プロジェクト№<span class="text-red-500"> *</span></label>
@@ -45,7 +44,7 @@
                             <div class="text-red-500">{{$message}}</div>
                         @enderror
                     </div>
-                    <button type="button" id="searchPJ" onclick="showProjectModal()" class="p-2.5 text-sm font-medium h-[34px] text-white mt-[18px] ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <button type="button" id="searchPJ" onclick="ProjectSearchModal.show('projectSearchModal1')" class="p-2.5 text-sm font-medium h-[34px] text-white mt-[18px] ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         <svg class="w-4 h-4 pb-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                         </svg>
@@ -67,7 +66,7 @@
                 </div> --}}
                 <div class="w-full flex flex-col">
                     <label for="client_name" class="dark:text-white text-red-700 leading-none text-sm">顧客名称<span class="text-red-500"> *</span></label>
-                    <input type="text" form="keepfileForm" name="client_name" class="dark:bg-gray-400 w-full py-1 border border-gray-700 rounded mt-1" id="client_name" value="{{old('client_name')}}" placeholder="" readonly>
+                    <input type="text" form="keepfileForm" name="client_name" class="input-readonly" id="client_name" value="{{old('client_name')}}" placeholder="" readonly>
                     @error('client_name')
                         <div class="text-red-500">{{$message}}</div>
                     @enderror
@@ -76,7 +75,7 @@
 
             <div class="w-full flex flex-col mt-4">
                 <label for="project_name" class="dark:text-gray-100 text-gray-900 leading-none text-sm">プロジェクト名称<span class="text-red-500"> *</span></label>
-                <input type="text" form="keepfileForm" maxlength="100" name="project_name" id="project_name" value="{{old('project_name')}}" class="dark:bg-gray-400 w-full py-1 border border-gray-700 rounded mt-1" tabindex="-1" readonly>
+                <input type="text" form="keepfileForm" maxlength="100" name="project_name" id="project_name" value="{{old('project_name')}}" class="input-readonly" tabindex="-1" readonly>
                 @error('project_name')
                     <div class="text-red-500">{{ $message }}</div>
                 @enderror
@@ -85,7 +84,7 @@
             <div class="grid gap-4 md:grid-cols-2 mt-4">
                 <div class="w-full flex flex-col">
                     <label for="keep_at" class="dark:text-white text-red-700 leading-none text-sm">預託日<span class="text-red-500"> *</span></label>
-                    <input type="date" form="keepfileForm" min="2000-01-01" max="2100-12-31" name="keep_at" class="input-primary" id="keep_at" value="{{old('keep_at')}}">
+                    <input type="date" form="keepfileForm" id="keep_at" name="keep_at" value="{{ old('keep_at', now()->format('Y-m-d')) }}" min="2000-01-01" max="2100-12-31" class="input-primary">
                     @error('keep_at')
                         <div class="text-red-500">{{$message}}</div>
                     @enderror
@@ -122,7 +121,7 @@
 
             <div class="w-full flex flex-col">
                 <label for="keepfile_memo" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">備考</label>
-                <textarea name="keepfile_memo" form="keepfileForm" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="keepfile_memo" data-auto-resize="true" cols="30" rows="5" placeholder="">{{old('keepfile_memo')}}</textarea>
+                <textarea name="keepfile_memo" form="keepfileForm" class="input-secondary" id="keepfile_memo" data-auto-resize="true" cols="30" rows="5" placeholder="">{{old('keepfile_memo')}}</textarea>
                 @error('keepfile_memo')
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
@@ -150,75 +149,33 @@
 
                 </label>
             </div>
-            
-            <form method="post" action="{{route('keepfile.store')}}" enctype="multipart/form-data" id="keepfileForm">
-                @csrf
-                <x-primary-button class="mt-4" form-id="keepfileForm" id="saveButton" onkeydown="stopTab(event)">
-                    保存(S)
-                </x-primary-button>
-            </form>
         </div>
     </div>
 
-
-    <!-- プロジェクト検索 Modal -->
-    <div id="projectSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden animate-slide-in-top">
-        <div class="max-h-full w-full max-w-2xl">
-            <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
-
-                <!-- Modal header -->
-                <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
-                    <h3 class="text-xl font-medium text-gray-900 dark:text-white">
-                        プロジェクト検索画面
-                    </h3>
-                </div>
-
-                <!-- Modal body -->
-                <form action="#" method="GET">
-                    <!-- 検索条件入力フォーム -->
-                    <div class="grid gap-4 mb-4 sm:grid-cols-2 mt-2">
-                        <div class="">
-                            <label for="projectNumber" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none">プロジェクト№</label>
-                            <input type="text" name="projectNumber" id="projectNumber" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
-                        </div>
-                        <div class="">
-                            <label for="projectName" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none">プロジェクト名称</label>
-                            <input type="text" name="projectName" id="projectName" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
-                        </div>
-                    </div>
-                </form>
-                <div class=" max-h-80 overflow-y-auto overflow-x-hidden mt-4">
-                    <table class="w-full mt-4 text-white mb-5 text-left text-sm">
-                        <thead>
-                        <tr>
-                            <th class="py-1 pl-5 whitespace-nowrap">プロジェクト№</th>
-                            <th class="py-1">顧客名称</th>
-                            <th class="py-1">プロジェクト名称</th>
-                        </tr>
-                        </thead>
-                        <tbody class="" id="searchResultsProjectContainer">                          
-                                <!-- 検索結果がここに追加されます -->
-                        </tbody>
-                    </table>
-                </div>
-                
-                <!-- Modal footer -->
-                <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                    <button type="button" onclick="searchProject()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        検索
-                    </button>
-                    <button type="button" onclick="hideProjectModal()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                        閉じる
-                    </button> 
-                </div>
-            </div>
-        </div>
-    </div>
+    <x-modals.project-search-modal 
+        modalId="projectSearchModal1" 
+        screenId="keepfile_create" 
+        :users="$users" 
+        onSelectCallback="handleProjectSelect" 
+    />
 
 
+    <script>
+        // プロジェクト選択時の処理を定義
+        function handleProjectSelect(project) {
+            // 選択されたプロジェクトの情報を各フィールドに設定
+            document.getElementById('project_num').value = project.project_num;
+            document.getElementById('project_name').value = project.project_name;
+            document.getElementById('client_name').value = project.client.client_name;
+            // document.getElementById('project_manager').value = project.user.user_name;
+        }
+        
+        // モーダルのコールバック関数を設定
+        window.projectSearchModal1_onSelect = handleProjectSelect;
+    </script>
 
-
-
+    {{-- プロジェクト検索モーダルのJavaScript --}}
+    <script src="{{ asset('/assets/js/modal/project-search-modal.js') }}"></script>
 
 
     <script>
@@ -234,12 +191,15 @@
                 const fileSize = (fileInput.files[0].size / 1024).toFixed(2); // Convert to KB with 2 decimal places
                 const fileType = fileInput.files[0].type;
         
-                fileInfo.innerHTML = `<span class="font-semibold text-md text-blue-600">ファイル名称： ${fileName}</span></br><span class="font-semibold text-md text-blue-600">ファイルサイズ： ${fileSize} KB</span></br><span class="font-semibold text-md text-blue-600">ファイル形式： ${fileType}</span>`;
+                fileInfo.innerHTML = `<span class="font-semibold text-md text-blue-600">ファイル名称： ${fileName}
+                                        </span></br><span class="font-semibold text-md text-blue-600">ファイルサイズ： ${fileSize} KB
+                                        </span></br><span class="font-semibold text-md text-blue-600">ファイル形式： ${fileType}</span>
+                                    `;
             }
         }
     </script>
 
-    <script type="text/javascript" src="{{ asset('assets/js/stopTab.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/assets/js/searchProject.js') }}"></script>
+    <script src="{{ asset('assets/js/stopTab.js') }}"></script>
+    <script src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
+    {{-- <script src="{{ asset('/assets/js/searchProject.js') }}"></script> --}}
 </x-app-layout>
