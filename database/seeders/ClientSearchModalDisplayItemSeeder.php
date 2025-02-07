@@ -6,7 +6,7 @@ use App\Models\ClientSearchModalDisplayItem;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class ClientSearchModalDisplayItemsSeeder extends Seeder
+class ClientSearchModalDisplayItemSeeder extends Seeder
 {
     /**
      * Run the database seeds.
