@@ -267,7 +267,7 @@
                                             <option value="">所属2</option>
                                             @foreach ($affiliation2s as $affiliation2)
                                             <option value="{{ $affiliation2->id }}" @if (isset($affiliation2Id) && $affiliation2Id == $affiliation2->id) selected @endif>
-                                                {{ $affiliation2->department_name }}
+                                                {{ $affiliation2->affiliation2_name }}
                                             </option>
                                             @endforeach
                                         </select>

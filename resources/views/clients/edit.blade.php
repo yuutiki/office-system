@@ -984,7 +984,7 @@
                                     </th>
                                     <th scope="col" class="px-2 py-1 whitespace-nowrap">
                                         <div class="flex items-center">
-                                            <button type="button" onclick="location.href='{{route('support.create')}}'" class=" bg-blue-400 flex items-center justify-center px-2 py-1 text-sm text-white rounded bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none m-auto">
+                                            <button type="button" onclick="location.href='{{ route('support.createFromClient', $client) }}'" class=" bg-blue-400 flex items-center justify-center px-2 py-1 text-sm text-white rounded bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none m-auto">
                                                 <svg class="h-3.5 w-3.5 mr-0.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                                   <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                                                 </svg>
@@ -1009,25 +1009,25 @@
                                             </button>
                                         </td >
                                         <th scope="row" class="px-2 py-1 font-normal text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{$support->received_at}}
+                                            {{ $support->received_at }}
                                         </th>
                                         <th scope="row" class="px-2 py-1 font-normal text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{$support->supportType->type_name}}
+                                            {{ optional($support->supportType)->type_name }}
                                         </th>
                                         <th scope="row" class="px-2 py-1 font-normal text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{$support->title}}
+                                            {{ $support->title }}
                                         </th>
                                         <th scope="row" class="px-2 py-1 font-normal text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{$support->productSeries->series_name}}
+                                            {{ optional($support->productSeries)->series_name }}
                                         </th>
                                         <th scope="row" class="px-2 py-1 font-normal text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{$support->productVersion->version_name}}
+                                            {{ optional($support->productVersion)->version_name }}
                                         </th>
                                         <th scope="row" class="px-2 py-1 font-normal text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{$support->productCategory->category_name}}
+                                            {{ optional($support->productCategory)->category_name }}
                                         </th>
                                         <th scope="row" class="px-2 py-1 font-normal text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{$support->user->name}}
+                                            {{ optional($support->user)->name }}
                                         </th>
                                         <td class="px-2 py-1">
                                             <button data-modal-target="deleteModal-{{$support->id}}" data-modal-toggle="deleteModal-{{$support->id}}"  class="button-delete-primary" type="button">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Link\LinkUpdateRequest;
 use App\Models\Affiliation2;
 use App\Models\Link;
 use Illuminate\Http\Request;
@@ -91,21 +92,28 @@ class LinkController extends Controller
         return view('link.edit', compact('affiliation2s','link'));
     }
 
-    public function update(Request $request, Link $link)
+    // バリデーション用API
+    public function validateLink(LinkUpdateRequest $request)
     {
-        $rules = [
-            'display_name' => 'required',
-            'affiliation2_id' => 'required',
-            'display_order' => 'required|numeric',
-            'url' => 'required|url',
-        ];
+        // バリデーションが成功すると、何も返さずに200 OK
+        return response()->json(['message' => 'Validation passed']);
+    }
+
+    public function update(LinkUpdateRequest $request, Link $link)
+    {
+        // $rules = [
+        //     'display_name' => 'required',
+        //     'affiliation2_id' => 'required',
+        //     'display_order' => 'required|numeric',
+        //     'url' => 'required|url',
+        // ];
     
-        $validator = Validator::make($request->all(), $rules);
+        // $validator = Validator::make($request->all(), $rules);
     
-        if ($validator->fails()) {
-            // バリデーションエラーがある場合
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+        // if ($validator->fails()) {
+        //     // バリデーションエラーがある場合
+        //     return redirect()->back()->withErrors($validator)->withInput();
+        // }
         
         $link['updated_by'] = Auth::user()->id; // 更新者のIDを更新データに追加
         $link->fill($request->all())->save();
@@ -113,7 +121,6 @@ class LinkController extends Controller
         // Session::forget('openedModalId');
 
         return redirect()->route('link.index')->with('success', '正常に更新しました');
-
     }
 
     public function destroy(String $id)

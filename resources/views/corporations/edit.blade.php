@@ -6,10 +6,26 @@
             </h2>
             <div class="flex justify-end items-center space-x-2">
                 <x-message :message="session('message')" />
-
+                <div class="flex justify-between">
+                    @if ($prevId)
+                        <a href="{{ route('corporations.edit', ['corporation' => $prevId]) }}" class="px-2 py-2 dark:bg-gray-600 rounded">
+                            <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7"/>
+                            </svg>
+                        </a>
+                    @endif
+                
+                    @if ($nextId)
+                        <a href="{{ route('corporations.edit', ['corporation' => $nextId]) }}" class="px-2 py-2 ml-2 dark:bg-gray-600 rounded">
+                            <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
+                            </svg>
+                        </a>
+                    @endif
+                </div>
                 <form method="post" action="{{ route('corporations.update', $corporation) }}" enctype="multipart/form-data" id="corporationForm" class="flex items-center">
                     @csrf
-                    @method('patch')
+                    @method('put')
                     @can('storeUpdate_corporations')
                         <x-button-save form-id="corporationForm" id="saveButton" onkeydown="stopTab(event)">
                             {{ __("Update") }}
@@ -482,6 +498,7 @@
 
         }
     </script>
+
 
     <script>
         const overlay2 = document.getElementById('overlay');

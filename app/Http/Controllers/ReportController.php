@@ -34,8 +34,8 @@ class ReportController extends Controller
 
     public function index(Request $request)
     {
-        $per_page = config('constants.perPage');
-        // $reports = Report::with('client', 'user')->sortable()->orderby('contact_at','desc')->paginate($per_page);
+        $perPage = config('constants.perPage');
+        // $reports = Report::with('client', 'user')->sortable()->orderby('contact_at','desc')->paginate($perPage);
         $user = User::all();
         $selectedUserId = $request->selected_user_id;
 
@@ -46,7 +46,7 @@ class ReportController extends Controller
             $reportQuery->where('user_id', $selectedUserId);
         }
 
-        $reports = $reportQuery->paginate($per_page);
+        $reports = $reportQuery->paginate($perPage);
         $count = $reports->count();
 
 
@@ -112,8 +112,6 @@ class ReportController extends Controller
 
         $report->save();
 
-        $request->session()->forget('selected_client_num');
-        $request->session()->forget('selected_client_name');
 
         // 通知の内容を設定
         $notificationData = [

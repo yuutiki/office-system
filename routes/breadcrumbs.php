@@ -143,12 +143,12 @@ Breadcrumbs::for('dashboard', function ($trail) {
         // ダッシュボード > サポート一覧
         Breadcrumbs::for('supports', function ($trail) {
             $trail->parent('dashboard');
-            $trail->push('サポート一覧', url('support'));
+            $trail->push('サポート一覧', route('supports.index'));
         });
                 // ダッシュボード > サポート一覧 > サポート新規登録
                 Breadcrumbs::for('createSupport', function ($trail) {
                     $trail->parent('supports');
-                    $trail->push('新規作成', url('support/create'));
+                    $trail->push('新規作成', url('supports.create'));
                 });
 
                 // ダッシュボード > サポート一覧 > 編集
@@ -160,7 +160,7 @@ Breadcrumbs::for('dashboard', function ($trail) {
                 // ダッシュボード > サポート一覧 > CSVアップロード
                 Breadcrumbs::for('csvUploadSupport', function ($trail) {
                     $trail->parent('supports');
-                    $trail->push('CSVアップロード', route('support.showUploadForm'));
+                    $trail->push('CSVアップロード', route('supports.showUploadForm'));
                 });
 
 

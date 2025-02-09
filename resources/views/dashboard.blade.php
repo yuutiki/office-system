@@ -426,7 +426,7 @@
                         <tbody>
                             <tr>
                                 <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-3 text-left">
-                                    {{ $mySupport->client->client_name }}
+                                    {{ optional($mySupport->client)->client_name }}
                                 </th>
                                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-3">
                                     {{ $mySupport->title }}
@@ -441,10 +441,10 @@
                                     </td>
                                 @endif
                                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-3">
-                                    {{ $mySupport->supportType->type_name }}
+                                    {{ optional($mySupport->supportType)->type_name }}
                                 </td>
                                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-3">
-                                    {{ $mySupport->user->name }}
+                                    {{ optional($mySupport->user)->name }}
                                 </td>
                                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-3">
                                     {{ \Carbon\Carbon::parse($mySupport->received_at)->diffForHumans() }}

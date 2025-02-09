@@ -362,10 +362,11 @@
                         </table>
                     </div>
 
-                    <div class="w-full flex flex-col">
+                    <div class="px-2">
                         <label for="estimate_memo" class="dark:text-gray-100 text-gray-900 leading-none mt-4">見積備考</label>
-                        <textarea name="estimate_memo" data-auto-resize="true" form="estimateForm" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="auto-resize-textarea-estimate_memo" cols="30" rows="5">{{ $estimate->estimate_memo }}</textarea>
+                        <textarea name="estimate_memo" data-auto-resize="true" form="estimateForm" class="input-secondary mr-2" id="auto-resize-textarea-estimate_memo" cols="30" rows="5">{{ $estimate->estimate_memo }}</textarea>
                     </div>
+                    
 
 
                     <!-- ProductSearch modal -->
@@ -942,18 +943,18 @@
             function setProduct(name, series, split, code, price) {
                 if (currentEditingRow) {
                     currentEditingRow.querySelector('input[name^="ing-cd-"]').value = code;
-                    currentEditingRow.querySelector('input[name^="ing-name-"]').value = name;
-                    currentEditingRow.querySelector('input[name^="ing-kataban-"]').value = series;
+                    currentEditingRow.querySelector('input[name^="product-name-"]').value = name;
+                    currentEditingRow.querySelector('input[name^="model-number-"]').value = series;
                     
                     // 小数点以下を取り除いて整数に変換し、カンマ区切りの文字列にフォーマット
                     const formattedPrice = parseInt(price).toLocaleString();
-                    currentEditingRow.querySelector('input[name^="ing-tanka-"]').value = formattedPrice;
+                    currentEditingRow.querySelector('input[name^="unit-price-"]').value = formattedPrice;
                     
-                    currentEditingRow.querySelector('input[name^="ing-genka-"]').value = 0;
-                    currentEditingRow.querySelector('input[name^="ing-suryo-"]').value = 1;
+                    currentEditingRow.querySelector('input[name^="unit-cost-"]').value = 0;
+                    currentEditingRow.querySelector('input[name^="quantity-"]').value = 1;
                     
                     // 値を更新した後、計算を実行
-                    calculateAll(currentEditingRow.querySelector('input[name^="ing-suryo-"]'));
+                    calculateAll(currentEditingRow.querySelector('input[name^="quantity-"]'));
                 }
 
                 hideProductModal();

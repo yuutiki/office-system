@@ -6,22 +6,22 @@
             </h2>
             <div class="flex justify-end items-center space-x-2">
                 <x-message :message="session('message')" />
-                <form method="post" action="{{ route('support.store') }}" enctype="multipart/form-data" id="supportForm" class="flex">
+                <form method="post" action="{{ route('supports.store') }}" enctype="multipart/form-data" id="supportForm" class="flex">
                     @csrf
                     <x-button-save form-id="supportForm" id="saveButton" onkeydown="stopTab(event)">
                         {{ __('登録') }}
                     </x-button-save>
 
-                    <x-button-save form-id="supportForm" id="saveButton" class="ml-2 dark:bg-orange-400" onclick="document.getElementById('isDraft').value = '1'; document.getElementById('reportForm').submit();">
+                    <x-buttons.draft-button form-id="supportForm" id="saveButton" class="ml-2" onclick="document.getElementById('isDraft').value = '1'; document.getElementById('supportForm').submit();">
                         {{ __('下書き') }}
-                    </x-button-save>
+                    </x-buttons.draft-button>
                 </form>
             </div>
         </div>
     </x-slot>
 
     {{-- 下書きフラグ用の隠しフィールド --}}
-    <input type="hidden" form="reoportForm" name="is_draft" id="isDraft" value="0">
+    <input type="hidden" form="supportForm" name="is_draft" id="isDraft" value="0">
 
     {{-- ローディングインジケーター --}}
     <div id="loading-indicator" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
@@ -30,7 +30,7 @@
 
     <div class="max-w-7xl mx-auto px-2 md:pl-14">
         <!-- 顧客検索ボタン(画面小) -->
-        <button type="button" onclick="ClientSearchModal.show('clientSearchModal1')" class="md:ml-1 md:mt-1 mt-1 mb-4 w-full md:w-auto whitespace-nowrap sm:hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        <button type="button" onclick="ClientSearchModal.show('clientSearchModal')" class="md:ml-1 md:mt-1 mt-1 mb-4 w-full md:w-auto whitespace-nowrap sm:hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
             顧客検索
         </button>
 
@@ -38,46 +38,29 @@
             <div class="flex sm:mt-4">
                 <div class="hidden">
                     <label for="client_id">顧客ID（非表示）</label>
-                    <input type="hidden" 
-                        form="supportForm" 
-                        name="client_id" 
-                        id="client_id" 
-                        value="{{ old('client_id', $clientId) }}">
+                    <input type="hidden" form="supportForm" name="client_id" id="client_id" value="{{ old('client_id', optional($client)->id) }}">
                 </div>
                 <div class="w-full flex flex-col">
                     <label for="client_num" class="text-sm dark:text-gray-100 text-gray-900 leading-none">顧客No.<span class="text-red-500 ml-2">*</span></label>
-                    <input type="text" form="supportForm" name="client_num" id="client_num" value="{{ old('client_num', $clientNum) }}" class="input-readonly @error('client_num') input-error @enderror" placeholder="" readonly tabindex="-1">
-                    <div class="text-red-500 text-xs sm:min-h-[1.5rem]">
-                        @error('client_num')
-                            {{ $message }}
-                        @enderror
-                    </div>
+                    <input type="text" form="supportForm" name="client_num" id="client_num" value="{{ old('client_num', optional($client)->client_num) }}" class="input-readonly @error('client_num') input-error @enderror" placeholder="" readonly tabindex="-1">
+                    @error('client_id')
+                        <div class="validate-message">{{ $message }}</div>
+                    @enderror
                 </div>
                 <!-- 顧客検索ボタン(画面：中～) -->
-                <button type="button" onclick="ClientSearchModal.show('clientSearchModal1')" data-form="supportForm" class="p-2.5 text-sm font-medium h-[35px] text-white mt-[18px] ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 zip2addr-trigger hidden sm:block">
+                <button type="button" onclick="ClientSearchModal.show('clientSearchModal')" data-form="supportForm" class="p-2.5 text-sm font-medium h-[35px] text-white mt-[18px] ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 zip2addr-trigger hidden sm:block">
                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                     </svg>
                 </button>
             </div>
             <div class="w-full flex flex-col sm:mt-4">
-                <label for="client_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none">顧客名称<span class="text-red-500 ml-2">*</span></label>
-                <input type="text" form="supportForm" form="supportForm" name="client_name" id="client_name" value="{{ old('client_name', $clientName) }}" class="input-readonly" placeholder="" readonly tabindex="-1">
+                <label for="client_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none">顧客名称</label>
+                <input type="text" form="supportForm" name="client_name" id="client_name" value="{{ old('client_name', optional($client)->client_name) }}" class="input-readonly" placeholder="" readonly tabindex="-1">
             </div>
-            <div>
-                <div class="w-full flex flex-col sm:mt-4">
-                    <label for="affiliation2" class="text-sm dark:text-gray-100 text-gray-900 leading-none">管轄事業部<span class="text-red-500 ml-2">*</span></label>
-                    <input type="text" name="affiliation2" id="affiliation2" value="{{ old('affiliation2') }}" class="input-readonly" placeholder="" readonly tabindex="-1">
-                </div>
-            </div>
-        </div>
-
-        <div class="grid gap-4 mb-4 mt-4 sm:mt-0 sm:grid-cols-3">
-            <div>
-                <div class="w-full flex flex-col">
-                    <label for="sales_user" class="text-sm dark:text-gray-100 text-gray-900 leading-none">営業担当<span class="text-red-500 ml-2">*</span></label>
-                    <input type="text" name="sales_user" id="sales_user" value="{{ old('sales_user') }}" class="input-readonly" placeholder="" readonly tabindex="-1">
-                </div>
+            <div class="w-full flex flex-col sm:mt-4">
+                <label for="affiliation2" class="text-sm dark:text-gray-100 text-gray-900 leading-none">管轄事業部</label>
+                <input type="text" form="supportForm" name="affiliation2" id="affiliation2" value="{{ old('affiliation2', optional(optional($client)->affiliation2)->affiliation2_name) }}" class="input-readonly" placeholder="" readonly tabindex="-1">
             </div>
         </div>
 
@@ -100,150 +83,146 @@
         </div>
 
         <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800 mb-4" id="support-request" role="tabpanel" aria-labelledby="support-request-tab">
-            <div class="grid gap-2 mb-4 sm:grid-cols-5">
+            <div class="grid gap-2 mb-4 sm:grid-cols-4">
                 <div class="">
-                    <label for="received_at" class="text-sm  dark:text-gray-100 text-gray-900 leading-none mt-4">受付日</label>
+                    <label for="received_at" class="label-primary">受付日<span class="text-red-500 ml-2">*</span></label>
                     <input type="date" form="supportForm" min="2000-01-01" max="2100-12-31" name="received_at" class="input-primary" id="received_at" value="{{ old('received_at', now()->format('Y-m-d')) }}" placeholder="">
-                    @error('received_at')
-                        <div class="text-red-500">{{ $message }}</div>
-                    @enderror
+                    @error('received_at') <div class="validate-message">{{ $message }}</div> @enderror
                 </div>
                 <div class="">
-                    <label for="user_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">受付対応者</label>
-                    <select form="supportForm" id="user_id" name="user_id" class="block w-full py-1.5 border bg-gray-50 rounded mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <label for="user_id" class="label-primary">受付対応者<span class="text-red-500 ml-2">*</span></label>
+                    <select form="supportForm" id="user_id" name="user_id" class="input-secondary">
                         <option selected value="">未選択</option>
                         @foreach($users as $user)
                             <option value="{{ $user->id }}" @if($user->id == Auth::user()->id) selected @endif>{{ $user->user_name }}</option>
                         @endforeach
                     </select>
                     @error('user_id')
-                        <div class="text-red-500">{{ $message }}</div>
+                        <div class="validate-message">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="">
-                    <label for="client_user_kana_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">担当者 氏名</label>
+                <div class="flex">
                     <div class="relative w-full">
-                        <input type="text" form="supportForm" name="client_user_kana_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded-e rounded-s mt-1" id="client_user_kana_name" value="{{old('client_user_kana_name')}}" placeholder="">
-                        <button type="button" onclick="showClientPersonModal()" class="absolute top-0 end-0 p-2 text-sm font-medium h-[34px] text-white mt-1 bg-blue-700 rounded-e border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                            </svg>
-                        </button>
+                        <label for="client_user_kana_name" class="label-primary" autocomplete="new-password">担当者 氏名</label>
+                        <input type="text" form="supportForm" name="client_user_kana_name" class="input-secondary" id="client_user_kana_name" value="{{old('client_user_kana_name')}}" placeholder="">
                         @error('client_user_kana_name')
-                            <div class="text-red-500">{{ $message }}</div>
+                            <div class="validate-message">{{ $message }}</div>
                         @enderror
                     </div>
+                    <button type="button" onclick="showClientPersonModal()" class="p-2.5 text-sm font-medium h-[35px] text-white mt-[27px] ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
+                    </button>
                 </div>
                 <div class="">
-                    <label for="client_user_department" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">担当者 部署</label>
-                    <input type="text" form="supportForm" name="client_user_department" class="block w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="client_user_department" value="{{old('client_user_department')}}" placeholder="">
+                    <label for="client_user_department" class="label-primary">担当者 部署</label>
+                    <input type="text" form="supportForm" name="client_user_department" class="input-secondary" id="client_user_department" value="{{old('client_user_department')}}" placeholder="">
                     @error('client_user_department')
-                    <div class="text-red-500">{{ $message }}</div>
+                        <div class="validate-message">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
 
             <div class="w-full flex flex-col">
-                <label for="title" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">タイトル</label>
+                <label for="title" class="label-primary">タイトル</label>
                 <input type="text" form="supportForm" name="title" class="input-secondary" id="title" value="{{old('title')}}" placeholder="">
                 @error('title')
-                    <div class="text-red-500">{{ $message }}</div>
+                    <div class="validate-message">{{ $message }}</div>
                 @enderror
             </div>
             <div class="w-full flex flex-col">
-                <label for="request_content" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">内容</label>
-                <textarea form="supportForm" name="request_content" class="w-auto py-1 border text-sm border-gray-300 rounded mt-1 placeholder-gray-400" data-auto-resize="true" id="request_content" value="{{old('request_content')}}" cols="30" rows="8">{{ old('request_content') }}</textarea>
+                <label for="request_content" class="label-primary">内容</label>
+                <textarea form="supportForm" name="request_content" class="input-secondary" data-auto-resize="true" id="request_content" value="{{old('request_content')}}" cols="30" rows="8">{{ old('request_content') }}</textarea>
                 @error('request_content')
-                    <div class="text-red-500">{{ $message }}</div>
+                    <div class="validate-message">{{ $message }}</div>
                 @enderror
             </div>
-            <div>
-                <div class="w-full flex flex-col">
-                    <label for="response_content" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">回答</label>
-                    <textarea form="supportForm" name="response_content" class="w-auto py-1 border text-sm border-gray-300 rounded mt-1 placeholder-gray-400" id="response_content" data-auto-resize="true" value="{{old('response_content')}}" cols="30" rows="8">{{ old('response_content') }}</textarea>
-                </div>
+            <div class="w-full flex flex-col">
+                <label for="response_content" class="label-primary">回答</label>
+                <textarea form="supportForm" name="response_content" class="input-secondary" id="response_content" data-auto-resize="true" value="{{old('response_content')}}" cols="30" rows="8">{{ old('response_content') }}</textarea>
                 @error('response_content')
-                    <div class="text-red-500">{{ $message }}</div>
+                    <div class="validate-message">{{ $message }}</div>
                 @enderror
             </div>
 
             <div class="grid gap-2 mb-4 mt-4 sm:grid-cols-5">
                 <div class="">
-                    <label for="support_type_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">サポート種別</label>
-                    <select form="supportForm" id="support_type_id" name="support_type_id" class="block w-full py-1.5 border bg-gray-50 rounded mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <label for="support_type_id" class="label-primary ">サポート種別</label>
+                    <select form="supportForm" id="support_type_id" name="support_type_id" class="input-secondary">
                         <option selected value="">未選択</option>
                         @foreach($supportTypes as $supportType)
                             <option value="{{ $supportType->id }}" @selected($supportType->id == old('support_type_id'))>{{ $supportType->type_name }}</option>
                         @endforeach
                     </select>
                     @error('support_type_id')
-                        <div class="text-red-500">{{ $message }}</div>
+                        <div class="validate-message">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="">
-                    <label for="support_time_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">所要時間</label>
-                    <select form="supportForm" id="support_time_id" name="support_time_id" class="block w-full py-1.5 border bg-gray-50 rounded mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <label for="support_time_id" class="label-primary ">所要時間</label>
+                    <select form="supportForm" id="support_time_id" name="support_time_id" class="input-secondary">
                         <option selected value="">未選択</option>
                         @foreach($supportTimes as $supportTime)
                             <option value="{{ $supportTime->id }}" @selected($supportTime->id == old('support_time_id'))>{{ $supportTime->time_name }}</option>
                         @endforeach
                     </select>
                     @error('support_time_id')
-                        <div class="text-red-500">{{ $message }}</div>
+                        <div class="validate-message">{{ $message }}</div>
                     @enderror
                 </div>
 
                 <div class="">
-                    <label for="product_series_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">シリーズ</label>
-                    <select form="supportForm" id="product_series_id" name="product_series_id" class="block w-full py-1.5 border bg-gray-50 rounded mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <label for="product_series_id" class="label-primary ">シリーズ</label>
+                    <select form="supportForm" id="product_series_id" name="product_series_id" class="input-secondary">
                         <option selected value="">未選択</option>
                         @foreach($productSeriess as $productSeries)
                             <option value="{{ $productSeries->id }}" @selected($productSeries->id == old('product_series_id'))>{{ $productSeries->series_name }}</option>
                         @endforeach
                     </select>
                     @error('product_series_id')
-                        <div class="text-red-500">{{ $message }}</div>
+                        <div class="validate-message">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="">
-                    <label for="product_version_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">バージョン</label>
-                    <select form="supportForm" id="product_version_id" name="product_version_id" class="block w-full py-1.5 border bg-gray-50 rounded mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <label for="product_version_id" class="label-primary ">バージョン</label>
+                    <select form="supportForm" id="product_version_id" name="product_version_id" class="input-secondary">
                         <option selected value="">未選択</option>
                         @foreach($productVersions as $productVersion)
                             <option value="{{ $productVersion->id }}" @selected($productVersion->id == old('product_version_id'))>{{ $productVersion->version_name }}</option>
                         @endforeach
                     </select>
                     @error('product_version_id')
-                        <div class="text-red-500">{{ $message }}</div>
+                        <div class="validate-message">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="">
-                    <label for="product_category_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">系統</label>
-                    <select form="supportForm" id="product_category_id" name="product_category_id" class="block w-full py-1.5 border bg-gray-50 rounded mt-1 text-sm border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <label for="product_category_id" class="label-primary ">系統</label>
+                    <select form="supportForm" id="product_category_id" name="product_category_id" class="input-secondary">
                         <option selected value="">未選択</option>
                         @foreach($productCategories as $productCategory)
                             <option value="{{ $productCategory->id }}" @selected($productCategory->id == old('product_category_id'))>{{ $productCategory->category_name }}</option>
                         @endforeach
                     </select>
                     @error('product_category_id')
-                        <div class="text-red-500">{{ $message }}</div>
+                        <div class="validate-message">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
             <div class="grid gap-2 mb-4 sm:grid-cols-2">
                 <div class="w-full flex flex-col">
-                    <label for="internal_message" class="text-sm dark:text-red-400 text-red-400 leading-none mt-4">社内連絡欄</label>
-                    <textarea form="supportForm" name="internal_message" class="w-auto py-1 border text-sm border-gray-300 rounded mt-1 placeholder-gray-400" id="internal_message" data-auto-resize="true" value="{{old('internal_message')}}" cols="30" rows="5">{{ old('internal_message') }}</textarea>
+                    <label for="internal_message" class="label-primary">社内連絡欄</label>
+                    <textarea form="supportForm" name="internal_message" class="input-secondary" id="internal_message" data-auto-resize="true" value="{{old('internal_message')}}" cols="30" rows="5">{{ old('internal_message') }}</textarea>
                 </div>
                 @error('internal_message')
-                    <div class="text-red-500">{{ $message }}</div>
+                    <div class="validate-message">{{ $message }}</div>
                 @enderror
                 <div class="w-full flex flex-col">
-                    <label for="internal_memo1" class="text-sm dark:text-red-400 text-red-400 leading-none mt-4">社内メモ欄</label>
-                    <textarea form="supportForm" name="internal_memo1" class="w-auto py-1 border text-sm border-gray-300 rounded mt-1 placeholder-gray-400" id="internal_memo1" data-auto-resize="true" value="{{old('internal_memo1')}}" cols="30" rows="5">{{ old('internal_memo1') }}</textarea>
+                    <label for="internal_memo1" class="label-primary">社内メモ欄</label>
+                    <textarea form="supportForm" name="internal_memo1" class="input-secondary" id="internal_memo1" data-auto-resize="true" value="{{old('internal_memo1')}}" cols="30" rows="5">{{ old('internal_memo1') }}</textarea>
                 </div>
                 @error('internal_memo1')
-                    <div class="text-red-500">{{ $message }}</div>
+                    <div class="validate-message">{{ $message }}</div>
                 @enderror
             </div>
             <ul class=" mt-4 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
@@ -253,7 +232,7 @@
                         <label for="is_finished" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">対応完了済</label>
                     </div>
                     @error('is_finished')
-                        <div class="text-red-500">{{ $message }}</div>
+                        <div class="validate-message">{{ $message }}</div>
                     @enderror
                 </li>
                 <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
@@ -262,7 +241,7 @@
                         <label for="is_faq_target" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">FAQ対象</label>
                     </div>
                     @error('is_faq_target')
-                        <div class="text-red-500">{{ $message }}</div>
+                        <div class="validate-message">{{ $message }}</div>
                     @enderror
                 </li>
                 <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
@@ -271,7 +250,7 @@
                         <label for="is_disclosured" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">顧客開示</label>
                     </div>
                     @error('is_disclosured')
-                        <div class="text-red-500">{{ $message }}</div>
+                        <div class="validate-message">{{ $message }}</div>
                     @enderror
                 </li>
                 <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
@@ -280,7 +259,7 @@
                         <label for="is_troubled" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">トラブル</label>
                     </div>
                     @error('is_troubled')
-                        <div class="text-red-500">{{ $message }}</div>
+                        <div class="validate-message">{{ $message }}</div>
                     @enderror
                 </li>
                 <li class="w-full dark:border-gray-600">
@@ -289,7 +268,7 @@
                         <label for="is_confirmed" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">上長確認済</label>
                     </div>
                     @error('is_confirmed')
-                        <div class="text-red-500">{{ $message }}</div>
+                        <div class="validate-message">{{ $message }}</div>
                     @enderror
                 </li>
             </ul>
@@ -315,7 +294,7 @@
                 </div>
 
                 <!-- 顧客情報 -->
-                <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                <div class="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg">
                     <h3 class="text-lg font-semibold text-gray-700 dark:text-white mb-4">顧客情報</h3>
                     <div class="grid gap-4">
                         <div class="flex">
@@ -349,23 +328,8 @@
                     </div>
                 </div>
 
-                <!-- 担当者情報 -->
-                {{-- <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
-                    <h3 class="text-lg font-semibold text-gray-700 dark:text-white mb-4">担当者情報</h3>
-                    <div class="grid gap-4">
-                        <div class="flex">
-                            <span class="w-24 font-semibold text-gray-600 dark:text-gray-300">氏名</span>
-                            <span class="text-gray-600 dark:text-gray-200">山田 太郎</span>
-                        </div>
-                        <div class="flex">
-                            <span class="w-24 font-semibold text-gray-600 dark:text-gray-300">役職</span>
-                            <span class="text-gray-600 dark:text-gray-200">営業部長</span>
-                        </div>
-                    </div>
-                </div> --}}
-
                 <!-- 連絡先 -->
-                <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                <div class="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg">
                     <h3 class="text-lg font-semibold text-gray-700 dark:text-white mb-4">代表連絡先</h3>
                     <div class="grid gap-4">
                         <div class="flex">
@@ -403,9 +367,9 @@
                 </div>
 
                 <!-- 契約情報 -->
-                <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
-                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300">契約情報</h3>
-                    <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">契約情報</h3>
+                    <div class="bg-gray-100 dark:bg-gray-700 p-0.5 rounded-lg overflow-x-auto">
                         <table class="w-full mt-2 border-collapse border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300">
                             <thead>
                                 <tr class="bg-gray-200 dark:bg-gray-600">
@@ -464,6 +428,25 @@
             {{-- サポート履歴の一覧をJSONで取得するか。 --}}
         </div>
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         <!-- 顧客担当者検索 Modal -->
         <div id="clientPersonSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden animate-slide-in-top">
@@ -532,27 +515,27 @@
 
     <script>
         // モーダルを表示するための関数
+        const clientPersonSearchModal = document.getElementById('clientPersonSearchModal');
+        const overlay = document.getElementById('overlay');
+
+
         function showClientPersonModal() {
-            // モーダルの要素を取得
-            const modal = document.getElementById('clientPersonSearchModal');
             //背後の操作不可を有効
-            const overlay = document.getElementById('overlay').classList.remove('hidden');
+            overlay.classList.remove('hidden');
             document.body.classList.add('overflow-hidden');
 
             // モーダルを表示するためのクラスを追加
-            modal.classList.remove('hidden');
+            clientPersonSearchModal.classList.remove('hidden');
         }
 
         // モーダルを非表示にするための関数
         function hideClientPersonModal() {
-            // モーダルの要素を取得
-            const modal = document.getElementById('clientPersonSearchModal');
             //背後の操作不可を解除
-            const overlay = document.getElementById('overlay').classList.add('hidden');
+            overlay.classList.add('hidden');
             document.body.classList.remove('overflow-hidden');
 
             // モーダルを非表示にするためのクラスを削除
-            modal.classList.add('hidden');
+            clientPersonSearchModal.classList.add('hidden');
         }
 
         // 検索ボタンを押した時の処理
@@ -587,21 +570,15 @@
             });
             }
 
-            function setClientPerson(name, number, installation, affiliation2, clienttype, user) {
-            document.getElementById('client_num').value = number;
-            document.getElementById('client_name').value = name;
-            document.getElementById('installation_type_id').value = installation;
-            document.getElementById('affiliation2').value = affiliation2;
-            document.getElementById('client_type_id').value = clienttype;
-            document.getElementById('user_id').value = user;
-
-            hideClientPersonModal();
+            function setClientPerson(name) {
+                document.getElementById('client_person_name').value = name;
+                hideClientPersonModal();
             }
     </script> 
 
 
     <x-modals.client-search-modal
-        modalId="clientSearchModal1"
+        modalId="clientSearchModal"
         screenId="order_entry"
         :users="$users"
         onSelectCallback="handleClientSelect"
@@ -613,12 +590,12 @@
             document.getElementById('client_id').value = client.id;
             document.getElementById('client_num').value = client.client_num;
             document.getElementById('client_name').value = client.client_name;
-            document.getElementById('sales_user').value = client.user.user_name;
+            // document.getElementById('sales_user').value = client.user.user_name;
             document.getElementById('affiliation2').value = client.affiliation2.affiliation2_name;
         }
 
         // モーダルのコールバック関数を設定
-        window.clientSearchModal1_onSelect = handleClientSelect;
+        window.clientSearchModal_onSelect = handleClientSelect;
 
         // 顧客情報の更新を明示的に呼び出し
         if (window.clientInfoManager) {

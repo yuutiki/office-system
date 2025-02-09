@@ -73,6 +73,10 @@ class CorporationController extends Controller
             ])
             ->sortable()
             ->paginate($perPage);
+
+        // 検索結果の全 corporation_id を取得しセッションに保存
+        $corporationIds = $corporations->pluck('id')->toArray();
+        session()->put('corporation_ids', $corporationIds);
             
         // 検索結果の件数を取得
         $count = $corporations->total();
@@ -169,7 +173,17 @@ class CorporationController extends Controller
         // 最新の与信情報を取得
         $latestCredit = $corporation->credits()->orderBy('created_at', 'desc')->first();
 
-        return view('corporations.edit',compact('corporation','prefectures','activeTab','credits', 'latestCredit',));
+        // セッションから検索結果のIDリストを取得
+        $corporationIds = session('corporation_ids', []);
+
+        // 現在のIDの位置を検索
+        $currentIndex = array_search($id, $corporationIds);
+
+        // 前後のIDを取得
+        $prevId = $currentIndex > 0 ? $corporationIds[$currentIndex - 1] : null;
+        $nextId = $currentIndex < count($corporationIds) - 1 ? $corporationIds[$currentIndex + 1] : null;
+
+        return view('corporations.edit',compact('corporation', 'prefectures', 'activeTab', 'credits', 'latestCredit', 'prevId', 'nextId'));
     }
 
     public function update(CorporationUpdateRequest $request, string $id)

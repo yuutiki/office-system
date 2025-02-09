@@ -55,6 +55,8 @@ use App\Http\Controllers\ModelHistoryController;
 use App\Http\Controllers\PasswordPolicyController;
 use App\Http\Controllers\ProjectExpenseController;
 use App\Models\EstimateAddress;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -175,9 +177,10 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/products', ProductController::class);
 
     // support関連
-    Route::get('/support/show-upload', [SupportController::class, 'showUploadForm'])->name('support.showUploadForm');
-    Route::post('/support/upload', [SupportController::class, 'upload'])->name('support.upload');
-    Route::resource('/support', '\App\Http\Controllers\SupportController');
+    Route::get('/supports/show-upload', [SupportController::class, 'showUploadForm'])->name('supports.showUploadForm');
+    Route::post('/supports/upload', [SupportController::class, 'upload'])->name('supports.upload');
+    Route::get('supports/create/{client}', [SupportController::class, 'createFromClient'])->name('supports.createFromClient')->whereNumber('client'); // 顧客からの新規作成ルート,clientのIDが数値であることを保証
+    Route::resource('/supports', '\App\Http\Controllers\SupportController');
 
     // repport関連
     Route::get('/report/{report_id}/comment', [CommentController::class, 'show'])->name('comment.show');
@@ -240,6 +243,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::post('/notifications/{notification}/read', [NotificationController::class, 'read'])->name('notifications.read');
     Route::post('/notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.read-all');
+
+    // Route::post('api/links/update', [LinkController::class, 'update'])
+    // ->middleware(HandlePrecognitiveRequests::class)
+    // ->name('api.links.update');
+
+    Route::put('/api/links/{link}/update', [LinkController::class, 'update'])
+    ->middleware(HandlePrecognitiveRequests::class)
+    ->name('api.links.update');
 
 
     Route::resource('/link', '\App\Http\Controllers\LinkController');

@@ -10,7 +10,7 @@
             <x-message :message="session('message')" />
             <div class="flex flex-col flex-shrink-0 space-y-1 w-auto md:flex-row md:space-y-0 md:space-x-3 items-center">
 
-                <x-buttons.add-button :route="route('support.create')" gate="storeUpdate_supports" :text="__('Add')" />
+                <x-buttons.add-button :route="route('supports.create')" gate="storeUpdate_supports" :text="__('Add')" />
 
                 <div class="flex items-center w-full space-x-3 hidden md:w-auto md:inline-block">
                     <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded md:w-auto hover:bg-gray-100 hover:text-blue-700 focus:z-10 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" type="button">
@@ -23,7 +23,7 @@
                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
                             <li>
                                 @can('admin_clients')
-                                    <button type="button" onclick="location.href='{{ route('support.showUploadForm') }}'" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                    <button type="button" onclick="location.href='{{ route('supports.showUploadForm') }}'" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
                                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                             <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2M8 9l4-5 4 5m1 8h0"/>
@@ -73,7 +73,7 @@
     <div class="relative bg-white dark:bg-gray-800 rounded-t-md md:w-auto md:ml-14 md:mr-2 m-auto shadow-md  dark:text-gray-900 mt-4">
         <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
             <div class="w-full">
-                <form method="GET" action="{{ route('support.index') }}" id="search_form" class="flex items-center">
+                <form method="GET" action="{{ route('supports.index') }}" id="search_form" class="flex items-center">
                     @csrf
                     <div class="flex flex-col md:flex-row w-full">
                         <label for="simple-search" class="sr-only">Search</label>
@@ -124,7 +124,7 @@
                                         </button>
                                     </div>
                                     <!-- Modal body -->
-                                    <div class="mt-4">
+                                    {{-- <div class="mt-4">
                                         <label for="clientNumber" class="dark:text-white text-sm text-gray-900 leading-none mx-2">課税/免税</label>
                                         <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
                                             <li class="flex justify-center items-center">
@@ -146,44 +146,43 @@
                                                 </label>
                                             </li>
                                         </ul>
+                                    </div> --}}
+
+                                    <div class="mt-4">
+                                        <label for="clientNumber" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">サポート種別</label>
+                                        <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
+                                            @foreach ($supportTypes as $supportType)
+                                                <li class="flex justify-center items-center">
+                                                    <input type="checkbox" id="supportType-{{ $supportType->id }}" 
+                                                        @checked(in_array($supportType->id, $selectedSupportTypes ?? [])) 
+                                                        value="{{ $supportType->id }}" 
+                                                        name="support_types[]" 
+                                                        class="hidden peer touch-none">
+                                                    <label for="supportType-{{ $supportType->id }}" class="checkbox-label">
+                                                        <div class="w-full text-sm font-medium text-center">{{ $supportType->type_name }}</div>
+                                                    </label>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <label for="clientNumber" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">製品系統</label>
+                                        <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
+                                            @foreach ($productCategories as $productCategory)
+                                                <li class="flex justify-center items-center">
+                                                    <input type="checkbox" id="category-{{ $productCategory->id }}" 
+                                                        @checked(in_array($productCategory->id, $selectedProductCategories ?? [])) 
+                                                        value="{{ $productCategory->id }}" 
+                                                        name="product_categories[]" 
+                                                        class="hidden peer touch-none">
+                                                    <label for="category-{{ $productCategory->id }}" class="checkbox-label">
+                                                        <div class="w-full text-sm font-medium text-center">{{ $productCategory->category_name }}</div>
+                                                    </label>
+                                                </li>
+                                            @endforeach
+                                        </ul>
                                     </div>
 
-                                    <label for="clientNumber" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">サポート種別</label>
-                                    <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
-                                        @foreach ($supportTypes as $supportType)
-                                            <li class="flex justify-center items-center">
-                                                <input type="checkbox" id="supportType-{{ $supportType->id }}" 
-                                                    @checked(in_array($supportType->id, $selectedSupportTypes ?? [])) 
-                                                    value="{{ $supportType->id }}" 
-                                                    name="support_types[]" 
-                                                    class="hidden peer touch-none">
-                                                <label for="supportType-{{ $supportType->id }}" class="checkbox-label">
-                                                    <div class="w-full text-sm font-medium text-center">{{ $supportType->type_name }}</div>
-                                                </label>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-
-
-                                    <label for="clientNumber" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">製品系統</label>
-
-
-                                    <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
-                                        @foreach ($productCategories as $productCategory)
-                                            <li class="flex justify-center items-center">
-                                                <input type="checkbox" id="category-{{ $productCategory->id }}" 
-                                                    @checked(in_array($productCategory->id, $selectedProductCategories ?? [])) 
-                                                    value="{{ $productCategory->id }}" 
-                                                    name="product_categories[]" 
-                                                    class="hidden peer touch-none">
-                                                <label for="category-{{ $productCategory->id }}" class="checkbox-label">
-                                                    <div class="w-full text-sm font-medium text-center">{{ $productCategory->category_name }}</div>
-                                                </label>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-
-                                        
                                     <!-- Modal footer -->
                                     <div class="flex items-center justify-end p-3 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
                                         <button type="button" onclick="hideModal()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
@@ -215,6 +214,12 @@
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <span class="sr-only">編集</span>
+                    </th>
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                        <div class="flex items-center">
+                            @sortablelink('is_draft','ステータス')
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
+                        </div>
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
@@ -293,7 +298,7 @@
                             {{ $loop->iteration }}
                         </td>
                         <td class="pl-4 py-1 whitespace-nowrap">
-                            <button type="button" onclick="location.href='{{route('support.edit',$support)}}'"  class="button-edit-primary">
+                            <button type="button" onclick="location.href='{{route('supports.edit',$support)}}'"  class="button-edit-primary">
                                 <div class="flex items-center">
                                     <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
@@ -301,6 +306,17 @@
                                     <span class=" md:block hidden">編集</span>
                                 </div>
                             </button>
+                        </td>
+                        <td class="px-1 py-1 whitespace-nowrap mr-2">
+                            @if($support->is_draft)
+                                <span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-400 border border-yellow-400">
+                                    下書き
+                                </span>
+                            @else
+                                <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                    入力完了
+                                </span>
+                            @endif
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
                             {{ $support->client->client_num }}
@@ -367,7 +383,7 @@
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                                     </svg>
                                     <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
-                                    <form action="{{route('support.destroy',$support->id)}}" method="POST" class="text-center m-auto">
+                                    <form action="{{route('supports.destroy',$support->id)}}" method="POST" class="text-center m-auto">
                                         @csrf
                                         @method('delete')
                                         <button type="submit" data-modal-hide="deleteModal-{{$support->id}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-2 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-s rounded-e text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
@@ -394,7 +410,7 @@
                                 </svg>
                             </button>
                         </div>
-                        <form id="updateForm-{{$support->id}}" method="POST" action="{{ route('support.update', $support->id) }}">
+                        <form id="updateForm-{{$support->id}}" method="POST" action="{{ route('supports.update', $support->id) }}">
                             @csrf
                             @method('PUT')
 
@@ -654,7 +670,7 @@
             <!-- Modal body -->
 
             <div class="p-6 space-y-6 mr-20 mt-4">
-                <form action="{{ route('support.upload') }}" method="POST" enctype="multipart/form-data" class="flex items-center" id="csv_form1">
+                <form action="{{ route('supports.upload') }}" method="POST" enctype="multipart/form-data" class="flex items-center" id="csv_form1">
                     @csrf
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="csv_upload"></label>
                     <input type="file" name="csv_upload"  id="csv_upload_file"  class="block w-full text-sm text-gray-900 border border-gray-300 rounded-s rounded-e cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="csv_upload_help">

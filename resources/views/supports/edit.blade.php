@@ -115,7 +115,7 @@
 
             <!-- サポート情報タブ -->
         <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800 md:p-4 mb-4" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-            <form id="form1" method="post" action="{{route('support.update',$support)}}" enctype="multipart/form-data" autocomplete="new-password">
+            <form id="form1" method="post" action="{{route('supports.update',$support)}}" enctype="multipart/form-data" autocomplete="new-password">
                 @csrf
                 @method('patch')
 
@@ -494,7 +494,7 @@
                     </svg>
                     <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
                     <div class="flex justify-center">
-                        <form action="{{route('support.destroy',$support->id)}}" method="POST" class="">
+                        <form action="{{route('supports.destroy',$support->id)}}" method="POST" class="">
                             @csrf
                             @method('delete')
                             <button type="submit" data-modal-hide="deleteModal-{{$support->id}}" class="text-white  bg-red-600 hover:bg-red-800 focus:outline-none font-medium rounded text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 dark:focus:ring-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">

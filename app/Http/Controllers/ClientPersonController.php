@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ClientPerson\StoreClientPersonRequest;
@@ -14,13 +13,12 @@ use Goodby\CSV\Import\Standard\Interpreter;
 use Goodby\CSV\Import\Standard\LexerConfig;
 use Illuminate\Support\Facades\DB;
 
-
 class ClientPersonController extends Controller
 {
     public function index()
     {
-        $per_page = 50;   
-        $clientPersons = ClientPerson::with(['client'])->orderBy('client_id','asc')->paginate($per_page);
+        $perPage = config('constants.perPage');   
+        $clientPersons = ClientPerson::with(['client'])->orderBy('client_id','asc')->paginate($perPage);
 
         $count = $clientPersons->total();
 
@@ -149,6 +147,39 @@ class ClientPersonController extends Controller
     {
         $clientPerson->delete();
         return redirect()->route('client-person.index')->with('success', '正常に削除しました');
+    }
+
+    public function search(Request $request)
+    {
+        // 既存の検索ロジックを活用しつつ、新しい要件に対応※下記は適当
+        $query = ClientPerson::query();
+
+        if (!empty($request->client_name)) {
+            $query->where('client_name', 'LIKE', '%' . $request->client_name . '%');
+        }
+
+        if (!empty($request->client_number)) {
+            $query->where('client_num', 'LIKE', '%' . $request->client_number . '%');
+        }
+
+        if (!empty($request->affiliation2_id)) {
+            $query->where('affiliation2_id', $request->affiliation2_id);
+        }
+
+        // Eager Loadingは維持
+        $clients = $query->with('products', 'affiliation2', 'corporation', 'user')->get();
+
+        // 画面IDに応じた表示項目を取得
+        $displayItems = ClientSearchModalDisplayItem::where('screen_id', $request->screen_id)
+            ->where('is_visible', true)
+            ->orderBy('display_order')
+            ->get();
+
+        // 新しいレスポンス形式に合わせて返却
+        return response()->json([
+            'results' => $clients,
+            'displayItems' => $displayItems
+        ]);
     }
 
 

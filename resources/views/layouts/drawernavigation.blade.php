@@ -262,7 +262,7 @@
                     <ul  class="hidden py-1 space-y-1" id="support-body" aria-labelledby="support-heading">
                         @can('view_supports')
                             <li>
-                                <x-nav-link :href="route('support.index')" :active="request()->routeIs('support.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                <x-nav-link :href="route('supports.index')" :active="request()->routeIs('supports.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                                     <span class="flex-1 ml-10 whitespace-nowrap">{{ __('サポート一覧') }}</span>
                                 </x-nav-link>
                             </li>
@@ -338,7 +338,7 @@
                     </button>
                     <ul  class="hidden py-1 space-y-1" id="workflow-body" aria-labelledby="workflow-heading">
                         <li>
-                            <x-nav-link :href="route('support.index')" :active="request()->routeIs('support.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                            <x-nav-link :href="route('supports.index')" :active="request()->routeIs('supports.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                                 <span class="flex-1 ml-10 whitespace-nowrap">{{ __('テンプレート一覧') }}</span>
                             </x-nav-link>
                         </li>
@@ -561,7 +561,7 @@
                         <ul class="hidden py-1 space-y-1" id="sm-support-body" aria-labelledby="sm-support-heading">
                             <li>
                                 @can('view_supports')
-                                    <x-nav-link :href="route('support.index')" :active="request()->routeIs('support.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                    <x-nav-link :href="route('supports.index')" :active="request()->routeIs('supports.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                                         <span class="flex-1 pt-1 ml-10 whitespace-nowrap">{{ __('サポート一覧') }}</span>
                                     </x-nav-link>
                                 @endcan
@@ -629,7 +629,7 @@
                         </button>
                         <ul  class="hidden py-1 space-y-1" id="sm-workflow-body" aria-labelledby="sm-workflow-heading">
                             <li>
-                                <x-nav-link :href="route('support.index')" :active="request()->routeIs('support.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                <x-nav-link :href="route('supports.index')" :active="request()->routeIs('supports.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                                     <span class="flex-1 ml-10 whitespace-nowrap">{{ __('テンプレート一覧') }}</span>
                                 </x-nav-link>
                             </li>

@@ -321,6 +321,7 @@ return [
         "corporation_kana_name" => "法人カナ名称",
         "corporation_short_name" => "法人略称",
 
+        "client_id" => "顧客No.",
         "client_num" => "顧客No.",
         "client_name" => "顧客名称",
         "client_kana_name" => "顧客カナ名称",
@@ -344,6 +345,13 @@ return [
         "report_title" => "報告タイトル",
         "report_content" => "報告内容",
         "report_notice" => "特記事項",
+        
+        "support_type_id" => "サポート種別",
+        "support_time_id" => "サポート所要時間",
+        "product_series_id" => "製品シリーズ",
+        "product_version_id" => "製品バージョン",
+        "product_category_id" => "製品カテゴリ",
+        "title" => "タイトル",
     ],
 
 ];

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Support\SupportStoreRequest;
@@ -59,12 +58,11 @@ class SupportController extends Controller
 
         // サポート検索クエリ
         $supportsQuery = Support::with([
-            'client', 'user', 'productSeries', 'productVersion', 'productCategory', 'supportType', 'supportTime'])->orderby('received_at', 'desc')->sortable();
+            'client', 'user', 'productSeries', 'productVersion', 'productCategory', 'supportType', 'supportTime'])->orderby('received_at', 'desc')->orderby('created_at', 'desc')->sortable();
 
         if (!empty($selectedSupportTypes)) {
             $supportsQuery->whereIn('support_type_id', $selectedSupportTypes);
         }
-
 
         if (!empty($clientName)) {
             // Clientモデルからclient_nameをもとにIDを取得
@@ -87,68 +85,46 @@ class SupportController extends Controller
         }
 
         // ページネーション設定
-        $per_page = config('constants.perPage');
-        $supports = $supportsQuery->paginate($per_page);
+        $perPage = config('constants.perPage');
+        $supports = $supportsQuery->paginate($perPage);
         $count = $supports->total(); // ページネーション後の総数を取得
 
-        return view('support.index', compact('supports', 'count', 'supportTypes' ,'selectedSupportTypes','keywords','users','supportTimes','productCategories','selectedProductCategories','clientName','productVersions','productSeriess'));
+        return view('supports.index', compact('supports', 'count', 'supportTypes' ,'selectedSupportTypes','keywords','users','supportTimes','productCategories','selectedProductCategories','clientName','productVersions','productSeriess'));
     }
 
     public function create()
     {
         $users = User::all();  //受付対応者用
+        $supportTypes = SupportType::all(); //サポート種別
+        $supportTimes = SupportTime::all(); //サポート所要時間
         $productSeriess = ProductSeries::all();  //製品シリーズ
         $productVersions = ProductVersion::orderby('version_code','desc')->get();  //製品バージョン
         $productCategories = ProductCategory::all();  // 製品系統
+
+        $affiliation2s = Affiliation2::all();
+        $client = null;
+
+        return view('supports.create', compact('users', 'supportTypes', 'supportTimes', 'productSeriess', 'productVersions', 'productCategories', 'affiliation2s', 'client'));
+    }
+
+    public function createFromClient(Client $client)
+    {
+        $users = User::all();  //受付対応者用
         $supportTypes = SupportType::all(); //サポート種別
         $supportTimes = SupportTime::all(); //サポート所要時間
-        $installationTypes = InstallationType::all();
-        $clientTypes = ClientType::all();
+        $productSeriess = ProductSeries::all();  //製品シリーズ
+        $productVersions = ProductVersion::orderby('version_code','desc')->get();  //製品バージョン
+        $productCategories = ProductCategory::all();  // 製品系統
+
         $affiliation2s = Affiliation2::all();
 
-        $clientId = Session::get('selected_client_id');
-        $clientNum = Session::get('selected_client_num');
-        $clientName = Session::get('selected_client_name');
-
-        return view('support.create',compact('users','productSeriess','productVersions','productCategories','supportTypes','supportTimes','installationTypes','clientTypes','affiliation2s','clientNum','clientName','clientId'));
+        return view('supports.create', compact('users', 'supportTypes', 'supportTimes', 'productSeriess', 'productVersions', 'productCategories', 'affiliation2s', 'client'));
     }
 
     public function store(SupportStoreRequest $request)
     {
-        $clientId = $request->input('client_id');
-
-        //問合せ連番を採番
-        $requestNumber = Support::generateRequestNumber($clientId);
-
-        // サポート履歴データを保存
-        $support = new Support();
-        $support->client_id = $clientId; // 予めclient_numから取得したclient_idをセット
-        $support->request_num = $requestNumber;// 採番した問合せ連番をセット
-        $support->received_at = $request->received_at;
-        $support->title = $request->title;
-        $support->request_content = $request->request_content;
-        $support->response_content = $request->response_content;
-        $support->internal_message = $request->internal_message;
-        $support->internal_memo1 = $request->internal_memo1;
-        $support->user_id = $request->user_id;// 受付対応者
-        $support->client_user_department = $request->client_user_department;
-        $support->client_user_kana_name = $request->client_user_kana_name;
-
-        $support->support_type_id = $request->support_type_id;
-        $support->support_time_id = $request->support_time_id;
-        $support->product_series_id = $request->product_series_id;
-        $support->product_version_id = $request->product_version_id;
-        $support->product_category_id = $request->product_category_id;
-        $support->is_finished = $request->has('is_finished') ? 1 : 0;
-        $support->is_disclosured = $request->has('is_disclosured') ? 1 : 0;
-        $support->is_confirmed = $request->has('is_confirmed') ? 1 : 0;
-        $support->is_troubled = $request->has('is_troubled') ? 1 : 0;
-        $support->is_faq_target = $request->has('is_faq_target') ? 1 : 0;
-        $support->save();
-
-        $request->session()->forget('selected_client_id');
-        $request->session()->forget('selected_client_num');
-        $request->session()->forget('selected_client_name');
+        // サポート履歴データを作成
+        $support = Support::createSupport($request->validated());
 
         // 通知の内容を設定
         $notificationData = [
@@ -157,10 +133,11 @@ class SupportController extends Controller
             'notification_type' => '0', // システム通知
             'notification_category'=> '',
             'importance'=> 0, // 通常
-            'action_url' => route('support.edit', ['support' => $support->id]),// 例: 日報を表示するURL
+            'action_url' => route('supports.edit', ['support' => $support->id]),// 例: 日報を表示するURL
             // 他の通知に関する情報をここで設定
         ];
 
+        // 通知の送信元を設定
         $notificationFrom = [
             'id' => $support->user->id,
             'name' => $support->user->user_name,
@@ -170,18 +147,20 @@ class SupportController extends Controller
             // 必要に応じて他のユーザー情報を追加
         ];
 
-        // 日報を登録したユーザーに通知を送信
-        $user = $support->client->user_id;
-        $userEigyou = User::find($user);
+        // 通知の送信先を設定（顧客の営業担当）
+        $clientSalesUser = User::find($support->client->user_id);
 
         // 通知の作成
-        $notification = new AppNotification($notificationData, $notificationFrom); // $support を通知データとして渡す
+        $notification = new AppNotification($notificationData, $notificationFrom);
 
         // 通知の送信
-        $this->notificationService->sendNotification($userEigyou, $notification);
+        $this->notificationService->sendNotification($clientSalesUser, $notification);
 
-
-        return redirect()->route('support.index')->with('message', '登録しました');
+        if($request->is_draft) {
+            return redirect()->route('supports.index')->with('success', '正常に一時保存しました');
+        }else {
+            return redirect()->route('supports.index')->with('success', '正常に登録しました');
+        }
     }
 
     public function show(Support $support)
@@ -191,11 +170,7 @@ class SupportController extends Controller
 
     public function edit(Support $support)
     {
-        // $clients = Client::all();
         $users = User::all();
-        $tradeStatuses = TradeStatus::all();
-        $clientTypes = ClientType::all();
-        $installationTypes = InstallationType::all();
         $affiliation2s = Affiliation2::all();
         $productSeriess = ProductSeries::all();  //製品シリーズ
         $productVersions = ProductVersion::all();  //製品バージョン
@@ -205,10 +180,6 @@ class SupportController extends Controller
 
         $support = Support::find($support->id);
         $clientId = $support->client_id;
-
-        // $client = Client::findOrFail($clientId);
-
-        // $clientSystems = $client->products;
 
         // 特定のクライアントを取得
         $client = Client::findOrFail($clientId);
@@ -220,24 +191,11 @@ class SupportController extends Controller
         session()->put('previous_url', url()->previous());
 
 
-        return view('support.edit',compact('users','tradeStatuses','clientTypes','installationTypes','affiliation2s','support','productSeriess','productVersions','productCategories','supportTypes','supportTimes', 'clientProducts',));
+        return view('supports.edit',compact('users', 'affiliation2s', 'support', 'productSeriess', 'productVersions', 'productCategories', 'supportTypes', 'supportTimes', 'clientProducts',));
     }
 
     public function update(Request $request, string $id)
     {
-
-        // // バリデーションルール
-        // $rules = [
-        //     'received_at' => 'required', 
-        // ];
-
-        // // バリデーション実行
-        // $validator = Validator::make($request->all(), $rules);
-        // // バリデーションエラーがある場合
-        // if ($validator->fails()) {
-        //     session()->flash('error', '入力内容にエラーがあります。');
-        //     return redirect()->back()->withErrors($validator)->withInput();
-        // }
 
         // $support = Support::find($id);
         // $support->received_at = $request->f_received_at;
@@ -283,37 +241,20 @@ class SupportController extends Controller
         $support->is_faq_target = $request->input('is_faq_target_' . $id);
         $support->save();
 
-        return redirect()->route('support.index')->with('success', '変更しました');
+        return redirect()->route('supports.index')->with('success', '変更しました');
     }
 
     public function destroy(string $id)
     {
         $support = Support::find($id);
-        // $projectId = $projectRevenue->project->id;
         $support->delete();
 
-        // return redirect()->route('project.edit', $projectId)->with('message', '削除しました');
-        return redirect()->back()->with('success', '正常に削除しました');
-
+        return redirect()->route('supports.index')->with('success', '正常に削除されました');            
     }
-
-    //モーダル用の非同期検索ロジック
-    // public function search(Request $request)
-    // {
-    //     $clientName = $request->input('clientName');
-    //     $clientNumber = $request->input('clientNumber');
-
-    //     // 検索条件に基づいて顧客データを取得
-    //     $clients = Client::where('client_name', 'LIKE', '%' . $clientName . '%')
-    //         ->where('client_num', 'LIKE', '%' . $clientNumber . '%')
-    //         ->get();
-
-    //     return response()->json($clients);
-    // }
 
     public function showUploadForm()
     {
-        return view('support.upload-form');
+        return view('supports.upload-form');
     }
 
 

@@ -264,7 +264,7 @@
                                 </svg>
                             </button>
                         </div>
-                        <form method="POST" action="{{ route('link.update', $link->id) }}">
+                        {{-- <form method="POST" action="{{ route('link.update', $link->id) }}">
                             @csrf
                             @method('PUT')
                             <div class="w-full flex flex-col col-span-2 mt-10">
@@ -308,7 +308,162 @@
                                     Delete
                                 </button>
                             </div>
-                        </form>
+                        </form> --}}
+
+                        {{-- <form method="POST" action="{{ route('link.update', $link->id) }}">
+                            @csrf
+                            @method('PUT')
+                            <div class="w-full flex flex-col col-span-2 mt-10">
+                                <label for="display_name-{{$link->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">表示名</label>
+                                <input type="text" maxlength="20" name="display_name" id="-{{$link->id}}" value="{{old('display_name',$link->display_name)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
+                            </div>
+                            @error('display_name')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                            <div class="w-full flex flex-col">
+                                <label for="affiliation2_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">対象事業部</label>
+                                <select name="affiliation2_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" id="affiliation2_id" value="{{old('affiliation2_id')}}" required>
+                                    @foreach($affiliation2s as $affiliation2)
+                                    <option value="{{ $affiliation2->id }}"  @selected($affiliation2->id == $link->affiliation2_id)>{{ $affiliation2->affiliation2_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @error('affiliation2_id')
+                                <div class="text-red-500">{{$message}}</div>
+                            @enderror
+                            <div class="w-full flex flex-col col-span-2">
+                                <label for="display_order-{{$link->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">表示順</label>
+                                <input type="number" min="1" max="99" name="display_order" id="display_order-{{$link->id}}" value="{{old('display_order',$link->display_order)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
+                            </div>
+                            @error('display_order')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                            <div class="w-full flex flex-col col-span-2">
+                                <label for="url-{{$link->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">URL</label>
+                                <input type="url" maxlength="100" name="url" id="url-{{$link->id}}" value="{{old('url',$link->url)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
+                            </div>
+                            @error('url')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
+                            <div class="grid grid-cols-2 gap-4 mt-4">
+                                <button type="submit" class="w-full justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    Update
+                                </button>
+                                <button type="button" class="w-full justify-center text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
+                                    <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                                    Delete
+                                </button>
+                            </div>
+                        </form> --}}
+                        
+                        <script>
+                            // デバッグ用：コンソールでデータを確認
+                            console.log('Link Data:', @json($link));
+                        </script>
+                        
+                        <form 
+                        x-data="{ 
+                            form: $form('PUT', '{{ route('api.links.update', $link->id) }}', {
+                                display_name: '{{ addslashes($link->display_name) }}',
+                                affiliation2_id: '{{ $link->affiliation2_id }}',
+                                display_order: '{{ $link->display_order }}',
+                                url: '{{ addslashes($link->url) }}' 
+                            }),
+                        }"
+                        x-init="
+                        $watch('form.errors', value => console.log('Validation errors:', value));
+                        $watch('form.data', value => console.log('Form data:', value));
+                    "
+                        @submit.prevent="form.submit()"
+                    >
+                        @csrf
+                        @method('PUT')
+                
+                        <!-- 表示名 -->
+                        <div class="w-full flex flex-col col-span-2 mt-4">
+                            <label for="display_name-{{$link->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none">表示名</label>
+                            <input 
+                                type="text" 
+                                maxlength="20" 
+                                name="display_name" 
+                                id="display_name-{{$link->id}}"
+                                x-model="form.data.display_name"
+                                value="{{ $link->display_name }}"
+                                @blur="form.validate('display_name')"
+                                class="input-secondary" 
+                            >
+                        </div>
+
+                        <!-- 対象事業部 -->
+                        <div class="w-full flex flex-col mt-4">
+                            <label for="affiliation2_id-{{$link->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none">対象事業部</label>
+                            <select 
+                                name="affiliation2_id" 
+                                id="affiliation2_id-{{$link->id}}"
+                                x-model="form.data.affiliation2_id"
+                                @change="form.validate('affiliation2_id')"
+                                class="input-secondary"
+                            >
+                                @foreach($affiliation2s as $affiliation2)
+                                    <option 
+                                        value="{{ $affiliation2->id }}"
+                                        {{ $link->affiliation2_id == $affiliation2->id ? 'selected' : '' }}
+                                    >
+                                        {{ $affiliation2->affiliation2_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- 表示順 -->
+                        <div class="w-full flex flex-col mt-4">
+                            <label for="display_order-{{$link->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none">表示順</label>
+                            <input 
+                                type="number" 
+                                min="1" 
+                                max="99" 
+                                name="display_order" 
+                                id="display_order-{{$link->id}}"
+                                x-model="form.data.display_order"
+                                value="{{ $link->display_order }}"
+                                @blur="form.validate('display_order')"
+                                class="input-secondary"
+                            >
+                        </div>
+
+                        <!-- URL -->
+                        <div class="w-full flex flex-col mt-4">
+                            <label for="url-{{$link->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none">URL</label>
+                            <input 
+                                type="url" 
+                                maxlength="100" 
+                                name="url" 
+                                id="url-{{$link->id}}"
+                                x-model="form.data.url"
+                                value="{{ $link->url }}"
+                                @blur="form.validate('url')"
+                                class="input-secondary"
+                            >
+                        </div>
+                
+                        <!-- ボタン -->
+                        <div class="grid grid-cols-2 gap-4 mt-6">
+                            <button 
+                                type="submit" 
+                                class="w-full justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center"
+                                :disabled="form.processing"
+                            >
+                                <span x-show="!form.processing">更新</span>
+                                <span x-show="form.processing">更新中...</span>
+                            </button>
+                            <button 
+                                type="button"
+                                class="w-full justify-center text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded text-sm px-5 py-2.5 text-center"
+                            >
+                                削除
+                            </button>
+                        </div>
+                    </form>
                     </div>
                 @endforeach
             </tbody>
