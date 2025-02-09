@@ -190,7 +190,6 @@ class SupportController extends Controller
 
         session()->put('previous_url', url()->previous());
 
-
         return view('supports.edit',compact('users', 'affiliation2s', 'support', 'productSeriess', 'productVersions', 'productCategories', 'supportTypes', 'supportTimes', 'clientProducts',));
     }
 
