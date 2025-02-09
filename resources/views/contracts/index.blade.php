@@ -85,7 +85,7 @@
     <div class="relative bg-white dark:bg-gray-800 rounded-t-md md:w-auto md:ml-14 md:mr-2 m-auto shadow-md  dark:text-gray-900 mt-4">
         <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
             <div class="w-full">
-                <form method="GET" action="{{ route('support.index') }}" id="search_form" class="flex items-center">
+                <form method="GET" action="{{ route('supports.index') }}" id="search_form" class="flex items-center">
                     @csrf
                     <div class="flex flex-col md:flex-row w-full">
                         <label for="simple-search" class="sr-only">Search</label>
@@ -336,7 +336,7 @@
             </div>
             <!-- Modal body -->
             <div class="p-6 space-y-6 mr-20 mt-4">
-                <form action="{{ route('support.upload') }}" method="POST" enctype="multipart/form-data" class="flex items-center" id="csv_form1">
+                <form action="{{ route('supports.upload') }}" method="POST" enctype="multipart/form-data" class="flex items-center" id="csv_form1">
                     @csrf
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="csv_upload"></label>
                     <input type="file" name="csv_upload"  id="csv_upload_file"  class="block w-full text-sm text-gray-900 border border-gray-300 rounded-s rounded-e cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="csv_upload_help">
