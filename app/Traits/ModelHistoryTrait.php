@@ -100,7 +100,10 @@ trait ModelHistoryTrait
         if ($operationType === 'updated') {
             return $this->getChangesWithOriginalExcludingUpdatedAt();
         } elseif ($operationType === 'created') {
-            return $this->getAttributesExcludingUpdatedAt();
+            // return $this->getAttributesExcludingUpdatedAt();
+            //         // "after" に作成データを入れる
+            $attributes = $this->getAttributesExcludingUpdatedAt();
+            return array_map(fn($value) => ['before' => null, 'after' => $value], $attributes);
         }
         // 'deleted' と 'retrieved' の場合はnullを返す
         return null;

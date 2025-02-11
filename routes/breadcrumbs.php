@@ -285,6 +285,13 @@ Breadcrumbs::for('dashboard', function ($trail) {
                     $trail->parent('masters');
                     $trail->push('顧客種別マスタ', url('client-type'));
                 });
+                
+                // ダッシュボード > マスタ一覧 >  顧客種別マスタ
+                Breadcrumbs::for('supportTypeMaster', function ($trail) {
+                    $trail->parent('masters');
+                    $trail->push('サポート種別マスタ', route('support-type.index'));
+                });
+
 
                 // ダッシュボード > マスタ一覧 >  都道府県マスタ
                 Breadcrumbs::for('prefectureMaster', function ($trail) {

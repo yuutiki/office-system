@@ -8,12 +8,13 @@ use Kyslik\ColumnSortable\Sortable;// add
 use Illuminate\Support\Facades\DB;// add
 use Illuminate\Support\Str;//add
 use App\Observers\GlobalObserver;
-
+use App\Traits\ModelHistoryTrait;
 
 class Support extends Model
 {
     use HasFactory;
     use Sortable;
+    use ModelHistoryTrait;
 
     protected $fillable = [
         'client_id',

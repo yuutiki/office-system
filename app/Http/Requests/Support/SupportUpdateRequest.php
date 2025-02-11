@@ -26,24 +26,38 @@ class SupportUpdateRequest extends FormRequest
 
         // 基本のバリデーション
         $rules = [
-            'client_num' => ['required'],
+            'client_id' => ['required'],
+            'received_at' => ['required', 'date'],
+            'user_id' => ['required',],
             'is_draft' => ['required', 'boolean'],
         ];
 
-        // 下書きではない場合の追加バリデーション
-        if (!$isDraft) {
-            $rules = array_merge($rules, [
-                'client_num' => ['required', 'size:12'],
-                'f_received_at' => ['required'],
-                'f_title' => ['required', 'max:500'],
-                'f_support_type_id' => ['required',],
-                'f_support_time_id' => ['required',],
-                'f_user_id' => ['required',],
-                'f_product_series_id' => ['required',],
-                'f_product_version_id' => ['required',],
-                'f_product_category_id' => ['required',],
-            ]);
-        }
+        // 必須チェックを下書きかどうかで切り替える
+        $requiredFields = !$isDraft ? ['required'] : ['nullable'];
+
+        // 下書きでない場合のバリデーション追加
+        $rules = array_merge($rules, [
+            'title' => array_merge($requiredFields, ['string', 'max:1000']),
+            'request_content' => array_merge($requiredFields, ['string', 'max:1000']),
+            'response_content' => array_merge($requiredFields, ['string', 'max:1000']),
+            'internal_message' => ['nullable', 'string', 'max:1000'],
+            'internal_memo1' => ['nullable', 'string', 'max:1000'],
+
+            'client_user_department' => ['nullable', 'string', 'max:100'],
+            'client_user_kana_name' => ['nullable', 'string', 'max:100'],
+
+            'support_type_id' => array_merge($requiredFields, ['exists:support_types,id']),
+            'support_time_id' => array_merge($requiredFields, ['exists:support_times,id']),
+            'product_series_id' => array_merge($requiredFields, ['exists:product_series,id']),
+            'product_version_id' => array_merge($requiredFields, ['exists:product_versions,id']),
+            'product_category_id' => array_merge($requiredFields, ['exists:product_categories,id']),
+
+            'is_finished' => ['nullable', 'boolean'],
+            'is_disclosured' => ['nullable', 'boolean'],
+            'is_confirmed' => ['nullable', 'boolean'],
+            'is_troubled' => ['nullable', 'boolean'],
+            'is_faq_target' => ['nullable', 'boolean'],
+        ]);
 
         return $rules;
     }

@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Support\SupportStoreRequest;
+use App\Http\Requests\Support\SupportUpdateRequest;
 use App\Models\Affiliation2;
 use App\Models\Client;
 use App\Models\ClientProduct;
@@ -193,54 +194,58 @@ class SupportController extends Controller
         return view('supports.edit',compact('users', 'affiliation2s', 'support', 'productSeriess', 'productVersions', 'productCategories', 'supportTypes', 'supportTimes', 'clientProducts',));
     }
 
-    public function update(Request $request, string $id)
+    public function update(SupportUpdateRequest $request, string $id)
     {
+        // Formrequestでバリデーション
+        // Modelで更新処理
+        // tryで存在確認、エラー時はリダイレクトしてerrorメッセージ出す
 
-        // $support = Support::find($id);
-        // $support->received_at = $request->f_received_at;
-        // $support->title = $request->f_title;
-        // $support->request_content = $request->f_request_content;
-        // $support->response_content = $request->f_response_content;
-        // $support->internal_message = $request->f_internal_message;
-        // $support->internal_memo1 = $request->f_internal_memo1;
-        // $support->support_type_id = $request->f_support_type_id;
-        // $support->support_time_id = $request->f_support_time_id;
-        // $support->user_id = $request->f_user_id;// 受付対応者
-        // $support->client_user_department = $request->f_client_user_department;
-        // $support->client_user_kana_name = $request->f_client_user_kana_name;
-        // $support->product_series_id = $request->f_product_series_id;
-        // $support->product_version_id = $request->f_product_version_id;
-        // $support->product_category_id = $request->f_product_category_id;
-        // $support->is_finished = $request->f_is_finished;
-        // $support->is_disclosured = $request->f_is_disclosured;
-        // $support->is_confirmed = $request->f_is_confirmed;
-        // $support->is_troubled = $request->f_is_troubled;
-        // $support->is_faq_target = $request->f_is_faq_target;
-        // $support->save();
-
-        $support = Support::find($id);
-        $support->received_at = $request->input('received_at_' . $id);
-        $support->title = $request->input('title_' . $id);
-        $support->request_content = $request->input('request_content_' . $id);
-        $support->response_content = $request->input('response_content_' . $id);
-        $support->internal_message = $request->input('internal_message_' . $id);
-        $support->internal_memo1 = $request->input('internal_memo1_' . $id);
-        $support->support_type_id = $request->input('support_type_id_' . $id);
-        $support->support_time_id = $request->input('support_time_id_' . $id);
-        $support->user_id = $request->input('user_id_' . $id);// 受付対応者
-        $support->client_user_department = $request->input('client_user_department_' . $id);
-        $support->client_user_kana_name = $request->input('client_user_kana_name_' . $id);
-        $support->product_series_id = $request->input('product_series_id_' . $id);
-        $support->product_version_id = $request->input('product_version_id_' . $id);
-        $support->product_category_id = $request->input('product_category_id_' . $id);
-        $support->is_finished = $request->input('is_finished_' . $id);
-        $support->is_disclosured = $request->input('is_disclosured_' . $id);
-        $support->is_confirmed = $request->input('is_confirmed_' . $id);
-        $support->is_troubled = $request->input('is_troubled_' . $id);
-        $support->is_faq_target = $request->input('is_faq_target_' . $id);
+        $support = Support::findOrFail($id);
+        $support->received_at = $request->received_at;
+        $support->title = $request->title;
+        $support->is_draft = $request->is_draft;
+        $support->request_content = $request->request_content;
+        $support->response_content = $request->response_content;
+        $support->internal_message = $request->internal_message;
+        $support->internal_memo1 = $request->internal_memo1;
+        $support->support_type_id = $request->support_type_id;
+        $support->support_time_id = $request->support_time_id;
+        $support->user_id = $request->user_id;// 受付対応者
+        $support->client_user_department = $request->client_user_department;
+        $support->client_user_kana_name = $request->client_user_kana_name;
+        $support->product_series_id = $request->product_series_id;
+        $support->product_version_id = $request->product_version_id;
+        $support->product_category_id = $request->product_category_id;
+        $support->is_finished = $request->is_finished;
+        $support->is_disclosured = $request->is_disclosured;
+        $support->is_confirmed = $request->is_confirmed;
+        $support->is_troubled = $request->is_troubled;
+        $support->is_faq_target = $request->is_faq_target;
         $support->save();
 
-        return redirect()->route('supports.index')->with('success', '変更しました');
+        // $support = Support::find($id);
+        // $support->received_at = $request->input('received_at_' . $id);
+        // $support->title = $request->input('title_' . $id);
+        // $support->request_content = $request->input('request_content_' . $id);
+        // $support->response_content = $request->input('response_content_' . $id);
+        // $support->internal_message = $request->input('internal_message_' . $id);
+        // $support->internal_memo1 = $request->input('internal_memo1_' . $id);
+        // $support->support_type_id = $request->input('support_type_id_' . $id);
+        // $support->support_time_id = $request->input('support_time_id_' . $id);
+        // $support->user_id = $request->input('user_id_' . $id);// 受付対応者
+        // $support->client_user_department = $request->input('client_user_department_' . $id);
+        // $support->client_user_kana_name = $request->input('client_user_kana_name_' . $id);
+        // $support->product_series_id = $request->input('product_series_id_' . $id);
+        // $support->product_version_id = $request->input('product_version_id_' . $id);
+        // $support->product_category_id = $request->input('product_category_id_' . $id);
+        // $support->is_finished = $request->input('is_finished_' . $id);
+        // $support->is_disclosured = $request->input('is_disclosured_' . $id);
+        // $support->is_confirmed = $request->input('is_confirmed_' . $id);
+        // $support->is_troubled = $request->input('is_troubled_' . $id);
+        // $support->is_faq_target = $request->input('is_faq_target_' . $id);
+        // $support->save();
+
+        return redirect()->back()->with('success', '正常に更新しました');
     }
 
     public function destroy(string $id)

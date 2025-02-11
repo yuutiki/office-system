@@ -22,18 +22,7 @@
     "If you did not receive the email,": "メールが届かない場合、",
     "click here to request another.": "こちらをクリックして再送信してください。",
     "Please confirm your password before continuing.": "続行するにはパスワードを入力してください。",
-    "save": "保存",
-    "saved.": "保存しました",
-    "Delete Account": "ユーザ削除",
-    "Delete": "削除",
-    "deleted": "削除",
-    "Update": "更新",
-    "updated": "更新",
-    "Print": "印刷",
-    "Add": "追加",
-    "created": "追加",
-    "Actions": "操作",
-    "Cancel": "キャンセル",
+
     "projectnum": "プロジェクト№",
     "clientname": "顧客名",
     "purpose": "用途",
@@ -50,10 +39,37 @@
     "Home": "ホーム",
     "Masters": "マスタ一覧",
 
+    "$comment01": "操作名",
+    "save": "保存",
+    "saved.": "保存しました",
+    "Delete Account": "ユーザ削除",
+
+    "delete": "削除",
+    "update": "更新",
+    "create": "作成",
+    "show": "参照",
+
+    "created": "作成",
+    "deleted": "削除",
+    "updated": "更新",
+
+
+    "Print": "印刷",
+    "Add": "追加",
+    "Actions": "操作",
+    "Cancel": "キャンセル",
+
+
+    "$comment": "モデル名",
     "Corporation": "法人データ",
     "Client": "顧客データ",
     "User": "ユーザーデータ",
     "Report": "営業報告データ",
+    "Support": "サポートデータ",
+    "Product": "製品データ",
+
+
+
     "System Setting": "システム設定",
     "Master Setting": "マスタ設定",
 

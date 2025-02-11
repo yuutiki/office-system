@@ -92,7 +92,7 @@
                 <div class="">
                     <label for="user_id" class="label-primary">受付対応者<span class="text-red-500 ml-2">*</span></label>
                     <select form="supportForm" id="user_id" name="user_id" class="input-secondary">
-                        <option selected value="">未選択</option>
+                        <option selected value="">---</option>
                         @foreach($users as $user)
                             <option value="{{ $user->id }}" @if($user->id == Auth::user()->id) selected @endif>{{ $user->user_name }}</option>
                         @endforeach
@@ -103,7 +103,7 @@
                 </div>
                 <div class="flex">
                     <div class="relative w-full">
-                        <label for="client_user_kana_name" class="label-primary" autocomplete="new-password">担当者 氏名</label>
+                        <label for="client_user_kana_name" class="label-primary" autocomplete="new-password">顧客 氏名</label>
                         <input type="text" form="supportForm" name="client_user_kana_name" class="input-secondary" id="client_user_kana_name" value="{{old('client_user_kana_name')}}" placeholder="">
                         @error('client_user_kana_name')
                             <div class="validate-message">{{ $message }}</div>
@@ -116,7 +116,7 @@
                     </button>
                 </div>
                 <div class="">
-                    <label for="client_user_department" class="label-primary">担当者 部署</label>
+                    <label for="client_user_department" class="label-primary">顧客 部署</label>
                     <input type="text" form="supportForm" name="client_user_department" class="input-secondary" id="client_user_department" value="{{old('client_user_department')}}" placeholder="">
                     @error('client_user_department')
                         <div class="validate-message">{{ $message }}</div>
@@ -150,7 +150,7 @@
                 <div class="">
                     <label for="support_type_id" class="label-primary ">サポート種別</label>
                     <select form="supportForm" id="support_type_id" name="support_type_id" class="input-secondary">
-                        <option selected value="">未選択</option>
+                        <option selected value="">---</option>
                         @foreach($supportTypes as $supportType)
                             <option value="{{ $supportType->id }}" @selected($supportType->id == old('support_type_id'))>{{ $supportType->type_name }}</option>
                         @endforeach
@@ -162,7 +162,7 @@
                 <div class="">
                     <label for="support_time_id" class="label-primary ">所要時間</label>
                     <select form="supportForm" id="support_time_id" name="support_time_id" class="input-secondary">
-                        <option selected value="">未選択</option>
+                        <option selected value="">---</option>
                         @foreach($supportTimes as $supportTime)
                             <option value="{{ $supportTime->id }}" @selected($supportTime->id == old('support_time_id'))>{{ $supportTime->time_name }}</option>
                         @endforeach
@@ -175,7 +175,7 @@
                 <div class="">
                     <label for="product_series_id" class="label-primary ">シリーズ</label>
                     <select form="supportForm" id="product_series_id" name="product_series_id" class="input-secondary">
-                        <option selected value="">未選択</option>
+                        <option selected value="">---</option>
                         @foreach($productSeriess as $productSeries)
                             <option value="{{ $productSeries->id }}" @selected($productSeries->id == old('product_series_id'))>{{ $productSeries->series_name }}</option>
                         @endforeach
@@ -187,7 +187,7 @@
                 <div class="">
                     <label for="product_version_id" class="label-primary ">バージョン</label>
                     <select form="supportForm" id="product_version_id" name="product_version_id" class="input-secondary">
-                        <option selected value="">未選択</option>
+                        <option selected value="">---</option>
                         @foreach($productVersions as $productVersion)
                             <option value="{{ $productVersion->id }}" @selected($productVersion->id == old('product_version_id'))>{{ $productVersion->version_name }}</option>
                         @endforeach
@@ -199,7 +199,7 @@
                 <div class="">
                     <label for="product_category_id" class="label-primary ">系統</label>
                     <select form="supportForm" id="product_category_id" name="product_category_id" class="input-secondary">
-                        <option selected value="">未選択</option>
+                        <option selected value="">---</option>
                         @foreach($productCategories as $productCategory)
                             <option value="{{ $productCategory->id }}" @selected($productCategory->id == old('product_category_id'))>{{ $productCategory->category_name }}</option>
                         @endforeach
@@ -209,6 +209,7 @@
                     @enderror
                 </div>
             </div>
+
             <div class="grid gap-2 mb-4 sm:grid-cols-2">
                 <div class="w-full flex flex-col">
                     <label for="internal_message" class="label-primary">社内連絡欄</label>
@@ -476,7 +477,7 @@
                         <div class="w-full flex flex-col mx-2">
                             <label for="affiliation2Id" class=" dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
                             <select id="affiliation2Id" name="affiliation2Id" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option selected value="">未選択</option>
+                                <option selected value="">---</option>
                                 @foreach($affiliation2s as $affiliation2)
                                 <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == Auth::user()->affiliation2->id)>
                                     {{ $affiliation2->affiliation2_name }}
