@@ -73,22 +73,13 @@
             </div>
         </div> --}}
 
-        <div class="bg-gray-600 rounded px-4 py-4 mt-8 dark:text-gray-200">
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div class="bg-gray-600 rounded pl-4 py-4 mt-8 dark:text-gray-200">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+
                 <div class="whitespace-nowrap md:mt-3">
                     <div class="text-xs text-white">{{ $support->client->client_num }}</div>
                     <div class="text-white">{{ $support->client->client_name }}</div>
                 </div>
-                {{-- <div class="flex md:mt-3">
-                    <div class="whitespace-nowrap mr-12">
-                        <div class="text-xs text-gray-300">設置種別</div>
-                        <div class="text-white">{{ $support->client->installationType->type_name }}</div>
-                    </div>
-                    <div class="whitespace-nowrap">
-                        <div class="text-xs text-gray-300">顧客種別</div>
-                        <div class="text-white">{{ $support->client->clientType->client_type_name }}</div>
-                    </div>
-                </div> --}}
                 <div class="whitespace-nowrap md:mt-3">
                     <div class="text-xs text-gray-300">管轄事業部</div>
                     <div class="text-white">{{ $support->client->affiliation2->affiliation2_name }}</div>

@@ -289,7 +289,7 @@ Breadcrumbs::for('dashboard', function ($trail) {
                 // ダッシュボード > マスタ一覧 >  顧客種別マスタ
                 Breadcrumbs::for('supportTypeMaster', function ($trail) {
                     $trail->parent('masters');
-                    $trail->push('サポート種別マスタ', route('support-type.index'));
+                    $trail->push('サポート種別', route('support-type.index'));
                 });
 
 

@@ -5,14 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Observers\GlobalObserver;
+use Kyslik\ColumnSortable\Sortable;
 
 class SupportType extends Model
 {
     use HasFactory;
+    use Sortable;
+
+    protected $sortable = [
+        'type_code',
+        'type_name',
+        'type_name_en',
+    ];
 
     protected $fillable = [
         'type_code',
         'type_name',
+        'type_name_en',
         'created_by',
         'updated_by'
     ];

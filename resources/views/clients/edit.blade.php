@@ -601,6 +601,183 @@
 
                 {{-- 4つ目のタブコンテンツStart --}}
                 <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="environments" role="tabpanel" aria-labelledby="environments-tab">
+
+
+
+                    <div class="max-w-6xl mx-auto">
+                        <div class="flex gap-4">
+                            <div class="w-1/2">
+                                <textarea
+                                    id="input-text"
+                                    class="w-full h-96 font-mono bg-white border border-gray-300 rounded-lg p-4"
+                                    placeholder="ディレクトリ構造を入力してください..."
+                                ></textarea>
+                            </div>
+                            <div class="w-1/2">
+                                <div class="relative">
+                                    <button 
+                                        id="copy-all"
+                                        class="absolute top-2 right-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
+                                    >
+                                        Copy All
+                                    </button>
+                                    <div 
+                                        id="tree-output" 
+                                        class="w-full h-96 font-mono bg-white border border-gray-300 rounded-lg p-4 overflow-auto whitespace-pre"
+                                    ></div>
+                                </div>
+                                <div 
+                                    id="copy-toast" 
+                                    class="fixed bottom-40 right-4 bg-gray-800 text-white px-4 py-2 rounded-lg opacity-0 transition-opacity duration-300"
+                                >
+                                    コピー完了
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const inputText = document.getElementById('input-text');
+                        const treeOutput = document.getElementById('tree-output');
+                        const copyAllBtn = document.getElementById('copy-all');
+                        const copyToast = document.getElementById('copy-toast');
+                
+                        // パスをクリーンアップする関数
+                        function cleanPath(path) {
+                            return path
+                                .split('/')
+                                .filter(Boolean) // 空の要素を削除
+                                .join('/');
+                        }
+                
+                        // Tab キーの処理
+                        inputText.addEventListener('keydown', function(e) {
+                            if (e.key === 'Tab') {
+                                e.preventDefault();
+                                const start = this.selectionStart;
+                                const end = this.selectionEnd;
+                                const spaces = '  '; // 2スペース
+                                
+                                this.value = this.value.substring(0, start) + spaces + this.value.substring(end);
+                                this.selectionStart = this.selectionEnd = start + spaces.length;
+                                
+                                updateTree();
+                            }
+                        });
+                
+                        function showToast(message = 'Copied!') {
+                            copyToast.textContent = message;
+                            copyToast.style.opacity = '1';
+                            setTimeout(() => {
+                                copyToast.style.opacity = '0';
+                            }, 2000);
+                        }
+                
+                        async function copyToClipboard(text) {
+                            try {
+                                await navigator.clipboard.writeText(text);
+                                showToast();
+                            } catch (err) {
+                                showToast('Failed to copy');
+                                console.error('Failed to copy: ', err);
+                            }
+                        }
+                
+                        function getNextNonEmptyLine(lines, startIndex) {
+                            for (let i = startIndex + 1; i < lines.length; i++) {
+                                if (lines[i].trim()) {
+                                    return { text: lines[i], index: i };
+                                }
+                            }
+                            return null;
+                        }
+                
+                        function generateTreeStructure(text) {
+                            const lines = text.split('\n');
+                            let result = [];
+                            let prefixes = [''];
+                            let pathParts = [];
+                
+                            for (let i = 0; i < lines.length; i++) {
+                                const line = lines[i];
+                                if (!line.trim()) continue;
+                
+                                const depth = line.search(/\S/);
+                                const content = line.trim();
+                
+                                // パス構造を更新
+                                pathParts.length = depth;
+                                pathParts[depth] = content;
+                                const currentPath = cleanPath(pathParts.slice(0, depth + 1).join('/'));
+                
+                                // プレフィックス配列を現在の深さに合わせて調整
+                                prefixes.length = depth + 1;
+                
+                                // 各深さレベルでのプレフィックスを決定
+                                for (let d = 1; d <= depth; d++) {
+                                    let hasMoreSiblings = false;
+                                    for (let j = i + 1; j < lines.length; j++) {
+                                        const checkLine = lines[j].trim();
+                                        if (!checkLine) continue;
+                                        const checkDepth = lines[j].search(/\S/);
+                                        if (checkDepth < d) break;
+                                        if (checkDepth === d) {
+                                            hasMoreSiblings = true;
+                                            break;
+                                        }
+                                    }
+                
+                                    if (d === depth) {
+                                        prefixes[d] = hasMoreSiblings ? '├─ ' : '└─ ';
+                                    } else {
+                                        prefixes[d] = hasMoreSiblings ? '│  ' : '   ';
+                                    }
+                                }
+                
+                                // 行を生成して配列に追加
+                                const prefix = prefixes.slice(1).join('');
+                                const formattedLine = prefix + content;
+                                result.push({
+                                    text: formattedLine,
+                                    html: `<span class="tree-item cursor-pointer hover:bg-gray-100" data-name="${content}" data-path="${currentPath}">${formattedLine}</span>`,
+                                    depth: depth,
+                                    path: currentPath
+                                });
+                            }
+                
+                            return result;
+                        }
+                
+                        function updateTree() {
+                            const treeStructure = generateTreeStructure(inputText.value);
+                            
+                            // HTML表示用の文字列を生成
+                            const htmlContent = treeStructure.map(item => item.html).join('\n');
+                            treeOutput.innerHTML = htmlContent;
+                
+                            // コピー用の整形されたテキストを保存
+                            treeOutput.setAttribute('data-text', treeStructure.map(item => item.text).join('\n'));
+                        }
+                
+                        inputText.addEventListener('input', updateTree);
+                
+                        // ツリー全体をコピーするイベント
+                        copyAllBtn.addEventListener('click', function() {
+                            const treeText = treeOutput.getAttribute('data-text');
+                            copyToClipboard(treeText);
+                        });
+                
+                        // 個別の要素をクリックしてパスをコピーするイベント
+                        treeOutput.addEventListener('click', function(e) {
+                            const treeItem = e.target.closest('.tree-item');
+                            if (treeItem) {
+                                const path = treeItem.getAttribute('data-path');
+                                copyToClipboard(path);
+                            }
+                        });
+                    });
+                    </script>
                     {{-- <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-2">
                         <div>
                             <label for="test1" class="text-sm text-gray-900 dark:text-white leading-none mt-4">インフラ区分</label>
@@ -984,7 +1161,7 @@
                                     </th>
                                     <th scope="col" class="px-2 py-1 whitespace-nowrap">
                                         <div class="flex items-center">
-                                            <button type="button" onclick="location.href='{{ route('support.createFromClient', $client) }}'" class=" bg-blue-400 flex items-center justify-center px-2 py-1 text-sm text-white rounded bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none m-auto">
+                                            <button type="button" onclick="location.href='{{ route('supports.createFromClient', $client) }}'" class=" bg-blue-400 flex items-center justify-center px-2 py-1 text-sm text-white rounded bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none m-auto">
                                                 <svg class="h-3.5 w-3.5 mr-0.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                                   <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                                                 </svg>
@@ -999,7 +1176,7 @@
                                 <tbody>
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
                                         <td class="px-2 py-1 whitespace-nowrap">
-                                            <button onclick="location.href='{{route('support.edit',$support)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded  text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
+                                            <button onclick="location.href='{{route('supports.edit',$support)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded  text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
                                                 <div class="flex">
                                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
@@ -1057,7 +1234,7 @@
                                                 </svg>
                                                 <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
                 
-                                                <form action="{{route('support.destroy',$support->id)}}" method="POST" class="text-center m-auto">
+                                                <form action="{{route('supports.destroy',$support->id)}}" method="POST" class="text-center m-auto">
                                                     @csrf
                                                     @method('delete')
                                                     <button type="submit" data-modal-hide="deleteModal-{{$support->id}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 rounded text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">

@@ -12,7 +12,7 @@
                     @method('patch')
                     @can('storeUpdate_corporations')
                         <x-button-save form-id="editForm" id="saveButton" onkeydown="stopTab(event)">
-                            {{ __("Update") }}
+                            {{ __("update") }}
                         </x-button-save>
                     @endcan
                 </form>
@@ -57,7 +57,7 @@
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-200 border border-gray-600">
                     <thead class="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 mt-8">
                         <tr class="">
-                            <th scope="col" class="px-6 py-2 whitespace-nowrap border-x border-gray-600">
+                            <th scope="col" class="px-3 py-2 whitespace-nowrap border-x border-gray-600">
                                 ポリシー項目
                             </th>
                             <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600">
@@ -67,7 +67,7 @@
                     </thead>
                     <tbody>
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
-                            <td class="px-6 py-1 border text-base border-gray-600">
+                            <td class="px-3 py-1 border text-sm md:text-base border-gray-600">
                                 パスワードの最小桁数（8~30）
                             </td>
                             <td class="px-2 py-2 border border-gray-600">
@@ -81,8 +81,8 @@
                             </td>
                         </tr>
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
-                            <td class="px-6 py-1 border text-base border-gray-600">
-                                1文字以上の英大文字を必須にする
+                            <td class="px-3 py-1 border text-sm md:text-base border-gray-600">
+                                1文字以上の英大文字を必須
                             </td>
                             <td class="px-2 py-2 border border-gray-600">
                                 <label class="relative inline-flex items-center cursor-pointer">
@@ -101,8 +101,8 @@
                             </td>
                         </tr>
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
-                            <td class="px-6 py-1 border text-base border-gray-600">
-                                1文字以上の英小文字を必須にする
+                            <td class="px-3 py-1 border text-sm md:text-base border-gray-600">
+                                1文字以上の英小文字を必須
                             </td>
                             <td class="px-2 py-2 border border-gray-600">
                                 <label class="relative inline-flex items-center cursor-pointer">
@@ -121,8 +121,8 @@
                             </td>
                         </tr>
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
-                            <td class="px-6 py-1 border text-base border-gray-600">
-                                1文字以上の数字を必須にする
+                            <td class="px-3 py-1 border text-sm md:text-base border-gray-600">
+                                1文字以上の数字を必須
                             </td>
                             <td class="px-2 py-2 border border-gray-600">
                                 <label class="relative inline-flex items-center cursor-pointer">
@@ -141,8 +141,8 @@
                             </td>
                         </tr>
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
-                            <td class="px-6 py-1 border text-base border-gray-600">
-                                記号文字の使用を必須にする
+                            <td class="px-3 py-1 border text-sm md:text-base border-gray-600">
+                                記号文字の使用を必須
                             </td>
                             <td class="px-2 py-2 border border-gray-600">
                                 <label class="relative inline-flex items-center cursor-pointer">
@@ -162,8 +162,8 @@
                         </tr>
 
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
-                            <td class="px-6 py-1 border text-base border-gray-600">
-                                パスワードにログインIDを含めることを禁止する
+                            <td class="px-3 py-1 border text-sm md:text-base border-gray-600">
+                                パスワードにログインIDを含めることを禁止
                             </td>
                             <td class="px-2 py-2 border border-gray-600">
                                 <label class="relative inline-flex items-center cursor-pointer">
@@ -182,8 +182,8 @@
                             </td>
                         </tr>
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
-                            <td class="px-6 py-1 border text-base border-gray-600">
-                                前回スワードの再利用を禁止する（）
+                            <td class="px-3 py-1 border text-sm md:text-base border-gray-600">
+                                前回スワードの再利用を禁止（）
                             </td>
                             <td class="px-2 py-2 border border-gray-600">
                                 <label class="relative inline-flex items-center cursor-pointer">
@@ -202,7 +202,7 @@
                             </td>
                         </tr>
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
-                            <td class="px-6 py-1 border text-base border-gray-600">
+                            <td class="px-3 py-1 border text-sm md:text-base border-gray-600">
                                 アカウントロックまでの回数
                             </td>
                             <td class="px-2 py-2 border border-gray-600">
@@ -216,7 +216,7 @@
                             </td>
                         </tr>
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
-                            <td class="px-6 py-1 border text-base border-gray-600">
+                            <td class="px-3 py-1 border text-sm md:text-base border-gray-600">
                                 アカウントロック解除までの時間（秒）（）
                             </td>
                             <td class="px-2 py-2 border border-gray-600">
@@ -231,7 +231,7 @@
                             </td>
                         </tr>
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
-                            <td class="px-6 py-1 border text-base border-gray-600">
+                            <td class="px-3 py-1 border text-sm md:text-base border-gray-600">
                                 アカウントを無効化する未ログイン期間
                             </td>
                             <td class="px-2 py-2 border border-gray-600">
@@ -245,7 +245,7 @@
                             </td>
                         </tr>
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
-                            <td class="px-6 py-1 border text-base border-gray-600">
+                            <td class="px-3 py-1 border text-sm md:text-base border-gray-600">
                                 パスワード有効期限（日）※0で無期限
                             </td>
                             <td class="px-2 py-2 border border-gray-600">
