@@ -67,6 +67,20 @@ class Support extends Model
         'is_faq_target',
     ];
 
+    // JOIN したテーブルのカラムをソート可能にする
+    public $sortableAs = ['client_user_kana_name'];
+
+    /**
+     * Client 経由で User の user_kana_name でソート
+     */
+    public function clientUserKanaNameSortable($query, $direction)
+    {
+        return $query
+            ->leftJoin('clients', 'supports.client_id', '=', 'clients.id')
+            ->leftJoin('users', 'clients.user_id', '=', 'users.id') // clients 経由で users に JOIN
+            ->orderBy('users.user_kana_name', $direction);
+    }
+
 
     public static function createSupport(array $data)
     {

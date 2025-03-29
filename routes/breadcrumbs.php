@@ -286,12 +286,24 @@ Breadcrumbs::for('dashboard', function ($trail) {
                     $trail->push('顧客種別マスタ', url('client-type'));
                 });
                 
-                // ダッシュボード > マスタ一覧 >  顧客種別マスタ
+                // ダッシュボード > マスタ一覧 >  サポート種別マスタ
                 Breadcrumbs::for('supportTypeMaster', function ($trail) {
                     $trail->parent('masters');
                     $trail->push('サポート種別', route('support-type.index'));
                 });
+                
+                // ダッシュボード > マスタ一覧 >  サポート時間マスタ
+                Breadcrumbs::for('supportTimeMaster', function ($trail) {
+                    $trail->parent('masters');
+                    $trail->push('サポート時間', route('support-time.index'));
+                });
 
+                // ダッシュボード > マスタ一覧 >  営業種別マスタ
+                Breadcrumbs::for('salesStageMaster', function ($trail) {
+                    $trail->parent('masters');
+                    $trail->push('営業種別', route('sales-stage.index'));
+                });                
+                
 
                 // ダッシュボード > マスタ一覧 >  都道府県マスタ
                 Breadcrumbs::for('prefectureMaster', function ($trail) {

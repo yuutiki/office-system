@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Observers\GlobalObserver;
+use Kyslik\ColumnSortable\Sortable;
 
 class SupportTime extends Model
 {
-    use HasFactory;
+    use HasFactory, Sortable;
 
     protected $fillable = [
         'time_code',

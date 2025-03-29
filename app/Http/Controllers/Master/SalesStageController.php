@@ -9,10 +9,20 @@ use Illuminate\Support\Facades\Auth;
 
 class SalesStageController extends Controller
 {
-    public function index()
+    /**
+     * 営業段階マスタの一覧表示
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\View\View
+     */
+    public function index(Request $request)
     {
-        $salesStages = SalesStage::with('updatedBy')->orderBy('sales_stage_code','asc')->paginate();
-        return view('masters.sales-stage-index',compact('salesStages'));
+        // 総件数を取得（AJAXで処理するため最低限の情報だけ渡す）
+        $count = SalesStage::count();
+        
+        // 基本的なデータはフロントエンドでAJAXを使って取得するため、
+        // ここではビューに必要最小限の変数のみを渡す
+        return view('masters.sales-stage-index', compact('count'));
     }
 
     public function create()

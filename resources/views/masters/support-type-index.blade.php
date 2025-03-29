@@ -111,8 +111,11 @@
                             <td class="px-1 py-2 whitespace-nowrap">
                                 {{ optional($supportType->updatedBy)->user_name }}
                             </td>
-                            <td class="px-1 py-2 whitespace-nowrap">
+                            <td class="px-1 py-2 whitespace-nowrap hidden md:block">
                                 {{$supportType->updated_at}}
+                            </td>
+                            <td class="px-1 py-2 whitespace-nowrap md:hidden">
+                                {{$supportType->updated_at->format('Y-m-d')}}
                             </td>
                             <td class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 <div class="text-center">

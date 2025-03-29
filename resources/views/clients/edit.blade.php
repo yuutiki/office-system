@@ -56,20 +56,22 @@
                 <label for="client_num" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">顧客No.</label>
             </div>
 
-            <div class="ml-2">
+            <div class="ml-2 dark:text-white ">
                 <div class="flex items-center">
-                    <div class="text-white text-sm">{{ $client->corporation->corporation_name }}</div>
+                    <div class="text-sm">
+                        {{ $client->corporation->corporation_name }}
+                    </div>
                     <span class="ml-6 bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
                         {{ $client->tradeStatus->trade_status_name }}
                     </span>
                 </div>
                 <div class="md:flex mt-1">
-                    <div class="text-white text-lg">{{ $client->client_num }}</div>
-                    <div class="text-white text-lg md:ml-6">{{ $client->client_name }}</div>
+                    <div class="text-lg">{{ $client->client_num }}</div>
+                    <div class="text-lg md:ml-6">{{ $client->client_name }}</div>
                 </div>
             </div>
 
-            <ul class="pt-4 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700"></ul>
+            <ul class="pt-4 mt-4 space-y-2 border-t border-gray-400 dark:border-gray-700"></ul>
 
 
             {{-- <div class="grid gap-3 mb-2 sm:grid-cols-2">

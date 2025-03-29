@@ -12,7 +12,7 @@
                     @method('patch')
                     @can('storeUpdate_corporations')
                         <x-button-save form-id="corporationForm" id="saveButton" onkeydown="stopTab(event)">
-                            {{ __("Update") }}
+                            {{ __("update") }}
                         </x-button-save>
                     @endcan
                 </form>
@@ -259,13 +259,13 @@
                                             {{ $loop->iteration }}
                                         </td>
                                         <td class="px-2 py-1 whitespace-nowrap">
-                                            {{$projectRevenue['belongingPeriod']}}
+                                            {{ $projectRevenue['belongingPeriod']}}
                                         </td>
                                         <td class="px-2 py-1 whitespace-nowrap">
-                                            {{$projectRevenue['formatRevenueDate']}}
+                                            {{ $projectRevenue['formatRevenueDate']}}
                                         </td>
-                                        <td class="px-2 py-1 whitespace-nowrap">
-                                            {{number_format($projectRevenue['revenue']->revenue)}}
+                                        <td class="px-2 py-1 whitespace-nowrap font-mono">
+                                            {{ number_format($projectRevenue['revenue']->revenue)}}
                                         </td>
                                         <td class="px-2 py-1">
                                             <div class="flex justify-between">

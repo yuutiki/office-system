@@ -73,20 +73,20 @@
             </div>
         </div> --}}
 
-        <div class="bg-gray-600 rounded pl-4 py-4 mt-8 dark:text-gray-200">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="dark:bg-gray-600 bg-gray-100 rounded pl-4 py-4 mt-8 dark:text-gray-200 shadow-md">
+            <div class="grid grid-cols-1 gap-4">
 
                 <div class="whitespace-nowrap md:mt-3">
-                    <div class="text-xs text-white">{{ $support->client->client_num }}</div>
-                    <div class="text-white">{{ $support->client->client_name }}</div>
+                    <div class="text-xs dark:text-white">{{ $support->client->client_num }}</div>
+                    <div class="dark:text-white">{{ $support->client->client_name }}</div>
                 </div>
                 <div class="whitespace-nowrap md:mt-3">
-                    <div class="text-xs text-gray-300">管轄事業部</div>
-                    <div class="text-white">{{ $support->client->affiliation2->affiliation2_name }}</div>
+                    <div class="text-xs dark:text-gray-300">管轄事業部</div>
+                    <div class="dark:text-white">{{ $support->client->affiliation2->affiliation2_name }}</div>
                 </div>
                 <div class="whitespace-nowrap md:mt-3">
-                    <div class="text-xs text-gray-300">営業担当</div>
-                    <div class="text-white">{{ $support->client->user->user_name }}</div>
+                    <div class="text-xs dark:text-gray-300">営業担当</div>
+                    <div class="dark:text-white">{{ $support->client->user->user_name }}</div>
                 </div>
                 <div>
                     @if($support->is_draft)
@@ -341,7 +341,7 @@
             <!-- メインコンテンツ -->
             <div class="flex flex-col gap-6 mt-6">
                 <!-- 法人情報 -->
-                <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow">
+                <div class="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg shadow">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">法人情報</h3>
                     <div class="grid gap-4">
                         <div class="flex">
@@ -410,7 +410,7 @@
                 </div>
 
                 <!-- 所在地情報 -->
-                <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow">
+                <div class="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg shadow">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">所在地</h3>
                     <div class="grid gap-4">
                         <div class="flex">

@@ -150,8 +150,8 @@
                         </div>
                     </div>
                     <!-- 詳細検索 Modal -->
-                    <div id="detailSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center overflow-y-scroll z-50 hidden animate-slide-in-top">
-                        <div class="max-h-full w-full max-w-3xl">
+                    <div id="detailSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center overflow-y-scroll z-50 hidden animate-slide-in-top overscroll-contain">
+                        <div class="max-h-full w-full max-w-7xl">
                             <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
                                 <!-- Modal header -->
                                 <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
@@ -166,7 +166,7 @@
                                 </div>
                                 <!-- Modal body -->
                                 <label for="clientNumber" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">取引状況</label>
-                                <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
+                                <ul class="grid w-full gap-3 md:grid-cols-4 sm:grid-cols-2 md:ml-2 mb-4">
                                     <li class="flex justify-center items-center">
                                         <input type="checkbox" id="trade_status-1" @checked(in_array(0, $filters['trade_status_ids'] ?? [])) value="0" name="trade_status_ids[]" class="hidden peer">
                                         <label for="trade_status-1" class="checkbox-label">
@@ -183,8 +183,8 @@
 
                                 <!-- 日付の範囲検索 -->
                                 <label for="" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">返却期限日</label>
-                                <div class="flex mb-4">
-                                    <div class="w-full mt-2 m-2">
+                                <div class="grid w-full gap-3 md:grid-cols-4 sm:grid-cols-2 md:ml-2 mb-4">
+                                    <div class="w-full mt-2">
                                         <input type="date" min="2000-01-01" max="2100-12-31" name="day_from" value="@if (isset($dayFrom)){{ $dayFrom }}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400">
                                     </div>
                                     <div class="w-full mt-2">

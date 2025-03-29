@@ -185,18 +185,6 @@
                                     </li>
                                 </ul>
 
-                                {{-- <label for="" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">営業段階</label>
-                                <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
-                                    @foreach ($salesStages as $salesStage)
-                                        <li class="flex justify-center items-center">
-                                            <input type="checkbox" name="sales_stage_ids[]" value="{{ $salesStage->id }}" @checked(in_array($salesStage->id, $filters['sales_stage_ids'] ?? [])) id="salesStage-{{ $salesStage->id }}" class="sr-only peer" tabindex="1">
-                                            <label for="salesStage-{{ $salesStage->id }}" class="inline-flex justify-between w-full p-2 rounded-lg cursor-pointer text-blue-600 dark:text-blue-500 dark:hover:text-white dark:peer-checked:text-white peer-checked:text-gray-600 border-2 border-gray-200 dark:border-blue-500 peer-checked:border-blue-500 peer-checked:hover:border-blue-500 dark:hover:border-blue-600 bg-white dark:peer-checked:bg-blue-500 hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-blue-600 focus:outline-none peer-focus:ring-2 peer-focus:ring-indigo-500 peer-focus:ring-offset-2 dark:peer-focus:ring-offset-gray-800 transition ease-in-out duration-150">
-                                                <div class="w-full text-sm font-medium text-center">{{ $salesStage->sales_stage_name }}</div>
-                                            </label>
-                                        </li>
-                                    @endforeach
-                                </ul> --}}
-                                    
                                 <!-- Modal footer -->
                                 <div class="flex items-center justify-end p-3 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
                                     <button type="button" onclick="hideModal()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">

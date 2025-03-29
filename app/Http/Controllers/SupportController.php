@@ -59,7 +59,7 @@ class SupportController extends Controller
 
         // サポート検索クエリ
         $supportsQuery = Support::with([
-            'client', 'user', 'productSeries', 'productVersion', 'productCategory', 'supportType', 'supportTime'])->orderby('received_at', 'desc')->orderby('created_at', 'desc')->sortable();
+            'client', 'user', 'client.user', 'productSeries', 'productVersion', 'productCategory', 'supportType', 'supportTime'])->sortable('received_at', 'desc');
 
         if (!empty($selectedSupportTypes)) {
             $supportsQuery->whereIn('support_type_id', $selectedSupportTypes);

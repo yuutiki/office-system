@@ -83,7 +83,7 @@
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                 </svg>
                             </div>
-                            <input type="search" id="keywords" name="keywords" value="@if (isset($keywords)){{$keywords}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="キーワード">
+                            <input type="search" id="keywords" name="keywords" value="@if (isset($keywords)){{$keywords}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="キーワード（表題） 営業担当 受付対応者 ステータス 受付日のFromTo シリーズ バージョン 系統">
                         </div>
                         <div class="relative w-full mt-2 md:ml-2 md:mt-0">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -91,7 +91,7 @@
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                 </svg>
                             </div>
-                            <input type="search" id="client_name" name="client_name" value="@if (isset($clientName)){{$clientName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="顧客名称">
+                            <input type="search" id="client_name" name="client_name" value="@if (isset($clientName)){{$clientName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="顧客名称/カナ名称/№">
                         </div>
 
                         <div class="flex mt-2 md:mt-0">
@@ -109,8 +109,8 @@
                         </div>
 
                         <!-- 詳細検索 Modal -->
-                        <div id="detailSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center overflow-y-scroll z-50 hidden animate-slide-in-top">
-                            <div class="max-h-full w-full max-w-3xl">
+                        <div id="detailSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center overflow-y-scroll z-50 hidden animate-slide-in-top overscroll-contain">
+                            <div class="max-h-full w-full max-w-7xl">
                                 <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
                                     <!-- Modal header -->
                                     <div class="flex items-center justify-between p-1 border-b rounded-t dark:border-gray-600">
@@ -150,7 +150,7 @@
 
                                     <div class="mt-4">
                                         <label for="clientNumber" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">サポート種別</label>
-                                        <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
+                                        <ul class="grid w-full gap-3 lg:grid-cols-4 grid-cols-2 md:ml-2 mb-4">
                                             @foreach ($supportTypes as $supportType)
                                                 <li class="flex justify-center items-center">
                                                     <input type="checkbox" id="supportType-{{ $supportType->id }}" 
@@ -167,7 +167,7 @@
                                     </div>
                                     <div>
                                         <label for="clientNumber" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">製品系統</label>
-                                        <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
+                                        <ul class="grid w-full gap-3 lg:grid-cols-4 grid-cols-2 md:ml-2 mb-4">
                                             @foreach ($productCategories as $productCategory)
                                                 <li class="flex justify-center items-center">
                                                     <input type="checkbox" id="category-{{ $productCategory->id }}" 
@@ -223,7 +223,7 @@
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
-                            @sortablelink('client_num','顧客番号')
+                            @sortablelink('client.client_num','顧客№')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
                                 <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
                             </svg>
@@ -231,7 +231,7 @@
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
-                            @sortablelink('client_name','顧客名称')
+                            @sortablelink('client.client_name','顧客名称')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
                                 <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
                             </svg>
@@ -272,21 +272,33 @@
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             @sortablelink('product_series_id','シリーズ')
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
+                                <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
+                            </svg>
                         </div>
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             @sortablelink('product_version_id','バージョン')
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
+                                <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
+                            </svg>
                         </div>
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             @sortablelink('product_category_id','系統')
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
+                                <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
+                            </svg>
                         </div>
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
-                            営業担当
+                            @sortablelink('client_user_kana_name','営業担当')
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
+                                <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
+                            </svg>
                         </div>
                     </th>
                 </tr>
@@ -331,7 +343,7 @@
                             {{ optional($support->supportType)->type_name }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap font-semibold">
-                            {{ $support->title }}
+                            {{ Str::limit($support->title, 80, '...') }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
                             {{ optional($support->user)->user_name }}

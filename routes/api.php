@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\SalesStageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,3 +19,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+// 営業段階マスタのAPIエンドポイント
+Route::get('/sales-stages', [SalesStageController::class, 'index']);
+Route::get('/sales-stages/{salesStage}', [SalesStageController::class, 'show']);
+Route::put('/sales-stages/{salesStage}', [SalesStageController::class, 'update']);
+Route::delete('/sales-stages/{salesStage}', [SalesStageController::class, 'destroy']);
