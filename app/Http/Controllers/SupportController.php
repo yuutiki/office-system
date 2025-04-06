@@ -50,16 +50,43 @@ class SupportController extends Controller
         $supportTimes = SupportTime::select('id', 'time_name')->get(); //サポート時間
         $supportTypes = SupportType::select('id', 'type_name')->get();// サポート種別
 
+
         // 検索リクエストを取得し変数に格納
-        $selectedSupportTypes = $request->input('support_types', []);
         $keywords = $request->input('keywords'); // キーワード検索
         $clientName = $request->input('client_name');
+        $selectedSupportTypes = $request->input('support_types', []);
         $selectedProductCategories = $request->input('product_categories',[]);
+        $selectedProductSeriess = $request->input('product_seriess', []);
+        $statusIds = $request->input('status_ids', []);
+        $selectedUserId = $request->input('selected_user_id');
+        $receivedAtFrom = $request->input('received_at_from');
+        $receivedAtTo = $request->input('received_at_to');
+
+        // 選択されたユーザーをオブジェクトでViewに返す
+        $selectedUser = null;
+        if ($selectedUserId) {
+            $selectedUser = User::find($selectedUserId);
+        }
 
 
         // サポート検索クエリ
         $supportsQuery = Support::with([
             'client', 'user', 'client.user', 'productSeries', 'productVersion', 'productCategory', 'supportType', 'supportTime'])->sortable('received_at', 'desc');
+
+
+        // 現在ログインしているユーザーのIDを取得
+        $loggedInUserId = Auth::id();
+
+        // is_draft = 1のデータはログインユーザーのものだけ表示
+        $supportsQuery->where(function($query) use ($loggedInUserId) {
+            // 下書きでないデータすべて
+            $query->where('is_draft', 0)
+                // または、ログインユーザーの下書きデータ
+                ->orWhere(function($q) use ($loggedInUserId) {
+                    $q->where('is_draft', 1)
+                        ->where('user_id', $loggedInUserId);
+                });
+        });
 
         if (!empty($selectedSupportTypes)) {
             $supportsQuery->whereIn('support_type_id', $selectedSupportTypes);
@@ -75,9 +102,26 @@ class SupportController extends Controller
             }
         }
 
+        if (!empty($statusIds))
+        {
+            $supportsQuery->whereIn('is_draft', $statusIds);
+        }
+
         if (!empty($selectedProductCategories))
         {
             $supportsQuery->whereIn('product_category_id', $selectedProductCategories);
+        }
+
+        if (!empty($selectedProductSeriess)) {
+            $supportsQuery->whereIn('product_series_id', $selectedProductSeriess);
+        }
+
+        if (!empty($selectedUserId)) {
+            $supportsQuery->where('user_id', $selectedUserId);
+        }
+
+        if (!empty($receivedAtFrom) && !empty($receivedAtTo)) {
+            $supportsQuery->whereBetween('received_at', [$receivedAtFrom, $receivedAtTo]);
         }
 
         if (!empty($keywords)) {
@@ -90,7 +134,7 @@ class SupportController extends Controller
         $supports = $supportsQuery->paginate($perPage);
         $count = $supports->total(); // ページネーション後の総数を取得
 
-        return view('supports.index', compact('supports', 'count', 'supportTypes' ,'selectedSupportTypes','keywords','users','supportTimes','productCategories','selectedProductCategories','clientName','productVersions','productSeriess'));
+        return view('supports.index', compact('supports', 'count', 'supportTypes', 'selectedSupportTypes', 'keywords', 'users', 'supportTimes', 'productCategories', 'selectedProductCategories', 'selectedProductSeriess', 'clientName', 'productVersions', 'productSeriess', 'selectedUserId' ,'selectedUser', 'receivedAtFrom', 'receivedAtTo', 'statusIds'));
     }
 
     public function create()

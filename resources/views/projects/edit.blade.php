@@ -205,40 +205,40 @@
 
                 {{-- テーブル表示 --}}
                 <div class="">
-                    <div class=" overflow-x-auto shadow-md rounded mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
-                        <table class="w-full text-sm font-medium text-left text-gray-800 dark:text-gray-400">
+                    <div class="overflow-x-auto shadow-md rounded mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
+                        <table class="w-full text-sm text-left text-gray-800 dark:text-gray-400">
                             {{-- テーブルヘッダ start --}}
-                            <thead class="text-sm text-gray-700 bg-gray-300 dark:bg-gray-700 dark:text-white border-b">
+                            <thead class="text-gray-700 bg-gray-300 dark:bg-gray-700 dark:text-white border-b">
                                 <tr>
                                     <th scope="col" class="pl-4 py-1 w-auto">
                                         <div class="flex items-center whitespace-nowrap">
                                             <div class="flex items-center">
-                                                <input type="checkbox" id="selectAllCheckbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-500 dark:border-white rounded border  focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700">
+                                                <input type="checkbox" id="selectAllCheckbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-500 dark:border-white rounded border focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700">
                                             </div>
                                         </div>
                                     </th>
                                     <th scope="col" class="pl-4 py-1 w-auto">
-                                        <div class="flex items-center whitespace-nowrap">
+                                        <div class="flex items-center whitespace-nowrap font-normal ">
                                             №
                                         </div>
                                     </th>
-                                    <th scope="col" class="px-2 py-1 whitespace-nowrap">
+                                    <th scope="col" class="px-2 py-1 whitespace-nowrap font-normal">
                                         <div class="flex items-center">
                                             期
                                         </div>
                                     </th>
-                                    <th scope="col" class="px-2 py-1 whitespace-nowrap">
+                                    <th scope="col" class="px-2 py-1 whitespace-nowrap font-normal">
                                         <div class="flex items-center">
                                             計上年月
                                         </div>
                                     </th>
-                                    <th scope="col" class="px-2 py-1 whitespace-nowrap">
-                                        <div class="flex items-center">
+                                    <th scope="col" class="px-2 py-1 whitespace-nowrap font-normal">
+                                        <div class="w-[65px] text-right">
                                             金額
                                         </div>
                                     </th>
-                                    <th scope="col" class="flex items-center py-1 whitespace-nowrap">
-                                        <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="w-auto flex py-1 px-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded border border-gray-200 hover:bg-gray-100 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
+                                    <th scope="col" class="flex items-center py-1 whitespace-nowrap font-normal">
+                                        <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="w-auto flex py-1 px-2 text-sm text-gray-900 focus:outline-none bg-white rounded border border-gray-200 hover:bg-gray-100 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
                                             <svg class="-ml-1 mr-1 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                                 <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
                                             </svg>
@@ -264,8 +264,10 @@
                                         <td class="px-2 py-1 whitespace-nowrap">
                                             {{ $projectRevenue['formatRevenueDate']}}
                                         </td>
-                                        <td class="px-2 py-1 whitespace-nowrap font-mono">
-                                            {{ number_format($projectRevenue['revenue']->revenue)}}
+                                        <td class="px-2 py-1 whitespace-nowrap">
+                                            <div class="w-[65px] text-right">
+                                                {{ number_format($projectRevenue['revenue']->revenue) ?? 'N/A' }}
+                                            </div>
                                         </td>
                                         <td class="px-2 py-1">
                                             <div class="flex justify-between">
@@ -311,16 +313,14 @@
                                                     @csrf
                                                     @method('PUT')
                                                     <div class="grid gap-4 mb-4 sm:grid-cols-2">
+
                                                         <div class="hidden">
                                                             <div class="w-full flex flex-col">
                                                                 <div class="w-full flex flex-col">
-                                                                    <label for="modalproject_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">プロジェクトID</label>
-                                                                    <input type="text" name="modalproject_id" id="modalproject_id" value="{{ $project->id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                                                    <label for="modalproject_id">プロジェクトID</label>
+                                                                    <input type="text" name="modalproject_id" id="modalproject_id" value="{{ $project->id }}">
                                                                 </div>
                                                             </div>
-                                                            @error('affiliation2_id')
-                                                                <div class="text-red-500">{{$message}}</div>
-                                                            @enderror
                                                         </div>
                                                         <div>
                                                             <div class="w-full flex flex-col">
@@ -338,7 +338,7 @@
                                                                 <div class="w-full flex flex-col">
                                                                 <label for="revenue_amount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">売上金額</label>
                                                                 {{-- <input type="number" min="0" max="999999999" name="revenue_amount" id="revenue_amount" value="{{old('revenue_amount')}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required> --}}
-                                                                <input type="text" onblur="formatNumberInput(this);" maxlength="9"   name="revenue_amount" id="revenue_amount" value="{{old('revenue_amount',number_format($projectRevenue['revenue']->revenue))}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="0" required>
+                                                                <input type="text" onblur="formatNumberInput(this);" maxlength="9" name="revenue_amount" id="revenue_amount" value="{{old('revenue_amount',number_format($projectRevenue['revenue']->revenue))}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="0" required>
                                                                 </div>
                                                             </div>
 
@@ -447,7 +447,7 @@
                 <div id="actionsDropdown" class="hidden w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 z-50">
                     <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
                         <li>
-                            <button data-modal-target="storeRevenueModal" data-modal-toggle="storeRevenueModal" class="block whitespace-nowrap w-full text-white hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-2 py-1 text-center m-auto" type="button">
+                            <button data-modal-target="storeRevenueModal" data-modal-toggle="storeRevenueModal" class="block whitespace-nowrap w-full text-white hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 text-sm px-2 py-1 text-center m-auto" type="button">
                                 <div class="flex items-center">
                                     <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
@@ -457,7 +457,7 @@
                             </button>
                         </li>
                         <li>
-                            <button data-modal-target="insertRevenueModal" data-modal-toggle="insertRevenueModal" class="block whitespace-nowrap w-full text-white hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-2 py-1 text-center m-auto" type="button">
+                            <button data-modal-target="insertRevenueModal" data-modal-toggle="insertRevenueModal" class="block whitespace-nowrap w-full text-white hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 text-sm px-2 py-1 text-center m-auto" type="button">
                                 <div class="flex items-center">
                                     <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
@@ -471,7 +471,7 @@
                             <form id="bulkDeleteForm" action="{{ route('projectrevenue.bulkDelete') }}" method="POST">
                                 @csrf
                                 @method('delete') <!-- 隠しフィールドを追加 -->
-                                <button type="submit" id="bulkDeleteButton" form="bulkDeleteForm" class="block whitespace-nowrap w-full text-white hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-2 py-1 text-center m-auto">
+                                <button type="submit" id="bulkDeleteButton" form="bulkDeleteForm" class="block whitespace-nowrap w-full text-white hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 text-sm px-2 py-1 text-center m-auto">
                                     <div class="flex items-center dark:text-red-500">
                                         <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                             <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>

@@ -46,9 +46,7 @@
         </div>
     </x-slot>
 
-    <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
-
-    <div class="max-w-7xl mx-auto px-2 pb-4 sm:pl-16 py-4">
+    <div class="max-w-7xl mx-auto px-2 md:pl-14">
 
         <div class="">
             <div class="relative z-0 hidden">
@@ -56,7 +54,7 @@
                 <label for="client_num" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">顧客No.</label>
             </div>
 
-            <div class="ml-2 dark:text-white ">
+            <div class="ml-2 dark:text-white">
                 <div class="flex items-center">
                     <div class="text-sm">
                         {{ $client->corporation->corporation_name }}
@@ -110,26 +108,26 @@
                 <ul class="flex flex-wrap -mb-px text-sm text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
                     <li class="mr-2" role="presentation">
                         <button onclick="changeTab('base')" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="base-tab" data-tabs-target="#base" type="button" role="tab" aria-controls="base" aria-selected="{{ $activeTab === 'base' ? 'true' : 'false' }}">
-                            基本情報
+                            基本
                         </button>
                     </li>
                     <li class="mr-2" role="presentation">
                         <button onclick="changeTab('contracts')" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="contracts-tab" data-tabs-target="#contracts" type="button" role="tab" aria-controls="contracts" aria-selected="{{ $activeTab === 'contracts' ? 'true' : 'false' }}">
-                            契約情報
+                            契約
                         </button>
                     </li>
 
                 @if ($client->is_enduser)
                     <li class="mr-2" role="presentation">
                         <button onclick="changeTab('environments')" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="environments-tab" data-tabs-target="#environments" type="button" role="tab" aria-controls="environments" aria-selected="{{ $activeTab === 'environments' ? 'true' : 'false' }}">
-                            環境情報
+                            環境
                         </button>
                     </li>
                 @endif
                 @if ($client->is_enduser)
                     <li class="mr-2" role="presentation">
                         <button onclick="changeTab('systems')" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="systems-tab" data-tabs-target="#systems" type="button" role="tab" aria-controls="systems" aria-selected="{{ $activeTab === 'systems' ? 'true' : 'false' }}">
-                            導入システム
+                            製品
                         </button>
                     </li>
                 @endif
@@ -143,7 +141,7 @@
                     @if ($client->is_enduser)
                     <li class="mr-2" role="presentation">
                         <button onclick="changeTab('supports')" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="supports-tab" data-tabs-target="#supports" type="button" role="tab" aria-controls="supports" aria-selected="{{ $activeTab === 'supports' ? 'true' : 'false' }}">
-                            サポート履歴
+                            サポート
                         </button>
                     </li>
                 @endif
@@ -151,12 +149,12 @@
                 </ul>
             </div>
             {{-- タブコンテンツStart --}}
-            <div id="myTabContent">
+            <div id="myTabContent" class="mb-4">
 
                 {{-- 1つ目のタブコンテンツStart --}}
                 <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="base" role="tabpanel" aria-labelledby="profile-tab">
 
-                <div class="grid gap-3 mb-2 sm:grid-cols-2">
+                <div class="grid gap-3 mb-2 md:grid-cols-2">
                     <div class="">
                         <label for="client_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2 mt-2">顧客名称</label>
                         <input type="text" name="client_name" form="clientForm" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" id="client_name" value="{{old('client_name',$client->client_name)}}" placeholder="例）烏丸大学">
@@ -173,11 +171,11 @@
                     </div>
                 </div>
 
-                    <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-1">
+                    <div class="grid gap-4 mb-4 lg:grid-cols-5 grid-cols-1">
                         <div>
                             <label for="installation_type_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">顧客カテゴリ</label>
-                            <select id="installation_type_id" name="installation_type_id" form="clientForm" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option selected value="">未選択</option>
+                            <select id="installation_type_id" name="installation_type_id" form="clientForm" class="input-secondary">
+                                <option selected value="">---</option>
                                 @foreach($installationTypes as $installationType)
                                 <option value="{{ $installationType->id }}" @selected( $installationType->id == $client->installation_type_id)>{{ $installationType->type_name }}</option>
                                 @endforeach
@@ -188,8 +186,8 @@
                         </div>
                         <div>
                             <label for="client_type_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">顧客種別</label>
-                            <select id="client_type_id" name="client_type_id" form="clientForm" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option selected value="">未選択</option>
+                            <select id="client_type_id" name="client_type_id" form="clientForm" class="input-secondary">
+                                <option selected value="">---</option>
                                 @foreach($clientTypes as $clientType)
                                 <option value="{{ $clientType->id }}" @selected( $clientType->id == $client->client_type_id)>{{ $clientType->client_type_name }}</option>
                                 @endforeach
@@ -200,8 +198,8 @@
                         </div>
                         <div>
                             <label for="trade_status_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">取引状態</label>
-                            <select id="trade_status_id" name="trade_status_id" form="clientForm" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option selected value="">未選択</option>
+                            <select id="trade_status_id" name="trade_status_id" form="clientForm" class="input-secondary">
+                                <option selected value="">---</option>
                                 @foreach($tradeStatuses as $tradeStatus)
                                 <option value="{{ $tradeStatus->id }}" @selected( $tradeStatus->id == $client->trade_status_id )>{{ $tradeStatus->trade_status_name }}</option>
                                 @endforeach
@@ -212,8 +210,8 @@
                         </div>
                         <div>
                             <label for="affiliation2" class="text-sm  text-gray-900 dark:text-white leading-none mt-4">管轄事業部</label>
-                            <select id="affiliation2" name="affiliation2" form="clientForm" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option selected value="">未選択</option>
+                            <select id="affiliation2" name="affiliation2" form="clientForm" class="input-secondary">
+                                <option selected value="">---</option>
                                 @foreach($affiliation2s as $affiliation2)
                                     <option value="{{ $affiliation2->id }}" @selected( $affiliation2->id == $client->affiliation2_id )>{{ $affiliation2->affiliation2_name }}</option>
                                 @endforeach
@@ -224,8 +222,8 @@
                         </div>
                         <div>
                             <label for="user_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">営業担当</label>
-                            <select id="user_id" name="user_id" form="clientForm" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option selected value="">未選択</option>
+                            <select id="user_id" name="user_id" form="clientForm" class="input-secondary">
+                                <option selected value="">---</option>
                                 @foreach($users as $user)
                                     <option value="{{ $user->id }}" @selected( $user->id == $client->user_id)>{{ $user->user_name }}</option>
                                 @endforeach
@@ -238,10 +236,9 @@
 
                     <ul class="pt-4 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700"></ul>
 
-                    <div class="grid gap-4 mb-4 sm:grid-cols-5 mt-2">
-
-                        <div class="">
-                            <label for="head_post_code" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">郵便番号</label>
+                    <div class="grid gap-4 mb-4 md:grid-cols-4 mt-2">
+                        <div class="w-full flex flex-col">
+                            <label for="head_post_code" class="text-sm dark:text-gray-100 text-gray-900 leading-none" autocomplete="new-password">郵便番号</label>
                             {{-- <input type="text" name="head_post_code" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="head_post_code" value="{{old('head_post_code')}}" placeholder="" onKeyUp="AjaxZip3.zip2addr(this,'','head_prefecture','head_addre1','','',false);"> --}}
                             <div class="relative w-full">
                                 <input type="text" name="head_post_code" form="clientForm" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="head_post_code" value="{{old('head_post_code', $client->head_post_code)}}" placeholder="">
@@ -252,12 +249,8 @@
                                 </button>
                             </div>
                         </div>
-
-                        {{-- <x-general-button type="button" class="ajaxzip3">
-                            郵便番号から住所を取得
-                        </x-general-button> --}}
-                        <div class="">
-                            <label for="head_prefecture_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">都道府県</label>
+                        <div class="w-full flex flex-col">
+                            <label for="head_prefecture_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none">都道府県</label>
                             <select id="head_prefecture_id" name="head_prefecture_id" form="clientForm" class="w-full py-1.5  text-sm mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 @foreach($prefectures as $prefecture)
@@ -265,35 +258,35 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-span-3">
-                            <label for="head_addre1" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表所在地</label>
+                        <div class="w-full flex flex-col md:col-span-2">
+                            <label for="head_addre1" class="text-sm dark:text-gray-100 text-gray-900 leading-none">代表所在地</label>
                             <input type="text" name="head_addre1" form="clientForm" id="head_addre1" value="{{old('head_addre1', $client->head_address1)}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" placeholder="">
                         </div>
 
 
 
 
-                        <div class="">
-                            <label for="head_tel" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表TEL</label>
+                        <div class="w-full flex flex-col md:col-span-2">  
+                            <label for="head_tel" class="text-sm dark:text-gray-100 text-gray-900 leading-none">代表TEL</label>
                             <input type="text" name="head_tel" form="clientForm" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_tel" value="{{old('head_tel',$client->head_tel)}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" placeholder="">
                         </div>
     
-                        <div class="">
-                            <label for="head_fax" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表FAX</label>
+                        <div class="w-full flex flex-col md:col-span-2">  
+                            <label for="head_fax" class="text-sm dark:text-gray-100 text-gray-900 leading-none">代表FAX</label>
                             <input type="tel" name="head_fax" form="clientForm" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_fax" value="{{old('head_fax',$client->head_fax)}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded"  placeholder="">
                         </div>
                     </div>
 
                     <ul class="pt-4 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700"></ul>
 
-                    <div class="grid gap-4 mb-1 sm:grid-cols-5 mt-1">
-                        <div class="w-full flex flex-col">
+                    <div class="grid gap-4 mb-1 lg:grid-cols-4 mt-1">
+                        <div class="w-full flex flex-col md:col-span-2">
                             <label for="students" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">規模（学生数/従業員数）</label>
                             <input type="number" min="0" name="students" form="clientForm" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="students" value="{{old('students',$client->students)}}">
                         </div>
                     </div>
-                    <div class="grid gap-4 mb-1 sm:grid-cols-5 mt-1">
-                        <div class="w-full flex flex-col">
+                    <div class="grid gap-4 mb-1 sm:grid-cols-4 mt-1">
+                        <div class="w-full flex flex-col md:col-span-2">
                             <label for="distribution" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">商流</label>
                             <select id="distribution_type_id" name="distribution_type_id" form="clientForm" class="w-full mt-1 block py-1.5 text-sm bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
@@ -349,7 +342,7 @@
                         </div>
                     </div> --}}
 
-                    <div class="grid gap-4 mt-1 mb-4 sm:grid-cols-5">
+                    <div class="grid gap-4 mt-1 mb-4 sm:grid-cols-4">
                         <div class="w-full flex flex-col hidden">
                             <label for="dealer_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">ディーラID（hidden要素）</label>
                             <input type="text" name="dealer_id" form="clientForm" class="w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="dealer_id" value="{{old('dealer_id')}}" placeholder="">
@@ -1259,9 +1252,9 @@
                     </div>
                 </div>
                 {{-- 6つ目のタブコンテンツEnd --}}
+            </div>
         </div>
     </div>
-</div>
 
 
     <!-- 法人検索 Modal -->

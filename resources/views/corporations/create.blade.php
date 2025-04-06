@@ -71,7 +71,6 @@
                 @enderror
             </div>
 
-
             <ul class="grid w-full gap-6 lg:grid-cols-3 mt-12">
                 <li>
                     <input type="radio" id="unconfirmed" name="tax_status" value="0" class="peer sr-only" {{ old('tax_status') == 0 ? 'checked' : '' }} required tabindex="-1">

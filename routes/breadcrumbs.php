@@ -259,7 +259,7 @@ Breadcrumbs::for('dashboard', function ($trail) {
         // ダッシュボード > 預託情報一覧
         Breadcrumbs::for('keepfiles', function ($trail, $searchParams) {
             $trail->parent('dashboard');
-            $trail->push('預託情報一覧', route('keepfile.index', $searchParams));
+            $trail->push('預託情報一覧', route('keepfiles.index', $searchParams));
         });
 
                 // ダッシュボード > 預託情報一覧 > 預託情報新規登録

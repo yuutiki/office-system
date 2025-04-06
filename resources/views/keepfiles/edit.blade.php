@@ -4,8 +4,20 @@
             <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
                 {{ Breadcrumbs::render('editKeepfile', $searchParams) }}
             </h2>
-            <div class="flex justify-end">
+            <div class="flex justify-end items-center space-x-2">
                 <x-message :message="session('message')"/>
+                <form method="post" action="{{route('keepfiles.update',$keepfile)}}" enctype="multipart/form-data" id="keepfileForm">
+                    @csrf
+                    @method('patch')
+                    <x-button-save form-id="keepfileForm" id="saveButton" onkeydown="stopTab(event)">
+                        {{ __("update") }}
+                    </x-button-save>
+                </form>
+                <button id="dropdownActionButton" data-dropdown-toggle="dropdownActions" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-600" type="button">
+                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                        <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+                    </svg>
+                </button>
             </div>
         </div>
     </x-slot>
@@ -233,13 +245,7 @@
                 </table>
             </div>
 
-            <form method="post" action="{{route('keepfile.update',$keepfile)}}" enctype="multipart/form-data" id="keepfileForm">
-                @csrf
-                @method('patch')
-                <x-primary-button class="mt-4" form-id="keepfileForm" id="saveButton" onkeydown="stopTab(event)">
-                    保存(S)
-                </x-primary-button>
-            </form>
+
         </div>
     </div>
 
@@ -293,7 +299,7 @@
                     </svg>
                     <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">既存の添付ファイルを上書きしますがよろしいですか？</h3>
                     <div class="flex justify-center">
-                        {{-- <form method="post" action="{{route('keepfile.update',$keepfile)}}" enctype="multipart/form-data">
+                        {{-- <form method="post" action="{{route('keepfiles.update',$keepfile)}}" enctype="multipart/form-data">
                             @csrf
                             @method('patch') --}}
                             <button type="submit" id="confirmButton" class="text-white bg-red-600 hover:bg-red-800 focus:ring-2 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">

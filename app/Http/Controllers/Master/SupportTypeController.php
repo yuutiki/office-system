@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Master;
 
+use App\Exports\SupportTypesExport;
 use App\Http\Controllers\Controller;
 use App\Models\SupportType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SupportTypeController extends Controller
 {
@@ -85,11 +87,22 @@ class SupportTypeController extends Controller
     
         $supportType->fill($data)->save();
     
-        return redirect()->back()->with('success', '正常に更新しました');
+        // return redirect()->back()->with('success', '正常に更新しました');
+        return redirect()->route('support-type.index')->with('success', '正常に更新しました');
     }
 
-    public function destroy(SupportType $supportType)
+    // public function destroy(SupportType $supportType)
+    public function destroy(string $id)
     {
-        //
+        $client = SupportType::find($id);
+        $client->delete();
+
+        return redirect()->route('support-type.index')->with('success', '正常に削除しました');
+    }
+
+    public function export(){
+
+	    return Excel::download(new SupportTypesExport, 'support-types.csv', \Maatwebsite\Excel\Excel::CSV); 
+
     }
 }

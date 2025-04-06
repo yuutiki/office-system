@@ -1,10 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between w-full whitespace-nowrap items-center">
-            <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex">
+            <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center">
                 {{ Breadcrumbs::render('corporations', $searchParams) }}
                 <div class="ml-4">
                     {{ $count }}件
+                </div>
+                <div class="text-gray-900 dark:text-white ml-4 text-base hidden md:block">
+                    - 選択中: <span id="selectedCount">0</span> 件
                 </div>
             </h2>
             <x-message :message="session('message')" />
@@ -62,7 +65,7 @@
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2m-1-5-4 5-4-5m9 8h0"/>
                                             </svg>
                                         </div>
-                                        CSVダウンロード
+                                        <div class="">CSVダウンロード</div>
                                     </button>
                                 @else
                                     <button type="button" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
@@ -71,10 +74,48 @@
                                                 <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
                                             </svg>
                                         </div>
-                                        CSVダウンロード
+                                        <div>CSVダウンロード</div>
                                     </button>
                                 @endcan
                             </li>
+                            <li>
+                                <button type="button" data-modal-target="select-modal" data-modal-toggle="select-modal" class="relative w-full flex items-center py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                    <div class="flex items-center min-w-6">
+                                        <x-icon name="icons/nav-setting" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-white" />
+                                    </div>
+                                    <div class="ml-2">一覧表示設定</div>
+                                </button>
+                                {{-- <button data-modal-target="select-modal" data-modal-toggle="select-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                                    Toggle modal
+                                  </button> --}}
+                            </li>
+                            <hr class="border-gray-300 dark:border-gray-500 mx-2">
+
+                            <li>
+                                @can('admin_corporations')
+                                    {{-- <form id="bulkDeleteForm" action="{{ route('corporations.bulkDelete') }}" method="POST">
+                                        @csrf --}}
+                                        <button type="button" data-modal-target="deleteModal-corporations" data-modal-show="deleteModal-corporations" class="relative w-full flex items-center py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                            <div class="flex items-center min-w-6">
+                                                <svg aria-hidden="true" class="w-5 h-5 mx-0.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                                </svg>
+                                            </div>
+                                            <div class="ml-2">データ削除</div>
+                                        </button>
+                                    {{-- </form> --}}
+                                @else
+                                    <button type="button" class="relative w-full flex items-center py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
+                                        <div class="flex items-center min-w-6">
+                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                                <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </div>
+                                        <div class="ml-2">データ削除</div>
+                                    </button>
+                                @endcan
+                            </li>
+
                         </ul>
                     </div>
                 </div>
@@ -211,10 +252,18 @@
                             №
                         </div>
                     </th>
+                    <th scope="col" class="pl-4 py-1 w-auto">
+                        <div class="flex items-center whitespace-nowrap">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="selectAllCheckbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-500 dark:border-white rounded border  focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700">
+                            </div>
+                        </div>
+                    </th>
                     <th scope="col" class="px-1 py-3 w-auto">
                         <span class="sr-only">編集</span>
                     </th>
-                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
+
+                    {{-- <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center w-auto">
                             @sortablelink('corporation_num','法人№', 'asc')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
@@ -230,7 +279,6 @@
                     </th>
                     <th scope="col" class="px-1 py-3 w-auto">
                         <div class="flex items-center whitespace-nowrap text-right">
-                            {{-- @sortablelink('corporation_prefecture_id','都道府県') --}}
                             @sortablelink('corporation_prefecture_id','都道府県')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
                         </div>
@@ -261,12 +309,19 @@
                         <div class="flex items-center whitespace-nowrap">
                             顧客/業者
                         </div>
-                    </th>
-                    @if($permissions['can_delete'])
-                        <th scope="col" class="px-1 py-3 w-auto">
-                            <span class="sr-only">削除</span>
-                        </th>
-                    @endif
+                    </th> --}}
+                    <!-- 動的に表示する列 -->
+                    @foreach($allColumns as $key => $label)
+                        @if(in_array($key, $visibleColumns))
+                            <th scope="col">
+                                <div class="flex items-center whitespace-nowrap">
+                                    @sortablelink($key, $label)
+                                    <!-- ソートアイコン -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg>
+                                </div>
+                            </th>
+                        @endif
+                    @endforeach
                 </tr>
             </thead>
             <tbody>
@@ -274,6 +329,11 @@
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600 clickable-row">
                         <td class="pl-4 py-1 whitespace-nowrap">
                             {{ ($corporations->currentPage() - 1) * $corporations->perPage() + $loop->index + 1 }}
+                        </td>
+                        <td class="pl-4 py-1 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <input id="checkbox{{ $corporation->id }}" type="checkbox" name="selectedIds[]" value="{{ $corporation->id }}" form="bulkDeleteForm" class="checkbox-item  w-4 h-4 text-blue-600 bg-gray-100 border-gray-500 dark:border-white rounded border  focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700">
+                            </div>
                         </td>
                         <td class="pl-4 py-1 whitespace-nowrap">
                             <button type="button" onclick="location.href='{{route('corporations.edit',$corporation)}}'"  class="button-edit-primary">
@@ -285,104 +345,153 @@
                                 </div>
                             </button>
                         </td>
-                        <td class="pl-1 py-1 whitespace-nowrap">
-                            {{$corporation->corporation_num}}
-                        </td>
-                        <td class="px-1 py-1 whitespace-nowrap w-96">
-                            {{$corporation->corporation_name}}
-                        </td>
-                        <td class="px-1 py-1 whitespace-nowrap">
-                            {{optional($corporation->prefecture)->prefecture_code .':'}}
-                            {{optional($corporation->prefecture)->prefecture_name}}
-                        </td>
-                        <td class="px-1 py-1 whitespace-nowrap w-44">
-                            @if ($corporation->tax_status == 1)
-                                <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
-                                    課税事業者
-                                </span>
-                            @elseif ($corporation->tax_status == 2)
-                                <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
-                                    免税事業者
-                                </span>
-                            @else
-                                <span class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-400">
-                                    未確認
-                                </span>
-                            @endif
-                        </td>
-                        <td class="px-1 py-1 whitespace-nowrap w-44 items-center">
-                            {{$corporation->invoice_num}}
-                            @if ($corporation->invoice_num && $corporation->is_active_invoice)
-                                <span class="inline-flex items-center justify-center w-5 h-5 me-2 text-sm font-semibold text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">
-                                    <svg class="w-2.5 h-2.5 text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
-                                    </svg>
-                                </span>
-                            @endif
-                        </td>
-                        <td class="px-1 py-1 whitespace-nowrap w-44">
-                            @if ($corporation->is_stop_trading == 1)
-                                <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
-                                    取引停止中
-                                </span>
-                            @else
-                                <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
-                                    取引中
-                                </span>
-                            @endif
-                        </td>
-                        <td class="px-1 py-1 whitespace-nowrap">
-                            <div class="w-[65px] text-right">
-                                {{number_format($corporation->latest_credit_limit) ?? 'N/A'}}
-                            </div>
-                        </td>
-                        <td class="px-1 py-1 whitespace-nowrap">
-                            <div class="w-[58px] text-right">
-                                {{$corporation->clients_count}}
-                            </div>
-                        </td>
-                        @if($permissions['can_delete'])
-                            <td class="py-1">
-                                <button type="button" data-modal-target="deleteModal-{{$corporation->id}}" data-modal-show="deleteModal-{{$corporation->id}}" class="button-delete-primary" tabindex="-1">
-                                    <div class="flex items-center">
-                                        <svg aria-hidden="true" class="w-[17px] h-[17px] mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
-                                        <span class="text-ms ">削除</span>
-                                    </div>
-                                </button>
+                        @if(in_array('corporation_num', $visibleColumns))
+                            <td class="pl-1 py-1 whitespace-nowrap">
+                                {{$corporation->corporation_num}}
+                            </td>
+                        @endif
+                        @if(in_array('corporation_name', $visibleColumns))
+                            <td class="px-1 py-1 whitespace-nowrap w-96">
+                                {{$corporation->corporation_name}}
+                            </td>
+                        @endif
+                        @if(in_array('corporation_kana_name', $visibleColumns))
+                            <td class="px-1 py-1 whitespace-nowrap w-96">
+                                {{$corporation->corporation_kana_name}}
+                            </td>
+                        @endif
+                        @if(in_array('corporation_prefecture_id', $visibleColumns))
+                            <td class="px-1 py-1 whitespace-nowrap">
+                                {{optional($corporation->prefecture)->prefecture_code .':'}}
+                                {{optional($corporation->prefecture)->prefecture_name}}
+                            </td>
+                        @endif
+                        @if(in_array('tax_status', $visibleColumns))
+                            <td class="px-1 py-1 whitespace-nowrap w-44">
+                                @if ($corporation->tax_status == 1)
+                                    <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                        課税事業者
+                                    </span>
+                                @elseif ($corporation->tax_status == 2)
+                                    <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
+                                        免税事業者
+                                    </span>
+                                @else
+                                    <span class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-400">
+                                        未確認
+                                    </span>
+                                @endif
+                            </td>
+                        @endif
+                        @if(in_array('invoice_num', $visibleColumns))
+                            <td class="px-1 py-1 whitespace-nowrap w-44 items-center">
+                                {{$corporation->invoice_num}}
+                                @if ($corporation->invoice_num && $corporation->is_active_invoice)
+                                    <span class="inline-flex items-center justify-center w-5 h-5 me-2 text-sm font-semibold text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">
+                                        <svg class="w-2.5 h-2.5 text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
+                                        </svg>
+                                    </span>
+                                @endif
+                            </td>
+                        @endif
+                        @if(in_array('is_stop_trading', $visibleColumns))
+                            <td class="px-1 py-1 whitespace-nowrap w-44">
+                                @if ($corporation->is_stop_trading == 1)
+                                    <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
+                                        取引停止中
+                                    </span>
+                                @else
+                                    <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                        取引中
+                                    </span>
+                                @endif
+                            </td>
+                        @endif
+                        @if(in_array('latest_credit_limit', $visibleColumns))
+                            <td class="px-1 py-1 whitespace-nowrap">
+                                <div class="w-[65px] text-right">
+                                    {{ number_format($corporation->latest_credit_limit) ?? 'N/A' }}
+                                </div>
+                            </td>
+                        @endif
+                        @if(in_array('clients_count', $visibleColumns))
+                            <td class="px-1 py-1 whitespace-nowrap">
+                                <div class="w-[58px] text-right">
+                                    {{ $corporation->clients_count }}
+                                </div>
                             </td>
                         @endif
                     </tr>
-                <!-- 削除モーダル -->
-                <div id="deleteModal-{{ $corporation->id }}" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                    <div class="relative w-full max-w-md max-h-full">
-                        <div class="relative bg-white rounded shadow dark:bg-gray-700">
-                            <div class="p-6 text-center">
-                                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                                </svg>
-                                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
-                                <div class="flex justify-center">
-                                    <form action="{{ route('corporations.destroy', $corporation->id) }}" method="POST" class="">
-                                        @csrf
-                                        @method('delete')
-                                        <button type="submit" data-modal-hide="deleteModal-{{ $corporation->id }}" class="text-white  bg-red-700 hover:bg-red-800 focus:outline-none font-medium rounded text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 dark:focus:ring-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
-                                            {{ __('deleted') }} <!--削除-->
-                                        </button>
-                                    </form>
-                                    <button id="cancelButton-{{ $corporation->id }}" data-modal-hide="deleteModal-{{ $corporation->id }}" type="button" data-modal-cancel class="text-gray-500 bg-white hover:bg-gray-100 focus:outline-none rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
-                                        やっぱやめます
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 @endforeach
             </tbody>
         </table>
         <div class="mt-1 mb-1 px-4">
         {{ $corporations->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
         </div> 
+    </div>
+
+    <!-- Main modal -->
+    <div id="select-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-md max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                        一覧表示項目個人設定
+                    </h3>
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="select-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <div class="p-4 md:p-5">
+                    {{-- <p class="text-gray-500 dark:text-gray-400 mb-4">一覧に表示する項目を以下から選択してください</p> --}}
+                    <form action="{{ route('user-settings.columns') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="page_identifier" value="corporations_index">
+                        @foreach($allColumns as $key => $label)
+                            <div class="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
+                                <input id="col_{{ $key }}" type="checkbox" value="{{ $key }}" name="visible_columns[]" {{ in_array($key, $visibleColumns) ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="col_{{ $key }}" class="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $label }}</label>
+                            </div>
+                        @endforeach
+                        <button type="submit" class="text-white inline-flex w-full justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            {{ __('save') }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+
+    <div id="deleteModal-corporations" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative w-full max-w-md max-h-full">
+            <div class="relative bg-white rounded shadow dark:bg-gray-700">
+                <div class="p-6 text-center">
+                    <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                    </svg>
+                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400"><span id="modalSelectedCount">0</span> 件を本当に削除しますか？</h3>
+                    <div class="flex justify-center">
+                        <form id="bulkDeleteForm" action="{{ route('corporations.bulkDelete') }}" method="POST">
+                            @csrf
+                            <button type="submit" id="bulkDeleteButton" form="bulkDeleteForm" data-modal-hide="deleteModal-corporations" class="text-white  bg-red-700 hover:bg-red-800 focus:outline-none font-medium rounded text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 dark:focus:ring-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                                {{ __('deleted') }} <!--削除-->
+                            </button>
+                        </form>
+                        <button id="cancelButton-corporations" data-modal-hide="deleteModal-corporations" type="button" data-modal-cancel class="text-gray-500 bg-white hover:bg-gray-100 focus:outline-none rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                            やっぱやめます
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://unpkg.com/scroll-hint@latest/js/scroll-hint.min.js"></script>
@@ -453,11 +562,29 @@
             }
     </script>
 
-    {{-- <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            setupModal('deleteModal-{{ $corporation->id }}', '{{ $corporation->id }}');
+    <script>
+        // 一覧画面のチェックボックス関連の操作　カウントしたり、一括でチェックを付けたり
+        document.addEventListener("DOMContentLoaded", function () {
+            const selectAllCheckbox = document.getElementById("selectAllCheckbox");
+            const checkboxes = document.querySelectorAll(".checkbox-item");
+            const selectedCountElement = document.getElementById("selectedCount");
+            const modalSelectedCount = document.getElementById("modalSelectedCount");
+
+            function updateSelectedCount() {
+                const selectedCount = document.querySelectorAll(".checkbox-item:checked").length;
+                selectedCountElement.textContent = selectedCount;
+                modalSelectedCount.textContent = selectedCount;  // モーダル内の選択数を更新
+            }
+
+            selectAllCheckbox.addEventListener("change", function () {
+                checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+                updateSelectedCount();
+            });
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener("change", updateSelectedCount);
+            });
         });
     </script>
-    <script src="{{ asset('assets/js/modal/delete-modal.js') }}"></script> --}}
-
+    
 </x-app-layout>

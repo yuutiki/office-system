@@ -51,44 +51,26 @@
     <input type="hidden" form="supportForm" name="client_id" id="client_id" value="{{ $support->client->id }}">
 
     <div class="max-w-7xl mx-auto px-2 md:pl-14">
-        {{-- <div class="grid gap-4 mb-4 sm:grid-cols-2">
-            <div class="">
-                <label for="client_num" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客番号</label>
-                <input type="text" name="client_num" class="w-full py-1 placeholder-red-500 border border-gray-300 rounded mt-1 cursor-not-allowed" id="client_num" value="{{ $support->client->client_num }}" placeholder="顧客を検索してください" readonly disabled>
-            </div>
-            <div class="">
-                <label for="client_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客名称</label>
-                <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" value="{{ $support->client->client_name }}" readonly disabled>
-            </div>
-        </div>
-
-        <div class="grid gap-4 mb-4 md:grid-cols-5 grid-cols-2">
-            <div class="">
-                <label for="client_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">管轄所属</label>
-                <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" value="{{ $support->client->affiliation2->affiliation2_name }}" readonly disabled>
-            </div>
-            <div class="">
-                <label for="client_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">営業担当</label>
-                <input type="text" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" value="{{ $support->client->user->name }}" readonly disabled>
-            </div>
-        </div> --}}
-
         <div class="dark:bg-gray-600 bg-gray-100 rounded pl-4 py-4 mt-8 dark:text-gray-200 shadow-md">
-            <div class="grid grid-cols-1 gap-4">
-
-                <div class="whitespace-nowrap md:mt-3">
-                    <div class="text-xs dark:text-white">{{ $support->client->client_num }}</div>
-                    <div class="dark:text-white">{{ $support->client->client_name }}</div>
+            <div class="grid gap-4">
+                <div class="flex">
+                    <span class="w-28 font-semibold text-gray-600 dark:text-gray-300">顧客No.</span>
+                    <span class="text-gray-600 dark:text-gray-200">{{ $support->client->client_num }}</span>
                 </div>
-                <div class="whitespace-nowrap md:mt-3">
-                    <div class="text-xs dark:text-gray-300">管轄事業部</div>
-                    <div class="dark:text-white">{{ $support->client->affiliation2->affiliation2_name }}</div>
+                <div class="flex">
+                    <span class="w-28 font-semibold text-gray-600 dark:text-gray-300">顧客名</span>
+                    <span class="text-gray-600 dark:text-gray-200">{{ $support->client->client_name }}</span>
                 </div>
-                <div class="whitespace-nowrap md:mt-3">
-                    <div class="text-xs dark:text-gray-300">営業担当</div>
-                    <div class="dark:text-white">{{ $support->client->user->user_name }}</div>
+                <div class="flex">
+                    <span class="w-28 font-semibold text-gray-600 dark:text-gray-300">管轄事業部</span>
+                    <span class="text-gray-600 dark:text-gray-200">{{ $support->client->affiliation2->affiliation2_name }}</span>
                 </div>
-                <div>
+                <div class="flex">
+                    <span class="w-28 font-semibold text-gray-600 dark:text-gray-300">営業担当</span>
+                    <span class="text-gray-600 dark:text-gray-200">{{ $support->client->user->user_name }}</span>
+                </div>
+                <div class="flex">
+                    <span class="w-28 font-semibold text-gray-600 dark:text-gray-300">ステータス</span>
                     @if($support->is_draft)
                         <span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-400 border border-yellow-400">
                             下書き
@@ -142,16 +124,16 @@
                     @enderror
                 </div>
                 <div class="">
-                    <label for="client_user_department" class="label-primary">顧客 部署</label>
-                    <input form="supportForm" type="text" name="client_user_department" class="input-secondary" id="client_user_department" value="{{old('client_user_department',$support->client_user_department)}}" placeholder="">
-                    @error('client_user_department')
+                    <label for="client_user_kana_name" class="label-primary">顧客 氏名</label>
+                    <input form="supportForm" type="text" name="client_user_kana_name" class="input-secondary" id="client_user_kana_name" value="{{old('client_user_kana_name',$support->client_user_kana_name)}}" placeholder="">
+                    @error('client_user_kana_name')
                         <div class="validate-message">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="">
-                    <label for="client_user_kana_name" class="label-primary">顧客 氏名</label>
-                    <input form="supportForm" type="text" name="client_user_kana_name" class="input-secondary" id="client_user_kana_name" value="{{old('client_user_kana_name',$support->client_user_kana_name)}}" placeholder="">
-                    @error('client_user_kana_name')
+                    <label for="client_user_department" class="label-primary">顧客 部署</label>
+                    <input form="supportForm" type="text" name="client_user_department" class="input-secondary" id="client_user_department" value="{{old('client_user_department',$support->client_user_department)}}" placeholder="">
+                    @error('client_user_department')
                         <div class="validate-message">{{ $message }}</div>
                     @enderror
                 </div>

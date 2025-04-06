@@ -54,6 +54,7 @@ use App\Http\Controllers\EstimateAddressController;
 use App\Http\Controllers\ModelHistoryController;
 use App\Http\Controllers\PasswordPolicyController;
 use App\Http\Controllers\ProjectExpenseController;
+use App\Http\Controllers\UserSettingsController;
 use App\Models\EstimateAddress;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 
@@ -159,8 +160,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/vendors',VendorController::class);
 
     // keepfile関連
-    Route::delete('/keepfile/{id}/delete-pdf', [KeepfileController::class, 'deletePdf'])->name('keepfile.deletePdf');
-    Route::resource('/keepfile',KeepfileController::class);
+    Route::delete('/keepfiles/{id}/delete-pdf', [KeepfileController::class, 'deletePdf'])->name('keepfile.deletePdf');
+    Route::resource('/keepfiles',KeepfileController::class);
 
     // user関連
     Route::post('/users/add-role-group', [UserController::class, 'addGroupsToUser'])->name('users.add-role-groups');
@@ -211,7 +212,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('role-groups', RoleGroupController::class);
 
 
-
+    // ユーザー別の一覧表示項目の設定
+    Route::post('/user-settings/columns', [UserSettingsController::class, 'saveColumnSettings'])->name('user-settings.columns');
 
 
 
@@ -292,6 +294,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/report-type', ReportTypeController::class);
     Route::resource('/sales-stage', SalesStageController::class);
     Route::resource('/support-time', SupportTimeController::class);
+
+    Route::get('/support-type/export',[SupportTypeController::class,'export'])->name('support-types.export');
     Route::resource('/support-type', SupportTypeController::class);
     Route::resource('/trade-status', TradeStatusController::class);
     Route::resource('/estimate-address', EstimateAddressController::class);

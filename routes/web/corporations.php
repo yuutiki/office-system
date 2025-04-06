@@ -24,5 +24,7 @@ Route::prefix('corporations')->name('corporations.')->group(function () {
         Route::get('/{corporation}/edit', 'edit')->middleware('can:view_corporations')->name('edit');
         Route::put('/{corporation}', 'update')->middleware('can:storeUpdate_corporations')->name('update');
         Route::delete('/{corporation}', 'destroy')->middleware('can:delete_corporations')->name('destroy');
+        Route::post('/corporations/bulk-delete', 'bulkDelete')->middleware('can:delete_corporations')->name('bulkDelete');
+
     });
 });

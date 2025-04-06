@@ -44,6 +44,8 @@ class Corporation extends Model
         'corporation_prefecture_id',
         'prefecture.prefecture_code',
         'is_stop_trading',
+        'invoice_num',
+        'tax_status',
     ];
 
     //GlobalObserverに定義されている作成者と更新者を登録するメソッド
@@ -53,6 +55,21 @@ class Corporation extends Model
         parent::boot();
 
         self::observe(GlobalObserver::class);
+    }
+
+    public static function getAvailableColumns()
+    {
+        return [
+            'corporation_num' => '法人№',
+            'corporation_name' => '法人名称',
+            'corporation_kana_name' => '法人カナ名称',
+            'corporation_prefecture_id' => '都道府県',
+            'tax_status' => '課税/免税',
+            'invoice_num' => 'インボイス番号',
+            'is_stop_trading' => '取引状況',
+            'latest_credit_limit' => '与信限度額',
+            'clients_count' => '顧客/業者',
+        ];
     }
 
     // index画面の検索ロジック
@@ -221,6 +238,10 @@ class Corporation extends Model
         $fileName);
     }
 
+
+
+
+    
     // protected function getHistoryMeta(): ?array
     // {
     //     return [

@@ -424,14 +424,26 @@ class UserController extends Controller
         $affiliation2Id = $request->affiliation2_id;
         $affiliation3Id = $request->affiliation3_id;
 
-        $users = User::with('affiliation1','affiliation2','affiliation3')
-            ->where('user_name', 'like', '%' . $userName . '%')
-            ->where('affiliation1_id', 'like', '%' . $affiliation1Id . '%')
-            ->where('affiliation2_id', 'like', '%' . $affiliation2Id . '%')
-            ->where('affiliation3_id', 'like', '%' . $affiliation3Id . '%')
-            ->where('employee_status_id', 1) // 退職者を除外する条件を追加
-            ->where('id', '!=', 1)// システム管理者を除外する条件を追加
-            ->get();
+        // クエリ作成
+        $query = User::with('affiliation1', 'affiliation2', 'affiliation3')
+            ->where('employee_status_id', 1) // 退職者を除外
+            ->where('role', '!=', 'system_admin'); // システム管理者を除外
+
+        if (!empty($userName)){
+            $query->where('user_name', 'like', '%' . $userName . '%');
+        }
+        if (!empty($affiliation1Id)){
+            $query->where('affiliation1_id', $affiliation1Id);
+        }
+        if (!empty($affiliation2Id)){
+            $query->where('affiliation2_id', $affiliation2Id);
+        }
+        if (!empty($affiliation3Id)){
+            $query->where('affiliation3_id', $affiliation3Id);
+        }
+
+        // クエリ実行
+        $users = $query->get();
 
         // 検索結果をJSON形式で返す
         return response()->json($users);

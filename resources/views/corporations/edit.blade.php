@@ -6,7 +6,7 @@
             </h2>
             <div class="flex justify-end items-center space-x-2">
                 <x-message :message="session('message')" />
-                <div class="flex justify-between">
+                <div class="flex justify-between items-center">
                     @if ($prevId)
                         <a href="{{ route('corporations.edit', ['corporation' => $prevId]) }}" class="px-2 py-2 dark:bg-gray-600 rounded">
                             <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -14,9 +14,12 @@
                             </svg>
                         </a>
                     @endif
-                
+
+                    <div class="mx-2">
+                        <input type="text" class="rounded py-1 px-1 w-48 text-sm" value="{{ $corporation->corporation_num }}：{{ $corporation->corporation_short_name }}" disabled>
+                    </div>
                     @if ($nextId)
-                        <a href="{{ route('corporations.edit', ['corporation' => $nextId]) }}" class="px-2 py-2 ml-2 dark:bg-gray-600 rounded">
+                        <a href="{{ route('corporations.edit', ['corporation' => $nextId]) }}" class="px-2 py-2 dark:bg-gray-600 rounded">
                             <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
                             </svg>
@@ -28,7 +31,7 @@
                     @method('put')
                     @can('storeUpdate_corporations')
                         <x-button-save form-id="corporationForm" id="saveButton" onkeydown="stopTab(event)">
-                            {{ __("Update") }}
+                            {{ __("update") }}
                         </x-button-save>
                     @endcan
                 </form>
@@ -61,8 +64,6 @@
             </div>
         </div>
     </x-slot>
-
-    <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
 
     <div class="max-w-7xl mx-auto px-2 md:pl-14">
 

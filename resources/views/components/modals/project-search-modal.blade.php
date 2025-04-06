@@ -143,7 +143,7 @@
             {{-- 検索結果テーブル：スクロール可能な固定ヘッダー付きテーブル --}}
             <div class="max-h-80 overflow-x-auto mt-4 rounded border dark:border-gray-600">
                 <table class="w-full text-white text-left text-sm">
-                    <thead class="sticky top-0 dark:bg-gray-600 border-l dark:border-gray-600 dark:text-white text-gray-900 bg-gray-200">
+                    <thead class="sticky top-0 dark:bg-gray-600 dark:border-gray-600 dark:text-white text-gray-900 bg-gray-200">
                         <tr id="{{ $modalId }}_headers">
                             {{-- ヘッダーはJavaScriptで動的に生成 --}}
                         </tr>

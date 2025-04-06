@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Response;
 use App\Jobs\ExportCorporationsCsv;
 use App\Models\CorporationCredit;
 use App\Models\Prefecture;
+use App\Models\UserColumnSetting;
 use App\Services\InvoiceApiService;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
@@ -32,6 +33,15 @@ class CorporationController extends Controller
 
     public function index(Request $request)//検索用にrequestを受取る
     {
+        $allColumns = Corporation::getAvailableColumns();
+
+        // ユーザーの設定を取得
+        $userSettings = UserColumnSetting::where('user_id', auth()->id())
+        ->where('page_identifier', 'corporations_index')
+        ->first();
+
+        $visibleColumns = $userSettings ? $userSettings->visible_columns : array_keys($allColumns);
+
         $permissions = [
             'can_create' => Gate::allows('storeUpdate_corporations'),
             'can_edit' => Gate::allows('storeUpdate_corporations'),
@@ -81,7 +91,7 @@ class CorporationController extends Controller
         // 検索結果の件数を取得
         $count = $corporations->total();
 
-        return view('corporations.index', compact('searchParams', 'corporations', 'count' ,'filters', 'CorporationNum', 'CorporationName', 'invoiceNum', 'tradeStatusIds', 'taxStatusIds', 'permissions'));
+        return view('corporations.index', compact('searchParams', 'allColumns', 'visibleColumns', 'corporations', 'count' ,'filters', 'CorporationNum', 'CorporationName', 'invoiceNum', 'tradeStatusIds', 'taxStatusIds', 'permissions'));
     }
 
     public function create(Request $request)
@@ -262,6 +272,36 @@ class CorporationController extends Controller
             return redirect()->back()->with('error', '対象のデータが見つかりませんでした');
         }
     }
+
+    public function bulkDelete(Request $request)
+    {
+        $selectedIds = $request->input('selectedIds', []);
+    
+        if (empty($selectedIds)) {
+            return redirect()->back()->with('error', '削除するレコードが選択されていません');
+        }
+    
+        // 削除できない企業のIDを取得（顧客データが存在する企業）
+        $corporationsWithClients = Corporation::whereIn('id', $selectedIds)
+            ->whereHas('clients')
+            ->pluck('id')
+            ->toArray();
+    
+        // 削除可能な企業のIDを取得（顧客データがない企業）
+        $corporationsToDelete = array_diff($selectedIds, $corporationsWithClients);
+    
+        if (!empty($corporationsToDelete)) {
+            Corporation::whereIn('id', $corporationsToDelete)->delete();
+        }
+    
+        // メッセージを設定
+        if (!empty($corporationsWithClients)) {
+            return redirect()->back()->with('error', '一部の法人は顧客/業者データが存在するため、削除できませんでした');
+        }
+    
+        return redirect()->back()->with('success', '選択された法人を削除しました');
+    }
+    
 
     //モーダル用の非同期検索メソッド
     public function search(Request $request)
@@ -516,7 +556,7 @@ class CorporationController extends Controller
             'corporation_name' => $row[1],
             'corporation_kana_name' => $row[2],
             'corporation_short_name' => $row[3],
-            'corporation_number' => $row[4],
+            'corporation_tax_num' => $row[4],
             'invoice_num' => $row[5],
             'corporation_post_code' => $row[6],
             'corporation_prefecture_id' => $prefecture,

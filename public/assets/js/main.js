@@ -86,11 +86,11 @@ window.addEventListener('load', () => {
 
     // 他の初期化コードなどがあればここに追加
 
-    $(document).ready(function () {
-        // 一括選択用のチェックボックスがクリックされたときの処理
-        $('#selectAllCheckbox').click(function () {
-            // 他の全てのチェックボックスの状態を一括で変更
-            $('input[name="selectedIds[]"]').prop('checked', this.checked);
-        });
-    });
+    // $(document).ready(function () {
+    //     // 一括選択用のチェックボックスがクリックされたときの処理
+    //     $('#selectAllCheckbox').click(function () {
+    //         // 他の全てのチェックボックスの状態を一括で変更
+    //         $('input[name="selectedIds[]"]').prop('checked', this.checked);
+    //     });
+    // });
 });

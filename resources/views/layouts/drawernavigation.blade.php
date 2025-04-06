@@ -321,7 +321,7 @@
                     <ul  class="hidden py-1 space-y-1" id="keepfile-body" aria-labelledby="keepfile-heading">
                         @can('view_keepfiles')
                         <li>
-                            <x-nav-link :href="route('keepfile.index')" :active="request()->routeIs('keepfile.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                            <x-nav-link :href="route('keepfiles.index')" :active="request()->routeIs('keepfiles.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                                 <span class="flex-1 ml-10 whitespace-nowrap">{{ __('預託情報一覧') }}</span>
                             </x-nav-link>
                         </li>
@@ -612,7 +612,7 @@
                         <ul  class="hidden py-1 space-y-1" id="sm-keepfile-body" aria-labelledby="sm-keepfile-heading">
                             <li>
                                 @can('view_keepfiles')
-                                    <x-nav-link :href="route('keepfile.index')" :active="request()->routeIs('keepfile.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
+                                    <x-nav-link :href="route('keepfiles.index')" :active="request()->routeIs('keepfiles.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" tabindex="-1">
                                         <span class="flex-1 ml-10 whitespace-nowrap">{{ __('預託情報一覧') }}</span>
                                     </x-nav-link>
                                 @endcan
