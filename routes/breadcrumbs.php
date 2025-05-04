@@ -107,7 +107,7 @@ Breadcrumbs::for('dashboard', function ($trail) {
                 // ダッシュボード > 業者一覧 > 編集
                 Breadcrumbs::for('editVendor', function ($trail, $vendor) {
                     $trail->parent('vendors');
-                    $trail->push('編集', url('vendors/' . $vendor->id . '/edit'));
+                    $trail->push('編集', url('vendors/' . $vendor->ulid . '/edit'));
                 });
 
                 // ダッシュボード > 担当者一覧 > CSVアップロード
@@ -117,27 +117,27 @@ Breadcrumbs::for('dashboard', function ($trail) {
                 });
 
         // ダッシュボード > 担当者一覧
-        Breadcrumbs::for('clientpersons', function ($trail) {
+        Breadcrumbs::for('clientContacts', function ($trail) {
             $trail->parent('dashboard');
-            $trail->push('担当者一覧', url('client-person'));
+            $trail->push('担当者一覧', route('client-contacts.index'));
         });
 
                 // ダッシュボード > 担当者一覧 > 新規登録
-                Breadcrumbs::for('createclientperson', function ($trail) {
-                    $trail->parent('clientpersons');
-                    $trail->push('新規作成', url('client-person/create'));
+                Breadcrumbs::for('createClientContact', function ($trail) {
+                    $trail->parent('clientContacts');
+                    $trail->push('新規作成', route('client-contacts.create'));
                 });
 
                 // ダッシュボード > 担当者一覧 > 編集
-                Breadcrumbs::for('editclientperson', function ($trail) {
-                    $trail->parent('clientpersons');
-                    $trail->push('編集', url('client-person/edit'));
+                Breadcrumbs::for('editClientContact', function ($trail) {
+                    $trail->parent('clientContacts');
+                    $trail->push('編集', url('client-contact/edit'));
                 });
 
                 // ダッシュボード > 担当者一覧 > CSVアップロード
-                Breadcrumbs::for('csvUploadClientPerson', function ($trail) {
-                    $trail->parent('clientpersons');
-                    $trail->push('CSVアップロード', url('client-person/show-upload'));
+                Breadcrumbs::for('csvUploadClientContact', function ($trail) {
+                    $trail->parent('clientContacts');
+                    $trail->push('CSVアップロード', route('client-contacts.showUploadForm'));
                 });
 
         // ダッシュボード > サポート一覧
@@ -302,7 +302,26 @@ Breadcrumbs::for('dashboard', function ($trail) {
                 Breadcrumbs::for('salesStageMaster', function ($trail) {
                     $trail->parent('masters');
                     $trail->push('営業種別', route('sales-stage.index'));
-                });                
+                });
+                
+                // ダッシュボード > マスタ一覧 >  プロジェクト種別マスタ
+                Breadcrumbs::for('projectTypeMaster', function ($trail) {
+                    $trail->parent('masters');
+                    $trail->push('プロジェクト種別', route('project-type.index'));
+                });
+
+                // ダッシュボード > マスタ一覧 >  営業報告種別マスタ
+                Breadcrumbs::for('reportTypeMaster', function ($trail) {
+                    $trail->parent('masters');
+                    $trail->push('営業報告種別', route('report-type.index'));
+                });
+
+                // ダッシュボード > マスタ一覧 >  会計期間マスタ
+                Breadcrumbs::for('accountingPeriodMaster', function ($trail) {
+                    $trail->parent('masters');
+                    $trail->push('会計期間', route('accounting-period.index'));
+                });
+
                 
 
                 // ダッシュボード > マスタ一覧 >  都道府県マスタ

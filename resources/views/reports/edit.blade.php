@@ -27,7 +27,7 @@
             顧客検索
         </button>
 
-        <div class="grid gap-4 mb-4 lg:grid-cols-4">
+        <div class="grid gap-4 mb-4 lg:grid-cols-3">
             <div class="flex lg:mt-4">
                 <div class="w-full flex flex-col">
                     <label for="client_num" class="font-normal text-sm dark:text-red-500 text-red-700 leading-none">顧客№<span class="text-red-500"> *</span></label>
@@ -59,9 +59,9 @@
 
 
 
-        <div class="text-black dark:bg-white w-10">
+        {{-- <div class="text-black dark:bg-white w-10">
             {{ $report->notification }}
-        </div>
+        </div> --}}
 
 
         <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
@@ -111,6 +111,10 @@
                         <label for="client_representative" class="text-sm dark:text-gray-100 text-gray-900 leading-none">先方担当者</label>
                         <input type="text" form="reoportForm" name="client_representative" class="input-primary" id="client_representative" value="{{ old('client_representative', $report->client_representative) }}" placeholder="">
                     </div>
+                    <div class="w-full flex flex-col">
+                        <label for="user_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none">報告者</label>
+                        <input type="text" form="reoportForm" name="user_id" class="input-primary" id="user_id" value="{{ old('user_id', $report->reporter->user_name) }}" disabled>
+                    </div>
                 </div>
                 <div>
                     <div class="w-full flex flex-col">
@@ -141,27 +145,111 @@
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
-                                
 
-                {{-- <!-- ユーザ検索フォーム -->
-                <input type="text" id="userSearch" class="border border-gray-300 rounded px-3 py-1 w-full mb-2" placeholder="ユーザを検索...">
+                <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                    <!-- 顧客検索ボタン(画面：小) -->
+                    <button type="button" onclick="ClientSearchModal.show('projectSearchModal1')" class="md:ml-1 md:mt-1 mt-1 mb-4 w-full md:w-auto whitespace-nowrap sm:hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        プロジェクト検索
+                    </button>
 
-                <!-- ユーザ検索結果のリスト -->
-                <ul id="userList" class="border border-gray-300 rounded px-3 py-2 h-60 overflow-y-scroll dark:text-white">
-                    @foreach($users as $user)
-                    <li data-user-id="{{ $user->id }}">
-                        <label>
-                            <input type="checkbox" class="mr-2"  name="selectedRecipientsId[]" value="{{ $user->id }}">
-                            {{ $user->user_name }}
-                        </label>
-                    </li>
-                    @endforeach
-                </ul>
+                    <input type="text" form="reoportForm" name="project_id" id="project_id" value="{{ old('project_id', optional($report->project)->project_id) }}" class="hidden">
+    
+                    <div class="flex md:mt-4">
+                        <div class="w-full flex flex-col">
+                            <label for="project_num" class="text-sm dark:text-gray-100 text-gray-900 leading-none">プロジェクトNo.</label>
+                            <input type="text" form="reoportForm" name="project_num" id="project_num" value="{{ old('project_num', optional($report->project)->project_num) }}" class="input-readonly" placeholder="" readonly tabindex="-1">
+                        </div>
+                        <!-- 顧客検索ボタン(画面中～) -->
+                        <button type="button" onclick="ProjectSearchModal.show('projectSearchModal1')" data-form="reoportForm" class="p-2.5 text-sm font-medium h-[35px] text-white mt-[18px] ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 zip2addr-trigger hidden sm:block">
+                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="w-full flex flex-col md:mt-4">
+                        <label for="project_client_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none">顧客名称</label>
+                        <input type="text" form="reoportForm" name="project_client_name" id="project_client_name" value="{{ old('project_client_name', $report->project->client->client_name ?? '') }}" class="input-readonly" readonly tabindex="-1">
+                    </div>
+                    <div class="w-full flex flex-col md:mt-4">
+                        <label for="project_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none">プロジェクト名称</label>
+                        <input type="text" form="reoportForm" name="project_name" id="project_name" value="{{ old('project_name', optional($report->project)->project_name) }}" class="input-readonly" readonly tabindex="-1">
+                    </div>
+                </div>
+    
 
-                <!-- 選択済みユーザーのリスト -->
-                <ul id="selectedUserList" class="border border-gray-300 rounded px-3 py-2 h-60 overflow-y-scroll dark:text-white">
-                    <!-- ここに選択済みユーザーが追加されます -->
-                </ul> --}}
+                <div class="mt-8">
+                    <span class="dark:text-white">報告先設定</span>
+                    <ul class="pt-4 space-y-2 border-t border-gray-200 dark:border-gray-700"></ul>
+                </div>
+    
+                <div class="grid gap-4 mb-4 sm:grid-cols-5">
+                    <!-- 検索フォーム -->
+                    <div class="w-full flex flex-col">
+                        <label for="user_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">氏名</label>
+                        <input type="text" form="reoportForm" id="user_name" class="input-secondary" placeholder="ユーザ名で検索">
+                    </div>
+    
+                    <!-- 所属1選択フォーム -->
+                    <div class="w-full flex flex-col">
+                        <label for="user_affiliation1_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">所属1</label>
+                        <select id="user_affiliation1_id" name="user_affiliation1_id" class="input-secondary">
+                            <option value="">未選択</option>
+                            @foreach ($affiliation1s as $affiliation1)
+                                <option value="{{ $affiliation1->id }}" @selected($affiliation1->id == old('user_affiliation1_id'))>{{ $affiliation1->affiliation1_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+    
+                    <!-- 部署選択フォーム -->
+                    <div class="w-full flex flex-col">
+                        <label for="user_affiliation2_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">所属2</label>
+                        <select id="user_affiliation2_id" name="user_affiliation2_id" class="input-secondary">
+                            <option value="">未選択</option>
+                            @foreach ($affiliation2s as $affiliation2)
+                                <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == old('user_affiliation2_id'))>{{ $affiliation2->affiliation2_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+    
+                    <!-- 所属3選択フォーム -->
+                    <div class="w-full flex flex-col">
+                        <label for="user_affiliation3_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">所属3</label>
+                        <select id="user_affiliation3_id" name="user_affiliation3_id" class="input-secondary">
+                            <option value="">未選択</option>
+                            @foreach ($affiliation3s as $affiliation3)
+                                <option value="{{ $affiliation3->id }}" @selected($affiliation3->id == old('user_affiliation3_id'))>{{ $affiliation3->affiliation3_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+    
+                    {{-- <button id="searchUsersButton" type="button">検索</button> --}}
+                    <div class="w-full flex justify-self-end  flex-col  mt-auto">
+                        <button type="button" id="searchUsersButton" class="md:ml-1 md:mt-1 w-full h-10 md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            ユーザ検索
+                        </button>
+                    </div>
+                </div>
+    
+                <div class="md:flex md:flex-row">
+                    <!-- 検索結果表示部分 -->
+                    <div class=" md:w-1/2">
+                        <div class="dark:text-white">検索結果</div>
+                        <div id="searchResults" class="dark:text-white border h-48 overflow-y-scroll p-2 text-base rounded border-gray-900">
+                            <!-- 検索結果はここに表示されます -->
+                        </div>
+                    </div>
+                    
+                    <!-- 選択された報告先表示部分 -->
+                    <div class=" md:w-1/2">
+                        <div class="dark:text-white md:ml-3 mt-3 md:mt-0">報告先</div>
+                        <div id="selectedRecipients" class="dark:text-white border overflow-y-scroll h-48 md:mt-0 p-2 md:ml-3 rounded border-gray-900">
+                            <!-- 選択された報告先はここに表示されます -->
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- 選択されたユーザのIDを保持する隠しフィールド -->
+                <input type="hidden" form="reoportForm" id="selectedUsers" name="selectedRecipientsId[]">
             </div>
         </div>
     </div>
@@ -173,6 +261,28 @@
         :users="$users"
         onSelectCallback="handleClientSelect"
     />
+
+    <x-modals.project-search-modal 
+        modalId="projectSearchModal1" 
+        screenId="keepfile_create" 
+        :users="$users" 
+        onSelectCallback="handleProjectSelect" 
+    />
+
+<script>
+    // プロジェクト選択時の処理を定義
+    function handleProjectSelect(project) {
+        // 選択されたプロジェクトの情報を各フィールドに設定
+        document.getElementById('project_id').value = project.id;
+        document.getElementById('project_num').value = project.project_num;
+        document.getElementById('project_name').value = project.project_name;
+        document.getElementById('project_client_name').value = project.client.client_name;
+        // document.getElementById('project_manager').value = project.user.user_name;
+    }
+    // モーダルのコールバック関数を設定
+    window.projectSearchModal1_onSelect = handleProjectSelect;
+</script>
+<script src="{{ asset('/assets/js/modal/project-search-modal.js') }}"></script>
         
         
         
@@ -188,4 +298,217 @@
     </script>
     <script src="{{ asset('/assets/js/modal/client-search-modal.js') }}"></script>
     <script src="{{ asset('assets/js/autoresizetextarea.js') }}"></script>
+
+
+
+
+
+
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // ストレージ管理用のオブジェクト
+            var initialRecipients = @json($recipients);
+
+            var storageManager = {
+                selectedUserIds: [],
+                
+                // ストレージ全体を更新
+                updateStorage: function() {
+                    localStorage.setItem('selectedUserIds', JSON.stringify(this.selectedUserIds));
+                    console.log('ストレージ更新後のselectedUserIds:', this.selectedUserIds);
+                },
+
+                // ユーザーを追加
+                addUser: function(userId, userName) {
+                    if (!this.selectedUserIds.includes(userId)) {
+                        this.selectedUserIds.push(userId);
+                        localStorage.setItem('userName_' + userId, userName);
+                        this.updateStorage();
+                    }
+                },
+
+                // ユーザーを削除
+                removeUser: function(userId) {
+                    var index = this.selectedUserIds.indexOf(userId);
+                    if (index !== -1) {
+                        this.selectedUserIds.splice(index, 1);
+                        localStorage.removeItem('userName_' + userId);
+                        this.updateStorage();
+                    }
+                },
+
+                // ユーザー名を取得
+                getUserName: function(userId) {
+                    return localStorage.getItem('userName_' + userId);
+                },
+
+                // 初期データのロード
+                loadInitialData: function(recipients) {
+                    // LocalStorageをクリア
+                    this.selectedUserIds.forEach(userId => {
+                        localStorage.removeItem('userName_' + userId);
+                    });
+                    this.selectedUserIds = [];
+                    
+                    // 初期データをロード
+                    recipients.forEach(recipient => {
+                        this.selectedUserIds.push(recipient.id.toString());
+                        localStorage.setItem('userName_' + recipient.id, recipient.user_name);
+                    });
+                    
+                    this.updateStorage();
+                }
+            };
+
+            // DOM要素
+            var elements = {
+                selectedUsers: document.getElementById('selectedUsers'),
+                selectedRecipients: document.getElementById('selectedRecipients'),
+                searchResults: document.getElementById('searchResults'),
+                searchButton: document.getElementById('searchUsersButton'),
+                userName: document.getElementById('user_name'),
+                userAffiliation1: document.getElementById('user_affiliation1_id'),
+                userAffiliation2: document.getElementById('user_affiliation2_id'),
+                userAffiliation3: document.getElementById('user_affiliation3_id')
+            };
+
+            // 初期化処理
+            function initialize() {
+                elements.selectedUsers.value = storageManager.selectedUserIds.join(',');
+                storageManager.selectedUserIds.forEach(function(userId) {
+                    var userName = storageManager.getUserName(userId);
+                    elements.selectedRecipients.insertAdjacentHTML(
+                        'afterbegin',
+                        '<div class="selectedUser cursor-pointer" data-user-id="' + userId + '">' + userName + '</div>'
+                    );
+                });
+            }
+
+            // ユーザー検索
+            elements.searchButton.addEventListener('click', function() {
+                var params = new URLSearchParams({
+                    user_name: elements.userName.value,
+                    affiliation1_id: elements.userAffiliation1.value,
+                    affiliation2_id: elements.userAffiliation2.value,
+                    affiliation3_id: elements.userAffiliation3.value
+                });
+
+                fetch('/search-users?' + params)
+                    .then(response => response.json())
+                    .then(function(response) {
+                        var filteredUsers = response.filter(function(user) {
+                            return !storageManager.selectedUserIds.some(id => id == user.id);
+                        });
+
+                        var sortedUsers = filteredUsers.sort(function(a, b) {
+                            return a.user_kana_name.toUpperCase()
+                                .localeCompare(b.user_kana_name.toUpperCase());
+                        });
+
+                        var usersHtml = sortedUsers
+                            .map(user => 
+                                '<div class="selectUser cursor-pointer" data-user-id="' + 
+                                user.id + '" data-user-name="' + user.user_name + '">' + 
+                                user.user_name + '</div>'
+                            ).join('');
+
+                        elements.searchResults.innerHTML = usersHtml;
+                    })
+                    .catch(function(error) {
+                        console.log('検索エラー:', error);
+                    });
+            });
+
+            // ユーザー選択処理
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('selectUser')) {
+                    handleUserSelection(e.target);
+                }
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.target.classList.contains('selectUser') && e.key === 'Enter') {
+                    handleUserSelection(e.target);
+                }
+            });
+
+            // 初期化処理
+            function initialize() {
+                // 更新画面の場合は初期データをロード
+                if (typeof initialRecipients !== 'undefined') {
+                    storageManager.loadInitialData(initialRecipients);
+                } else {
+                    // 新規作成の場合はLocalStorageから読み込む
+                    storageManager.selectedUserIds = JSON.parse(localStorage.getItem('selectedUserIds')) || [];
+                }
+                
+                // 選択済みユーザーを表示
+                elements.selectedRecipients.innerHTML = '';
+                elements.selectedUsers.value = storageManager.selectedUserIds.join(',');
+                
+                storageManager.selectedUserIds.forEach(function(userId) {
+                    var userName = storageManager.getUserName(userId);
+                    elements.selectedRecipients.insertAdjacentHTML(
+                        'beforeend',
+                        '<div class="selectedUser cursor-pointer" data-user-id="' + userId + '">' + userName + '</div>'
+                    );
+                });
+            }
+
+            function handleUserSelection(element) {
+                var userId = element.dataset.userId;
+                var userName = element.dataset.userName;
+                var selectedUsers = elements.selectedRecipients.querySelectorAll('.selectedUser');
+                var inserted = false;
+
+                for (var i = 0; i < selectedUsers.length; i++) {
+                    var selectedUserName = selectedUsers[i].textContent;
+                    if (userName.localeCompare(selectedUserName, 'ja', {sensitivity: 'base'}) < 0) {
+                        selectedUsers[i].insertAdjacentHTML(
+                            'beforebegin',
+                            '<div class="selectedUser cursor-pointer" data-user-id="' + userId + '">' + 
+                            userName + '</div>'
+                        );
+                        inserted = true;
+                        break;
+                    }
+                }
+
+                if (!inserted) {
+                    elements.selectedRecipients.insertAdjacentHTML(
+                        'beforeend',
+                        '<div class="selectedUser cursor-pointer" data-user-id="' + userId + '">' + 
+                        userName + '</div>'
+                    );
+                }
+
+                storageManager.addUser(userId, userName);
+                element.remove();
+                elements.selectedUsers.value = storageManager.selectedUserIds.join(',');
+            }
+
+            // ユーザー選択解除処理
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('selectedUser')) {
+                    var userId = e.target.dataset.userId;
+                    var userName = e.target.textContent;
+
+                    elements.searchResults.insertAdjacentHTML(
+                        'beforeend',
+                        '<div class="selectUser cursor-pointer" data-user-id="' + userId + 
+                        '" data-user-name="' + userName + '">' + userName + '</div>'
+                    );
+
+                    storageManager.removeUser(userId);
+                    e.target.remove();
+                    elements.selectedUsers.value = storageManager.selectedUserIds.join(',');
+                }
+            });
+
+            // 初期化実行
+            initialize();
+        });
+    </script>
 </x-app-layout>

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KeepfileController; //add
 use App\Http\Controllers\CorporationController;//add
 use App\Http\Controllers\ClientController;//add
-use App\Http\Controllers\ClientPersonController;
+use App\Http\Controllers\ClientContactController;
 use App\Http\Controllers\Dashboard\DashboardController;//add
 use App\Http\Controllers\CommentController;//add
 use App\Http\Controllers\ContractController;
@@ -46,14 +46,15 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RoleGroupController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\VendorController;
-use App\Models\Contract;
 use App\Http\Controllers\Auth\PasswordChangeController;
+use App\Http\Controllers\ClientContactCheckboxOptionController;
 use App\Http\Controllers\ClientSearchModalDisplayItemController;
 use App\Http\Controllers\CorporationCreditController;
 use App\Http\Controllers\EstimateAddressController;
 use App\Http\Controllers\ModelHistoryController;
 use App\Http\Controllers\PasswordPolicyController;
 use App\Http\Controllers\ProjectExpenseController;
+use App\Http\Controllers\SSOController;
 use App\Http\Controllers\UserSettingsController;
 use App\Models\EstimateAddress;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
@@ -142,16 +143,17 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/corporation-credits', CorporationCreditController::class);
 
     // clients関連
+    Route::post('/clients/bulk-delete', [ClientController::class, 'bulkDelete'])->middleware('can:delete_clients')->name('clients.bulkDelete');
     Route::get('/clients/show-upload', [ClientController::class, 'showUploadForm'])->name('clients.showUploadForm');
     Route::post('/clients/upload', [ClientController::class, 'upload'])->name('clients.upload');
     Route::post('/client/search', [ClientController::class, 'search'])->name('client.search');
     Route::resource('/clients', ClientController::class);
     Route::post('/updateActiveTab',  [ClientController::class, 'updateActiveTab']); //顧客編集画面のアクティブタブを取得
 
-    // clientPerson関連
-    Route::get('/client-person/show-upload', [ClientPersonController::class, 'showUploadForm'])->name('client-person.showUploadForm');
-    Route::post('/client-person/upload', [ClientPersonController::class, 'upload'])->name('client-person.upload');
-    Route::resource('/client-person', ClientPersonController::class);
+    // clientContacts関連
+    Route::get('/client-contacts/show-upload', [ClientContactController::class, 'showUploadForm'])->name('client-contacts.showUploadForm');
+    Route::post('/client-contacts/upload', [ClientContactController::class, 'upload'])->name('client-contacts.upload');
+    Route::resource('/client-contacts', ClientContactController::class);
 
     // vendor関連
     Route::get('/vendors/show-upload', [VendorController::class, 'showUploadForm'])->name('vendors.showUploadForm');
@@ -164,6 +166,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/keepfiles',KeepfileController::class);
 
     // user関連
+    Route::post('/users/bulk-disable', [UserController::class, 'bulkDisable'])->middleware('can:delete_users')->name('users.bulkDisable');
+    Route::post('/users/bulk-delete', [UserController::class, 'bulkDelete'])->middleware('can:delete_users')->name('users.bulkDelete');
     Route::post('/users/add-role-group', [UserController::class, 'addGroupsToUser'])->name('users.add-role-groups');
     Route::get('/users/show-upload', [UserController::class, 'showUploadForm'])->name('users.showUploadForm');
     Route::post('/users/upload', [UserController::class, 'upload'])->name('users.upload');
@@ -184,9 +188,13 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/supports', '\App\Http\Controllers\SupportController');
 
     // repport関連
+    
     Route::get('/report/{report_id}/comment', [CommentController::class, 'show'])->name('comment.show');
     Route::post('/report/{report_id}/comment', [CommentController::class, 'store'])->name('comment.store');
+    Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
+    Route::post('/reports/{report}/mark-as-read', [ReportController::class, 'markAsRead'])->name('reports.mark-as-read');
     Route::get('/report/{report_id}/client', [ReportController::class, 'showFromClient'])->name('report.showFromClient');
     Route::prefix('reports')->group(function () {
         // 通常の新規作成ルート
@@ -328,7 +336,34 @@ Route::middleware(['auth'])->group(function () {
      });
 
 
+    // キャンパスプラン SSO URL ジェネレーター ルート
+    Route::get('/sso-generator', [SSOController::class, 'index'])
+        ->name('sso.index');
+
+    Route::post('/sso-generate', [SSOController::class, 'generate'])
+        ->name('sso.generate');
+
+
 });
+
+    // routes/web.php
+    Route::post('/client/contacts/checkbox-options/add', [ClientContactController::class, 'addCheckboxOption'])
+        ->name('client.contacts.checkbox-options.add')
+        ->middleware('can:manage-checkbox-options');
+
+    // チェックボックスオプション管理のルート
+    Route::prefix('client-contacts-checkbox-options')->name('client-contacts.checkbox-options.')->group(function () {
+        Route::get('/', [ClientContactCheckboxOptionController::class, 'index'])->name('index');
+        Route::get('/create', [ClientContactCheckboxOptionController::class, 'create'])->name('create');
+        Route::post('/', [ClientContactCheckboxOptionController::class, 'store'])->name('store');
+        Route::get('/{clientContactCheckboxOption}/edit', [ClientContactCheckboxOptionController::class, 'edit'])->name('edit');
+        Route::put('/{clientContactCheckboxOption}', [ClientContactCheckboxOptionController::class, 'update'])->name('update');
+        Route::patch('/{clientContactCheckboxOption}/toggle-active', [ClientContactCheckboxOptionController::class, 'toggleActive'])->name('toggle-active');
+        Route::post('/update-order', [ClientContactCheckboxOptionController::class, 'updateOrder'])->name('update-order');
+    });
+
+
+
 
 // Route::get('/dashboard',  [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/dashboard',  [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');

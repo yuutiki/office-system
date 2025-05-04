@@ -11,7 +11,7 @@ class NotificationController extends Controller
     public function index(Request $request)
     {
         $notifications = Notification::where('notifiable_id', $request->user()->id)
-            ->with(['creator'])
+            // ->with(['creator'])
             ->orderBy('created_at', 'desc')
             ->paginate(25);
         

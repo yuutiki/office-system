@@ -311,5 +311,17 @@ class AppMasterSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+        AppMaster::create([
+            'master_type' => '顧客担当者マスタ',
+            'master_code' => '180',
+            'master_name' => '顧客担当者チェックボックス',
+            'master_name_en' => 'clientContactCheckbox',
+            'route' => 'client-contacts.checkbox-options.index',
+            'digit' => 2,
+            'created_by' => 1,
+            'updated_by' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }

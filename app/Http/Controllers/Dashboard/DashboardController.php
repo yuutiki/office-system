@@ -8,13 +8,14 @@ use App\Models\AccountingPeriod;
 use Illuminate\Http\Request;
 use App\Models\Client;
 use App\Models\Project;
+use App\Models\ProjectRevenue;
 use App\Models\Support;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $clientCount = 0; // 仮の初期値
         $client = Client::where('trade_status_id','=','1')
@@ -53,7 +54,31 @@ class DashboardController extends Controller
         }
 
 
-        return view('dashboard',compact('clientCount','mySupports','receivedAtArray', 'currentPeriod', 'totalRevenue'));
+
+
+        // クエリパラメータにperiod_idがあればそれを優先
+        if ($request->filled('period_id')) {
+            $accountingPeriod = AccountingPeriod::findOrFail($request->input('period_id'));
+        } else {
+            // なければ、今日が属する会計期間を自動取得
+            $today = Carbon::today();
+            $accountingPeriod = AccountingPeriod::where('period_start_at', '<=', $today)
+                ->where('period_end_at', '>=', $today)
+                ->firstOrFail();
+        }
+
+        $monthlyRevenue = ProjectRevenue::getMonthlyRevenueByAccountingPeriod($accountingPeriod->id);
+
+        // X軸ラベル作成
+        $xAxisCategories = [];
+        $start = Carbon::parse($accountingPeriod->period_start_at)->startOfMonth();
+        $end = Carbon::parse($accountingPeriod->period_end_at)->startOfMonth();
+        while ($start->lte($end)) {
+            $xAxisCategories[] = $start->format('Y/n');
+            $start->addMonth();
+        }
+
+        return view('dashboard',compact('clientCount','mySupports','receivedAtArray', 'currentPeriod', 'totalRevenue', 'monthlyRevenue', 'accountingPeriod', 'xAxisCategories'));
     }
 
     public function create()

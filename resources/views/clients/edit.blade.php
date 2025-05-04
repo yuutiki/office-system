@@ -50,7 +50,7 @@
 
         <div class="">
             <div class="relative z-0 hidden">
-                <input type="text" id="client_num" name="client_num" form="clientForm" value="{{old('client_num',$client->client_num)}}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
+                <input type="text" id="client_num" name="client_num" form="clientForm" value="{{ old('client_num',$client->client_num) }}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
                 <label for="client_num" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">顧客No.</label>
             </div>
 
@@ -83,14 +83,14 @@
                 </div>
                 <div class="">
                     <label for="client_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2 mt-2">顧客名称</label>
-                    <input type="text" name="client_name" form="clientForm" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" id="client_name" value="{{old('client_name',$client->client_name)}}" placeholder="例）烏丸大学">
+                    <input type="text" name="client_name" form="clientForm" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" id="client_name" value="{{ old('client_name',$client->client_name) }}" placeholder="例）烏丸大学">
                     @error('client_name')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror                
                 </div>
                 <div class="hidden md:inline-block">
                     <label for="client_kana_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客カナ名称</label>
-                    <input type="text" name="client_kana_name" form="clientForm" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" id="client_kana_name" value="{{old('client_kana_name',$client->client_kana_name)}}" placeholder="例）カラスマダイガク">
+                    <input type="text" name="client_kana_name" form="clientForm" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" id="client_kana_name" value="{{ old('client_kana_name',$client->client_kana_name) }}" placeholder="例）カラスマダイガク">
                     @error('client_kana_name')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror                
@@ -150,21 +150,26 @@
             </div>
             {{-- タブコンテンツStart --}}
             <div id="myTabContent" class="mb-4">
+                @error('updated_at')
+                    <div class="text-red-500">{{ $message }}</div>
+                @enderror     
 
                 {{-- 1つ目のタブコンテンツStart --}}
                 <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="base" role="tabpanel" aria-labelledby="profile-tab">
 
+                {{-- 楽観ロック用 --}}
+                <input type="hidden" form="clientForm" name="updated_at" value="{{ $client->updated_at->toISOString() }}">
                 <div class="grid gap-3 mb-2 md:grid-cols-2">
                     <div class="">
                         <label for="client_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2 mt-2">顧客名称</label>
-                        <input type="text" name="client_name" form="clientForm" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" id="client_name" value="{{old('client_name',$client->client_name)}}" placeholder="例）烏丸大学">
+                        <input type="text" name="client_name" form="clientForm" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" id="client_name" value="{{ old('client_name',$client->client_name) }}" placeholder="例）烏丸大学">
                         @error('client_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror                
                     </div>
                     <div class="hidden md:inline-block">
                         <label for="client_kana_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客カナ名称</label>
-                        <input type="text" name="client_kana_name" form="clientForm" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" id="client_kana_name" value="{{old('client_kana_name',$client->client_kana_name)}}" placeholder="例）カラスマダイガク">
+                        <input type="text" name="client_kana_name" form="clientForm" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" id="client_kana_name" value="{{ old('client_kana_name',$client->client_kana_name) }}" placeholder="例）カラスマダイガク">
                         @error('client_kana_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror                
@@ -239,9 +244,9 @@
                     <div class="grid gap-4 mb-4 md:grid-cols-4 mt-2">
                         <div class="w-full flex flex-col">
                             <label for="head_post_code" class="text-sm dark:text-gray-100 text-gray-900 leading-none" autocomplete="new-password">郵便番号</label>
-                            {{-- <input type="text" name="head_post_code" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="head_post_code" value="{{old('head_post_code')}}" placeholder="" onKeyUp="AjaxZip3.zip2addr(this,'','head_prefecture','head_addre1','','',false);"> --}}
+                            {{-- <input type="text" name="head_post_code" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="head_post_code" value="{{ old('head_post_code') }}" placeholder="" onKeyUp="AjaxZip3.zip2addr(this,'','head_prefecture','head_addre1','','',false);"> --}}
                             <div class="relative w-full">
-                                <input type="text" name="head_post_code" form="clientForm" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="head_post_code" value="{{old('head_post_code', $client->head_post_code)}}" placeholder="">
+                                <input type="text" name="head_post_code" form="clientForm" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="head_post_code" value="{{ old('head_post_code', $client->post_code) }}" placeholder="">
                                 <button type="button" id="client_ajaxzip3" class="absolute top-0 end-0 p-2.5 text-sm h-[34px] text-white mt-1 bg-blue-700 rounded-e border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
@@ -254,13 +259,13 @@
                             <select id="head_prefecture_id" name="head_prefecture_id" form="clientForm" class="w-full py-1.5  text-sm mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">未選択</option>
                                 @foreach($prefectures as $prefecture)
-                                    <option value="{{ $prefecture->id }}" @if( $prefecture->id == $client->head_prefecture ) selected @endif>{{ $prefecture->prefecture_code }}:{{ $prefecture->prefecture_name }}</option>
+                                    <option value="{{ $prefecture->id }}" @if( $prefecture->id == $client->prefecture_id ) selected @endif>{{ $prefecture->prefecture_code }}:{{ $prefecture->prefecture_name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="w-full flex flex-col md:col-span-2">
                             <label for="head_addre1" class="text-sm dark:text-gray-100 text-gray-900 leading-none">代表所在地</label>
-                            <input type="text" name="head_addre1" form="clientForm" id="head_addre1" value="{{old('head_addre1', $client->head_address1)}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" placeholder="">
+                            <input type="text" name="head_addre1" form="clientForm" id="head_addre1" value="{{ old('head_addre1', $client->address_1) }}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" placeholder="">
                         </div>
 
 
@@ -268,12 +273,12 @@
 
                         <div class="w-full flex flex-col md:col-span-2">  
                             <label for="head_tel" class="text-sm dark:text-gray-100 text-gray-900 leading-none">代表TEL</label>
-                            <input type="text" name="head_tel" form="clientForm" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_tel" value="{{old('head_tel',$client->head_tel)}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" placeholder="">
+                            <input type="text" name="head_tel" form="clientForm" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_tel" value="{{ old('head_tel', $client->tel) }}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" placeholder="">
                         </div>
     
                         <div class="w-full flex flex-col md:col-span-2">  
                             <label for="head_fax" class="text-sm dark:text-gray-100 text-gray-900 leading-none">代表FAX</label>
-                            <input type="tel" name="head_fax" form="clientForm" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_fax" value="{{old('head_fax',$client->head_fax)}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded"  placeholder="">
+                            <input type="tel" name="head_fax" form="clientForm" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_fax" value="{{ old('head_fax', $client->fax) }}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded"  placeholder="">
                         </div>
                     </div>
 
@@ -282,7 +287,7 @@
                     <div class="grid gap-4 mb-1 lg:grid-cols-4 mt-1">
                         <div class="w-full flex flex-col md:col-span-2">
                             <label for="students" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">規模（学生数/従業員数）</label>
-                            <input type="number" min="0" name="students" form="clientForm" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="students" value="{{old('students',$client->students)}}">
+                            <input type="number" min="0" name="students" form="clientForm" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="students" value="{{ old('students', $client->students) }}">
                         </div>
                     </div>
                     <div class="grid gap-4 mb-1 sm:grid-cols-4 mt-1">
@@ -307,27 +312,27 @@
 
                         <div class="w-full flex flex-col hidden">
                             <label for="billing_corporation_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">ディーラ（顧客）ID</label>
-                            <input form="updateForm" type="text" name="billing_corporation_id" class="w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="billing_corporation_id" value="{{old('billing_corporation_id',$client->billing_corporation_id)}}" placeholder="">
+                            <input form="updateForm" type="text" name="billing_corporation_id" class="w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="billing_corporation_id" value="{{ old('billing_corporation_id',$client->billing_corporation_id) }}" placeholder="">
                         </div>
                         <div class="w-full flex flex-col">
                             <label for="billing_corporation_num" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（顧客）№</label>
-                            <input type="text" name="billing_corporation_num" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1" id="billing_corporation_num" value="{{old('billing_corporation_num',optional($client->dealer)->vendor_num)}}" disabled>
+                            <input type="text" name="billing_corporation_num" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1" id="billing_corporation_num" value="{{ old('billing_corporation_num',optional($client->dealer)->vendor_num) }}" disabled>
                         </div>
                         <div class="w-full flex flex-col col-span-3">
                             <label for="billing_corporation_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（顧客）名称</label>
-                            <input type="text" name="billing_corporation_name" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="billing_corporation_name" value="{{old('billing_corporation_name',optional($client->dealer)->vendor_name)}}" disabled>
+                            <input type="text" name="billing_corporation_name" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="billing_corporation_name" value="{{ old('billing_corporation_name',optional($client->dealer)->vendor_name) }}" disabled>
                         </div>
                     </div> --}}
 
                     {{-- <div class="grid gap-4 mt-1 mb-4 sm:grid-cols-5">
                         <div class="w-full flex flex-col hidden">
                             <label for="dealer_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">ディーラID（hidden要素）</label>
-                            <input type="text" name="dealer_id" class="w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="dealer_id" value="{{old('dealer_id')}}" placeholder="">
+                            <input type="text" name="dealer_id" class="w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="dealer_id" value="{{ old('dealer_id') }}" placeholder="">
                         </div>
                         <div class="w-full flex flex-col">
                             <label for="vendor_num" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（業者）№</label>
                             <div class="relative w-full">
-                                <input type="text" name="vendor_num" class="dark:bg-gray-400 w-full py-1 border border-gray-300 rounded mt-1" id="vendor_num" value="{{old('vendor_num',optional($client->dealer)->vendor_num)}}" disabled>
+                                <input type="text" name="vendor_num" class="dark:bg-gray-400 w-full py-1 border border-gray-300 rounded mt-1" id="vendor_num" value="{{ old('vendor_num',optional($client->dealer)->vendor_num) }}" disabled>
                                 <button type="button" onclick="showdealerModal()" class="absolute top-0 end-0 p-2.5 text-sm h-[34px] text-white mt-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
@@ -338,19 +343,19 @@
 
                         <div class="w-full flex flex-col md:col-span-3">
                             <label for="vendor_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（業者）名称</label>
-                            <input type="text" name="vendor_name" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="vendor_name" value="{{old('vendor_name',optional($client->dealer)->vendor_name)}}" disabled>
+                            <input type="text" name="vendor_name" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="vendor_name" value="{{ old('vendor_name',optional($client->dealer)->vendor_name) }}" disabled>
                         </div>
                     </div> --}}
 
                     <div class="grid gap-4 mt-1 mb-4 sm:grid-cols-4">
                         <div class="w-full flex flex-col hidden">
                             <label for="dealer_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">ディーラID（hidden要素）</label>
-                            <input type="text" name="dealer_id" form="clientForm" class="w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="dealer_id" value="{{old('dealer_id')}}" placeholder="">
+                            <input type="text" name="dealer_id" form="clientForm" class="w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="dealer_id" value="{{ old('dealer_id') }}" placeholder="">
                         </div>
                         <div class="w-full flex flex-col">
                             <label for="vendor_num" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（業者）№</label>
                             <div class="relative w-full">
-                                <input type="text" name="vendor_num" form="clientForm" class="dark:bg-gray-400 w-full py-1 border border-gray-300 rounded mt-1" id="vendor_num" value="{{old('vendor_num',optional($client->dealer)->vendor_num)}}" disabled>
+                                <input type="text" name="vendor_num" form="clientForm" class="dark:bg-gray-400 w-full py-1 border border-gray-300 rounded mt-1" id="vendor_num" value="{{ old('vendor_num',optional($client->dealer)->vendor_num) }}" disabled>
                                 <button type="button" onclick="showdealerModal()" class="absolute top-0 end-0 p-2.5 text-sm h-[34px] text-white mt-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
@@ -361,14 +366,14 @@
                     
                         <div class="w-full flex flex-col md:col-span-3">
                             <label for="vendor_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">ディーラ（業者）名称</label>
-                            <input type="text" name="vendor_name" form="clientForm" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="vendor_name" value="{{old('vendor_name',optional($client->dealer)->vendor_name)}}" disabled>
+                            <input type="text" name="vendor_name" form="clientForm" class="dark:bg-gray-400 w-auto py-1 border border-gray-300 rounded mt-1 mb-2" id="vendor_name" value="{{ old('vendor_name',optional($client->dealer)->vendor_name) }}" disabled>
                         </div>
                     </div>
                     
 
                     <div class="w-full flex flex-col">
                         <label for="memo" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">備考</label>
-                        <textarea name="memo" form="clientForm" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="auto-resize-textarea" data-auto-resize="true" value="{{old('memo')}}" cols="30" rows="5">{{old('memo', $client->memo)}}</textarea>
+                        <textarea name="memo" form="clientForm" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="auto-resize-textarea" data-auto-resize="true" value="{{ old('memo') }}" cols="30" rows="5">{{ old('memo', $client->memo) }}</textarea>
                     </div>
                     {{-- <ul class=" mt-4 items-center w-full text-sm text-gray-900 bg-white border border-gray-200 rounded sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                         <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
@@ -459,7 +464,7 @@
 
                     {{-- <div class="w-full flex flex-col">
                         <label for="" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">主バージョン</label>
-                        <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="" value="{{old('',"V10.1")}}" placeholder="">
+                        <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="" value="{{ old('',"V10.1") }}" placeholder="">
                     </div> --}}
 
                     <div class="w-full relative overflow-x-auto shadow-md rounded mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
@@ -512,7 +517,7 @@
                                         </div>
                                     </th>
                                     <th scope="col" class="px-2 py-2 whitespace-nowrap">
-                                        <button onclick="location.href='{{route('client-product.create')}}'" class="bg-blue-400 flex items-center justify-center px-2 py-1 text-sm text-white rounded bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" type="button">
+                                        <button onclick="location.href='{{ route('client-product.create') }}'" class="bg-blue-400 flex items-center justify-center px-2 py-1 text-sm text-white rounded bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" type="button">
                                             <svg class="h-3.5 w-3.5 mr-0.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                                 <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                                             </svg>
@@ -525,7 +530,7 @@
                                     @foreach ($clientProducts as $clientProduct)
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
                                         <td class="px-2 py-2 text-center">
-                                            <button onclick="location.href='{{route('clients.edit',$client)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
+                                            <button onclick="location.href='{{ route('clients.edit',$client) }}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
                                                 <div class="flex">
                                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
@@ -848,20 +853,20 @@
                         </div>
                         <div class="w-full flex flex-col">
                             <label for="" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">SQL サーバ名</label>
-                            <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="" value="{{old('',"DBサーバ名")}}" placeholder="">
+                            <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="" value="{{ old('',"DBサーバ名") }}" placeholder="">
                         </div>       
 
                         <div class="w-full flex flex-col">
                             <label for="" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">SQL インスタンス名</label>
-                            <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="" value="{{old('',"SQLSERVER2019")}}" placeholder="">
+                            <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="" value="{{ old('',"SQLSERVER2019") }}" placeholder="">
                         </div>
                         <div class="w-full flex flex-col">
                             <label for="" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">SQL ユーザ名</label>
-                            <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="" value="{{old('',"sa")}}" placeholder="">
+                            <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="" value="{{ old('',"sa") }}" placeholder="">
                         </div>
                         <div class="w-full flex flex-col">
                             <label for="" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">SQL パスワード</label>
-                            <input type="password" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="" value="{{old('',"V10.1")}}" placeholder="">
+                            <input type="password" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="" value="{{ old('',"V10.1") }}" placeholder="">
                         </div>
                         <div>
                             <label for="test6" class="text-sm text-gray-900 dark:text-white leading-none mt-4">IIS Ver</label>
@@ -911,11 +916,11 @@
                         </div>
                         <div class="w-full flex flex-col">
                             <label for="" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">接続タイムアウト値</label>
-                            <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="" value="{{old('',"120秒")}}" placeholder="">
+                            <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="" value="{{ old('',"120秒") }}" placeholder="">
                         </div>
                         <div class="w-full flex flex-col">
                             <label for="" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1" autocomplete="new-password">プロセスリサイクル値</label>
-                            <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="" value="{{old('',"1740分")}}" placeholder="">
+                            <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="" value="{{ old('',"1740分") }}" placeholder="">
                         </div>
 
                         <div>
@@ -947,19 +952,19 @@
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="test14" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">サーバ構成</label>
-                        <textarea name="test14" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="test14" value="{{old('test14')}}" cols="30" rows="5"></textarea>
+                        <textarea name="test14" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="test14" value="{{ old('test14') }}" cols="30" rows="5"></textarea>
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="test14" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">フォルダ構成</label>
-                        <textarea name="test14" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="test14" value="{{old('test14')}}" cols="30" rows="5"></textarea>
+                        <textarea name="test14" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="test14" value="{{ old('test14') }}" cols="30" rows="5"></textarea>
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="test14" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">バックアップ情報</label>
-                        <textarea name="test14" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="test14" value="{{old('test14')}}" cols="30" rows="5"></textarea>
+                        <textarea name="test14" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="test14" value="{{ old('test14') }}" cols="30" rows="5"></textarea>
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="test14" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">環境備考</label>
-                        <textarea name="test14" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="test14" value="{{old('test14')}}" cols="30" rows="5"></textarea>
+                        <textarea name="test14" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400" id="test14" value="{{ old('test14') }}" cols="30" rows="5"></textarea>
                     </div> --}}
 
                 </div>
@@ -967,7 +972,6 @@
 
                 {{-- 5つ目のタブコンテンツStart --}}
                 <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="reports" role="tabpanel" aria-labelledby="reports-tab">
-                    <span class="text-white">この顧客の営業報告の内容が表示されます。ここから営業報告を登録することもできます。</span>
                     {{-- テーブル表示 --}}
                     <div class="w-full relative overflow-x-auto shadow-md rounded mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
                         <table class="w-full text-sm text-left text-gray-800 dark:text-gray-400">
@@ -1019,7 +1023,7 @@
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
                                         <td class="px-2 py-2 text-center">
                                      {{-- reports.showを作成して変更 --}}
-                                            <button onclick="location.href='{{route('report.showFromClient',$report)}}'"  class="block whitespace-nowrap text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 rounded text-sm px-2 py-1 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 m-auto" type="button">
+                                            <button onclick="location.href='{{ route('report.showFromClient',$report) }}'"  class="block whitespace-nowrap text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 rounded text-sm px-2 py-1 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 m-auto" type="button">
                                                 <div class="flex">
                                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
@@ -1038,10 +1042,10 @@
                                             {{$report->report_title}}
                                         </td>
                                         <td class="px-2 py-2 whitespace-nowrap">
-                                            {{$report->reporter->name}}
+                                            {{$report->reporter->user_name}}
                                         </td>
                                         <td class="px-2 py-2 text-center">
-                                            <button onclick="location.href='{{route('reports.edit',$report)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
+                                            <button onclick="location.href='{{ route('reports.edit',$report) }}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
                                                 <div class="flex">
                                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
@@ -1078,7 +1082,7 @@
                                                 </svg>
                                                 <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
 
-                                                <form action="{{route('reports.destroy',$report->id)}}" method="POST" class="text-center m-auto">
+                                                <form action="{{ route('reports.destroy',$report->id) }}" method="POST" class="text-center m-auto">
                                                     @csrf
                                                     @method('delete')
                                                     <button type="submit" data-modal-hide="deleteModal-{{$report->id}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 rounded text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
@@ -1171,7 +1175,7 @@
                                 <tbody>
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white">
                                         <td class="px-2 py-1 whitespace-nowrap">
-                                            <button onclick="location.href='{{route('supports.edit',$support)}}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded  text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
+                                            <button onclick="location.href='{{ route('supports.edit',$support) }}'"  class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded  text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 m-auto" type="button">
                                                 <div class="flex">
                                                     <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
@@ -1229,7 +1233,7 @@
                                                 </svg>
                                                 <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
                 
-                                                <form action="{{route('supports.destroy',$support->id)}}" method="POST" class="text-center m-auto">
+                                                <form action="{{ route('supports.destroy',$support->id) }}" method="POST" class="text-center m-auto">
                                                     @csrf
                                                     @method('delete')
                                                     <button type="submit" data-modal-hide="deleteModal-{{$support->id}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 rounded text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
@@ -1400,7 +1404,7 @@
                     </svg>
                     <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
                     <div class="flex justify-center">
-                        <form action="{{route('clients.destroy',$client->id)}}" method="POST" class="">
+                        <form action="{{ route('clients.destroy',$client->id) }}" method="POST" class="">
                             @csrf
                             @method('delete')
                             <button type="submit" data-modal-hide="deleteModal-{{$client->id}}" class="text-white  bg-red-600 hover:bg-red-800 focus:outline-none font-medium rounded text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 dark:focus:ring-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">

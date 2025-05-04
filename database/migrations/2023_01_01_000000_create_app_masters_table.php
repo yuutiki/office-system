@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('master_type',20)->comment('マスタ種別');
             $table->string('master_code',3)->unique()->comment('マスタコード');
-            $table->string('master_name',20)->comment('マスタ名称');
-            $table->string('master_name_en',20)->nullable(true)->comment('マスタ英名称');
+            $table->string('master_name',40)->comment('マスタ名称');
+            $table->string('master_name_en',40)->nullable(true)->comment('マスタ英名称');
             $table->string('route')->comment('ルート');
             $table->integer('digit')->nullable()->comment('桁数');
 

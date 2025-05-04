@@ -55,7 +55,7 @@ class VendorController extends Controller
 
 
         // 検索クエリを組み立てる
-        $vendorsQuery = Vendor::with(['corporation','user','affiliation2'])->sortable()->orderBy('vendor_num','asc');
+        $vendorsQuery = Vendor::with(['corporation', 'affiliation2'])->sortable()->orderBy('vendor_num','asc');
 
         if (!empty($isDealer)) {
             $vendorsQuery->where('is_dealer', 1);
@@ -180,20 +180,20 @@ class VendorController extends Controller
         //
     }
 
-    public function edit(string $id)
+    public function edit(string $ulid)
     {
         $users = User::all();
         $vendorTypes = VendorType::all();
         $affiliation2s = Affiliation2::all();
-        $vendor = Vendor::find($id);
+        $vendor = Vendor::find($ulid);
         $prefectures = Prefecture::all(); //都道府県
 
         return view('vendors.edit',compact('affiliation2s','users','vendorTypes','vendor','prefectures',));
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $ulid)
     {
-        $vendor = Vendor::findOrFail($id);
+        $vendor = Vendor::findOrFail($ulid);
 
         $this->updateBasicInfo($vendor, $request);
         $this->updateBankInfo($vendor, $request);
@@ -201,7 +201,7 @@ class VendorController extends Controller
 
         $vendor->save();
 
-        return redirect()->route('vendors.edit', $id)->with('success', '正常に変更しました');
+        return redirect()->route('vendors.edit', $ulid)->with('success', '正常に変更しました');
     }
 
     private function updateBasicInfo(Vendor $vendor, Request $request)

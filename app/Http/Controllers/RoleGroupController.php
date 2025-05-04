@@ -80,7 +80,8 @@ class RoleGroupController extends Controller
         ->with(['affiliation1', 'affiliation2', 'affiliation3'])
         ->paginate(50);
     
-        $roleGroup->load(['functionMenus.permission']);
+        // $roleGroup->load(['functionMenus.permission']);
+        $roleGroup->load(['functionMenus']);
 
         // ユーザ検索条件を渡す
         $affiliation1s = Affiliation1::all();

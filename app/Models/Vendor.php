@@ -103,10 +103,10 @@ class Vendor extends Model
     {
         return $this->hasMany(Client::class, 'dealer_id'); // 'dealer_id'がClientテーブルのvendor_idを参照することを示す
     }
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    // public function user()
+    // {
+    //     return $this->belongsTo(User::class);
+    // }
     public function vendorType()
     {
         return $this->belongsTo(VendorType::class);

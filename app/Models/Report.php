@@ -21,6 +21,7 @@ class Report extends Model
         'report_content',
         'report_notice',
         'is_draft',
+        'project_id',
     ];
 
     // 型変換の定義
@@ -61,7 +62,42 @@ class Report extends Model
 
 
 
+    // キーワード検索用の関数
+    public static function getSearchWordArray($keywords)
+    {
+        // 検索文字列全体の前後にある空白を除去
+        $keywordsRemoveSpace = preg_replace('/\A[\p{C}\p{Z}]++|[\p{C}\p{Z}]++\z/u', '', $keywords);
+        // 検索文字列内の半角スペースを全角スペースにする
+        $keywordsUnifySpace =  mb_convert_kana($keywordsRemoveSpace, 's');
+        // 全角空白で文字を区切り配列へ
+        $keywordsArray = preg_split('/[\s]+/', $keywordsUnifySpace);
 
+        return $keywordsArray;
+    }
+    
+    // 複数単語のAND検索用のクエリ発行関数
+    public static function getMultiWordSearchQuery($query, $searchTextArray)
+    {
+        // AND検索なので、最初の条件をwhereで追加し、以降はorWhereで条件を追加する
+        $first = array_shift($searchTextArray);
+        $query->where(function ($q) use ($first) {
+            $q->where(function ($innerQ) use ($first) {
+                $innerQ->where('report_title', 'like', '%' . $first . '%')
+                    ->orWhere('report_content', 'like', '%' . $first . '%')
+                    ->orWhere('report_notice', 'like', '%' . $first . '%');
+            });
+        });
+
+        foreach ($searchTextArray as $searchText) {
+            $query->where(function ($innerQ) use ($searchText) {
+                $innerQ->where('report_title', 'like', '%' . $searchText . '%')
+                    ->orWhere('report_content', 'like', '%' . $searchText . '%')
+                    ->orWhere('report_notice', 'like', '%' . $searchText . '%');
+            });
+        }
+
+        return $query;
+    }
 
 
 
@@ -69,12 +105,12 @@ class Report extends Model
 
 
     // 中間テーブルreport_to_recipientsを介して報告内容が報告先（受信者）と関連するリレーションok
-    public function recipients()
-    {
-        return $this->belongsToMany(User::class, 'report_to_recipients', 'report_id', 'recipient_id')
-            ->withPivot('is_read')// pivotテーブルのreadカラムを取得する
-            ->withTimestamps();
-    }
+    // public function recipients()
+    // {
+    //     return $this->belongsToMany(User::class, 'report_to_recipients', 'report_id', 'recipient_id')
+    //         ->withPivot('is_read')// pivotテーブルのreadカラムを取得する
+    //         ->withTimestamps();
+    // }
 
     // 報告に関連するコメントのリレーションok
     public function comments()
@@ -84,6 +120,10 @@ class Report extends Model
     public function client()
     {
         return $this->belongsTo(Client::class);
+    }
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
     }
     public function reportType()
     {
@@ -97,5 +137,11 @@ class Report extends Model
     public function reporter()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+    public function recipients()
+    {
+        return $this->belongsToMany(User::class, 'report_recipients')
+                    ->withPivot('is_read', 'read_at')
+                    ->withTimestamps();
     }
 }

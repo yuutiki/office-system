@@ -54,13 +54,42 @@ class CommentController extends Controller
         //
     }
 
+    /**
+     * コメントを更新
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Comment  $comment
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, Comment $comment)
     {
-        //
+        // 権限チェック - 自分のコメントのみ更新可能
+        if ($comment->user_id !== auth()->id()) {
+            return redirect()->back()->with('error', '他のユーザーのコメントは編集できません。');
+        }
+        
+        // バリデーション
+        $request->validate([
+            'content' => 'required|string|max:1000',
+        ]);
+        
+        // コメント更新
+        $comment->content = $request->input('content');
+        $comment->save();
+        
+        return redirect()->route('reports.show', $comment->report_id)->with('success', 'コメントを更新しました。');
     }
 
     public function destroy(Comment $comment)
     {
-        //
+        // 権限チェック - 自分のコメントのみ削除可能
+        if ($comment->user_id !== auth()->id()) {
+            return redirect()->back()->with('error', '他のユーザーのコメントは削除できません。');
+        }
+        
+        // コメントを削除
+        $comment->delete();
+        
+        return redirect()->back()->with('success', 'コメントを削除しました。');
     }
 }

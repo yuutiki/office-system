@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight items-center pb-1.5">
             {{ Breadcrumbs::render('dashboard') }}
         </h2>
         <div class="flex justify-end">
@@ -8,539 +8,441 @@
         </div>
     </x-slot>
 
+
+    <!-- 必要なスクリプト -->
     <script src="https://cdn.jsdelivr.net/npm/echarts@latest/dist/echarts.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet">
 
-    <!-- カード４つ -->
-    <div class="relative pb-32 pt-2">
-        <div class="md:pl-10 mx-auto w-full">
-            <div>
-                <!-- Card stats -->
-                <div class="flex flex-wrap">
-                    <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-                        <div class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
-                            <div class="flex-auto p-4">
-                                <div class="flex flex-wrap">
-                                    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                                        <h5 class="text-blueGray-400 uppercase font-bold text-xs">
-                                            @if( isset($currentPeriod) )
-                                                当期案件規模:{{ $currentPeriod->period_name }}
-                                            @else
-                                                当期案件規模:-
-                                            @endif
-                                        </h5>
-                                        <span class="font-semibold text-xl text-blueGray-700">
-                                            {{ number_format($totalRevenue) }}円
-                                        </span>
-                                    </div>
-                                    <div class="relative w-auto pl-4 flex-initial">
-                                        <div class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-red-500">
-                                            <i class="far fa-chart-bar"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <p class="text-sm text-blueGray-400 mt-4">
-                                    <span class="text-emerald-500 mr-2">
-                                        <i class="fas fa-arrow-up"></i> 3.48%
-                                    </span>
-                                    <span class="whitespace-nowrap">
-                                        @if( isset($currentPeriod) )
-                                            {{ $currentPeriod->period_start_at->format('Y年m月d日') }} 〜 {{ $currentPeriod->period_end_at->format('Y年m月d日') }}
-                                        @else
-                                            現在の計上期が設定されていません
-                                        @endif
-                                    </span>
-                                </p>
-                            </div>
-                        </div>
+
+    <div class="max-w-full md:ml-14 mx-auto p-4 dark:bg-gray-800 bg-white rounded-lg shadow-xl mb-4">
+        <div id="calendar" class="text-sm dark:text-white text-gray-600"></div>
+    </div>
+
+
+
+
+
+
+
+
+
+      
+    <!-- モーダル -->
+    <div id="eventModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-xl max-w-md w-full">
+            <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-white">予定の登録</h2>
+            <form id="eventForm" class="space-y-4">
+                <div>
+                    <label for="eventTitle" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">タイトル</label>
+                    <input type="text" id="eventTitle" class="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
+                </div>
+                
+                <div>
+                    <label for="eventDate" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">日付</label>
+                    <input type="text" id="eventDate" readonly class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-800 dark:text-white">
+                </div>
+                
+                <div>
+                    <label for="eventDescription" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">詳細</label>
+                    <textarea id="eventDescription" rows="3" class="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"></textarea>
+                </div>
+                
+                <div class="flex items-center">
+                    <input type="checkbox" id="eventAllDay" class="mr-2 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                    <label for="eventAllDay" class="text-sm font-medium text-gray-700 dark:text-gray-300">終日</label>
+                </div>
+                
+                <div id="timeInputs" class="space-y-3">
+                    <div>
+                        <label for="eventStartTime" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">開始時間</label>
+                        <input type="time" id="eventStartTime" class="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
                     </div>
-                    <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-                        <div class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
-                            <div class="flex-auto p-4">
-                                <div class="flex flex-wrap">
-                                    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                                        <h5 class="text-blueGray-400 uppercase font-bold text-xs">
-                                            顧客数（アクティブ）
-                                        </h5>
-                                        <span class="font-semibold text-xl text-blueGray-700">
-                                            {{ $clientCount }}
-                                        </span>
-                                    </div>
-                                    <div class="relative w-auto pl-4 flex-initial">
-                                        <div class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-orange-500">
-                                            <i class="fas fa-chart-pie"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <p class="text-sm text-blueGray-400 mt-4">
-                                    <span class="text-red-500 mr-2">
-                                        <i class="fas fa-arrow-down"></i> 3.48%
-                                    </span>
-                                    <span class="whitespace-nowrap">
-                                        昨年比
-                                    </span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-                        <div class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
-                            <div class="flex-auto p-4">
-                                <div class="flex flex-wrap">
-                                    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                                        <h5 class="text-blueGray-400 uppercase font-bold text-xs">
-                                            売上計上額
-                                        </h5>
-                                        <span class="font-semibold text-xl text-blueGray-700">
-                                            832,456,236
-                                        </span>
-                                    </div>
-                                    <div class="relative w-auto pl-4 flex-initial">
-                                        <div class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-pink-500">
-                                            <i class="fas fa-users"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <p class="text-sm text-blueGray-400 mt-4">
-                                    <span class="text-orange-500 mr-2">
-                                        <i class="fas fa-arrow-down"></i> 56.14%
-                                    </span>
-                                    <span class="whitespace-nowrap">
-                                        対当期売上予算比
-                                    </span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-                        <div class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
-                            <div class="flex-auto p-4">
-                                <div class="flex flex-wrap">
-                                    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                                        <h5 class="text-blueGray-400 uppercase font-bold text-xs">
-                                            当期売上予算（事業部）
-                                        </h5>
-                                        <span class="font-semibold text-xl text-blueGray-700">
-                                            1,446,856,894
-                                        </span>
-                                    </div>
-                                    <div class="relative w-auto pl-4 flex-initial">
-                                        <div class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-blue-400 ">
-                                            <i class="fas fa-percent"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <p class="text-sm text-blueGray-400 mt-4">
-                                    <span class="text-emerald-500 mr-2">
-                                        <i class="fas fa-arrow-up"></i> 12%
-                                    </span>
-                                    <span class="whitespace-nowrap">
-                                        対前期比
-                                    </span>
-                                </p>
-                            </div>
-                        </div>
+                    
+                    <div>
+                        <label for="eventEndTime" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">終了時間</label>
+                        <input type="time" id="eventEndTime" class="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
                     </div>
                 </div>
-            </div>
+                
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button type="button" id="cancelButton" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-lg transition-colors">キャンセル</button>
+                    <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors">保存</button>
+                </div>
+            </form>
         </div>
     </div>
 
 
 
 
-    <div class="md:pl-10 mx-auto w-full -m-24">
-        <div class="flex flex-wrap px-4">
-            {{-- <div class="w-full xl:w-8/12 xl:mb-0 px-4">
-                <div class="relative flex flex-col min-w-0 px-4 py-3 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-100 dark:bg-gray-800">
-                    <h2 class="dark:text-white text-xl font-semibold">
-                        売上推移
-                    </h2>
-                    <div class="p-4 flex-auto">
-                        <!-- Chart -->
-                        <div class="relative" style="height:350px">
-                            <canvas id="line-chart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
+        <main class="p-2 md:ml-12 h-full pt-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-4 mb-4">
+                <div class="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-32 md:h-36">
 
-            <div class="w-full xl:w-8/12 mb-10 p-6 bg-white rounded-lg shadow dark:bg-gray-800">
-                <div class="flex justify-between mb-5">
-                    <div class="grid gap-4 grid-cols-2">
-                        <div>
-                            <h5 class="inline-flex items-center text-gray-500 dark:text-gray-400 leading-none font-normal mb-2">
-                                売上推移
-                                <svg data-popover-target="clicks-info" data-popover-placement="right" class="w-3 h-3 text-gray-400 hover:text-gray-900 dark:hover:text-white cursor-pointer ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-xs uppercase font-bold text-gray-500 dark:text-gray-400 tracking-wider">
+                                    @if(isset($currentPeriod))
+                                        当期案件規模:{{ $currentPeriod->period_name }}
+                                    @else
+                                        当期案件規模:-
+                                    @endif
+                                </h3>
+                                <p class="mt-2 text-2xl font-bold text-gray-800 dark:text-white whitespace-nowrap">
+                                    {{ number_format($totalRevenue) }}円
+                                </p>
+                            </div>
+                            <div class="bg-red-500 p-3 rounded-full shadow-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                                 </svg>
-                                <div data-popover id="clicks-info" role="tooltip" class="absolute z-10 invisible inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 w-36 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400">
-                                    <div class="p-3 space-y-2">
-                                        <h3 class="font-semibold text-gray-900 dark:text-white">
-                                            Clicks growth
-                                        </h3>
-                                        <p>Report helps navigate cumulative growth of community activities.</p>
-                                    </div>
-                                    <div data-popper-arrow></div>
-                                </div>
-                            </h5>
-                            <p class="text-gray-900 dark:text-white text-2xl leading-none font-bold">
-                                {{ number_format($totalRevenue) }}
-                            </p>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex items-center text-sm text-gray-500 dark:text-gray-400">
+                            <span class="text-green-500 flex items-center mr-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                                </svg>
+                                3.48%
+                            </span>
+                            <span class="whitespace-nowrap">
+                                @if(isset($currentPeriod))
+                                    {{ $currentPeriod->period_start_at->format('Y年m月d日') }} 〜 {{ $currentPeriod->period_end_at->format('Y年m月d日') }}
+                                @else
+                                    現在の計上期が設定されていません
+                                @endif
+                            </span>
                         </div>
                     </div>
-                    <div>
-                        <button id="dropdownDefaultButton"
-                            data-dropdown-toggle="lastDaysdropdown"
-                            data-dropdown-placement="bottom" type="button" class="px-3 py-2 inline-flex items-center text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                                Last week
-                            <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+
+
+                </div>
+                <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-36">
+
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-xs uppercase font-bold text-gray-500 dark:text-gray-400 tracking-wider">
+                                    @if(isset($currentPeriod))
+                                        当期売上計上額:{{ $currentPeriod->period_name }}
+                                    @else
+                                        当期売上計上額:-
+                                    @endif
+                                </h3>
+                                <p class="mt-2 text-2xl font-bold text-gray-800 dark:text-white whitespace-nowrap">
+                                    832,456,236円
+                                </p>
+                            </div>
+                            <div class="bg-pink-500 p-3 rounded-full shadow-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex items-center text-sm text-gray-500 dark:text-gray-400">
+                            <span class="text-orange-500 flex items-center mr-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+                                </svg>
+                                56.14%
+                            </span>
+                            <span class="whitespace-nowrap">対当期売上予算比</span>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-36">
+
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-xs uppercase font-bold text-gray-500 dark:text-gray-400 tracking-wider">
+                                    顧客数（アクティブ）
+                                </h3>
+                                <p class="mt-2 text-2xl font-bold text-gray-800 dark:text-white whitespace-nowrap">
+                                    {{ $clientCount }}
+                                </p>
+                            </div>
+                            <div class="bg-orange-500 p-3 rounded-full shadow-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex items-center text-sm text-gray-500 dark:text-gray-400">
+                            <span class="text-red-500 flex items-center mr-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+                                </svg>
+                                3.48%
+                            </span>
+                            <span class="whitespace-nowrap">昨期比</span>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-36">
+
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-xs uppercase font-bold text-gray-500 dark:text-gray-400 tracking-wider">
+                                    当期売上予算（事業部）
+                                </h3>
+                                <p class="mt-2 text-2xl font-bold text-gray-800 dark:text-white whitespace-nowrap">
+                                    1,446,856,894円
+                                </p>
+                            </div>
+                            <div class="bg-blue-500 p-3 rounded-full shadow-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex items-center text-sm text-gray-500 dark:text-gray-400">
+                            <span class="text-green-500 flex items-center mr-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                                </svg>
+                                12%
+                            </span>
+                            <span class="whitespace-nowrap">対前期比</span>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-4">
+
+                
+                <div class="w-full p-6 bg-white rounded-lg dark:bg-gray-800 shadow-lg">
+                    <div class="flex justify-between mb-3">
+                        <div class="grid gap-4 grid-cols-2">
+                            <div>
+                                <h5 class="inline-flex items-center text-gray-500 dark:text-gray-400 leading-none font-normal mb-2">
+                                    売上推移
+                                    <svg data-popover-target="clicks-info" data-popover-placement="right" class="w-3 h-3 text-gray-400 hover:text-gray-900 dark:hover:text-white cursor-pointer ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                                    </svg>
+                                    <div data-popover id="clicks-info" role="tooltip" class="absolute z-10 invisible inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 w-36 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400">
+                                        <div class="p-3 space-y-2">
+                                            <h3 class="font-semibold text-gray-900 dark:text-white">
+                                                Clicks growth
+                                            </h3>
+                                            <p>Report helps navigate cumulative growth of community activities.</p>
+                                        </div>
+                                        <div data-popper-arrow></div>
+                                    </div>
+                                </h5>
+                                <p class="text-gray-900 dark:text-white text-2xl leading-none font-bold">
+                                    {{ number_format($totalRevenue) }}
+                                </p>
+                            </div>
+                        </div>
+                        <div>
+                            <button id="dropdownDefaultButton"
+                                data-dropdown-toggle="lastDaysdropdown"
+                                data-dropdown-placement="bottom" type="button" class="px-3 py-2 inline-flex items-center text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                                    Last week
+                                <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                                </svg>
+                            </button>
+                            <div id="lastDaysdropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                                    <li>
+                                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">所属1</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">所属2</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="beta-line-chart"></div>
+                    {{-- <div class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between mt-2.5"></div> --}}
+                </div>
+
+
+            </div>
+            <div class="border-2 border-dashed rounded-2xl border-gray-300 dark:border-gray-600 h-auto mb-6">
+                <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <h2 class="text-lg font-semibold text-gray-800 dark:text-white">
+                            サポート件数
+                        </h2>
+                        <button class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                             </svg>
                         </button>
-                        <div id="lastDaysdropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                                <li>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">所属1</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">所属2</a>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
-                </div>
-                <div id="beta-line-chart"></div>
-                <div class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between mt-2.5"></div>
-            </div>
-
-            <div class="w-full xl:w-4/12 xl:pl-4">
-                <div class="relative flex flex-col min-w-0 px-4 py-3 break-words bg-gray-100 dark:bg-gray-800 w-full mb-6 shadow-lg rounded-lg">
-                    <h2 class="text-blueGray-700 text-xl font-semibold dark:text-white">
-                        各月予実状況
-                    </h2>
-                    <div class="p-4 flex-auto">
-                        <!-- Chart -->
-                        <div class="relative" style="height:350px">
-                            <canvas id="bar-chart"></canvas>
-                        </div>
-                    </div>
+            
+                    {{-- チャートエリア --}}
+                    <div id="main" class="h-[320px] sm:h-[360px] md:h-[380px] w-full"></div>
                 </div>
             </div>
-        </div>
-
-        <div class="flex flex-wrap">
-            <div class="w-full xl:w-8/12 xl:mb-0 px-4">
-                <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-100 dark:bg-gray-800 p-6">
-                    <div class="flex justify-between items-start w-full">
-                        <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white mr-1">
-                            サポート件数
-                        </h5>
-                        <div class="flex justify-end items-center">
-                            <button id="widgetDropdownButton" data-dropdown-toggle="widgetDropdown" data-dropdown-placement="bottom" type="button"  class="inline-flex items-center justify-center text-gray-500 w-8 h-8 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm">
-                                <svg class="w-3.5 h-3.5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
-                                    <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
-                                </svg>
-                                <span class="sr-only">Open dropdown</span>
-                            </button>
-                            <div id="widgetDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="widgetDropdownButton">
-                                    <li>
-                                        <a href="#" class="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><svg class="w-3 h-3 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 21">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.418 17.861 1 20l2.139-6.418m4.279 4.279 10.7-10.7a3.027 3.027 0 0 0-2.14-5.165c-.802 0-1.571.319-2.139.886l-10.7 10.7m4.279 4.279-4.279-4.279m2.139 2.14 7.844-7.844m-1.426-2.853 4.279 4.279"/>
-                                            </svg>Edit widget
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><svg class="w-3 h-3 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
-                                            <path d="M17 4h-4V2a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v2H1a1 1 0 0 0 0 2h1v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6h1a1 1 0 1 0 0-2ZM7 2h4v2H7V2Zm1 14a1 1 0 1 1-2 0V8a1 1 0 0 1 2 0v8Zm4 0a1 1 0 0 1-2 0V8a1 1 0 0 1 2 0v8Z"/>
-                                            </svg>Delete widget
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class=" flex-auto">
-                        <!-- Chart -->
-                        <div id="main" class="w-auto h-[380px]" ></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="w-full xl:w-4/12 px-4">
-                <div class="relative flex flex-col min-w-0 break-words bg-gray-100 dark:bg-gray-800 w-full mb-6 shadow-lg rounded-lg p-6">
-                    <div class="flex justify-between items-start w-full">
-                        <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white mr-1">
-                            利用形態
-                        </h5>
-                        <div class="flex justify-end items-center">
-                            <button id="widgetDropdownButton" data-dropdown-toggle="widgetDropdown" data-dropdown-placement="bottom" type="button"  class="inline-flex items-center justify-center text-gray-500 w-8 h-8 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm">
-                                <svg class="w-3.5 h-3.5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
-                                    <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
-                                </svg>
-                                <span class="sr-only">Open dropdown</span>
-                            </button>
-                            <div id="widgetDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="widgetDropdownButton">
-                                    <li>
-                                        <a href="#" class="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><svg class="w-3 h-3 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 21">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.418 17.861 1 20l2.139-6.418m4.279 4.279 10.7-10.7a3.027 3.027 0 0 0-2.14-5.165c-.802 0-1.571.319-2.139.886l-10.7 10.7m4.279 4.279-4.279-4.279m2.139 2.14 7.844-7.844m-1.426-2.853 4.279 4.279"/>
-                                            </svg>Edit widget
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><svg class="w-3 h-3 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
-                                            <path d="M17 4h-4V2a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v2H1a1 1 0 0 0 0 2h1v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6h1a1 1 0 1 0 0-2ZM7 2h4v2H7V2Zm1 14a1 1 0 1 1-2 0V8a1 1 0 0 1 2 0v8Zm4 0a1 1 0 0 1-2 0V8a1 1 0 0 1 2 0v8Z"/>
-                                            </svg>Delete widget
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="pieChart" class="w-full h-[380px] " ></div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="w-full xl:w-4/12 px-4">
-            <div class="relative flex flex-col min-w-0 break-words bg-gray-100 dark:bg-gray-800 w-full mb-6 p-6 shadow-lg rounded-lg">
-                <div class="rounded-t mb-0 px-4 py-3 border-0">
-                    <h3 class="font-semibold text-base text-blueGray-700 dark:text-white">
-                        営業個人予算達成率
-                    </h3>
-                </div>
-                <div class="block w-full overflow-x-auto">
-                    <!-- Projects table -->
-                    <table class="items-center w-full bg-transparent border-collapse">
-                        <thead class="thead-light">
-                            <tr>
-                                <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left dark:text-white">
-                                    氏名
-                                </th>
-                                <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left dark:text-white">
-                                    当期予算額
-                                </th>
-                                <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left dark:text-white" style="min-width:140px">
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left dark:text-white">
-                                    末久優
-                                </th>
-                                <td class="dark:text-white border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                    125,000,000
-                                </td>
-                                <td class="dark:text-white border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                    <div class="flex items-center">
-                                        <span class="mr-2">60%</span>
-                                        <div class="relative w-full">
-                                            <div class="overflow-hidden h-2 text-xs flex rounded bg-red-200">
-                                                <div style="width:60%" class="shadow-none flex flex-col text-center whitespace-nowrap dark:text-white justify-center bg-red-500"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left dark:text-white">
-                                    営業担当A
-                                </th>
-                                <td class="dark:text-white border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                    115,000,000
-                                </td>
-                                <td class="dark:text-white border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                    <div class="flex items-center">
-                                        <span class="mr-2">70%</span>
-                                        <div class="relative w-full">
-                                            <div class="overflow-hidden h-2 text-xs flex rounded bg-emerald-200">
-                                                <div style="width:70%" class="shadow-none flex flex-col text-center whitespace-nowrap dark:text-white justify-center bg-emerald-500"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <span id="javascript-date" class="hidden"></span>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="flex flex-wrap mt-32 md:ml-10 mb-8">
-        <div class="relative flex flex-col min-w-0 break-words dark:bg-gray-800 bg-gray-100 text-black w-full mb-6 p-6 shadow-lg rounded-lg dark:text-white mx-4">
-            <h5 class="inline-flex items-center text-gray-500 dark:text-gray-400 leading-none font-normal mb-2">
-                担当顧客サポート状況
-                <svg data-popover-target="clicks-info1" data-popover-placement="right" class="w-3 h-3 text-gray-400 hover:text-gray-900 dark:hover:text-white cursor-pointer ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-                </svg>
-                <div data-popover id="clicks-info1" role="tooltip" class="absolute z-10 invisible inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 w-36 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400">
-                    <div class="p-3 space-y-2">
-                        <h3 class="font-semibold text-gray-900 dark:text-white">
-                            表示範囲
-                        </h3>
-                        <p>直近5件</p>
-                    </div>
-                    <div data-popper-arrow></div>
-                </div>
-            </h5>
-            <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
-                @can('view_supports')                            
-                    <button type="button" class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1" onclick="location.href='/support'">
-                        {{ __('See all') }}
-                    </button>
-                @endcan
-            </div>
-            <div class="block w-full overflow-x-auto font-medium">
-                <!-- Projects table -->
-                <table class="items-center w-full bg-transparent border-collapse">
-                    <thead>
-                        <tr>
-                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-sm  uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                            顧客名称
-                            </th>
-                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                            タイトル
-                            </th>
-                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                            完了フラグ
-                            </th>
-                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                            種別
-                            </th>
-                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                            対応者
-                            </th>
-                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                            受付日時
-                            </th>
-                        </tr>
-                    </thead>
-                    @foreach ($mySupports as $mySupport)                        
-                        <tbody>
-                            <tr>
-                                <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-3 text-left">
-                                    {{ optional($mySupport->client)->client_name }}
-                                </th>
-                                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-3">
-                                    {{ $mySupport->title }}
-                                </td>
-                                @if ($mySupport->is_finished == "0")
-                                    <td class="border-t-0 px-6 text-red-400 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-3">
-                                        対応中
-                                    </td>                          
-                                @else
-                                    <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-3">
-                                        完了
-                                    </td>
-                                @endif
-                                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-3">
-                                    {{ optional($mySupport->supportType)->type_name }}
-                                </td>
-                                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-3">
-                                    {{ optional($mySupport->user)->name }}
-                                </td>
-                                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-3">
-                                    {{ \Carbon\Carbon::parse($mySupport->received_at)->diffForHumans() }}
-                                </td>
-                            </tr>
-                        </tbody>
-                    @endforeach
-                </table>
-            </div>
-        </div>
             
 
-        <div class="relative flex flex-col min-w-0 break-words dark:bg-gray-800 dark:text-white text-black bg-gray-100 w-full mb-6 p-6 shadow-lg rounded-lg mx-4">
-            <h5 class="inline-flex items-center text-gray-500 dark:text-gray-400 leading-none font-normal mb-2">
-                直近案件リスト
-                <svg data-popover-target="clicks-info2" data-popover-placement="right" class="w-3 h-3 text-gray-400 hover:text-gray-900 dark:hover:text-white cursor-pointer ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-                </svg>
-                <div data-popover id="clicks-info2" role="tooltip" class="absolute z-10 invisible inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 w-36 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400">
-                    <div class="p-3 space-y-2">
-                        <h3 class="font-semibold text-gray-900 dark:text-white">
-                            表示範囲
-                        </h3>
-                        <p>当月及び次月</p>
+            <div class="grid lg:grid-cols-2 gap-4 mb-4">
+                <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-72">
+
+                    <!-- 営業個人予算達成率 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 transition-all duration-300 hover:shadow-xl h-full overflow-y-auto">
+                        <h2 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">営業個人予算達成率</h2>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                <thead>
+                                    <tr class="bg-gray-50 dark:bg-gray-700">
+                                        <th scope="col" class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider text-left">氏名</th>
+                                        <th scope="col" class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider text-left">当期予算額</th>
+                                        <th scope="col" class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider text-left" style="min-width:140px">達成率</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">末久優</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">125,000,000円</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">60%</span>
+                                                <div class="w-full bg-red-200 rounded-full h-2.5 dark:bg-red-700">
+                                                    <div class="bg-red-600 h-2.5 rounded-full" style="width: 60%"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">営業担当A</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">115,000,000円</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">70%</span>
+                                                <div class="w-full bg-emerald-200 rounded-full h-2.5 dark:bg-emerald-700">
+                                                    <div class="bg-emerald-600 h-2.5 rounded-full" style="width: 70%"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">営業担当A</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">115,000,000円</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">70%</span>
+                                                <div class="w-full bg-emerald-200 rounded-full h-2.5 dark:bg-emerald-700">
+                                                    <div class="bg-emerald-600 h-2.5 rounded-full" style="width: 70%"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">営業担当A</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">115,000,000円</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">70%</span>
+                                                <div class="w-full bg-emerald-200 rounded-full h-2.5 dark:bg-emerald-700">
+                                                    <div class="bg-emerald-600 h-2.5 rounded-full" style="width: 70%"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">営業担当A</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">115,000,000円</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">70%</span>
+                                                <div class="w-full bg-emerald-200 rounded-full h-2.5 dark:bg-emerald-700">
+                                                    <div class="bg-emerald-600 h-2.5 rounded-full" style="width: 70%"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">営業担当A</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">115,000,000円</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">70%</span>
+                                                <div class="w-full bg-emerald-200 rounded-full h-2.5 dark:bg-emerald-700">
+                                                    <div class="bg-emerald-600 h-2.5 rounded-full" style="width: 70%"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div data-popper-arrow></div>
+
                 </div>
-            </h5>
-            <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
-                <button type="button" class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 transition-all">
-                    See all
-                </button>
+                <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72 overflow-y-auto">
+                    @include('dashboard.components.my-attention-table')
+                </div>
+                
+                <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72">
+
+                </div>
+                <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72">
+
+                </div>
             </div>
-        
-            <div class="block w-full overflow-x-auto">
-                <!-- Projects table -->
-                <table class="items-center w-full bg-transparent border-collapse dark:text-white">
-                    <thead>
-                        <tr>
-                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                顧客名称
-                            </th>
-                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                プロジェクト№
-                            </th>
-                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                プロジェクト名称
-                            </th>
-                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                金額
-                            </th>
-                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                営業段階
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                白梅学園大学
-                            </th>
-                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                №100026-01-0021
-                            </td>
-                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                シラバス追加導入
-                            </td>
-                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                2,000,000-
-                            </td>
-                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                見込有
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                東京薬科大学
-                            </th>
-                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                №100026-01-0321
-                            </td>
-                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                Smart学務提案
-                            </td>
-                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                80,000,000-
-                            </td>
-                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                重点営業
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+
+            <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-4">
+                @include('dashboard.components.my-support-table', ['mySupports' => $mySupports])
             </div>
-        </div>
-    </div>
+            <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-4">
+                @include('dashboard.components.my-project-table')
+            </div>
+
+            {{-- <div class="grid grid-cols-2 gap-4">
+                <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72">
+                </div>
+                <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72">
+                
+                </div>
+                <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72">
+                
+                </div>
+                <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72">
+
+                </div>
+            </div> --}}
+        </main>
+
+                <!-- サポート件数と利用形態 -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                    <!-- 利用形態円グラフ (1/3幅) -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-lg font-semibold text-gray-800 dark:text-white">利用形態</h2>
+                            <div class="relative">
+                                <button class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="pieChart" class="h-[380px]"></div>
+                    </div>
+                </div>
+      
 
 
     <script>
@@ -563,7 +465,7 @@
                     show: false,
                 },
                 y: {
-                    formatter: (value) => `¥${value.toLocaleString()}`, // 数値にカンマと¥を追加
+                    formatter: (value) => `¥${value.toLocaleString()}`,
                 },
             },
             dataLabels: {
@@ -584,21 +486,16 @@
             },
             series: [
                 {
-                    name: "案件規模",
-                    data: [650000000, 641008, 6456, 6526, 6356, 6456, 6456, 6456, 6456, 6456, 6456, 6456],
-                    color: "#1A56DB",
-                },
-                {
                     name: "受注額",
-                    data: [6456, 6356, 6526, 6332, 6418, 6500],
-                    color: "#7E3AF2",
+                    data: @json($monthlyRevenue),
+                    color: "#1A56DB",
                 },
             ],
             legend: {
                 show: true,
             },
             xaxis: {
-                categories: ['11', '12', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+                categories: @json($xAxisCategories),
                 labels: {
                     show: true,
                     style: {
@@ -620,7 +517,7 @@
                         fontFamily: "Inter, sans-serif",
                         cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400',
                     },
-                    formatter: (value) => `¥${value.toLocaleString()}`, // Y軸ラベルをカスタマイズ
+                    formatter: (value) => `¥${value.toLocaleString()}`,
                 },
             },
         };
@@ -633,4 +530,5 @@
 
     <script src="{{ asset('assets/js/chart/barSupport.js') }}"></script>
     <script src="{{ asset('assets/js/chart/pieUsage.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/fullcalendar.js') }}"></script>
 </x-app-layout>

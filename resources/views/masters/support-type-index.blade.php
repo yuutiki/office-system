@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between">
-            <h2 class="text-lg text-gray-900 dark:text-white flex">
+            <h2 class="text-lg text-gray-900 dark:text-white flex items-center">
                 {{ Breadcrumbs::render('supportTypeMaster') }}
                 <div class="ml-4">
                     {{ $count }}件
@@ -9,98 +9,41 @@
             </h2>
             <div class="flex justify-end">
                 <x-message :message="session('message')"/>
-                <x-buttons.save-button onclick="openDrawer('create')">
+                <x-buttons.save-button onclick="openDrawer('create')" class="mr-2">
                     {{ __('create') }}
                 </x-buttons.save-button>
+
                 <div class="flex items-center w-full space-x-3 hidden md:w-auto md:inline-block">
-                    <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full px-4 py-2 ml-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded md:w-auto hover:bg-gray-100 hover:text-blue-700 focus:z-10 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" type="button">
-                        <svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                        </svg>
-                        {{ __('Actions') }}
+                    <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full p-2.5 text-sm font-medium hover:bg-[#313a48] bg-[#364050] text-gray-200 rounded md:w-auto focus:z-10 dark:bg-blue-600 dark:text-gray-100 dark:border-gray-600 dark:hover:text-white dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" type="button">
+                        <x-icon name="ui/dot-option" class="w-4 h-4"></x-icon>
                     </button>
                     <div id="actionsDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-600 dark:divide-gray-600">
                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
                             <li>
-                                @can('admin_corporations')
-                                    <button type="button" onclick="location.href='{{ route('corporations.showUploadForm') }}'" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
-                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2M8 9l4-5 4 5m1 8h0"/>
-                                            </svg>
-                                        </div>
-                                        CSVアップロード
-                                    </button>
-                                @else
-                                    <button type="button" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
-                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                            <svg class="h-6 w-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                                <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
-                                            </svg>
-                                        </div>
-                                        CSVアップロード
-                                    </button>
-                                @endcan
+                                <x-buttons.csv-upload-button :route="route('corporations.showUploadForm')" gate="admin_masters" />
                             </li>
                             <li>
-                                @can('download_corporations')
-                                    <button type="button" onclick="location.href='{{ route('support-types.export') }}'" class="relative w-full items-center py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
-                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2m-1-5-4 5-4-5m9 8h0"/>
-                                            </svg>
-                                        </div>
-                                        <div class="">CSVダウンロード</div>
-                                    </button>
-                                @else
-                                    <button type="button" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
-                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                            <svg class="h-6 w-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                                <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
-                                            </svg>
-                                        </div>
-                                        <div>CSVダウンロード</div>
-                                    </button>
-                                @endcan
-                            </li>
-                            <li>
-                                <button type="button" data-modal-target="select-modal" data-modal-toggle="select-modal" class="relative w-full flex items-center py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
-                                    <div class="flex items-center min-w-6">
-                                        <x-icon name="icons/nav-setting" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-white" />
-                                    </div>
-                                    <div class="ml-2">一覧表示設定</div>
-                                </button>
-                                {{-- <button data-modal-target="select-modal" data-modal-toggle="select-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                                    Toggle modal
-                                  </button> --}}
+                                <x-buttons.csv-download-button :route="route('support-types.export')" gate="download_masters" />
                             </li>
                             <hr class="border-gray-300 dark:border-gray-500 mx-2">
 
                             <li>
-                                @can('admin_corporations')
-                                    {{-- <form id="bulkDeleteForm" action="{{ route('corporations.bulkDelete') }}" method="POST">
-                                        @csrf --}}
-                                        <button type="button" data-modal-target="deleteModal-corporations" data-modal-show="deleteModal-corporations" class="relative w-full flex items-center py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
-                                            <div class="flex items-center min-w-6">
-                                                <svg aria-hidden="true" class="w-5 h-5 mx-0.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                                                </svg>
-                                            </div>
-                                            <div class="ml-2">データ削除</div>
-                                        </button>
-                                    {{-- </form> --}}
-                                @else
-                                    <button type="button" class="relative w-full flex items-center py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
+                                @can('admin_masters')
+                                    <button type="button" data-modal-target="deleteModal-corporations" data-modal-show="deleteModal-corporations" class="relative w-full flex items-center py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
                                         <div class="flex items-center min-w-6">
-                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                                <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
-                                            </svg>
+                                        <x-icon name="actions/delete"></x-icon>
+                                        </div>
+                                        <div class="ml-2">データ削除</div>
+                                    </button>
+                                @else
+                                    <button type="button" class="relative w-full flex items-center py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
+                                        <div class="flex items-center min-w-6">
+                                            <x-icon name="actions/lock"></x-icon>
                                         </div>
                                         <div class="ml-2">データ削除</div>
                                     </button>
                                 @endcan
                             </li>
-
                         </ul>
                     </div>
                 </div>
@@ -109,105 +52,52 @@
     </x-slot>
 
     <div class="relative bg-white dark:bg-gray-800 rounded-t-md md:w-auto md:ml-14 md:mr-2 m-auto shadow-md  dark:text-gray-900 mt-4">
-        <div class="w-full">
-            <div class="relative bg-white dark:bg-gray-800">
-                <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
-                    <div class="w-full">
-                        <form method="GET" action="{{ route('support-type.index') }}" id="search_form" class="flex items-center">
-                            @csrf
-                            <div class="flex flex-col md:flex-row w-full">
+        <div class="w-full dark:bg-gray-800 p-4">
+            <form method="GET" action="{{ route('support-type.index') }}" id="search_form" class="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-2 md:space-y-0">
+                @csrf
 
-                                <div class="relative w-full">
-                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                        <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                    <input type="search" id="type-code-search" name="code" value="@if (isset($typeCode)){{ $typeCode }}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="コード" >
-                                </div>
-
-                                <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                        <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                    <input type="search" id="type-name-search" name="name" value="@if (isset($request->name)){{ $request->name }}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="名称" >
-                                </div>
-
-                                <div class="flex mt-2 md:mt-0">
-                                    <div class="flex flex-col justify-end  w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
-                                        <div class="flex mt-4 md:mt-0">
-                                            <!-- 検索ボタン -->
-                                            <x-buttons.search-button />
-                                            <!-- リセットボタン -->
-                                            <x-buttons.reset-button />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                {{-- コード検索 --}}
+                <div class="relative w-full">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <x-icon name="ui/search" class="w-5 h-5 text-gray-500 dark:text-gray-400 pointer-events-none" />
                     </div>
+                    <input type="search" name="code" value="{{ $typeCode ?? '' }}" class="input-search" placeholder="コード">
                 </div>
-            </div>
+
+                {{-- 名称検索 --}}
+                <div class="relative w-full">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <x-icon name="ui/search" class="w-5 h-5 text-gray-500 dark:text-gray-400 pointer-events-none" />
+                    </div>
+                    <input type="search" name="name" value="{{ request('name') ?? '' }}" class="input-search" placeholder="名称 / 英名称">
+                </div>
+
+                {{-- ボタン類 --}}
+                <div class="flex space-x-2">
+                    <x-buttons.search-button />
+                    <x-buttons.reset-button />
+                </div>
+            </form>
         </div>
+
 
         <div class="md:w-auto  md:mr-2 mb-4 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-300">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-200">
+                <thead class="text-xs text-gray-700 bg-gray-100 dark:bg-gray-700 dark:text-gray-200">
                     <tr>
-                        <th scope="col" class="pl-4 py-3 whitespace-nowrap">
-                            <div class="flex items-center">
-                                コード
-                            </div>
-                        </th>
-                        <th scope="col" class="px-1 py-3 whitespace-nowrap">
-                            <div class="flex items-center">
-                                名称
-                            </div>
-                        </th>
-                        {{-- <th scope="col" class="px-1 py-3 whitespace-nowrap">
-                            <div class="flex items-center">
-                                英名称
-                            </div>
-                        </th> --}}
-                        <th scope="col" class="px-1 py-3 whitespace-nowrap">
-                            <div class="flex items-center">
-                                更新者
-                            </div>
-                        </th>
-                        <th scope="col" class="px-1 py-3 whitespace-nowrap">
-                            <div class="flex items-center">
-                                更新日時
-                            </div>
-                        </th>
-                        <th scope="col" class="px-1 py-3 whitespace-nowrap">
-                            <div class="flex items-center">
-                                
-                            </div>
-                        </th>
+                        <th scope="col" class="pl-4 py-3 whitespace-nowrap">コード</th>
+                        <th scope="col" class="px-1 py-3 whitespace-nowrap">編集</th>
+                        <th scope="col" class="px-1 py-3 whitespace-nowrap">名称</th>
+                        <th scope="col" class="px-1 py-3 whitespace-nowrap">英名称</th>
+                        <th scope="col" class="px-1 py-3 whitespace-nowrap">更新者</th>
+                        <th scope="col" class="px-1 py-3 whitespace-nowrap">更新日時</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($supportTypes as $supportType)
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white dark:hover:bg-gray-600">
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600">
                             <td class="pl-4 py-2 whitespace-nowrap">
                                 {{ $supportType->type_code }}
-                            </td>
-                            <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{$supportType->type_name}}
-                            </td>
-                            {{-- <td class="px-1 py-2 whitespace-nowrap">
-                                {{$supportType->projectType_eng_name}}
-                            </td> --}}
-                            <td class="px-1 py-2 whitespace-nowrap">
-                                {{ optional($supportType->updatedBy)->user_name }}
-                            </td>
-                            <td class="px-1 py-2 whitespace-nowrap hidden md:block">
-                                {{$supportType->updated_at}}
-                            </td>
-                            <td class="px-1 py-2 whitespace-nowrap md:hidden">
-                                {{$supportType->updated_at->format('Y-m-d')}}
                             </td>
                             <td class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 <div class="text-center">
@@ -220,6 +110,21 @@
                                         </div>
                                     </button>
                                 </div>
+                            </td>
+                            <td class="px-1 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{$supportType->type_name}}
+                            </td>
+                            <td class="px-1 py-2 whitespace-nowrap">
+                                {{$supportType->type_name_en}}
+                            </td>
+                            <td class="px-1 py-2 whitespace-nowrap">
+                                {{ optional($supportType->updatedBy)->user_name }}
+                            </td>
+                            <td class="px-1 py-2 whitespace-nowrap hidden md:block">
+                                {{$supportType->updated_at}}
+                            </td>
+                            <td class="px-1 py-2 whitespace-nowrap md:hidden">
+                                {{$supportType->updated_at->format('Y-m-d')}}
                             </td>
                         </tr>
                         <!-- drawer component -->
@@ -245,27 +150,21 @@
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 16 4-4-4-4m6 8 4-4-4-4"/>
                                             </svg>
                                         </button>
-                                    
+
                                         <div class="flex gap-4">
-                                            <button type="submit" class="button-edit-primary">
-                                                <div class="flex items-center px-3.5 py-1.5">
-                                                    <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
-                                                    </svg>
-                                                    <span class="md:block hidden">{{ __('update') }}</span>
-                                                </div>
-                                            </button>
-                                            <button type="button" data-modal-target="deleteModal-{{$supportType->id}}" data-modal-show="deleteModal-{{$supportType->id}}" class="justify-center text-red-600 hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:ring-red-300 font-medium rounded px-3.5 py-1 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 inline-flex items-center">
-                                                <svg class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                                                </svg>
+                                            <x-buttons.save-button form-id="corporationForm" id="saveButton" class="" data-drawer-id="{{$supportType->id}}">
+                                                {{ __("update") }}
+                                            </x-buttons.save-button>
+
+                                            <button type="button" data-modal-target="deleteModal-{{$supportType->id}}" data-modal-show="deleteModal-{{$supportType->id}}" class="button-delete-primary">
+                                                <x-icon name="actions/delete" class="w-5 h-5 mr-1 -ml-1"></x-icon>
                                                 {{ __('delete') }}
                                             </button>
                                         </div>
                                     </div>
                                     <div class="space-y-4 p-4">
                                         <div class="w-full">
-                                            <label for="type_code-{{$supportType->id}}" class="block font-semibold dark:text-gray-100 text-gray-900 mb-1">
+                                            <label for="type_code-{{$supportType->id}}" class="block font-semibold dark:text-gray-100 text-gray-900">
                                                 コード
                                             </label>
                                             <input type="text" 
@@ -281,7 +180,7 @@
                                         </div>
                             
                                         <div class="w-full">
-                                            <label for="type_name-{{$supportType->id}}" class="block font-semibold dark:text-gray-100 text-gray-900 mb-1">
+                                            <label for="type_name-{{$supportType->id}}" class="block font-semibold dark:text-gray-100 text-gray-900">
                                                 名称
                                             </label>
                                             <input type="text" 
@@ -292,6 +191,22 @@
                                                     class="input-secondary" 
                                                     required>
                                             @error('type_name')
+                                                <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="w-full">
+                                            <label for="type_name-{{$supportType->id}}" class="block font-semibold dark:text-gray-100 text-gray-900">
+                                                英名称
+                                            </label>
+                                            <input type="text" 
+                                                    maxlength="10" 
+                                                    name="type_name_en" 
+                                                    id="type_name_en-{{$supportType->id}}" 
+                                                    value="{{old('type_name_en',$supportType->type_name_en)}}" 
+                                                    class="input-secondary" 
+                                                    >
+                                            @error('type_name_en')
                                                 <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -317,10 +232,10 @@
                                         <form action="{{route('support-type.destroy',$supportType->id)}}" method="POST" class="text-center m-auto">
                                             @csrf
                                             @method('delete')
-                                            @can('managerOrAbobe')
-                                            <button type="submit" data-modal-hide="deleteModal-{{$supportType->id}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-2 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-s rounded-e text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
-                                                削除
-                                            </button>
+                                            @can('delete_masters')
+                                                <button type="submit" data-modal-hide="deleteModal-{{$supportType->id}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-2 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-s rounded-e text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                                                    削除
+                                                </button>
                                             @endcan
                                         </form>
                                         <button data-modal-hide="deleteModal-{{$supportType->id}}" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-2 focus:outline-none focus:ring-gray-200 rounded-s rounded-e border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
@@ -368,7 +283,7 @@
 
                 <div class="space-y-4 mt-4">
                     <div class="w-full">
-                        <label for="type_code" class="block font-semibold dark:text-gray-100 text-gray-900 mb-1">
+                        <label for="type_code" class="block font-semibold dark:text-gray-100 text-gray-900">
                             コード
                         </label>
                         <input type="text" 
@@ -384,11 +299,11 @@
                     </div>
 
                     <div class="w-full">
-                        <label for="type_name" class="block font-semibold dark:text-gray-100 text-gray-900 mb-1">
+                        <label for="type_name" class="block font-semibold dark:text-gray-100 text-gray-900">
                             名称
                         </label>
                         <input type="text" 
-                            maxlength="10" 
+                            maxlength="20" 
                             name="type_name" 
                             id="type_name"
                             value="{{ old('type_name') }}"
@@ -399,18 +314,35 @@
                         @enderror
                     </div>
 
+                    <div class="w-full">
+                        <label for="type_name_en" class="block font-semibold dark:text-gray-100 text-gray-900">
+                            英名称
+                        </label>
+                        <input type="text" 
+                            maxlength="20" 
+                            name="type_name_en" 
+                            id="type_name_en"
+                            value="{{ old('type_name_en') }}"
+                            class="input-secondary" 
+                            >
+                        @error('type_name_en')
+                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
                     <div class="mt-6">
-                        <button type="submit" class="w-full justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none">
-                            登録
-                        </button>
+                        <x-buttons.save-button  class="mr-2">
+                            {{ __('save') }}
+                        </x-buttons.save-button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 
-
-
+    {{-- @push('scripts')
+        <script src="{{ asset('assets/js/drawer-manager.js') }}"></script>
+    @endpush --}}
     <script>
         // ドロワーの設定を管理するオブジェクト
         const DrawerManager = {

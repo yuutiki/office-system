@@ -6,37 +6,59 @@
             </h2>
             <div class="flex justify-end items-center space-x-2">
                 <x-message :message="session('message')" />
-                <div class="flex justify-between items-center">
-                    @if ($prevId)
-                        <a href="{{ route('corporations.edit', ['corporation' => $prevId]) }}" class="px-2 py-2 dark:bg-gray-600 rounded">
-                            <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7"/>
-                            </svg>
-                        </a>
-                    @endif
-
-                    <div class="mx-2">
-                        <input type="text" class="rounded py-1 px-1 w-48 text-sm" value="{{ $corporation->corporation_num }}：{{ $corporation->corporation_short_name }}" disabled>
+                <div class="hidden md:flex justify-between items-center">
+                    {{-- 前へボタン --}}
+                    <div class="w-10 flex justify-center">
+                        @if ($prevId)
+                            <a href="{{ route('corporations.edit', ['corporation' => $prevId]) }}" class="px-2 py-2.5 dark:bg-gray-600 rounded hover:bg-[#313a48] bg-[#364050]">
+                                <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7"/>
+                                </svg>
+                            </a>
+                        @else
+                            <div class="px-2 py-2.5 bg-gray-400 rounded">
+                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7"/>
+                                </svg>
+                            </div>
+                        @endif
                     </div>
-                    @if ($nextId)
-                        <a href="{{ route('corporations.edit', ['corporation' => $nextId]) }}" class="px-2 py-2 dark:bg-gray-600 rounded">
-                            <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
-                            </svg>
-                        </a>
-                    @endif
+                
+                    {{-- 中央テキスト --}}
+                    <div class="mx-0.5">
+                        <input type="text" class="rounded py-1 px-2 w-56 text-sm" value="{{ $corporation->corporation_num }}：{{ $corporation->corporation_short_name }}" disabled>
+                    </div>
+                
+                    {{-- 次へボタン --}}
+                    <div class="w-10 flex justify-center">
+                        @if ($nextId)
+                            <a href="{{ route('corporations.edit', ['corporation' => $nextId]) }}" class="px-2 py-2.5 dark:bg-gray-600 rounded hover:bg-[#313a48] bg-[#364050]">
+                                <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
+                                </svg>
+                            </a>
+                        @else
+                            <div class="px-2 py-2.5 bg-gray-400 rounded">
+                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
+                                </svg>
+                            </div>
+                        @endif
+                    </div>
                 </div>
+                
+                
                 <form method="post" action="{{ route('corporations.update', $corporation) }}" enctype="multipart/form-data" id="corporationForm" class="flex items-center">
                     @csrf
                     @method('put')
                     @can('storeUpdate_corporations')
-                        <x-button-save form-id="corporationForm" id="saveButton" onkeydown="stopTab(event)">
+                        <x-buttons.save-button form-id="corporationForm" id="saveButton" class="">
                             {{ __("update") }}
-                        </x-button-save>
+                        </x-buttons.save-button>
                     @endcan
                 </form>
 
-                <button id="dropdownActionButton" data-dropdown-toggle="dropdownActions" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-600" type="button">
+                <button id="dropdownActionButton" data-dropdown-toggle="dropdownActions" class="inline-flex items-center p-2.5 text-sm font-medium text-center hover:bg-[#313a48] bg-[#364050] text-white rounded focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-600" type="button">
                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
                         <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
                     </svg>
@@ -47,7 +69,7 @@
             <div id="dropdownActions" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-60 dark:bg-gray-700 dark:divide-gray-600">
                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownActionButton">
                     <li>
-                        <button type="button" data-modal-target="deleteModal-{{$corporation->id}}" data-modal-show="deleteModal-{{$corporation->id}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full dark:text-red-500">
+                        <button type="button" data-modal-target="deleteModal-{{$corporation->id}}" data-modal-show="deleteModal-{{$corporation->id}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-red-500 dark:text-red-500">
                             <div class="flex">
                                 <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
                                 <span class="font-semibold">削除</span>
@@ -79,7 +101,7 @@
         </div>
 
         <!-- 基本情報タブ -->
-        <div class="hidden md:p-4 p-2 mb-4 rounded bg-gray-50 dark:bg-gray-800" id="base" role="tabpanel" aria-labelledby="base-tab">
+        <div class="hidden md:p-4 p-2 mb-4 rounded bg-gray-50 dark:border-gray-800 border border-1 border-gray-300 dark:bg-gray-800" id="base" role="tabpanel" aria-labelledby="base-tab">
             <div class="relative z-0 mt-2">
                 <input type="text" id="corporation_num" value="{{old('corporation_num',$corporation->corporation_num)}}" class="block text-lg px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
                 <label for="corporation_num" name="corporation_num" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">法人No.</label>
@@ -110,9 +132,9 @@
                 @enderror
             </div>
             <div class="w-full flex flex-col">
-                <label for="corporation_number" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">法人番号（国税庁）</label>
-                <input type="text" form="corporationForm" name="corporation_number" id="corporation_number" value="{{old('corporation_number',$corporation->corporation_number)}}" class="input-primary" placeholder="123456789123">
-                @error('corporation_number')
+                <label for="corporation_tax_num" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">法人番号（国税庁）</label>
+                <input type="text" form="corporationForm" name="corporation_tax_num" id="corporation_tax_num" value="{{old('corporation_tax_num',$corporation->corporation_tax_num)}}" class="input-primary" placeholder="123456789123">
+                @error('corporation_tax_num')
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
             </div>
@@ -264,8 +286,8 @@
         </div>
 
         <!-- 与信情報タブ -->
-        <div class="hidden md:p-4 p-2 mb-4 rounded bg-gray-50 dark:bg-gray-800" id="credit" role="tabpanel" aria-labelledby="credit-tab">
-            <div>
+        <div class="hidden md:p-4 p-2 mb-4 rounded bg-gray-50 dark:bg-gray-800 border border-1 border-gray-300" id="credit" role="tabpanel" aria-labelledby="credit-tab">
+            <div class="">
                 <div class="relative bg-white dark:bg-gray-700 rounded-t md:w-auto shadow-md  dark:text-gray-900 mt-4 border border-gray-600">
                     <div class="flex flex-col justify-end p-2 space-y-1 md:flex-row md:space-y-0 md:space-x-4">
 

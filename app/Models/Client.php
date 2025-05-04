@@ -26,11 +26,15 @@ class Client extends Model
         'client_type_id',
         'trade_status_id',
         'installation_type_id',
-        'head_post_code',
+        'post_code',
+        'prefecture_id',
+        'address_1',
         'memo',
         'created_by',
         'updated_by',
     ];
+
+ 
 
     //ソート用に使うカラムを指定
     public $sortable = [
@@ -43,17 +47,6 @@ class Client extends Model
         // 'corporation.corporation_kana_name'  
     ];
 
-    // //バリデーションルールを設定
-    // public static $rules = [
-    //     'client_num' => 'size:10',
-    //     'client_name' => 'required|max:20',
-    //     'client_kana_name' => 'required|max:50',
-    //     'user_id' => 'required',
-    //     'client_type_id' => 'required',
-    //     'trade_status_id' => 'required',
-    //     'installation_type_id' => 'required',
-    //     'department' => 'required',
-    // ];
 
     //GlobalObserverに定義されている作成者と更新者を登録するメソッド
     //なお、値を更新せずにupdateをかけても更新者は更新されない。
@@ -136,6 +129,25 @@ class Client extends Model
     //         throw $e;
     //     }
     // }
+
+    /**
+     * 履歴表示用の名称を取得
+     */
+    protected function getHistoryDisplayName(): string
+    {
+        return "{$this->client_name}（{$this->client_num}）";
+    }
+
+    /**
+     * 履歴に追加のメタ情報を含める場合
+     */
+    protected function getAdditionalHistoryMeta(): array
+    {
+        return [
+            'client_num' => $this->client_num,
+            // 他の必要な情報
+        ];
+    }
 
 
     //relation

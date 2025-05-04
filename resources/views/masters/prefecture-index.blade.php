@@ -119,7 +119,7 @@
             </thead>
             <tbody>
                 @foreach ($prefectures as $prefecture)
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white dark:hover:bg-gray-600">
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600">
                         <td class="pl-4 py-1 whitespace-nowrap">
                             {{ $prefecture->prefecture_code }}
                         </td>

@@ -548,7 +548,7 @@
                             <select form="supportForm" id="affiliation2Code" name="affiliation2Code" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">---</option>
                                 @foreach($affiliation2s as $affiliation2)
-                                <option value="{{ $affiliation2->prefix_code }}">{{ $affiliation2->affiliation2_name }}</option>
+                                <option value="{{ $affiliation2->affiliation2_prefix }}">{{ $affiliation2->affiliation2_name }}</option>
                                 @endforeach
                             </select>
                         </div>

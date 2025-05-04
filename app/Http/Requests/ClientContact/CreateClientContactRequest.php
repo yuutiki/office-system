@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests\ClientPerson;
+namespace App\Http\Requests\ClientContact;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateClientPersonRequest extends FormRequest
+class CreateClientContactRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -24,11 +24,5 @@ class UpdateClientPersonRequest extends FormRequest
         return [
             //
         ];
-    }
-
-    protected function failedValidation($validator)
-    {
-        session()->flash('error', '入力内容にエラーがあります。');
-        parent::failedValidation($validator);
     }
 }

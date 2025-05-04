@@ -99,9 +99,9 @@
                     @enderror
                 </div>
                 <div class="w-full flex flex-col">
-                    <label for="_at" class="text-sm dark:text-gray-100 leading-none">入職年月日</label>
-                    <input type="date" min="1900-01-01" max="2200-12-31" form="userForm" name="_at" class="input-primary" id="_at" value="{{old('_at', $user->_at)}}" placeholder="">
-                    @error('_at')
+                    <label for="employment_at" class="text-sm dark:text-gray-100 leading-none">入職年月日</label>
+                    <input type="date" min="1900-01-01" max="2200-12-31" form="userForm" name="employment_at" class="input-primary" id="employment_at" value="{{old('employment_at', $user->employment_at)}}" placeholder="">
+                    @error('employment_at')
                         <div class="text-red-500">{{$message}}</div>
                     @enderror
                 </div>
@@ -205,7 +205,7 @@
                 @error('affiliation3_id')
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
-                <div class="w-full flex flex-col">
+                {{-- <div class="w-full flex flex-col">
                     <label for="affiliation4_id" class="text-sm dark:text-gray-100 leading-none mt-2">所属4</label>
                     <select form="userForm" name="affiliation4_id" class="input-secondary" id="affiliation4_id" value="{{old('affiliation4_id', $user->affiliation4_id)}}">
                         @foreach($affiliation3s as $affiliation3)
@@ -226,7 +226,7 @@
                 </div>
                 @error('affiliation5_id')
                     <div class="text-red-500">{{$message}}</div>
-                @enderror
+                @enderror --}}
             </div>
 
             <div class="mt-8">
@@ -753,5 +753,4 @@
     </script>
 
     <script src="{{ asset('assets/js/stopTab.js') }}"></script>
-    <script src="{{ asset('assets/js/formatTel.js') }}"></script>
 </x-app-layout>

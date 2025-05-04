@@ -44,6 +44,7 @@ class SupportTypeController extends Controller
         $validated = $request->validate([
             'type_code' => 'required|string|max:2|unique:support_types',
             'type_name' => 'required|string|max:10',
+            'type_name_en' => 'nullable|string|max:10',
         ]);
     
         try {
@@ -81,6 +82,7 @@ class SupportTypeController extends Controller
         $data = $request->validate([
             // 'type_code' => 'required|size:2',
             'type_name' => 'required|max:20',
+            'type_name_en' => 'nullable|max:20',
         ]);
         
         $data['updated_by'] = $user->id; // 更新者のIDを更新データに追加

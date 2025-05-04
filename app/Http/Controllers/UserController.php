@@ -34,7 +34,7 @@ class UserController extends Controller
     public function index(Request $request)//検索用にrequestを受取る
     {
         $per_page = config('constants.perPage');
-        $users = User::with(['role','affiliation1s','affiliation2','affiliation3']);
+        $users = User::with(['affiliation1', 'affiliation2', 'affiliation3', 'employeeStatus']);
         $affiliation1s = Affiliation1::all();
         $affiliation2s = Affiliation2::all();
         $affiliation3s = Affiliation3::all();
@@ -53,6 +53,9 @@ class UserController extends Controller
 
         //検索Query
         $query = User::query();
+
+        // ここでEagerロードを設定
+        $query->with(['affiliation1', 'affiliation2', 'affiliation3', 'employeeStatus', 'updatedBy']);
 
         // システム管理者でない場合は、id1のユーザーを非表示にする
         if (!$this->isSysAdmin()) {
@@ -83,12 +86,6 @@ class UserController extends Controller
             }
         }
         
-        //もし権限があれば
-        if (!empty($selectedRoles))
-        {
-            $query->whereIn('role_id', $selectedRoles);
-        }
-
         //もし在職状態があれば
         if(!empty($employeeStatusIds))
         {
@@ -230,7 +227,6 @@ class UserController extends Controller
         $affiliation2s = Affiliation2::all();
         $affiliation3s = Affiliation3::all();
         $e_statuses = EmployeeStatus::all();
-        $user_role = $user->role_id;
         $user_e_status = $user->employee_status_id;
 
         // 参照中のユーザに紐づく権限グループのIDを取得
@@ -243,7 +239,7 @@ class UserController extends Controller
 
         $maxlength = config('constants.int_phone_maxlength');
 
-        return view('admin.user.edit',compact('user','user_role','e_statuses','user_e_status','affiliation1s','affiliation2s','affiliation3s', 'maxlength','roleGroups',));
+        return view('admin.user.edit',compact('user', 'e_statuses', 'user_e_status', 'affiliation1s', 'affiliation2s', 'affiliation3s', 'maxlength', 'roleGroups',));
     }
 
     public function update(UserUpdateRequest $request, User $user)
@@ -346,6 +342,57 @@ class UserController extends Controller
 
         $name = $user->name;
         return redirect()->back()->with('success', $name . 'を正常に削除しました');
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $selectedIds = $request->input('selectedIds', []);
+    
+        if (empty($selectedIds)) {
+            return redirect()->back()->with('error', '削除するレコードが選択されていません');
+        }
+    
+        // 削除できないユーザーのIDを取得（在職中のユーザー）
+        $usersInOffice = User::whereIn('id', $selectedIds)
+            ->where('employee_status_id', 1)
+            ->pluck('id')
+            ->toArray();
+    
+        // 削除可能なユーザーのIDを取得（在職中でないユーザー）
+        $usersToDelete = array_diff($selectedIds, $usersInOffice);
+    
+        if (!empty($usersToDelete)) {
+            User::whereIn('id', $usersToDelete)->delete();
+        }
+    
+        // メッセージを設定
+        if (!empty($usersInOffice)) {
+            return redirect()->back()->with('error', '在職中のユーザーが含まれていたため、一部削除できませんでした。');
+        }
+    
+        return redirect()->back()->with('success', '選択されたユーザーを削除しました');
+    }
+
+    // 仮で作成 ログが発火しない
+    public function bulkDisable(Request $request)
+    {
+        $selectedIds = $request->input('selectedIds', []);
+
+        if (empty($selectedIds)) {
+            return redirect()->back()->with('error', '対象ユーザーが選択されていません。');
+        }
+
+        // 一括で更新
+        $users = User::whereIn('id', $selectedIds)->get();
+
+        foreach ($users as $user) {
+            $user->is_enable = 0;
+            $user->save(); // イベント発火、1回のSELECT＋N回のUPDATE
+        }
+
+        // User::whereIn('id', $selectedIds)->update(['is_enabled' => 1]);
+
+        return redirect()->back()->with('success', '選択されたユーザーを無効にしました。');
     }
 
     public function upload(CsvUploadRequest $request)

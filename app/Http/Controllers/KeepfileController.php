@@ -44,7 +44,7 @@ class KeepfileController extends Controller
         }
 
         // フィルタリングクエリを作成
-        $keepfileQuery = Keepfile::sortable()->with('user','project');
+        $keepfileQuery = Keepfile::sortable()->with('user', 'project', 'project.client');
     
         if (!empty($projectNum)) {
             // Project テーブルからプロジェクト番号を部分一致で検索して該当する ID を取得

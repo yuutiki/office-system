@@ -1,13 +1,9 @@
-{{-- @props(['form' => null])
+<button {{ $attributes->merge([
+  'type' => 'submit',
+  'class' => 'flex items-center pl-2 sm:px-4 py-1.5 text-sm font-medium text-white rounded hover:bg-[#313a48] bg-[#364050] focus:ring-2 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800',
+  'data-tooltip-target' => 'tooltip-save-button',
+  ' data-tooltip-placement' => 'bottom',
 
-<button {{ $attributes->merge([
-  'type' => 'submit',
-  'class' => 'inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150'])}} form="{{ $form }}">
-    {{ $slot }}
-</button> --}}
-<button {{ $attributes->merge([
-  'type' => 'submit',
-  'class' => 'flex items-center pl-2 sm:px-4 py-1.5 text-sm font-medium text-white rounded bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
   ])}} >
     {{-- <svg class="w-4.5 h-4.5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
         <path stroke="currentColor" stroke-linecap="round" stroke-width="1.25" d="M11 16h2m6.707-9.293-2.414-2.414A1 1 0 0 0 16.586 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7.414a1 1 0 0 0-.293-.707ZM16 20v-6a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v6h8ZM9 4h6v3a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V4Z"/>
@@ -18,17 +14,19 @@
     <span class="hidden sm:inline text-sm whitespace-nowrap">{{ $slot }}</span>
 </button>
 
-
+<div id="tooltip-save-button" role="tooltip" class="absolute  z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-sm shadow-xs opacity-0 tooltip dark:bg-gray-600">
+    Ctrl + S
+    <div class="tooltip-arrow" data-popper-arrow></div>
+</div>
 
 <script>
-
-$("form").submit(function() {
-  var self = this;
-  $(":submit", self).prop("disabled", true);
-  setTimeout(function() {
-    $(":submit", self).prop("disabled", false);
-  }, 3000);
-});
+    $("form").submit(function() {
+    var self = this;
+    $(":submit", self).prop("disabled", true);
+    setTimeout(function() {
+        $(":submit", self).prop("disabled", false);
+    }, 3000);
+    });
 </script>
 
 {{--type を submit ではなく button にし、 onclick=>submit とすることで入力途中にenterを押してもsubmitされなくする（誤submit防止）  --}}

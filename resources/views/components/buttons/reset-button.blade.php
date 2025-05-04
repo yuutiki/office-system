@@ -1,6 +1,6 @@
 @props([
     'text' => 'リセット',
-    'form' => 'search-form'
+    'form' => 'search_form'
 ])
 
 <button {{ $attributes->merge([

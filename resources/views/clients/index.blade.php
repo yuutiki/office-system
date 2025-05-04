@@ -1,10 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between w-full whitespace-nowrap items-center">
-            <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex">
+            <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center">
                 {{ Breadcrumbs::render('clients') }}
                 <div class="ml-4">
                     {{ $count }}件
+                </div>
+                <div class="text-gray-900 dark:text-white ml-4 text-base hidden md:block">
+                    - 選択中: <span id="selectedCount">0</span> 件
                 </div>
             </h2>
             <x-message :message="session('message')" />
@@ -32,8 +35,8 @@
                                         CSVアップロード
                                     </button>
                                 @else
-                                    <button type="button" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
-                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <button type="button" class="w-full flex items-center gap-x-2 py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
+                                        <div class="flex items-center">
                                             <svg class="h-6 w-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                                 <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
                                             </svg>
@@ -53,13 +56,38 @@
                                         CSVダウンロード
                                     </button> --}}
                                 @else
-                                    <button type="button" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
-                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <button type="button" class="w-full flex items-center gap-x-2 py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
+                                        <div class="flex items-center">
                                             <svg class="h-6 w-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                                 <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
                                             </svg>
                                         </div>
                                         CSVダウンロード
+                                    </button>
+                                @endcan
+                            </li>
+                            <hr class="border-gray-300 dark:border-gray-500 mx-2">
+                            <li>
+                                @can('admin_clients')
+                                    {{-- <form id="bulkDeleteForm" action="{{ route('clients.bulkDelete') }}" method="POST">
+                                        @csrf --}}
+                                        <button type="button" data-modal-target="deleteModal-clients" data-modal-show="deleteModal-clients" class="relative w-full flex items-center py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                            <div class="flex items-center min-w-6">
+                                                <svg aria-hidden="true" class="w-5 h-5 mx-0.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                                </svg>
+                                            </div>
+                                            <div class="ml-2">データ削除</div>
+                                        </button>
+                                    {{-- </form> --}}
+                                @else
+                                    <button type="button" class="w-full flex items-center gap-x-2 py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
+                                        <div class="flex items-center">
+                                            <svg class="h-6 w-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </div>
+                                        データ削除
                                     </button>
                                 @endcan
                             </li>
@@ -69,10 +97,6 @@
             </div>
         </div>
     </x-slot>
-
-    <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
-
-    {{--  --}}
 
     <div class="relative bg-white dark:bg-gray-800 rounded-t-md lg:w-auto md:ml-14 lg:mr-2 m-auto shadow-md  dark:text-gray-900 mt-4">
         <div class="flex flex-col items-center justify-between p-4 space-y-3 lg:flex-row  lg:space-y-0 lg:space-x-3">
@@ -271,6 +295,13 @@
                             №
                         </div>
                     </th>
+                    <th scope="col" class="pl-4 py-1 w-auto">
+                        <div class="flex items-center whitespace-nowrap">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="selectAllCheckbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-500 dark:border-white rounded border  focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700">
+                            </div>
+                        </div>
+                    </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <span class="sr-only">編集</span>
                     </th>
@@ -309,11 +340,6 @@
                             管轄事業部
                         </div>
                     </th>
-                    @can('managerOrAbobe')
-                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
-                        <span class="sr-only">削除</span>
-                    </th>
-                    @endcan
                 </tr>
             </thead>
             <tbody>
@@ -321,6 +347,11 @@
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600 clickable-row">
                         <td class="pl-4 py-1 whitespace-nowrap">
                             {{ $loop->iteration }}
+                        </td>
+                        <td class="pl-4 py-1 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <input id="checkbox{{ $client->id }}" type="checkbox" name="selectedIds[]" value="{{ $client->id }}" form="bulkDeleteForm" class="checkbox-item  w-4 h-4 text-blue-600 bg-gray-100 border-gray-500 dark:border-white rounded border  focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700">
+                            </div>
                         </td>
                         <td class="pl-3 pr-2 py-0.5 whitespace-nowrap">
                             <button onclick="location.href='{{route('clients.edit',$client)}}'" class="block whitespace-nowrap px-2 pl-3 md:pl-1.5  md:pr-1.5 py-[4.5px] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-sm items-center text-sm text-center dark:bg-blue-700 dark:hover:bg-blue-800 dark:focus:ring-blue-800" type="button">
@@ -340,64 +371,49 @@
                             {{$client->client_name}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap w-96">
-                            {{$client->Corporation->corporation_name}}
+                            {{$client->corporation->corporation_name}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
                             {{$client->user->user_name}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$client->tradestatus->trade_status_name}}
+                            {{$client->tradeStatus->trade_status_name}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
                             {{$client->affiliation2->affiliation2_name_short}}
                         </td>
-                        <td class="py-1">
-                            <button type="button" data-modal-target="deleteModal-{{$client->id}}" data-modal-show="deleteModal-{{$client->id}}" class="button-delete-primary">
-                                <div class="flex items-center">
-                                    <svg aria-hidden="true" class="w-[17px] h-[17px] mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
-                                    <span class="text-ms ">削除</span>
-                                </div>
-                            </button>
-                        </td>
                     </tr>
-                    {{-- 削除確認モーダル画面 Start --}}
-                    <div id="deleteModal-{{$client->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                        <div class="relative w-full max-w-md max-h-full">
-                            <div class="relative bg-white rounded-s rounded-e shadow dark:bg-gray-700">
-                                <button data-modal-hide="deleteModal-{{$client->id}}" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-s rounded-e text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                                    </svg>
-                                </button>
-
-                                <div class="p-6 text-center">
-                                    <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                                    </svg>
-                                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
-                                    <form action="{{route('clients.destroy',$client->id)}}" method="POST" class="text-center m-auto">
-                                        @csrf
-                                        @method('delete')
-                                        @can('managerOrAbobe')
-                                        <button type="submit" data-modal-hide="deleteModal-{{$client->id}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-2 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-s rounded-e text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
-                                            削除
-                                        </button>
-                                        @endcan
-                                    </form>
-                                    <button data-modal-hide="deleteModal-{{$client->id}}" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-2 focus:outline-none focus:ring-gray-200 rounded-s rounded-e border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                                        やっぱやめます
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {{-- 削除確認モーダル画面 End --}}
                 @endforeach
             </tbody>
         </table>
         <div class="mt-1 mb-1 px-4">
         {{ $clients->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
         </div> 
+    </div>
+
+
+    <div id="deleteModal-clients" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative w-full max-w-md max-h-full">
+            <div class="relative bg-white rounded shadow dark:bg-gray-700">
+                <div class="p-6 text-center">
+                    <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                    </svg>
+                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400"><span id="modalSelectedCount">0</span> 件を本当に削除しますか？</h3>
+                    <div class="flex justify-center">
+                        <form id="bulkDeleteForm" action="{{ route('clients.bulkDelete') }}" method="POST">
+                            @csrf
+                            <button type="submit" id="bulkDeleteButton" form="bulkDeleteForm" data-modal-hide="deleteModal-clients" class="text-white  bg-red-700 hover:bg-red-800 focus:outline-none font-medium rounded text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 dark:focus:ring-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                                {{ __('deleted') }} <!--削除-->
+                            </button>
+                        </form>
+                        <button id="cancelButton-clients" data-modal-hide="deleteModal-clients" type="button" data-modal-cancel class="text-gray-500 bg-white hover:bg-gray-100 focus:outline-none rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                            やっぱやめます
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <style>
@@ -433,4 +449,31 @@
     </script>
 
     <script src="{{ asset('assets/js/user-dropdown.js') }}"></script>
+
+
+
+    <script>
+        // 一覧画面のチェックボックス関連の操作　カウントしたり、一括でチェックを付けたり
+        document.addEventListener("DOMContentLoaded", function () {
+            const selectAllCheckbox = document.getElementById("selectAllCheckbox");
+            const checkboxes = document.querySelectorAll(".checkbox-item");
+            const selectedCountElement = document.getElementById("selectedCount");
+            const modalSelectedCount = document.getElementById("modalSelectedCount");
+
+            function updateSelectedCount() {
+                const selectedCount = document.querySelectorAll(".checkbox-item:checked").length;
+                selectedCountElement.textContent = selectedCount;
+                modalSelectedCount.textContent = selectedCount;  // モーダル内の選択数を更新
+            }
+
+            selectAllCheckbox.addEventListener("change", function () {
+                checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+                updateSelectedCount();
+            });
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener("change", updateSelectedCount);
+            });
+        });
+    </script>
 </x-app-layout>

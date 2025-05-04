@@ -1,36 +1,26 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between w-full whitespace-nowrap items-center">
-            <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex">
+            <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center py-1">
                 {{ Breadcrumbs::render('users') }}
                 <div class="ml-4">
                     {{ $count }}件
                 </div>
+                <div class="text-gray-900 dark:text-white ml-2 text-sm hidden md:block">
+                    <div>（選択中： <span id="selectedCount">0</span> 件）</div>
+                </div>
             </h2>
             <x-message :message="session('message')" />
             <div class="flex flex-col flex-shrink-0 space-y-1 w-auto md:flex-row md:space-y-0 md:space-x-3 items-center">
-                @can('storeUpdate_users')
-                    <button type="button" onclick="location.href='{{ route('users.create') }}'" class="flex items-center pl-2 sm:px-4 py-2 text-sm font-medium text-white rounded bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                        <svg class="h-5 w-5 sm:h-3.5 sm:w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                        </svg>
-                        <div class="hidden sm:block">{{ __('Add') }}</div>
-                    </button>
-                @else
-                    <button type="button" onclick="location.href='{{ route('users.create') }}'" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-s rounded-e bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-blue-800 cursor-not-allowed" disabled>
-                        <svg class="h-4 w-4 mr-2 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
-                        </svg>
-                        <div class="hidden sm:block">{{ __('Add') }}</div>
-                    </button>
-                @endcan
+
+                <x-buttons.add-button :route="route('users.create')" gate="storeUpdate_users" :text="__('Add')" />
 
                 <div class="flex items-center w-full space-x-3 hidden md:w-auto md:inline-block">
-                    <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s rounded-e md:w-auto focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
-                        <svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                    <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full p-2.5 text-sm font-medium hover:bg-[#313a48] bg-[#364050] text-gray-200 rounded md:w-auto focus:z-10 dark:bg-blue-600 dark:text-gray-100 dark:border-gray-600 dark:hover:text-white dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" type="button">
+                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                            <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
                         </svg>
-                        {{ __('Actions') }}
+                        {{-- {{ __('Actions') }} --}}
                     </button>
 
                     <div id="actionsDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-600 dark:divide-gray-600">
@@ -68,14 +58,36 @@
                                     </button>
                                 </li>
                             @endcan
+
+                            <hr class="border-gray-300 dark:border-gray-500 mx-2">
+                            
+                            <li>
+                                @can('admin_users')
+                                    <button type="button" data-modal-target="deleteModal-users" data-modal-show="deleteModal-users" class="relative w-full flex items-center py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                        <div class="flex items-center min-w-6">
+                                            <svg aria-hidden="true" class="w-5 h-5 mx-0.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                            </svg>
+                                        </div>
+                                        <div class="ml-2">データ削除</div>
+                                    </button>
+                                @else
+                                    <button type="button" class="relative w-full flex items-center py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
+                                        <div class="flex items-center min-w-6">
+                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                                <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </div>
+                                        <div class="ml-2">データ削除</div>
+                                    </button>
+                                @endcan
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
     </x-slot>
-
-    <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
 
     <div class="relative bg-white dark:bg-gray-800 rounded-t-md md:w-auto md:ml-14 md:mr-2 m-auto shadow-md  dark:text-gray-900 mt-4">
         <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
@@ -218,6 +230,13 @@
                             №
                         </div>
                     </th>
+                    <th scope="col" class="pl-4 py-1 w-auto">
+                        <div class="flex items-center whitespace-nowrap">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="selectAllCheckbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-500 dark:border-white rounded border  focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700">
+                            </div>
+                        </div>
+                    </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             
@@ -273,13 +292,13 @@
                             
                         </div>
                     </th>
-                    @can('delete_users')
+                    {{-- @can('delete_users')
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             
                         </div>
                     </th>
-                    @endcan
+                    @endcan --}}
                 </tr>
             </thead>
             <tbody>
@@ -287,6 +306,11 @@
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600">
                         <td class="pl-4 py-1 whitespace-nowrap">
                             {{ $loop->iteration }}
+                        </td>
+                        <td class="pl-4 py-1 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <input id="checkbox{{ $user->id }}" type="checkbox" name="selectedIds[]" value="{{ $user->id }}" form="bulkDeleteForm" class="checkbox-item  w-4 h-4 text-blue-600 bg-gray-100 border-gray-500 dark:border-white rounded border  focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700">
+                            </div>
                         </td>
                         <td class="pl-4 py-1 whitespace-nowrap w-20 pr-10">
                             <button type="button" onclick="location.href='{{route('users.edit', $user)}}'" class="button-edit-primary">
@@ -315,8 +339,8 @@
                         @endif
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$user->employee_status->employee_status_num}}:
-                            {{$user->employee_status->employee_status_name}}
+                            {{$user->employeeStatus->employee_status_num}}:
+                            {{$user->employeeStatus->employee_status_name}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap mr-2">
                             @if($user->is_enabled == '1')
@@ -332,7 +356,7 @@
                         <td class="px-1 py-1 whitespace-nowrap">
                             {{ optional($user->updatedBy)->name }}
                         </td>
-                        @can('delete_users')
+                        {{-- @can('delete_users')
                         <td class="py-1">
                             <button type="button" data-modal-target="deleteModal-{{$user->id}}" data-modal-show="deleteModal-{{$user->id}}" class="button-delete-primary">
                                 <div class="flex">
@@ -341,10 +365,10 @@
                                 </div>
                             </button>
                         </td>                            
-                        @endcan
+                        @endcan --}}
                     </tr>
                     {{-- 削除確認モーダル画面 Start --}}
-                    <div id="deleteModal-{{$user->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                    {{-- <div id="deleteModal-{{$user->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
                         <div class="relative w-full max-w-md max-h-full">
                             <div class="relative bg-white rounded-s rounded-e shadow dark:bg-gray-700">
                                 <button data-modal-hide="deleteModal-{{$user->id}}" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-s rounded-e text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
@@ -370,7 +394,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     {{-- 削除確認モーダル画面 End --}}
                 @endforeach
             </tbody>
@@ -378,6 +402,30 @@
         <div class="mt-1 mb-1 px-4">
             {{ $users->withQueryString()->links('vendor.pagination.custum-tailwind') }}
         </div> 
+    </div>
+
+    <div id="deleteModal-users" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative w-full max-w-md max-h-full">
+            <div class="relative bg-white rounded shadow dark:bg-gray-700">
+                <div class="p-6 text-center">
+                    <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                    </svg>
+                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400"><span id="modalSelectedCount">0</span> 件を本当に削除しますか？</h3>
+                    <div class="flex justify-center">
+                        <form id="bulkDeleteForm" action="{{ route('users.bulkDelete') }}" method="POST">
+                            @csrf
+                            <button type="submit" id="bulkDeleteButton" form="bulkDeleteForm" data-modal-hide="deleteModal-users" class="text-white  bg-red-700 hover:bg-red-800 focus:outline-none font-medium rounded text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 dark:focus:ring-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                                {{ __('deleted') }} <!--削除-->
+                            </button>
+                        </form>
+                        <button id="cancelButton-users" data-modal-hide="deleteModal-users" type="button" data-modal-cancel class="text-gray-500 bg-white hover:bg-gray-100 focus:outline-none rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                            やっぱやめます
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -405,5 +453,31 @@
             modal.classList.add('hidden');
         }
     </script>
+
+
+<script>
+    // 一覧画面のチェックボックス関連の操作　カウントしたり、一括でチェックを付けたり
+    document.addEventListener("DOMContentLoaded", function () {
+        const selectAllCheckbox = document.getElementById("selectAllCheckbox");
+        const checkboxes = document.querySelectorAll(".checkbox-item");
+        const selectedCountElement = document.getElementById("selectedCount");
+        const modalSelectedCount = document.getElementById("modalSelectedCount");
+
+        function updateSelectedCount() {
+            const selectedCount = document.querySelectorAll(".checkbox-item:checked").length;
+            selectedCountElement.textContent = selectedCount;
+            modalSelectedCount.textContent = selectedCount;  // モーダル内の選択数を更新
+        }
+
+        selectAllCheckbox.addEventListener("change", function () {
+            checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+            updateSelectedCount();
+        });
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener("change", updateSelectedCount);
+        });
+    });
+</script>
 
 </x-app-layout>

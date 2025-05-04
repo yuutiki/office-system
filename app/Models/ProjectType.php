@@ -5,10 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Observers\GlobalObserver;
+use Kyslik\ColumnSortable\Sortable;
 
 class ProjectType extends Model
 {
-    use HasFactory;
+    use HasFactory, Sortable;
+
+    public $sortable = [
+        'project_type_code',
+        'project_type_name',
+        'created_by',
+        'updated_by'
+    ];
 
     protected $fillable = [
         'project_type_code',

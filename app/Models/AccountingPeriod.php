@@ -6,10 +6,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Observers\GlobalObserver;
 use Carbon\Carbon;
+use Kyslik\ColumnSortable\Sortable;
 
 class AccountingPeriod extends Model
 {
-    use HasFactory;
+    use HasFactory, Sortable;
+
+    public $sortable = [
+        'period_name',
+        'period_start_at',
+        'period_end_at',
+        'created_by',
+        'updated_by'
+    ];
     
     protected $fillable = [
         'period_name',

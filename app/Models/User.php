@@ -105,6 +105,23 @@ class User extends Authenticatable
     {
         return $this->role === config('sytemadmin.system_admin');
     }
+
+    /**
+     * 指定レポートを受信しているか？
+     */
+    public function hasReceivedReport(Report $report): bool
+    {
+        return $this->receivedReports->contains('id', $report->id);
+    }
+
+    /**
+     * 指定レポートを既読にしているか？
+     */
+    public function hasReadReport(Report $report): bool
+    {
+        $pivot = $this->receivedReports->firstWhere('id', $report->id)?->pivot;
+        return $pivot?->is_read ?? false;
+    }
     
 
     //relation
@@ -113,7 +130,7 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function employee_status()
+    public function employeeStatus()
     {
         return $this->belongsTo(Employeestatus::class);
     }
@@ -153,10 +170,12 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Affiliation1::class);
     }
+
     public function affiliation2()
     {
         return $this->belongsTo(Affiliation2::class);
     }
+
     public function affiliation3()
     {
         return $this->belongsTo(Affiliation3::class);
@@ -180,6 +199,13 @@ class User extends Authenticatable
     public function updatedBy()
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');
+    }
+
+    public function receivedReports()
+    {
+        return $this->belongsToMany(Report::class, 'report_recipients')
+                    ->withPivot('is_read', 'read_at')
+                    ->withTimestamps();
     }
 
 }

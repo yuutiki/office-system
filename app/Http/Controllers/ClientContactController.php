@@ -1,105 +1,160 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ClientPerson\StoreClientPersonRequest;
+use App\Http\Requests\ClientContact\StoreClientContactRequest;
+use App\Http\Requests\ClientContact\UpdateClientContactRequest;
 use App\Http\Requests\CsvUploadRequest;
 use App\Models\Affiliation2;
 use App\Models\Client;
-use App\Models\ClientPerson;
+use App\Models\ClientContact;
+use App\Models\ClientContactCheckboxOption;
 use App\Models\Prefecture;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Goodby\CSV\Import\Standard\Lexer;
 use Goodby\CSV\Import\Standard\Interpreter;
 use Goodby\CSV\Import\Standard\LexerConfig;
 use Illuminate\Support\Facades\DB;
 
-class ClientPersonController extends Controller
+class ClientContactController extends Controller
 {
-    public function index()
+    // チェックボックスオプションを取得するメソッド
+    private function getCheckboxOptions()
+    {
+        return ClientContactCheckboxOption::where('is_active', true)
+            ->orderBy('display_order')
+            ->get();
+    }
+
+    // チェックボックス値を保存するヘルパーメソッド
+    private function saveCheckboxValues(ClientContact $clientContact, Request $request)
+    {
+        // 既存のチェックボックス関連をクリア
+        $clientContact->checkboxOptions()->detach();
+        
+        // チェックボックスオプションを取得
+        $checkboxOptions = ClientContactCheckboxOption::all();
+        
+        foreach ($checkboxOptions as $option) {
+            // リクエストにチェックボックスの値が含まれているかチェック
+            $value = $request->has($option->name) ? true : false;
+            
+            // 関連を保存
+            $clientContact->checkboxOptions()->attach($option->id, ['value' => $value]);
+        }
+    }
+
+    // 新しいチェックボックスオプションを追加するメソッド
+    public function addCheckboxOption(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:client_contact_checkbox_options',
+            'label' => 'required|string|max:255',
+        ]);
+        
+        $lastOrder = ClientContactCheckboxOption::max('display_order') ?? 0;
+        
+        $option = new ClientContactCheckboxOption();
+        $option->name = $validated['name'];
+        $option->label = $validated['label'];
+        $option->display_order = $lastOrder + 1;
+        $option->save();
+        
+        // 既存のclient_contactレコードに対してデフォルト値を設定
+        $clientContacts = ClientContact::all();
+        foreach ($clientContacts as $contact) {
+            $contact->checkboxOptions()->attach($option->id, ['value' => false]);
+        }
+        
+        return redirect()->back()->with('success', 'チェックボックスが追加されました');
+    }
+
+    public function index(Request $request)
     {
         $perPage = config('constants.perPage');   
-        $clientPersons = ClientPerson::with(['client'])->orderBy('client_id','asc')->paginate($perPage);
 
-        $count = $clientPersons->total();
+        $filters = $request->only(['client_info', ]);
 
-        return view('client-person.index', compact('clientPersons', 'count'));
+        //上記で$filters変数に格納した検索条件をModelに渡し、検索処理を行う。結果を$corporationsに詰める
+        $clientContacts = ClientContact::filter($filters)
+            ->with('client',)
+            ->sortable()
+            ->paginate($perPage);
+
+        // $clientContacts = ClientContact::with(['client'])->orderBy('client_id','asc')->paginate($perPage);
+
+        $count = $clientContacts->total();
+
+        return view('client-contact.index', compact('clientContacts', 'count', 'filters'));
     }
 
     public function create()
     {
+        $users = User::all();
         $prefectures = Prefecture::all();
         $affiliation2s = Affiliation2::all();
-        return view('client-person.create', compact('prefectures', 'affiliation2s'));
+        $checkboxOptions = $this->getCheckboxOptions();
+        return view('client-contact.create', compact('prefectures', 'affiliation2s', 'users', 'checkboxOptions'));
     }
 
-    public function store(StoreClientPersonRequest $request)
+    public function store(StoreClientContactRequest $request)
     {
-        ////以下にFormRequestのバリデーションを通過した場合の処理を記述////
-        $formattedPost = formatPostalCode($request->head_post_code);
+        $formattedPost = formatPostalCode($request->post_code);
 
-        $clientId = Client::where('client_num', $request->client_num)->value('id');
-
-        if ($clientId === null) {
+        if ($request->client_id === null) {
             // クライアントが見つからない場合の処理
             return redirect()->back()->with('error', 'クライアントが見つかりません。');
         }
 
         // 顧客データを保存
-        $clientPerson = new ClientPerson();
+        $clientContact = ClientContact::create([
+            'client_id' => $request->client_id,
+            'last_name' => $request->last_name,
+            'first_name' => $request->first_name,
+            'last_name_kana' => $request->last_name_kana,
+            'first_name_kana' => $request->first_name_kana,
+            'division_name' => $request->division_name,
+            'position_name' => $request->position_name,
+            'tel1' => $request->tel1,
+            'tel2' => $request->tel2,
+            'fax1' => $request->fax1,
+            'fax2' => $request->fax2,
+            'int_tel' => $request->int_tel,
+            'phone' => $request->phone,
+            'mail' => $request->mail,
+            'post_code' => $formattedPost, //変換後の郵便番号をセット
+            'prefecture_id' => $request->prefecture_id,
+            'address_1' => $request->address_1,
+            'client_contact_memo' => $request->client_contact_memo,
+            'is_retired' => $request->has('is_retired') ? 1 : 0,
+            'is_billing_receiver' => $request->has('is_billing_receiver') ? 1 : 0,
+            'is_payment_receiver' => $request->has('is_payment_receiver') ? 1 : 0,
+        ]);
 
-        $clientPerson->client_id = $clientId; // 取得したclient_id
-        $clientPerson->last_name = $request->last_name;
-        $clientPerson->first_name = $request->first_name;
-        $clientPerson->last_name_kana = $request->last_name_kana;
-        $clientPerson->first_name_kana = $request->first_name_kana;
-        $clientPerson->division_name = $request->division_name;
-        $clientPerson->position_name = $request->position_name;
-        $clientPerson->tel1 = $request->tel1;
-        $clientPerson->tel2 = $request->tel2;
-        $clientPerson->fax1 = $request->fax1;
-        $clientPerson->fax2 = $request->fax2;
-        $clientPerson->int_tel = $request->int_tel;
-        $clientPerson->phone = $request->phone;
-        $clientPerson->mail = $request->mail;
+        // チェックボックス値の保存
+        $this->saveCheckboxValues($clientContact, $request);
 
-        $clientPerson->head_post_code = $formattedPost; //変換後の郵便番号をセット
-        $clientPerson->prefecture_id = $request->head_prefecture_id;
-        $clientPerson->head_address1 = $request->head_addre1;
-        $clientPerson->person_memo = $request->person_memo;
-
-        $clientPerson->is_retired = $request->has('is_retired') ? 1 : 0;
-        $clientPerson->is_billing_receiver = $request->has('is_billing_receiver') ? 1 : 0;
-        $clientPerson->is_payment_receiver = $request->has('is_payment_receiver') ? 1 : 0;
-        $clientPerson->is_support_info_receiver = $request->has('is_support_info_receiver') ? 1 : 0;
-        $clientPerson->is_closing_info_receiver = $request->has('is_closing_info_receiver') ? 1 : 0;
-        $clientPerson->is_exhibition_info_receiver = $request->has('is_exhibition_info_receiver') ? 1 : 0;
-        $clientPerson->is_cloud_info_receiver = $request->has('is_cloud_info_receiver') ? 1 : 0;
-        $clientPerson->save();
-
-        return redirect()->route('client-person.edit', $clientPerson->id)->with('success', '正常に登録しました');
+        return redirect()->route('client-contacts.edit', $clientContact->id)->with('success', '正常に登録しました');
     }
 
-    public function show(ClientPerson $clientPerson)
+    public function show(ClientContact $clientContact)
     {
         //
     }
 
-    public function edit(ClientPerson $clientPerson)
+    public function edit(ClientContact $clientContact)
     {
+        $users = User::all();
         $prefectures = Prefecture::all();
         $affiliation2s = Affiliation2::all();
-        return view('client-person.edit', compact('prefectures', 'affiliation2s', 'clientPerson'));
+        $checkboxOptions = $this->getCheckboxOptions();
+
+        return view('client-contact.edit', compact('users', 'prefectures', 'affiliation2s', 'clientContact', 'checkboxOptions'));
     }
 
-    public function update(Request $request, ClientPerson $clientPerson)
+    public function update(UpdateClientContactRequest $request, ClientContact $clientContact)
     {
-            // FormRequestのバリデーションを通過した場合の処理を記述
-        $request->validate([
-            // 'tel1' => 'required',
-            // 'last_name' => 'required'
-        ]);
-
-        $formattedPost = formatPostalCode($request->head_post_code);
+        $formattedPost = formatPostalCode($request->post_code);
 
         // フォームからの値を変数に格納
         $clientNum = $request->input('client_num');
@@ -109,50 +164,49 @@ class ClientPersonController extends Controller
         $clientId = $client->id;
 
         // 顧客データを更新
-        // $clientPerson = ClientPerson::find($id);
+        // $clientContact = ClientContact::find($id);
 
-        $clientPerson->client_id = $clientId; // 取得したclient_id
-        $clientPerson->last_name = $request->last_name;
-        $clientPerson->first_name = $request->first_name;
-        $clientPerson->last_name_kana = $request->last_name_kana;
-        $clientPerson->first_name_kana = $request->first_name_kana;
-        $clientPerson->division_name = $request->division_name;
-        $clientPerson->position_name = $request->position_name;
-        $clientPerson->tel1 = $request->tel1;
-        $clientPerson->tel2 = $request->tel2;
-        $clientPerson->fax1 = $request->fax1;
-        $clientPerson->fax2 = $request->fax2;
-        $clientPerson->int_tel = $request->int_tel;
-        $clientPerson->phone = $request->phone;
-        $clientPerson->mail = $request->mail;
+        $clientContact->client_id = $clientId; // 取得したclient_id
+        $clientContact->last_name = $request->last_name;
+        $clientContact->first_name = $request->first_name;
+        $clientContact->last_name_kana = $request->last_name_kana;
+        $clientContact->first_name_kana = $request->first_name_kana;
+        $clientContact->division_name = $request->division_name;
+        $clientContact->position_name = $request->position_name;
+        $clientContact->tel1 = $request->tel1;
+        $clientContact->tel2 = $request->tel2;
+        $clientContact->fax1 = $request->fax1;
+        $clientContact->fax2 = $request->fax2;
+        $clientContact->int_tel = $request->int_tel;
+        $clientContact->phone = $request->phone;
+        $clientContact->mail = $request->mail;
 
-        $clientPerson->head_post_code = $formattedPost; // 変換後の郵便番号をセット
-        $clientPerson->prefecture_id = $request->head_prefecture;
-        $clientPerson->head_address1 = $request->head_addre1;
-        $clientPerson->person_memo = $request->person_memo;
+        $clientContact->post_code = $formattedPost; // 変換後の郵便番号をセット
+        $clientContact->prefecture_id = $request->prefecture_id;
+        $clientContact->address_1 = $request->address_1;
+        $clientContact->client_contact_memo = $request->client_contact_memo;
 
-        $clientPerson->is_retired = $request->has('is_retired') ? 1 : 0;
-        $clientPerson->is_billing_receiver = $request->has('is_billing_receiver') ? 1 : 0;
-        $clientPerson->is_payment_receiver = $request->has('is_payment_receiver') ? 1 : 0;
-        $clientPerson->is_support_info_receiver = $request->has('is_support_info_receiver') ? 1 : 0;
-        $clientPerson->is_closing_info_receiver = $request->has('is_closing_info_receiver') ? 1 : 0;
-        $clientPerson->is_exhibition_info_receiver = $request->has('is_exhibition_info_receiver') ? 1 : 0;
-        $clientPerson->is_cloud_info_receiver = $request->has('is_cloud_info_receiver') ? 1 : 0;
-        $clientPerson->save();
+        $clientContact->is_retired = $request->has('is_retired') ? 1 : 0;
+        $clientContact->is_billing_receiver = $request->has('is_billing_receiver') ? 1 : 0;
+        $clientContact->is_payment_receiver = $request->has('is_payment_receiver') ? 1 : 0;
+        $clientContact->save();
+
+        // チェックボックス値の保存
+        $this->saveCheckboxValues($clientContact, $request);
 
         return redirect()->back()->with('success', '正常に更新しました');
     }
 
-    public function destroy(ClientPerson $clientPerson)
+    public function destroy(ClientContact $clientContact)
     {
-        $clientPerson->delete();
-        return redirect()->route('client-person.index')->with('success', '正常に削除しました');
+        $clientContact->delete();
+        return redirect()->route('client-contacts.index')->with('success', '正常に削除しました');
     }
 
     public function search(Request $request)
     {
         // 既存の検索ロジックを活用しつつ、新しい要件に対応※下記は適当
-        $query = ClientPerson::query();
+        $query = ClientContact::query();
 
         if (!empty($request->client_name)) {
             $query->where('client_name', 'LIKE', '%' . $request->client_name . '%');
@@ -186,7 +240,7 @@ class ClientPersonController extends Controller
 
     public function showUploadForm()
     {
-        return view('client-person.upload-form');
+        return view('client-contact.upload-form');
     }
 
 
@@ -359,7 +413,7 @@ class ClientPersonController extends Controller
     
     private function processRow(array $row, $operation)
     {
-        $clientPersonData = [
+        $clientContactData = [
             'last_name' => $row[1],
             'first_name' => $row[2],
             'last_name_kana' => $row[3],
@@ -370,10 +424,10 @@ class ClientPersonController extends Controller
             'fax1' => $row[8],
             'phone' => $row[9],
             'mail' => $row[10],
-            'head_post_code' => $row[11],
+            'post_code' => $row[11],
             'prefecture_id' => $row[12], // idで登録するのか
-            'head_address1' => $row[13],
-            'person_memo' => $row[14],
+            'address_1' => $row[13],
+            'client_contact_memo' => $row[14],
             'is_retired' => $row[15],
             'is_billing_receiver' => $row[16],
             'is_payment_receiver' => $row[17],
@@ -389,15 +443,15 @@ class ClientPersonController extends Controller
 
         if ($client) {
             // Clientが存在する場合は、そのidを関連データとして保存
-            $clientPersonData['client_id'] = $client->id;
+            $clientContactData['client_id'] = $client->id;
         }
 
         if ($operation === 'new') {
             // 新規登録の場合は$dataを保存
-            ClientPerson::create($clientPersonData);
-        } elseif ($existingRecord = ClientPerson::where('client_id', $client->id)->first()) {
+            ClientContact::create($clientContactData);
+        } elseif ($existingRecord = ClientContact::where('client_id', $client->id)->first()) {
             // 既存レコードが存在する場合は更新
-            $existingRecord->update($clientPersonData);
+            $existingRecord->update($clientContactData);
         }
     }
 }

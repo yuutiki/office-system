@@ -9,6 +9,10 @@ shortcut.add("Ctrl+S", function () {
     document.getElementById('saveButton').click();
 });
 
+shortcut.add("Ctrl+A", function () {
+    // 保存ボタンをクリック
+    document.getElementById('add-button').click();
+});
 
 shortcut.add("Ctrl+F", function () {
     // 検索ボタンをクリック
@@ -32,34 +36,90 @@ $(function() {
 });
 
 
-// resetForm.js
-$(function () {
-    $('#clear').click(function () {
-        resetForm('#clientcorporationform');
-        resetForm('#keepfileform');
-        resetForm('#link-search-form');
-        resetForm('#search_form');
-        resetForm('#supportform');
-        // 別のフォームがあればここで追加
-    });
+// // resetForm.js
+// $(function () {
+//     $('#clear').click(function () {
+//         resetForm('#clientcorporationform');
+//         resetForm('#keepfileform');
+//         resetForm('#link-search-form');
+//         resetForm('#search_form');
+//         resetForm('#supportform');
+//         // 別のフォームがあればここで追加
+//     });
+// });
+
+// function resetForm(formId) {
+//     $(formId + ' input, ' + formId + ' select').each(function () {
+//         // checkboxまたはradioボタンの時
+//         if (this.type == 'checkbox' || this.type == 'radio') {
+//             // 一括でチェックを外す
+//             this.checked = false;
+//         }
+//         // checkboxまたはradioボタン以外の時
+//         else {
+//             // val値を空にする
+//             $(this).val('');
+//         }
+//     });
+//     // 検索ボタンをクリック
+//     document.getElementById('search-button').click();
+// }
+
+
+// resetForm.js - 検索フォーム特化版
+document.addEventListener('DOMContentLoaded', function() {
+    // クリアボタンのイベントリスナー
+    const clearButton = document.getElementById('clear');
+
+    if (clearButton) {
+        clearButton.addEventListener('click', function() {
+            // 検索フォームをリセット
+            resetForm('#clientcorporationform');
+            resetForm('#keepfileform');
+            resetForm('#link-search-form');
+            resetForm('#search_form');
+            resetForm('#supportform');
+            
+            // 検索ボタンをクリック
+            const searchButton = document.getElementById('search-button');
+
+            if (searchButton) {
+                searchButton.click();
+            }
+        });
+    }
 });
 
-function resetForm(formId) {
-    $(formId + ' input, ' + formId + ' select').each(function () {
-        // checkboxまたはradioボタンの時
-        if (this.type == 'checkbox' || this.type == 'radio') {
-            // 一括でチェックを外す
-            this.checked = false;
-        }
-        // checkboxまたはradioボタン以外の時
-        else {
-            // val値を空にする
-            $(this).val('');
+/**
+ * 検索フォームをリセットする関数
+ * @param {string} formSelector - フォームのセレクタ
+ */
+function resetForm(formSelector) {
+    const form = document.querySelector(formSelector);
+    if (!form) return; // フォームが存在しない場合は処理をスキップ
+    
+    // 全ての入力要素を取得
+    const inputs = form.querySelectorAll('input, select');
+    
+    // 各入力要素をリセット
+    inputs.forEach(function(input) {
+        // チェックボックスまたはラジオボタンの場合
+        if (input.type === 'checkbox' || input.type === 'radio') {
+            input.checked = false;
+        } 
+        // hidden以外の場合に値をクリア
+        else if (input.type !== 'hidden') {
+            input.value = '';
         }
     });
-    // 検索ボタンをクリック
-    document.getElementById('search-button').click();
 }
+
+
+
+
+
+
+
 
 
 function goBack() {

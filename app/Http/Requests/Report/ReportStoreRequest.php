@@ -39,6 +39,7 @@ class ReportStoreRequest extends FormRequest
                 'contact_at' => ['required', 'date'],
                 'report_title' => ['required', 'string', 'max:500'],
                 'report_content' => ['required', 'string', 'max:5000'],
+                'project_id' => ['nullable', ],
                 // 'selectedRecipientsId' => ['required', 'array'],
                 // 'selectedRecipientsId.*' => ['exists:users,id'],
             ]);

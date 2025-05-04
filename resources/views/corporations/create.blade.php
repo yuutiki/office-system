@@ -10,9 +10,9 @@
                 <form method="post" action="{{ route('corporations.store') }}" enctype="multipart/form-data" id="corporationForm" class="flex items-center">
                     @csrf
                     @can('storeUpdate_corporations')
-                        <x-button-save form-id="corporationForm" id="saveButton" onkeydown="stopTab(event)">
-                            {{ __('save') }}
-                        </x-button-save>
+                        <x-buttons.save-button form-id="corporationForm" id="saveButton" class="">
+                            {{ __("save") }}
+                        </x-buttons.save-button>
                     @endcan
                 </form>
             </div>
@@ -64,9 +64,9 @@
                 @enderror
             </div>
             <div class="w-full flex flex-col">
-                <label for="corporation_number" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">法人番号（国税庁）</label>
-                <input type="text" form="corporationForm" name="corporation_number" id="corporation_number" value="{{ old('corporation_number') }}" class="input-primary" placeholder="123456789123">
-                @error('corporation_number')
+                <label for="corporation_tax_num" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">法人番号（国税庁）</label>
+                <input type="text" form="corporationForm" name="corporation_tax_num" id="corporation_tax_num" value="{{ old('corporation_tax_num') }}" class="input-primary" placeholder="123456789123">
+                @error('corporation_tax_num')
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
             </div>

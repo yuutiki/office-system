@@ -24,8 +24,7 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $per_page = 100;
-        $users = User::all();
+        $perPage = config('constants.perPage');
         $productSeriess = ProductSeries::all();
         $productTypes = ProductType::all();
         $productSplitTypes = ProductSplitType::all();
@@ -41,8 +40,7 @@ class ProductController extends Controller
         $productSplitType = $request->product_split_type; 
 
         //検索Query
-        // $query = Product::query();
-        $query = Product::with(['affiliation2', 'productSplitType', 'productSeries'])->sortable()->orderBy('product_code', 'asc');
+        $query = Product::with(['affiliation2', 'productSplitType', 'productSeries', 'productsplittype'])->sortable()->orderBy('product_code', 'asc');
 
         if(!empty($productCode))
         {
@@ -60,11 +58,10 @@ class ProductController extends Controller
             }
         }
 
-        $count = $query->count(); // 検索結果の総数を取得
-        // $products = $query->with(['affiliation2','productSplitType','productSeries'])->sortable()->orderBy('product_code','asc')->paginate($per_page);
-        $products = $query->paginate($per_page);
+        $products = $query->paginate($perPage);
+        $count = $products->total(); // 検索結果の総数を取得
 
-        return view('product.index',compact('products','count','users','productCode','productName','productSeriess','productTypes','productSplitTypes','affiliation2s'));
+        return view('product.index',compact('products', 'count', 'productCode', 'productName', 'productSeriess', 'productTypes', 'productSplitTypes', 'affiliation2s'));
     }
 
     public function create()

@@ -42,7 +42,7 @@ return [
             'admin' => 6,
         ],
     ],
-    'client_persons' => [
+    'client_contacts' => [
         'function_menu_code' => '1030',
         'permissions' => [
             'view' => 2,

@@ -12,7 +12,6 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         {{-- favicon --}}
         <link rel="shortcut icon" href="{{ asset('/favicon.ico') }}">
-        <!-- Add this to your app.blade.php layout -->
 
         {{-- Windows/Android用マニフェスト --}}
         <link rel="manifest" href="/manifest.json">
@@ -54,16 +53,12 @@
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
         <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
-        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/datepicker.min.js"></script> --}}
-        {{-- <link rel="stylesheet" href="{{ asset('/assets/css/select2.min.css') }}"> --}}
-        {{-- <script type="text/javascript" src="{{ asset('/assets/js/select2.min.js') }}"></script> --}}
         <!-- Select2のスタイルを読み込む（CDNを使用する場合） -->
         <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 
         {{-- 横スクロールヒント1/2 --}}
         <link rel="stylesheet" href="https://unpkg.com/scroll-hint@latest/css/scroll-hint.css">
         {{-- 横スクロールヒント2/2 --}}
-
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" integrity="sha512-cyzxRvewl+FOKTtpBzYjW6x6IAYUCZy3sGP40hn+DQkqeluGRCax7qztK2ImL64SA+C7kVWdLI6wvdlStawhyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -72,13 +67,14 @@
 
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-blue-100 dark:bg-gray-900 ">
+        <div class="min-h-screen bg-[#f3f4f9] dark:bg-gray-900 ">
+
             @include('layouts.drawernavigation')
 
             <!-- Page Heading -->
             @if (isset($header))
                 <header class="fixed top-12 left-0 right-0 z-10 bg-gray-100 dark:bg-gray-800 shadow-md">
-                    <div class="md:ml-9 py-3 px-4">
+                    <div class="md:ml-9 py-1.5 px-4">
                         {{ $header }}
                     </div>
                 </header>
@@ -92,24 +88,24 @@
             </main>
 
 
-            <div id="rap" class="fixed bottom-11 right-6 z-50">
+            <div id="rap" class="fixed bottom-11 right-6 z-50 ">
                 <div id="speed-dial-button" class="flex flex-col items-center hidden mb-4 space-y-2">
-                    <button type="button" onclick="location.href='{{route('supports.create')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 shadow-sm dark:hover:text-white dark:text-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
+                    <button type="button" onclick="location.href='{{route('supports.create')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 dark:hover:text-white dark:text-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400 shadow-xl">
                         <span class="block mb-px text-xs font-medium">サポート</span>
                     </button>
-                    <button type="button" onclick="location.href='{{route('reports.create')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 shadow-sm dark:hover:text-white dark:text-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
+                    <button type="button" onclick="location.href='{{route('reports.create')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 dark:hover:text-white dark:text-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400 shadow-xl">
                         <span class="block mb-px text-xs font-medium">営業報告</span>
                     </button>
-                    <button type="button" onclick="location.href='{{route('projects.create')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 shadow-sm dark:hover:text-white dark:text-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
+                    <button type="button" onclick="location.href='{{route('projects.create')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 dark:hover:text-white dark:text-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400 shadow-xl">
                         <span class="block mb-px text-xs font-medium">プロジェクト</span>
                     </button>
-                    <button type="button" onclick="location.href='{{route('keepfiles.create')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 shadow-sm dark:hover:text-white dark:text-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
+                    <button type="button" onclick="location.href='{{route('keepfiles.create')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 dark:hover:text-white dark:text-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400 shadow-xl">
                         <span class="block mb-px text-xs font-medium">預託情報</span>
                     </button>
-                    <button type="button" onclick="location.href='{{route('client-person.create')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 shadow-sm dark:hover:text-white dark:text-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
+                    <button type="button" onclick="location.href='{{route('client-contacts.create')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 dark:hover:text-white dark:text-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400 shadow-xl">
                         <span class="block mb-px text-xs font-medium">顧客<br>担当者</span>
                     </button>
-                    <button type="button" onclick="location.href='{{route('dashboard')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 shadow-sm dark:hover:text-white dark:text-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
+                    <button type="button" onclick="location.href='{{route('dashboard')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 dark:hover:text-white dark:text-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400 shadow-xl">
                         <span class="block mb-px text-xs font-medium">Home</span>
                     </button>
                 </div>
@@ -132,13 +128,6 @@
                 </div>
             </footer>
         </div>
-
-        {{-- <style>
-            .rotate-45 {
-            @apply transform rotate-45;
-            transition: transform 0.1s ease; /* ゆっくりと回転するアニメーションを設定 */
-        }
-        </style> --}}
 
 
     <script>
@@ -189,25 +178,26 @@
 
 
 
-        {{-- inputのEnter無効化 --}}
-        <script src="{{ asset('/assets/js/allinputenterdisable.js') }}"></script>
+
         {{-- JQUERY --}}
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-        {{-- カナ補完 --}}
-        <script type="text/javascript" src="{{ asset('/assets/js/jquery.autoKana.js') }}"></script>
-        {{-- 住所補完 --}}
-        <script type="text/javascript" src="{{ asset('/assets/js/jquery.zip2addr.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
         <script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
-        {{-- ショートカット --}}
-        <script type="text/javascript" src="{{ asset('/assets/js/shortcut.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('/assets/js/main.js') }}"></script>
+
         <!-- Select2を読み込む（CDNを使用する場合） -->
         <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/i18n/ja.js"></script>
-
         <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js" integrity="sha512-6lplKUSl86rUVprDIjiW8DuOniNX8UDoRATqZSds/7t6zCQZfaCe3e5zcGaQwxa8Kpn5RTM9Fvl3X2lLV4grPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/libphonenumber-js/1.1.10/libphonenumber-js.min.js"></script>
 
+        {{-- 自作JS --}}
+        <script src="{{ asset('/assets/js/allinputenterdisable.js') }}"></script>
+        <script src="{{ asset('/assets/js/jquery.zip2addr.js') }}"></script>
+        <script src="{{ asset('/assets/js/jquery.autoKana.js') }}"></script>
+        <script src="{{ asset('/assets/js/shortcut.js') }}"></script>
+        <script src="{{ asset('/assets/js/main.js') }}"></script>
+
+        @stack('scripts')
     </body>
 </html>
 

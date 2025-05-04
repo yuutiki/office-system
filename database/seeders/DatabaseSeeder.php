@@ -57,5 +57,6 @@ class DatabaseSeeder extends Seeder
         $this->call(T_ClientSeeder::class);
         $this->call(T_ProjectSeeder::class);
         $this->call(T_KeepfileSeeder::class);
+        $this->call(ClientContactCheckboxOptionsSeeder::class);
     }
 }

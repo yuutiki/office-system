@@ -12,7 +12,6 @@ const ClientSearchModal = {
     // スタイル定義を集約し、再利用性を向上
     CLASSES: {
         ROW: [
-            'dark:border-gray-600',
             'hover:bg-blue-400',
             'focus:bg-blue-400',
             'focus:outline-none',
@@ -21,7 +20,8 @@ const ClientSearchModal = {
             'text-gray-900',
             'border-b-white',
             'cursor-pointer',
-            'border',
+            'outline-gray-900',
+            'outline-4',
             'whitespace-nowrap',
         ].join(' '),
         CELL: 'py-2 px-5',

@@ -42,13 +42,13 @@ class CorporationController extends Controller
 
         $visibleColumns = $userSettings ? $userSettings->visible_columns : array_keys($allColumns);
 
-        $permissions = [
-            'can_create' => Gate::allows('storeUpdate_corporations'),
-            'can_edit' => Gate::allows('storeUpdate_corporations'),
-            'can_delete' => Gate::allows('delete_corporations'),
-            'can_download' => Gate::allows('download_corporations'),
-            'can_admin' => Gate::allows('admin_corporations'),
-        ];
+        // $permissions = [
+        //     'can_create' => Gate::allows('storeUpdate_corporations'),
+        //     'can_edit' => Gate::allows('storeUpdate_corporations'),
+        //     'can_delete' => Gate::allows('delete_corporations'),
+        //     'can_download' => Gate::allows('download_corporations'),
+        //     'can_admin' => Gate::allows('admin_corporations'),
+        // ];
         // １ページごとの表示件数
         $perPage = config('constants.perPage');
 
@@ -91,7 +91,7 @@ class CorporationController extends Controller
         // 検索結果の件数を取得
         $count = $corporations->total();
 
-        return view('corporations.index', compact('searchParams', 'allColumns', 'visibleColumns', 'corporations', 'count' ,'filters', 'CorporationNum', 'CorporationName', 'invoiceNum', 'tradeStatusIds', 'taxStatusIds', 'permissions'));
+        return view('corporations.index', compact('searchParams', 'allColumns', 'visibleColumns', 'corporations', 'count' ,'filters', 'CorporationNum', 'CorporationName', 'invoiceNum', 'tradeStatusIds', 'taxStatusIds',));
     }
 
     public function create(Request $request)
@@ -136,6 +136,15 @@ class CorporationController extends Controller
             $data['is_active_invoice'] = false;
             $data['invoice_at'] = null;
         }
+
+        // リクエスト全体から与信情報以外を抽出
+        $data = $request->except([
+            'credit_limit',
+            'credit_rate',
+            'credit_rater',
+            'credit_reason',
+            '_token',
+        ]);
 
         try {
             $corporation = DB::transaction(function () use ($data, $request) {

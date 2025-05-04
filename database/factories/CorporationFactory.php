@@ -14,7 +14,8 @@ class CorporationFactory extends Factory
     public function definition()
     {
         return [
-            'corporation_num' => $this->faker->unique()->numberBetween(100000, 999999),
+            // 'corporation_num' => $this->faker->unique()->numberBetween(100000, 999999),
+            'corporation_num' => fake()->unique()->numerify('#####'), // ← ユニークにする
             'corporation_name' => '学校法人 ' . $this->faker->company,
             'corporation_kana_name' => 'ガッコウホウジン ' . $this->faker->kanaName,
             'corporation_short_name' => $this->faker->company,

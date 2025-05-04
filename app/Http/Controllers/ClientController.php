@@ -26,32 +26,22 @@ use Goodby\CSV\Import\Standard\Lexer;
 use Goodby\CSV\Import\Standard\Interpreter;
 use Goodby\CSV\Import\Standard\LexerConfig;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\MessageBag;
 use Illuminate\Support\Number;
+use Illuminate\Validation\ValidationException;
 
 class ClientController extends Controller
 {
     public function index(Request $request)
     {
         $perPage = config('constants.perPage');
-        $selectedUserId = $request->selected_user_id;
-
-        // 現在のログインユーザを取得
-                // @var User $loggedInUser
-        $loggedInUser = Auth::user();
-
-        // UserモデルのisSystemAdmin()メソッドを呼び出す
-        if ($loggedInUser && $loggedInUser->role ==  config('sytemadmin.system_admin')) {
-            // システム管理者を含む全てのユーザーを取得
-            $salesUsers = User::all();
-        } else {
-            // システム管理者を除くユーザーを取得
-            $salesUsers = User::where('role', '!=', config('sytemadmin.system_admin'))->get();
-        }
 
         $affiliation2s = Affiliation2::all();
         $tradeStatuses = TradeStatus::all();
         $clientTypes = ClientType::all();
         $installationTypes = InstallationType::all();
+
+        $selectedUserId = $request->selected_user_id;
 
         // ログインユーザーの所属を取得
         $userAffiliation2 = auth()->user()->affiliation2_id;
@@ -85,50 +75,13 @@ class ClientController extends Controller
         }
         if (!empty($clientName)) {
             // Clientモデルからclient_nameをもとにIDを取得
-            $clientsQuery = Client::where('client_name', 'like', '%' . $clientName . '%');
+            $clientsQuery->where('client_name', 'like', '%' . $clientName . '%');
         }
-        // if (!empty($clientName)) {
-        //     // Clientモデルからclient_nameをもとにIDを取得
-        //     $clientIds = Client::where('client_name', 'like', '%' . $clientName . '%')->pluck('id')->toArray();
-        
-        //     // 取得したIDを利用してサポート検索クエリに追加条件を設定
-        //     if (!empty($clientIds)) {
-        //         $clientsQuery->whereIn('id', $clientIds);
-        //     }
-        // }
-
-
-
-
-        // 初期表示で絞る
-        // if (empty($salesUserId)) {
-        //     $clientsQuery->where('user_id','=', Auth::id());
-        // }
-
-        // // プルダウンが変更された場合の処理
-        // if (request()->has('selected_affiliation2')) {
-        //     $selectedAffiliation2 = request('selected_affiliation2');
-
-        //     // プルダウンが「事業部全て」以外の場合、検索結果を絞る
-        //     if ($selectedAffiliation2 != 0) {
-        //         $clientsQuery->where('affiliation2_id', $selectedAffiliation2);
-        //     }  // 「事業部全て」の場合は何もしない（絞り込み解除）
-
-        //     // 上記の条件で検索結果を取得
-        //     $clients = $clientsQuery->get();
-            
-        // } else {
-        //     // 初期表示の場合、ユーザーの所属に基づいて検索結果を絞る
-        //     $clientsQuery->where('affiliation2_id', $userAffiliation2)->get();
-        // }
-        
-
-
 
         $clients = $clientsQuery->paginate($perPage);
         $count = $clients->total();
 
-        return view('clients.index',compact('clients','count','salesUsers', 'affiliation2s', 'installationTypes', 'tradeStatuses', 'clientTypes', 'selectedTradeStatuses','selectedClientTypes','selectedInstallationTypes','salesUserId', 'affiliation2Id', 'clientName', 'selectedAffiliation2', 'selectedUserId'));
+        return view('clients.index',compact('clients','count', 'affiliation2s', 'installationTypes', 'tradeStatuses', 'clientTypes', 'selectedTradeStatuses','selectedClientTypes','selectedInstallationTypes','salesUserId', 'affiliation2Id', 'clientName', 'selectedAffiliation2', 'selectedUserId'));
     }
 
     public function create()
@@ -141,20 +94,15 @@ class ClientController extends Controller
         $prefectures = Prefecture::all(); //都道府県
         $distributionTypes = DistributionType::all();
 
-
         return view('clients.create',compact('affiliation2s','users','tradeStatuses','clientTypes','installationTypes','prefectures','distributionTypes'));
     }
 
     public function store(ClientStoreRequest $request)
     {
-        ////以下にFormRequestのバリデーションを通過した場合の処理を記述////
-
         $inputPost = $request->head_post_code;
         // $formattedPost = Client::formatPostCode($inputPost);
         $formattedPost = PostCodeUtils::formatPostCode($inputPost);
 
-
-        
 
         // フォームからの値を変数に格納
         $corporationNum = $request->input('corporation_num');
@@ -163,7 +111,6 @@ class ClientController extends Controller
         $prefix_code = $getaffiliation2->affiliation2_prefix;
 
         $clientNumber = Client::generateClientNumber($corporationNum, $prefix_code);
-
 
         // corporation_numからcorporation_idを取得する
         $corporation = Corporation::where('corporation_num', $corporationNum)->first();
@@ -181,11 +128,11 @@ class ClientController extends Controller
         $client->affiliation2_id = $affiliation2Id;
         $client->client_name = $request->client_name;
         $client->client_kana_name = $request->client_kana_name;
-        $client->head_post_code = $formattedPost; // 変換後の郵便番号をセット
-        $client->head_prefecture = $request->head_prefecture;
-        $client->head_address1 = $request->head_addre1;
-        $client->head_tel = $request->head_tel;
-        $client->head_fax = $request->head_fax;
+        $client->post_code = $formattedPost; // 変換後の郵便番号をセット
+        $client->prefecture_id = $request->prefecture_id;
+        $client->address_1 = $request->address_1;
+        $client->tel = $request->tel;
+        $client->fax = $request->fax;
         $client->students = $request->students;
         $client->distribution = $request->distribution;
         $client->client_type_id = $request->client_type_id;
@@ -223,7 +170,7 @@ class ClientController extends Controller
         $distributionTypes = DistributionType::all();
 
         $clientProducts = ClientProduct::where('client_id',$id)->orderBy('product_id','asc')->get();
-        $reports = Report::where('client_id',$id)->get();
+        $reports = Report::with('reportType', 'reporter')->where('client_id',$id)->get();
         $supports = Support::with(['client', 'user', 'productSeries', 'productVersion', 'productCategory', 'supportType', 'supportTime'])->orderBy('received_at', 'desc')->where('client_id',$id)->paginate(25);
         // client_numとclient_nameをセッションに保存
         Session::put('selected_client_num', $client->client_num);
@@ -238,35 +185,38 @@ class ClientController extends Controller
 
     public function update(ClientStoreRequest $request, string $id)
     {
+        $client = Client::findOrFail($id);
 
-        $client = Client::find($id);
+        // 楽観ロックチェック
+        if ($client->updated_at->toISOString() !== $request->input('updated_at')) {
+            $errors = new MessageBag([
+                'updated_at' => '他のユーザーによって顧客基本情報が更新されています。内容をご確認の上、再度登録ボタンを押してください。',
+            ]);
+            return redirect()->back()
+                ->withInput() // 入力値を保持
+                ->withErrors($errors) // バリデーションエラーとして扱う
+                ->with('error', '他のユーザーによって顧客基本情報が更新されています。');
+        }
 
-        $client->client_num = $request->client_num;
         $client->client_name = $request->client_name;
         $client->client_kana_name = $request->client_kana_name;
-        $client->head_post_code = $request->head_post_code;
-        $client->head_prefecture = $request->head_prefecture_id;
-        $client->head_address1 = $request->head_addre1;
-        $client->head_tel = $request->head_tel;
-        $client->head_fax = $request->head_fax;
+        $client->post_code = $request->head_post_code; //
+        $client->prefecture_id = $request->head_prefecture_id; //
+        $client->address_1 = $request->head_addre1; //
+        $client->tel = $request->head_tel;
+        $client->fax = $request->head_fax;
         $client->students = $request->students;
 
-        $client->distribution = $request->distribution_type_id;
-        $client->affiliation2_id = $request->affiliation2;
+        $client->distribution = $request->distribution_type_id; //
+        $client->affiliation2_id = $request->affiliation2; //
         $client->client_type_id = $request->client_type_id;
         $client->installation_type_id = $request->installation_type_id;
         $client->trade_status_id = $request->trade_status_id;
         $client->user_id = $request->user_id;
         $client->dealer_id = $request->dealer_id; // Vendorとリレーションしている
         $client->memo = $request->memo;
-        // $client->is_enduser = $request->has('is_enduser') ? 1 : 0;
-        // $client->is_supplier = $request->has('is_supplier') ? 1 : 0;
-        // $client->is_dealer = $request->has('is_dealer') ? 1 : 0;
-        // $client->is_lease = $request->has('is_lease') ? 1 : 0;
-        // $client->is_other_partner = $request->has('is_other_partner') ? 1 : 0;
         $client->save();
 
-        // return redirect()->route('clients.edit', $id)->with('success', '正常に変更しました');
         return redirect()->back()->with('success', '正常に変更しました');
     }
 
@@ -276,6 +226,35 @@ class ClientController extends Controller
         $client->delete();
 
         return redirect()->route('clients.index')->with('success', '正常に削除しました');
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $selectedIds = $request->input('selectedIds', []);
+    
+        if (empty($selectedIds)) {
+            return redirect()->back()->with('error', '削除するレコードが選択されていません');
+        }
+    
+        // 削除できない企業のIDを取得（営業報告データが存在する企業）
+        $clientsWithReports = Client::whereIn('id', $selectedIds)
+            ->whereHas('reports')
+            ->pluck('id')
+            ->toArray();
+    
+        // 削除可能な企業のIDを取得（営業報告データがない企業）
+        $clientsToDelete = array_diff($selectedIds, $clientsWithReports);
+    
+        if (!empty($clientsToDelete)) {
+            Client::whereIn('id', $clientsToDelete)->delete();
+        }
+    
+        // メッセージを設定
+        if (!empty($clientsWithReports)) {
+            return redirect()->back()->with('error', '一部の顧客は営業報告データが存在するため、削除できませんでした');
+        }
+    
+        return redirect()->back()->with('success', '選択された顧客を削除しました');
     }
 
     public function getClientInfo($clientId)
@@ -435,12 +414,12 @@ class ClientController extends Controller
             $client->user_id = $row[7];
             
 
-            $client->head_post_code = $row[8];
-            $client->head_prefecture = $row[9];
-            $client->head_address1 = $row[10];
+            $client->post_code = $row[8];
+            $client->prefecture_id = $row[9];
+            $client->address1 = $row[10];
 
-            $client->head_tel = $row[11];
-            $client->head_fax = $row[12];
+            $client->tel = $row[11];
+            $client->fax = $row[12];
             $client->students = $row[13];
 
             $client->is_enduser = $row[14];

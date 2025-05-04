@@ -10,9 +10,9 @@ return new class extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
-            $table->string('client_num',12)->unique()->comment('顧客番号');
-            $table->string('client_name',255)->comment('顧客名称');
-            $table->string('client_kana_name',255)->comment('顧客カナ名称');
+            $table->string('client_num', 12)->unique()->comment('顧客番号');
+            $table->string('client_name')->comment('顧客名称');
+            $table->string('client_kana_name')->comment('顧客カナ名称');
             $table->foreignId('affiliation1_id')->nullable(true)->comment('所属1ID');//Affiliation1テーブル参照
             $table->foreignId('affiliation2_id')->nullable(true)->comment('所属2ID');//Affiliation2テーブル参照
             $table->foreignId('affiliation3_id')->nullable(true)->comment('所属3ID');//Affiliation3テーブル参照
@@ -29,13 +29,13 @@ return new class extends Migration
             $table->foreignId('trade_status_id')->comment('取引状態ID');// Trade_statusesテーブル参照
             $table->foreignUlid('corporation_id')->comment('法人ID'); // Corporationsテーブル参照
 
-            $table->string('head_post_code',80)->nullable(true)->comment('本店郵便番号');
-            $table->string('head_prefecture',80)->nullable(true)->comment('本店都道府県');
-            $table->string('head_address1',80)->nullable(true)->comment('本店住所1');
-            $table->string('head_tel',80)->nullable(true)->comment('本店TEL');
-            $table->string('head_fax',80)->nullable(true)->comment('本店FAX');
+            $table->string('post_code', 8)->nullable(true)->comment('本店郵便番号');
+            $table->string('prefecture_id')->nullable(true)->comment('本店都道府県');
+            $table->string('address_1', 300)->nullable(true)->comment('本店住所1');
+            $table->string('tel', 80)->nullable(true)->comment('本店TEL');
+            $table->string('fax', 80)->nullable(true)->comment('本店FAX');
             $table->foreignId('students')->length(5)->nullable(true)->comment('学生数');
-            $table->text('memo',1000)->nullable(true)->comment('備考');
+            $table->text('memo')->nullable(true)->comment('備考');
 
             $table->string('distribution',100)->nullable(true)->default('直販')->comment('商流');
             $table->foreignId('dealer_id')->nullable(true)->comment('ディーラID');// Vendorテーブルから取得

@@ -25,9 +25,9 @@ class Affiliation1Seeder extends Seeder
         Affiliation1::create([
             'affiliation1_code' => '10',
             'affiliation1_prefix' => 'S',
-            'affiliation1_name' => '株式会社システムディ',
-            'affiliation1_kana_name' => 'カブシキガイシャシステムディ',
-            'affiliation1_eng_name' => 'SystemD,inc',
+            'affiliation1_name' => '株式会社オーフィス',
+            'affiliation1_kana_name' => 'カブシキガイシャオーフィス',
+            'affiliation1_eng_name' => 'Orpfice,inc',
             'created_by' => 1,
             'updated_by' => 1,
             'created_at' => now(),

@@ -52,7 +52,7 @@ class ProjectController extends Controller
         
         //上記で$filters変数に格納した検索条件をModelに渡し、検索処理を行う。結果を$corporationsに詰める
         $projectsQuery = Project::filter($filters) 
-            ->with('salesStage', 'accountingType', 'accountUser', 'projectRevenues',)
+            ->with('salesStage', 'accountingType', 'accountUser', 'projectRevenues', 'client', 'distributionType', 'projectType')
             ->sortable()
             ->orderBy('project_num','asc');
 

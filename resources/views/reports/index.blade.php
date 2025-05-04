@@ -10,12 +10,7 @@
             <x-message :message="session('message')" />
             <div class="flex flex-col flex-shrink-0 space-y-1 w-auto md:flex-row md:space-y-0 md:space-x-3 items-center">
                 @can('storeUpdate_corporations')
-                    <button type="button" onclick="location.href='{{ route('reports.create') }}'" class="flex items-center pl-2 sm:px-4 py-2 text-sm font-medium text-white rounded bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                        <svg class="h-5 w-5 sm:h-3.5 sm:w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                        </svg>
-                        <div class="hidden sm:block">{{ __('Add') }}</div>
-                    </button>
+                    <x-buttons.add-button :route="route('reports.create')" gate="storeUpdate_reports" :text="__('Add')" />
                 @else
                     <button type="button" onclick="location.href='{{ route('reports.create') }}'" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-s rounded-e bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-blue-800 cursor-not-allowed" disabled>
                         <svg class="h-5 w-5 sm:h-3.5 sm:w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -25,11 +20,11 @@
                     </button>
                 @endcan
                 <div class="flex items-center w-full space-x-3 hidden md:w-auto md:inline-block">
-                    <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded md:w-auto hover:bg-gray-100 hover:text-blue-700 focus:z-10 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" type="button">
-                        <svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                    <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full p-2.5 text-sm font-medium hover:bg-[#313a48] bg-[#364050] text-gray-200 rounded md:w-auto focus:z-10 dark:bg-blue-600 dark:text-gray-100 dark:border-gray-600 dark:hover:text-white dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" type="button">
+                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                            <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
                         </svg>
-                        {{ __('Actions') }}
+                        {{-- {{ __('Actions') }} --}}
                     </button>
                     <div id="actionsDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-600 dark:divide-gray-600">
                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
@@ -84,20 +79,20 @@
 
     <div class="relative bg-white dark:bg-gray-800 rounded-t-md md:w-auto md:ml-14 md:mr-2 m-auto shadow-md  dark:text-gray-900 mt-4">
         <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
-            <div class="w-full md:w-3/4">
+            <div class="w-full">
                 <form method="GET" action="{{ route('reports.index') }}" id="search_form" class="flex items-center">
                     @csrf
-                    <div class="flex flex-col md:flex-row w-full">
-                        <label for="simple-search" class="sr-only">Search</label>
-                        <div class="relative w-full">
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                                </svg>
+                    <div class="flex flex-col lg:flex-row w-full">
+
+                        <div class="relative w-full mt-2 lg:mr-2 lg:mt-0">
+                            <div class="absolute inset-y-0 flex items-center pl-3">
+                                <x-icon name="ui/search" class="flex-shrink-0 w-5 h-5 text-gray-500 dark:text-gray-400 pointer-events-none" />
                             </div>
-                            <input type="search" id="keywords" name="keywords" value="" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="キーワード">
+                            <input type="search" id="keywords" name="keywords" value="@if(isset($keywords)){{ $keywords }}@endif" class="input-search" placeholder="キーワード">
                         </div>
-                        {{-- <div class="relative w-full mt-2 md:ml-2 md:mt-0">
+
+
+                        {{-- <div class="relative w-full mt-2 lg:ml-2 lg:mt-0">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
@@ -105,7 +100,7 @@
                             </div>
                             <input type="search" id="client_name" name="client_name" value="@if (isset($clientName)){{$clientName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="顧客名称（カナ）">
                         </div>
-                        <div class="relative w-full mt-2 md:ml-2 md:mt-0">
+                        <div class="relative w-full mt-2 lg:ml-2 lg:mt-0">
                             <select name="selected_department" id="selected_department" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option value="0"  @if($selectedDepartment == 0) selected @endif>管轄事業部</option>
                                 @foreach ($departments as $department)
@@ -115,14 +110,16 @@
                                 @endforeach
                             </select>
                         </div> --}}
+
+
                         <input type="hidden" id="selected-user-id" name="selected_user_id" value="{{ $selectedUserId }}">
-                        <div id="user-dropdown" class="relative w-full md:ml-2 md:mt-0">
-                            <button type="button" id="dropdown-toggle" class="w-full px-4 py-1.5 my-2 md:my-0 text-left bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400">
+                        <div id="user-dropdown" class="relative w-full lg:mr-2 lg:mt-0">
+                            <button type="button" id="dropdown-toggle" class="w-full px-4 py-1.5 my-2 lg:my-0 text-left bg-gray-100  dark:bg-gray-700 border border-gray-400 dark:border-gray-600 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400">
                                 <span id="selected-user-display" class="text-gray-800 dark:text-white">
                                     @if($selectedUserId)
-                                        {{ $user->find($selectedUserId)->user_name ?? 'ユーザーを選択' }}
+                                        {{ $user->find($selectedUserId)->user_name ?? '営業担当を選択' }}
                                     @else
-                                        ユーザーを選択
+                                        営業担当を選択
                                     @endif
                                 </span>
                                 <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
@@ -133,7 +130,7 @@
                             </button>
                             <div id="dropdown-menu" class="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg hidden">
                                 <div class="p-2">
-                                    <input id="user-search" type="text" name="user_id" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-800 dark:text-white" placeholder="ユーザーを検索...">
+                                    <input id="user-search" type="text" name="user_id" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-800 dark:text-white" placeholder="営業担当を検索...">
                                 </div>
                                 <ul id="user-list" class="max-h-60 overflow-auto">
                                     <!-- ユーザーリストはJavaScriptで動的に追加されます -->
@@ -142,12 +139,17 @@
                             </div>
                         </div>
 
+
+
+
+
+
                         <div class="flex mt-2 md:mt-0">
-                            <div class="flex flex-col justify-end  w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
-                                <button type="button" onclick="showModal()" class="flex w-auto items-center justify-center md:ms-2 px-4 py-2 text-sm font-medium text-white rounded-sm bg-indigo-700 hover:bg-indigo-800 focus:ring-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                            <div class="flex flex-col justify-end  w-full space-y-2 lg:w-auto lg:flex-row lg:space-y-0 lg:items-center lg:space-x-3">
+                                <button type="button" onclick="showModal()" class="flex w-auto items-center justify-center lg:ms-2 px-4 py-2 text-sm font-medium text-white rounded-sm bg-indigo-700 hover:bg-indigo-800 focus:ring-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
                                     <div class="whitespace-nowrap">{{ __('詳細条件') }}</div>
                                 </button>
-                                <div class="flex mt-4 md:mt-0">
+                                <div class="flex mt-4 lg:mt-0">
                                     <!-- 検索ボタン -->
                                     <x-buttons.search-button />
                                     <!-- リセットボタン -->
@@ -248,16 +250,9 @@
     <div class="md:w-auto md:ml-14 md:mr-2 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700  dark:text-gray-900 bg-gray-300">
 
         @if($reports->isEmpty())
-            @if(request()->input('selected_user_id'))
+            @if (collect(request()->except('page'))->filter()->isNotEmpty())
                 {{-- 検索結果なしの表示 --}}
                 <div class="flex flex-col items-center justify-center py-10">
-                    <svg width="150" height="150" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="75" cy="75" r="50" fill="currentColor" opacity="0.1"/>
-                        <circle cx="60" cy="60" r="30" stroke="currentColor" stroke-width="4" fill="none"/>
-                        <line x1="85" y1="85" x2="110" y2="110" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-                        <text x="60" y="62" font-size="24" fill="currentColor" text-anchor="middle" dominant-baseline="middle">?</text>
-                        <text x="75" y="140" font-size="12" fill="currentColor" text-anchor="middle">No Results</text>
-                      </svg>
                     <p class="text-gray-500 dark:text-white text-lg mt-4">検索条件に一致するデータが見つかりませんでした</p>
                     <a href="{{ route('reports.index') }}" class="mt-4 px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">
                         検索条件をリセット
@@ -266,16 +261,6 @@
             @else
                 {{-- 初期データなしの表示 --}}
                 <div class="flex flex-col items-center justify-center py-10">
-                    <svg width="150" height="150" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="75" cy="75" r="50" fill="currentColor" opacity="0.1"/>
-                        <rect x="40" y="35" width="70" height="80" rx="10" ry="10" stroke="currentColor" stroke-width="4" fill="none"/>
-                        <line x1="50" y1="55" x2="90" y2="55" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                        <line x1="50" y1="75" x2="90" y2="75" stroke="currentColor" stroke-width="3" stroke-dasharray="5 5"/>
-                        <line x1="50" y1="95" x2="90" y2="95" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                        <text x="75" y="140" font-size="12" fill="currentColor" text-anchor="middle">Empty List</text>
-                    </svg>
-                      
-                      
                     <p class="text-gray-500 dark:text-white text-lg mt-4">まだデータがありません</p>
                     <a href="{{ route('reports.create') }}" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
                         新規追加
@@ -451,69 +436,6 @@
             </div> 
         @endif
     </div>
-
-<style>
-    /* ドロップダウンの基本スタイル */
-    #dropdown-menu {
-        background: white;
-    }
-
-    /* リスト項目の基本スタイル */
-    #user-list li {
-        padding: 0.5rem 1rem;
-        cursor: pointer;
-        color: #1f2937; /* デフォルトの文字色 */
-    }
-
-    /* ホバー時のスタイル */
-    #user-list li:hover {
-        background-color: #3b82f6; /* 明るい青 */
-        color: white;
-    }
-
-    /* フォーカス時のスタイル */
-    #user-list li:focus,
-    #user-list li:focus-visible {
-        background-color: #3b82f6;
-        color: white;
-        outline: 2px solid #2563eb;
-        outline-offset: -2px;
-    }
-
-    /* 選択された項目のスタイル */
-    #user-list li.selected {
-        background-color: #3b82f6;
-        color: white;
-    }
-
-    /* ダークモード対応 */
-    @media (prefers-color-scheme: dark) {
-        #dropdown-menu {
-            background: #1f2937;
-        }
-
-        #user-list li {
-            color: #e5e7eb; /* ダークモードでのデフォルト文字色 */
-        }
-
-        #user-list li:hover {
-            background-color: #4b5563;
-            color: white;
-        }
-
-        #user-list li:focus,
-        #user-list li:focus-visible {
-            background-color: #4b5563;
-            color: white;
-            outline-color: #60a5fa;
-        }
-
-        #user-list li.selected {
-            background-color: #4b5563;
-            color: white;
-        }
-    }
-</style>
 
 <script src="{{ asset('assets/js/user-dropdown.js') }}"></script>
 

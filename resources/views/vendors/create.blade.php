@@ -144,11 +144,11 @@
                             </div>
                             <div>
                                 <label for="head_tel" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表TEL（-）</label>
-                                <input type="text" name="head_tel" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_tel" value="{{old('head_tel')}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" placeholder="">
+                                <input type="text" name="head_tel" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_tel" value="{{old('head_tel')}}" onchange="validateAndFormat('head_tel')" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" placeholder="">
                             </div>
                             <div>
                                 <label for="head_fax" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表FAX（-）</label>
-                                <input type="tel" name="head_fax" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_fax" value="{{old('head_fax')}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded"  placeholder="">
+                                <input type="tel" name="head_fax" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_fax" value="{{old('head_fax')}}" onchange="validateAndFormat('head_fax')" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded"  placeholder="">
                             </div>
                         </div>
     

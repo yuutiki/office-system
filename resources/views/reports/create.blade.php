@@ -8,9 +8,11 @@
                 <x-message :message="session('message')" />
                 <form method="post" action="{{ route('reports.store') }}" enctype="multipart/form-data" id="reoportForm" class="flex">
                     @csrf
-                    <x-button-save form-id="reoportForm" id="saveButton" onkeydown="stopTab(event)">
-                        {{ __('登録') }}
-                    </x-button-save>
+                    @can('storeUpdate_reports')
+                        <x-buttons.save-button form-id="reoportForm" id="saveButton" class="">
+                            {{ __("save") }}
+                        </x-buttons.save-button>
+                    @endcan
 
                     <x-button-save form-id="reoportForm" id="saveButton" class="ml-2 dark:bg-orange-400" onclick="document.getElementById('isDraft').value = '1'; document.getElementById('reportForm').submit();">
                         {{ __('下書き') }}
@@ -135,7 +137,6 @@
                 </div>
             </div>
             
-
             <div>
                 <div class="w-full flex flex-col">
                     <label for="report_title" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">報告タイトル<span class="text-red-500 ml-2">*</span></label>
@@ -170,13 +171,18 @@
                 @enderror
             </div>
 
-
-
             <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                <!-- 顧客検索ボタン(画面：小) -->
+                <button type="button" onclick="ClientSearchModal.show('projectSearchModal1')" class="md:ml-1 md:mt-1 mt-1 mb-4 w-full md:w-auto whitespace-nowrap sm:hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    プロジェクト検索
+                </button>
+
+                <input type="text" form="reoportForm" name="project_id" id="project_id" value="{{ old('project_id') }}" class="hidden">
+
                 <div class="flex md:mt-4">
                     <div class="w-full flex flex-col">
                         <label for="project_num" class="text-sm dark:text-gray-100 text-gray-900 leading-none">プロジェクトNo.</label>
-                        <input type="text" form="reoportForm" name="project_num" id="project_num" value="{{ old('project_num', $clientNum) }}" class="input-readonly" placeholder="" readonly tabindex="-1">
+                        <input type="text" form="reoportForm" name="project_num" id="project_num" value="{{ old('project_num') }}" class="input-readonly" placeholder="" readonly tabindex="-1">
                     </div>
                     <!-- 顧客検索ボタン(画面中～) -->
                     <button type="button" onclick="ProjectSearchModal.show('projectSearchModal1')" data-form="reoportForm" class="p-2.5 text-sm font-medium h-[35px] text-white mt-[18px] ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 zip2addr-trigger hidden sm:block">
@@ -186,12 +192,14 @@
                     </button>
                 </div>
                 <div class="w-full flex flex-col md:mt-4">
+                    <label for="project_client_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none">顧客名称</label>
+                    <input type="text" form="reoportForm" form="reoportForm" name="project_client_name" id="project_client_name" value="{{ old('project_client_name') }}" class="input-readonly" placeholder="" readonly tabindex="-1">
+                </div>
+                <div class="w-full flex flex-col md:mt-4">
                     <label for="project_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none">プロジェクト名称</label>
-                    <input type="text" form="reoportForm" form="reoportForm" name="project_name" id="project_name" value="{{ old('project_name', $clientName) }}" class="input-readonly" placeholder="" readonly tabindex="-1">
+                    <input type="text" form="reoportForm" form="reoportForm" name="project_name" id="project_name" value="{{ old('project_name') }}" class="input-readonly" placeholder="" readonly tabindex="-1">
                 </div>
             </div>
-
-
 
             <div class="mt-8">
                 <span class="dark:text-white">報告先設定</span>
@@ -288,223 +296,11 @@
     />
 
 
-    <script>
-        // プロジェクト選択時の処理を定義
-        function handleProjectSelect(project) {
-            // 選択されたプロジェクトの情報を各フィールドに設定
-            document.getElementById('project_num').value = project.project_num;
-            document.getElementById('project_name').value = project.project_name;
-            // document.getElementById('client_name').value = project.client.client_name;
-            // document.getElementById('project_manager').value = project.user.user_name;
-        }
-        
-        // モーダルのコールバック関数を設定
-        window.projectSearchModal1_onSelect = handleProjectSelect;
-    </script>
-
-    {{-- プロジェクト検索モーダルのJavaScript --}}
-    <script src="{{ asset('/assets/js/modal/project-search-modal.js') }}"></script>
 
 
 
-    {{-- <script>
-        // モーダルを表示するための関数
-        const clientSearchModal = document.getElementById('clientSearchModal');
-        const overlay = document.getElementById('overlay');
-
-        function showModal() {
-            overlay.classList.remove('hidden');
-            document.body.classList.add('overflow-hidden');
-            clientSearchModal.classList.remove('hidden');
-
-            // モーダル内の最初の入力フィールドにフォーカスを設定
-            setTimeout(() => {
-                const firstInput = clientSearchModal.querySelector('input, select, button');
-                if (firstInput) firstInput.focus();
-            }, 100);
-
-            // モーダル内の要素にのみタブ移動を制限
-            clientSearchModal.addEventListener('keydown', trapFocus);
-        }
-
-        // モーダルを非表示にするための関数
-        function hideModal() {
-            overlay.classList.add('hidden');
-            document.body.classList.remove('overflow-hidden');
-            clientSearchModal.classList.add('hidden');
-
-            // イベントリスナーを削除
-            clientSearchModal.removeEventListener('keydown', trapFocus);
-        }
-
-        // モーダル外へのフォーカス移動を防ぐ関数（更新版）
-        function trapFocus(e) {
-            if (e.key === 'Tab') {
-                const focusableElements = clientSearchModal.querySelectorAll('input, select, button, [tabindex]:not([tabindex="-1"])');
-                const firstElement = focusableElements[0];
-                const lastElement = focusableElements[focusableElements.length - 1];
-
-                if (e.shiftKey) {
-                    if (document.activeElement === firstElement) {
-                        e.preventDefault();
-                        lastElement.focus();
-                    }
-                } else {
-                    if (document.activeElement === lastElement) {
-                        e.preventDefault();
-                        firstElement.focus();
-                    }
-                }
-            }
-        }
-
-        // 検索ボタンと結果メッセージの要素を取得
-        const searchButton = document.querySelector('button[onclick="searchClient()"]');
-        const searchResultsArea = document.getElementById('searchResultsContainer').parentElement;
-
-        // 検索結果なしメッセージのHTML
-        const noResultsMessage = document.createElement('div');
-        noResultsMessage.className = 'p-4 text-center dark:text-gray-300 text-gray-700';
-        noResultsMessage.textContent = '検索条件に合致する結果がありません。';
-
-        // 検索ボタンのローディング状態を制御する関数
-        function setLoadingState(isLoading) {
-            if (isLoading) {
-                searchButton.disabled = true;
-                searchButton.innerHTML = `
-                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    検索中...
-                `;
-            } else {
-                searchButton.disabled = false;
-                searchButton.innerHTML = '検索';
-            }
-        }        
 
 
-
-        // 検索ボタンを押した時の処理
-        function searchClient() {
-            const clientName = document.getElementById('clientName').value;
-            const clientNumber = document.getElementById('clientNumber').value;
-            const userId = document.getElementById('selected-user-id').value;
-            const searchResultsContainer = document.getElementById('searchResultsContainer');
-            const searchResultCount = document.getElementById('searchResultCount');
-
-            // ローディング状態を開始
-            setLoadingState(true);
-
-            fetch('/client/search', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({ clientName, clientNumber, userId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                searchResultsContainer.innerHTML = '';
-
-                // 検索結果のカウントを表示
-                searchResultCount.textContent = `${data.length}`;
-
-                if (data.length === 0) {
-                    // 検索結果が0件の場合
-                    searchResultsContainer.appendChild(noResultsMessage.cloneNode(true));
-                } else {
-                    // 検索結果がある場合
-                    data.forEach((result, index) => {
-                        const resultElement = document.createElement('tr');
-                        resultElement.classList.add(
-                            'dark:border-gray-600',
-                            'hover:bg-blue-400',
-                            'focus:bg-blue-400',  // フォーカス時の背景色
-                            'focus:outline-none', // デフォルトのoutlineを消す
-                            'focus:ring-blue-500', // リングの色
-                            'dark:text-white',
-                            'text-gray-900',
-                            'border-b-white',
-                            'cursor-pointer',
-                            'border'
-                        );
-                        resultElement.setAttribute('tabindex', '0');
-                        resultElement.setAttribute('role', 'button');
-                        resultElement.setAttribute('aria-label', `${result.client_name} を選択`);
-                        resultElement.innerHTML = `
-                            <td class="py-2 px-5 w-96">${result.client_name}</td>
-                            <td class="py-2 px-5 ml-2 whitespace-nowrap">${result.client_num}</td>
-                            <td class="py-2 px-5 ml-2">${result.affiliation2.affiliation2_name_short}</td>
-                            <td class="py-2 px-5 ml-2">${result.user.user_name}</td>
-                        `;
-                        resultElement.addEventListener('click', () => setCorporation(result.client_name, result.client_num, result.user.user_name));
-                        resultElement.addEventListener('keydown', (e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                                e.preventDefault();
-                                setCorporation(result.client_name, result.client_num, result.user.user_name);
-                            }
-                        });
-                        searchResultsContainer.appendChild(resultElement);
-                    });
-
-                    // 検索結果が表示されたら、最初の結果にフォーカスを移動
-                    if (data.length > 0) {
-                        searchResultsContainer.firstElementChild.focus();
-                    }
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                searchResultsContainer.innerHTML = '';
-                const errorMessage = document.createElement('div');
-                errorMessage.className = 'p-4 text-center text-red-600 dark:text-red-400';
-                errorMessage.textContent = '検索中にエラーが発生しました。';
-                searchResultsContainer.appendChild(errorMessage);
-            })
-            .finally(() => {
-                // ローディング状態を解除
-                setLoadingState(false);
-            });
-        }
-
-        function setCorporation(name, number, salesUser) {
-            document.getElementById('client_num').value = number;
-            document.getElementById('client_name').value = name;
-            document.getElementById('sales_user').value = salesUser;
-
-            hideModal();
-        }
-
-        // モーダル外の要素のtabindexを設定/解除する関数
-        function setOutsideElementsTabIndex(disable) {
-            const outsideElements = document.querySelectorAll('body > *:not(#clientSearchModal)');
-            outsideElements.forEach(element => {
-                if (disable) {
-                    element.setAttribute('tabindex', '-1');
-                } else {
-                    element.removeAttribute('tabindex');
-                }
-            });
-        }
-
-        // ページ読み込み時にイベントリスナーを設定
-        document.addEventListener('DOMContentLoaded', () => {
-            const clientSearchModal = document.getElementById('clientSearchModal');
-            
-            // モーダルが表示されたときの処理
-            clientSearchModal.addEventListener('show', () => {
-                setOutsideElementsTabIndex(true);
-            });
-
-            // モーダルが非表示になったときの処理
-            clientSearchModal.addEventListener('hide', () => {
-                setOutsideElementsTabIndex(false);
-            });
-        });
-    </script> --}}
 
     
 
@@ -673,13 +469,27 @@
 
 
     <script>
+        // プロジェクト選択時の処理を定義
+        function handleProjectSelect(project) {
+            // 選択されたプロジェクトの情報を各フィールドに設定
+            document.getElementById('project_id').value = project.id;
+            document.getElementById('project_num').value = project.project_num;
+            document.getElementById('project_name').value = project.project_name;
+            document.getElementById('project_client_name').value = project.client.client_name;
+            // document.getElementById('project_manager').value = project.user.user_name;
+        }
+        // モーダルのコールバック関数を設定
+        window.projectSearchModal1_onSelect = handleProjectSelect;
+    </script>
+    <script src="{{ asset('/assets/js/modal/project-search-modal.js') }}"></script>
+
+    <script>
         // コールバック関数の定義
         function handleClientSelect(client) {
             document.getElementById('client_num').value = client.client_num;
             document.getElementById('client_name').value = client.client_name;
             document.getElementById('sales_user').value = client.user.user_name;
         }
-
         // モーダルのコールバック関数を設定
         window.clientSearchModal1_onSelect = handleClientSelect;
     </script>
@@ -687,5 +497,4 @@
 
     <script src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
     <script src="{{ asset('/assets/js/stopTab.js') }}"></script>
-
 </x-app-layout>

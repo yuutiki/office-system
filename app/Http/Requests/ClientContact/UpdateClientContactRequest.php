@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\ClientPerson;
+namespace App\Http\Requests\ClientContact;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreClientPersonRequest extends FormRequest
+class UpdateClientContactRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -36,17 +36,13 @@ class StoreClientPersonRequest extends FormRequest
             'int_tel' => 'nullable|string|max:20',
             'phone' => 'nullable|string|regex:/^[0-9-]+$/|max:20',
             'mail' => 'nullable|email|max:255',
-            'head_post_code' => 'nullable|string|regex:/^\d{3}-?\d{4}$/',
-            'head_prefecture' => 'nullable|exists:prefectures,id',
-            'head_addre1' => 'nullable|string|max:255',
-            'person_memo' => 'nullable|string',
+            'post_code' => 'nullable|string|regex:/^\d{3}-?\d{4}$/',
+            'prefecture_id' => 'nullable|exists:prefectures,id',
+            'address_1' => 'nullable|string|max:255',
+            'client_contact_memo' => 'nullable|string',
             'is_retired' => 'boolean',
             'is_billing_receiver' => 'boolean',
             'is_payment_receiver' => 'boolean',
-            'is_support_info_receiver' => 'boolean',
-            'is_closing_info_receiver' => 'boolean',
-            'is_exhibition_info_receiver' => 'boolean',
-            'is_cloud_info_receiver' => 'boolean',
         ];
     }
 

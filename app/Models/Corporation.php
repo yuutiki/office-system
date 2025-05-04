@@ -28,7 +28,7 @@ class Corporation extends Model
         'is_stop_trading',
         'stop_trading_reason',
         'tax_status',
-        'corporation_number',
+        'corporation_tax_num',
         'invoice_num',
         'invoice_at',  
         'is_active_invoice',

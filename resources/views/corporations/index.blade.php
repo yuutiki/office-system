@@ -1,38 +1,27 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between w-full whitespace-nowrap items-center">
-            <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center">
+            <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center py-1">
                 {{ Breadcrumbs::render('corporations', $searchParams) }}
                 <div class="ml-4">
                     {{ $count }}件
                 </div>
-                <div class="text-gray-900 dark:text-white ml-4 text-base hidden md:block">
-                    - 選択中: <span id="selectedCount">0</span> 件
+                <div class="text-gray-900 dark:text-white ml-2 text-sm hidden md:block">
+                    <div>（選択中： <span id="selectedCount">0</span> 件）</div>
                 </div>
             </h2>
             <x-message :message="session('message')" />
-            <div class="flex flex-col flex-shrink-0 space-y-1 w-auto md:flex-row md:space-y-0 md:space-x-3 items-center">
-                @can('storeUpdate_corporations')
-                    <button type="button" onclick="location.href='{{ route('corporations.create') }}'" class="flex items-center pl-2 sm:px-4 py-2 text-sm font-medium text-white rounded bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                        <svg class="h-5 w-5 sm:h-3.5 sm:w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+            <div class="flex flex-shrink-0 w-auto md:flex-row space-y-0 space-x-3 items-center">
+
+                {{-- 新規登録 --}}
+                <x-buttons.add-button :route="route('corporations.create')" gate="storeUpdate_corporations" :text="__('Add')" />
+
+                <div class="flex items-center space-x-3 w-auto hidden md:inline-block">
+                    <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full p-2.5 text-sm font-medium hover:bg-[#313a48] bg-[#364050] text-gray-200 rounded md:w-auto focus:z-10 dark:bg-blue-600 dark:text-gray-100 dark:border-gray-600 dark:hover:text-white dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" type="button">
+                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                            <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
                         </svg>
-                        <div class="hidden sm:block">{{ __('Add') }}</div>
-                    </button>
-                @else
-                    <button type="button" onclick="location.href='{{ route('corporations.create') }}'" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-s rounded-e bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-blue-800 cursor-not-allowed" disabled>
-                        <svg class="h-5 w-5 sm:h-3.5 sm:w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                        </svg>
-                        <div class="hidden sm:block">{{ __('Add') }}</div>
-                    </button>
-                @endcan
-                <div class="flex items-center w-full space-x-3 hidden md:w-auto md:inline-block">
-                    <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded md:w-auto hover:bg-gray-100 hover:text-blue-700 focus:z-10 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" type="button">
-                        <svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                        </svg>
-                        {{ __('Actions') }}
+                        {{-- {{ __('Actions') }} --}}
                     </button>
                     <div id="actionsDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-600 dark:divide-gray-600">
                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
@@ -49,9 +38,7 @@
                                 @else
                                     <button type="button" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
                                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                            <svg class="h-6 w-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                                <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
-                                            </svg>
+                                            <x-icon name="actions/lock" class="w-6 h-6 text-gray-800 dark:text-white"></x-icon>
                                         </div>
                                         CSVアップロード
                                     </button>
@@ -61,18 +48,14 @@
                                 @can('download_corporations')
                                     <button type="button" onclick="location.href='{{ route('corporations.downloadCsv', $filters ?? []) }}'" class="relative w-full items-center py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
                                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2m-1-5-4 5-4-5m9 8h0"/>
-                                            </svg>
+                                            <x-icon name="actions/download" class="w-6 h-6 text-gray-800 dark:text-white"></x-icon>
                                         </div>
                                         <div class="">CSVダウンロード</div>
                                     </button>
                                 @else
                                     <button type="button" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
                                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                            <svg class="h-6 w-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                                <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
-                                            </svg>
+                                            <x-icon name="actions/lock" class="w-6 h-6 text-gray-800 dark:text-white"></x-icon>
                                         </div>
                                         <div>CSVダウンロード</div>
                                     </button>
@@ -81,7 +64,7 @@
                             <li>
                                 <button type="button" data-modal-target="select-modal" data-modal-toggle="select-modal" class="relative w-full flex items-center py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
                                     <div class="flex items-center min-w-6">
-                                        <x-icon name="icons/nav-setting" class="flex-shrink-0 w-6 h-6 text-gray-600 dark:text-white" />
+                                        <x-icon name="icons/nav-setting" class="flex-shrink-0 w-6 h-6 text-gray-900 dark:text-white" />
                                     </div>
                                     <div class="ml-2">一覧表示設定</div>
                                 </button>
@@ -93,29 +76,21 @@
 
                             <li>
                                 @can('admin_corporations')
-                                    {{-- <form id="bulkDeleteForm" action="{{ route('corporations.bulkDelete') }}" method="POST">
-                                        @csrf --}}
-                                        <button type="button" data-modal-target="deleteModal-corporations" data-modal-show="deleteModal-corporations" class="relative w-full flex items-center py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
-                                            <div class="flex items-center min-w-6">
-                                                <svg aria-hidden="true" class="w-5 h-5 mx-0.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                                                </svg>
-                                            </div>
-                                            <div class="ml-2">データ削除</div>
-                                        </button>
-                                    {{-- </form> --}}
-                                @else
-                                    <button type="button" class="relative w-full flex items-center py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
+                                    <button type="button" data-modal-target="deleteModal-corporations" data-modal-show="deleteModal-corporations" class="relative w-full flex items-center py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
                                         <div class="flex items-center min-w-6">
-                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                                <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
-                                            </svg>
+                                            <x-icon name="actions/delete" class="flex-shrink-0" />
+                                        </div>
+                                        <div class="ml-2">データ削除</div>
+                                    </button>
+                                @else
+                                    <button type="button" class="relative w-full flex items-center py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
+                                        <div class="flex items-center min-w-6">
+                                            <x-icon name="actions/lock" class="w-6 h-6 text-gray-800 dark:text-white"></x-icon>
                                         </div>
                                         <div class="ml-2">データ削除</div>
                                     </button>
                                 @endcan
                             </li>
-
                         </ul>
                     </div>
                 </div>
@@ -130,30 +105,26 @@
                 <form method="GET" action="{{ route('corporations.index') }}" id="search_form" class="flex items-center">
                     @csrf
                     <div class="flex flex-col md:flex-row w-full">
-                        <label for="simple-search" class="sr-only">Search</label>
-                        <div class="relative w-full">
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                                </svg>
+                        
+                        <div class="relative w-full mt-2 md:mr-2 md:mt-0">
+                            <div class="absolute inset-y-0 flex items-center pl-3">
+                                <x-icon name="ui/search" class="flex-shrink-0 w-5 h-5 text-gray-500 dark:text-gray-400 pointer-events-none" />
                             </div>
-                            <input type="search" id="corporation_num" name="corporation_num" value="@if (isset($CorporationNum)){{$CorporationNum}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="法人№">
+                            <input type="search" id="corporation_num" name="corporation_num" value="@if(isset($CorporationNum)){{ $CorporationNum }}@endif" class="input-search" placeholder="法人№">
                         </div>
-                        <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                                </svg>
+
+                        <div class="relative w-full mt-2 md:mr-2 md:mt-0">
+                            <div class="absolute inset-y-0 flex items-center pl-3">
+                                <x-icon name="ui/search" class="flex-shrink-0 w-5 h-5 text-gray-500 dark:text-gray-400 pointer-events-none" />
                             </div>
-                            <input type="search" id="corporation_name" name="corporation_name" value="@if (isset($CorporationName)){{$CorporationName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="法人名称 / カナ名称 / 法人略称">
+                            <input type="search" id="corporation_name" name="corporation_name" value="@if(isset($CorporationName)){{ $CorporationName }}@endif" class="input-search" placeholder="法人名称 / カナ名称 / 法人略称">
                         </div>
-                        <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                                </svg>
+
+                        <div class="relative w-full mt-2 md:mr-2 md:mt-0">
+                            <div class="absolute inset-y-0 flex items-center pl-3">
+                                <x-icon name="ui/search" class="flex-shrink-0 w-5 h-5 text-gray-500 dark:text-gray-400 pointer-events-none" />
                             </div>
-                            <input type="search" id="invoice_num" name="invoice_num" value="@if (isset($invoiceNum)){{$invoiceNum}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="インボイス番号">
+                            <input type="search" id="invoice_num" name="invoice_num" value="@if(isset($invoiceNum)){{ $invoiceNum }}@endif" class="input-search" placeholder="インボイス番号">
                         </div>
 
                         <div class="flex mt-2 md:mt-0">
@@ -242,8 +213,19 @@
             </div>
         </div>
     </div>
+    <div class="text-gray-950 md:ml-16 my-2">
+        <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center">
+            <div class="ml-4">
+                {{ $count }}件
+            </div>
+            <div class="text-gray-900 dark:text-white ml-2 text-sm">
+                <div>（選択中： <span id="selectedCount">0</span> 件）</div>
+            </div>
+        </h2>
+    </div>
 
-    <div class="md:w-auto md:ml-14 md:mr-2 mb-4 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-300">
+
+    <div class="md:w-auto md:ml-14 md:mr-2 mb-4 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-300 js-scrollable">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-sm text-gray-700 dark:bg-gray-700 dark:text-gray-200">
                 <tr>
@@ -336,14 +318,7 @@
                             </div>
                         </td>
                         <td class="pl-4 py-1 whitespace-nowrap">
-                            <button type="button" onclick="location.href='{{route('corporations.edit',$corporation)}}'"  class="button-edit-primary">
-                                <div class="flex items-center">
-                                    <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
-                                    </svg>
-                                    <span class=" md:block hidden">編集</span>
-                                </div>
-                            </button>
+                            <x-buttons.edit-button :route="route('corporations.edit', $corporation)" />
                         </td>
                         @if(in_array('corporation_num', $visibleColumns))
                             <td class="pl-1 py-1 whitespace-nowrap">
@@ -411,7 +386,7 @@
                         @if(in_array('latest_credit_limit', $visibleColumns))
                             <td class="px-1 py-1 whitespace-nowrap">
                                 <div class="w-[65px] text-right">
-                                    {{ number_format($corporation->latest_credit_limit) ?? 'N/A' }}
+                                    {{ number_format($corporation->latest_credit_limit ?? 0) }}
                                 </div>
                             </td>
                         @endif
@@ -528,38 +503,6 @@
             // モーダルを非表示にするためのクラスを削除
             modal.classList.add('hidden');
         }
-    
-        // 検索ボタンを押した時の処理
-        function searchClient() {
-            const clientName = document.getElementById('clientName').value;
-            const clientNumber = document.getElementById('clientNumber').value;
-            const departmentId = document.getElementById('departmentId').value;
-    
-            fetch('/client/search', {
-                method: 'POST',
-                headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({ clientName, clientNumber, departmentId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                const searchResultsContainer = document.getElementById('searchResultsContainer');
-                searchResultsContainer.innerHTML = '';
-    
-                data.forEach(result => {
-                const resultElement = document.createElement('tr');
-                resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
-                resultElement.innerHTML = `
-                    <td class="py-2 pl-5 cursor-pointer" onclick="setClient('${result.client_corporation.corporation_name}', '${result.client_num}', '${result.client_name}', '${result.department_id}')">${result.client_name}</td>
-                    <td class="py-2 ml-2">${result.client_num}</td>
-                    <td class="py-2 ml-2">${result.department.department_name}</td>
-                `;
-                searchResultsContainer.appendChild(resultElement);
-                });
-            });
-            }
     </script>
 
     <script>

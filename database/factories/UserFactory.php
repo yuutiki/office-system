@@ -38,7 +38,8 @@ class UserFactory extends Factory
             'user_name' => $this->faker->name,
             'user_kana_name' => $this->faker->kanaName,
             'birth' => $this->faker->date('Y-m-d', '-20 years'),
-            'email' => $this->faker->unique()->safeEmail,
+            // 'email' => $this->faker->unique()->safeEmail,
+            'email' => fake()->unique()->safeEmail(),
             'password' => Hash::make('password'),
             'int_phone' => $this->faker->numberBetween(100, 999),
             'ext_phone' => $this->faker->phoneNumber,
@@ -51,11 +52,13 @@ class UserFactory extends Factory
             'updated_by' => 1,
             'created_at' => now(),
             'updated_at' => now(),
-            'role' => 'user',
-            // 'role' => $this->faker->randomElement([
-            //     config('sytemadmin.system_admin'),
-            //     'user'
-            // ]),
+            // 'role' => 'system_admin',
+            'profile_image' => 'default',
+            'password_change_required' => false, // ← 追加！
+            'role' => $this->faker->randomElement([
+                config('sytemadmin.system_admin'),
+                'user'
+            ]),
         ];
     }
 
