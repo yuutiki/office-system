@@ -1,15 +1,17 @@
 {{-- resources/views/components/support/my-support-table.blade.php --}}
-<div class="w-full overflow-x-auto font-medium bg-white rounded-xl shadow-lg p-4">
-    <h2 class="text-lg font-semibold text-gray-600 dark:text-gray-300 mb-4 p-4">担当顧客サポート状況</h2>
-    <table class="min-w-full bg-white dark:bg-gray-800 text-sm text-left text-gray-700 dark:text-gray-200 border">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-300">
+<div class="bg-white dark:bg-gray-800 text-black dark:text-white shadow-lg rounded-lg p-6 w-full h-full overflow-x-auto">
+    <h2 class="text-lg font-semibold text-gray-600 dark:text-gray-300 mb-4">
+        担当顧客サポート状況
+    </h2>
+    <table class="min-w-full table-auto text-sm text-left border-t border-gray-200 dark:border-gray-600">
+        <thead class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
             <tr>
-                <th class="px-6 py-3">顧客名称</th>
-                <th class="px-6 py-3">タイトル</th>
-                <th class="px-6 py-3">完了フラグ</th>
-                <th class="px-6 py-3">種別</th>
-                <th class="px-6 py-3">対応者</th>
-                <th class="px-6 py-3">受付日時</th>
+                <th class="px-6 py-3 whitespace-nowrap">顧客名称</th>
+                <th class="px-6 py-3 whitespace-nowrap">タイトル</th>
+                <th class="px-6 py-3 whitespace-nowrap">完了フラグ</th>
+                <th class="px-6 py-3 whitespace-nowrap">種別</th>
+                <th class="px-6 py-3 whitespace-nowrap">対応者</th>
+                <th class="px-6 py-3 whitespace-nowrap">受付日時</th>
             </tr>
         </thead>
         <tbody class="divide-y divide-gray-200 dark:divide-gray-600">

@@ -1,4 +1,4 @@
-<div class="bg-white dark:bg-gray-800 text-black dark:text-white shadow-lg rounded-lg p-6 w-full">
+<div class="bg-white dark:bg-gray-800 text-black dark:text-white shadow-lg rounded-lg p-6 w-full h-full overflow-x-auto">
     <div class="flex justify-between items-center mb-4 ">
         <h2 class="text-lg font-semibold flex items-center text-gray-600 dark:text-gray-300">
             直近案件リスト
@@ -20,11 +20,11 @@
         <table class="min-w-full table-auto text-sm text-left border-t border-gray-200 dark:border-gray-600">
             <thead class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
                 <tr>
-                    <th class="px-4 py-2 font-semibold">顧客名称</th>
-                    <th class="px-4 py-2 font-semibold">プロジェクト№</th>
-                    <th class="px-4 py-2 font-semibold">プロジェクト名称</th>
-                    <th class="px-4 py-2 font-semibold">金額</th>
-                    <th class="px-4 py-2 font-semibold">営業段階</th>
+                    <th class="px-4 py-2 whitespace-nowrap">顧客名称</th>
+                    <th class="px-4 py-2 whitespace-nowrap">プロジェクト№</th>
+                    <th class="px-4 py-2 whitespace-nowrap">プロジェクト名称</th>
+                    <th class="px-4 py-2 whitespace-nowrap">金額</th>
+                    <th class="px-4 py-2 whitespace-nowrap">営業段階</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 dark:divide-gray-700">

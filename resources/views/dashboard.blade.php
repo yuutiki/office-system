@@ -82,7 +82,7 @@
                 <div class="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-32 md:h-36">
 
 
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 transition-all duration-300 hover:shadow-xl h-full">
                         <div class="flex justify-between items-start">
                             <div>
                                 <h3 class="text-xs uppercase font-bold text-gray-500 dark:text-gray-400 tracking-wider">
@@ -124,7 +124,7 @@
                 <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-36">
 
 
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 transition-all duration-300 hover:shadow-xl h-full">
                         <div class="flex justify-between items-start">
                             <div>
                                 <h3 class="text-xs uppercase font-bold text-gray-500 dark:text-gray-400 tracking-wider">
@@ -160,7 +160,7 @@
                 <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-36">
 
 
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 transition-all duration-300 hover:shadow-xl h-full">
                         <div class="flex justify-between items-start">
                             <div>
                                 <h3 class="text-xs uppercase font-bold text-gray-500 dark:text-gray-400 tracking-wider">
@@ -192,7 +192,7 @@
                 <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-36">
 
 
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 transition-all duration-300 hover:shadow-xl h-full">
                         <div class="flex justify-between items-start">
                             <div>
                                 <h3 class="text-xs uppercase font-bold text-gray-500 dark:text-gray-400 tracking-wider">
@@ -227,7 +227,7 @@
             <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-4">
 
                 
-                <div class="w-full p-6 bg-white rounded-lg dark:bg-gray-800 shadow-lg">
+                <div class="w-full p-6 bg-white rounded-lg dark:bg-gray-800 shadow-lg h-full">
                     <div class="flex justify-between mb-3">
                         <div class="grid gap-4 grid-cols-2">
                             <div>
@@ -457,6 +457,9 @@
                 },
                 toolbar: {
                     show: false,
+                },
+                zoom: {
+                    enabled: false, // ← これを追加！
                 },
             },
             tooltip: {

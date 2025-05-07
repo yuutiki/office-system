@@ -1,5 +1,5 @@
-<div class="w-full">
-    <div class="relative flex flex-col min-w-0 bg-white dark:bg-gray-800 w-full mb-6 shadow-lg rounded-lg px-4 py-4 md:px-6 md:py-5">
+<div class="w-full h-full">
+    <div class="relative flex flex-col min-w-0 bg-white dark:bg-gray-800 w-full mb-6 shadow-lg rounded-lg px-4 py-4 md:px-6 md:py-5 h-full">
         <h2 class="text-gray-800 text-lg font-semibold dark:text-white mb-4">
             要確認
         </h2>

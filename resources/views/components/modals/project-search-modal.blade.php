@@ -8,7 +8,7 @@
 
 {{-- モーダル全体のコンテナ --}}
 <div id="{{ $modalId }}" tabindex="-1" class="fixed inset-0 flex items-center justify-center hidden animate-slide-in-top px-2 z-[99999]">
-    <div class="max-h-full w-full max-w-7xl">
+    <div class="max-h-full w-full max-w-7xl overflow-y-auto">
         <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
             {{-- モーダルヘッダー：タイトルと検索結果件数、閉じるボタンを含む --}}
             <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">

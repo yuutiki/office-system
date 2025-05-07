@@ -292,7 +292,7 @@
   
     <!-- ユーザ検索モーダル -->
     <div id="userSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden animate-slide-in-top">
-        <div class="max-h-full w-full max-w-7xl">
+        <div class="max-h-full w-full max-w-7xl overflow-y-auto">
             <!-- モーダル content -->
             <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
                 <!-- モーダル header -->
