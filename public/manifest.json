@@ -1,7 +1,7 @@
 {
-    "name": "OfficeSystem",
-    "short_name":"OfficeSystem",
-    "description":"社内システム",
+    "name": "Orphice",
+    "short_name":"Orphice",
+    "description":"オーフィス",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",

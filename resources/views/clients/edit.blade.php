@@ -176,7 +176,7 @@
                     </div>
                 </div>
 
-                    <div class="grid gap-4 mb-4 lg:grid-cols-5 grid-cols-1">
+                    <div class="grid gap-3 mb-4 mt-8 lg:grid-cols-2 grid-cols-1">
                         <div>
                             <label for="installation_type_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">顧客カテゴリ</label>
                             <select id="installation_type_id" name="installation_type_id" form="clientForm" class="input-secondary">

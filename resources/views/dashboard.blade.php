@@ -298,95 +298,102 @@
             
 
             <div class="grid lg:grid-cols-2 gap-4 mb-4">
-                <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-72">
+                <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72 overflow-y-auto">
+                    <div class="w-full h-full">
 
-                    <!-- 営業個人予算達成率 -->
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 transition-all duration-300 hover:shadow-xl h-full overflow-y-auto">
-                        <h2 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">営業個人予算達成率</h2>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                                <thead>
-                                    <tr class="bg-gray-50 dark:bg-gray-700">
-                                        <th scope="col" class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider text-left">氏名</th>
-                                        <th scope="col" class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider text-left">当期予算額</th>
-                                        <th scope="col" class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider text-left" style="min-width:140px">達成率</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">末久優</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">125,000,000円</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">60%</span>
-                                                <div class="w-full bg-red-200 rounded-full h-2.5 dark:bg-red-700">
-                                                    <div class="bg-red-600 h-2.5 rounded-full" style="width: 60%"></div>
+                        <!-- 営業個人予算達成率 -->
+                        {{-- <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 transition-all duration-300 hover:shadow-xl h-full overflow-y-auto"> --}}
+                        <div class="relative flex flex-col min-w-0 bg-white dark:bg-gray-800 w-full mb-6 shadow-lg rounded-lg px-4 py-4 md:px-6 md:py-5 h-full">
+
+                            <h2 class="text-gray-800 text-lg font-semibold dark:text-white mb-4">
+                                営業個人予算達成率
+                            </h2>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full table-auto text-sm text-left text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-600 rounded-lg">
+                                    <thead class="bg-gray-100 dark:bg-gray-700 text-xs font-semibold uppercase text-gray-600 dark:text-gray-300">
+
+                                        <tr class="bg-gray-50 dark:bg-gray-700">
+                                            <th scope="col" class="px-6 py-2 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider text-left">氏名</th>
+                                            <th scope="col" class="px-6 py-2 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider text-left">当期予算額</th>
+                                            <th scope="col" class="px-6 py-2 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider text-left" style="min-width:140px">達成率</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                        <tr>
+                                            <td class="px-6 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">末久優</td>
+                                            <td class="px-6 py-2.5 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">125,000,000円</td>
+                                            <td class="px-6 py-2.5 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">60%</span>
+                                                    <div class="w-full bg-red-200 rounded-full h-2.5 dark:bg-red-700">
+                                                        <div class="bg-red-600 h-2.5 rounded-full" style="width: 60%"></div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">営業担当A</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">115,000,000円</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">70%</span>
-                                                <div class="w-full bg-emerald-200 rounded-full h-2.5 dark:bg-emerald-700">
-                                                    <div class="bg-emerald-600 h-2.5 rounded-full" style="width: 70%"></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">営業担当A</td>
+                                            <td class="px-6 py-2.5 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">115,000,000円</td>
+                                            <td class="px-6 py-2.5 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">70%</span>
+                                                    <div class="w-full bg-emerald-200 rounded-full h-2.5 dark:bg-emerald-700">
+                                                        <div class="bg-emerald-600 h-2.5 rounded-full" style="width: 70%"></div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">営業担当A</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">115,000,000円</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">70%</span>
-                                                <div class="w-full bg-emerald-200 rounded-full h-2.5 dark:bg-emerald-700">
-                                                    <div class="bg-emerald-600 h-2.5 rounded-full" style="width: 70%"></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">営業担当A</td>
+                                            <td class="px-6 py-2.5 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">115,000,000円</td>
+                                            <td class="px-6 py-2.5 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">70%</span>
+                                                    <div class="w-full bg-emerald-200 rounded-full h-2.5 dark:bg-emerald-700">
+                                                        <div class="bg-emerald-600 h-2.5 rounded-full" style="width: 70%"></div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">営業担当A</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">115,000,000円</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">70%</span>
-                                                <div class="w-full bg-emerald-200 rounded-full h-2.5 dark:bg-emerald-700">
-                                                    <div class="bg-emerald-600 h-2.5 rounded-full" style="width: 70%"></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">営業担当A</td>
+                                            <td class="px-6 py-2.5 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">115,000,000円</td>
+                                            <td class="px-6 py-2.5 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">70%</span>
+                                                    <div class="w-full bg-emerald-200 rounded-full h-2.5 dark:bg-emerald-700">
+                                                        <div class="bg-emerald-600 h-2.5 rounded-full" style="width: 70%"></div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">営業担当A</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">115,000,000円</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">70%</span>
-                                                <div class="w-full bg-emerald-200 rounded-full h-2.5 dark:bg-emerald-700">
-                                                    <div class="bg-emerald-600 h-2.5 rounded-full" style="width: 70%"></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">営業担当A</td>
+                                            <td class="px-6 py-2.5 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">115,000,000円</td>
+                                            <td class="px-6 py-2.5 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">70%</span>
+                                                    <div class="w-full bg-emerald-200 rounded-full h-2.5 dark:bg-emerald-700">
+                                                        <div class="bg-emerald-600 h-2.5 rounded-full" style="width: 70%"></div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">営業担当A</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">115,000,000円</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">70%</span>
-                                                <div class="w-full bg-emerald-200 rounded-full h-2.5 dark:bg-emerald-700">
-                                                    <div class="bg-emerald-600 h-2.5 rounded-full" style="width: 70%"></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">営業担当A</td>
+                                            <td class="px-6 py-2.5 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">115,000,000円</td>
+                                            <td class="px-6 py-2.5 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">70%</span>
+                                                    <div class="w-full bg-emerald-200 rounded-full h-2.5 dark:bg-emerald-700">
+                                                        <div class="bg-emerald-600 h-2.5 rounded-full" style="width: 70%"></div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
 
