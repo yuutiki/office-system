@@ -306,8 +306,8 @@
 
                                 <td class="px-1 border border-gray-600 align-bottom pb-1 readonly-cell">
                                     <div class="flex flex-col">
-                                        <input type="text" form="estimateForm" class="input-estimate-arari min-w-[100px] w-full text-xs py-0 readonly-cell pointer-events-none text-right block" name="ing-arari-{{ $index + 1 }}" value="{{ number_format($detail->offer_price - ($detail->cost_price * $detail->quantity)) }}" readonly tabindex="-1">
-                                        <input type="text" form="estimateForm" class="input-estimate-arari min-w-[100px] w-full text-xs py-0 readonly-cell pointer-events-none text-right mt-0" name="ing-arariritu-{{ $index + 1 }}" value="{{ $detail->offer_price > 0 ? number_format((($detail->offer_price - ($detail->cost_price * $detail->quantity)) / $detail->offer_price * 100), 2) : 0 }}%" readonly tabindex="-1">
+                                        {{-- <input type="text" form="estimateForm" class="input-estimate-arari min-w-[100px] w-full text-xs py-0 readonly-cell pointer-events-none text-right block" name="ing-arari-{{ $index + 1 }}" value="{{ number_format($detail->offer_price - ($detail->cost_price * $detail->quantity)) }}" readonly tabindex="-1">
+                                        <input type="text" form="estimateForm" class="input-estimate-arari min-w-[100px] w-full text-xs py-0 readonly-cell pointer-events-none text-right mt-0" name="ing-arariritu-{{ $index + 1 }}" value="{{ $detail->offer_price > 0 ? number_format((($detail->offer_price - ($detail->cost_price * $detail->quantity)) / $detail->offer_price * 100), 2) : 0 }}%" readonly tabindex="-1"> --}}
                                     </div>
                                 </td>
                                 <td class="px-1 border border-gray-600 text-center">

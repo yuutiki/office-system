@@ -29,6 +29,10 @@ use App\Imports\SupportsImport;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException as LaravelValidationException;
+
+set_time_limit(60);
 
 class SupportController extends Controller
 {
@@ -306,113 +310,147 @@ class SupportController extends Controller
     }
 
 
-    // SupportControllerのuploadメソッドと関連メソッド
+
+
+
+
+
+
+
+
+
+
+
     
-    public function import(Request $request)
+
+    public function upload(Request $request)
     {
-        $request->validate([
-            'file' => 'required|file|mimes:csv,txt|max:10240', // 最大10MB
-        ]);
-
-        $file = $request->file('file');
-        $path = $file->getRealPath();
-
+        // 処理時間とメモリの制限を60秒に設定
+        set_time_limit(60);
+        ini_set('memory_limit', '512M');
+        
+        $tempFilePath = null;
+        
         try {
-            $import = new SupportsImport($path);
-            Excel::import($import, $path);
-
-            // インポート結果の詳細を取得
-            $errorReport = $import->getErrorReport();
-
-            if ($import->hasErrors()) {
-                // エラーがある場合は詳細をログに記録
-                Log::warning('Support import completed with errors', $errorReport);
-
-                // ビューにエラー詳細を渡す
-                return back()->with([
-                    'warning' => 'インポートが完了しましたが、一部エラーがあります。',
-                    'import_result' => $errorReport
-                ]);
-            }
-
-            // 成功時のレスポンス
-            return back()->with([
-                'success' => 'インポートが正常に完了しました。',
-                'import_result' => $errorReport
+            $request->validate([
+                'csv_upload' => 'required|file|mimes:csv,txt|max:10240',
             ]);
-
+    
+            $file = $request->file('csv_upload');
+            $originalName = $file->getClientOriginalName();
+            
+            // 一時ファイルの保存
+            $tempFilePath = $this->saveTempFile($file);
+    
+            // インポート実行
+            DB::beginTransaction();
+            
+            try {
+                $import = new SupportsImport($tempFilePath);
+                Excel::import($import, $tempFilePath);
+                
+                if ($import->hasErrors()) {
+                    DB::rollBack();
+                    
+                    return redirect()->back()
+                        ->with('error', "インポート中にエラーが発生しました。")
+                        ->with('validation_errors', $this->formatDetailedErrors($import->getErrors()));
+                }
+                
+                DB::commit();
+                
+                $results = [
+                    'totalRows' => $import->getRowCount(),
+                    'successRows' => $import->getSuccessCount(),
+                    'errorCount' => count($import->getErrors()),
+                ];
+                
+                $this->logImportResults($results, $originalName);
+                return $this->handleSuccessfulImport($results, $originalName);
+                
+            } catch (\Exception $e) {
+                DB::rollBack();
+                Log::error("Import transaction error: " . $e->getMessage());
+                return redirect()->back()
+                    ->with('error', "インポートに失敗しました: " . $e->getMessage());
+            }
+    
         } catch (\Exception $e) {
-            Log::error('Support import failed', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-
-            return back()->with('error', 'インポートに失敗しました: ' . $e->getMessage());
+            Log::error("CSV Import Error: " . $e->getMessage());
+            return redirect()->back()
+                ->with('error', "エラーが発生しました: " . $e->getMessage());
+        } finally {
+            // 一時ファイルの削除
+            if ($tempFilePath && file_exists($tempFilePath)) {
+                unlink($tempFilePath);
+            }
+            
+            // メモリ制限を元に戻す
+            ini_restore('memory_limit');
         }
     }
-
-    // エラー詳細をダウンロードするためのメソッド
-    public function downloadErrorReport(Request $request)
+    
+    private function saveTempFile($file)
     {
-        $errorReport = session('import_result');
+        $mimeType = $file->getMimeType();
         
-        if (!$errorReport) {
-            return back()->with('error', 'エラーレポートが見つかりません。');
+        if (!in_array($mimeType, ['text/csv', 'text/plain', 'application/csv'])) {
+            throw new \Exception("不正なファイル形式です。CSVファイルをアップロードしてください。");
         }
-
-        $csvContent = $this->generateErrorCsv($errorReport);
         
-        return response($csvContent)
-            ->header('Content-Type', 'text/csv')
-            ->header('Content-Disposition', 'attachment; filename="import-errors.csv"');
+        $tempFileName = 'temp_csv_' . uniqid() . '.csv';
+        $tempDir = storage_path('app/temp');
+        
+        if (!is_dir($tempDir)) {
+            mkdir($tempDir, 0755, true);
+        }
+        
+        $tempFilePath = $tempDir . '/' . $tempFileName;
+        $file->move($tempDir, $tempFileName);
+        
+        return $tempFilePath;
     }
-
-    protected function generateErrorCsv($errorReport)
+    
+    private function formatDetailedErrors($errors)
     {
-        $csv = [];
-        $csv[] = ['インポート結果サマリー'];
-        $csv[] = ['総行数', $errorReport['total_rows']];
-        $csv[] = ['成功数', $errorReport['success_count']];
-        $csv[] = ['失敗数', $errorReport['failed_count']];
-        $csv[] = ['エラー率', $errorReport['summary']['error_rate'] . '%'];
-        $csv[] = [];
+        $formattedErrors = [];
         
-        if (!empty($errorReport['validation_errors'])) {
-            $csv[] = ['バリデーションエラー'];
-            $csv[] = ['行番号', 'エラー内容', 'データ'];
+        foreach ($errors as $error) {
+            $row = $error['row'] ?? '不明';
+            $message = $error['message'] ?? '不明なエラー';
             
-            foreach ($errorReport['validation_errors'] as $error) {
-                $csv[] = [
-                    $error['row'],
-                    implode(' | ', $error['errors']),
-                    json_encode($error['data'], JSON_UNESCAPED_UNICODE)
-                ];
-            }
-            $csv[] = [];
+            // 行番号を実際のCSV行番号に変換（ヘッダーを除く）
+            $actualRow = is_numeric($row) ? $row - 1 : $row;
+            $formattedErrors[] = "{$actualRow}行目: {$message}";
         }
         
-        if (!empty($errorReport['processing_errors'])) {
-            $csv[] = ['処理エラー'];
-            $csv[] = ['行番号', 'エラー内容', 'データ'];
-            
-            foreach ($errorReport['processing_errors'] as $error) {
-                $csv[] = [
-                    $error['row'],
-                    $error['message'],
-                    json_encode($error['data'], JSON_UNESCAPED_UNICODE)
-                ];
-            }
-        }
-        
-        // CSVを生成
-        $output = fopen('php://temp', 'r+');
-        foreach ($csv as $row) {
-            fputcsv($output, $row);
-        }
-        rewind($output);
-        $csvContent = stream_get_contents($output);
-        fclose($output);
-        
-        return $csvContent;
+        return array_unique($formattedErrors);
+    }
+    
+    private function logImportResults($results, $originalName)
+    {
+        $message = sprintf(
+            "CSVインポート完了 [%s] - 処理行数: %d, 成功: %d, エラー: %d",
+            $originalName,
+            $results['totalRows'],
+            $results['successRows'],
+            $results['errorCount']
+        );
+        Log::info($message);
+    }
+    
+    private function handleSuccessfulImport($results, $originalName)
+    {
+        $successMessage = "CSVファイル '{$originalName}' のインポートが完了しました。";
+        $detailMessage = sprintf(
+            "処理行数: %d, 成功: %d, エラー: %d",
+            $results['totalRows'],
+            $results['successRows'],
+            $results['errorCount']
+        );
+    
+        return redirect()->back()
+            ->with('success', $successMessage)
+            ->with('success_details', $detailMessage);
     }
 }

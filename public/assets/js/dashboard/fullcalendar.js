@@ -93,6 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
       
       // モーダルを表示
       modal.classList.remove('hidden');
+      modal.classList.add('flex');
         document.body.classList.add('overflow-hidden');
 
     },
@@ -162,6 +163,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
     // モーダルを閉じる
     modal.classList.add('hidden');
+    modal.classList.remove('flex');
     document.body.classList.remove('overflow-hidden');
 
     calendar.unselect();
@@ -170,20 +172,22 @@ document.addEventListener('DOMContentLoaded', function () {
   // キャンセルボタン
   cancelButton.addEventListener('click', function() {
     modal.classList.add('hidden');
+    modal.classList.remove('flex');
     document.body.classList.remove('overflow-hidden');
 
     calendar.unselect();
   });
   
-  // モーダル外クリックでモーダルを閉じる
-  modal.addEventListener('click', function(e) {
-    if (e.target === this) {
-      modal.classList.add('hidden');
-    document.body.classList.remove('overflow-hidden');
+    // モーダル外クリックでモーダルを閉じる
+    modal.addEventListener('click', function(e) {
+        if (e.target === this) {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.classList.remove('overflow-hidden');
 
-      calendar.unselect();
-    }
-  });
+            calendar.unselect();
+        }
+    });
   
   // スタイルを適用する関数
   function applyCustomStyles() {

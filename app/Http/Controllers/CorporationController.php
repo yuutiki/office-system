@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Response;
 use App\Jobs\ExportCorporationsCsv;
 use App\Models\CorporationCredit;
+use App\Models\CorporationSearchModalDisplayItem;
 use App\Models\Prefecture;
 use App\Models\UserColumnSetting;
 use App\Services\InvoiceApiService;
@@ -315,15 +316,30 @@ class CorporationController extends Controller
     //モーダル用の非同期検索メソッド
     public function search(Request $request)
     {
-        $corporationName = $request->input('corporationName');
-        $corporationNumber = $request->input('corporationNumber');
+        $query = Corporation::query();
 
-        // 検索条件に基づいて法人データを取得
-        $corporations = Corporation::where('corporation_name', 'LIKE', '%' . $corporationName . '%')
-            ->where('corporation_num', 'LIKE', '%' . $corporationNumber . '%')
-            ->get();
+        if (!empty($request->corporation_name)) {
+            $query->where('corporation_name', 'LIKE', '%' . $request->corporation_name . '%');
+        }
 
-        return response()->json($corporations);
+        if (!empty($request->corporation_num)) {
+            $query->where('corporation_num', 'LIKE', '%' . $request->corporation_num . '%');
+        }
+
+        $corporations = $query->get();
+
+        // 画面IDに応じた表示項目を取得
+        $displayItems = CorporationSearchModalDisplayItem::where('screen_id', $request->screen_id)
+        ->where('is_visible', true)
+        ->orderBy('display_order')
+        ->get();
+
+        // 新しいレスポンス形式に合わせて返却
+        return response()->json([
+            'results' => $corporations,
+            'displayItems' => $displayItems
+        ]);
+
     }
 
 

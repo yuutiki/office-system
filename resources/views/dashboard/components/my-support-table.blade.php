@@ -31,7 +31,7 @@
                         @endif
                     </td>
                     <td class="px-6 py-4">{{ optional($mySupport->supportType)->type_name }}</td>
-                    <td class="px-6 py-4">{{ optional($mySupport->user)->name }}</td>
+                    <td class="px-6 py-4">{{ optional($mySupport->user)->user_name }}</td>
                     <td class="px-6 py-4">{{ \Carbon\Carbon::parse($mySupport->received_at)->diffForHumans() }}</td>
                 </tr>
             @endforeach

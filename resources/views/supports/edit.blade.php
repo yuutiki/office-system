@@ -148,14 +148,14 @@
             </div>
             <div class="w-full flex flex-col">
                 <label for="request_content" class="label-primary">内容</label>
-                <textarea form="supportForm" name="request_content" class="input-secondary" data-auto-resize="true" id="request_content" cols="30" rows="8">{{ old('request_content', $support->request_content) }}</textarea>
+                <textarea form="supportForm" name="request_content" class="input-secondary" data-auto-resize="true" id="request_content" data-min-height="210" cols="30" rows="8">{{ old('request_content', $support->request_content) }}</textarea>
                 @error('request_content')
                     <div class="validate-message">{{ $message }}</div>
                 @enderror
             </div>
             <div class="w-full flex flex-col">
                 <label for="response_content" class="label-primary">回答</label>
-                <textarea form="supportForm" name="response_content" class="input-secondary" data-auto-resize="true" id="response_content" cols="30" rows="8">{{ old('response_content', $support->response_content) }}</textarea>
+                <textarea form="supportForm" name="response_content" class="input-secondary" data-auto-resize="true" id="response_content" data-min-height="210" cols="30" rows="8">{{ old('response_content', $support->response_content) }}</textarea>
                 @error('response_content')
                     <div class="validate-message">{{ $message }}</div>
                 @enderror
@@ -238,14 +238,14 @@
             <div class="grid gap-2 mb-4 sm:grid-cols-2">
                 <div class="w-full flex flex-col">
                     <label for="internal_message" class="label-primary">社内連絡欄</label>
-                    <textarea form="supportForm" name="internal_message" class="input-secondary" data-auto-resize="true" id="internal_message" cols="30" rows="5">{{ old('internal_message', $support->internal_message) }}</textarea>
+                    <textarea form="supportForm" name="internal_message" class="input-secondary" data-auto-resize="true" id="internal_message" data-min-height="150" cols="30">{{ old('internal_message', $support->internal_message) }}</textarea>
                     @error('internal_message')
                         <div class="validate-message">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="w-full flex flex-col">
                     <label for="internal_memo1" class="label-primary">社内メモ欄</label>
-                    <textarea form="supportForm" name="internal_memo1" class="input-secondary" data-auto-resize="true" id="internal_memo1" cols="30" rows="5">{{ old('internal_memo1', $support->internal_memo1) }}</textarea>
+                    <textarea form="supportForm" name="internal_memo1" class="input-secondary" data-auto-resize="true" id="internal_memo1" data-min-height="150" cols="30">{{ old('internal_memo1', $support->internal_memo1) }}</textarea>
                     @error('internal_memo1')
                         <div class="validate-message">{{ $message }}</div>
                     @enderror
@@ -514,7 +514,7 @@
     </div>
 
     <!-- 不要？ -->
-    <div id="clientSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+    <div id="clientSearchModal" tabindex="-1" class="fixed inset-0 items-center justify-center z-50 hidden">
         <div class=" w-4/5  max-h-full">
             <!-- Modal content -->
             <div class="relative bg-white rounded shadow dark:bg-gray-700">
@@ -614,16 +614,19 @@
     </div>
 
     <script>
+        const modal = document.getElementById('clientSearchModal');
+        const overlay = document.getElementById('overlay');
+        
         // モーダルを表示するための関数
         function showModal() {
             // モーダルの要素を取得
-            const modal = document.getElementById('clientSearchModal');
             //背後の操作不可を有効
-            const overlay = document.getElementById('overlay').classList.remove('hidden');
+            overlay.classList.remove('hidden');
             document.body.classList.add('overflow-hidden');
 
             // モーダルを表示するためのクラスを追加
             modal.classList.remove('hidden');
+            modal.classList.add('flex');
         }
 
         // モーダルを非表示にするための関数
@@ -631,11 +634,12 @@
             // モーダルの要素を取得
             const modal = document.getElementById('clientSearchModal');
             //背後の操作不可を解除
-            const overlay = document.getElementById('overlay').classList.add('hidden');
+            overlay.classList.add('hidden');
             document.body.classList.remove('overflow-hidden');
 
             // モーダルを非表示にするためのクラスを削除
             modal.classList.add('hidden');
+            modal.classList.remove('flex');
         }
 
         // 検索ボタンを押した時の処理

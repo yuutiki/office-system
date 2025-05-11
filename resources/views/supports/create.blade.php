@@ -23,11 +23,6 @@
     {{-- 下書きフラグ用の隠しフィールド --}}
     <input type="hidden" form="supportForm" name="is_draft" id="isDraft" value="0">
 
-    {{-- ローディングインジケーター --}}
-    <div id="loading-indicator" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-white"></div>
-    </div>
-
     <div class="max-w-7xl mx-auto px-2 md:pl-14">
         <!-- 顧客検索ボタン(画面小) -->
         <button type="button" onclick="ClientSearchModal.show('clientSearchModal')" class="md:ml-1 md:mt-1 mt-1 mb-4 w-full md:w-auto whitespace-nowrap sm:hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -133,14 +128,14 @@
             </div>
             <div class="w-full flex flex-col">
                 <label for="request_content" class="label-primary">内容</label>
-                <textarea form="supportForm" name="request_content" class="input-secondary" data-auto-resize="true" id="request_content" value="{{old('request_content')}}" cols="30" rows="8">{{ old('request_content') }}</textarea>
+                <textarea form="supportForm" name="request_content" class="input-secondary" data-auto-resize="true" data-min-height="210" id="request_content" value="{{old('request_content')}}" cols="30" rows="8">{{ old('request_content') }}</textarea>
                 @error('request_content')
                     <div class="validate-message">{{ $message }}</div>
                 @enderror
             </div>
             <div class="w-full flex flex-col">
                 <label for="response_content" class="label-primary">回答</label>
-                <textarea form="supportForm" name="response_content" class="input-secondary" id="response_content" data-auto-resize="true" value="{{old('response_content')}}" cols="30" rows="8">{{ old('response_content') }}</textarea>
+                <textarea form="supportForm" name="response_content" class="input-secondary" data-auto-resize="true" data-min-height="210" id="response_content" value="{{old('response_content')}}" cols="30" rows="8">{{ old('response_content') }}</textarea>
                 @error('response_content')
                     <div class="validate-message">{{ $message }}</div>
                 @enderror
@@ -213,14 +208,14 @@
             <div class="grid gap-2 mb-4 sm:grid-cols-2">
                 <div class="w-full flex flex-col">
                     <label for="internal_message" class="label-primary">社内連絡欄</label>
-                    <textarea form="supportForm" name="internal_message" class="input-secondary" id="internal_message" data-auto-resize="true" value="{{old('internal_message')}}" cols="30" rows="5">{{ old('internal_message') }}</textarea>
+                    <textarea form="supportForm" name="internal_message" class="input-secondary" id="internal_message" data-auto-resize="true" data-min-height="150" value="{{old('internal_message')}}" cols="30" rows="5">{{ old('internal_message') }}</textarea>
                 </div>
                 @error('internal_message')
                     <div class="validate-message">{{ $message }}</div>
                 @enderror
                 <div class="w-full flex flex-col">
                     <label for="internal_memo1" class="label-primary">社内メモ欄</label>
-                    <textarea form="supportForm" name="internal_memo1" class="input-secondary" id="internal_memo1" data-auto-resize="true" value="{{old('internal_memo1')}}" cols="30" rows="5">{{ old('internal_memo1') }}</textarea>
+                    <textarea form="supportForm" name="internal_memo1" class="input-secondary" id="internal_memo1" data-auto-resize="true" data-min-height="150" value="{{old('internal_memo1')}}" cols="30" rows="5">{{ old('internal_memo1') }}</textarea>
                 </div>
                 @error('internal_memo1')
                     <div class="validate-message">{{ $message }}</div>
@@ -450,7 +445,7 @@
 
 
         <!-- 顧客担当者検索 Modal -->
-        <div id="clientPersonSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden animate-slide-in-top">
+        <div id="clientPersonSearchModal" tabindex="-1" class="fixed inset-0 items-center justify-center z-50 hidden animate-slide-in-top">
             <div class="max-h-full w-full max-w-2xl">
                 <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
                     <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
@@ -516,7 +511,7 @@
 
     <script>
         // モーダルを表示するための関数
-        const clientPersonSearchModal = document.getElementById('clientPersonSearchModal');
+        const modalPerson = document.getElementById('clientPersonSearchModal');
         const overlay = document.getElementById('overlay');
 
 
@@ -526,7 +521,8 @@
             document.body.classList.add('overflow-hidden');
 
             // モーダルを表示するためのクラスを追加
-            clientPersonSearchModal.classList.remove('hidden');
+            modalPerson.classList.remove('hidden');
+            modalPerson.classList.add('flex');
         }
 
         // モーダルを非表示にするための関数
@@ -536,7 +532,8 @@
             document.body.classList.remove('overflow-hidden');
 
             // モーダルを非表示にするためのクラスを削除
-            clientPersonSearchModal.classList.add('hidden');
+            modalPerson.classList.add('hidden');
+            modalPerson.classList.remove('flex');
         }
 
         // 検索ボタンを押した時の処理

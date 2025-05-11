@@ -54,7 +54,7 @@ class Support extends Model
         'internal_memo1',
         'support_type_id',
         'support_time_id',
-        'user_id',
+        'supports.user_id',
         'client_user_department',
         'client_user_kana_name',
         'product_series_id',

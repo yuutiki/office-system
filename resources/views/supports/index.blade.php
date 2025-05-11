@@ -15,7 +15,7 @@
 
                 <x-buttons.add-button :route="route('supports.create')" gate="storeUpdate_supports" :text="__('Add')" />
 
-                <div class="flex items-center w-full space-x-3 hidden md:w-auto md:inline-block">
+                <div class="items-center w-full space-x-3 hidden md:w-auto md:inline-block">
                     <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded md:w-auto hover:bg-gray-100 hover:text-blue-700 focus:z-10 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" type="button">
                         <svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
@@ -139,7 +139,7 @@
                         </div>
 
                         <!-- 詳細検索 Modal -->
-                        <div id="detailSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center overflow-y-scroll z-50 hidden animate-slide-in-top overscroll-contain">
+                        <div id="detailSearchModal" tabindex="-1" class="fixed inset-0 items-center justify-center overflow-y-scroll z-50 hidden animate-slide-in-top overscroll-contain">
                             <div class="max-h-full w-full max-w-7xl">
                                 <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
                                     <!-- Modal header -->
@@ -389,10 +389,10 @@
                             @endif
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{ $support->client->client_num }}
+                            {{ $support->client ? $support->client->client_num : '---' }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{ $support->client->client_name }}
+                            {{ $support->client ? $support->client->client_name : '---' }}
                         </td>
                         <td class="pl-4 py-1 whitespace-nowrap">
                             {{ $support->received_at }}
@@ -723,7 +723,7 @@
 
 
 
-<script>
+{{-- <script>
     function submitAndUpdateDrawer(supportId) {
         // 保存処理（ここではLocalStorageを使用）
         localStorage.setItem('updateDrawerId', supportId);
@@ -804,12 +804,12 @@
             }
         });
     </script>
-@endif
+@endif --}}
 
 
 
 {{-- 行がクリックされたときに発火するJavaScript --}}
-<script>
+{{-- <script>
     document.addEventListener('DOMContentLoaded', function () {
         // 各行のクリックイベントを設定
         var rows = document.querySelectorAll('.clickable-row');
@@ -821,38 +821,34 @@
             });
         });
     });
-</script>
+</script> --}}
 
 {{-- 選択された行に適用されるスタイル --}}
-<style>
+{{-- <style>
     .selected {
         background-color: #f0f0f0; /* 任意の背景色 */
     }
-</style>
+</style> --}}
 
 <script>
+    const overlay = document.getElementById('overlay');
+    const modal = document.getElementById('detailSearchModal');
+
     // モーダルを表示するための関数
     function showModal() {
-        // モーダルの要素を取得
-        const modal = document.getElementById('detailSearchModal');
-        //背後の操作不可を有効
-        const overlay = document.getElementById('overlay').classList.remove('hidden');
+        overlay.classList.remove('hidden');
         document.body.classList.add('overflow-hidden');
-
-        // モーダルを表示するためのクラスを追加
         modal.classList.remove('hidden');
+        modal.classList.add('flex');
     }
 
     // モーダルを非表示にするための関数
     function hideModal() {
-        // モーダルの要素を取得
-        const modal = document.getElementById('detailSearchModal');
-        //背後の操作不可を解除
-        const overlay = document.getElementById('overlay').classList.add('hidden');
+        overlay.classList.add('hidden');
         document.body.classList.remove('overflow-hidden');
-
-        // モーダルを非表示にするためのクラスを削除
         modal.classList.add('hidden');
+        modal.classList.remove('flex');
+
     }
 
     // 検索ボタンを押した時の処理
@@ -864,8 +860,8 @@
         fetch('/client/search', {
             method: 'POST',
             headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             },
             body: JSON.stringify({ clientName, clientNumber, departmentId })
         })
@@ -875,18 +871,27 @@
             searchResultsContainer.innerHTML = '';
 
             data.forEach(result => {
-            const resultElement = document.createElement('tr');
-            resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
-            resultElement.innerHTML = `
-                <td class="py-2 pl-5 cursor-pointer" onclick="setClient('${result.client_corporation.corporation_name}', '${result.client_num}', '${result.client_name}', '${result.department_id}')">${result.client_name}</td>
-                <td class="py-2 ml-2">${result.client_num}</td>
-                <td class="py-2 ml-2">${result.department.department_name}</td>
-            `;
-            searchResultsContainer.appendChild(resultElement);
+                const resultElement = document.createElement('tr');
+                resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white');
+                resultElement.innerHTML = `
+                    <td class="py-2 pl-5 cursor-pointer"
+                        onclick="setClient(
+                            '${result.client_corporation?.corporation_name ?? ''}',
+                            '${result.client_num}',
+                            '${result.client_name}',
+                            '${result.department_id}'
+                        )">
+                        ${result.client_name}
+                    </td>
+                    <td class="py-2 ml-2">${result.client_num}</td>
+                    <td class="py-2 ml-2">${result.department?.department_name ?? ''}</td>
+                `;
+                searchResultsContainer.appendChild(resultElement);
             });
         });
-        }
+    }
 </script>
+
 
 <script>
     // 一覧画面のチェックボックス関連の操作　カウントしたり、一括でチェックを付けたり
@@ -914,5 +919,5 @@
 </script>
 
 
-<script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
+{{-- <script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script> --}}
 </x-app-layout>

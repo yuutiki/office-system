@@ -183,7 +183,7 @@ Route::middleware(['auth'])->group(function () {
 
     // support関連
     Route::get('/supports/show-upload', [SupportController::class, 'showUploadForm'])->name('supports.showUploadForm');
-    Route::post('/supports/upload', [SupportController::class, 'import'])->name('supports.upload');
+    Route::post('/supports/upload', [SupportController::class, 'upload'])->name('supports.upload');
     Route::get('supports/create/{client}', [SupportController::class, 'createFromClient'])->name('supports.createFromClient')->whereNumber('client'); // 顧客からの新規作成ルート,clientのIDが数値であることを保証
     Route::resource('/supports', '\App\Http\Controllers\SupportController');
 

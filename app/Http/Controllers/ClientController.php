@@ -416,7 +416,7 @@ class ClientController extends Controller
 
             $client->post_code = $row[8];
             $client->prefecture_id = $row[9];
-            $client->address1 = $row[10];
+            $client->address_1 = $row[10];
 
             $client->tel = $row[11];
             $client->fax = $row[12];

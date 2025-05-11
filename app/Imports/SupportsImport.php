@@ -10,30 +10,30 @@ use App\Models\ProductVersion;
 use App\Models\ProductCategory;
 use App\Models\SupportTime;
 use App\Models\SupportType;
-use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithStartRow;
-use Maatwebsite\Excel\Concerns\WithValidation;
-use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
-use Maatwebsite\Excel\Concerns\SkipsErrors;
+use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\SkipsOnError;
+use Maatwebsite\Excel\Concerns\SkipsErrors;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
+use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Validators\Failure;
 
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 use Throwable;
 
 class SupportsImport implements 
-    ToCollection, 
+    ToModel, 
     WithStartRow, 
-    WithValidation, 
-    WithBatchInserts, 
     WithChunkReading, 
     WithCustomCsvSettings,
+    WithValidation,
+    WithBatchInserts,
     SkipsOnError,
     SkipsOnFailure
 {
@@ -43,8 +43,13 @@ class SupportsImport implements
     protected $encoding;
     protected $rowCount = 0;
     protected $successCount = 0;
-    protected $errors = [];
-    protected $validationErrors = [];
+    protected $customErrors = [];
+    
+    // キャッシュ用の配列
+    protected static $clientCache = [];
+    protected static $userCache = [];
+    protected static $masterDataCache = [];
+    protected static $requestNumberCounters = [];
 
     protected $columnNames = [
         0 => '顧客番号',
@@ -73,149 +78,119 @@ class SupportsImport implements
     {
         $this->filePath = $filePath;
         $this->encoding = $this->detectEncoding();
+        $this->preloadMasterData();
     }
 
-    public function collection(Collection $rows)
+    protected function detectEncoding(): string
     {
-        foreach ($rows as $index => $row) {
-            $this->rowCount++;
-            $rowNumber = $this->startRow() + $index;
-
-            try {
-                // バリデーションを手動で実行
-                $this->manualValidate($row, $rowNumber);
-                
-                // サポートデータの作成
-                $support = $this->createSupportFromRow($row, $rowNumber);
-                $this->successCount++;
-            } catch (Throwable $e) {
-                $this->errors[] = [
-                    'row' => $rowNumber,
-                    'message' => $e->getMessage(),
-                    'data' => $row->toArray()
-                ];
-            }
-        }
-    }
-
-    protected function manualValidate($row, $rowNumber)
-    {
-        $rowArray = $row->toArray();
+        $cacheKey = 'csv_encoding_' . md5_file($this->filePath);
         
-        // 配列のキーを列名に変換（デバッグ用）
-        $data = [];
-        foreach ($rowArray as $index => $value) {
-            $columnName = $this->columnNames[$index] ?? "列{$index}";
-            $data[$columnName] = $value;
-        }
-
-        $validator = Validator::make($rowArray, $this->rules(), $this->customValidationMessages());
-
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            $errorMessages = [];
+        return Cache::remember($cacheKey, 3600, function() {
+            $content = file_get_contents($this->filePath, false, null, 0, 1024);
+            $encoding = mb_detect_encoding($content, ['CP932', 'UTF-8', 'SJIS', 'EUC-JP'], true);
             
-            foreach ($errors->messages() as $field => $messages) {
-                $columnName = $this->columnNames[$field] ?? "列{$field}";
-                foreach ($messages as $message) {
-                    $errorMessages[] = "列{$field}({$columnName}): {$message}";
-                }
+            return $encoding ?: 'UTF-8';
+        });
+    }
+
+    public function getCsvSettings(): array
+    {
+        return [
+            'input_encoding' => $this->encoding,
+            'delimiter' => ',',
+            'enclosure' => '"',
+            'escape' => '\\',
+            'use_bom' => false,
+            'output_encoding' => 'UTF-8',
+        ];
+    }
+
+    protected function preloadMasterData()
+    {
+        // マスターデータをキャッシュから取得するか、DBから取得してキャッシュする
+        self::$masterDataCache = Cache::remember('import_master_data', 300, function() {
+            return [
+                'series' => ProductSeries::pluck('id', 'series_code')->toArray(),
+                'versions' => ProductVersion::pluck('id', 'version_code')->toArray(),
+                'categories' => ProductCategory::pluck('id', 'category_code')->toArray(),
+                'times' => SupportTime::pluck('id', 'time_code')->toArray(),
+                'types' => SupportType::pluck('id', 'type_code')->toArray(),
+            ];
+        });
+        
+        // リクエスト番号のカウンターを初期化
+        $this->initializeRequestNumberCounters();
+    }
+
+    protected function initializeRequestNumberCounters()
+    {
+        if (empty(self::$requestNumberCounters)) {
+            $maxNumbers = Support::selectRaw('client_id, MAX(request_num) as max_num')
+                ->groupBy('client_id')
+                ->pluck('max_num', 'client_id')
+                ->toArray();
+            
+            foreach ($maxNumbers as $clientId => $maxNum) {
+                self::$requestNumberCounters[$clientId] = $maxNum + 1;
+            }
+        }
+    }
+
+    public function model(array $row)
+    {
+        $this->rowCount++;
+        
+        try {
+            // 文字化け対策
+            $row = $this->convertEncoding($row);
+            
+            // クライアントとユーザーの取得
+            $client = $this->getClient($row[0]);
+            $user = $this->getUser($row[2]);
+            
+            if (!$client) {
+                throw new \Exception("顧客番号 {$row[0]} が見つかりません");
             }
             
-            $this->validationErrors[] = [
-                'row' => $rowNumber,
-                'errors' => $errorMessages,
-                'data' => $data
-            ];
+            if (!$user) {
+                throw new \Exception("社員番号 {$row[2]} が見つかりません");
+            }
             
-            throw new \Exception(implode(' | ', $errorMessages));
+            $this->successCount++;
+            
+            return new Support([
+                'client_id' => $client->id,
+                'request_num' => $this->getNextRequestNumber($client->id),
+                'received_at' => $this->parseDate($row[1]),
+                'user_id' => $user->id,
+                'client_user_department' => $row[3] ?? null,
+                'client_user_kana_name' => $row[4] ?? null,
+                'product_series_id' => $this->getMasterDataId('series', $row[5] ?? null),
+                'product_version_id' => $this->getMasterDataId('versions', $row[6] ?? null),
+                'product_category_id' => $this->getMasterDataId('categories', $row[7] ?? null),
+                'title' => $row[8],
+                'request_content' => $row[9],
+                'response_content' => $row[10] ?? null,
+                'internal_message' => $row[11] ?? null,
+                'internal_memo1' => $row[12] ?? null,
+                'is_finished' => $this->toBool($row[13] ?? null),
+                'is_faq_target' => $this->toBool($row[14] ?? null),
+                'is_disclosured' => $this->toBool($row[15] ?? null),
+                'is_troubled' => $this->toBool($row[16] ?? null),
+                'is_confirmed' => $this->toBool($row[17] ?? null),
+                'support_time_id' => $this->getMasterDataId('times', $row[18] ?? null),
+                'support_type_id' => $this->getMasterDataId('types', $row[19] ?? null),
+            ]);
+            
+        } catch (\Exception $e) {
+            // カスタムエラーとして記録
+            $this->customErrors[] = [
+                'row' => $this->rowCount,
+                'message' => $e->getMessage(),
+                'type' => 'processing',
+            ];
+            throw $e;
         }
-    }
-
-    protected function createSupportFromRow($row, $rowNumber)
-    {
-        $rowArray = $row->toArray();
-
-        // より詳細なエラーメッセージ
-        $client = $this->findClientByNumber($rowArray[0], $rowNumber);
-        $user = $this->findUserByNumber($rowArray[2], $rowNumber);
-
-        $support = new Support([
-            'client_id' => $client->id,
-            'request_num' => Support::generateRequestNumber($client->id),
-            'received_at' => $rowArray[1],
-            'user_id' => $user->id,
-            'client_user_department' => $rowArray[3] ?? null,
-            'client_user_kana_name' => $rowArray[4] ?? null,
-            'title' => $rowArray[8],
-            'request_content' => $rowArray[9],
-            'response_content' => $rowArray[10] ?? null,
-            'internal_message' => $rowArray[11] ?? null,
-            'internal_memo1' => $rowArray[12] ?? null,
-            'is_finished' => $this->toBool($rowArray[13] ?? false),
-            'is_faq_target' => $this->toBool($rowArray[14] ?? false),
-            'is_disclosured' => $this->toBool($rowArray[15] ?? false),
-            'is_troubled' => $this->toBool($rowArray[16] ?? false),
-            'is_confirmed' => $this->toBool($rowArray[17] ?? false),
-        ]);
-
-        $this->setRelatedModels($support, $rowArray, $rowNumber);
-
-        $support->save();
-
-        return $support;
-    }
-
-    protected function findClientByNumber($clientNumber, $rowNumber)
-    {
-        $client = Client::where('client_num', $clientNumber)->first();
-        if (!$client) {
-            throw new \Exception("行{$rowNumber}: 顧客番号 '{$clientNumber}' に該当する顧客が見つかりません。");
-        }
-        return $client;
-    }
-
-    protected function findUserByNumber($userNumber, $rowNumber)
-    {
-        $paddedUserNumber = str_pad($userNumber, 6, '0', STR_PAD_LEFT);
-        $user = User::where('user_num', $paddedUserNumber)->first();
-        if (!$user) {
-            throw new \Exception("行{$rowNumber}: 社員番号 '{$userNumber}' (補完後: {$paddedUserNumber}) に該当するユーザーが見つかりません。");
-        }
-        return $user;
-    }
-
-    protected function setRelatedModels($support, $rowArray, $rowNumber)
-    {
-        // 各関連モデルのIDを検索（エラーメッセージを詳細化）
-        $support->product_series_id = $this->findModelId(ProductSeries::class, 'series_code', $rowArray[5] ?? null, 'シリーズコード', $rowNumber);
-        $support->product_version_id = $this->findModelId(ProductVersion::class, 'version_code', $rowArray[6] ?? null, 'バージョンコード', $rowNumber);
-        $support->product_category_id = $this->findModelId(ProductCategory::class, 'category_code', $rowArray[7] ?? null, '系統コード', $rowNumber);
-        $support->support_time_id = $this->findModelId(SupportTime::class, 'time_code', $rowArray[18] ?? null, '所要時間コード', $rowNumber);
-        $support->support_type_id = $this->findModelId(SupportType::class, 'type_code', $rowArray[19] ?? null, '種別コード', $rowNumber);
-    }
-
-    protected function findModelId($modelClass, $column, $value, $fieldName, $rowNumber)
-    {
-        if (empty($value)) {
-            return null;
-        }
-
-        $model = $modelClass::where($column, $value)->first();
-        if (!$model) {
-            // オプション: 存在しない場合はエラーにせず、nullを返す
-            // throw new \Exception("行{$rowNumber}: {$fieldName} '{$value}' が見つかりません。");
-            return null;
-        }
-        return $model->id;
-    }
-
-    protected function toBool($value)
-    {
-        if (is_bool($value)) {
-            return $value;
-        }
-        return in_array(strtolower((string)$value), ['1', 'true', 'yes', 'y', '○', '◯'], true);
     }
 
     public function rules(): array
@@ -226,30 +201,107 @@ class SupportsImport implements
             '2' => 'required', // 社員番号
             '8' => 'required|max:255', // 表題
             '9' => 'required', // 内容
-            '10' => 'nullable', // 回答
-            '11' => 'nullable', // 社内連絡欄
-            '12' => 'nullable', // 社内メモ欄
-            '13' => 'nullable', // 対応完了済
-            '14' => 'nullable', // FAQ対象
-            '15' => 'nullable', // 顧客開示
-            '16' => 'nullable', // トラブル
-            '17' => 'nullable', // 入力確認
-            '18' => 'nullable', // 所要時間コード
-            '19' => 'nullable', // 種別コード
         ];
     }
 
     public function customValidationMessages()
     {
-        $messages = [];
-        foreach ($this->columnNames as $index => $name) {
-            $messages["{$index}.required"] = "{$name}は必須項目です。";
-            $messages["{$index}.max"] = "{$name}は:max文字以内で入力してください。";
-            if ($index == 1) {
-                $messages["{$index}.date"] = "{$name}には有効な日付を指定してください。";
+        return [
+            '0.required' => '顧客番号は必須です',
+            '1.required' => '受付日は必須です',
+            '1.date' => '受付日の形式が不正です',
+            '2.required' => '社員番号は必須です',
+            '8.required' => '表題は必須です',
+            '8.max' => '表題は255文字以内で入力してください',
+            '9.required' => '内容は必須です',
+        ];
+    }
+
+    protected function convertEncoding($row)
+    {
+        foreach ($row as $key => $value) {
+            if (is_string($value)) {
+                // 金額のカンマ対応（エスケープされたカンマを一時的に置換）
+                $value = str_replace('\\,', '[COMMA]', $value);
+                
+                // エンコーディング変換
+                if (!mb_check_encoding($value, 'UTF-8')) {
+                    $value = mb_convert_encoding($value, 'UTF-8', $this->encoding);
+                }
+                
+                // カンマを元に戻す
+                $value = str_replace('[COMMA]', ',', $value);
+                
+                $row[$key] = trim($value);
             }
         }
-        return $messages;
+        return $row;
+    }
+
+    protected function getClient($clientNumber)
+    {
+        if (empty($clientNumber)) {
+            return null;
+        }
+        
+        if (!isset(self::$clientCache[$clientNumber])) {
+            self::$clientCache[$clientNumber] = Client::where('client_num', $clientNumber)->first();
+        }
+        return self::$clientCache[$clientNumber];
+    }
+
+    protected function getUser($userNumber)
+    {
+        if (empty($userNumber)) {
+            return null;
+        }
+        
+        $paddedNumber = str_pad($userNumber, 6, '0', STR_PAD_LEFT);
+        if (!isset(self::$userCache[$paddedNumber])) {
+            self::$userCache[$paddedNumber] = User::where('user_num', $paddedNumber)->first();
+        }
+        return self::$userCache[$paddedNumber];
+    }
+
+    protected function getMasterDataId($type, $code)
+    {
+        if (empty($code)) {
+            return null;
+        }
+        return self::$masterDataCache[$type][$code] ?? null;
+    }
+
+    protected function getNextRequestNumber($clientId)
+    {
+        if (!isset(self::$requestNumberCounters[$clientId])) {
+            self::$requestNumberCounters[$clientId] = 1;
+        }
+        
+        $num = self::$requestNumberCounters[$clientId];
+        self::$requestNumberCounters[$clientId]++;
+        return $num;
+    }
+
+    protected function parseDate($date)
+    {
+        if (empty($date)) {
+            return null;
+        }
+        
+        try {
+            return \Carbon\Carbon::parse($date)->format('Y-m-d');
+        } catch (\Exception $e) {
+            throw new \Exception("日付の形式が不正です: {$date}");
+        }
+    }
+
+    protected function toBool($value)
+    {
+        if (empty($value)) {
+            return false;
+        }
+        
+        return in_array(strtolower($value), ['1', 'true', 'yes', 'y', '○', '◯'], true);
     }
 
     public function startRow(): int
@@ -259,54 +311,37 @@ class SupportsImport implements
 
     public function batchSize(): int
     {
-        return 100;
+        return 1000;
     }
-
+    
     public function chunkSize(): int
     {
-        return 100;
+        return 1000;
     }
 
-    protected function detectEncoding(): string
-    {
-        $content = file_get_contents($this->filePath);
-        $encoding = mb_detect_encoding($content, ['UTF-8', 'SJIS-win', 'eucJP-win', 'ASCII'], true);
-        return $encoding ?: 'UTF-8';
-    }
-
-    public function getCsvSettings(): array
-    {
-        return [
-            'input_encoding' => $this->encoding,
-            'delimiter' => ',',
-            'enclosure' => '"',
-            'escape' => '\\',
-        ];
-    }
-
-    // エラーハンドリング用メソッド
     public function onError(Throwable $e)
     {
-        $this->errors[] = [
-            'type' => 'error',
-            'message' => $e->getMessage(),
-            'trace' => $e->getTraceAsString()
-        ];
+        // エラーの詳細情報をログに記録
+        Log::error('Import error at row ' . $this->getRowCount(), [
+            'error' => $e->getMessage(),
+            'row' => $this->getRowCount(),
+        ]);
     }
 
     public function onFailure(Failure ...$failures)
     {
+        // バリデーションエラーの処理
         foreach ($failures as $failure) {
-            $this->validationErrors[] = [
+            $this->customErrors[] = [
                 'row' => $failure->row(),
-                'attribute' => $failure->attribute(),
-                'errors' => $failure->errors(),
-                'values' => $failure->values()
+                'message' => implode(', ', $failure->errors()),
+                'type' => 'validation',
+                'attribute' => $this->columnNames[$failure->attribute()] ?? $failure->attribute(),
             ];
         }
     }
 
-    // 結果取得用メソッド
+    // ゲッターメソッド
     public function getRowCount(): int
     {
         return $this->rowCount;
@@ -319,37 +354,23 @@ class SupportsImport implements
 
     public function getErrors(): array
     {
-        return $this->errors;
-    }
-
-    public function getValidationErrors(): array
-    {
-        return $this->validationErrors;
-    }
-
-    public function getFailedCount(): int
-    {
-        return count($this->errors) + count($this->validationErrors);
+        $allErrors = array_merge($this->customErrors);
+        
+        // エラーを行番号でソート
+        usort($allErrors, function($a, $b) {
+            return $a['row'] <=> $b['row'];
+        });
+        
+        return $allErrors;
     }
 
     public function hasErrors(): bool
     {
-        return !empty($this->errors) || !empty($this->validationErrors);
+        return !empty($this->customErrors);
     }
 
-    // 詳細なエラーレポートを生成
-    public function getErrorReport(): array
+    public function getErrorCount(): int
     {
-        return [
-            'total_rows' => $this->rowCount,
-            'success_count' => $this->successCount,
-            'failed_count' => $this->getFailedCount(),
-            'validation_errors' => $this->validationErrors,
-            'processing_errors' => $this->errors,
-            'summary' => [
-                'has_errors' => $this->hasErrors(),
-                'error_rate' => $this->rowCount > 0 ? round(($this->getFailedCount() / $this->rowCount) * 100, 2) : 0
-            ]
-        ];
+        return count($this->customErrors);
     }
 }

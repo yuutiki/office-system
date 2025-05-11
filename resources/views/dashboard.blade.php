@@ -12,72 +12,12 @@
     <!-- 必要なスクリプト -->
     <script src="https://cdn.jsdelivr.net/npm/echarts@latest/dist/echarts.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet">
 
 
-    <div class="max-w-full md:ml-14 mx-auto p-4 dark:bg-gray-800 bg-white rounded-lg shadow-xl mb-4">
-        <div id="calendar" class="text-sm dark:text-white text-gray-600"></div>
-    </div>
+    {{-- @include('dashboard.components.my-calendar') --}}
 
 
-
-
-
-
-
-
-
-      
-    <!-- モーダル -->
-    <div id="eventModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-xl max-w-md w-full">
-            <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-white">予定の登録</h2>
-            <form id="eventForm" class="space-y-4">
-                <div>
-                    <label for="eventTitle" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">タイトル</label>
-                    <input type="text" id="eventTitle" class="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
-                </div>
-                
-                <div>
-                    <label for="eventDate" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">日付</label>
-                    <input type="text" id="eventDate" readonly class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-800 dark:text-white">
-                </div>
-                
-                <div>
-                    <label for="eventDescription" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">詳細</label>
-                    <textarea id="eventDescription" rows="3" class="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"></textarea>
-                </div>
-                
-                <div class="flex items-center">
-                    <input type="checkbox" id="eventAllDay" class="mr-2 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                    <label for="eventAllDay" class="text-sm font-medium text-gray-700 dark:text-gray-300">終日</label>
-                </div>
-                
-                <div id="timeInputs" class="space-y-3">
-                    <div>
-                        <label for="eventStartTime" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">開始時間</label>
-                        <input type="time" id="eventStartTime" class="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
-                    </div>
-                    
-                    <div>
-                        <label for="eventEndTime" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">終了時間</label>
-                        <input type="time" id="eventEndTime" class="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
-                    </div>
-                </div>
-                
-                <div class="flex justify-end space-x-3 pt-4">
-                    <button type="button" id="cancelButton" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-lg transition-colors">キャンセル</button>
-                    <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors">保存</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-
-
-
-        <main class="p-2 md:ml-12 h-full pt-20">
+        <main class="p-2 md:ml-12 h-full">
             <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-4 mb-4">
                 <div class="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-32 md:h-36">
 
@@ -223,60 +163,97 @@
 
                 </div>
             </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-4 mb-4">
 
-            <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-4">
-
-                
-                <div class="w-full p-6 bg-white rounded-lg dark:bg-gray-800 shadow-lg h-full">
-                    <div class="flex justify-between mb-3">
-                        <div class="grid gap-4 grid-cols-2">
-                            <div>
-                                <h5 class="inline-flex items-center text-gray-500 dark:text-gray-400 leading-none font-normal mb-2">
-                                    売上推移
-                                    <svg data-popover-target="clicks-info" data-popover-placement="right" class="w-3 h-3 text-gray-400 hover:text-gray-900 dark:hover:text-white cursor-pointer ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-                                    </svg>
-                                    <div data-popover id="clicks-info" role="tooltip" class="absolute z-10 invisible inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 w-36 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400">
-                                        <div class="p-3 space-y-2">
-                                            <h3 class="font-semibold text-gray-900 dark:text-white">
-                                                Clicks growth
-                                            </h3>
-                                            <p>Report helps navigate cumulative growth of community activities.</p>
+                <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 col-span-2">
+                    
+                    <div class="w-full p-6 bg-white rounded-lg dark:bg-gray-800 shadow-lg h-full">
+                        <div class="flex justify-between mb-3">
+                            <div class="grid gap-4 grid-cols-2">
+                                <div>
+                                    <h5 class="inline-flex items-center text-gray-500 dark:text-gray-400 leading-none font-normal mb-2">
+                                        売上推移
+                                        <svg data-popover-target="clicks-info" data-popover-placement="right" class="w-3 h-3 text-gray-400 hover:text-gray-900 dark:hover:text-white cursor-pointer ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                                        </svg>
+                                        <div data-popover id="clicks-info" role="tooltip" class="absolute z-10 invisible inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 w-36 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400">
+                                            <div class="p-3 space-y-2">
+                                                <h3 class="font-semibold text-gray-900 dark:text-white">
+                                                    Clicks growth
+                                                </h3>
+                                                <p>Report helps navigate cumulative growth of community activities.</p>
+                                            </div>
+                                            <div data-popper-arrow></div>
                                         </div>
-                                        <div data-popper-arrow></div>
-                                    </div>
-                                </h5>
-                                <p class="text-gray-900 dark:text-white text-2xl leading-none font-bold">
-                                    {{ number_format($totalRevenue) }}
-                                </p>
+                                    </h5>
+                                    <p class="text-gray-900 dark:text-white text-2xl leading-none font-bold">
+                                        {{ number_format($totalRevenue) }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div>
+                                <button id="dropdownDefaultButton"
+                                    data-dropdown-toggle="lastDaysdropdown"
+                                    data-dropdown-placement="bottom" type="button" class="px-3 py-2 inline-flex items-center text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                                        Last week
+                                    <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                                    </svg>
+                                </button>
+                                <div id="lastDaysdropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                                        <li>
+                                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">所属1</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">所属2</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                        <div>
-                            <button id="dropdownDefaultButton"
-                                data-dropdown-toggle="lastDaysdropdown"
-                                data-dropdown-placement="bottom" type="button" class="px-3 py-2 inline-flex items-center text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                                    Last week
-                                <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                                </svg>
-                            </button>
-                            <div id="lastDaysdropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                                    <li>
-                                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">所属1</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">所属2</a>
-                                    </li>
-                                </ul>
+                        <div id="beta-line-chart"></div>
+                        {{-- <div class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between mt-2.5"></div> --}}
+                    </div>
+
+
+                </div>
+                <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 col-span-1">
+                    <div class="min-h-full">
+                        <div x-data="datetimeWidget()" x-init="init()">
+                            <div class="relative overflow-hidden bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-lg p-6 text-white shadow-xl transform transition-all duration-500">
+                                <!-- コンテンツ -->
+                                <div class="relative z-10">
+                                    <!-- 日付表示 -->
+                                    <div class="mb-4">
+                                        <div class="text-sm font-medium text-white/80 mb-1">今日の日付</div>
+                                        <div class="text-2xl font-bold" x-text="formattedDate"></div>
+                                        <div class="text-sm font-light text-white/90" x-text="dayOfWeek"></div>
+                                    </div>
+                        
+                                    <!-- 時刻表示 -->
+                                    <div class="border-t border-white/20 pt-4">
+                                        <div class="text-sm font-medium text-white/80 mb-1">現在時刻</div>
+                                        <div class="text-4xl font-mono font-bold tracking-wider flex items-baseline">
+                                            <span x-text="hours"></span>
+                                            <span class="mx-1 animate-pulse">:</span>
+                                            <span x-text="minutes"></span>
+                                            <span class="text-xl ml-2 text-white/80" x-text="seconds"></span>
+                                        </div>
+                                    </div>
+                        
+                                    <!-- アイコン -->
+                                    <div class="absolute top-4 right-4 opacity-40">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div id="beta-line-chart"></div>
-                    {{-- <div class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between mt-2.5"></div> --}}
+
                 </div>
-
-
             </div>
             <div class="border-2 border-dashed rounded-2xl border-gray-300 dark:border-gray-600 h-auto mb-6">
                 <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 p-6">
@@ -451,6 +428,50 @@
                 </div>
       
 
+                <!-- dashboard.blade.php に直接貼り付ける日時ウィジェット -->
+
+
+
+<script>
+function datetimeWidget() {
+    return {
+        currentDate: new Date(),
+        hours: '',
+        minutes: '',
+        seconds: '',
+        formattedDate: '',
+        dayOfWeek: '',
+        
+        init() {
+            this.updateDateTime();
+            // 1秒ごとに更新
+            setInterval(() => {
+                this.updateDateTime();
+            }, 1000);
+        },
+        
+        updateDateTime() {
+            this.currentDate = new Date();
+            
+            // 時刻
+            this.hours = String(this.currentDate.getHours()).padStart(2, '0');
+            this.minutes = String(this.currentDate.getMinutes()).padStart(2, '0');
+            this.seconds = String(this.currentDate.getSeconds()).padStart(2, '0');
+            
+            // 日付
+            const year = this.currentDate.getFullYear();
+            const month = String(this.currentDate.getMonth() + 1).padStart(2, '0');
+            const day = String(this.currentDate.getDate()).padStart(2, '0');
+            this.formattedDate = `${year}年${month}月${day}日`;
+            
+            // 曜日
+            const daysOfWeek = ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'];
+            this.dayOfWeek = daysOfWeek[this.currentDate.getDay()];
+        }
+    }
+}
+</script>
+
 
     <script>
         const options = {
@@ -540,5 +561,4 @@
 
     <script src="{{ asset('assets/js/chart/barSupport.js') }}"></script>
     <script src="{{ asset('assets/js/chart/pieUsage.js') }}"></script>
-    <script src="{{ asset('assets/js/dashboard/fullcalendar.js') }}"></script>
 </x-app-layout>

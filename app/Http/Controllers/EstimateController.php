@@ -39,14 +39,14 @@ class EstimateController extends Controller
             $query->where('project_affiliation3', $project->account_affiliation3_id)
                   ->orWhereNull('project_affiliation3');
         })
-        ->where(function ($query) use ($project) {
-            $query->where('project_affiliation4', $project->account_affiliation4_id)
-                  ->orWhereNull('project_affiliation4');
-        })
-        ->where(function ($query) use ($project) {
-            $query->where('project_affiliation5', $project->account_affiliation5_id)
-                  ->orWhereNull('project_affiliation5');
-        })
+        // ->where(function ($query) use ($project) {
+        //     $query->where('project_affiliation4', $project->account_affiliation4_id)
+        //           ->orWhereNull('project_affiliation4');
+        // })
+        // ->where(function ($query) use ($project) {
+        //     $query->where('project_affiliation5', $project->account_affiliation5_id)
+        //           ->orWhereNull('project_affiliation5');
+        // })
         ->get();
 
         $defaultEstimateMemo ="■内容等変更が生じた場合は再度御見積りが必要となります。\n■消費税率が改定される際は別途御見積り致します。";
@@ -176,13 +176,13 @@ class EstimateController extends Controller
         $estimateAddresses = EstimateAddress::where('project_affiliation1', $project->account_affiliation1_id)
         ->where('project_affiliation2', $project->account_affiliation2_id)
         ->where('project_affiliation3', $project->account_affiliation3_id)
-        ->where('project_affiliation4', $project->account_affiliation4_id)
-        ->where('project_affiliation5', $project->account_affiliation5_id)
+        // ->where('project_affiliation4', $project->account_affiliation4_id)
+        // ->where('project_affiliation5', $project->account_affiliation5_id)
         ->get();
 
     
         // 関連する明細データを取得
-        $estimateDetails = $estimate->details()->orderBy('sort_order')->get();
+        $estimateDetails = $estimate->details()->with('product')->orderBy('sort_order')->get();
     
         return view('estimate.edit', compact('estimate', 'estimateDetails', 'productSeries', 'productType', 'productSplitTypes', 'project', 'estimateAddresses', 'users'));
     }

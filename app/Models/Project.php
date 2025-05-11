@@ -187,6 +187,10 @@ class Project extends Model
     {
         return $this->belongsTo(Affiliation3::class, 'account_affiliation3_id');
     }
+    public function accountAffiliation4()
+    {
+        return $this->belongsTo(Affiliation4::class, 'account_affiliation4_id');
+    }
     public function accountUser()
     {
         return $this->belongsTo(User::class);

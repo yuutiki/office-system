@@ -652,18 +652,18 @@
                                         {{ $estimate->estimate_subject }}
                                     </td>
                                     <td class="px-1 py-1 whitespace-nowrap">
-                                        <div class="text-right w-[65px] ">{{ number_format($estimate->subtotal_amount, 0) }}</div>
+                                        {{-- <div class="text-right w-[65px] ">{{ number_format($estimate->subtotal_amount, 0) }}</div> --}}
                                     </td>
                                     <td class="px-1 py-1 whitespace-nowrap">
                                         {{$estimate->estimate_at}}
                                     </td>
                                     <td class="px-1 py-1 whitespace-nowrap">
-                                        {{$estimate->return_at}}
+                                        {{$estimate->submit_at}}
                                     </td>
                                     {{-- <td class="px-1 py-1 whitespace-nowrap">
                                         {{$estimate->user->user_name}}
                                     </td> --}}
-                                    <td class="px-1 py-1 whitespace-nowrap">
+                                    {{-- <td class="px-1 py-1 whitespace-nowrap">
                                         @if ($estimate->is_finished == "0")
                                             <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
                                                 未返却
@@ -673,8 +673,8 @@
                                                 返却済
                                             </span>
                                         @endif
-                                    </td>
-                                    <td class="px-1 py-1 whitespace-nowrap">
+                                    </td> --}}
+                                    {{-- <td class="px-1 py-1 whitespace-nowrap">
                                         @if ($estimate->pdf_file)
                                             <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
                                                 有り
@@ -695,7 +695,7 @@
                                                 なし
                                             </span>
                                         @endif
-                                    </td>
+                                    </td> --}}
                                     <td class="py-1">
                                         <button type="button" data-modal-target="deleteModal-{{ $estimate->ulid }}" data-modal-show="deleteModal-{{ $estimate->ulid }}" class="button-delete-primary" tabindex="-1">
                                             <div class="flex">
