@@ -163,7 +163,7 @@
 
                 </div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-4 mb-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-y-4 md:gap-4 mb-4">
 
                 <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 col-span-2">
                     
@@ -218,41 +218,8 @@
 
 
                 </div>
-                <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 col-span-1">
-                    <div class="min-h-full">
-                        <div x-data="datetimeWidget()" x-init="init()">
-                            <div class="relative overflow-hidden bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-lg p-6 text-white shadow-xl transform transition-all duration-500">
-                                <!-- コンテンツ -->
-                                <div class="relative z-10">
-                                    <!-- 日付表示 -->
-                                    <div class="mb-4">
-                                        <div class="text-sm font-medium text-white/80 mb-1">今日の日付</div>
-                                        <div class="text-2xl font-bold" x-text="formattedDate"></div>
-                                        <div class="text-sm font-light text-white/90" x-text="dayOfWeek"></div>
-                                    </div>
-                        
-                                    <!-- 時刻表示 -->
-                                    <div class="border-t border-white/20 pt-4">
-                                        <div class="text-sm font-medium text-white/80 mb-1">現在時刻</div>
-                                        <div class="text-4xl font-mono font-bold tracking-wider flex items-baseline">
-                                            <span x-text="hours"></span>
-                                            <span class="mx-1 animate-pulse">:</span>
-                                            <span x-text="minutes"></span>
-                                            <span class="text-xl ml-2 text-white/80" x-text="seconds"></span>
-                                        </div>
-                                    </div>
-                        
-                                    <!-- アイコン -->
-                                    <div class="absolute top-4 right-4 opacity-40">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600  h-96 col-span-1">
+                    @include('dashboard.components.datetime-widget')
                 </div>
             </div>
             <div class="border-2 border-dashed rounded-2xl border-gray-300 dark:border-gray-600 h-auto mb-6">
@@ -426,51 +393,6 @@
                         <div id="pieChart" class="h-[380px]"></div>
                     </div>
                 </div>
-      
-
-                <!-- dashboard.blade.php に直接貼り付ける日時ウィジェット -->
-
-
-
-<script>
-function datetimeWidget() {
-    return {
-        currentDate: new Date(),
-        hours: '',
-        minutes: '',
-        seconds: '',
-        formattedDate: '',
-        dayOfWeek: '',
-        
-        init() {
-            this.updateDateTime();
-            // 1秒ごとに更新
-            setInterval(() => {
-                this.updateDateTime();
-            }, 1000);
-        },
-        
-        updateDateTime() {
-            this.currentDate = new Date();
-            
-            // 時刻
-            this.hours = String(this.currentDate.getHours()).padStart(2, '0');
-            this.minutes = String(this.currentDate.getMinutes()).padStart(2, '0');
-            this.seconds = String(this.currentDate.getSeconds()).padStart(2, '0');
-            
-            // 日付
-            const year = this.currentDate.getFullYear();
-            const month = String(this.currentDate.getMonth() + 1).padStart(2, '0');
-            const day = String(this.currentDate.getDate()).padStart(2, '0');
-            this.formattedDate = `${year}年${month}月${day}日`;
-            
-            // 曜日
-            const daysOfWeek = ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'];
-            this.dayOfWeek = daysOfWeek[this.currentDate.getDay()];
-        }
-    }
-}
-</script>
 
 
     <script>

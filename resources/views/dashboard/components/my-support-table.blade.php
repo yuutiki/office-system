@@ -6,12 +6,12 @@
     <table class="min-w-full table-auto text-sm text-left border-t border-gray-200 dark:border-gray-600">
         <thead class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
             <tr>
-                <th class="px-6 py-3 whitespace-nowrap">顧客名称</th>
-                <th class="px-6 py-3 whitespace-nowrap">タイトル</th>
-                <th class="px-6 py-3 whitespace-nowrap">完了フラグ</th>
-                <th class="px-6 py-3 whitespace-nowrap">種別</th>
-                <th class="px-6 py-3 whitespace-nowrap">対応者</th>
-                <th class="px-6 py-3 whitespace-nowrap">受付日時</th>
+                <th class="px-6 py-2 whitespace-nowrap">顧客名称</th>
+                <th class="px-6 py-2 whitespace-nowrap">タイトル</th>
+                <th class="px-6 py-2 whitespace-nowrap">完了フラグ</th>
+                <th class="px-6 py-2 whitespace-nowrap">種別</th>
+                <th class="px-6 py-2 whitespace-nowrap">対応者</th>
+                <th class="px-6 py-2 whitespace-nowrap">受付日時</th>
             </tr>
         </thead>
         <tbody class="divide-y divide-gray-200 dark:divide-gray-600">

@@ -112,6 +112,18 @@ function resetForm(formSelector) {
             input.value = '';
         }
     });
+
+    // ユーザー選択の hidden フィールドと表示用テキストをリセット
+    const userIdInput = document.getElementById('selected-user-id');
+    if (userIdInput) {
+        userIdInput.value = '';
+    }
+
+    const userDisplay = document.getElementById('selected-user-display');
+    if (userDisplay) {
+        const defaultText = userDisplay.dataset.default || 'ユーザーを選択';
+        userDisplay.textContent = defaultText;
+    }
 }
 
 

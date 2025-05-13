@@ -54,6 +54,7 @@ use App\Http\Controllers\EstimateAddressController;
 use App\Http\Controllers\ModelHistoryController;
 use App\Http\Controllers\PasswordPolicyController;
 use App\Http\Controllers\ProjectExpenseController;
+use App\Http\Controllers\SmtpSettingController;
 use App\Http\Controllers\SSOController;
 use App\Http\Controllers\UserSettingsController;
 use App\Models\EstimateAddress;
@@ -361,6 +362,28 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/{clientContactCheckboxOption}/toggle-active', [ClientContactCheckboxOptionController::class, 'toggleActive'])->name('toggle-active');
         Route::post('/update-order', [ClientContactCheckboxOptionController::class, 'updateOrder'])->name('update-order');
     });
+
+
+
+
+
+    // routes/web.php
+    Route::prefix('smtp-settings')->name('smtp-settings.')->group(function () {
+        Route::get('/', [SmtpSettingController::class, 'index'])->name('index');
+        Route::get('/create', [SmtpSettingController::class, 'create'])->name('create');
+        Route::post('/', [SmtpSettingController::class, 'store'])->name('store');
+        Route::get('/{smtpSetting}/edit', [SmtpSettingController::class, 'edit'])->name('edit');
+        Route::put('/{smtpSetting}', [SmtpSettingController::class, 'update'])->name('update');
+        Route::delete('/{smtpSetting}', [SmtpSettingController::class, 'destroy'])->name('destroy');
+        Route::post('/{smtpSetting}/activate', [SmtpSettingController::class, 'setActive'])->name('activate');
+        Route::post('/{smtpSetting}/test', [SmtpSettingController::class, 'testConnection'])->name('test');
+    });
+
+    // OAuth認証用のルート
+    Route::get('smtp-settings/{smtpSetting}/oauth/authorize', [OAuthController::class, 'authorize'])
+        ->name('oauth.authorize');
+    Route::get('smtp-settings/oauth/callback', [OAuthController::class, 'callback'])
+        ->name('oauth.callback');
 
 
 

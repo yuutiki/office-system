@@ -127,7 +127,7 @@
                         <div id="user-dropdown" class="relative w-full lg:ml-2 mt-2 lg:mt-0">
                             <input type="hidden" id="selected-user-id" name="selected_user_id" value="{{ $selectedUserId }}">
                             <button type="button" id="dropdown-toggle" class="block w-full p-2 pl-4 text-sm text-left text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400">
-                                <span id="selected-user-display" class="text-gray-800 dark:text-white whitespace-nowrap">
+                                <span id="selected-user-display"  data-default="ユーザーを選択" class="text-gray-800 dark:text-white whitespace-nowrap">
                                     @if($selectedUserId)
                                         {{ $salesUsers->find($selectedUserId)->user_name ?? 'ユーザーを選択' }}
                                     @else

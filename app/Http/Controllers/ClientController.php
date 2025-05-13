@@ -40,6 +40,7 @@ class ClientController extends Controller
         $tradeStatuses = TradeStatus::all();
         $clientTypes = ClientType::all();
         $installationTypes = InstallationType::all();
+        $salesUsers = User::select('id', 'user_name')->get();
 
         $selectedUserId = $request->selected_user_id;
 
@@ -81,7 +82,7 @@ class ClientController extends Controller
         $clients = $clientsQuery->paginate($perPage);
         $count = $clients->total();
 
-        return view('clients.index',compact('clients','count', 'affiliation2s', 'installationTypes', 'tradeStatuses', 'clientTypes', 'selectedTradeStatuses','selectedClientTypes','selectedInstallationTypes','salesUserId', 'affiliation2Id', 'clientName', 'selectedAffiliation2', 'selectedUserId'));
+        return view('clients.index',compact('clients','count', 'affiliation2s', 'installationTypes', 'tradeStatuses', 'clientTypes', 'selectedTradeStatuses','selectedClientTypes','selectedInstallationTypes','salesUserId', 'affiliation2Id', 'clientName', 'selectedAffiliation2', 'selectedUserId', 'salesUsers'));
     }
 
     public function create()
