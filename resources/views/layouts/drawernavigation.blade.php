@@ -514,6 +514,13 @@
                                     </x-nav-link>
                                 @endcan
                             </li>
+                            <li>
+                                @can('view_client_products')
+                                    <x-nav-link :href="route('client-products.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-100 rounded-sm dark:text-white hover:bg-gray-500 dark:hover:bg-gray-700" tabindex="-1">
+                                        <span class="flex-1 ml-10 whitespace-nowrap">{{ __('導入製品一覧') }}</span>
+                                    </x-nav-link>
+                                @endcan
+                            </li>
                         </ul>
                     </li>
                 @endcanany
