@@ -22,7 +22,7 @@ class StoreClientProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'client_id' => 'required|exists:clients,id',
+            // 'client_id' => 'required|exists:clients,id',
             'product_id' => 'required|exists:products,id',
             'product_version_id' => 'required|exists:product_versions,id',
             'is_customized' => 'required|boolean',
