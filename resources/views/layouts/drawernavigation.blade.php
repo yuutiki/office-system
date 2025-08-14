@@ -32,13 +32,15 @@
           
         <!-- Dropdown menu -->
         <div id="dropdownDots" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton">
-                @foreach ($links as $link)
-                <li>
-                    <a href="{{ $link->url }}" target="_blank" class="block px-4 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ $link->display_name }}</a>
-                </li>
-                @endforeach
-            </ul>
+            @if ($links->isNotEmpty())
+                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton">
+                    @foreach ($links as $link)
+                    <li>
+                        <a href="{{ $link->url }}" target="_blank" class="block px-4 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ $link->display_name }}</a>
+                    </li>
+                    @endforeach
+                </ul>
+            @endif
         </div>
 
         {{-- ダークモードスイッチャー
@@ -90,25 +92,26 @@
         
         <!-- 通知ボックスDropdown -->
         <div id="dropdownDivider" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-auto dark:bg-gray-700 dark:divide-gray-600 whitespace-nowrap">
-            <ul class="py-2 text-sm text-gray-900 dark:text-gray-200" aria-labelledby="dropdownDividerButton">
-                @foreach ($unreadNotifications  as $notification)
-                <li class="flex justify-between hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                    {{-- <p  class="block px-4 py-2">{{ $notification->data['notification_data']['reporter'] }}</p> --}}
-                    <form action="{{ route('notifications.read', $notification) }}" method="POST" style="display: inline;">
-                        @csrf
-                        <button type="submit" class="{{ is_null($notification->read_at) ? 'un-read' : '' }}">
-                            <div class="flex justify-between hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                {{-- <p class="block px-4 py-2">{{ $notification->data['content_data']['reporter']['user_name'] }}</p> --}}
-                                <p class="block px-4 py-2">{{ $notification->data['notification_data']['notification_title'] }}</p>
-                            </div>
-                        </button>
-                    </form>
-                    {{-- <a href="{{ $notification->data['notification_data']['action_url'] }}" class="block px-4 py-2">{{ $notification->data['notification_data']['message'] }}</a> --}}
-                    <div class="px-4 py-2">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</div>
-                </li>
-                @endforeach
-
-            </ul>
+            @if ($unreadNotifications->isNotEmpty())
+                <ul class="py-2 text-sm text-gray-900 dark:text-gray-200" aria-labelledby="dropdownDividerButton">
+                    @foreach ($unreadNotifications  as $notification)
+                        <li class="flex justify-between hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                            {{-- <p  class="block px-4 py-2">{{ $notification->data['notification_data']['reporter'] }}</p> --}}
+                            <form action="{{ route('notifications.read', $notification) }}" method="POST" style="display: inline;">
+                                @csrf
+                                <button type="submit" class="{{ is_null($notification->read_at) ? 'un-read' : '' }}">
+                                    <div class="flex justify-between hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                        {{-- <p class="block px-4 py-2">{{ $notification->data['content_data']['reporter']['user_name'] }}</p> --}}
+                                        <p class="block px-4 py-2">{{ $notification->data['notification_data']['notification_title'] }}</p>
+                                    </div>
+                                </button>
+                            </form>
+                            {{-- <a href="{{ $notification->data['notification_data']['action_url'] }}" class="block px-4 py-2">{{ $notification->data['notification_data']['message'] }}</a> --}}
+                            <div class="px-4 py-2">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</div>
+                        </li>
+                    @endforeach
+                </ul>
+            @endif
             <div class="py-1">
                 <a href="{{ route('notifications.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
                     すべてのメッセージを見る
@@ -116,7 +119,16 @@
             </div>
         </div>
 
-        <img class="w-10 h-10 rounded border-gray-500 border" src="{{ asset('storage/' . Auth::user()->profile_image) }}?{{ time() }}" alt="プロフィール画像">
+        {{-- <img class="w-10 h-10 rounded border-gray-500 border" src="{{ asset('storage/' . Auth::user()->profile_image) }}?{{ time() }}" alt="プロフィール画像"> --}}
+        @if (Auth::check() && Auth::user()->profile_image)
+            <img class="w-10 h-10 rounded border-gray-500 border"
+                src="{{ asset('storage/' . Auth::user()->profile_image) }}?{{ time() }}"
+                alt="プロフィール画像">
+        @else
+            <img class="w-10 h-10 rounded border-gray-500 border"
+                src="{{ asset('images/default-profile.png') }}"
+                alt="デフォルトプロフィール画像">
+        @endif
 
         {{-- ユーザ設定 --}}
         <div class=" sm:flex sm:items-center sm:ml-1">
@@ -212,6 +224,13 @@
                             @can('view_vendor_persons')
                                 <x-nav-link :href="route('client-contacts.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-100 rounded-sm dark:text-white hover:bg-gray-500 dark:hover:bg-gray-700" tabindex="-1">
                                     <span class="flex-1 ml-10 whitespace-nowrap">{{ __('業者担当者一覧') }}</span>
+                                </x-nav-link>
+                            @endcan
+                        </li>
+                        <li>
+                            @can('view_vendor_persons')
+                                <x-nav-link :href="route('client-products.index')" :active="request()->routeIs('#')" class="flex w-full items-center px-2 pb-1 text-gray-100 rounded-sm dark:text-white hover:bg-gray-500 dark:hover:bg-gray-700" tabindex="-1">
+                                    <span class="flex-1 ml-10 whitespace-nowrap">{{ __('導入製品一覧') }}</span>
                                 </x-nav-link>
                             @endcan
                         </li>

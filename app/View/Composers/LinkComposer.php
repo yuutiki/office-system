@@ -27,7 +27,7 @@ class LinkComposer
     private function getUserLinks()
     {
         if (!Auth::check()) {
-            return null;
+            return collect(); // ← ここを null ではなく空のコレクションに
         }
 
         $userId = Auth::id();

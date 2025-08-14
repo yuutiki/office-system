@@ -52,6 +52,7 @@ class DatabaseSeeder extends Seeder
         $this->call(AppSettingSeeder::class);
         $this->call(ClientSearchModalDisplayItemSeeder::class);
         $this->call(ProjectSearchModalDisplayItemSeeder::class);
+        $this->call(ProductSearchModalDisplayItemSeeder::class);
 
         // $this->call(T_CorporationSeeder::class);
         $this->call(T_ClientSeeder::class);

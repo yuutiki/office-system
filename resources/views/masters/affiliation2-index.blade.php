@@ -208,25 +208,25 @@
                               <div class="text-red-500">{{ $message }}</div>
                             @enderror
                             <div class="w-full flex flex-col col-span-2">
-                              <label for="affiliation2_kana_name-{{$affiliation2->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">英名称</label>
-                              <input type="text" maxlength="100" name="affiliation2_kana_name" id="affiliation2_kana_name-{{$affiliation2->id}}" value="{{old('affiliation2_kana_name',$affiliation2->affiliation2_kana_name)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
+                              <label for="affiliation2_name_kana-{{$affiliation2->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">英名称</label>
+                              <input type="text" maxlength="100" name="affiliation2_name_kana" id="affiliation2_name_kana-{{$affiliation2->id}}" value="{{old('affiliation2_name_kana',$affiliation2->affiliation2_name_kana)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
                             </div>
-                            @error('affiliation2_kana_name')
+                            @error('affiliation2_name_kana')
                               <div class="text-red-500">{{ $message }}</div>
                             @enderror
                             <div class="w-full flex flex-col col-span-2">
-                                <label for="affiliation2_eng_name-{{$affiliation2->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">英名称</label>
-                                <input type="text" maxlength="100" name="affiliation2_eng_name" id="affiliation2_eng_name-{{$affiliation2->id}}" value="{{old('affiliation2_eng_name',$affiliation2->affiliation2_eng_name)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
+                                <label for="affiliation2_name_en-{{$affiliation2->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">英名称</label>
+                                <input type="text" maxlength="100" name="affiliation2_name_en" id="affiliation2_name_en-{{$affiliation2->id}}" value="{{old('affiliation2_name_en',$affiliation2->affiliation2_name_en)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
                             </div>
-                            @error('affiliation2_eng_name')
+                            @error('affiliation2_name_en')
                               <div class="text-red-500">{{ $message }}</div>
                             @enderror
 
                             <div class="w-full flex flex-col col-span-2">
-                              <label for="affiliation2_short_name-{{$affiliation2->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">略称</label>
-                              <input type="text" maxlength="100" name="affiliation2_short_name" id="affiliation2_short_name-{{$affiliation2->id}}" value="{{old('affiliation2_short_name',$affiliation2->affiliation2_short_name)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
+                              <label for="affiliation2_name_short-{{$affiliation2->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">略称</label>
+                              <input type="text" maxlength="100" name="affiliation2_name_short" id="affiliation2_name_short-{{$affiliation2->id}}" value="{{old('affiliation2_name_short',$affiliation2->affiliation2_name_short)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
                             </div>
-                            @error('affiliation2_short_name')
+                            @error('affiliation2_name_short')
                               <div class="text-red-500">{{ $message }}</div>
                             @enderror
 

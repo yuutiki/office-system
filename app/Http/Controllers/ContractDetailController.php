@@ -12,6 +12,7 @@ use App\Models\ContractPartnerType;
 use App\Models\ContractSheetStatus;
 use App\Models\ContractType;
 use App\Models\ContractUpdateType;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ContractDetailController extends Controller
@@ -34,10 +35,12 @@ class ContractDetailController extends Controller
         $contractChangeTypes = ContractChangeType::all();
         $contractPartnerTypes = ContractPartnerType::all();
         $contractSheetStatuses = ContractSheetStatus::all();
+        $users = User::where('employee_status_id', 1)->get();
+
 
         $contract = Contract::findOrFail($contractId);
 
-        return view('contract-details.create',compact('contractTypes','contractUpdateTypes','contractChangeTypes','contractPartnerTypes','contractSheetStatuses','contract',));
+        return view('contract-details.create',compact('contractTypes', 'contractUpdateTypes', 'contractChangeTypes', 'contractPartnerTypes', 'contractSheetStatuses', 'contract', 'users'));
     }
 
     /**

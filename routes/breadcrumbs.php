@@ -55,16 +55,28 @@ Breadcrumbs::for('dashboard', function ($trail) {
                     $trail->push('編集', url('clients/' . $client->id . '/edit'));
                 });
 
-                        // ダッシュボード > 顧客一覧 > 編集 > 導入システム新規登録
-                        Breadcrumbs::for('createClientProduct', function ($trail) {
-                            $trail->parent('editClient');
-                            $trail->push('導入システム登録', url('client-product/create'));
-                        });
-
                 // ダッシュボード > 顧客一覧 > CSVアップロード
                 Breadcrumbs::for('csvUploadClients', function ($trail) {
                     $trail->parent('clients');
                     $trail->push('CSVアップロード', route('clients.showUploadForm'));
+                });
+
+        // ダッシュボード > 導入製品一覧
+        Breadcrumbs::for('clientProducts', function ($trail) {
+            $trail->parent('dashboard');
+            $trail->push('導入製品一覧', route('client-products.index'));
+        });
+
+                // ダッシュボード > 導入製品一覧 > 新規登録
+                Breadcrumbs::for('createClientProduct', function ($trail) {
+                    $trail->parent('clientProducts');
+                    $trail->push('登録', route('client-products.create'));
+                });
+
+                // ダッシュボード > 導入製品一覧 > 編集
+                Breadcrumbs::for('editClientProduct', function ($trail, $clientProduct) {
+                    $trail->parent('clientProducts');
+                    $trail->push('編集', route('client-products.edit', $clientProduct));
                 });
 
 
@@ -480,6 +492,21 @@ Breadcrumbs::for('dashboard', function ($trail) {
                 $tail->parent('app-settings');
                 $tail->push('所属階層利用設定', route('app-settings.index'));
             });
+
+            Breadcrumbs::for('smtp-settings', function ($tail) {
+                $tail->parent('app-settings');
+                $tail->push('送信元SMTP情報設定', route('smtp-settings.index'));
+            });
+
+                Breadcrumbs::for('createSmtpSetting', function ($tail) {
+                    $tail->parent('smtp-settings');
+                    $tail->push('新規作成', route('smtp-settings.create'));
+                });
+
+                Breadcrumbs::for('editSmtpSetting', function ($tail, $smtpSetting) {
+                    $tail->parent('smtp-settings');
+                    $tail->push('編集', route('smtp-settings.edit', $smtpSetting));
+                });
 
             Breadcrumbs::for('password-policy-setting', function ($tail) {
                 $tail->parent('app-settings');

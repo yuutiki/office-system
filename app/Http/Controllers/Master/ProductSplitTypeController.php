@@ -13,7 +13,7 @@ class ProductSplitTypeController extends Controller
     public function index()
     {
         $productTypes = ProductType::all();
-        $productSplitTypes = ProductSplitType::with('updatedBy')->orderBy('split_type_code','asc')->paginate();
+        $productSplitTypes = ProductSplitType::with('updatedBy', 'productType')->orderBy('split_type_code','asc')->paginate();
         return view('masters.product-split-type-index',compact('productSplitTypes','productTypes'));
     }
 

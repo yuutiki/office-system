@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Observers\GlobalObserver;
+use Kyslik\ColumnSortable\Sortable;
 
 class ClientProduct extends Model
 {
-    use HasFactory;
+    use HasFactory, Sortable;
 
     protected $fillable = [
         'client_id',
@@ -42,19 +43,18 @@ class ClientProduct extends Model
     {
         return $this->belongsTo(Client::class, 'client_id', 'id');
     }
-
+    public function productSeries()
+    {
+        return $this->belongsTo(ProductSeries::class, 'product_series_id', 'id');
+    }
     public function productVersion()
     {
-        return $this->belongsTo(ProductVersion::class, 'product_version_id' ,'id');
+        return $this->belongsTo(ProductVersion::class, 'product_version_id', 'id');
     }
-
-    // 作成者とのリレーション
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
-
-    // 更新者とのリレーション
     public function updatedBy()
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');

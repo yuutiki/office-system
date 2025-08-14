@@ -48,10 +48,12 @@ use App\Http\Controllers\SupportController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\Auth\PasswordChangeController;
 use App\Http\Controllers\ClientContactCheckboxOptionController;
+use App\Http\Controllers\ClientProductController;
 use App\Http\Controllers\ClientSearchModalDisplayItemController;
 use App\Http\Controllers\CorporationCreditController;
 use App\Http\Controllers\EstimateAddressController;
 use App\Http\Controllers\ModelHistoryController;
+use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\PasswordPolicyController;
 use App\Http\Controllers\ProjectExpenseController;
 use App\Http\Controllers\SmtpSettingController;
@@ -264,8 +266,13 @@ Route::middleware(['auth'])->group(function () {
     ->name('api.links.update');
 
 
+
+    Route::post('/client-products/bulk-update', [ClientProductController::class, 'bulkUpdate'])->name('client-products.bulkUpdate');
+    Route::post('/client-products/bulk-delete', [ClientProductController::class, 'bulkDelete'])->name('client-products.bulkDelete');
+    Route::resource('/client-products' , '\App\Http\Controllers\ClientProductController');
+
+
     Route::resource('/link', '\App\Http\Controllers\LinkController');
-    Route::resource('/client-product' , '\App\Http\Controllers\ClientProductController');
     Route::resource('/projectrevenue' , '\App\Http\Controllers\ProjectRevenueController');
 
 
@@ -345,45 +352,51 @@ Route::middleware(['auth'])->group(function () {
         ->name('sso.generate');
 
 
+
+
+
+        // routes/web.php
+        Route::post('/client/contacts/checkbox-options/add', [ClientContactController::class, 'addCheckboxOption'])
+            ->name('client.contacts.checkbox-options.add')
+            ->middleware('can:manage-checkbox-options');
+        
+        // チェックボックスオプション管理のルート
+        Route::prefix('client-contacts-checkbox-options')->name('client-contacts.checkbox-options.')->group(function () {
+            Route::get('/', [ClientContactCheckboxOptionController::class, 'index'])->name('index');
+            Route::get('/create', [ClientContactCheckboxOptionController::class, 'create'])->name('create');
+            Route::post('/', [ClientContactCheckboxOptionController::class, 'store'])->name('store');
+            Route::get('/{clientContactCheckboxOption}/edit', [ClientContactCheckboxOptionController::class, 'edit'])->name('edit');
+            Route::put('/{clientContactCheckboxOption}', [ClientContactCheckboxOptionController::class, 'update'])->name('update');
+            Route::patch('/{clientContactCheckboxOption}/toggle-active', [ClientContactCheckboxOptionController::class, 'toggleActive'])->name('toggle-active');
+            Route::post('/update-order', [ClientContactCheckboxOptionController::class, 'updateOrder'])->name('update-order');
+        });
+        
+        
+        
+        
+        
+        // SMTP設定ルート
+        Route::resource('smtp-settings', SmtpSettingController::class);
+        
+            // 設定の有効化
+        // Route::post('smtp-settings/{smtpSetting}/activate', [SmtpSettingController::class, 'setActive'])
+        //     ->name('smtp-settings.activate');
+        
+        // テストメール送信
+        Route::post('smtp-settings/{smtpSetting}/test', [SmtpSettingController::class, 'testConnection'])
+            ->name('smtp-settings.test');
+        
+        // OAuth認証用のルート
+        Route::get('smtp-settings/{smtpSetting}/oauth/authorize-oauth', [OAuthController::class, 'authorizeOAuth'])
+            ->name('oauth.authorize');
+        
+        Route::get('oauth/callback', [OAuthController::class, 'callback'])
+            ->name('oauth.callback');
+
+
 });
 
-    // routes/web.php
-    Route::post('/client/contacts/checkbox-options/add', [ClientContactController::class, 'addCheckboxOption'])
-        ->name('client.contacts.checkbox-options.add')
-        ->middleware('can:manage-checkbox-options');
-
-    // チェックボックスオプション管理のルート
-    Route::prefix('client-contacts-checkbox-options')->name('client-contacts.checkbox-options.')->group(function () {
-        Route::get('/', [ClientContactCheckboxOptionController::class, 'index'])->name('index');
-        Route::get('/create', [ClientContactCheckboxOptionController::class, 'create'])->name('create');
-        Route::post('/', [ClientContactCheckboxOptionController::class, 'store'])->name('store');
-        Route::get('/{clientContactCheckboxOption}/edit', [ClientContactCheckboxOptionController::class, 'edit'])->name('edit');
-        Route::put('/{clientContactCheckboxOption}', [ClientContactCheckboxOptionController::class, 'update'])->name('update');
-        Route::patch('/{clientContactCheckboxOption}/toggle-active', [ClientContactCheckboxOptionController::class, 'toggleActive'])->name('toggle-active');
-        Route::post('/update-order', [ClientContactCheckboxOptionController::class, 'updateOrder'])->name('update-order');
-    });
-
-
-
-
-
-    // routes/web.php
-    Route::prefix('smtp-settings')->name('smtp-settings.')->group(function () {
-        Route::get('/', [SmtpSettingController::class, 'index'])->name('index');
-        Route::get('/create', [SmtpSettingController::class, 'create'])->name('create');
-        Route::post('/', [SmtpSettingController::class, 'store'])->name('store');
-        Route::get('/{smtpSetting}/edit', [SmtpSettingController::class, 'edit'])->name('edit');
-        Route::put('/{smtpSetting}', [SmtpSettingController::class, 'update'])->name('update');
-        Route::delete('/{smtpSetting}', [SmtpSettingController::class, 'destroy'])->name('destroy');
-        Route::post('/{smtpSetting}/activate', [SmtpSettingController::class, 'setActive'])->name('activate');
-        Route::post('/{smtpSetting}/test', [SmtpSettingController::class, 'testConnection'])->name('test');
-    });
-
-    // OAuth認証用のルート
-    Route::get('smtp-settings/{smtpSetting}/oauth/authorize', [OAuthController::class, 'authorize'])
-        ->name('oauth.authorize');
-    Route::get('smtp-settings/oauth/callback', [OAuthController::class, 'callback'])
-        ->name('oauth.callback');
+        
 
 
 

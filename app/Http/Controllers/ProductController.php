@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\User;//add
 use App\Models\Affiliation2;//add
 use App\Models\ProductMaker;//add
+use App\Models\ProductSearchModalDisplayItem;
 use App\Models\ProductSeries;//add
 use App\Models\ProductType;//add
 use App\Models\ProductSplitType;//add
@@ -308,19 +309,31 @@ public function getSplitTypes($productTypeId)
             ->where('is_listed', '=',  '1');
     
         // 検索条件が指定されている場合のみクエリに追加
-        if ($request->filled('productName')) {
-            $query->where('product_name', 'LIKE', '%' . $request->input('productName') . '%');
+        if ($request->filled('product_name')) {
+            $query->where('product_name', 'LIKE', '%' . $request->input('product_name') . '%');
         }
-        if ($request->filled('productSeriesId')) {
-            $query->where('product_series_id', 'LIKE', '%' . $request->input('productSeriesId') . '%');
+        if ($request->filled('product_series_id')) {
+            $query->where('product_series_id', 'LIKE', '%' . $request->input('product_series_id') . '%');
         }
-        if ($request->filled('productSplitTypeId')) {
-            $query->where('product_split_type_id', '=', $request->input('productSplitTypeId'));
+        if ($request->filled('product_type_id')) {
+            $query->where('product_type_id', '=', $request->input('product_type_id'));
         }
-    
-        $products = $query->with('productSplitType', 'affiliation2', 'productSeries')->get();
-    
-        return response()->json($products);
+        if ($request->filled('product_split_type_id')) {
+            $query->where('product_split_type_id', '=', $request->input('product_split_type_id'));
+        }
+        $products = $query->with('productType', 'productSplitType', 'affiliation2', 'productSeries')->get();
+        
+        // 画面IDに応じた表示項目を取得
+        $displayItems = ProductSearchModalDisplayItem::where('screen_id', $request->screen_id)
+            ->where('is_visible', true)
+            ->orderBy('display_order')
+            ->get();
+
+        // 新しいレスポンス形式に合わせて返却
+        return response()->json([
+            'results' => $products,
+            'displayItems' => $displayItems
+        ]);
     }
 
 

@@ -58,11 +58,7 @@
                     @endcan
                 </form>
 
-                <button id="dropdownActionButton" data-dropdown-toggle="dropdownActions" class="inline-flex items-center p-2.5 text-sm font-medium text-center hover:bg-[#313a48] bg-[#364050] text-white rounded focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-600" type="button">
-                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
-                        <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
-                    </svg>
-                </button>
+                <x-buttons.dropdown-edit-button />
             </div>
 
             <!-- Dropdown menu -->
@@ -132,7 +128,7 @@
                 @enderror
             </div>
             <div class="w-full flex flex-col">
-                <label for="corporation_tax_num" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">法人番号（国税庁）</label>
+                <label for="corporation_tax_num" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">法人番号（登記）</label>
                 <input type="text" form="corporationForm" name="corporation_tax_num" id="corporation_tax_num" value="{{old('corporation_tax_num',$corporation->corporation_tax_num)}}" class="input-primary" placeholder="123456789123">
                 @error('corporation_tax_num')
                     <div class="text-red-500">{{$message}}</div>

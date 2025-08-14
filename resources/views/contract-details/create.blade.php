@@ -75,14 +75,20 @@
                 <div class="grid gap-4 md:grid-cols-2 mt-4">
                     <div>
                         <label for="contract_start_at" class="dark:text-gray-100 text-gray-900">契約開始日</label>
-                        <input type="date" min="1900-01-01" max="2200-12-31" name="contract_start_at" id="contract_start_at" value="{{old('contract_start_at')}}" class="input-primary">
+                        <input type="date" min="1900-01-01" max="2200-12-31" 
+                            name="contract_start_at" id="contract_start_at" 
+                            value="{{ old('contract_start_at') }}" 
+                            class="input-primary">
                         @error('contract_start_at')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
                     <div>
                         <label for="contract_end_at" class="dark:text-gray-100 text-gray-900">契約終了日</label>
-                        <input type="date" min="1900-01-01" max="2200-12-31" name="contract_end_at" id="contract_end_at" value="{{old('contract_end_at')}}" class="input-primary">
+                        <input type="date" min="1900-01-01" max="2200-12-31" 
+                            name="contract_end_at" id="contract_end_at" 
+                            value="{{ old('contract_end_at') }}" 
+                            class="input-primary">
                         @error('contract_end_at')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
@@ -118,7 +124,7 @@
                         <label for="project_num" class="dark:text-gray-100 text-gray-900 leading-none mt-1">プロジェクト№</label>
                         <div class="relative w-full">
                             <input type="text" name="project_num"  id="project_num" value="{{old('project_num')}}" class="dark:bg-gray-400 w-full py-1 border border-gray-700 rounded" readonly>
-                            <button type="button" id="searchProjectButton" onclick="showProjectModal()" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-[34px] text-white bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                            <button type="button" id="searchProjectButton" onclick="ProjectSearchModal.show('projectSearchModal1')" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-[34px] text-white bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
                                 <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                 </svg>
@@ -162,59 +168,29 @@
     </div>
 
 
-    <!-- PJ検索 Modal -->
-    <div id="projectSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden animate-slide-in-top">
-        <div class="max-h-full w-full max-w-2xl">
-            <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
 
-                <!-- Modal header -->
-                <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
-                    <h3 class="text-xl font-medium text-gray-900 dark:text-white">
-                        プロジェクト検索画面
-                    </h3>
-                </div>
+    <x-modals.project-search-modal 
+    modalId="projectSearchModal1" 
+    screenId="keepfile_create" 
+    :users="$users" 
+    onSelectCallback="handleProjectSelect" 
+    />
 
-                <!-- Modal body -->
-                <form action="#" method="GET">
-                    <!-- 検索条件入力フォーム -->
-                    <div class="grid gap-4 mb-4 sm:grid-cols-2 mt-2">
-                        <div class="">
-                            <label for="projectNumber" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none">プロジェクト№</label>
-                            <input type="text" name="projectNumber" id="projectNumber" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
-                        </div>
-                        <div class="">
-                            <label for="projectName" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none">プロジェクト名称</label>
-                            <input type="text" name="projectName" id="projectName" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
-                        </div>
-                    </div>
-                </form>
-                <div class=" max-h-80 overflow-y-auto overflow-x-hidden mt-4">
-                    <table class="w-full mt-4 text-white mb-5 text-left text-sm">
-                        <thead>
-                        <tr>
-                            <th class="py-1 pl-5 whitespace-nowrap">プロジェクト№</th>
-                            <th class="py-1">プロジェクト名称</th>
-                        </tr>
-                        </thead>
-                        <tbody class="" id="searchResultsProjectContainer">                          
-                                <!-- 検索結果がここに追加されます -->
-                        </tbody>
-                    </table>
-                </div>
-                
-                <!-- Modal footer -->
-                <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                    <button type="button" onclick="searchProject()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        検索
-                    </button>
-                    <button type="button" onclick="hideProjectModal()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                        閉じる
-                    </button> 
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <script>
+        // プロジェクト選択時の処理を定義
+        function handleProjectSelect(project) {
+            // 選択されたプロジェクトの情報を各フィールドに設定
+            document.getElementById('project_id').value = project.id;
+            document.getElementById('project_num').value = project.project_num;
+            document.getElementById('project_name').value = project.project_name;
+            // document.getElementById('project_client_name').value = project.client.client_name;
+            document.getElementById('account_user').value = project.account_user.user_name;
+            document.getElementById('sales_stage_name').value = project.sales_stage.sales_stage_name;
+        }
+        // モーダルのコールバック関数を設定
+        window.projectSearchModal1_onSelect = handleProjectSelect;
+    </script>
+    <script src="{{ asset('/assets/js/modal/project-search-modal.js') }}"></script>
 
 
 
@@ -230,5 +206,27 @@
             }
         }
     </script>
+
+
+
+<script>
+    document.getElementById('contract_start_at').addEventListener('change', function () {
+        const startDate = this.value;
+        if (!startDate) return;
+
+        let start = new Date(startDate);
+        // 1年後に設定
+        let end = new Date(start);
+        end.setFullYear(end.getFullYear() + 1);
+        // 1日引く
+        end.setDate(end.getDate() - 1);
+
+        // 日付をYYYY-MM-DD形式に整形
+        const yyyy = end.getFullYear();
+        const mm = String(end.getMonth() + 1).padStart(2, '0');
+        const dd = String(end.getDate()).padStart(2, '0');
+        document.getElementById('contract_end_at').value = `${yyyy}-${mm}-${dd}`;
+    });
+</script>
 
 </x-app-layout>

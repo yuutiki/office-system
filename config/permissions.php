@@ -62,6 +62,16 @@ return [
             'admin' => 6,
         ],
     ],
+    'client_products' => [
+        'function_menu_code' => '1041',
+        'permissions' => [
+            'view' => 2,
+            'storeUpdate' => 3,
+            'delete' => 4,
+            'download' => 5,
+            'admin' => 6,
+        ],
+    ],
     'supports' => [
         'function_menu_code' => '1050',
         'permissions' => [

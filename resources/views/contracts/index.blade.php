@@ -254,9 +254,6 @@
                         <td class="px-1 py-1 whitespace-nowrap">
                             {{$contract->contractType->contract_type_name}}
                         </td>
-                        <td class="px-1 py-1 whitespace-nowrap">
-                            {{$contract->title}}
-                        </td>
                         <td class="py-1">
                             <button type="button" data-modal-target="deleteModal-{{$contract->id}}" data-modal-show="deleteModal-{{$contract->id}}" class="button-delete-primary">
                                 <div class="flex">

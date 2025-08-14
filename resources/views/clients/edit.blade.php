@@ -17,11 +17,7 @@
                     @endcan
                 </form>
 
-                <button id="dropdownActionButton" data-dropdown-toggle="dropdownActions" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-600" type="button">
-                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
-                        <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
-                    </svg>
-                </button>
+                <x-buttons.dropdown-edit-button />
             </div>
 
             <!-- Dropdown menu -->
@@ -105,49 +101,72 @@
 
             {{-- タブヘッダStart --}}
             <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
-                <ul class="flex flex-wrap -mb-px text-sm text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
-                    <li class="mr-2" role="presentation">
-                        <button onclick="changeTab('base')" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="base-tab" data-tabs-target="#base" type="button" role="tab" aria-controls="base" aria-selected="{{ $activeTab === 'base' ? 'true' : 'false' }}">
-                            基本
-                        </button>
-                    </li>
-                    <li class="mr-2" role="presentation">
-                        <button onclick="changeTab('contracts')" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="contracts-tab" data-tabs-target="#contracts" type="button" role="tab" aria-controls="contracts" aria-selected="{{ $activeTab === 'contracts' ? 'true' : 'false' }}">
-                            契約
+                <ul class="flex flex-nowrap overflow-x-auto -mb-px text-sm text-center scrollbar-hide" 
+                    id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
+
+                    <li class="mr-2 flex-shrink-0" role="presentation">
+                        <button onclick="changeTab('base')" 
+                            class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                            id="base-tab" data-tabs-target="#base" type="button" role="tab" aria-controls="base" 
+                            aria-selected="{{ $activeTab === 'base' ? 'true' : 'false' }}">
+                            基本情報
                         </button>
                     </li>
 
-                @if ($client->is_enduser)
-                    <li class="mr-2" role="presentation">
-                        <button onclick="changeTab('environments')" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="environments-tab" data-tabs-target="#environments" type="button" role="tab" aria-controls="environments" aria-selected="{{ $activeTab === 'environments' ? 'true' : 'false' }}">
-                            環境
+                    <li class="mr-2 flex-shrink-0" role="presentation">
+                        <button onclick="changeTab('contracts')" 
+                            class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                            id="contracts-tab" data-tabs-target="#contracts" type="button" role="tab" aria-controls="contracts" 
+                            aria-selected="{{ $activeTab === 'contracts' ? 'true' : 'false' }}">
+                            契約情報
                         </button>
                     </li>
-                @endif
-                @if ($client->is_enduser)
-                    <li class="mr-2" role="presentation">
-                        <button onclick="changeTab('systems')" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="systems-tab" data-tabs-target="#systems" type="button" role="tab" aria-controls="systems" aria-selected="{{ $activeTab === 'systems' ? 'true' : 'false' }}">
-                            製品
-                        </button>
-                    </li>
-                @endif
 
-                    <li class="mr-2" role="presentation">
-                        <button onclick="changeTab('reports')" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="reports-tab" data-tabs-target="#reports" type="button" role="tab" aria-controls="reports" aria-selected="{{ $activeTab === 'reports' ? 'true' : 'false' }}">
+                    @if ($client->is_enduser)
+                    <li class="mr-2 flex-shrink-0" role="presentation">
+                        <button onclick="changeTab('environments')" 
+                            class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                            id="environments-tab" data-tabs-target="#environments" type="button" role="tab" aria-controls="environments" 
+                            aria-selected="{{ $activeTab === 'environments' ? 'true' : 'false' }}">
+                            環境情報
+                        </button>
+                    </li>
+                    @endif
+
+                    @if ($client->is_enduser)
+                    <li class="mr-2 flex-shrink-0" role="presentation">
+                        <button onclick="changeTab('systems')" 
+                            class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                            id="systems-tab" data-tabs-target="#systems" type="button" role="tab" aria-controls="systems" 
+                            aria-selected="{{ $activeTab === 'systems' ? 'true' : 'false' }}">
+                            製品情報
+                        </button>
+                    </li>
+                    @endif
+
+                    <li class="mr-2 flex-shrink-0" role="presentation">
+                        <button onclick="changeTab('reports')" 
+                            class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                            id="reports-tab" data-tabs-target="#reports" type="button" role="tab" aria-controls="reports" 
+                            aria-selected="{{ $activeTab === 'reports' ? 'true' : 'false' }}">
                             営業報告
                         </button>
                     </li>
-                
+                    
                     @if ($client->is_enduser)
-                    <li class="mr-2" role="presentation">
-                        <button onclick="changeTab('supports')" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="supports-tab" data-tabs-target="#supports" type="button" role="tab" aria-controls="supports" aria-selected="{{ $activeTab === 'supports' ? 'true' : 'false' }}">
+                    <li class="mr-2 flex-shrink-0" role="presentation">
+                        <button onclick="changeTab('supports')" 
+                            class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                            id="supports-tab" data-tabs-target="#supports" type="button" role="tab" aria-controls="supports" 
+                            aria-selected="{{ $activeTab === 'supports' ? 'true' : 'false' }}">
                             サポート
                         </button>
                     </li>
-                @endif
+                    @endif
 
                 </ul>
             </div>
+
             {{-- タブコンテンツStart --}}
             <div id="myTabContent" class="mb-4">
                 @error('updated_at')
@@ -460,14 +479,7 @@
 
                 {{-- 3つ目のタブコンテンツ(導入システム)Start --}}
                 <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="systems" role="tabpanel" aria-labelledby="systems-tab">
-                    <span class="text-white">この顧客のサポート問い合わせ情報の内容が表示されます。ここからサポート情報を登録することもできます。</span>
-
-                    {{-- <div class="w-full flex flex-col">
-                        <label for="" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">主バージョン</label>
-                        <input type="text" name="" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="" value="{{ old('',"V10.1") }}" placeholder="">
-                    </div> --}}
-
-                    <div class="w-full relative overflow-x-auto shadow-md rounded mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
+                    <div class="w-full relative overflow-x-auto shadow-md rounded-sm mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
                         <table class="w-full text-sm text-left text-gray-800 dark:text-gray-400">
                 
                             {{-- テーブルヘッダ start --}}
@@ -477,51 +489,51 @@
                                         <span class="sr-only">編集</span>
                                     </th>
                                     <th scope="col" class="px-4 py-2 whitespace-nowrap">
-                                        <div class="flex items-center">
+                                        <div class="flex items-center font-normal">
                                             シリーズ
                                         </div>
                                     </th>
                                     <th scope="col" class="px-1 py-2 whitespace-nowrap">
-                                        <div class="flex items-center">
+                                        <div class="flex items-center font-normal">
                                             バージョン
                                         </div>
                                     </th>
                                     <th scope="col" class="px-2 py-2 whitespace-nowrap">
-                                        <div class="flex items-center">
+                                        <div class="flex items-center font-normal">
                                             内訳種別
                                         </div>
                                     </th>
                                     <th scope="col" class="px-1 py-2 whitespace-nowrap">
-                                        <div class="flex items-center">
+                                        <div class="flex items-center font-normal">
                                             導入システム名称
                                         </div>
                                     </th>
                                     <th scope="col" class="px-2 py-2 whitespace-nowrap">
-                                        <div class="flex items-center">
+                                        <div class="flex items-center font-normal">
                                             数量
                                         </div>
                                     </th>
                                     <th scope="col" class="px-2 py-2 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            CUS
+                                        <div class="flex items-center font-normal">
+                                            カスタマイズ
                                         </div>
                                     </th>
                                     <th scope="col" class="px-2 py-2 whitespace-nowrap">
-                                        <div class="flex items-center">
+                                        <div class="flex items-center font-normal">
                                             契約区分
                                         </div>
                                     </th>
                                     <th scope="col" class="px-2 py-2 whitespace-nowrap">
-                                        <div class="flex items-center">
+                                        <div class="flex items-center font-normal">
                                             導入備考
                                         </div>
                                     </th>
                                     <th scope="col" class="px-2 py-2 whitespace-nowrap">
-                                        <button onclick="location.href='{{ route('client-product.create') }}'" class="bg-blue-400 flex items-center justify-center px-2 py-1 text-sm text-white rounded bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" type="button">
-                                            <svg class="h-3.5 w-3.5 mr-0.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+               
+                                        <button id="dropdownActionButton" data-dropdown-toggle="dropdown-systems" class="inline-flex items-center p-1 text-sm font-medium text-center hover:bg-[#313a48] bg-[#364050] text-white rounded-sm ocus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" type="button">
+                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                                                <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
                                             </svg>
-                                            <span class="text-sm">追加</span>
                                         </button>
                                     </th>
                                 </tr>
@@ -597,6 +609,39 @@
                         </div> 
                     </div> 
                 </div>
+
+                <!-- Dropdown menu -->
+                <div id="dropdown-systems" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-60 dark:bg-gray-700 dark:divide-gray-600">
+                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownActionButton">
+                        {{-- <li>
+                            <button type="button" data-modal-target="deleteModal-{{$corporation->id}}" data-modal-show="deleteModal-{{$corporation->id}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-red-500 dark:text-red-500">
+                                <div class="flex">
+                                    <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                                    <span class="font-semibold">削除</span>
+                                </div>
+                            </button>
+                        </li>
+                        <li>
+                            <span class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full">更新日：{{ $corporation->updated_at }}</span>
+                        </li> --}}
+                        <li class="hover:bg-gray-400 text-left">
+                            <button onclick="location.href='{{ route('client-product.create') }}'" class="ml-2 w-full flex items-center font-normal justify-start px-2 py-1 text-sm text-white rounded bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" type="button">
+                                <svg class="h-3.5 w-3.5 mr-0.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                                </svg>
+                                <span class="text-sm ml-4">追加</span>
+                            </button>
+                        </li>
+                        <li class="hover:bg-gray-400 text-left">
+                            <button onclick="location.href='{{ route('client-product.create') }}'" class="ml-2 w-full flex items-center font-normal justify-start px-2 py-1 text-sm text-white rounded bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" type="button">
+                                <svg class="h-3.5 w-3.5 mr-0.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                                </svg>
+                                <span class="text-sm ml-4">バージョン変更</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>                
                 {{-- 3つ目のタブコンテンツEnd --}}
 
                 {{-- 4つ目のタブコンテンツStart --}}

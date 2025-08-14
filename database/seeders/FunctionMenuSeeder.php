@@ -61,6 +61,14 @@ class FunctionMenuSeeder extends Seeder
             'updated_at' => now(),
         ]);
         FunctionMenu::create([
+            'function_menu_code' => '1041',
+            'function_menu_name' => '導入製品管理',
+            'created_by' => 1,
+            'updated_by' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        FunctionMenu::create([
             'function_menu_code' => '1050',
             'function_menu_name' => 'サポート管理',
             'created_by' => 1,

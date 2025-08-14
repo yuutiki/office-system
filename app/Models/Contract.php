@@ -67,4 +67,8 @@ class Contract extends Model
     {
         return $this->belongsTo(ContractsheetStatus::class);
     }
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id');
+    }
 }

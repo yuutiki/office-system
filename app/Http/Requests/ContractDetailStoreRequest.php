@@ -32,6 +32,7 @@ class ContractDetailStoreRequest extends FormRequest
             'target_system' => 'max:2000',
             'contract_detail_memo' => 'max:2000',
             'project_id' => 'required',
+            'project_name' => 'required',
         ];
     }
 

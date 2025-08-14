@@ -1,46 +1,125 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between w-5/6">
+        <div class="flex justify-between">
             <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('editContract', $contract) }}
             </h2>
-            <x-message :message="session('message')" />
+            <div class="flex justify-end items-center space-x-2">
+                <x-message :message="session('message')" />
+
+                <form method="post" action="{{ route('contracts.update', $contract) }}" enctype="multipart/form-data" id="updateForm" class="flex items-center">
+                    @csrf
+                    @method('patch')
+                    @can('storeUpdate_corporations')
+                        <x-buttons.save-button form-id="updateForm" id="saveButton" class="">
+                            {{ __("update") }}
+                        </x-buttons.save-button>
+                    @endcan
+                </form>
+
+                <button id="dropdownActionButton" data-dropdown-toggle="dropdownActions" class="inline-flex items-center p-2.5 text-sm font-medium text-center hover:bg-[#313a48] bg-[#364050] text-white rounded focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-600" type="button">
+                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                        <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+                    </svg>
+                </button>    
+            </div>
+            <!-- Dropdown menu -->
+            <div id="dropdownActions" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-60 dark:bg-gray-700 dark:divide-gray-600">
+                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownActionButton">
+                    <li>
+                        <button type="button" data-modal-target="deleteModal-{{$contract->id}}" data-modal-show="deleteModal-{{$contract->id}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-red-500 dark:text-red-500">
+                            <div class="flex">
+                                <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                                <span class="font-semibold">削除</span>
+                            </div>
+                        </button>
+                    </li>
+                    <li>
+                        <span class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full">更新日：{{ $contract->updated_at }}</span>
+                    </li>
+                    <li>
+                        <span class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full">更新者：{{ $contract->updatedBy->user_name }}</span>
+                    </li>
+                </ul>
+            </div>
         </div>
     </x-slot>
 
-    <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
+    <div class="mx-2 md:pl-12 pb-2">
+        <div class="mx-auto md:w-full my-4 rounded shadow-md overflow-hidden border border-gray-200 dark:border-gray-600">
+            <table class="w-full text-sm text-left divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
+                <tbody>
+                    <!-- 顧客No. -->
+                    {{-- <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
+                            顧客No.
+                        </th>
+                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
+                            <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300">{{ $client->client_num }}</div>
+                        </td>
+                    </tr> --}}
 
-    <div class="mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="mx-4 sm:p-8">
-            <div class="grid gap-4 mb-4 md:grid-cols-4">
-                <div class="">
-                    <label class="block text-sm dark:text-gray-100 text-gray-900 leading-none sm:mt-2 mt-4">顧客番号</label>
-                    <input type="text" name="client_num"  value="{{ $client->client_num }}" class="input-readonly" readonly>
-                </div>
-                <div class="">
-                    <label class="block text-sm dark:text-gray-100 text-gray-900 leading-none sm:mt-2">契約連番</label>
-                    <input type="text" name="contract_num" value="{{ $contract->contract_num }}" class="input-readonly" readonly>
-                </div>
-            </div>
+                    
+                    <!-- 法人名称 -->
+                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
+                            法人名称
+                        </th>
+                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
+                            <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300">{{ $client->corporation->corporation_name }}</div>
+                        </td>
+                    </tr>
+                    
+                    <!-- 顧客名称 -->
+                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
+                            顧客名称
+                        </th>
+                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
+                            <div class="flex items-center">
+                                <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300">{{ $client->client_num }}：{{ $client->client_name }}</div>
+                                <span class="bg-blue-100 text-blue-800 text-xs font-medium ml-2 inline-block px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                    {{ $client->tradeStatus->trade_status_name }}
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- 管轄所属 -->
+                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
+                            管轄所属
+                        </th>
+                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
+                            <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300">{{ $client->affiliation2->affiliation2_name }}</div>
+                        </td>
+                    </tr>
+                    
+                    <!-- 営業担当 -->
+                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
+                            営業担当
+                        </th>
+                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
+                            <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300 whitespace-pre-wrap">{{ $client->user->user_name }}</div>
+                        </td>
+                    </tr>
 
-            <div class="grid gap-4 mb-4 lg:grid-cols-4">
-                <div class="">
-                    <label class="block text-sm dark:text-gray-100 text-gray-900 leading-none sm:mt-2">法人名称</label>
-                    <input type="text" name="corporation_name" value="{{ $client->corporation->corporation_name }}" class="input-readonly" readonly>
-                </div>
-                <div class="">
-                    <label class="block text-sm dark:text-gray-100 text-gray-900 leading-none sm:mt-2">顧客名称</label>
-                    <input type="text" name="client_name" value="{{ $client->client_name }}" class="input-readonly" readonly>
-                </div>
-                <div class="">
-                    <label class="block text-sm dark:text-gray-100 text-gray-900 leading-none sm:mt-2">管轄所属</label>
-                    <input type="text" name="user_name" value="{{ $client->affiliation2->affiliation2_name }}" class="input-readonly" readonly>
-                </div>
-                <div class="">
-                    <label class="block text-sm dark:text-gray-100 text-gray-900 leading-none sm:mt-2">営業担当</label>
-                    <input type="text" name="user_name" value="{{ $client->user->user_name }}" class="input-readonly" readonly>
-                </div>
-            </div>
+                    <!-- 契約連番 -->
+                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
+                            契約連番
+                        </th>
+                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
+                            <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300">{{ $contract->contract_num }}</div>
+                        </td>
+                    </tr>                        
+                </tbody>
+            </table>
+        </div>
+
+
+
 
             <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
                 <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
@@ -298,16 +377,16 @@
                                             @endif
                                         </td>
 
-                                        <td class="px-2 py-1">
+                                        {{-- <td class="px-2 py-1">
                                             <button data-modal-target="deleteModal-{{$contractDetail->id}}" data-modal-toggle="deleteModal-{{$contractDetail->id}}"  class="button-delete-primary" type="button">
                                                 <div class="flex items-center">
                                                     <svg aria-hidden="true" class="w-[17px] h-[17px] mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
                                                     <span class="text-ms ">削除</span>
                                                 </div>
                                             </button>
-                                        </td>
+                                        </td> --}}
                                     </tr>
-                                    <tr>
+                                    {{-- <tr>
                                         <td>
                                             <div id="deleteModal-{{$contractDetail->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full animate-slide-in-top justify-center">
                                                 <div class="relative w-full max-w-md max-h-full">
@@ -341,9 +420,8 @@
                                                 </div>
                                             </div>
                                         </td>
-                                    </tr>
+                                    </tr> --}}
                                 @endforeach
-
 
                             </tbody>
                         </table>
@@ -437,17 +515,11 @@
 
                     <div>
                         <div class="w-full flex flex-col">
-                            <label for="contract_memo" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">契約備考</label>
-                            <textarea form="updateForm" name="contract_memo" class="w-auto py-1 border border-gray-300 rounded mt-1" data-auto-resize="true" id="auto-resize-textarea-content" value="{{old('contract_memo')}}" cols="30" rows="5" data-auto-resize="true">{{old('contract_memo', $contract->contract_memo)}}</textarea>
+                            <label for="contract_memo" class="dark:text-gray-100 text-gray-900 leading-none mt-4">契約備考</label>
+                            <textarea form="updateForm" name="contract_memo" class="input-secondary" data-auto-resize="true" id="auto-resize-textarea-content" value="{{old('contract_memo')}}" cols="30" rows="5" data-auto-resize="true">{{old('contract_memo', $contract->contract_memo)}}</textarea>
                         </div>
 
-                        <form id="updateForm" method="post" action="{{route('contracts.update', $contract)}}" enctype="multipart/form-data" autocomplete="new-password">
-                            @csrf
-                            @method('patch')
-                            <x-primary-button class="mt-4" form="updateForm" id="saveButton">
-                                編集を確定する(s)
-                            </x-primary-button>
-                        </form>
+
                     </div>
                 </div>
             </div>
@@ -455,18 +527,17 @@
             </div>
             <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="client" role="tabpanel" aria-labelledby="client-tab">
                 <div>
-                    {{ $client->head_post_code }}
+                    {{ $client->post_code }}
                 </div>
                 <div>
-                    {{ $client->head_prefecture }}
+                    {{ $client->prefecture_id }}
                 </div>
                 <div>
-                    {{ $client->head_address1 }}
+                    {{ $client->address_1 }}
                 </div>
             </div>
             <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="dealer" role="tabpanel" aria-labelledby="dealer-tab">
             </div>
-        </div>
     </div>
 
 

@@ -172,7 +172,7 @@
             </div>
 
             <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                <!-- 顧客検索ボタン(画面：小) -->
+                <!-- プロジェクト検索ボタン(画面：小) -->
                 <button type="button" onclick="ClientSearchModal.show('projectSearchModal1')" class="md:ml-1 md:mt-1 mt-1 mb-4 w-full md:w-auto whitespace-nowrap sm:hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     プロジェクト検索
                 </button>
@@ -184,7 +184,7 @@
                         <label for="project_num" class="text-sm dark:text-gray-100 text-gray-900 leading-none">プロジェクトNo.</label>
                         <input type="text" form="reoportForm" name="project_num" id="project_num" value="{{ old('project_num') }}" class="input-readonly" placeholder="" readonly tabindex="-1">
                     </div>
-                    <!-- 顧客検索ボタン(画面中～) -->
+                    <!-- プロジェクト検索ボタン(画面中～) -->
                     <button type="button" onclick="ProjectSearchModal.show('projectSearchModal1')" data-form="reoportForm" class="p-2.5 text-sm font-medium h-[35px] text-white mt-[18px] ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 zip2addr-trigger hidden sm:block">
                         <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>

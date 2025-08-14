@@ -209,7 +209,7 @@
 
                             <div class="w-full flex flex-col">
                               <label for="product_type_id_{{$productSplitType->id}}" class="block mt-4 text-sm font-medium text-gray-900 dark:text-white">製品種別</label>
-                              <select name="product_type_id_{{$productSplitType->id}}" id="division_id-{{$productSplitType->id}}" value="{{old('product_type_id_' . $productSplitType->id, $productSplitType->division_id)}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" >
+                              <select name="product_type_id_{{$productSplitType->id}}" id="product_type_id-{{$productSplitType->id}}" value="{{old('product_type_id_' . $productSplitType->id, $productSplitType->product_type_id)}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" >
                                   @foreach($productTypes as $productType)
                                   <option value="{{ $productType->id }}"  @selected($productType->id == old('product_type_id_' . $productSplitType->id, $productSplitType->product_type_id))>{{ $productType->type_name }}</option>
                                   @endforeach

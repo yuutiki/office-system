@@ -110,6 +110,10 @@ class Product extends Model
     {
         return $this->belongsTo(Affiliation2::class);
     }
+    public function productType()
+    {
+        return $this->belongsTo(ProductType::class);
+    }
     public function productSplitType()
     {
         return $this->belongsTo(ProductSplitType::class);

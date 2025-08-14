@@ -19,7 +19,7 @@ class ContractController extends Controller
 {
     public function index()
     {
-        $contracts = Contract::all();
+        $contracts = Contract::with('client','contractType')->get();
         $count = $contracts->count();
 
 
