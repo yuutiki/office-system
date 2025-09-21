@@ -1,16 +1,20 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
+        <div class="flex justify-between w-full whitespace-nowrap items-center">
+            {{-- 左側：パンくず --}}
+            <h2 class="text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('createCorporation', $searchParams) }}
             </h2>
-            <div class="flex justify-end items-center space-x-2">
+
+            {{-- 右側：メッセージ & 保存ボタン --}}
+            <div class="ml-auto flex items-center space-x-2">
                 <x-message :message="session('message')" />
 
-                <form method="post" action="{{ route('corporations.store') }}" enctype="multipart/form-data" id="corporationForm" class="flex items-center">
+                <form method="post" action="{{ route('corporations.store') }}" 
+                    enctype="multipart/form-data" id="corporationForm">
                     @csrf
                     @can('storeUpdate_corporations')
-                        <x-buttons.save-button form-id="corporationForm" id="saveButton" class="">
+                        <x-buttons.save-button form-id="corporationForm" id="saveButton">
                             {{ __("save") }}
                         </x-buttons.save-button>
                     @endcan
@@ -18,6 +22,7 @@
             </div>
         </div>
     </x-slot>
+
 
     <div class="max-w-7xl mx-auto px-2 md:pl-14">
 

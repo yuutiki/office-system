@@ -1,159 +1,114 @@
-// ダークモードの状態をローカルストレージから取得
-const storedTheme = localStorage.getItem('color-theme');
-const isDarkMode = storedTheme === 'dark';
+document.addEventListener("DOMContentLoaded", function () {
+    const ctx = document.getElementById("supportChart").getContext("2d");
+    let supportChart = null;
 
-let myChart = null;
-
-// チャートの初期化関数
-function initChart() {
-    const chartDom = document.getElementById('main');
-    
-    // 既存のチャートがある場合は破棄
-    if (myChart) {
-        myChart.dispose();
-    }
-    
-    myChart = echarts.init(chartDom);
-    
-    // 現在のビューポートサイズに基づいてバー幅を計算
-    const viewportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-    const barWidth = calculateBarWidth(viewportWidth);
-
-    const option = {
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'shadow'
-            }
-        },
-        legend: {
-            textStyle: {
-                color: isDarkMode ? '#ffffff' : '#000000',
-            },
-        },
-        grid: {
-            left: '3%',  // グリッドの余白を調整
-            right: '3%',
-            bottom: '3%',
-            containLabel: true,
-        },
-        xAxis: [{
-            type: 'category',
-            data: ['11月', '12月', '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月'],
-            axisLabel: {
-                color: isDarkMode ? '#ffffff' : '#000000',
-                interval: 0,
-                rotate: viewportWidth < 768 ? 45 : 0  // スマホサイズの場合はラベルを回転
-            }
-        }],
-        yAxis: [{
-            type: 'value',
-            axisLabel: {
-                color: isDarkMode ? '#ffffff' : '#000000'
-            }
-        }],
-        series: [
-            {
-                name: '学務',
-                type: 'bar',
-                stack: 'Ad',
-                barWidth: barWidth,
-                emphasis: { focus: 'series' },
-                data: [120, 132, 101, 134, 90, 230, 210, 60, 89, 123, 56, 325],
-                label: {
-                    show: true,
-                    position: 'inside',
-                    color: isDarkMode ? '#ffffff' : '#000000',
-                }
-            },
-            {
-                name: '財務',
-                type: 'bar',
-                stack: 'Ad',
-                emphasis: { focus: 'series' },
-                data: [220, 182, 191, 234, 290, 330, 310, 134, 90, 230, 210, 60]
-            },
-            {
-                name: '総務',
-                type: 'bar',
-                stack: 'Ad',
-                emphasis: { focus: 'series' },
-                data: [150, 232, 201, 154, 190, 330, 410, 220, 182, 191, 234, 290]
-            },
-            {
-                name: '高校',
-                type: 'bar',
-                stack: 'Ad',
-                emphasis: { focus: 'series' },
-                data: [150, 232, 201, 154, 190, 330, 410, 232, 201, 154, 56, 87]
-            },
-            {
-                name: 'その他',
-                type: 'bar',
-                stack: 'Ad',
-                emphasis: { focus: 'series' },
-                data: [150, 232, 201, 154, 190, 330, 410, 154, 190, 330, 410, 874]
-            }
-        ]
+    const labels = ['11月', '12月', '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月'];
+    const datasetsData = {
+        '学務': [120, 132, 101, 134, 90, 230, 210, 60, 89, 123, 56, 325],
+        '財務': [220, 182, 191, 234, 290, 330, 310, 134, 90, 230, 210, 60],
+        '総務': [150, 232, 201, 154, 190, 330, 410, 220, 182, 191, 234, 290],
+        '高校': [150, 232, 201, 154, 190, 330, 410, 232, 201, 154, 56, 87],
+        'その他': [150, 232, 201, 154, 190, 330, 410, 154, 190, 330, 410, 874],
     };
 
-    myChart.setOption(option);
-}
-
-// バー幅を計算する関数
-function calculateBarWidth(width) {
-    // PWAかどうかの判定
-    const isPWA = window.matchMedia('(display-mode: standalone)').matches || 
-                 window.navigator.standalone === true;
-    
-    // PWAの場合は異なる計算を適用
-    if (isPWA) {
-        if (width < 768) return 10;
-        if (width < 1024) return 20;
-        return 30;
-    } else {
-        // 通常のブラウザの場合
-        if (width < 768) return '10%';
-        if (width < 1024) return '20%';
-        return '30%';
+    function isDarkMode() {
+        return document.documentElement.classList.contains("dark") || localStorage.getItem('color-theme') === 'dark';
     }
-}
 
-// リサイズハンドラー
-function handleResize() {
-    if (!myChart) return;
+    function initChart() {
+        if (supportChart) {
+            supportChart.destroy();
+        }
 
-    const width = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-    const barWidth = calculateBarWidth(width);
+        const darkMode = isDarkMode();
+        const textColor = darkMode ? "#E5E7EB" : "#374151";
 
-    // チャートのサイズを更新
-    myChart.resize();
+        const colors = [
+            "rgba(59, 130, 246, 0.8)",  // 学務: 青
+            "rgba(16, 185, 129, 0.8)",  // 財務: 緑
+            "rgba(245, 158, 11, 0.8)",  // 総務: オレンジ
+            "rgba(139, 92, 246, 0.8)",  // 高校: 紫
+            "rgba(239, 68, 68, 0.8)",   // その他: 赤
+        ];
 
-    // バー幅とラベルの回転を更新
-    myChart.setOption({
-        xAxis: [{
-            axisLabel: {
-                rotate: width < 768 ? 45 : 0
+        supportChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: Object.keys(datasetsData).map((key, index) => ({
+                    label: key,
+                    data: datasetsData[key],
+                    backgroundColor: colors[index],
+                    borderRadius: 6,
+                    barPercentage: 0.7,
+                }))
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: textColor,
+                            font: { size: 13 }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: darkMode ? 'rgba(31,41,55,0.9)' : 'rgba(255,255,255,0.95)',
+                        titleColor: darkMode ? '#F9FAFB' : '#111827',
+                        bodyColor: darkMode ? '#E5E7EB' : '#111827',
+                        padding: 10,
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.dataset.label}: ${context.raw} 件`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                        ticks: {
+                            color: textColor,
+                            maxRotation: window.innerWidth < 768 ? 45 : 0,
+                        },
+                        grid: {
+                            color: darkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.05)",
+                        }
+                    },
+                    y: {
+                        stacked: true,
+                        ticks: {
+                            color: textColor,
+                        },
+                        grid: {
+                            color: darkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.05)",
+                        }
+                    }
+                }
             }
-        }],
-        series: [{
-            barWidth: barWidth
-        }]
+        });
+    }
+
+    // 初期化
+    initChart();
+
+    // ダークモード切り替え検知
+    const observer = new MutationObserver(() => {
+        initChart();
     });
-}
+    observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["class"],
+    });
 
-// 初期化時の実行
-initChart();
-
-// イベントリスナーの設定
-window.addEventListener('resize', _.debounce(handleResize, 250));
-
-// ダークモード変更検知
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-    initChart();
-});
-
-// PWAの表示モード変更検知
-window.matchMedia('(display-mode: standalone)').addEventListener('change', () => {
-    initChart();
+    // PWA表示モード変更検知
+    window.matchMedia('(display-mode: standalone)').addEventListener('change', () => {
+        initChart();
+    });
 });

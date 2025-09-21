@@ -18,7 +18,7 @@ class LinkController extends Controller
 
 
         // フィルタリングクエリを作成
-        $query = Link::with('affiliation2');
+        $query = Link::with('affiliation2', 'updatedBy');
 
         // 検索フォームの値を取得する
         $displayName = $request->input('display_name');

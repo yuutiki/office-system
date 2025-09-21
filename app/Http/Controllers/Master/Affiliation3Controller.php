@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
+use App\Models\Affiliation2;
 use App\Models\Affiliation3;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,8 +12,9 @@ class Affiliation3Controller extends Controller
 {
     public function index()
     {
-        $affiliation3s = Affiliation3::with('updatedBy')->orderBy('affiliation3_code','asc')->paginate(50);
-        return view('masters.affiliation3-index',compact('affiliation3s'));
+        $affiliation3s = Affiliation3::with('updatedBy', 'affiliation2')->orderBy('affiliation3_code','asc')->paginate(50);
+        $affiliation2s = Affiliation2::all();
+        return view('masters.affiliation3-index',compact('affiliation2s', 'affiliation3s'));
     }
 
     public function create()
@@ -40,10 +42,10 @@ class Affiliation3Controller extends Controller
         $user = Auth::user(); // ログインしているユーザーの情報を取得
 
         $data = $request->validate([
-            'Affiliation3_code' => 'required|size:2',
-            'Affiliation3_name' => 'required|max:100',
-            'Affiliation3_name_kana' => 'required|max:100',
-            'Affiliation3_name_en' => 'required|max:100',
+            'affiliation3_code' => 'required|size:2',
+            'affiliation3_name' => 'required|max:100',
+            'affiliation3_name_kana' => 'required|max:100',
+            'affiliation3_name_en' => 'required|max:100',
         ]);
         
         $data['updated_by'] = $user->id; // 更新者のIDを更新データに追加

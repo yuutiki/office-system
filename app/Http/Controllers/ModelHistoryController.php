@@ -10,6 +10,7 @@ class ModelHistoryController extends Controller
     public function index(Request $request)
     {
         $perPage =config('constants.perPage');
+
         $histories = ModelHistory::with('user')
             ->when($request->filled('model'), function ($query) use ($request) {
                 return $query->where('model', $request->model);
@@ -42,12 +43,11 @@ class ModelHistoryController extends Controller
         $minDate = $now->copy()->subYear()->startOfDay()->format('Y-m-d\TH:i');
         $maxDate = $now->format('Y-m-d\TH:i');
 
-        $count = $histories->total();
         $models = ModelHistory::distinct('model')->pluck('model');
         $operationTypes = ModelHistory::distinct('operation_type')->pluck('operation_type');
         $searchText = $request->search_text;
 
-        return view('admin.logs.index', compact('histories', 'models', 'operationTypes', 'count', 'searchText', 'minDate', 'maxDate'));
+        return view('admin.logs.index', compact('histories', 'models', 'operationTypes', 'searchText', 'minDate', 'maxDate'));
     }
 
     // public function create()

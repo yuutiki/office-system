@@ -8,38 +8,6 @@ use Illuminate\Http\Request;
 class PasswordPolicyController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(PasswordPolicy $passwordPolicy)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(PasswordPolicy $passwordPolicy)
@@ -75,14 +43,5 @@ class PasswordPolicyController extends Controller
 
         // レスポンスを返す
         return redirect()->route('password-policy.edit', $passwordPolicy)->with(['success' => 'Password policy has been updated successfully']);
-        
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(PasswordPolicy $passwordPolicy)
-    {
-        //
     }
 }

@@ -11,6 +11,8 @@ use App\Models\Affiliation2;//add
 use App\Models\ClientSearchModalDisplayItem;
 use App\Models\InstallationType;//add
 use App\Models\ClientType;//add
+use App\Models\Contract;
+use App\Models\Department;
 use App\Models\DistributionType;
 use App\Models\TradeStatus;//add
 use App\Models\Prefecture;//add
@@ -36,7 +38,10 @@ class ClientController extends Controller
     {
         $perPage = config('constants.perPage');
 
-        $affiliation2s = Affiliation2::all();
+        $departments = Department::all();
+        // 親子順に並んだリストを取得
+        $departments = $this->buildTree($departments);
+        // $affiliation2s = Affiliation2::all();
         $tradeStatuses = TradeStatus::all();
         $clientTypes = ClientType::all();
         $installationTypes = InstallationType::all();
@@ -44,9 +49,13 @@ class ClientController extends Controller
 
         $selectedUserId = $request->selected_user_id;
 
-        // ログインユーザーの所属を取得
-        $userAffiliation2 = auth()->user()->affiliation2_id;
-        $selectedAffiliation2 = $userAffiliation2; // ユーザーの所属を初期値に設定
+        // // ログインユーザーの所属を取得
+        // $userAffiliation2 = auth()->user()->affiliation2_id;
+        // $selectedAffiliation2 = $userAffiliation2; // ユーザーの所属を初期値に設定
+
+        // ログインユーザーの部門ID
+        // $userDepartmentId = auth()->user()->department_id ?? null;
+        // $selectedDepartment = $request->input('department_id', $userDepartmentId);
 
         // 検索リクエストを取得し変数に格納
         $request->session()->put([
@@ -57,10 +66,14 @@ class ClientController extends Controller
         $selectedInstallationTypes = $request->input('installation_types', []);
         $clientName = $request->input('client_name');
         $salesUserId = $request->input('selected_user_id');
-        $affiliation2Id = $request->input('affiliation2_id');
+        $selectedDepartmentId = $request->input('department_id', auth()->user()->department_id ?? null);
+        $selectedDepartmentPath = null;
+        if ($selectedDepartmentId) {
+            $selectedDepartmentPath = Department::find($selectedDepartmentId)?->path;
+        }
 
         // 検索クエリを組み立てる
-        $clientsQuery = Client::with(['corporation','user','tradeStatus','affiliation2'])->sortable()->orderBy('client_num','asc');
+        $clientsQuery = Client::with(['corporation','user','tradeStatus','department'])->sortable()->orderBy('client_num','asc');
 
         if (!empty($selectedTradeStatuses)) {// 取引状態
             $clientsQuery->whereIn('trade_status_id', $selectedTradeStatuses);
@@ -78,11 +91,27 @@ class ClientController extends Controller
             // Clientモデルからclient_nameをもとにIDを取得
             $clientsQuery->where('client_name', 'like', '%' . $clientName . '%');
         }
+        if (!empty($selectedDepartmentId)) {
+            $department = Department::find($selectedDepartmentId);
+
+            if ($department) {
+                $ids = $department->getDescendantIds();
+                $clientsQuery->whereIn('department_id', $ids);
+
+                // パスを取得
+                $selectedDepartmentPath = $department->path;
+            }
+        }
 
         $clients = $clientsQuery->paginate($perPage);
         $count = $clients->total();
 
-        return view('clients.index',compact('clients','count', 'affiliation2s', 'installationTypes', 'tradeStatuses', 'clientTypes', 'selectedTradeStatuses','selectedClientTypes','selectedInstallationTypes','salesUserId', 'affiliation2Id', 'clientName', 'selectedAffiliation2', 'selectedUserId', 'salesUsers'));
+        return view('clients.index',compact(
+            'clients','count',
+            'departments','installationTypes','tradeStatuses','clientTypes',
+            'selectedTradeStatuses','selectedClientTypes','selectedInstallationTypes',
+            'salesUserId','clientName','selectedDepartmentId','selectedUserId','salesUsers', 'selectedDepartmentPath'
+        ));
     }
 
     public function create()
@@ -94,9 +123,54 @@ class ClientController extends Controller
         $affiliation2s = Affiliation2::all(); //管轄事業部
         $prefectures = Prefecture::all(); //都道府県
         $distributionTypes = DistributionType::all();
+        $allDepartments = Department::orderBy('code')->get();
 
-        return view('clients.create',compact('affiliation2s','users','tradeStatuses','clientTypes','installationTypes','prefectures','distributionTypes'));
+        // // ツリー形式に整形
+        // $departments = $this->buildTree($allDepartments);
+    
+        // 方法1: Collectionのままにして、フラットな配列として渡す
+    $departments = Department::select('id', 'code', 'name', 'parent_id', 'level')
+                            ->orderBy('code')
+                            ->get();
+        
+
+        return view('clients.create',compact('affiliation2s','users','tradeStatuses','clientTypes','installationTypes','prefectures','distributionTypes', 'departments'));
     }
+    
+    // // ClientController内のbuildTreeメソッド
+    // private function buildTree($departments, $parentId = null)
+    // {
+    //     $tree = [];
+        
+    //     foreach ($departments as $department) {
+    //         // parent_idがnullまたは0の場合の処理
+    //         $deptParentId = $department->parent_id;
+    //         if ($deptParentId === 0) {
+    //             $deptParentId = null;
+    //         }
+            
+    //         if ($deptParentId == $parentId) {
+    //             $children = $this->buildTree($departments, $department->id);
+                
+    //             $departmentArray = [
+    //                 'id' => $department->id,
+    //                 'code' => $department->code,
+    //                 'name' => $department->name,
+    //                 'parent_id' => $department->parent_id,
+    //                 'level' => $department->level,
+    //                 'is_active' => $department->is_active
+    //             ];
+                
+    //             if (!empty($children)) {
+    //                 $departmentArray['children'] = $children;
+    //             }
+                
+    //             $tree[] = $departmentArray;
+    //         }
+    //     }
+        
+    //     return $tree;
+    // }
 
     public function store(ClientStoreRequest $request)
     {
@@ -111,7 +185,8 @@ class ClientController extends Controller
         $getaffiliation2 = Affiliation2::where('id', $affiliation2Id)->first();
         $prefix_code = $getaffiliation2->affiliation2_prefix;
 
-        $clientNumber = Client::generateClientNumber($corporationNum, $prefix_code);
+        $clientNumber = Client::generateClientNumber($corporationNum);
+        // $clientNumber = Client::generateClientNumber($corporationNum, $prefix_code);
 
         // corporation_numからcorporation_idを取得する
         $corporation = Corporation::where('corporation_num', $corporationNum)->first();
@@ -147,6 +222,7 @@ class ClientController extends Controller
         $client->is_dealer = $request->has('is_dealer') ? 1 : 0;
         $client->is_lease = $request->has('is_lease') ? 1 : 0;
         $client->is_other_partner = $request->has('is_other_partner') ? 1 : 0;
+        $client->department_id = $request->department_id;
         $client->save();
 
         return redirect()->route('clients.index')->with('success', '正常に登録しました');
@@ -170,9 +246,21 @@ class ClientController extends Controller
         $prefectures = Prefecture::all(); //都道府県
         $distributionTypes = DistributionType::all();
 
-        $clientProducts = ClientProduct::where('client_id',$id)->orderBy('product_id','asc')->get();
+        $departments = Department::all();
+        // 親子順に並んだリストを取得
+        $departments = $this->buildTree($departments);
+
+        $clientProducts = ClientProduct::with('product', 'productVersion')->where('client_id',$id)->orderBy('product_id','asc')->get();
         $reports = Report::with('reportType', 'reporter')->where('client_id',$id)->get();
         $supports = Support::with(['client', 'user', 'productSeries', 'productVersion', 'productCategory', 'supportType', 'supportTime'])->orderBy('received_at', 'desc')->where('client_id',$id)->paginate(25);
+        
+        $contracts = Contract::with([
+            'contractType',                                        // 契約種別
+            'latestContractDetail.contractPartnerType',            // 最新の契約先区分
+            'latestContractDetail.contractUpdateType',             // 最新の自動更新区分
+            'firstContractDetail'                                  // 初回契約日用
+        ])->paginate(25);
+
         // client_numとclient_nameをセッションに保存
         Session::put('selected_client_num', $client->client_num);
         Session::put('selected_client_name', $client->client_name);
@@ -181,8 +269,23 @@ class ClientController extends Controller
         $activeTab = $request->query('tab', 'tab1'); // クエリパラメータからタブを取得
 
 
-        return view('clients.edit',compact('affiliation2s','users','tradeStatuses','clientTypes','installationTypes','client','reports','prefectures','supports','clientProducts','distributionTypes','activeTab',));
+        return view('clients.edit',compact('contracts', 'affiliation2s','users','tradeStatuses','clientTypes','installationTypes','client','reports','prefectures','supports','clientProducts','distributionTypes','activeTab', 'departments'));
     }
+
+private function buildTree($departments, $parentId = null, $level = 0)
+{
+    $result = [];
+    foreach ($departments->where('parent_id', $parentId)->sortBy('id') as $department) {
+        $department->level = $level;
+
+        // path（親からの経路文字列）を作っておくと便利
+        $department->path = str_repeat('— ', $level) . $department->name;
+
+        $result[] = $department;
+        $result = array_merge($result, $this->buildTree($departments, $department->id, $level + 1));
+    }
+    return $result;
+}
 
     public function update(ClientStoreRequest $request, string $id)
     {
@@ -216,6 +319,7 @@ class ClientController extends Controller
         $client->user_id = $request->user_id;
         $client->dealer_id = $request->dealer_id; // Vendorとリレーションしている
         $client->memo = $request->memo;
+        $client->department_id = $request->department_id;
         $client->save();
 
         return redirect()->back()->with('success', '正常に変更しました');

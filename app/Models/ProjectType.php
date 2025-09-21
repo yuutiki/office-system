@@ -14,6 +14,7 @@ class ProjectType extends Model
     public $sortable = [
         'project_type_code',
         'project_type_name',
+        'is_active',
         'created_by',
         'updated_by'
     ];
@@ -21,6 +22,7 @@ class ProjectType extends Model
     protected $fillable = [
         'project_type_code',
         'project_type_name',
+        'is_active',
         'created_by',
         'updated_by'
     ];

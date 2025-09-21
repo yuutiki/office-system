@@ -24,13 +24,12 @@ class NotificationsComposer
     {
         if ($view->getName() === 'link.index') {
             // リンク一覧画面の場合、すべてのリンクを事業部別および表示順別に取得
-            // $links = Link::orderBy('department_id')
-            //     ->orderBy('display_order')
-            //     ->get();
+            $unreadNotifications = collect(); // 空のコレクションで代用
         } else {
-             
-            // 未読通知を取得するコードをここに記述します
-            $unreadNotifications = auth()->check() ? auth()->user()->unreadNotifications : null;
+            // 通知を取得（未ログイン時は空）
+            $unreadNotifications = auth()->check()
+                ? auth()->user()->unreadNotifications
+                : collect();
         }
         $view->with('unreadNotifications', $unreadNotifications);
     }

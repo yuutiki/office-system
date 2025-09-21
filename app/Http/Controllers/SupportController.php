@@ -51,7 +51,7 @@ class SupportController extends Controller
         $productVersions = ProductVersion::select('id', 'version_name')->get();  //製品バージョン
         $productCategories = ProductCategory::select('id', 'category_name')->get();  // 製品系統
         $users = User::select('id', 'user_name')->get();  //受付対応者用
-        $supportTimes = SupportTime::select('id', 'time_name')->get(); //サポート時間
+        $supportTimes = SupportTime::select('id', 'name')->get(); //サポート時間
         $supportTypes = SupportType::select('id', 'type_name')->get();// サポート種別
 
 
@@ -145,7 +145,7 @@ class SupportController extends Controller
     {
         $users = User::all();  //受付対応者用
         $supportTypes = SupportType::all(); //サポート種別
-        $supportTimes = SupportTime::all(); //サポート所要時間
+        $supportTimes = SupportTime::where('is_active', true)->get(); //サポート所要時間
         $productSeriess = ProductSeries::all();  //製品シリーズ
         $productVersions = ProductVersion::orderby('version_code','desc')->get();  //製品バージョン
         $productCategories = ProductCategory::all();  // 製品系統
@@ -225,7 +225,7 @@ class SupportController extends Controller
         $productVersions = ProductVersion::all();  //製品バージョン
         $productCategories = ProductCategory::all();  // 製品系統
         $supportTypes = SupportType::all(); //サポート種別
-        $supportTimes = SupportTime::all(); //サポート所要時間
+        $supportTimes = SupportTime::where('is_active', true)->get(); //サポート所要時間
 
         $support = Support::find($support->id);
         $clientId = $support->client_id;
@@ -234,7 +234,7 @@ class SupportController extends Controller
         $client = Client::findOrFail($clientId);
 
         // クライアントに関連する製品を取得
-        $clientProducts = ClientProduct::where('client_id', $clientId)->get();
+        $clientProducts = ClientProduct::with('product', 'productVersion')->where('client_id', $clientId)->get();
 
 
         session()->put('previous_url', url()->previous());

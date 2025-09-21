@@ -1,16 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between w-full whitespace-nowrap items-center">
-            <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center py-1">
+            <h2 class="text-gray-900 dark:text-white flex items-center py-1">
                 {{ Breadcrumbs::render('users') }}
-                <div class="ml-4">
-                    {{ $count }}件
-                </div>
                 <div class="text-gray-900 dark:text-white ml-2 text-sm hidden md:block">
                     <div>（選択中： <span id="selectedCount">0</span> 件）</div>
                 </div>
             </h2>
-            <x-message :message="session('message')" />
             <div class="flex flex-col flex-shrink-0 space-y-1 w-auto md:flex-row md:space-y-0 md:space-x-3 items-center">
 
                 <x-buttons.add-button :route="route('users.create')" gate="storeUpdate_users" :text="__('Add')" />
@@ -221,6 +217,14 @@
         </div>
     </div>
 
+    <div class="text-gray-950 md:ml-9 my-2">
+        <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center">
+            <div class="ml-4">
+                {{ $users->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
+            </div>
+        </h2>
+    </div>
+
     <div class="md:w-auto md:ml-14 md:mr-2 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700  dark:text-gray-900 bg-gray-300">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-sm text-gray-700 dark:bg-gray-700 dark:text-gray-200">
@@ -399,10 +403,12 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="mt-1 mb-1 px-4">
-            {{ $users->withQueryString()->links('vendor.pagination.custum-tailwind') }}
-        </div> 
     </div>
+    @if ($users->hasPages())
+        <div class="mb-1 px-4 md:ml-9">
+            {{ $users->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
+        </div>         
+    @endif
 
     <div id="deleteModal-users" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative w-full max-w-md max-h-full">

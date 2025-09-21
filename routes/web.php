@@ -51,7 +51,10 @@ use App\Http\Controllers\ClientContactCheckboxOptionController;
 use App\Http\Controllers\ClientProductController;
 use App\Http\Controllers\ClientSearchModalDisplayItemController;
 use App\Http\Controllers\CorporationCreditController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\DepartmentSettingController;
 use App\Http\Controllers\EstimateAddressController;
+use App\Http\Controllers\Master\Affiliation4Controller;
 use App\Http\Controllers\ModelHistoryController;
 use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\PasswordPolicyController;
@@ -59,7 +62,6 @@ use App\Http\Controllers\ProjectExpenseController;
 use App\Http\Controllers\SmtpSettingController;
 use App\Http\Controllers\SSOController;
 use App\Http\Controllers\UserSettingsController;
-use App\Models\EstimateAddress;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 
 
@@ -166,6 +168,8 @@ Route::middleware(['auth'])->group(function () {
 
     // keepfile関連
     Route::delete('/keepfiles/{id}/delete-pdf', [KeepfileController::class, 'deletePdf'])->name('keepfile.deletePdf');
+    Route::post('/keepfiles/bulk-delete', [KeepfileController::class, 'bulkDelete'])->name('keepfile.bulkDelete');
+    // Route::post('/keepfiles/bulk-delete', 'bulkDelete')->middleware('can:delete_keepfiles')->name('bulkDelete');
     Route::resource('/keepfiles',KeepfileController::class);
 
     // user関連
@@ -292,6 +296,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/masters', '\App\Http\Controllers\AppMasterController');
     Route::resource('/accounting-period', AccountingPeriodController::class);
     Route::resource('/accounting-type', AccountingTypeController::class);
+    Route::resource('/affiliation4', Affiliation4Controller::class);
     Route::resource('/affiliation3', Affiliation3Controller::class);
     Route::resource('/affiliation2', Affiliation2Controller::class);
     Route::resource('/affiliation1', Affiliation1Controller::class);
@@ -310,6 +315,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/report-type', ReportTypeController::class);
     Route::resource('/sales-stage', SalesStageController::class);
     Route::resource('/support-time', SupportTimeController::class);
+    Route::resource('/departments', DepartmentController::class);
+
 
     Route::get('/support-type/export',[SupportTypeController::class,'export'])->name('support-types.export');
     Route::resource('/support-type', SupportTypeController::class);
@@ -332,6 +339,11 @@ Route::middleware(['auth'])->group(function () {
     // Route::get('/corporations/download/{filename}', [CorporationController::class, 'downloadCsv'])->name('corporations.download');
 
     Route::resource('/password-policy', PasswordPolicyController::class);
+
+    // 所属部門利用設定
+    Route::get('department-settings/edit', [DepartmentSettingController::class, 'edit'])->name('department-settings.edit');
+    Route::put('department-settings', [DepartmentSettingController::class, 'update'])->name('department-settings.update');
+
 
     // routes/web.php
 

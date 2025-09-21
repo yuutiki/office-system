@@ -3,24 +3,16 @@
         <div class="flex justify-between w-full whitespace-nowrap items-center">
             <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center">
                 {{ Breadcrumbs::render('supports') }}
-                <div class="ml-4">
-                    {{ $count }}件
-                </div>
-                <div class="text-gray-900 dark:text-white ml-4 text-base hidden md:block">
-                    - 選択中: <span id="selectedCount">0</span> 件
-                </div>
             </h2>
-            <x-message :message="session('message')" />
             <div class="flex flex-col flex-shrink-0 space-y-1 w-auto md:flex-row md:space-y-0 md:space-x-3 items-center">
 
                 <x-buttons.add-button :route="route('supports.create')" gate="storeUpdate_supports" :text="__('Add')" />
 
                 <div class="items-center w-full space-x-3 hidden md:w-auto md:inline-block">
-                    <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded md:w-auto hover:bg-gray-100 hover:text-blue-700 focus:z-10 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" type="button">
-                        <svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                    <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full p-2.5 text-sm font-medium hover:bg-[#313a48] bg-[#364050] text-gray-200 rounded md:w-auto focus:z-10 dark:bg-blue-600 dark:text-gray-100 dark:border-gray-600 dark:hover:text-white dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" type="button">
+                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                            <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
                         </svg>
-                        {{ __('Actions') }}
                     </button>
                     <div id="actionsDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-600 dark:divide-gray-600">
                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
@@ -100,11 +92,11 @@
                         <div id="user-dropdown" class="relative w-full md:ml-2 mt-2 md:mt-0">
                             <input type="hidden" id="selected-user-id" name="selected_user_id" value="{{ $selectedUserId }}">
                             <button type="button" id="dropdown-toggle" class="block w-full p-2 pl-4 text-sm text-left text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400">
-                                <span id="selected-user-display" class="text-gray-800 dark:text-white whitespace-nowrap">
+                                <span id="selected-user-display" data-default-main="受付対応者" data-default-sub="を選択" class="text-gray-800 dark:text-white whitespace-nowrap">
                                     @if($selectedUser)
                                         {{ $selectedUser->user_name }}
                                     @else
-                                        <span>受付対応者</span><span class="text-gray-400 ml-2">を選択</span>
+                                        <span>受付対応者</span><span class="text-gray-400 ml-3">を選択</span>
                                     @endif
                                 </span>
                                 <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
@@ -248,6 +240,13 @@
             </div>
         </div>
     </div>
+    <div class="text-gray-950 md:ml-9 my-2">
+        <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center">
+            <div class="ml-4">
+                {{ $supports->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
+            </div>
+        </h2>
+    </div>
 
     <div class="md:w-auto md:ml-14 md:mr-2 mb-4 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-300">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -265,8 +264,8 @@
                             </div>
                         </div>
                     </th>
-                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
-                        <span class="sr-only">編集</span>
+                    <th scope="col" class="px-1 py-3 w-auto">
+                        <div class="whitespace-nowrap">（選択 <span id="selectedCount">0</span> 件）</div>
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
@@ -418,26 +417,14 @@
                         <td class="px-1 py-1 whitespace-nowrap">
                             {{ optional($support->client->user)->user_name }}
                         </td>
-                        {{-- <td class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <div class="text-center">
-                                <button class="button-edit" type="button" data-drawer-target="dupdateModal-{{ $support->id}}" data-drawer-body-scrolling="false" data-drawer-show="dupdateModal-{{ $support->id}}" data-drawer-placement="right" aria-controls="dupdateModal-{{ $support->id}}">
-                                    <div class="flex">
-                                        <svg class="mr-1 w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17v1a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V5.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 1h8.239A.97.97 0 0 1 15 2M6 1v4a1 1 0 0 1-1 1H1m13.14.772 2.745 2.746M18.1 5.612a2.086 2.086 0 0 1 0 2.953l-6.65 6.646-3.693.739.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"/>
-                                        </svg>
-                                        <span class="text-ms">編集</span>
-                                    </div>
-                                </button>
-                            </div>
-                        </td> --}}
-                        <td class="py-1">
+                        {{-- <td class="py-1">
                             <button type="button" data-modal-target="deleteModal-{{ $support->id}}" data-modal-show="deleteModal-{{ $support->id}}" class="button-delete-primary">
                                 <div class="flex">
                                     <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
                                     <span class="text-ms ">削除</span>
                                 </div>
                             </button>
-                        </td>
+                        </td> --}}
                     </tr>
                     {{-- 削除確認モーダル画面 Start --}}
                     <div id="deleteModal-{{$support->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -467,457 +454,103 @@
                             </div>
                         </div>
                     </div>
-                    {{-- 削除確認モーダル画面 End --}}
-                    <!-- 更新drawer --> 
-                    {{-- <div id="dupdateModal-{{$support->id}}" class="fixed top-0 right-0 z-50 h-screen p-4 overflow-y-auto transition-transform md:w-1/2 translate-x-full bg-gray-200 dark:bg-gray-800" tabindex="-1" aria-labelledby="dupdateModal-{{$support->id}}">
-                        <div class="">
-                            <h5 id="dupdateModal-{{$support->id}}" class="inline-flex items-center mb-4 font-semibold text-xl text-gray-500 dark:text-gray-400">
-                                サポート詳細
-                            </h5>
-                            <button type="button" data-drawer-hide="dupdateModal-{{$support->id}}" aria-controls="dupdateModal-{{$support->id}}" class="text-gray-400 bg-transparent ml-8 hover:bg-gray-200 hover:text-gray-900 rounded-md text-sm w-8 h-8 absolute top-2.5 end-2.5 inline-flex items-center justify-center dark:hover:bg-gray-600 dark:hover:text-white" >
-                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                                </svg>
-                            </button>
-                        </div>
-                        <form id="updateForm-{{$support->id}}" method="POST" action="{{ route('supports.update', $support->id) }}">
-                            @csrf
-                            @method('PUT')
-
-                            <div class="grid  gap-4 my-4 md:grid-cols-4">
-                                <div class="relative z-0">
-                                    <input type="text" id="client_num" name="client_num" value="{{ $support->client->client_num }}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
-                                    <label for="client_num" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">顧客番号</label>
-                                </div>
-
-                                <div class="relative z-0">
-                                    <input type="text" id="client_name" name="client_name" value="{{ $support->client->client_name }}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
-                                    <label for="client_name" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">顧客名称</label>
-                                </div>
-
-                                <div class="relative z-0">
-                                    <input type="text" id="sales_person" name="sales_person" value="{{ $support->client->user->user_name }}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
-                                    <label for="sales_person" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">営業担当</label>
-                                </div>
-
-                                <div class="relative z-0">
-                                    <input type="text" id="affiliation2_id" name="affiliation2_id" value="{{ $support->client->affiliation2->affiliation2_name }}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
-                                    <label for="affiliation2_id" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">管轄事業部</label>
-                                </div>
-                            </div>
-
-                            <div class="w-full flex flex-col col-span-2 mt-4">
-                                <label for="title-{{$support->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">表題</label>
-                                <input type="text" maxlength="100" name="title_{{$support->id}}" id="title-{{$support->id}}" value="{{old('title' . $support->id, $support->title)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
-                            </div>
-                            @error('title_' . $support->id)
-                                <div class="text-red-500">{{ $message }}</div>
-                            @enderror
-
-                            <div class="grid gap-4 my-4 md:grid-cols-4">
-                                <div class="w-full flex flex-col">
-                                    <label for="received_at-{{$support->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">受付日</label>
-                                    <input type="date" maxlength="20" name="received_at_{{$support->id}}" id="received_at-{{$support->id}}" value="{{ old('received_at_' . $support->id, $support->received_at) }}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
-                                </div>
-                                @error('received_at_' . $support->id)
-                                    <div class="text-red-500">{{ $message }}</div>
-                                @enderror
-
-                                <div class="w-full flex flex-col">
-                                    <label for="user_id" class="block font-medium text-gray-900 dark:text-white">受付対応者</label>
-                                    <select name="user_id_{{$support->id}}" id="user_id-{{$support->id}}" value="{{old('user_id')}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        @foreach($users as $user)
-                                        <option value="{{ $user->id }}"  @selected($user->id == $support->user_id)>{{ $user->user_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                @error('user_id_' . $support->id)
-                                    <div class="text-red-500">{{$message}}</div>
-                                @enderror
-                            </div>
-
-                            <div class="w-full flex flex-col">
-                                <label for="request_content-{{$support->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">内容</label>
-                                <textarea name="request_content_{{$support->id}}" id="request_content-{{$support->id}}" class="w-auto py-1 border text-sm border-gray-300 rounded-md mt-1 placeholder-gray-400" data-auto-resize="true"  cols="30" rows="8">{{ old('request_content_' . $support->id , $support->request_content) }}</textarea>
-                                @error('request_content_' . $support->id)
-                                    <div class="text-red-500">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="w-full flex flex-col">
-                                <label for="response_content-{{$support->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">回答</label>
-                                <textarea name="response_content_{{$support->id}}" id="response_content-{{$support->id}}" class="w-auto py-1 border text-sm border-gray-300 rounded-md mt-1 placeholder-gray-400" data-auto-resize="true"  cols="30" rows="8">{{ old('response_content_' . $support->id , $support->response_content) }}</textarea>
-                                @error('response_content_' . $support->id)
-                                    <div class="text-red-500">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="w-full flex flex-col">
-                                <label for="internal_message-{{$support->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">社内連絡欄</label>
-                                <textarea name="internal_message_{{$support->id}}" id="internal_message-{{$support->id}}" class="w-auto py-1 border text-sm border-gray-300 rounded-md mt-1 placeholder-gray-400" data-auto-resize="true"  cols="30" rows="8">{{ old('internal_message_' . $support->id , $support->internal_message) }}</textarea>
-                                @error('internal_message_' . $support->id)
-                                    <div class="text-red-500">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="w-full flex flex-col">
-                                <label for="internal_memo1-{{$support->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-4">メモ欄</label>
-                                <textarea name="internal_memo1_{{$support->id}}" id="internal_memo1-{{$support->id}}" class="w-auto py-1 border text-sm border-gray-300 rounded-md mt-1 placeholder-gray-400" data-auto-resize="true"  cols="30" rows="8">{{ old('internal_memo1_' . $support->id , $support->internal_memo1) }}</textarea>
-                                @error('internal_memo1_' . $support->id)
-                                    <div class="text-red-500">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="grid gap-4 my-4 md:grid-cols-2">
-                                <div class="w-full flex flex-col">
-                                    <label for="support_type_id" class="block font-medium text-gray-900 dark:text-white">サポート種別</label>
-                                    <select name="support_type_id_{{$support->id}}" id="support_type_id-{{$support->id}}" value="{{old('support_type_id')}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        @foreach($supportTypes as $supportType)
-                                        <option value="{{ $supportType->id }}"  @selected($supportType->id == $support->support_type_id)>{{ $supportType->type_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                @error('support_type_id_' . $support->id)
-                                    <div class="text-red-500">{{$message}}</div>
-                                @enderror
-
-                                <div class="w-full flex flex-col">
-                                    <label for="support_time_id" class="block font-medium text-gray-900 dark:text-white">サポート時間</label>
-                                    <select name="support_time_id_{{$support->id}}" id="support_time_id-{{$support->id}}" value="{{old('support_time_id')}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        @foreach($supportTimes as $supportTime)
-                                        <option value="{{ $supportTime->id }}"  @selected($supportTime->id == $support->support_time_id)>{{ $supportTime->time_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                @error('support_time_id_' . $support->id)
-                                    <div class="text-red-500">{{$message}}</div>
-                                @enderror
-                            </div>
-
-                            <div class="grid gap-4 my-4 md:grid-cols-3">
-                                <div class="w-full flex flex-col">
-                                    <label for="product_series_id" class="block font-medium text-gray-900 dark:text-white">製品シリーズ</label>
-                                    <select name="product_series_id_{{$support->id}}" id="product_series_id-{{$support->id}}" value="{{old('product_series_id')}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        @foreach($productSeriess as $productSeries)
-                                        <option value="{{ $productSeries->id }}"  @selected($productSeries->id == $support->product_series_id)>{{ $productSeries->series_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                @error('product_series_id_' . $support->id)
-                                    <div class="text-red-500">{{$message}}</div>
-                                @enderror
-                                <div class="w-full flex flex-col">
-                                    <label for="product_version_id" class="block font-medium text-gray-900 dark:text-white">製品バージョン</label>
-                                    <select name="product_version_id_{{$support->id}}" id="product_version_id-{{$support->id}}" value="{{old('product_version_id')}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        @foreach($productVersions as $productVersion)
-                                        <option value="{{ $productVersion->id }}"  @selected($productVersion->id == $support->product_version_id)>{{ $productVersion->version_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                @error('product_version_id_' . $support->id)
-                                    <div class="text-red-500">{{$message}}</div>
-                                @enderror
-                                <div class="w-full flex flex-col">
-                                    <label for="product_category_id" class="block font-medium text-gray-900 dark:text-white">製品系統</label>
-                                    <select name="product_category_id_{{$support->id}}" id="product_category_id-{{$support->id}}" value="{{old('product_category_id')}}" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        @foreach($productCategories as $productCategory)
-                                        <option value="{{ $productCategory->id }}"  @selected($productCategory->id == $support->product_category_id)>{{ $productCategory->category_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                @error('product_category_id_' . $support->id)
-                                    <div class="text-red-500">{{$message}}</div>
-                                @enderror
-                            </div>
-                            <ul class=" mt-4 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                    <div class="flex items-center pl-3">
-                                        <input id="is_finished_{{ $support->id }}" name="is_finished_{{ $support->id }}" type="hidden" value="0" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        @if($support->is_finished)
-                                            <input id="is_finished_{{ $support->id }}" name="is_finished_{{ $support->id }}" type="checkbox" value="1" checked="checked" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        @else
-                                            <input id="is_finished_{{ $support->id }}" name="is_finished_{{ $support->id }}" type="checkbox" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        @endif
-                                        <label for="is_finished_{{ $support->id }}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">対応完了済</label>
-                                    </div>
-                                    @error('is_finished_' . $support->id)
-                                     <div class="text-red-500">{{ $message }}</div>
-                                    @enderror
-                                </li>
-                                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                    <div class="flex items-center pl-3">
-                                        <input id="is_faq_target1_{{ $support->id }}" name="is_faq_target_{{ $support->id }}" type="hidden" value="0" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        @if($support->is_faq_target === 1)
-                                            <input id="is_faq_target_{{ $support->id }}" name="is_faq_target_{{ $support->id }}" type="checkbox" checked="checked" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        @else
-                                            <input id="is_faq_target_{{ $support->id }}" name="is_faq_target_{{ $support->id }}" type="checkbox" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        @endif
-                                        <label for="is_faq_target_{{ $support->id }}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">FAQ対象</label>
-                                    </div>
-                                    @error('is_faq_target_' . $support->id)
-                                     <div class="text-red-500">{{ $message }}</div>
-                                    @enderror
-                                </li>
-                                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                    <div class="flex items-center pl-3">
-                                        <input id="is_disclosured1_{{ $support->id }}" name="is_disclosured_{{ $support->id }}" type="hidden" value="0" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        @if($support->is_disclosured === 1)
-                                            <input id="is_disclosured_{{ $support->id }}" name="is_disclosured_{{ $support->id }}" type="checkbox" value="1" checked="checked" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        @else
-                                            <input id="is_disclosured_{{ $support->id }}" name="is_disclosured_{{ $support->id }}" type="checkbox" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        @endif
-                                        <label for="is_disclosured_{{ $support->id }}" class="cursor-pointer    w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">顧客開示</label>
-                                    </div>
-                                    @error('is_disclosured_' . $support->id)
-                                     <div class="text-red-500">{{ $message }}</div>
-                                    @enderror
-                                </li>
-                                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                    <div class="flex items-center pl-3">
-                                        <input id="is_troubled1_{{ $support->id }}" name="is_troubled_{{ $support->id }}" type="hidden" value="0" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        @if($support->is_troubled === 1)
-                                            <input id="is_troubled_{{ $support->id }}" name="is_troubled_{{ $support->id }}" type="checkbox" value="1" checked="checked" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        @else
-                                            <input id="is_troubled_{{ $support->id }}" name="is_troubled_{{ $support->id }}" type="checkbox" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        @endif
-                                        <label for="is_troubled_{{ $support->id }}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">トラブル</label>
-                                    </div>
-                                    @error('is_troubled_' . $support->id)
-                                     <div class="text-red-500">{{ $message }}</div>
-                                    @enderror
-                                </li>
-                                <li class="w-full dark:border-gray-600">
-                                    <div class="flex items-center pl-3">
-                                        <input id="is_confirmed1_{{ $support->id }}" name="is_confirmed_{{ $support->id }}" type="hidden" value="0" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        @if($support->is_confirmed === 1)
-                                            <input id="is_confirmed_{{ $support->id }}" name="is_confirmed_{{ $support->id }}" type="checkbox" value="1" checked="checked" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" >
-                                        @else
-                                            <input id="is_confirmed_{{ $support->id }}" name="is_confirmed_{{ $support->id }}" type="checkbox" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        @endif
-                                        <label for="is_confirmed_{{ $support->id }}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">上長確認済</label>
-                                    </div>
-                                    @error('is_confirmed_' . $support->id)
-                                     <div class="text-red-500">{{ $message }}</div>
-                                    @enderror
-                                </li>
-                            </ul>
-
-                            <div class="grid grid-cols-2 gap-4 mt-4">
-                                <button type="button" onclick="submitAndUpdateDrawer({{$support->id}})" class="w-full justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-s rounded-e text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    {{ __('Update') }}
-                                </button>
-                                <button type="button" data-modal-target="deleteModal-{{$support->id}}" data-modal-show="deleteModal-{{$support->id}}" class="w-full justify-center text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-s rounded-e text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
-                                    <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
-                                    {{ __('Delete') }}
-                                </button>
-                            </div>
-                        </form>
-                    </div> --}}
                 @endforeach
             </tbody>
         </table>
-        <div class="mt-1 mb-1 px-4">
-        {{ $supports->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
-        </div> 
     </div>
+    @if($supports && $supports->hasPages())
+        <div class="mb-1 px-4 md:ml-9">
+            {{ $supports->withQueryString()->links('vendor.pagination.custum-tailwind') }}
+        </div>
+    @endif
 
 
 
-{{-- <script>
-    function submitAndUpdateDrawer(supportId) {
-        // 保存処理（ここではLocalStorageを使用）
-        localStorage.setItem('updateDrawerId', supportId);
-
-        // フォームのsubmit
-        document.getElementById('updateForm-' + supportId).submit();
-    }
-</script>
-
-<!-- バリデーションエラー時にDrawerを開くスクリプト -->
-@if ($errors->any())
-    <style>
-        /* オーバーレイのスタイルを定義 */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* グレーで透過させる */
-            /* z-index: 40; Drawerよりも大きな値 */
-        }
-    </style>
     <script>
-        // ページ遷移後に初回のみ実行するための変数
-        let isValidationProcessed = false;
+        const overlay = document.getElementById('overlay');
+        const modal = document.getElementById('detailSearchModal');
 
-        document.addEventListener('DOMContentLoaded', function () {
-            let drawerId = localStorage.getItem('updateDrawerId');
-            
-            // ページ遷移後初回のみ実行
-            if (!isValidationProcessed && drawerId !== null) {
-                // オーバーレイを作成
-                const overlay = document.createElement('div');
-                overlay.classList.add('overlay'); // オーバーレイのクラスを追加
-                document.body.appendChild(overlay); // bodyに追加
+        // モーダルを表示するための関数
+        function showModal() {
+            overlay.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
 
-                // Drawerを表示
-                const drawer = document.getElementById('dupdateModal-' + drawerId);
-                drawer.classList.remove('translate-x-full');
-                localStorage.removeItem('updateDrawerId');
-                console.log(drawerId);
-                
-                // 変数をtrueに設定して初期化を行わないようにする
-                isValidationProcessed = true;
+        // モーダルを非表示にするための関数
+        function hideModal() {
+            overlay.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
 
-                // bodyにoverflow-hiddenクラスを追加
-                document.body.classList.add('overflow-hidden');
+        }
 
-                // Drawerのz-indexよりも大きな値を設定
-                const drawerZIndex = getComputedStyle(drawer).zIndex;
-                const overlayZIndex = parseInt(drawerZIndex) - 1;
-                overlay.style.zIndex = overlayZIndex;
+        // 検索ボタンを押した時の処理
+        function searchClient() {
+            const clientName = document.getElementById('clientName').value;
+            const clientNumber = document.getElementById('clientNumber').value;
+            const departmentId = document.getElementById('departmentId').value;
 
-                // オーバーレイをクリックしたときに閉じる
-                overlay.addEventListener('click', function () {
-                    closeDrawer();
+            fetch('/client/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ clientName, clientNumber, departmentId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const searchResultsContainer = document.getElementById('searchResultsContainer');
+                searchResultsContainer.innerHTML = '';
+
+                data.forEach(result => {
+                    const resultElement = document.createElement('tr');
+                    resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white');
+                    resultElement.innerHTML = `
+                        <td class="py-2 pl-5 cursor-pointer"
+                            onclick="setClient(
+                                '${result.client_corporation?.corporation_name ?? ''}',
+                                '${result.client_num}',
+                                '${result.client_name}',
+                                '${result.department_id}'
+                            )">
+                            ${result.client_name}
+                        </td>
+                        <td class="py-2 ml-2">${result.client_num}</td>
+                        <td class="py-2 ml-2">${result.department?.department_name ?? ''}</td>
+                    `;
+                    searchResultsContainer.appendChild(resultElement);
                 });
+            });
+        }
+    </script>
 
-                // ボタンをクリックしたときにも閉じる
-                const closeButton = document.querySelector('[data-drawer-hide="dupdateModal-' + drawerId + '"]');
-                if (closeButton) {
-                    closeButton.addEventListener('click', function () {
-                        closeDrawer();
-                    });
-                }
 
-                function closeDrawer() {
-                    // Drawerを非表示にする
-                    drawer.classList.add('translate-x-full');
-                    
-                    // オーバーレイを削除する
-                    overlay.remove();
-                    
-                    // bodyのoverflow-hiddenクラスを削除
-                    document.body.classList.remove('overflow-hidden');
-                }
+    <script>
+        // 一覧画面のチェックボックス関連の操作　カウントしたり、一括でチェックを付けたり
+        document.addEventListener("DOMContentLoaded", function () {
+            const selectAllCheckbox = document.getElementById("selectAllCheckbox");
+            const checkboxes = document.querySelectorAll(".checkbox-item");
+            const selectedCountElement = document.getElementById("selectedCount");
+            const modalSelectedCount = document.getElementById("modalSelectedCount");
+
+            function updateSelectedCount() {
+                const selectedCount = document.querySelectorAll(".checkbox-item:checked").length;
+                selectedCountElement.textContent = selectedCount;
+                modalSelectedCount.textContent = selectedCount;  // モーダル内の選択数を更新
             }
+
+            selectAllCheckbox.addEventListener("change", function () {
+                checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+                updateSelectedCount();
+            });
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener("change", updateSelectedCount);
+            });
         });
     </script>
-@endif --}}
-
-
-
-{{-- 行がクリックされたときに発火するJavaScript --}}
-{{-- <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // 各行のクリックイベントを設定
-        var rows = document.querySelectorAll('.clickable-row');
-
-        rows.forEach(function (row) {
-            row.addEventListener('click', function () {
-                // 選択された行に 'selected' クラスを追加
-                this.classList.toggle('selected');
-            });
-        });
-    });
-</script> --}}
-
-{{-- 選択された行に適用されるスタイル --}}
-{{-- <style>
-    .selected {
-        background-color: #f0f0f0; /* 任意の背景色 */
-    }
-</style> --}}
-
-<script>
-    const overlay = document.getElementById('overlay');
-    const modal = document.getElementById('detailSearchModal');
-
-    // モーダルを表示するための関数
-    function showModal() {
-        overlay.classList.remove('hidden');
-        document.body.classList.add('overflow-hidden');
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-    }
-
-    // モーダルを非表示にするための関数
-    function hideModal() {
-        overlay.classList.add('hidden');
-        document.body.classList.remove('overflow-hidden');
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-
-    }
-
-    // 検索ボタンを押した時の処理
-    function searchClient() {
-        const clientName = document.getElementById('clientName').value;
-        const clientNumber = document.getElementById('clientNumber').value;
-        const departmentId = document.getElementById('departmentId').value;
-
-        fetch('/client/search', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({ clientName, clientNumber, departmentId })
-        })
-        .then(response => response.json())
-        .then(data => {
-            const searchResultsContainer = document.getElementById('searchResultsContainer');
-            searchResultsContainer.innerHTML = '';
-
-            data.forEach(result => {
-                const resultElement = document.createElement('tr');
-                resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white');
-                resultElement.innerHTML = `
-                    <td class="py-2 pl-5 cursor-pointer"
-                        onclick="setClient(
-                            '${result.client_corporation?.corporation_name ?? ''}',
-                            '${result.client_num}',
-                            '${result.client_name}',
-                            '${result.department_id}'
-                        )">
-                        ${result.client_name}
-                    </td>
-                    <td class="py-2 ml-2">${result.client_num}</td>
-                    <td class="py-2 ml-2">${result.department?.department_name ?? ''}</td>
-                `;
-                searchResultsContainer.appendChild(resultElement);
-            });
-        });
-    }
-</script>
-
-
-<script>
-    // 一覧画面のチェックボックス関連の操作　カウントしたり、一括でチェックを付けたり
-    document.addEventListener("DOMContentLoaded", function () {
-        const selectAllCheckbox = document.getElementById("selectAllCheckbox");
-        const checkboxes = document.querySelectorAll(".checkbox-item");
-        const selectedCountElement = document.getElementById("selectedCount");
-        const modalSelectedCount = document.getElementById("modalSelectedCount");
-
-        function updateSelectedCount() {
-            const selectedCount = document.querySelectorAll(".checkbox-item:checked").length;
-            selectedCountElement.textContent = selectedCount;
-            modalSelectedCount.textContent = selectedCount;  // モーダル内の選択数を更新
-        }
-
-        selectAllCheckbox.addEventListener("change", function () {
-            checkboxes.forEach(checkbox => checkbox.checked = this.checked);
-            updateSelectedCount();
-        });
-
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener("change", updateSelectedCount);
-        });
-    });
-</script>
-
-
-{{-- <script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script> --}}
 </x-app-layout>

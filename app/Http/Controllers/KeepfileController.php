@@ -209,4 +209,36 @@ class KeepfileController extends Controller
     
         return back()->with('success', '添付ファイルを削除しました');
     }
+    
+    public function bulkDelete(Request $request)
+    {
+        $selectedIds = $request->input('selectedIds', []);
+
+        if (empty($selectedIds)) {
+            return redirect()->back()->with('error', '削除するレコードが選択されていません');
+        }
+
+        // 削除できない預託情報のIDを取得（pdf_fileが存在する預託情報）
+        $keepfileWithAttachment = Keepfile::whereIn('id', $selectedIds)
+            ->where(function($query) {
+                $query->whereNotNull('pdf_file')
+                    ->orWhere('pdf_file', '!=', '');
+            })
+            ->pluck('id')
+            ->toArray();
+
+        // 削除可能な預託情報のIDを取得（pdf_fileがない預託情報）
+        $keepfilesToDelete = array_diff($selectedIds, $keepfileWithAttachment);
+
+        if (!empty($keepfilesToDelete)) {
+            Keepfile::whereIn('id', $keepfilesToDelete)->delete();
+        }
+
+        // メッセージを設定
+        if (!empty($keepfileWithAttachment)) {
+            return redirect()->back()->with('error', '一部の預託情報はPDFファイルが存在するため、削除できませんでした');
+        }
+
+        return redirect()->back()->with('success', '選択された預託情報を削除しました');
+    }
 }

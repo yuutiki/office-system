@@ -1,11 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="text-xl text-gray-900 dark:text-white">
+        <div class="flex w-full">
+            <h2 class="text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('createKeepfile', $searchParams) }}
             </h2>
-            <div class="flex justify-end">
-                <x-message :message="session('message')"/>
+            <div class="ml-auto flex justify-end">
                 <form method="post" action="{{route('keepfiles.store')}}" enctype="multipart/form-data" id="keepfileForm">
                     @csrf
                     <x-button-save form-id="keepfileForm" id="saveButton" onkeydown="stopTab(event)">

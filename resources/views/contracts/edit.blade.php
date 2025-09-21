@@ -49,16 +49,6 @@
         <div class="mx-auto md:w-full my-4 rounded shadow-md overflow-hidden border border-gray-200 dark:border-gray-600">
             <table class="w-full text-sm text-left divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
                 <tbody>
-                    <!-- 顧客No. -->
-                    {{-- <tr class="md:border-b dark:border-gray-600 block md:table-row">
-                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
-                            顧客No.
-                        </th>
-                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
-                            <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300">{{ $client->client_num }}</div>
-                        </td>
-                    </tr> --}}
-
                     
                     <!-- 法人名称 -->
                     <tr class="md:border-b dark:border-gray-600 block md:table-row">
@@ -69,6 +59,16 @@
                             <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300">{{ $client->corporation->corporation_name }}</div>
                         </td>
                     </tr>
+
+                    <!-- 顧客No. -->
+                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
+                            顧客No.
+                        </th>
+                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
+                            <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300">{{ $client->client_num }}</div>
+                        </td>
+                    </tr>
                     
                     <!-- 顧客名称 -->
                     <tr class="md:border-b dark:border-gray-600 block md:table-row">
@@ -77,7 +77,7 @@
                         </th>
                         <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
                             <div class="flex items-center">
-                                <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300">{{ $client->client_num }}：{{ $client->client_name }}</div>
+                                <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300">{{ $client->client_name }}</div>
                                 <span class="bg-blue-100 text-blue-800 text-xs font-medium ml-2 inline-block px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
                                     {{ $client->tradeStatus->trade_status_name }}
                                 </span>

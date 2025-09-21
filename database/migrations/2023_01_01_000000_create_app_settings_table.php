@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('description')->nullable()->comment('説明文');
             $table->boolean('is_editable')->default(false)->comment('編集可能フラグ');
             $table->string('route')->nullable()->comment('設定画面のルート名');
+            $table->boolean('is_active')->default(true)->comment('有効フラグ');
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->datetimes();

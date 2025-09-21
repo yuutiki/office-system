@@ -13,16 +13,9 @@ return new class extends Migration
             $table->string('client_num', 12)->unique()->comment('顧客番号');
             $table->string('client_name')->comment('顧客名称');
             $table->string('client_kana_name')->comment('顧客カナ名称');
-            $table->foreignId('affiliation1_id')->nullable(true)->comment('所属1ID');//Affiliation1テーブル参照
-            $table->foreignId('affiliation2_id')->nullable(true)->comment('所属2ID');//Affiliation2テーブル参照
-            $table->foreignId('affiliation3_id')->nullable(true)->comment('所属3ID');//Affiliation3テーブル参照
-            $table->foreignId('affiliation4_id')->nullable(true)->comment('所属4ID');//Affiliation4テーブル参照
-            $table->foreignId('affiliation5_id')->nullable(true)->comment('所属5ID');//Affiliation5テーブル参照
-            $table->foreignId('affiliation6_id')->nullable(true)->comment('所属6ID');//Affiliation6テーブル参照
-            $table->foreignId('affiliation7_id')->nullable(true)->comment('所属7ID');//Affiliation7テーブル参照
-            $table->foreignId('affiliation8_id')->nullable(true)->comment('所属8ID');//Affiliation8テーブル参照
-            $table->foreignId('affiliation9_id')->nullable(true)->comment('所属9ID');//Affiliation9テーブル参照
-            $table->foreignId('affiliation10_id')->nullable(true)->comment('所属10ID');//Affiliation10テーブル参照
+            $table->foreignId('affiliation2_id')->nullable(true)->comment('所属2ID');//Affiliation2テーブル参照<= 削除予定
+            $table->foreignId('department_id')->nullable(true)->comment('管理部門ID');// Departmentテーブル参照
+
             $table->foreignId('user_id')->nullable(true)->comment('営業担当ID');// Usersテーブル参照
             $table->foreignId('installation_type_id')->nullable(true)->comment('設置種別ID');// Installation_typesテーブル参照
             $table->foreignId('client_type_id')->nullable(true)->comment('顧客種別ID');// Client_typesテーブル参照

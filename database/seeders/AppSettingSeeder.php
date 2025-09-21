@@ -14,11 +14,11 @@ class AppSettingSeeder extends Seeder
     {
         AppSetting::create([
             'setting_code' => '100',
-            'setting_name' => '所属階層利用設定',
-            'setting_name_en' => 'Affiliation Level Setttings',
+            'setting_name' => '所属部門設定',
+            'setting_name_en' => 'Department Setttings',
             'description' => 'システムで利用する所属の階層を１～５階層までで設定できます。途中で変更したとしても過去のデータは保持し続けます。',
             'is_editable' => 1,
-            'route' => 'corporations.index',
+            'route' => 'department-settings.edit',
             'created_by' => 1,
             'updated_by' => 1,
             'created_at' => now(),
@@ -30,7 +30,7 @@ class AppSettingSeeder extends Seeder
             'setting_name_en' => 'SMTP Sender Settings',
             'description' => '本システムからメールを送信する場合に経由するSMTP情報です',
             'is_editable' => 1,
-            'route' => 'corporations.index',
+            'route' => 'smtp-settings.index',
             'created_by' => 1,
             'updated_by' => 1,
             'created_at' => now(),

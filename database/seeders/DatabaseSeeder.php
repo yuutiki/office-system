@@ -53,12 +53,14 @@ class DatabaseSeeder extends Seeder
         $this->call(ClientSearchModalDisplayItemSeeder::class);
         $this->call(ProjectSearchModalDisplayItemSeeder::class);
         $this->call(ProductSearchModalDisplayItemSeeder::class);
+        $this->call(CorporationSearchModalDisplayItemSeeder::class);
 
         // $this->call(T_CorporationSeeder::class);
         $this->call(T_ClientSeeder::class);
         $this->call(T_ProjectSeeder::class);
         $this->call(T_KeepfileSeeder::class);
         $this->call(T_SmtpSettingSeeder::class);
+        $this->call(T_DepartmentSeeder::class);
         $this->call(ClientContactCheckboxOptionsSeeder::class);
     }
 }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->json('changes')->nullable()->comment('変更内容');
             $table->ipAddress('ip_address')->nullable()->comment('IPアドレス');
             $table->text('user_agent')->nullable()->comment('ユーザーエージェント');
+            $table->json('user_agent_client_hint')->nullable()->comment('UA Client Hints');
             $table->json('meta')->nullable()->comment('追加のメタデータ');
             $table->datetimes();
 

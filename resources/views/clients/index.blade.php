@@ -3,24 +3,16 @@
         <div class="flex justify-between w-full whitespace-nowrap items-center">
             <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center">
                 {{ Breadcrumbs::render('clients') }}
-                <div class="ml-4">
-                    {{ $count }}件
-                </div>
-                <div class="text-gray-900 dark:text-white ml-4 text-base hidden md:block">
-                    - 選択中: <span id="selectedCount">0</span> 件
-                </div>
             </h2>
-            <x-message :message="session('message')" />
             <div class="flex flex-col flex-shrink-0 space-y-1 w-auto md:flex-row md:space-y-0 md:space-x-3 items-center">
 
                 <x-buttons.add-button :route="route('clients.create')" gate="storeUpdate_clients" :text="__('Add')" />
 
                 <div class="flex items-center w-full space-x-3 hidden md:w-auto md:inline-block">
-                    <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded md:w-auto hover:bg-gray-100 hover:text-blue-700 focus:z-10 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" type="button">
-                        <svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                    <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full p-2.5 text-sm font-medium hover:bg-[#313a48] bg-[#364050] text-gray-200 rounded md:w-auto focus:z-10 dark:bg-blue-600 dark:text-gray-100 dark:border-gray-600 dark:hover:text-white dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" type="button">
+                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                            <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
                         </svg>
-                        {{ __('Actions') }}
                     </button>
                     <div id="actionsDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-600 dark:divide-gray-600">
                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
@@ -99,7 +91,7 @@
     </x-slot>
 
     <div class="relative bg-white dark:bg-gray-800 rounded-t-md lg:w-auto md:ml-14 lg:mr-2 m-auto shadow-md  dark:text-gray-900 mt-4">
-        <div class="flex flex-col items-center justify-between p-4 space-y-3 lg:flex-row  lg:space-y-0 lg:space-x-3">
+        <div class="flex flex-col items-center justify-between p-4 space-y-3 lg:flex-row lg:space-y-0 lg:space-x-3">
             <div class="w-full">
                 <form method="GET" action="{{ route('clients.index') }}" id="search_form" class="flex items-center">
                     @csrf
@@ -113,16 +105,181 @@
                             </div>
                             <input type="search" id="client_name" name="client_name" value="@if (isset($clientName)){{$clientName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="顧客名称（カナ）">
                         </div>
-                        <div class="relative w-full mt-2 lg:ml-2 lg:mt-0">
-                            <select name="selected_affiliation2" id="selected_affiliation2" class="block w-full p-2 pl-4 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400">
-                                <option value="0"  @if($selectedAffiliation2 == 0) selected @endif>管轄事業部</option>
-                                @foreach ($affiliation2s as $affiliation2)
-                                <option value="{{ $affiliation2->id }}" @if($selectedAffiliation2 == $affiliation2->id) selected @endif>
-                                    {{ $affiliation2->affiliation2_name }}
-                                </option>
+
+                        <div class="relative w-full mr-2 department-dropdown">
+                            <label for="department_input" class="sr-only">所属部門</label>
+
+                            {{-- 表示用 --}}
+                            <input type="text" 
+                                id="department_input"
+                                readonly 
+                                class="block w-full p-2 lg:ml-2 mt-2 lg:mt-0 pl-4 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400"
+                                placeholder="部門を選択"
+                                value="{{ old('department_id', $selectedDepartmentPath ?? '') }}"
+                            >
+
+                            {{-- フォーム送信用 --}}
+                            <input type="hidden" name="department_id" id="department_id" 
+                                value="{{ old('department_id', $selectedDepartmentId ?? '') }}"
+                            >
+
+                            {{-- ドロップダウンリスト --}}
+                            <ul 
+                                id="department_list"
+                                class="lg:ml-2 absolute dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-black dark:text-white bg-white w-full mt-1 max-h-60 overflow-auto z-50 rounded shadow hidden"
+                            >
+                                @foreach($departments as $department)
+                                    <li 
+                                        data-id="{{ $department->id }}"
+                                        data-path="{{ $department->path }}"
+                                        class="relative cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1"
+                                    >
+                                        <div class="flex items-center">
+                                            {{-- 左ボーダー（階層分） --}}
+                                            @for($i = 0; $i < $department->level; $i++)
+                                                <div class="border-l border-gray-300 dark:border-gray-600 h-6 w-6"></div>
+                                            @endfor
+                                            <span class="ml-1">{{ $department->name }}</span>
+                                        </div>
+                                    </li>
                                 @endforeach
-                            </select>
+                            </ul>
                         </div>
+
+                        <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            const dropdown = document.querySelector(".department-dropdown");
+                            const input = dropdown.querySelector("#department_input");
+                            const hiddenInput = dropdown.querySelector("#department_id");
+                            const list = dropdown.querySelector("#department_list");
+                            const items = list.querySelectorAll("li");
+
+                            let highlightIndex = -1;
+
+                            // 初期値に対応してハイライト
+                            const currentValue = hiddenInput.value;
+                            items.forEach((item, i) => {
+                                if (item.getAttribute("data-id") === currentValue) {
+                                    highlightIndex = i;
+                                    highlightItem(highlightIndex);
+                                }
+                            });
+
+                            function openList() {
+                                list.classList.remove("hidden");
+
+                                // DB初期値に基づきハイライト
+                                if (highlightIndex === -1 && hiddenInput.value) {
+                                    items.forEach((item, i) => {
+                                        if (item.getAttribute("data-id") === hiddenInput.value) {
+                                            highlightIndex = i;
+                                            highlightItem(highlightIndex);
+                                        }
+                                    });
+                                }
+                            }
+
+                            function closeList() {
+                                list.classList.add("hidden");
+                                highlightIndex = -1;
+                                clearHighlight();
+                            }
+
+                            function toggleList() {
+                                if (list.classList.contains("hidden")) {
+                                    openList();
+                                } else {
+                                    closeList();
+                                }
+                            }
+
+                            function highlightItem(index) {
+                                clearHighlight();
+                                if (index >= 0 && index < items.length) {
+                                    items[index].classList.add("bg-gray-200");
+                                    items[index].classList.add("dark:bg-gray-800");
+                                    items[index].scrollIntoView({ block: "nearest" });
+                                }
+                            }
+
+                            function clearHighlight() {
+                                items.forEach(item => item.classList.remove("bg-gray-200"));
+                                items.forEach(item => item.classList.remove("dark:bg-gray-800"));
+                            }
+
+                            function selectItem(index) {
+                                if (index >= 0 && index < items.length) {
+                                    const item = items[index];
+                                    const id = item.getAttribute("data-id");
+                                    const path = item.getAttribute("data-path");
+
+                                    hiddenInput.value = id;
+                                    input.value = path;
+
+                                    closeList();
+                                }
+                            }
+
+                            // マウス操作
+                            input.addEventListener("click", function(e) {
+                                e.stopPropagation();
+                                toggleList();
+                            });
+
+                            items.forEach((item, i) => {
+                                item.addEventListener("click", function() {
+                                    selectItem(i);
+                                });
+                            });
+
+                            document.addEventListener("click", function(e) {
+                                if (!dropdown.contains(e.target)) {
+                                    closeList();
+                                }
+                            });
+
+                            // キーボード操作
+                            input.addEventListener("keydown", function(e) {
+                                switch (e.key) {
+                                    case " ": // スペースキー
+                                        e.preventDefault();
+                                        toggleList();
+                                        break;
+                                    case "ArrowDown":
+                                        e.preventDefault();
+                                        if (list.classList.contains("hidden")) {
+                                            openList();
+                                        } else {
+                                            highlightIndex = highlightIndex < items.length - 1 ? highlightIndex + 1 : 0;
+                                            highlightItem(highlightIndex);
+                                        }
+                                        break;
+                                    case "ArrowUp":
+                                        e.preventDefault();
+                                        if (list.classList.contains("hidden")) {
+                                            openList();
+                                        } else {
+                                            highlightIndex = highlightIndex > 0 ? highlightIndex - 1 : items.length - 1;
+                                            highlightItem(highlightIndex);
+                                        }
+                                        break;
+                                    case "Enter":
+                                        e.preventDefault();
+                                        if (list.classList.contains("hidden")) {
+                                            openList();
+                                        } else {
+                                            selectItem(highlightIndex);
+                                        }
+                                        break;
+                                    case "Escape":
+                                        closeList();
+                                        break;
+                                }
+                            });
+                        });
+                        </script>
+
+
 
                         <div id="user-dropdown" class="relative w-full lg:ml-2 mt-2 lg:mt-0">
                             <input type="hidden" id="selected-user-id" name="selected_user_id" value="{{ $selectedUserId }}">
@@ -164,6 +321,9 @@
                                 </div>
                             </div>
                         </div>
+
+
+
                         <!-- 詳細検索 Modal -->
                         <div id="detailSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center overflow-y-scroll z-50 hidden animate-slide-in-top">
                             <div class="max-h-full w-full max-w-3xl">
@@ -285,6 +445,13 @@
             </div>
         </div>
     </div>
+    <div class="text-gray-950 md:ml-9 my-2">
+        <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center">
+            <div class="ml-4">
+                {{ $clients->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
+            </div>
+        </h2>
+    </div>
 
     <div class="md:w-auto md:ml-14 lg:mr-2 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-300">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -302,9 +469,12 @@
                             </div>
                         </div>
                     </th>
-                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
-                        <span class="sr-only">編集</span>
+                    <th scope="col" class="px-1 py-3 w-auto">
+                        <div class="whitespace-nowrap">（選択 <span id="selectedCount">0</span> 件）</div>
                     </th>
+                    {{-- <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                        <span class="sr-only">編集</span>
+                    </th> --}}
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             @sortablelink('client_num','顧客No.')
@@ -353,7 +523,7 @@
                                 <input id="checkbox{{ $client->id }}" type="checkbox" name="selectedIds[]" value="{{ $client->id }}" form="bulkDeleteForm" class="checkbox-item  w-4 h-4 text-blue-600 bg-gray-100 border-gray-500 dark:border-white rounded border  focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700">
                             </div>
                         </td>
-                        <td class="pl-3 pr-2 py-0.5 whitespace-nowrap">
+                        <td class="pl-4 pr-2 py-0.5 whitespace-nowrap">
                             <button onclick="location.href='{{route('clients.edit',$client)}}'" class="block whitespace-nowrap px-2 pl-3 md:pl-1.5  md:pr-1.5 py-[4.5px] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-sm items-center text-sm text-center dark:bg-blue-700 dark:hover:bg-blue-800 dark:focus:ring-blue-800" type="button">
                                 <div class="flex items-center">
                                     <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -380,17 +550,19 @@
                             {{$client->tradeStatus->trade_status_name}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$client->affiliation2->affiliation2_name_short}}
+                            {{ $client->department?->getLevelName(2) ?? '-' }}
+                            {{-- {{ $client->department?->path ?? '-' }} --}}
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
-        <div class="mt-1 mb-1 px-4">
-        {{ $clients->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
-        </div> 
     </div>
-
+    @if($clients->hasPages())
+        <div class="mb-1 px-4 md:ml-9">
+            {{ $clients->withQueryString()->links('vendor.pagination.custum-tailwind') }}
+        </div>
+    @endif
 
     <div id="deleteModal-clients" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative w-full max-w-md max-h-full">

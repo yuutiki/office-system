@@ -113,7 +113,7 @@ class SupportsImport implements
                 'series' => ProductSeries::pluck('id', 'series_code')->toArray(),
                 'versions' => ProductVersion::pluck('id', 'version_code')->toArray(),
                 'categories' => ProductCategory::pluck('id', 'category_code')->toArray(),
-                'times' => SupportTime::pluck('id', 'time_code')->toArray(),
+                'times' => SupportTime::pluck('id', 'code')->toArray(),
                 'types' => SupportType::pluck('id', 'type_code')->toArray(),
             ];
         });

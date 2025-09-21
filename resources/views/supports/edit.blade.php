@@ -51,7 +51,77 @@
     <input type="hidden" form="supportForm" name="client_id" id="client_id" value="{{ $support->client->id }}">
 
     <div class="max-w-7xl mx-auto px-2 md:pl-14">
-        <div class="dark:bg-gray-600 bg-gray-100 rounded pl-4 py-4 mt-8 dark:text-gray-200 shadow-md">
+        <div class="mx-auto md:w-full my-4 rounded shadow-md overflow-hidden border border-gray-200 dark:border-gray-600">
+            <table class="w-full text-sm text-left divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
+                <tbody>
+                    
+                    <!-- 顧客No. -->
+                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
+                            顧客No.
+                        </th>
+                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
+                            <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300">{{ $support->client->client_num }}</div>
+                        </td>
+                    </tr>
+                    
+                    <!-- 顧客名称 -->
+                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
+                            顧客名称
+                        </th>
+                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
+                            <div class="flex items-center">
+                                <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300 whitespace-nowrap">{{ $support->client->client_name }}</div>
+                                <span class="bg-blue-100 text-blue-800 text-xs font-medium ml-2 inline-block px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400 whitespace-nowrap">
+                                    {{ $support->client->tradeStatus->trade_status_name }}
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- 管轄所属 -->
+                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
+                            管轄所属
+                        </th>
+                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
+                            <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300">{{ $support->client->affiliation2->affiliation2_name }}</div>
+                        </td>
+                    </tr>
+                    
+                    <!-- 営業担当 -->
+                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
+                            営業担当
+                        </th>
+                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
+                            <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300 whitespace-pre-wrap">{{ $support->client->user->user_name }}</div>
+                        </td>
+                    </tr>
+
+                    <!-- 契約連番 -->
+                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
+                            ステータス
+                        </th>
+                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
+                            @if($support->is_draft)
+                                <span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-400 border border-yellow-400">
+                                    下書き
+                                </span>
+                            @else
+                                <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                    入力完了
+                                </span>
+                            @endif
+                        </td>
+                    </tr>                        
+                </tbody>
+            </table>
+        </div>
+
+        {{-- <div class="dark:bg-gray-600 bg-gray-100 rounded pl-4 py-4 mt-8 dark:text-gray-200 shadow-md">
             <div class="grid gap-4">
                 <div class="flex">
                     <span class="w-28 font-semibold text-gray-600 dark:text-gray-300">顧客No.</span>
@@ -82,7 +152,7 @@
                     @endif
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         {{-- タブボタン --}}
         <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
@@ -183,7 +253,7 @@
                         <option selected value="">---</option>
                         @foreach($supportTimes as $supportTime)
                             <option value="{{ $supportTime->id }}" @selected(old('support_time_id', $support->support_time_id) == $supportTime->id)>
-                                {{ $supportTime->time_name }}
+                                {{ $supportTime->name }}
                             </option>
                         @endforeach
                     </select>

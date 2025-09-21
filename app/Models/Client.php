@@ -79,23 +79,38 @@ class Client extends Model
     }
 
 
-
-    public static function generateClientNumber($corporationNum, $prefix_code)
+    public static function generateClientNumber($corporationNum)
     {
-        $suffix = strtoupper(Str::substr($prefix_code, 0, 1));
-        $lastClient = Client::where('client_num', 'like', "$corporationNum-C-$suffix%")
+        // $suffix = strtoupper(Str::substr($prefix_code, 0, 1));
+        $lastClient = Client::where('client_num', 'like', "$corporationNum-C-%")
             ->orderBy('client_num', 'desc')
             ->first();
 
         if ($lastClient) {
-            $lastSerialNumber = (int) Str::substr($lastClient->client_num, -2);
-            $newSerialNumber = str_pad($lastSerialNumber + 1, 2, '0', STR_PAD_LEFT);
+            $lastSerialNumber = (int) Str::substr($lastClient->client_num, -3);
+            $newSerialNumber = str_pad($lastSerialNumber + 1, 3, '0', STR_PAD_LEFT);
         } else {
-            $newSerialNumber = '01';
+            $newSerialNumber = '001';
         }
 
-        return "$corporationNum-C-$suffix$newSerialNumber";
+        return "$corporationNum-C-$newSerialNumber";
     }
+    // public static function generateClientNumber($corporationNum, $prefix_code)
+    // {
+    //     $suffix = strtoupper(Str::substr($prefix_code, 0, 1));
+    //     $lastClient = Client::where('client_num', 'like', "$corporationNum-C-$suffix%")
+    //         ->orderBy('client_num', 'desc')
+    //         ->first();
+
+    //     if ($lastClient) {
+    //         $lastSerialNumber = (int) Str::substr($lastClient->client_num, -2);
+    //         $newSerialNumber = str_pad($lastSerialNumber + 1, 2, '0', STR_PAD_LEFT);
+    //     } else {
+    //         $newSerialNumber = '01';
+    //     }
+
+    //     return "$corporationNum-C-$suffix$newSerialNumber";
+    // }
 
     // public static function generateClientNumber($clientcorporationId)
     // {
@@ -216,6 +231,10 @@ class Client extends Model
     public function updatedBy()
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');
+    }
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
     }
 
 }

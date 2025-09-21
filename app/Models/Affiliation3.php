@@ -33,5 +33,9 @@ class Affiliation3 extends Model
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');
     }
+    public function affiliation2()
+    {
+        return $this->belongsTo(Affiliation2::class);
+    }
 }
 

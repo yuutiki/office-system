@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('distribution_type_code',2)->unique()->comment('商流種別コード');
             $table->string('distribution_type_name',20)->comment('商流種別名称');
+            $table->boolean('is_active')->default(true)->comment('有効フラグ');
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->datetimes();

@@ -14,35 +14,35 @@ class T_ClientSeeder extends Seeder
     {
         $clientsData = [
             [
-                'client_num' => '999990-C-C01',
+                'client_num' => '999990-C-001',
                 'client_name' => '札幌大谷学園',
                 'client_kana_name' => 'サッポロオオタニガクエン',
                 'corporation_name' => '学校法人 札幌大谷学園',
                 'memo' => '1494-01-28-00',
             ],
             [
-                'client_num' => '999991-C-C01',
+                'client_num' => '999991-C-001',
                 'client_name' => '東洋女子高等学校',
                 'client_kana_name' => 'トウヨウジョシコウトウガッコウ',
                 'corporation_name' => '学校法人 東洋女子学園',
                 'memo' => '1494-01-28-00',
             ],
             [
-                'client_num' => '999992-C-C01',
+                'client_num' => '999992-C-001',
                 'client_name' => '聖路加国際大学',
                 'client_kana_name' => 'セイロカコクサイダイガク',
                 'corporation_name' => '学校法人 聖路加国際大学',
                 'memo' => '1494-01-28-00',
             ],
             [
-                'client_num' => '999993-C-C01',
+                'client_num' => '999993-C-001',
                 'client_name' => '桐朋学園大学',
                 'client_kana_name' => 'トウホウガクエンダイガク',
                 'corporation_name' => '学校法人 桐朋学園',
                 'memo' => '0477-01-28-00',
             ],
             [
-                'client_num' => '999994-C-C01',
+                'client_num' => '999994-C-001',
                 'client_name' => '帝京平成大学',
                 'client_kana_name' => 'テイキョウヘイセイダイガク',
                 'corporation_name' => '学校法人 帝京平成大学',

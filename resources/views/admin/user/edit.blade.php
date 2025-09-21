@@ -1,10 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
+        <div class="flex w-full">
+            <h2 class="text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('editUser', $user) }}
             </h2>
-            <div class="flex justify-end items-center space-x-2">
+            <div class="ml-auto flex justify-end items-center space-x-2">
                 <x-message :message="session('message')"/>
 
                 {{-- <form method="post" action="{{ route('corporations.update', $corporation) }}" enctype="multipart/form-data" id="corporationForm" class="flex items-center">

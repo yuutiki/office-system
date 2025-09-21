@@ -1,11 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="text-lg text-gray-900 dark:text-white flex">
+        <div class="flex w-full">
+            <h2 class="text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('createSupport') }}
             </h2>
-            <div class="flex justify-end items-center space-x-2">
-                <x-message :message="session('message')" />
+            <div class="ml-auto flex justify-end items-center space-x-2">
                 <form method="post" action="{{ route('supports.store') }}" enctype="multipart/form-data" id="supportForm" class="flex">
                     @csrf
                     <x-button-save form-id="supportForm" id="saveButton" onkeydown="stopTab(event)">
@@ -159,7 +158,7 @@
                     <select form="supportForm" id="support_time_id" name="support_time_id" class="input-secondary">
                         <option selected value="">---</option>
                         @foreach($supportTimes as $supportTime)
-                            <option value="{{ $supportTime->id }}" @selected($supportTime->id == old('support_time_id'))>{{ $supportTime->time_name }}</option>
+                            <option value="{{ $supportTime->id }}" @selected($supportTime->id == old('support_time_id'))>{{ $supportTime->name }}</option>
                         @endforeach
                     </select>
                     @error('support_time_id')

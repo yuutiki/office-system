@@ -19,11 +19,9 @@ class ContractController extends Controller
 {
     public function index()
     {
-        $contracts = Contract::with('client','contractType')->get();
-        $count = $contracts->count();
+        $contracts = Contract::with('client','contractType')->sortable()->paginate();
 
-
-        return view('contracts.index', compact('contracts','count'));
+        return view('contracts.index', compact('contracts'));
     }
 
     public function create()

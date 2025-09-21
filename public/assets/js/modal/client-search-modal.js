@@ -6,7 +6,9 @@ const ClientSearchModal = {
     // モーダルの状態管理
     state: {
         activeModalId: null,
-        keydownHandler: null
+        keydownHandler: null,
+        initializedModals: new Set(), // 初期化済みモーダルを追跡
+        dropdownHandlers: new Map()   // ドロップダウンハンドラーを管理
     },
 
     // スタイル定義を集約し、再利用性を向上
@@ -71,8 +73,14 @@ const ClientSearchModal = {
         const firstInput = modal.querySelector('input, select, button');
         if (firstInput) firstInput.focus();
 
-        // ユーザードロップダウンの初期化
-        this.initializeUserDropdown(modalId);
+        // ユーザードロップダウンの初期化（重複を防ぐ）
+        if (!this.state.initializedModals.has(modalId)) {
+            this.initializeUserDropdown(modalId);
+            this.state.initializedModals.add(modalId);
+        } else {
+            // 既に初期化済みの場合は状態をリセット
+            this.resetDropdownState(modalId);
+        }
     },
 
     /**
@@ -92,6 +100,25 @@ const ClientSearchModal = {
         modal.classList.add('hidden');
         overlay.classList.add('hidden');
         document.body.classList.remove('overflow-hidden');
+
+        // ドロップダウン状態をリセット
+        this.resetDropdownState(modalId);
+        this.state.activeModalId = null;
+    },
+
+    /**
+     * ドロップダウンの状態をリセット
+     */
+    resetDropdownState: function(modalId) {
+        const dropdownMenu = document.getElementById(`${modalId}_user_dropdown_menu`);
+        const userSearch = document.getElementById(`${modalId}_user_search`);
+        
+        if (dropdownMenu) {
+            dropdownMenu.classList.add('hidden');
+        }
+        if (userSearch) {
+            userSearch.value = '';
+        }
     },
 
     /**
@@ -196,7 +223,6 @@ const ClientSearchModal = {
 
         document.getElementById(`${modalId}_selected_user_display`).textContent = '営業担当を選択';
 
-        
         const firstInput = modal.querySelector('input, select');
         if (firstInput) firstInput.focus();
     },
@@ -308,7 +334,6 @@ const ClientSearchModal = {
         rows[nextIndex].focus();
     },
 
-
     /**
      * ユーザードロップダウンの初期化
      */
@@ -320,41 +345,84 @@ const ClientSearchModal = {
         const selectedUserDisplay = document.getElementById(`${modalId}_selected_user_display`);
         const selectedUserId = document.getElementById(`${modalId}_user_id`);
 
+        if (!dropdownToggle || !dropdownMenu || !userSearch) {
+            console.error('Required elements not found for modal:', modalId);
+            return;
+        }
+
         let debounceTimer = null;
 
+        // 既存のハンドラーを削除（重複防止）
+        this.removeDropdownHandlers(modalId);
+
         // ドロップダウンの表示/非表示
-        dropdownToggle.addEventListener('click', () => {
+        const toggleHandler = () => {
             dropdownMenu.classList.toggle('hidden');
             if (!dropdownMenu.classList.contains('hidden')) {
                 userSearch.focus();
                 // ドロップダウンを開いたときに初期ユーザー一覧を取得
                 this.fetchUsers(modalId);
             }
-        });
+        };
 
         // ユーザー検索の入力処理
-        userSearch.addEventListener('input', (e) => {
+        const inputHandler = (e) => {
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(() => {
                 this.fetchUsers(modalId, e.target.value);
             }, 300);
-        });
+        };
 
         // フォーカス時のスタイル追加
-        userSearch.addEventListener('focus', () => {
+        const focusHandler = () => {
             userSearch.classList.add('border-blue-500', 'ring-2', 'ring-blue-500');
-        });
+        };
 
-        userSearch.addEventListener('blur', () => {
+        const blurHandler = () => {
             userSearch.classList.remove('border-blue-500', 'ring-2', 'ring-blue-500');
-        });
+        };
 
         // 外部クリックでの閉じる処理
-        document.addEventListener('click', (e) => {
-            if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+        const documentClickHandler = (e) => {
+            if (this.state.activeModalId === modalId && 
+                !dropdownToggle.contains(e.target) && 
+                !dropdownMenu.contains(e.target)) {
                 dropdownMenu.classList.add('hidden');
             }
+        };
+
+        // イベントリスナーを追加
+        dropdownToggle.addEventListener('click', toggleHandler);
+        userSearch.addEventListener('input', inputHandler);
+        userSearch.addEventListener('focus', focusHandler);
+        userSearch.addEventListener('blur', blurHandler);
+        document.addEventListener('click', documentClickHandler);
+
+        // ハンドラーを保存（後で削除するため）
+        this.state.dropdownHandlers.set(modalId, {
+            dropdownToggle,
+            userSearch,
+            toggleHandler,
+            inputHandler,
+            focusHandler,
+            blurHandler,
+            documentClickHandler
         });
+    },
+
+    /**
+     * ドロップダウンのイベントハンドラーを削除
+     */
+    removeDropdownHandlers: function(modalId) {
+        const handlers = this.state.dropdownHandlers.get(modalId);
+        if (handlers) {
+            handlers.dropdownToggle.removeEventListener('click', handlers.toggleHandler);
+            handlers.userSearch.removeEventListener('input', handlers.inputHandler);
+            handlers.userSearch.removeEventListener('focus', handlers.focusHandler);
+            handlers.userSearch.removeEventListener('blur', handlers.blurHandler);
+            document.removeEventListener('click', handlers.documentClickHandler);
+            this.state.dropdownHandlers.delete(modalId);
+        }
     },
 
     /**
@@ -384,7 +452,9 @@ const ClientSearchModal = {
             }
         } catch (error) {
             console.error('Error fetching users:', error);
-            userList.innerHTML = '<li class="px-4 py-2 text-red-500">エラーが発生しました</li>';
+            if (userList) {
+                userList.innerHTML = '<li class="px-4 py-2 text-red-500">エラーが発生しました</li>';
+            }
         }
     },
     
@@ -412,8 +482,36 @@ const ClientSearchModal = {
      */
     displayUsers: function(modalId, users) {
         const userList = document.getElementById(`${modalId}_user_list`);
+        if (!userList) return;
+        
         userList.innerHTML = '';
 
+        // 「選択を解除」オプションを最初に追加
+        const clearOption = document.createElement('li');
+        clearOption.tabIndex = 0;
+        clearOption.className = 'px-4 py-2 hover:bg-red-50 cursor-pointer focus:bg-red-100 focus:text-red-600 focus:outline-none transition-colors duration-150 ease-in-out border-b border-gray-200 dark:border-gray-600';
+        clearOption.setAttribute('role', 'option');
+        clearOption.innerHTML = `
+            <div class="flex items-center text-red-600">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+                <span class="font-semibold">選択を解除</span>
+            </div>
+        `;
+
+        clearOption.addEventListener('click', () => this.clearUserSelection(modalId));
+        clearOption.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                this.clearUserSelection(modalId);
+            }
+        });
+
+
+        userList.appendChild(clearOption);
+
+        // 通常のユーザー一覧を追加
         users.forEach((user, index) => {
             const li = document.createElement('li');
             li.tabIndex = 0;
@@ -460,9 +558,45 @@ const ClientSearchModal = {
         const dropdownMenu = document.getElementById(`${modalId}_user_dropdown_menu`);
         const userSearch = document.getElementById(`${modalId}_user_search`);
 
-        selectedUserDisplay.textContent = user.user_name;
-        selectedUserId.value = user.id;
-        dropdownMenu.classList.add('hidden');
-        userSearch.value = '';
+        if (selectedUserDisplay) selectedUserDisplay.textContent = user.user_name;
+        if (selectedUserId) selectedUserId.value = user.id;
+        if (dropdownMenu) dropdownMenu.classList.add('hidden');
+        if (userSearch) userSearch.value = '';
     },
+
+    /**
+     * 営業担当の選択を解除
+     */
+    clearUserSelection: function(modalId) {
+        const selectedUserDisplay = document.getElementById(`${modalId}_selected_user_display`);
+        const selectedUserId = document.getElementById(`${modalId}_user_id`);
+        const dropdownMenu = document.getElementById(`${modalId}_user_dropdown_menu`);
+        const userSearch = document.getElementById(`${modalId}_user_search`);
+
+        if (selectedUserDisplay) {
+            selectedUserDisplay.textContent = '営業担当を選択';
+        }
+        if (selectedUserId) {
+            selectedUserId.value = '';
+        }
+        if (dropdownMenu) {
+            dropdownMenu.classList.add('hidden');
+        }
+        if (userSearch) {
+            userSearch.value = '';
+        }
+    },
+
+
+    /**
+     * 全てのモーダルを破棄（必要に応じて使用）
+     */
+    destroy: function() {
+        // 全てのハンドラーを削除
+        for (const modalId of this.state.dropdownHandlers.keys()) {
+            this.removeDropdownHandlers(modalId);
+        }
+        this.state.initializedModals.clear();
+        this.state.dropdownHandlers.clear();
+    }
 };

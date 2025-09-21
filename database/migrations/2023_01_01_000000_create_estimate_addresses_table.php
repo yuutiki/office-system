@@ -29,6 +29,7 @@ return new class extends Migration
             $table->foreignId('project_affiliation3')->nullable(true)->comment('PJ所属階層3');
             $table->foreignId('project_affiliation4')->nullable(true)->comment('PJ所属階層4');
             $table->foreignId('project_affiliation5')->nullable(true)->comment('PJ所属階層5');
+            $table->boolean('is_active')->default(true)->comment('有効フラグ');
         
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');

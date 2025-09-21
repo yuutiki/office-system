@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('contract_partner_type_code',2)->unique()->comment('契約先種別コード');
             $table->string('contract_partner_type_name',20)->comment('契約先種別名称');
             $table->string('contract_partner_type_name_en',20)->nullable(true)->comment('契約先種別英名称');
+            $table->boolean('is_active')->default(true)->comment('有効フラグ');
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->datetimes();

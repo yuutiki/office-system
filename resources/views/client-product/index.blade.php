@@ -3,14 +3,10 @@
         <div class="flex justify-between w-full whitespace-nowrap items-center">
             <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center">
                 {{ Breadcrumbs::render('clientProducts') }}
-                <div class="ml-4">
-                    {{ $count }}件
-                </div>
                 <div class="text-gray-900 dark:text-white ml-4 text-base hidden md:block">
                     - 選択中: <span id="selectedCount">0</span> 件
                 </div>
             </h2>
-            <x-message :message="session('message')" />
             <div class="flex flex-col flex-shrink-0 space-y-1 w-auto md:flex-row md:space-y-0 md:space-x-3 items-center">
 
                 <x-buttons.add-button :route="route('client-products.create')" gate="storeUpdate_client_products" :text="__('Add')" />
@@ -240,6 +236,13 @@
             </div>
         </div>
     </div>
+    <div class="text-gray-950 md:ml-9 my-2">
+        <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center">
+            <div class="ml-4">
+                {{ $clientProducts->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
+            </div>
+        </h2>
+    </div>
 
     <div class="md:w-auto md:ml-14 lg:mr-2 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-300">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -375,10 +378,12 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="mt-1 mb-1 px-4">
-        {{ $clientProducts->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
-        </div> 
     </div>
+    @if($clientProducts->hasPages())
+        <div class="mb-1 px-4 md:ml-9">
+            {{ $clientProducts->withQueryString()->links('vendor.pagination.custum-tailwind') }}
+        </div>
+    @endif
 
     <style>
         .active {

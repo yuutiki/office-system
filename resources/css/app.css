@@ -3,17 +3,65 @@
 @tailwind utilities;
 
 
-.button-delete {
-    @apply block whitespace-nowrap font-medium rounded-s rounded-e text-sm px-2.5 py-1 text-center text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800;
-}
+/* ボタン要素 */
+    .button-delete {
+        @apply block whitespace-nowrap font-medium rounded-s rounded-e text-sm px-2.5 py-1 text-center text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800;
+    }
 
-.button-delete-primary {
-    @apply whitespace-nowrap justify-center text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-2 focus:outline-none focus:ring-red-300 rounded-sm text-sm px-2.5 py-1 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900;
-}
+    /* .button-delete-primary {
+        @apply whitespace-nowrap justify-center text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-2 focus:outline-none focus:ring-red-300 rounded-sm text-sm px-2.5 py-1 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900;
+    } */
 
-.button-edit-primary {
-    @apply block whitespace-nowrap px-2 pl-3 md:pl-1.5  md:pr-1.5 py-[4.5px] text-white bg-blue-700 hover:bg-blue-800 rounded-sm items-center text-sm text-center dark:bg-blue-700 dark:hover:bg-blue-800 focus:border-blue-500  border-gray-400  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150;
-}
+    .button-delete-primary {
+        @apply block whitespace-nowrap px-2 pl-3 md:pl-1.5  md:pr-1.5 py-[4.5px] text-white bg-red-700 hover:bg-red-800 rounded-sm items-center text-sm text-center dark:bg-red-700 dark:hover:bg-red-800 focus:border-red-500  border-gray-400  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150;
+    }
+
+    .button-edit-primary {
+        @apply block whitespace-nowrap px-2 pl-3 md:pl-1.5  md:pr-1.5 py-[4.5px] text-white bg-blue-700 hover:bg-blue-800 rounded-sm items-center text-sm text-center dark:bg-blue-700 dark:hover:bg-blue-800 focus:border-blue-500  border-gray-400  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150;
+    }
+
+    .button-show-primary {
+        @apply block whitespace-nowrap px-2 pl-3 md:pl-1.5  md:pr-1.5 py-[4.5px] text-white bg-green-700 hover:bg-green-800 rounded-sm items-center text-sm text-center dark:bg-green-700 dark:hover:bg-green-800 focus:border-green-500  border-gray-400  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150;
+    }
+
+    .button-active {
+        @apply w-20 h-10 flex items-center justify-center rounded border-2
+                transition-all ease-in-out duration-200
+                
+                /* チェック時（有効）- 青系 */
+                peer-checked:bg-blue-600 
+                peer-checked:border-blue-600 
+                peer-checked:text-white
+                peer-checked:hover:bg-blue-700
+                peer-checked:hover:border-blue-700
+                dark:peer-checked:bg-blue-700
+                dark:peer-checked:border-blue-500
+                dark:peer-checked:hover:bg-blue-800
+                dark:peer-checked:hover:border-blue-600
+                
+                /* 未チェック時（無効）- 赤系 */
+                bg-red-50
+                border-red-400
+                text-red-700
+                hover:bg-red-100
+                hover:border-red-500
+                dark:bg-red-950
+                dark:border-red-600
+                dark:text-red-400
+                dark:hover:bg-red-900
+                dark:hover:border-red-500
+                
+                /* フォーカス時 */
+                peer-focus:outline-none 
+                peer-focus:ring-2 
+                peer-focus:ring-offset-2
+                peer-focus:ring-blue-500
+                dark:peer-focus:ring-indigo-500
+                dark:peer-focus:ring-offset-gray-800
+                
+                /* 共通 */
+                shadow-sm
+    }
 
 
 
@@ -73,41 +121,55 @@
     @apply border-red-700 focus:ring-red-500;
 }
 
-@layer components {
-    .checkbox-label {
-      @apply inline-flex justify-between w-full p-2 rounded-lg cursor-pointer
-             text-blue-600 dark:text-blue-500
-             border-2 border-gray-200 dark:border-blue-500
-             bg-white dark:bg-gray-800
-             transition-colors duration-300;
-    }
-  
-    /* PCでのホバー効果 */
-    @media (hover: hover) and (pointer: fine) {
-      .checkbox-label:hover {
-        @apply bg-gray-50 border-blue-500
-               dark:bg-blue-600 dark:border-blue-600 dark:text-white
-               dark:peer-checked:text-white peer-checked:text-gray-600
-               peer-checked:border-blue-500 peer-checked:hover:border-blue-500 ;
-      }
-    }
-  
-    /* スマートフォンでのアクティブ効果 */
-    @media (hover: none) and (pointer: coarse) {
-      .checkbox-label:active {
-        @apply bg-gray-100 border-blue-600
-               dark:bg-blue-700 dark:border-blue-700 dark:text-white
-               dark:peer-checked:text-white peer-checked:text-gray-600
-               peer-checked:border-blue-500 peer-checked:hover:border-blue-500 ;
-      }
-    }
-  
-    /* チェック状態 (共通) */
-    .peer:checked + .checkbox-label {
-      @apply bg-blue-500 border-blue-500 text-white
-             dark:bg-blue-600 dark:border-blue-600 dark:text-white;
-    }
-  }
+        @layer components {
+            .checkbox-label {
+                @apply inline-flex justify-between w-full p-1.5 rounded-lg cursor-pointer
+                       text-blue-600 dark:text-blue-500
+                       border-2 border-gray-200 dark:border-blue-500
+                       bg-white dark:bg-gray-800
+                       transition-colors duration-300;
+            }
+            
+            /* フォーカス状態（タブ移動時） */
+            .peer:focus + .checkbox-label {
+                @apply ring-2 ring-indigo-500 ring-offset-2 ring-offset-white
+                       dark:ring-offset-gray-800;
+            }
+            
+            /* PCでのホバー効果（未チェック時） */
+            @media (hover: hover) and (pointer: fine) {
+                .checkbox-label:hover {
+                    @apply bg-gray-50 border-blue-500
+                           dark:bg-blue-600 dark:border-blue-600 dark:text-white;
+                }
+                
+                /* チェック状態でのホバー効果（チェック済み時） */
+                .peer:checked + .checkbox-label:hover {
+                    @apply bg-blue-600 border-blue-600 text-white
+                           dark:bg-blue-800 dark:border-blue-800;
+                }
+            }
+            
+            /* スマートフォンでのアクティブ効果（未チェック時） */
+            @media (hover: none) and (pointer: coarse) {
+                .checkbox-label:active {
+                    @apply bg-gray-100 border-blue-600
+                           dark:bg-blue-700 dark:border-blue-700 dark:text-white;
+                }
+                
+                /* チェック状態でのアクティブ効果（チェック済み時） */
+                .peer:checked + .checkbox-label:active {
+                    @apply bg-blue-600 border-blue-600 text-white
+                           dark:bg-blue-700 dark:border-blue-700;
+                }
+            }
+            
+            /* チェック状態（基本スタイル） */
+            .peer:checked + .checkbox-label {
+                @apply bg-blue-500 border-blue-500 text-white
+                       dark:bg-blue-700 dark:border-blue-700 dark:text-white;
+            }
+        }
 
 
 

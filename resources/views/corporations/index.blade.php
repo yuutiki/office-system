@@ -1,16 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between w-full whitespace-nowrap items-center">
-            <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center py-1">
+            <h2 class="text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('corporations', $searchParams) }}
-                <div class="ml-4">
-                    {{ $count }}件
-                </div>
-                <div class="text-gray-900 dark:text-white ml-2 text-sm hidden md:block">
-                    <div>（選択中： <span id="selectedCount">0</span> 件）</div>
-                </div>
             </h2>
-            <x-message :message="session('message')" />
             <div class="flex flex-shrink-0 w-auto md:flex-row space-y-0 space-x-3 items-center">
 
                 {{-- 新規登録 --}}
@@ -212,19 +205,16 @@
             </div>
         </div>
     </div>
-    <div class="text-gray-950 md:ml-16 my-2">
+    <div class="text-gray-950 md:ml-9 my-2">
         <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center">
             <div class="ml-4">
-                {{ $count }}件
-            </div>
-            <div class="text-gray-900 dark:text-white ml-2 text-sm">
-                <div>（選択中： <span id="selectedCount">0</span> 件）</div>
+                {{ $corporations->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
             </div>
         </h2>
     </div>
 
 
-    <div class="md:w-auto md:ml-14 md:mr-2 mb-4 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-300 js-scrollable">
+    <div class="md:w-auto md:ml-14 md:mr-2 mb-1 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-300 js-scrollable">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-sm text-gray-700 dark:bg-gray-700 dark:text-gray-200">
                 <tr>
@@ -241,7 +231,7 @@
                         </div>
                     </th>
                     <th scope="col" class="px-1 py-3 w-auto">
-                        <span class="sr-only">編集</span>
+                        <div class="whitespace-nowrap">（選択 <span id="selectedCount">0</span> 件）</div>
                     </th>
 
                     {{-- <th scope="col" class="px-1 py-3 whitespace-nowrap">
@@ -399,11 +389,13 @@
                     </tr>
                 @endforeach
             </tbody>
-        </table>
-        <div class="mt-1 mb-1 px-4">
-        {{ $corporations->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
-        </div> 
+        </table> 
     </div>
+    @if($corporations && $corporations->hasPages())
+        <div class="mb-1 px-4 md:ml-9">
+            {{ $corporations->withQueryString()->links('vendor.pagination.custum-tailwind') }}
+        </div>
+    @endif
 
     <!-- Main modal -->
     <div id="select-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">

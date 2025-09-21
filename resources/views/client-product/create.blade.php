@@ -31,7 +31,7 @@
             <div class="flex">
                 <div class="w-full flex flex-col">
                     <label for="client_num" class="block dark:text-gray-100 text-gray-900 leading-none mt-4 text-sm">顧客番号</label>
-                    <input type="text" form="createForm" name="client_num" tabindex="-1" class="input-secondary cursor-not-allowed" id="client_num" value="{{ $clientNum }}" placeholder="顧客検索してください" readonly>
+                    <input type="text" form="createForm" name="client_num" tabindex="-1" class="input-secondary cursor-not-allowed" id="client_num" value="{{ $clientNum }}" placeholder="顧客検索してください">
                 </div>
 
                 <button type="button" onclick="ClientSearchModal.show('clientSearchModal1')" class="p-2.5 text-sm font-medium h-[35px] text-white mt-[34px] ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('master_name_en',40)->nullable(true)->comment('マスタ英名称');
             $table->string('route')->comment('ルート');
             $table->integer('digit')->nullable()->comment('桁数');
+            $table->boolean('is_active')->default(true)->comment('有効フラグ');
 
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');

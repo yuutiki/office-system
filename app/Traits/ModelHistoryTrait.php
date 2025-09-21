@@ -90,6 +90,7 @@ trait ModelHistoryTrait
             'changes' => $changes,
             'ip_address' => request()->ip(),
             'user_agent' => request()->userAgent(),
+            'user_agent_client_hint' => $this->getUaClientHints(),   // UA-CH追加
             'meta' => $this->getHistoryMeta(),
         ]);
     }
@@ -194,4 +195,18 @@ trait ModelHistoryTrait
         // どのフィールドも見つからない場合はIDを返す
         return "ID: {$this->getKey()}";
     }
+
+    protected function getUaClientHints(): ?array
+    {
+        $request = request();
+
+        return [
+            'ua'       => $request->header('Sec-CH-UA'),
+            'mobile'   => $request->header('Sec-CH-UA-Mobile'),
+            'platform' => $request->header('Sec-CH-UA-Platform'),
+            'arch'     => $request->header('Sec-CH-UA-Arch'),
+            'model'    => $request->header('Sec-CH-UA-Model'),
+        ];
+    }
+
 }

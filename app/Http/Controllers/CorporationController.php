@@ -25,6 +25,27 @@ use Illuminate\Support\Facades\Session;
 
 class CorporationController extends Controller
 {
+    /**
+     * ページネーション設定
+     */
+    private const ALLOWED_PER_PAGE = [100, 300, 500];
+    private const DEFAULT_PER_PAGE = 100;
+
+    /**
+     * 表示件数の取得とバリデーション
+     */
+    private function getValidatedPerPage(Request $request): int
+    {
+        $perPage = (int) $request->get('per_page', self::DEFAULT_PER_PAGE);
+        
+        // バリデーション
+        if (!in_array($perPage, self::ALLOWED_PER_PAGE)) {
+            $perPage = self::DEFAULT_PER_PAGE;
+        }
+        
+        return $perPage;
+    }
+
     protected $invoiceService;
 
     public function __construct(InvoiceApiService $invoiceService)
@@ -51,7 +72,9 @@ class CorporationController extends Controller
         //     'can_admin' => Gate::allows('admin_corporations'),
         // ];
         // １ページごとの表示件数
-        $perPage = config('constants.perPage');
+        // $perPage = config('constants.perPage');
+        // 1. 表示件数の取得とバリデーション
+        $perPage = $this->getValidatedPerPage($request);
 
         // 検索条件を取得してセッションに保存
         $searchParams = $request->session()->put('search_params', $request->all());
@@ -88,6 +111,19 @@ class CorporationController extends Controller
         // 検索結果の全 corporation_id を取得しセッションに保存
         $corporationIds = $corporations->pluck('id')->toArray();
         session()->put('corporation_ids', $corporationIds);
+
+        // 検索結果の全件データも取得してセッションに保存（ドロワー用）
+        $allSearchResults = Corporation::filter($filters)
+            ->with('prefecture', 'credits')
+            ->addSelect(['latest_credit_limit' => CorporationCredit::select('credit_limit')
+                ->whereColumn('corporation_id', 'corporations.id')
+                ->latest()
+                ->limit(1)
+            ])
+            ->orderBy(session('sort_by', 'id'), session('sort_direction', 'asc'))
+            ->get();
+        
+        session()->put('search_results', $allSearchResults);
             
         // 検索結果の件数を取得
         $count = $corporations->total();
@@ -184,26 +220,45 @@ class CorporationController extends Controller
 
     public function edit(string $id, Request $request)
     {
-        $activeTab = $request->query('tab', 'tab1'); // クエリパラメータからタブを取得
-        $prefectures = Prefecture::all();
+    $activeTab = $request->query('tab', 'tab1'); // クエリパラメータからタブを取得
+    $prefectures = Prefecture::all();
 
-        $corporation = Corporation::findOrFail($id);
-        $credits = CorporationCredit::where('corporation_id',$id)->orderBy('created_at','desc')->get();
+    $corporation = Corporation::findOrFail($id);
+    $credits = CorporationCredit::where('corporation_id',$id)->orderBy('created_at','desc')->get();
 
-        // 最新の与信情報を取得
-        $latestCredit = $corporation->credits()->orderBy('created_at', 'desc')->first();
+    // 最新の与信情報を取得
+    $latestCredit = $corporation->credits()->orderBy('created_at', 'desc')->first();
 
-        // セッションから検索結果のIDリストを取得
-        $corporationIds = session('corporation_ids', []);
+    // セッションから検索結果データを取得
+    $searchResults = session('search_results', collect());
+    $searchParams = session('search_params', []);
+    $corporationIds = session('corporation_ids', []);
 
-        // 現在のIDの位置を検索
-        $currentIndex = array_search($id, $corporationIds);
+    // 現在のIDの位置を検索
+    $currentIndex = array_search((int)$id, $corporationIds);
+    $totalCount = count($corporationIds);
 
-        // 前後のIDを取得
-        $prevId = $currentIndex > 0 ? $corporationIds[$currentIndex - 1] : null;
-        $nextId = $currentIndex < count($corporationIds) - 1 ? $corporationIds[$currentIndex + 1] : null;
+    // 前後のIDを取得
+    $prevId = $currentIndex !== false && $currentIndex > 0 ? $corporationIds[$currentIndex - 1] : null;
+    $nextId = $currentIndex !== false && $currentIndex < count($corporationIds) - 1 ? $corporationIds[$currentIndex + 1] : null;
 
-        return view('corporations.edit',compact('corporation', 'prefectures', 'activeTab', 'credits', 'latestCredit', 'prevId', 'nextId'));
+    // 都道府県データを取得（検索条件表示用）
+    $prefectureNames = Prefecture::pluck('prefecture_name', 'id');
+
+    return view('corporations.edit', compact(
+        'corporation', 
+        'prefectures', 
+        'activeTab', 
+        'credits', 
+        'latestCredit', 
+        'prevId', 
+        'nextId',
+        'searchResults',
+        'searchParams',
+        'currentIndex',
+        'totalCount',
+        'prefectureNames'
+    ));
     }
 
     public function update(CorporationUpdateRequest $request, string $id)

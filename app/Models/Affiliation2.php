@@ -39,5 +39,9 @@ class Affiliation2 extends Model
     {
         return $this->hasMany(Product::class);
     }
+    public function affiliation1()
+    {
+        return $this->belongsTo(Affiliation1::class);
+    }
     
 }

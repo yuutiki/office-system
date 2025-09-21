@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('sales_stage_code',2)->unique()->comment('営業段階コード');
             $table->string('sales_stage_name',20)->comment('営業段階名称');
+            $table->boolean('is_active')->default(true)->comment('有効フラグ');
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->datetimes();

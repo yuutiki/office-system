@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="text-xl text-gray-900 dark:text-white">
+        <div class="flex w-full">
+            <h2 class="text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('createUser') }}
             </h2>
             <div class="flex justify-end">

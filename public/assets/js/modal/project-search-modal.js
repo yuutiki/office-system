@@ -7,7 +7,14 @@ const ProjectSearchModal = {
     state: {
         activeModalId: null,
         keydownHandler: null,
-        lastSearchParams: null
+        lastSearchParams: null,
+        // イベントリスナーの管理用
+        eventListeners: {
+            statusDropdown: null,
+            userDropdown: null,
+            statusOutsideClick: null,
+            userOutsideClick: null
+        }
     },
 
     // スタイル定義を集約し、再利用性を向上
@@ -43,14 +50,6 @@ const ProjectSearchModal = {
         ].join(' ')
     },
 
-    // プロジェクトのステータス定義
-    // STATUS_LIST: [
-    //     { id: 'planning', name: '計画中' },
-    //     { id: 'in_progress', name: '進行中' },
-    //     { id: 'completed', name: '完了' },
-    //     { id: 'on_hold', name: '保留中' }
-    // ],
-
     /**
      * モーダルを表示し、初期化処理を行います
      * @param {string} modalId - モーダルのID
@@ -77,12 +76,30 @@ const ProjectSearchModal = {
         const firstInput = modal.querySelector('input, select, button');
         if (firstInput) firstInput.focus();
 
+        // 既存のイベントリスナーをクリーンアップしてから初期化
+        this.cleanupEventListeners();
+        
         // 各種ドロップダウンの初期化
         this.initializeDropdowns(modalId);
 
         // 前回の検索パラメータがあれば、検索を実行
         if (this.state.lastSearchParams) {
             this.search(modalId, this.state.lastSearchParams.screenId);
+        }
+    },
+
+    /**
+     * イベントリスナーをクリーンアップします
+     */
+    cleanupEventListeners: function() {
+        // 外部クリックイベントリスナーを削除
+        if (this.state.eventListeners.statusOutsideClick) {
+            document.removeEventListener('click', this.state.eventListeners.statusOutsideClick);
+            this.state.eventListeners.statusOutsideClick = null;
+        }
+        if (this.state.eventListeners.userOutsideClick) {
+            document.removeEventListener('click', this.state.eventListeners.userOutsideClick);
+            this.state.eventListeners.userOutsideClick = null;
         }
     },
 
@@ -138,6 +155,9 @@ const ProjectSearchModal = {
             this.state.keydownHandler = null;
         }
         
+        // 外部クリックイベントリスナーのクリーンアップ
+        this.cleanupEventListeners();
+        
         modal.classList.add('hidden');
         overlay.classList.add('hidden');
         document.body.classList.remove('overflow-hidden');
@@ -192,26 +212,23 @@ const ProjectSearchModal = {
 
         if (!dropdownToggle || !dropdownMenu || !statusList) return;
 
+        // 既存のイベントリスナーを削除
+        const newToggle = dropdownToggle.cloneNode(true);
+        dropdownToggle.parentNode.replaceChild(newToggle, dropdownToggle);
+
         // トグルボタンのクリックイベント
-        dropdownToggle.addEventListener('click', () => {
+        newToggle.addEventListener('click', () => {
             dropdownMenu.classList.toggle('hidden');
-            dropdownToggle.setAttribute('aria-expanded', 
+            newToggle.setAttribute('aria-expanded', 
                 dropdownMenu.classList.contains('hidden') ? 'false' : 'true'
             );
         });
 
-        // ステータスリストの生成
-        // statusList.innerHTML = this.STATUS_LIST.map(status => `
-        //     <li class="${this.CLASSES.DROPDOWN_ITEM}"
-        //         role="option"
-        //         tabindex="0"
-        //         data-value="${status.id}">
-        //         ${status.name}
-        //     </li>
-        // `).join('');
-
-        // 各ステータス項目のイベント設定
-        statusList.querySelectorAll('li').forEach(li => {
+        // 各ステータス項目のイベント設定（既存のリスナーをクリア）
+        const newStatusList = statusList.cloneNode(true);
+        statusList.parentNode.replaceChild(newStatusList, statusList);
+        
+        newStatusList.querySelectorAll('li').forEach(li => {
             li.addEventListener('click', () => {
                 this.selectStatus(modalId, {
                     id: li.dataset.value,
@@ -228,12 +245,16 @@ const ProjectSearchModal = {
         });
 
         // 外部クリックでの閉じる処理
-        document.addEventListener('click', (e) => {
-            if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
-                dropdownMenu.classList.add('hidden');
-                dropdownToggle.setAttribute('aria-expanded', 'false');
+        this.state.eventListeners.statusOutsideClick = (e) => {
+            const currentToggle = document.getElementById(`${modalId}_status_dropdown_toggle`);
+            const currentMenu = document.getElementById(`${modalId}_status_dropdown_menu`);
+            if (currentToggle && currentMenu && 
+                !currentToggle.contains(e.target) && !currentMenu.contains(e.target)) {
+                currentMenu.classList.add('hidden');
+                currentToggle.setAttribute('aria-expanded', 'false');
             }
-        });
+        };
+        document.addEventListener('click', this.state.eventListeners.statusOutsideClick);
     },
 
     /**
@@ -249,20 +270,27 @@ const ProjectSearchModal = {
 
         let debounceTimer = null;
 
+        // 既存のイベントリスナーを削除
+        const newToggle = dropdownToggle.cloneNode(true);
+        dropdownToggle.parentNode.replaceChild(newToggle, dropdownToggle);
+
+        const newUserSearch = userSearch.cloneNode(true);
+        userSearch.parentNode.replaceChild(newUserSearch, userSearch);
+
         // トグルボタンのクリックイベント
-        dropdownToggle.addEventListener('click', () => {
+        newToggle.addEventListener('click', () => {
             dropdownMenu.classList.toggle('hidden');
-            dropdownToggle.setAttribute('aria-expanded', 
+            newToggle.setAttribute('aria-expanded', 
                 dropdownMenu.classList.contains('hidden') ? 'false' : 'true'
             );
             if (!dropdownMenu.classList.contains('hidden')) {
-                userSearch.focus();
+                newUserSearch.focus();
                 this.fetchUsers(modalId);
             }
         });
 
         // ユーザー検索の入力処理
-        userSearch.addEventListener('input', (e) => {
+        newUserSearch.addEventListener('input', (e) => {
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(() => {
                 this.fetchUsers(modalId, e.target.value);
@@ -270,21 +298,25 @@ const ProjectSearchModal = {
         });
 
         // フォーカス時のスタイル
-        userSearch.addEventListener('focus', () => {
-            userSearch.classList.add('border-blue-500', 'ring-2', 'ring-blue-500');
+        newUserSearch.addEventListener('focus', () => {
+            newUserSearch.classList.add('border-blue-500', 'ring-2', 'ring-blue-500');
         });
 
-        userSearch.addEventListener('blur', () => {
-            userSearch.classList.remove('border-blue-500', 'ring-2', 'ring-blue-500');
+        newUserSearch.addEventListener('blur', () => {
+            newUserSearch.classList.remove('border-blue-500', 'ring-2', 'ring-blue-500');
         });
 
         // 外部クリックでの閉じる処理
-        document.addEventListener('click', (e) => {
-            if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
-                dropdownMenu.classList.add('hidden');
-                dropdownToggle.setAttribute('aria-expanded', 'false');
+        this.state.eventListeners.userOutsideClick = (e) => {
+            const currentToggle = document.getElementById(`${modalId}_dropdown_toggle`);
+            const currentMenu = document.getElementById(`${modalId}_user_dropdown_menu`);
+            if (currentToggle && currentMenu && 
+                !currentToggle.contains(e.target) && !currentMenu.contains(e.target)) {
+                currentMenu.classList.add('hidden');
+                currentToggle.setAttribute('aria-expanded', 'false');
             }
-        });
+        };
+        document.addEventListener('click', this.state.eventListeners.userOutsideClick);
     },
 
     /**
@@ -360,7 +392,7 @@ const ProjectSearchModal = {
         };
 
         // 検索パラメータを保存
-        this.state.lastSearchParams = { ...searchData };
+        this.state.lastSearchParams = { ...searchData, screenId: screenId };
 
         this.setLoadingState(modalId, true);
 
@@ -431,8 +463,15 @@ const ProjectSearchModal = {
         });
 
         // ステータスと担当者の表示をリセット
-        // document.getElementById(`${modalId}_selected_status_display`).textContent = 'ステータスを選択';
-        document.getElementById(`${modalId}_selected_user_display`).textContent = '営業担当を選択';
+        const statusDisplay = document.getElementById(`${modalId}_selected_status_display`);
+        if (statusDisplay) {
+            statusDisplay.textContent = 'ステータスを選択';
+        }
+        
+        const userDisplay = document.getElementById(`${modalId}_selected_user_display`);
+        if (userDisplay) {
+            userDisplay.textContent = '営業担当を選択';
+        }
         
         // 結果表示もクリア
         const resultsContainer = document.getElementById(`${modalId}_results`);
@@ -442,6 +481,8 @@ const ProjectSearchModal = {
         // 最初の入力フィールドにフォーカス
         const firstInput = modal.querySelector('input, select');
         if (firstInput) firstInput.focus();
+
+        this.closeAllDropdowns(modalId);
 
         // 保存された検索パラメータをクリア
         this.state.lastSearchParams = null;
@@ -491,9 +532,8 @@ const ProjectSearchModal = {
                 ].filter(Boolean).join(' ');
 
                 const value = this.getNestedValue(result, item.column_key);
-                // ステータスの場合は表示名に変換
-                const displayValue = item.column_key === 'status' ? 
-                    this.getStatusDisplayName(value) : value;
+                // ステータスの場合は表示名に変換（必要に応じて）
+                const displayValue = value;
 
                 return `<td class="${cellClasses}">${displayValue}</td>`;
             }).join('');
@@ -511,16 +551,6 @@ const ProjectSearchModal = {
             if (firstRow) firstRow.focus();
         });
     },
-
-    /**
-     * ステータスのIDから表示名を取得します
-     * @param {string} statusId - ステータスID
-     * @returns {string} ステータスの表示名
-     */
-    // getStatusDisplayName: function(statusId) {
-    //     const status = this.STATUS_LIST.find(s => s.id === statusId);
-    //     return status ? status.name : statusId;
-    // },
 
     /**
      * ネストされたオブジェクトから値を取得します

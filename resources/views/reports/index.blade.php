@@ -247,6 +247,14 @@
         </div>
     </div>
 
+    <div class="text-gray-950 md:ml-9 my-2">
+        <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center">
+            <div class="ml-4">
+                {{ $reports->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
+            </div>
+        </h2>
+    </div>
+
     <div class="md:w-auto md:ml-14 md:mr-2 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700  dark:text-gray-900 bg-gray-300">
 
         @if($reports->isEmpty())
@@ -431,11 +439,13 @@
                     @endforeach
                 </tbody>
             </table>
-            <div class="mt-1 mb-1 px-4">
-            {{ $reports->withQueryString()->links('vendor.pagination.custum-tailwind') }}
-            </div> 
         @endif
     </div>
+    @if($reports->hasPages())
+        <div class="mb-1 px-4 md:ml-9">
+            {{ $reports->withQueryString()->links('vendor.pagination.custum-tailwind') }}
+        </div>
+    @endif
 
 <script src="{{ asset('assets/js/user-dropdown.js') }}"></script>
 

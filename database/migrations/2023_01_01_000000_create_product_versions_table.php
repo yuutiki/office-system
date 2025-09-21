@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('version_code',4)->unique()->comment('製品バージョンコード');
             $table->string('version_name',20)->comment('製品バージョン名称');
+            $table->boolean('is_active')->default(true)->comment('有効フラグ');
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->datetimes();

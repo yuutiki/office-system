@@ -58,6 +58,7 @@ class ContractDetail extends Model
             return "{$years}年{$months}ヶ月{$days}日";
         }
 
+    // リレーション定義
     public function contract()
     {
         return $this->belongsTo(Contract::class);

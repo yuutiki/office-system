@@ -7,10 +7,9 @@ function initializeDrawerManager(formPrefix) {
     const DrawerManager = {
         currentWidth: 480,
         minWidth: 300,
-        maxWidth: Math.min(1200, window.innerWidth), // 画面幅を超えないように調整
-        activeDrawerId: null, // 現在開いているドロワーのID
+        maxWidth: Math.min(1200, window.innerWidth),
+        activeDrawerId: null,
         
-        // ドロワーの幅を更新
         updateAllDrawersWidth: function(width) {
             this.currentWidth = Math.min(parseInt(width), window.innerWidth);
             document.querySelectorAll('.drawer-component').forEach(drawer => {
@@ -19,7 +18,6 @@ function initializeDrawerManager(formPrefix) {
             localStorage.setItem('drawerWidth', this.currentWidth);
         },
 
-        // 保存された幅を読み込む
         loadSavedWidth: function() {
             const savedWidth = localStorage.getItem('drawerWidth');
             if (savedWidth) {
@@ -28,20 +26,14 @@ function initializeDrawerManager(formPrefix) {
             }
         },
         
-        // 初期化時にすべてのドロワーを非表示状態にする
         setupInitialState: function() {
-            // すべてのドロワーのフォーカス可能要素を非フォーカス可能に設定
             document.querySelectorAll('.drawer-component').forEach(drawer => {
-                // ARIA属性を設定
                 drawer.setAttribute('aria-hidden', 'true');
                 
-                // フォーカス可能な要素全てにtabindex="-1"を設定
                 FocusTrap.getFocusableElements(drawer).forEach(element => {
-                    // 元のtabindexを保存（あれば）
                     if (element.hasAttribute('tabindex')) {
                         element.dataset.originalTabindex = element.getAttribute('tabindex');
                     }
-                    // フォーカス不可に設定
                     element.setAttribute('tabindex', '-1');
                 });
             });
@@ -50,47 +42,71 @@ function initializeDrawerManager(formPrefix) {
 
     // フォーカストラップを管理するオブジェクト
     const FocusTrap = {
-        // 前回フォーカスされていた要素（ドロワー開閉時に使用）
         lastFocusedElement: null,
-        
-        // キーボードイベントリスナー参照
         keyboardListener: null,
         
-        // ドロワー内のフォーカス可能な要素を取得
+        // ラジオボタングループを含むフォーカス可能な要素を取得
         getFocusableElements: function(drawerElement) {
-            return Array.from(drawerElement.querySelectorAll(
-                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-            )).filter(el => !el.hasAttribute('disabled') && el.offsetParent !== null);
+            const focusableSelectors = 'button:not([disabled]), [href], input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+            const elements = Array.from(drawerElement.querySelectorAll(focusableSelectors));
+            
+            // ラジオボタンの特殊処理
+            const radioGroups = new Map();
+            const filteredElements = [];
+            
+            elements.forEach(el => {
+                if (el.type === 'radio') {
+                    // ラジオボタングループごとに1つだけ含める
+                    if (!radioGroups.has(el.name)) {
+                        // チェックされているものか、最初のものを代表として選択
+                        const checkedRadio = drawerElement.querySelector(`input[type="radio"][name="${el.name}"]:checked`);
+                        const firstRadio = drawerElement.querySelector(`input[type="radio"][name="${el.name}"]`);
+                        radioGroups.set(el.name, checkedRadio || firstRadio);
+                    }
+                } else if (el.offsetParent !== null) {
+                    // 通常の要素（表示されているもののみ）
+                    filteredElements.push(el);
+                }
+            });
+            
+            // ラジオボタングループの代表要素を追加
+            radioGroups.forEach(radio => {
+                if (radio && radio.offsetParent !== null) {
+                    filteredElements.push(radio);
+                }
+            });
+            
+            // DOM順にソート
+            return filteredElements.sort((a, b) => {
+                const position = a.compareDocumentPosition(b);
+                if (position & Node.DOCUMENT_POSITION_FOLLOWING) return -1;
+                if (position & Node.DOCUMENT_POSITION_PRECEDING) return 1;
+                return 0;
+            });
         },
         
-        // フォーカスをトラップする
         trapFocus: function(drawerElement) {
-            // 現在フォーカスされている要素を保存
             this.lastFocusedElement = document.activeElement;
-            
-            // ドロワー内のすべての要素をフォーカス可能に設定
             this.enableFocusableElements(drawerElement);
             
-            // キーボードイベントリスナーを設定
+            // ラジオボタングループのキーボード操作を設定
+            this.setupRadioGroupNavigation(drawerElement);
+            
             this.keyboardListener = (e) => {
                 if (e.key !== 'Tab') return;
                 
                 const focusableElements = this.getFocusableElements(drawerElement);
-                
                 if (focusableElements.length === 0) return;
                 
                 const firstElement = focusableElements[0];
                 const lastElement = focusableElements[focusableElements.length - 1];
                 
-                // SHIFT + Tabで逆方向に循環
                 if (e.shiftKey) {
                     if (document.activeElement === firstElement) {
                         e.preventDefault();
                         lastElement.focus();
                     }
-                } 
-                // Tabで順方向に循環
-                else {
+                } else {
                     if (document.activeElement === lastElement) {
                         e.preventDefault();
                         firstElement.focus();
@@ -100,24 +116,72 @@ function initializeDrawerManager(formPrefix) {
             
             document.addEventListener('keydown', this.keyboardListener);
             
-            // ドロワー内の最初のフォーカス可能な要素にフォーカス
+            // 最初のフォーカス可能な要素にフォーカス（input/textareaを優先）
             const focusableElements = this.getFocusableElements(drawerElement);
             if (focusableElements.length > 0) {
+                const firstInput = focusableElements.find(el => 
+                    (el.tagName === 'INPUT' && el.type !== 'radio' && el.type !== 'checkbox' && !el.readOnly) ||
+                    el.tagName === 'TEXTAREA'
+                );
+                
                 setTimeout(() => {
-                    focusableElements[0].focus();
+                    (firstInput || focusableElements[0]).focus();
                 }, 50);
             }
         },
         
-        // ドロワー内の要素をフォーカス可能にする
+        // ラジオボタングループのキーボードナビゲーション設定
+        setupRadioGroupNavigation: function(drawerElement) {
+            const radioGroups = new Map();
+            
+            // すべてのラジオボタンをグループごとに整理
+            drawerElement.querySelectorAll('input[type="radio"]').forEach(radio => {
+                if (!radioGroups.has(radio.name)) {
+                    radioGroups.set(radio.name, []);
+                }
+                radioGroups.get(radio.name).push(radio);
+            });
+            
+            // 各グループにキーボードナビゲーションを設定
+            radioGroups.forEach((radios, groupName) => {
+                radios.forEach((radio, index) => {
+                    radio.addEventListener('keydown', (e) => {
+                        let nextIndex = -1;
+                        
+                        switch(e.key) {
+                            case 'ArrowDown':
+                            case 'ArrowRight':
+                                e.preventDefault();
+                                nextIndex = (index + 1) % radios.length;
+                                break;
+                            case 'ArrowUp':
+                            case 'ArrowLeft':
+                                e.preventDefault();
+                                nextIndex = (index - 1 + radios.length) % radios.length;
+                                break;
+                            case ' ':
+                            case 'Enter':
+                                e.preventDefault();
+                                radio.checked = true;
+                                radio.dispatchEvent(new Event('change', { bubbles: true }));
+                                return;
+                        }
+                        
+                        if (nextIndex !== -1) {
+                            radios[nextIndex].focus();
+                            radios[nextIndex].checked = true;
+                            radios[nextIndex].dispatchEvent(new Event('change', { bubbles: true }));
+                        }
+                    });
+                });
+            });
+        },
+        
         enableFocusableElements: function(drawerElement) {
-            // ドロワーをARIAで表示状態に設定
             drawerElement.setAttribute('aria-hidden', 'false');
             
-            // すべてのフォーカス可能要素を有効化
             const elements = this.getFocusableElements(drawerElement);
             elements.forEach(element => {
-                // 保存された元のtabindexがあれば復元、なければ属性を削除
                 if (element.dataset.originalTabindex) {
                     element.setAttribute('tabindex', element.dataset.originalTabindex);
                 } else {
@@ -126,39 +190,31 @@ function initializeDrawerManager(formPrefix) {
             });
         },
         
-        // ドロワー内の要素をフォーカス不可にする
         disableFocusableElements: function(drawerElement) {
-            // ドロワーをARIAで非表示状態に設定
             drawerElement.setAttribute('aria-hidden', 'true');
             
-            // すべてのフォーカス可能要素を無効化
             const elements = Array.from(drawerElement.querySelectorAll(
                 'button, [href], input, select, textarea, [tabindex]'
             )).filter(el => !el.hasAttribute('disabled'));
             
             elements.forEach(element => {
-                // 現在のtabindexを保存（あれば）
                 if (element.hasAttribute('tabindex') && element.getAttribute('tabindex') !== '-1') {
                     element.dataset.originalTabindex = element.getAttribute('tabindex');
                 }
-                // フォーカス不可に設定
                 element.setAttribute('tabindex', '-1');
             });
         },
         
-        // フォーカストラップを解除
         releaseFocus: function(drawerElement) {
             if (this.keyboardListener) {
                 document.removeEventListener('keydown', this.keyboardListener);
                 this.keyboardListener = null;
             }
             
-            // ドロワー内の要素をフォーカス不可に設定
             if (drawerElement) {
                 this.disableFocusableElements(drawerElement);
             }
             
-            // 保存しておいた要素にフォーカスを戻す
             if (this.lastFocusedElement) {
                 setTimeout(() => {
                     this.lastFocusedElement.focus();
@@ -168,20 +224,13 @@ function initializeDrawerManager(formPrefix) {
         }
     };
 
-    // フォームの変更検知と警告を管理するオブジェクト
+    // フォームの変更検知と警告を管理するオブジェクト（ラジオボタン対応版）
     const FormManager = {
-        // フォームの初期値と変更状態を保持
-        formStates: new Map(), // { formId: { initialValues: Map, isChanged: boolean } }
+        formStates: new Map(),
 
-        // フォームの初期化
         initialize(form) {
-            const initialValues = new Map();
-            const inputs = this.getFormInputs(form);
+            const initialValues = this.getInitialValues(form);
             
-            inputs.forEach(input => {
-                initialValues.set(input.name, input.value);
-            });
-
             this.formStates.set(form.id, {
                 initialValues: initialValues,
                 isChanged: false
@@ -197,80 +246,118 @@ function initializeDrawerManager(formPrefix) {
             });
         },
 
-        // 変更検知の設定
+        // 初期値を取得（ラジオボタン対応）
+        getInitialValues(form) {
+            const values = new Map();
+            const inputs = this.getFormInputs(form);
+            
+            // ラジオボタングループを管理
+            const radioGroups = new Set();
+            
+            inputs.forEach(input => {
+                if (input.type === 'radio') {
+                    // ラジオボタングループはグループ名で管理
+                    if (!radioGroups.has(input.name)) {
+                        radioGroups.add(input.name);
+                        const checkedRadio = form.querySelector(`input[type="radio"][name="${input.name}"]:checked`);
+                        values.set(input.name, checkedRadio ? checkedRadio.value : '');
+                    }
+                } else if (input.type === 'checkbox') {
+                    values.set(input.name, input.checked ? input.value : '');
+                } else {
+                    values.set(input.name, input.value);
+                }
+            });
+            
+            return values;
+        },
+
+        // 現在の値を取得（ラジオボタン対応）
+        getCurrentValues(form) {
+            const values = new Map();
+            const inputs = this.getFormInputs(form);
+            
+            const radioGroups = new Set();
+            
+            inputs.forEach(input => {
+                if (input.type === 'radio') {
+                    if (!radioGroups.has(input.name)) {
+                        radioGroups.add(input.name);
+                        const checkedRadio = form.querySelector(`input[type="radio"][name="${input.name}"]:checked`);
+                        values.set(input.name, checkedRadio ? checkedRadio.value : '');
+                    }
+                } else if (input.type === 'checkbox') {
+                    values.set(input.name, input.checked ? input.value : '');
+                } else {
+                    values.set(input.name, input.value);
+                }
+            });
+            
+            return values;
+        },
+
         setupChangeDetection(form) {
             const inputs = this.getFormInputs(form);
 
+            const checkChanges = () => {
+                const formState = this.formStates.get(form.id);
+                if (!formState) return;
+
+                const currentValues = this.getCurrentValues(form);
+                const hasChanges = Array.from(currentValues.entries()).some(
+                    ([name, value]) => value !== formState.initialValues.get(name)
+                );
+
+                formState.isChanged = hasChanges;
+                form.dataset.isChanged = hasChanges.toString();
+
+                console.log('Change detected:', {
+                    formId: form.id,
+                    currentValues: Object.fromEntries(currentValues),
+                    initialValues: Object.fromEntries(formState.initialValues),
+                    hasChanges: hasChanges
+                });
+            };
+
             inputs.forEach(input => {
-                const checkChanges = () => {
-                    const formState = this.formStates.get(form.id);
-                    if (!formState) return;
-
-                    const currentValues = new Map(inputs.map(field => [field.name, field.value]));
-                    const hasChanges = Array.from(currentValues.entries()).some(
-                        ([name, value]) => value !== formState.initialValues.get(name)
-                    );
-
-                    formState.isChanged = hasChanges;
-                    form.dataset.isChanged = hasChanges.toString();
-
-                    console.log('Change check:', {
-                        formId: form.id,
-                        field: input.name,
-                        currentValue: input.value,
-                        initialValue: formState.initialValues.get(input.name),
-                        hasChanges: hasChanges
-                    });
-                };
-
-                // input と change の両方のイベントを監視
-                input.addEventListener('input', checkChanges);
-                input.addEventListener('change', checkChanges);
-            });
-        },
-
-        // フォームのリセット処理
-        resetForm(form) {
-            console.log('Starting form reset for:', form.id);
-            
-            // まずフォームをリセット
-            form.reset();
-
-            // 現在のフォーム値を取得し、新しい初期値として設定
-            const inputs = this.getFormInputs(form);
-            const newInitialValues = new Map();
-            
-            inputs.forEach(input => {
-                // リセット後の値を新しい初期値として保存
-                const resetValue = input.value;
-                newInitialValues.set(input.name, resetValue);
-                console.log(`Reset ${input.name} to:`, resetValue);
-            });
-
-            // フォームの状態を更新
-            this.formStates.set(form.id, {
-                initialValues: newInitialValues,
-                isChanged: false
-            });
-
-            console.log('Form reset completed:', {
-                formId: form.id,
-                newState: {
-                    initialValues: Object.fromEntries(newInitialValues),
-                    isChanged: false
+                // ラジオボタンとチェックボックスはchangeイベントのみ
+                if (input.type === 'radio' || input.type === 'checkbox') {
+                    input.addEventListener('change', checkChanges);
+                } else {
+                    input.addEventListener('input', checkChanges);
+                    input.addEventListener('change', checkChanges);
                 }
             });
         },
 
-        // 入力要素を取得するユーティリティ
+        resetForm(form) {
+            console.log('Starting form reset for:', form.id);
+            
+            form.reset();
+            
+            // 既存の初期値を保持（新しく取得しない）
+            const formState = this.formStates.get(form.id);
+            if (formState) {
+                formState.isChanged = false;
+                form.dataset.isChanged = 'false';
+            }
+
+            console.log('Form reset completed:', {
+                formId: form.id,
+                initialValues: formState ? Object.fromEntries(formState.initialValues) : 'not found',
+                isChanged: false
+            });
+        },
+
         getFormInputs(form) {
             return Array.from(form.elements).filter(element => 
-                element.tagName.toLowerCase() === 'input' &&
-                !['hidden', 'submit'].includes(element.type)
+                (element.tagName.toLowerCase() === 'input' || 
+                 element.tagName.toLowerCase() === 'select' || 
+                 element.tagName.toLowerCase() === 'textarea') &&
+                !['hidden', 'submit', 'button'].includes(element.type)
             );
         },
 
-        // 閉じるボタンの設定
         setupCloseButton(form) {
             const drawerId = form.id.split('-').pop();
             const drawer = document.getElementById(`drawer-${drawerId}`);
@@ -284,7 +371,6 @@ function initializeDrawerManager(formPrefix) {
             }
         },
 
-        // 閉じる処理
         handleClose(form, drawerId) {
             const formState = this.formStates.get(form.id);
             
@@ -298,7 +384,6 @@ function initializeDrawerManager(formPrefix) {
             }
         },
 
-        // 送信処理
         setupSubmitHandler(form) {
             form.addEventListener('submit', () => {
                 const formState = this.formStates.get(form.id);
@@ -309,17 +394,11 @@ function initializeDrawerManager(formPrefix) {
             });
         },
 
-        // 新規作成フォームの初期化
         initializeCreateForm() {
             const form = document.getElementById(`${formPrefix}-create`);
             if (!form) return;
 
-            const initialValues = new Map();
-            const inputs = this.getFormInputs(form);
-            
-            inputs.forEach(input => {
-                initialValues.set(input.name, input.value || '');  // 空値の場合も考慮
-            });
+            const initialValues = this.getInitialValues(form);
 
             this.formStates.set(form.id, {
                 initialValues: initialValues,
@@ -331,7 +410,6 @@ function initializeDrawerManager(formPrefix) {
             this.setupSubmitHandler(form);
         },
 
-        // バリデーションエラー時のドロワー再表示
         handleValidationError() {
             const params = new URLSearchParams(window.location.search);
             const shouldOpenDrawer = sessionStorage.getItem('openDrawer');
@@ -370,7 +448,7 @@ function initializeDrawerManager(formPrefix) {
                 if (!isResizing) return;
 
                 const diffX = e.clientX - initialX;
-                const newWidth = Math.min(initialWidth - diffX, window.innerWidth); // 画面幅を超えない
+                const newWidth = Math.min(initialWidth - diffX, window.innerWidth);
 
                 if (newWidth >= DrawerManager.minWidth) {
                     drawer.style.width = `${newWidth}px`;
@@ -403,7 +481,6 @@ function initializeDrawerManager(formPrefix) {
             });
         }
         
-        // ドロワー内の要素を初期状態で非フォーカス可能に設定
         DrawerManager.setupInitialState();
     }
 
@@ -413,7 +490,7 @@ function initializeDrawerManager(formPrefix) {
         const overlay = document.getElementById('overlay');
         
         if (drawer && overlay) {
-            const maxWidth = Math.min(DrawerManager.currentWidth, window.innerWidth); // 画面幅以下にする
+            const maxWidth = Math.min(DrawerManager.currentWidth, window.innerWidth);
             drawer.style.width = `${maxWidth}px`;
 
             overlay.classList.remove('hidden');
@@ -421,10 +498,7 @@ function initializeDrawerManager(formPrefix) {
             drawer.classList.remove('translate-x-full');
             updateUrl(id);
             
-            // 現在のドロワーIDを保存
             DrawerManager.activeDrawerId = id;
-
-            // フォーカストラップを設定
             FocusTrap.trapFocus(drawer);
 
             setTimeout(() => {
@@ -440,7 +514,6 @@ function initializeDrawerManager(formPrefix) {
         const overlay = document.getElementById('overlay');
         const form = document.getElementById(`${formPrefix}-${id}`);
 
-        // フォーム変更チェック
         if (form) {
             const formState = FormManager.formStates.get(form.id);
             if (formState && formState.isChanged) {
@@ -456,10 +529,7 @@ function initializeDrawerManager(formPrefix) {
             overlay.classList.add('opacity-0');
             overlay.classList.remove('opacity-100');
             
-            // アクティブなドロワーIDをクリア
             DrawerManager.activeDrawerId = null;
-            
-            // フォーカストラップを解除
             FocusTrap.releaseFocus(drawer);
             
             setTimeout(() => {
@@ -502,7 +572,6 @@ function initializeDrawerManager(formPrefix) {
             resetButton.addEventListener('click', function() {
                 const form = document.getElementById('search_form');
                 if (form) {
-                    // 検索条件をクリア (hidden除く)
                     form.querySelectorAll('input:not([type="hidden"]), select').forEach(input => {
                         if (input.type === 'checkbox' || input.type === 'radio') {
                             input.checked = false;
@@ -510,7 +579,6 @@ function initializeDrawerManager(formPrefix) {
                             input.value = '';
                         }
                     });
-                    // フォーム送信
                     form.submit();
                 }
             });
@@ -540,11 +608,7 @@ function initializeDrawerManager(formPrefix) {
 
     // 新規作成フォームの初期化
     FormManager.initializeCreateForm();
-
-    // バリデーションエラー時の処理
     FormManager.handleValidationError();
-    
-    // 検索フォームのリセット処理
     setupSearchFormReset();
 
     // グローバル関数として公開
@@ -554,12 +618,8 @@ function initializeDrawerManager(formPrefix) {
 
 // DOMContentLoaded時に実行される
 document.addEventListener('DOMContentLoaded', function() {
-    // デフォルト値 (ブレード側で上書き可能)
     const defaultFormPrefix = 'support-type-form';
-    
-    // ページで定義されていればそれを使用、なければデフォルト値
     const formPrefix = (typeof window.FORM_PREFIX !== 'undefined') ? window.FORM_PREFIX : defaultFormPrefix;
     
-    // 初期化
     initializeDrawerManager(formPrefix);
 });

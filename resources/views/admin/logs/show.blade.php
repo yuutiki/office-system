@@ -4,7 +4,6 @@
             <h2 class="text-lg text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('showLog', $modelHistory) }}
             </h2>
-            <x-message :message="session('message')" />
         </div>
     </x-slot>
     

@@ -1,11 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
+        <div class="flex w-full">
+            <h2 class="text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('editClientContact') }}
             </h2>
-            <div class="flex justify-end items-center space-x-2">
-                <x-message :message="session('message')"/>
+            <div class="ml-auto flex justify-end items-center space-x-2">
                 <form method="post" action="{{ route('client-contacts.update', $clientContact) }}" enctype="multipart/form-data" id="clientContactForm" class="flex items-center">
                     @csrf
                     @method('patch')
@@ -19,10 +18,7 @@
         </div>
     </x-slot>
 
-    <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
-
     <div class="max-w-7xl mx-auto px-2 md:pl-14">
-
         <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
             <ul class="flex flex-wrap -mb-px text-sm text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
                 <li class="mr-2" role="presentation">

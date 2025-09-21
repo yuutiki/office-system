@@ -10,9 +10,12 @@
 
 
     <!-- 必要なスクリプト -->
-    <script src="https://cdn.jsdelivr.net/npm/echarts@latest/dist/echarts.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
+    <!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- lodash CDN（debounce用） -->
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 
     {{-- @include('dashboard.components.my-calendar') --}}
 
@@ -234,9 +237,9 @@
                             </svg>
                         </button>
                     </div>
-            
-                    {{-- チャートエリア --}}
-                    <div id="main" class="h-[320px] sm:h-[360px] md:h-[380px] w-full"></div>
+                    <div class="h-[320px] sm:h-[360px] md:h-[380px] w-full">
+                        <canvas id="supportChart" class=""></canvas>
+                    </div>
                 </div>
             </div>
             
@@ -374,25 +377,29 @@
 
                 </div>
             </div> --}}
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                <!-- 利用形態円グラフ -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-lg font-semibold text-gray-800 dark:text-white">利用形態</h2>
+                        <div class="relative">
+                            <button class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <canvas id="pieChart" class="h-[380px]"></canvas>
+                </div>
+            </div>
         </main>
 
-                <!-- サポート件数と利用形態 -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-                    <!-- 利用形態円グラフ (1/3幅) -->
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-lg font-semibold text-gray-800 dark:text-white">利用形態</h2>
-                            <div class="relative">
-                                <button class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                        <div id="pieChart" class="h-[380px]"></div>
-                    </div>
-                </div>
+
+
+
 
 
     <script>

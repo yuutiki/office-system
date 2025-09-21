@@ -96,35 +96,41 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 function resetForm(formSelector) {
     const form = document.querySelector(formSelector);
-    if (!form) return; // フォームが存在しない場合は処理をスキップ
-    
-    // 全ての入力要素を取得
+    if (!form) return;
+
     const inputs = form.querySelectorAll('input, select');
-    
-    // 各入力要素をリセット
+
     inputs.forEach(function(input) {
-        // チェックボックスまたはラジオボタンの場合
         if (input.type === 'checkbox' || input.type === 'radio') {
             input.checked = false;
-        } 
-        // hidden以外の場合に値をクリア
-        else if (input.type !== 'hidden') {
-            input.value = '';
+        } else {
+            input.value = ''; // hidden も含めてリセット
         }
     });
 
-    // ユーザー選択の hidden フィールドと表示用テキストをリセット
+    // 部門プルダウンの表示用テキストもリセット
+    const deptInput = document.getElementById('department_input');
+    if (deptInput) {
+        deptInput.value = ''; // placeholder に戻す場合
+    }
+
+    const deptHidden = document.getElementById('department_id');
+    if (deptHidden) {
+        deptHidden.value = '';
+    }
+
+    // ユーザー選択用フィールド
     const userIdInput = document.getElementById('selected-user-id');
     if (userIdInput) {
         userIdInput.value = '';
     }
-
     const userDisplay = document.getElementById('selected-user-display');
     if (userDisplay) {
         const defaultText = userDisplay.dataset.default || 'ユーザーを選択';
         userDisplay.textContent = defaultText;
     }
 }
+
 
 
 

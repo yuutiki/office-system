@@ -23,8 +23,11 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\LogAuthenticationAttempt',
         ],
     
-        'Illuminate\Auth\Events\Authenticated' => [
-            'App\Listeners\LogAuthenticated',
+        // 'Illuminate\Auth\Events\Authenticated' => [
+        //     'App\Listeners\LogAuthenticated',
+        // ],
+            \Illuminate\Auth\Events\Login::class => [  // Authenticatedから変更
+            \App\Listeners\LogAuthenticated::class,
         ],
     
         'Illuminate\Auth\Events\Login' => [

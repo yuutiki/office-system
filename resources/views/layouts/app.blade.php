@@ -74,7 +74,7 @@
             <!-- Page Heading -->
             @if (isset($header))
                 <header class="fixed top-[51px] left-0 right-0 z-10 bg-gray-100 dark:bg-gray-800 shadow-md">
-                    <div class="md:ml-9 py-1.5 px-4 min-h-[48px]">
+                    <div class="md:ml-9 px-4 min-h-[48px] flex items-center justify-between">
                         {{ $header }}
                     </div>
                 </header>
@@ -271,6 +271,8 @@
         <script src="{{ asset('/assets/js/main.js') }}"></script>
 
         @stack('scripts')
+
+        <x-message :message="session('message')" class="z-[9999]"/>
     </body>
 </html>
 

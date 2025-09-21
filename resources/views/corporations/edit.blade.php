@@ -1,84 +1,83 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
+        <div class="flex items-center justify-between w-full min-h-[48px]">
+            {{-- 左側：パンくず --}}
+            <h2 class="text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('editCorporation', $corporation, $searchParams) }}
             </h2>
-            <div class="flex justify-end items-center space-x-2">
-                <x-message :message="session('message')" />
-                <div class="hidden md:flex justify-between items-center">
+
+            {{-- 右側 --}}
+            <div class="flex items-center space-x-2 relative">
+                
+                {{-- 前へ / 中央テキスト / 次へ --}}
+                <div class="hidden md:flex items-center space-x-2">
                     {{-- 前へボタン --}}
-                    <div class="w-10 flex justify-center">
-                        @if ($prevId)
-                            <a href="{{ route('corporations.edit', ['corporation' => $prevId]) }}" class="px-2 py-2.5 dark:bg-gray-600 rounded hover:bg-[#313a48] bg-[#364050]">
-                                <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7"/>
-                                </svg>
-                            </a>
-                        @else
-                            <div class="px-2 py-2.5 bg-gray-400 rounded">
-                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7"/>
-                                </svg>
-                            </div>
-                        @endif
-                    </div>
-                
+                    @if ($prevId)
+                        <a href="{{ route('corporations.edit', ['corporation' => $prevId]) }}" 
+                        class="h-8 w-8 flex items-center justify-center rounded bg-[#364050] hover:bg-[#313a48] dark:bg-gray-600">
+                            <svg class="w-4 h-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7"/>
+                            </svg>
+                        </a>
+                    @else
+                        <div class="h-8 w-8 flex items-center justify-center rounded bg-gray-400">
+                            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7"/>
+                            </svg>
+                        </div>
+                    @endif
+
                     {{-- 中央テキスト --}}
-                    <div class="mx-0.5">
-                        <input type="text" class="rounded py-1 px-2 w-56 text-sm" value="{{ $corporation->corporation_num }}：{{ $corporation->corporation_short_name }}" disabled>
-                    </div>
-                
+                    <input type="text" class="rounded py-1 px-2 w-56 text-sm" 
+                        value="{{ $corporation->corporation_num }}：{{ $corporation->corporation_short_name }}" disabled>
+
                     {{-- 次へボタン --}}
-                    <div class="w-10 flex justify-center">
-                        @if ($nextId)
-                            <a href="{{ route('corporations.edit', ['corporation' => $nextId]) }}" class="px-2 py-2.5 dark:bg-gray-600 rounded hover:bg-[#313a48] bg-[#364050]">
-                                <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
-                                </svg>
-                            </a>
-                        @else
-                            <div class="px-2 py-2.5 bg-gray-400 rounded">
-                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
-                                </svg>
-                            </div>
-                        @endif
-                    </div>
+                    @if ($nextId)
+                        <a href="{{ route('corporations.edit', ['corporation' => $nextId]) }}" 
+                        class="h-8 w-8 flex items-center justify-center rounded bg-[#364050] hover:bg-[#313a48] dark:bg-gray-600">
+                            <svg class="w-4 h-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
+                            </svg>
+                        </a>
+                    @else
+                        <div class="h-8 w-8 flex items-center justify-center rounded bg-gray-400">
+                            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
+                            </svg>
+                        </div>
+                    @endif
                 </div>
-                
-                
-                <form method="post" action="{{ route('corporations.update', $corporation) }}" enctype="multipart/form-data" id="corporationForm" class="flex items-center">
+
+                {{-- 保存ボタン --}}
+                <form method="post" action="{{ route('corporations.update', $corporation) }}" enctype="multipart/form-data" id="corporationForm">
                     @csrf
                     @method('put')
                     @can('storeUpdate_corporations')
-                        <x-buttons.save-button form-id="corporationForm" id="saveButton" class="">
+                        <x-buttons.save-button form-id="corporationForm" id="saveButton">
                             {{ __("update") }}
                         </x-buttons.save-button>
                     @endcan
                 </form>
 
+                {{-- ドロップダウン --}}
                 <x-buttons.dropdown-edit-button />
-            </div>
-
-            <!-- Dropdown menu -->
-            <div id="dropdownActions" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-60 dark:bg-gray-700 dark:divide-gray-600">
-                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownActionButton">
-                    <li>
-                        <button type="button" data-modal-target="deleteModal-{{$corporation->id}}" data-modal-show="deleteModal-{{$corporation->id}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-red-500 dark:text-red-500">
-                            <div class="flex">
-                                <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
-                                <span class="font-semibold">削除</span>
-                            </div>
-                        </button>
-                    </li>
-                    <li>
-                        <span class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full">更新日：{{ $corporation->updated_at }}</span>
-                    </li>
-                    <li>
-                        <span class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full">更新者：{{ $corporation->updatedBy->user_name }}</span>
-                    </li>
-                </ul>
+                <div id="dropdownActions" class="absolute right-0 top-full mt-1 z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-60 dark:bg-gray-700 dark:divide-gray-600">
+                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+                        <li>
+                            <button type="button" data-modal-target="deleteModal-{{$corporation->id}}" data-modal-show="deleteModal-{{$corporation->id}}" 
+                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-red-500 text-left">
+                                <div class="flex">
+                                    <svg class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <span class="font-semibold">削除</span>
+                                </div>
+                            </button>
+                        </li>
+                        <li><span class="block px-4 py-2">更新日：{{ $corporation->updated_at }}</span></li>
+                        <li><span class="block px-4 py-2">更新者：{{ $corporation->updatedBy->user_name }}</span></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </x-slot>
@@ -92,6 +91,9 @@
                 </li>
                 <li class="mr-2" role="presentation">
                     <button onclick="changeTab('credit')" class="inline-block p-4 border-b-2 rounded-t-md {{ $activeTab === 'credit' ? 'border-blue-500' : '' }}" id="credit-tab" data-tabs-target="#credit" type="button" role="tab" aria-controls="credit" aria-selected="{{ $activeTab === 'credit' ? 'true' : 'false' }}">与信情報</button>
+                </li>
+                <li class="mr-2" role="presentation">
+                    <button onclick="changeTab('client_vendor')" class="inline-block p-4 border-b-2 rounded-t-md {{ $activeTab === 'client_vendor' ? 'border-blue-500' : '' }}" id="client_vendor-tab" data-tabs-target="#client_vendor" type="button" role="tab" aria-controls="client_vendor" aria-selected="{{ $activeTab === 'client_vendor' ? 'true' : 'false' }}">業者/顧客</button>
                 </li>
             </ul>
         </div>
@@ -282,7 +284,7 @@
         </div>
 
         <!-- 与信情報タブ -->
-        <div class="hidden md:p-4 p-2 mb-4 rounded bg-gray-50 dark:bg-gray-800 border border-1 border-gray-300" id="credit" role="tabpanel" aria-labelledby="credit-tab">
+        <div class="hidden md:p-4 p-2 mb-4 rounded bg-gray-50 dark:bg-gray-800 border border-1 border-gray-300 dark:border-gray-800" id="credit" role="tabpanel" aria-labelledby="credit-tab">
             <div class="">
                 <div class="relative bg-white dark:bg-gray-700 rounded-t md:w-auto shadow-md  dark:text-gray-900 mt-4 border border-gray-600">
                     <div class="flex flex-col justify-end p-2 space-y-1 md:flex-row md:space-y-0 md:space-x-4">
@@ -370,6 +372,9 @@
                 </div>
             </div>
         </div>
+        <div class="hidden md:p-4 p-2 mb-4 rounded bg-gray-50 dark:bg-gray-800 border border-1 border-gray-300 dark:border-gray-800" id="client_vendor" role="tabpanel" aria-labelledby="client_vendor-tab">
+        </div>
+
     </div>
 
 
@@ -669,4 +674,295 @@
     {{-- <script src="{{ asset('/assets/js/main.js') }}"></script> --}}
 
 
+
+
+
+{{-- 検索結果ドロワー機能 --}}
+@if($searchResults && $searchResults->count() > 0)
+
+{{-- 検索結果ボタン（左下固定） --}}
+<button 
+    id="searchResultsButton" 
+    onclick="toggleDrawer()" 
+    class="fixed bottom-6 left-6 bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg shadow-lg transition-colors duration-200 flex items-center space-x-2 z-40"
+>
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+    </svg>
+    <span>検索結果</span>
+    <span id="resultCount" class="bg-blue-500 text-xs px-2 py-1 rounded-full">{{ $totalCount }}</span>
+</button>
+
+{{-- オーバーレイ --}}
+<div 
+    id="drawerOverlay" 
+    class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden overlay-transition opacity-0"
+    onclick="closeDrawer()"
+></div>
+
+{{-- ドロワー --}}
+<div 
+    id="searchDrawer" 
+    class="fixed top-0 left-0 h-full w-96 bg-white shadow-2xl z-50 transform -translate-x-full drawer-transition"
+>
+    {{-- ドロワーヘッダー --}}
+    <div class="flex items-center justify-between p-4 border-b border-gray-200 bg-gray-50">
+        <div class="flex items-center space-x-2">
+            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+            </svg>
+            <h3 class="text-lg font-semibold text-gray-800">検索結果</h3>
+            <span class="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full">{{ $totalCount }}件</span>
+        </div>
+        <button 
+            onclick="closeDrawer()" 
+            class="text-gray-500 hover:text-gray-700 p-1 rounded-md hover:bg-gray-200 transition-colors"
+        >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+    </div>
+
+    {{-- 検索条件表示 --}}
+    @if($searchParams && (isset($searchParams['corporation_name']) || isset($searchParams['corporation_num']) || isset($searchParams['invoice_num']) || isset($searchParams['trade_status_ids']) || isset($searchParams['tax_status_ids'])))
+    <div class="p-4 bg-blue-50 border-b border-gray-200">
+        <h4 class="text-sm font-medium text-gray-700 mb-2">検索条件</h4>
+        <div class="space-y-1 text-sm text-gray-600">
+            @if(!empty($searchParams['corporation_name']))
+            <div class="flex items-center space-x-2">
+                <span class="font-medium">法人名:</span>
+                <span class="bg-white px-2 py-1 rounded border text-xs">{{ $searchParams['corporation_name'] }}</span>
+            </div>
+            @endif
+            @if(!empty($searchParams['corporation_num']))
+            <div class="flex items-center space-x-2">
+                <span class="font-medium">法人No:</span>
+                <span class="bg-white px-2 py-1 rounded border text-xs">{{ $searchParams['corporation_num'] }}</span>
+            </div>
+            @endif
+            @if(!empty($searchParams['invoice_num']))
+            <div class="flex items-center space-x-2">
+                <span class="font-medium">インボイス番号:</span>
+                <span class="bg-white px-2 py-1 rounded border text-xs">{{ $searchParams['invoice_num'] }}</span>
+            </div>
+            @endif
+            @if(!empty($searchParams['trade_status_ids']))
+            <div class="flex items-center space-x-2">
+                <span class="font-medium">取引状況:</span>
+                <span class="bg-white px-2 py-1 rounded border text-xs">
+                    @if(in_array('0', $searchParams['trade_status_ids'])) 通常取引 @endif
+                    @if(in_array('1', $searchParams['trade_status_ids'])) 取引停止 @endif
+                </span>
+            </div>
+            @endif
+            @if(!empty($searchParams['tax_status_ids']))
+            <div class="flex items-center space-x-2">
+                <span class="font-medium">課税状況:</span>
+                <span class="bg-white px-2 py-1 rounded border text-xs">
+                    @if(in_array('0', $searchParams['tax_status_ids'])) 未確認 @endif
+                    @if(in_array('1', $searchParams['tax_status_ids'])) 課税事業者 @endif
+                    @if(in_array('2', $searchParams['tax_status_ids'])) 免税事業者 @endif
+                </span>
+            </div>
+            @endif
+        </div>
+    </div>
+    @endif
+
+    {{-- 検索結果リスト --}}
+    <div class="flex-1 overflow-y-auto" style="height: calc(100vh - 200px);">
+        <div class="divide-y divide-gray-200">
+            @foreach($searchResults as $index => $result)
+            <div class="p-3 {{ $result->id == $corporation->id ? 'bg-blue-50 border-l-4 border-blue-500' : 'hover:bg-gray-50 cursor-pointer transition-colors' }}" 
+                 @if($result->id != $corporation->id) onclick="navigateToEdit('{{ $result->id }}')" @endif>
+                <div class="flex items-center justify-between mb-2">
+                    @if($result->id == $corporation->id)
+                        <span class="text-sm font-medium text-blue-700">現在編集中</span>
+                    @else
+                        <span class="text-xs text-gray-500">{{ $index + 1 }}/{{ $totalCount }}</span>
+                    @endif
+                    <span class="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded">{{ $result->corporation_num }}</span>
+                </div>
+                <h4 class="font-medium text-gray-900 mb-1 text-sm">{{ $result->corporation_name }}</h4>
+                <p class="text-xs text-gray-600 mb-1">{{ $result->corporation_kana_name }}</p>
+                @if($result->prefecture)
+                <p class="text-xs text-gray-500 mb-2">{{ $result->prefecture->prefecture_name }}{{ $result->corporation_address1 ? ' ' . $result->corporation_address1 : '' }}</p>
+                @elseif($result->corporation_address1)
+                <p class="text-xs text-gray-500 mb-2">{{ $result->corporation_address1 }}</p>
+                @endif
+                
+                <div class="flex items-center mt-2 space-x-1 flex-wrap">
+                    @if($result->tax_status == 1)
+                        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">課税事業者</span>
+                    @elseif($result->tax_status == 2)
+                        <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">免税事業者</span>
+                    @else
+                        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">未確認</span>
+                    @endif
+                    
+                    @if($result->is_stop_trading)
+                        <span class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded">取引停止</span>
+                    @endif
+                    
+                    @if($result->latest_credit_limit)
+                        <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">与信: {{ number_format($result->latest_credit_limit) }}円</span>
+                    @endif
+                </div>
+                
+                <div class="text-xs text-gray-500 mt-1">
+                    更新: {{ $result->updated_at->format('Y-m-d') }}
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+
+    {{-- ドロワーフッター --}}
+    <div class="p-4 border-t border-gray-200 bg-gray-50">
+        <div class="flex items-center justify-between text-sm text-gray-600">
+            @if($currentIndex !== false)
+                <span>{{ $currentIndex + 1 }} / {{ $totalCount }}件</span>
+            @else
+                <span>{{ $totalCount }}件</span>
+            @endif
+            <div class="flex space-x-2">
+                @if($prevId)
+                    <button 
+                        onclick="navigateToEdit('{{ $prevId }}')" 
+                        class="p-1 rounded border hover:bg-gray-100 transition-colors"
+                        title="前の項目"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                    </button>
+                @else
+                    <button class="p-1 rounded border opacity-50 cursor-not-allowed" disabled>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                    </button>
+                @endif
+                
+                @if($nextId)
+                    <button 
+                        onclick="navigateToEdit('{{ $nextId }}')" 
+                        class="p-1 rounded border hover:bg-gray-100 transition-colors"
+                        title="次の項目"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                @else
+                    <button class="p-1 rounded border opacity-50 cursor-not-allowed" disabled>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- CSS --}}
+<style>
+.drawer-transition {
+    transition: transform 0.3s ease-in-out;
+}
+.overlay-transition {
+    transition: opacity 0.3s ease-in-out;
+}
+@media (max-width: 768px) {
+    #searchDrawer {
+        width: 100vw;
+    }
+}
+</style>
+
+{{-- JavaScript --}}
+<script>
+let isDrawerOpen = false;
+
+function toggleDrawer() {
+    if (isDrawerOpen) {
+        closeDrawer();
+    } else {
+        openDrawer();
+    }
+}
+
+function openDrawer() {
+    const drawer = document.getElementById('searchDrawer');
+    const overlay = document.getElementById('drawerOverlay');
+    const button = document.getElementById('searchResultsButton');
+
+    overlay.classList.remove('hidden');
+    setTimeout(() => {
+        overlay.classList.add('opacity-50');
+    }, 10);
+
+    drawer.classList.remove('-translate-x-full');
+
+    const icon = button.querySelector('svg');
+    icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>';
+
+    isDrawerOpen = true;
+    document.body.style.overflow = 'hidden';
+}
+
+function closeDrawer() {
+    const drawer = document.getElementById('searchDrawer');
+    const overlay = document.getElementById('drawerOverlay');
+    const button = document.getElementById('searchResultsButton');
+
+    drawer.classList.add('-translate-x-full');
+    overlay.classList.remove('opacity-50');
+    setTimeout(() => {
+        overlay.classList.add('hidden');
+    }, 300);
+
+    const icon = button.querySelector('svg');
+    icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>';
+
+    isDrawerOpen = false;
+    document.body.style.overflow = '';
+}
+
+function navigateToEdit(corporationId) {
+    const currentTab = new URLSearchParams(window.location.search).get('tab') || 'base';
+    window.location.href = `/corporations/${corporationId}/edit?tab=${currentTab}`;
+}
+
+// ESCキーでドロワーを閉じる
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && isDrawerOpen) {
+        closeDrawer();
+    }
+});
+
+// モバイル対応
+window.addEventListener('resize', function() {
+    if (window.innerWidth < 768 && isDrawerOpen) {
+        const drawer = document.getElementById('searchDrawer');
+        drawer.style.width = '100vw';
+    }
+});
+</script>
+
+@endif
+
+{{-- 検索結果がない場合のメッセージ（オプション） --}}
+@if($searchResults && $searchResults->count() === 0 && !empty($searchParams))
+<div class="fixed bottom-6 left-6 bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-2 rounded-lg shadow-lg z-40">
+    <div class="flex items-center space-x-2">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+        </svg>
+        <span class="text-sm">検索結果がありません</span>
+    </div>
+</div>
+@endif
 </x-app-layout>

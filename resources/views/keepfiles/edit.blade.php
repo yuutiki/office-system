@@ -1,11 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
+        <div class="flex w-full">
+            <h2 class="text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('editKeepfile', $searchParams) }}
             </h2>
-            <div class="flex justify-end items-center space-x-2">
-                <x-message :message="session('message')"/>
+            <div class="ml-auto flex justify-end items-center space-x-2">
                 <form method="post" action="{{route('keepfiles.update',$keepfile)}}" enctype="multipart/form-data" id="keepfileForm">
                     @csrf
                     @method('patch')

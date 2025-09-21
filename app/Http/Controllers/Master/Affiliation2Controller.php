@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
+use App\Models\Affiliation1;
 use App\Models\Affiliation2;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,8 +12,9 @@ class Affiliation2Controller extends Controller
 {
     public function index()
     {
-        $affiliation2s = Affiliation2::with('updatedBy')->orderBy('affiliation2_code','asc')->paginate(50);
-        return view('masters.affiliation2-index',compact('affiliation2s'));
+        $affiliation2s = Affiliation2::with('affiliation1', 'updatedBy')->orderBy('affiliation2_code','asc')->paginate(50);
+        $affiliation1s = Affiliation1::all();
+        return view('masters.affiliation2-index',compact('affiliation1s', 'affiliation2s'));
     }
 
     public function create()
