@@ -102,6 +102,12 @@
                     <pre class="bg-gray-100 p-4 rounded-md overflow-x-auto">{{ json_encode($modelHistory->meta, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
                 </dd>
             @endif
+            @if($modelHistory->user_agent_client_hint)
+                <dt class="font-medium text-gray-600 dark:text-gray-300 mt-6">UACH</dt>
+                <dd class="text-gray-900">
+                    <pre class="bg-gray-100 p-4 rounded-md overflow-x-auto">{{ $modelHistory->user_agent_client_hint }}</pre>
+                </dd>
+            @endif
         </div>
     </div>
 
