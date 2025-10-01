@@ -1,11 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="text-lg text-gray-900 dark:text-white flex">
+        <div class="flex w-full">
+            <h2 class="flex text-gray-900 dark:text-white">
                 {{ Breadcrumbs::render('prefectureMaster') }}
             </h2>
-
-            <div class="flex flex-shrink-0 w-auto md:flex-row space-y-0 space-x-3 items-center">
+            <div class="ml-auto flex flex-shrink-0 w-auto md:flex-row space-y-0 space-x-3 items-center">
                 <x-buttons.add-button-drawer onclick="openDrawer('create')">
                     {{ __('create') }}
                 </x-buttons.add-button-drawer>
@@ -120,7 +119,7 @@
 
     <div class="md:w-auto md:mr-2 md:ml-14 mb-4 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-300">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-200">
+            <thead class="text-xs text-gray-700 bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
                 <tr>
                     <th scope="col" class="pl-8 py-3 whitespace-nowrap">
                         <div class="flex items-center">
@@ -156,7 +155,7 @@
             </thead>
             <tbody>
                 @foreach ($prefectures as $prefecture)
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white dark:hover:bg-gray-600">
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600">
                         <td class="pl-8 py-2 whitespace-nowrap font-mono text-lg">
                             {{ $prefecture->prefecture_code }}
                         </td>

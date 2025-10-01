@@ -4,13 +4,16 @@
             <h2 class="text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('createUser') }}
             </h2>
-            <div class="flex justify-end">
-                <x-message :message="session('message')"/>
+            <div class="ml-auto flex items-center space-x-2">
+                <form method="post" action="{{route('users.store')}}" enctype="multipart/form-data" id="createForm">
+                    @csrf
+                    <x-button-save form-id="createForm" id="saveButton" onkeydown="stopTab(event)">
+                            {{ __('save') }}
+                    </x-button-save>
+                </form>
             </div>
         </div>
     </x-slot>
-
-    <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
 
     <div class="max-w-7xl mx-auto px-2 md:pl-14">
         <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
@@ -27,18 +30,18 @@
             <!-- 画像選択用のフォーム -->
             <div class="mb-8 w-20 h-20">
                 <img id="image_preview" src="{{ asset('storage/users/profile_image/default.png') }}" alt="プロフ画像" class="cursor-pointer w-full h-full object-cover rounded" onclick="document.getElementById('profile_image').click()">
-                <input type="file" id="profile_image" accept="image/*" class="hidden" form="userForm" name="profile_image">
+                <input type="file" id="profile_image" accept="image/*" class="hidden" form="createForm" name="profile_image">
             </div>
 
             <!-- フォームにトリミング後の画像をセットするための非表示のinput要素 -->
-            <input type="hidden" id="cropped_profile_image" name="cropped_profile_image" form="userForm">
+            <input type="hidden" id="cropped_profile_image" name="cropped_profile_image" form="createForm">
 
             <!-- トリミング後の画像を表示する要素 -->
             {{-- <img id="cropped_profile_image_preview" src="#" alt="トリミング後の画像" style="display: none;"> --}}
 
             <label class="relative inline-flex items-center cursor-pointer mb-9">
-                <input type="hidden" form="userForm" name="is_enabled" value="0">
-                <input type="checkbox" form="userForm" name="is_enabled" value="1" checked class="sr-only peer">
+                <input type="hidden" form="createForm" name="is_enabled" value="0">
+                <input type="checkbox" form="createForm" name="is_enabled" value="1" checked class="sr-only peer">
                 <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                 <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">有効</span>
             </label>
@@ -46,16 +49,16 @@
             <div class="grid gap-4 md:grid-cols-4 mb-4">
                 <div class="w-full flex flex-col">
                     <label for="user_num" class="text-sm dark:text-gray-100 leading-none">社員番号<span class="text-red-500"> *</span></label>
-                    <input type="text" form="userForm" name="user_num" class="input-primary" id="user_num" value="{{old('user_num')}}" placeholder="999999" maxlength="6">
+                    <input type="text" form="createForm" name="user_num" class="input-primary" id="user_num" value="{{old('user_num')}}" placeholder="999999" maxlength="6">
                     @error('user_num')
                         <div class="text-red-500">{{$message}}</div>
                     @enderror
                 </div>
                 <div class="w-full flex flex-col">
                     <label for="employee_status_id" class="text-sm dark:text-gray-100 leading-none">雇用状態<span class="text-red-500"> *</span></label>
-                    <select form="userForm" name="employee_status_id" class=" input-primary" id="employee_status_id" value="{{old('employee_status_id')}}">
+                    <select form="createForm" name="employee_status_id" class=" input-primary" id="employee_status_id" value="{{old('employee_status_id')}}">
                         @foreach($e_statuses as $e_status)
-                        <option value="{{ $e_status->id }}">{{ $e_status->employee_status_name }}</option>
+                        <option value="{{ $e_status->id }}" @selected($e_status->id == old('employee_status_id'))>{{ $e_status->employee_status_name }}</option>
                         @endforeach
                     </select>
                     @error('employee_status_id')
@@ -64,14 +67,14 @@
                 </div>
                 <div class="w-full flex flex-col">
                     <label for="_at" class="text-sm dark:text-gray-100 leading-none">入職年月日</label>
-                    <input type="date" min="1900-01-01" max="2200-12-31" form="userForm" name="_at" class="input-primary" id="_at" value="{{old('_at', now()->format('Y-m-d'))}}" placeholder="">
+                    <input type="date" min="1900-01-01" max="2200-12-31" form="createForm" name="_at" class="input-primary" id="_at" value="{{old('_at', now()->format('Y-m-d'))}}" placeholder="">
                     @error('_at')
                         <div class="text-red-500">{{$message}}</div>
                     @enderror
                 </div>
                 <div class="w-full flex flex-col">
                     <label for="birth" class="text-sm dark:text-gray-100 leading-none">生年月日<span class="text-red-500"> *</span></label>
-                    <input type="date" min="1900-01-01" max="2200-12-31" form="userForm" name="birth" class="input-primary" id="birth" value="{{old('birth')}}" placeholder="">
+                    <input type="date" min="1900-01-01" max="2200-12-31" form="createForm" name="birth" class="input-primary" id="birth" value="{{old('birth')}}" placeholder="">
                     @error('birth')
                         <div class="text-red-500">{{$message}}</div>
                     @enderror
@@ -82,7 +85,7 @@
                 <div class="md:flex items-center">
                     <div class="w-full flex flex-col">
                         <label for="user_name" class="text-sm dark:text-gray-100 leading-none">氏名<span class="text-red-500"> *</span></label>
-                        <input type="text" form="userForm" name="user_name" class="input-secondary" id="user_name" value="{{old('user_name')}}" placeholder="">
+                        <input type="text" form="createForm" name="user_name" class="input-secondary" id="user_name" value="{{old('user_name')}}" placeholder="">
                         @error('user_name')
                             <div class="text-red-500">{{$message}}</div>
                         @enderror
@@ -91,7 +94,7 @@
                 <div class="md:flex items-center">
                     <div class="w-full flex flex-col">
                     <label for="user_kana_name" class="text-sm dark:text-gray-100 leading-none">カナ氏名<span class="text-red-500"> *</span></label>
-                    <input type="text" form="userForm" name="user_kana_name" class="input-secondary" id="user_kana_name" value="{{old('user_kana_name')}}" placeholder="">
+                    <input type="text" form="createForm" name="user_kana_name" class="input-secondary" id="user_kana_name" value="{{old('user_kana_name')}}" placeholder="">
                     @error('user_kana_name')
                         <div class="text-red-500">{{$message}}</div>
                     @enderror
@@ -107,21 +110,21 @@
             <div class="grid gap-4 mb-4 md:grid-cols-3">
                 <div class="w-full flex flex-col">
                     <label for="ext_phone" class="text-sm dark:text-gray-100 leading-none mt-2">外線番号<span class="text-red-500"> *</span></label>
-                    <input type="text" form="userForm" name="ext_phone"  onchange="validateAndFormat('ext_phone')" class="input-secondary" id="ext_phone" value="{{old('ext_phone')}}" placeholder="999-9999-9999">
+                    <input type="text" form="createForm" name="ext_phone"  onchange="validateAndFormat('ext_phone')" class="input-secondary" id="ext_phone" value="{{old('ext_phone')}}" placeholder="999-9999-9999">
                     @error('ext_phone')
                         <div class="text-red-500">{{$message}}</div>
                     @enderror
                 </div>
                 <div class="w-full flex flex-col">
                     <label for="int_phone" class="text-sm dark:text-gray-100 leading-none mt-2">内線番号</label>
-                    <input type="text" form="userForm" name="int_phone" class="input-secondary" id="int_phone" value="{{old('int_phone')}}" placeholder="999" maxlength="{{ $maxlength }}">
+                    <input type="text" form="createForm" name="int_phone" class="input-secondary" id="int_phone" value="{{old('int_phone')}}" placeholder="999" maxlength="{{ $maxlength }}">
                     @error('int_phone')
                         <div class="text-red-500">{{$message}}</div>
                     @enderror
                 </div>
                 <div class="w-full flex flex-col">
                     <label for="email" class="text-sm dark:text-gray-100 leading-none mt-2">E-MAIL<span class="text-red-500"> *</span></label>
-                    <input type="text" form="userForm" name="email" class="input-secondary" id="email" value="{{old('email')}}" placeholder="test＠gmail.com">
+                    <input type="text" form="createForm" name="email" class="input-secondary" id="email" value="{{old('email')}}" placeholder="test＠gmail.com">
                     @error('email')
                         <div class="text-red-500">{{$message}}</div>
                     @enderror
@@ -136,7 +139,7 @@
             <div class="grid gap-4 mb-4 md:grid-cols-3 ">
                 <div class="w-full flex flex-col">
                     <label for="affiliation1_id" class="text-sm dark:text-gray-100 leading-none mt-2">所属1</label>
-                    <select form="userForm" name="affiliation1_id" class="input-secondary" id="affiliation1_id" value="{{old('affiliation1_id')}}">
+                    <select form="createForm" name="affiliation1_id" class="input-secondary" id="affiliation1_id" value="{{old('affiliation1_id')}}">
                         @foreach($affiliation1s as $affiliation1)
                         <option value="{{ $affiliation1->id }}">{{ $affiliation1->affiliation1_name }}</option>
                         @endforeach
@@ -148,7 +151,7 @@
 
                 <div class="w-full flex flex-col">
                     <label for="affiliation2_id" class="text-sm dark:text-gray-100 leading-none mt-2">所属2</label>
-                    <select form="userForm" name="affiliation2_id" class="input-secondary" id="affiliation2_id" value="{{old('affiliation2_id')}}">
+                    <select form="createForm" name="affiliation2_id" class="input-secondary" id="affiliation2_id" value="{{old('affiliation2_id')}}">
                         @foreach($affiliation2s as $affiliation2)
                         <option value="{{ $affiliation2->id }}">{{ $affiliation2->affiliation2_name }}</option>
                         @endforeach
@@ -160,7 +163,7 @@
 
                 <div class="w-full flex flex-col">
                     <label for="affiliation3_id" class="text-sm dark:text-gray-100 leading-none mt-2">所属3</label>
-                    <select form="userForm" name="affiliation3_id" class="input-secondary" id="affiliation3_id" value="{{old('affiliation3_id')}}">
+                    <select form="createForm" name="affiliation3_id" class="input-secondary" id="affiliation3_id" value="{{old('affiliation3_id')}}">
                         @foreach($affiliation3s as $affiliation3)
                         <option value="{{ $affiliation3->id }}">{{ $affiliation3->affiliation3_name }}</option>
                         @endforeach
@@ -169,9 +172,9 @@
                 @error('affiliation3_id')
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
-                <div class="w-full flex flex-col">
+                {{-- <div class="w-full flex flex-col">
                     <label for="affiliation4_id" class="text-sm dark:text-gray-100 leading-none mt-2">所属4</label>
-                    <select form="userForm" name="affiliation4_id" class="input-secondary" id="affiliation4_id" value="{{old('affiliation4_id')}}">
+                    <select form="createForm" name="affiliation4_id" class="input-secondary" id="affiliation4_id" value="{{old('affiliation4_id')}}">
                         @foreach($affiliation3s as $affiliation3)
                         <option value="{{ $affiliation3->id }}">{{ $affiliation3->affiliation3_name }}</option>
                         @endforeach
@@ -182,7 +185,7 @@
                 @enderror
                 <div class="w-full flex flex-col">
                     <label for="affiliation5_id" class="text-sm dark:text-gray-100 leading-none mt-2">所属5</label>
-                    <select form="userForm" name="affiliation5_id" class="input-secondary" id="affiliation5_id" value="{{old('affiliation5_id')}}">
+                    <select form="createForm" name="affiliation5_id" class="input-secondary" id="affiliation5_id" value="{{old('affiliation5_id')}}">
                         @foreach($affiliation3s as $affiliation3)
                         <option value="{{ $affiliation3->id }}">{{ $affiliation3->affiliation3_name }}</option>
                         @endforeach
@@ -190,8 +193,25 @@
                 </div>
                 @error('affiliation5_id')
                     <div class="text-red-500">{{$message}}</div>
-                @enderror
+                @enderror --}}
             </div>
+
+    <div class="mb-4">
+        <label for="department_id" class="block text-sm font-medium text-gray-700 dark:text-gray-200">
+            所属部門
+        </label>
+        <select id="department_id" form="createForm" name="department_id" class="input-primary w-full">
+            <option value="">未選択</option>
+            @foreach($departments as $department)
+                <option value="{{ $department->id }}" @selected(old('department_id') == $department->id)>
+                    {{ $department->path }}
+                </option>
+            @endforeach
+        </select>
+        @error('department_id')
+            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+        @enderror
+    </div>
 
             <div class="mt-8">
                 <span class="dark:text-white">ログイン情報</span>
@@ -200,7 +220,7 @@
 
             {{-- <div class="w-full flex flex-col">
                 <label class="text-sm dark:text-gray-100 leading-none mt-2">パスワード</label>
-                <input type="password" form="userForm" name="password" autocomplete="new-password" class="input-primary" id="password" value="{{old('password')}}">
+                <input type="password" form="createForm" name="password" autocomplete="new-password" class="input-primary" id="password" value="{{old('password')}}">
             </div>
             @error('password')
                 <div class="text-red-500">{{$message}}</div>
@@ -208,7 +228,7 @@
 
             <div class="w-full flex flex-col mt-4">
                 <label class="text-sm dark:text-gray-100 leading-none mt-2">パスワード（確認）</label>
-                <input type="password" form="userForm" name="password_confirmation" autocomplete="new-password" class="input-primary" id="password_confirmation" value="{{old('password_confirmation')}}">
+                <input type="password" form="createForm" name="password_confirmation" autocomplete="new-password" class="input-primary" id="password_confirmation" value="{{old('password_confirmation')}}">
             </div>
             @error('password_confirmation')
                 <div class="text-red-500">{{$message}}</div>
@@ -221,18 +241,13 @@
             </div>
 
             <label class="relative inline-flex items-center cursor-pointer my-9">
-                <input type="hidden" form="userForm" name="password_change_required" value="0">
-                <input type="checkbox" form="userForm" name="password_change_required" value="1" checked class="sr-only peer">
+                <input type="hidden" form="createForm" name="password_change_required" value="0">
+                <input type="checkbox" form="createForm" name="password_change_required" value="1" checked class="sr-only peer">
                 <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-orange-600"></div>
                 <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">次回ログイン時パスワード変更</span>
             </label>
 
-            <form method="post" action="{{route('users.store')}}" enctype="multipart/form-data" id="userForm">
-                @csrf
-                <x-primary-button class="mt-4" form-id="userForm" id="saveButton" onkeydown="stopTab(event)">
-                    保存(S)
-                </x-primary-button>
-            </form>
+
         </div>
     </div>
 

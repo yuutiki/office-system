@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Contract\StoreContractRequest;
 use App\Models\Client;
 use App\Models\Contract;
 use App\Models\ContractChangeType;
@@ -27,24 +28,21 @@ class ContractController extends Controller
     public function create()
     {
         $contractTypes = ContractType::all();
-        $affiliation2s = Affiliation2::all();
-        $users = User::all();
+        $users = User::all(); // 顧客検索モーダルのユーザーセレクトボックス用
 
-        return view('contracts.create', compact('contractTypes', 'affiliation2s', 'users',));
+        return view('contracts.create', compact('contractTypes', 'users',));
     }
 
-    public function store(Request $request)
+    public function store(StoreContractRequest $request)
     {
-        $clientId = $request->client_id;
-        $contractNum = Contract::generateContractNumber($clientId);
+        $contractNum = Contract::generateContractNumber($request->client_id);
 
-        $contract = new Contract;
+        $contract = new Contract;   
         $contract->contract_num = $contractNum;
-        $contract->client_id = $clientId;
+        $contract->client_id = $request->client_id;
         $contract->contract_type_id = $request->contract_type_id;
         $contract->save();
         
-        // return redirect()->back()->with('success', '正常に登録し詳細画面に遷移しました');
         return redirect()->route('contracts.edit', ['contract' => $contract->id])->with('success', '正常に登録し詳細画面に遷移しました');
     }
 

@@ -382,6 +382,24 @@
                     </ul>
                 </li>
             @endcanany
+            @canany(['view_products',])
+                <li>
+                    <button type="button" class="flex items-center w-full py-1.5 pr-1 pl-1 text-sm  text-white transition duration-75 rounded-sm group hover:bg-gray-500 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#product-body" aria-expanded="false" aria-controls="product-body">
+                        <x-icon name="icons/nav-product" class="flex-shrink-0 w-6 h-6 text-gray-100 dark:text-gray-400" />
+                        <span class="flex-1 ml-3 text-left whitespace-nowrap">{{ __('製品管理') }}</span>
+                        <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
+                    </button>
+                    <ul  class="hidden py-1 space-y-1" id="product-body" aria-labelledby="product-heading">
+                        @can('view_products')
+                        <li>
+                            <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.index')" class="flex w-full items-center px-2 pb-1 text-white rounded-sm dark:text-white hover:bg-[#3e4858] dark:hover:bg-gray-700">
+                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('製品一覧') }}</span>
+                            </x-nav-link>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+            @endcanany
 
             <ul class="pt-4 mt-4 space-y-2 border-t border-gray-500 dark:border-gray-700">
 
@@ -403,14 +421,7 @@
                         <li>
                             @can('view_role_groups')
                                 <x-nav-link :href="route('role-groups.index')" :active="request()->routeIs('role-groups.index')" class="flex w-full items-center px-2 pb-1 text-white rounded-sm dark:text-white hover:bg-[#3e4858] dark:hover:bg-gray-700">
-                                    <span class="flex-1 ml-10 whitespace-nowrap">{{ __('権限グループ') }}</span>
-                                </x-nav-link>
-                            @endcan
-                        </li>
-                        <li>
-                            @can('view_products')
-                                <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.index')" class="flex w-full items-center px-2 pb-1 text-white rounded-sm dark:text-white hover:bg-[#3e4858] dark:hover:bg-gray-700">
-                                    <span class="flex-1 ml-10 whitespace-nowrap">{{ __('製品管理') }}</span>
+                                    <span class="flex-1 ml-10 whitespace-nowrap">{{ __('権限設定') }}</span>
                                 </x-nav-link>
                             @endcan
                         </li>
@@ -421,13 +432,6 @@
                                 </x-nav-link>
                             @endcan
                         </li>
-                        {{-- <li>
-                            @can('view_password_policies')
-                                <x-nav-link :href="route('password-policy.edit', 1)" :active="request()->routeIs('password-policy.edit', 1)" class="flex w-full items-center px-2 pb-1 text-white rounded-sm dark:text-white hover:bg-[#3e4858] dark:hover:bg-gray-700">
-                                    <span class="flex-1 ml-10 whitespace-nowrap">{{ __('パスワードポリシー') }}</span>
-                                </x-nav-link>
-                            @endcan
-                        </li> --}}
                         {{-- TODO:システム設定用の権限やFunctionMenuの作成(デスクトップ)--}}
                         <li>
                             @can('view_password_policies')
@@ -461,7 +465,7 @@
 
 
 
-{{-- スマホ画面 --}}    
+    <!-- スマホ画面 -->
     <div id="sm-accordion-collapse" data-accordion="sm-collapse" class="mt-12  fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform -translate-x-full w-60 bg-white dark:bg-gray-800"  tabindex="-1">
         <div class="py-4 overflow-y-auto">
             <ul class="space-y-1 font-medium">
@@ -665,6 +669,24 @@
                         </ul>
                     </li>
                 @endcanany
+                @canany(['view_products',])
+                    <li>
+                        <button type="button" class="flex items-center w-full py-1.5 pr-1 pl-1 text-sm  text-white transition duration-75 rounded-sm group hover:bg-gray-500 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#sm-product-body" aria-expanded="false" aria-controls="sm-product-body">
+                            <x-icon name="icons/nav-product" class="flex-shrink-0 w-6 h-6 text-gray-100 dark:text-gray-400" />
+                            <span class="flex-1 ml-3 text-left whitespace-nowrap">{{ __('製品管理') }}</span>
+                            <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
+                        </button>
+                        <ul  class="hidden py-1 space-y-1" id="sm-product-body" aria-labelledby="sm-product-heading">
+                            @can('view_products')
+                            <li>
+                                <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.index')" class="flex w-full items-center px-2 pb-1 text-white rounded-sm dark:text-white hover:bg-[#3e4858] dark:hover:bg-gray-700">
+                                    <span class="flex-1 ml-10 whitespace-nowrap">{{ __('製品一覧') }}</span>
+                                </x-nav-link>
+                            </li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endcanany
                 <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
 
                 @canany(['view_users', 'view_role_groups', 'view_links', 'view_masters', 'view_password_policies', 'view_operation_logs',])
@@ -686,14 +708,7 @@
                                 @can('view_role_groups')
                                     <x-nav-link :href="route('role-groups.index')" :active="request()->routeIs('role-groups.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                                         {{-- <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-900 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> --}}
-                                        <span class="flex-1 ml-10 whitespace-nowrap">{{ __('権限グループ') }}</span>
-                                    </x-nav-link>
-                                @endcan
-                            </li>
-                            <li>
-                                @can('view_products')
-                                    <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.index')" class="flex w-full items-center px-2 pb-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                        <span class="flex-1 ml-10 whitespace-nowrap">{{ __('製品管理') }}</span>
+                                        <span class="flex-1 ml-10 whitespace-nowrap">{{ __('権限設定') }}</span>
                                     </x-nav-link>
                                 @endcan
                             </li>

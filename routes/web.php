@@ -296,7 +296,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/masters', '\App\Http\Controllers\AppMasterController');
     Route::resource('/accounting-period', AccountingPeriodController::class);
     Route::resource('/accounting-type', AccountingTypeController::class);
-    Route::resource('/affiliation4', Affiliation4Controller::class);
     Route::resource('/affiliation3', Affiliation3Controller::class);
     Route::resource('/affiliation2', Affiliation2Controller::class);
     Route::resource('/affiliation1', Affiliation1Controller::class);

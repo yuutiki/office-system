@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Link\LinkUpdateRequest;
 use App\Models\Affiliation2;
+use App\Models\Department;
 use App\Models\Link;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,9 @@ class LinkController extends Controller
     public function index(Request $request)
     {
         $affiliation2s = Affiliation2::all();
-
+        $departments = Department::all();
+        // 親子順に並んだリストを取得
+        $departments = Department::buildTree($departments);
 
         // フィルタリングクエリを作成
         $query = Link::with('affiliation2', 'updatedBy');
@@ -34,13 +37,9 @@ class LinkController extends Controller
             }
         }
 
-
-    
         // if (!empty($userId)) {
         //     $query->where('user_id', 'like', "%{$userId}%");
         // }
-    
-
     
         // // 未返却のみのフィルタリング
         // if (!$request->has('unreturned_only')) {
@@ -51,15 +50,8 @@ class LinkController extends Controller
         $adminLinks = $query->orderby('display_order', 'asc')->paginate();
 
 
-        // dd($links);
-
-        // $count = $links->total();
-
-
-
-
         // $links = Link::with(['affiliation2'])->sortable()->orderBy('display_order','asc')->paginate(); 
-        return view('link.index', compact('affiliation2s', 'adminLinks','displayName'));
+        return view('link.index', compact('affiliation2s', 'adminLinks', 'displayName', 'departments'));
     }
 
     public function create()

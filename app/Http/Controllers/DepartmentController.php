@@ -19,6 +19,8 @@ class DepartmentController extends Controller
         $level = $request->input('level');
 
         // 再帰的に階層順に取得
+        $departmentTree = Department::getTree();
+
         $departments = Department::getHierarchy();
 
         // level 絞り込みが指定されていればフィルタ
@@ -29,7 +31,7 @@ class DepartmentController extends Controller
         // プルダウン用 distinct
         $levels = Department::select('level')->distinct()->orderBy('level')->pluck('level');
 
-        return view('masters.departments.index', compact('departments', 'levels', 'level'));
+        return view('masters.departments.index', compact('departments', 'levels', 'level', 'departmentTree'));
     }
 
 

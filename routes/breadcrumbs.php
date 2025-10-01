@@ -191,7 +191,7 @@ Breadcrumbs::for('dashboard', function ($trail) {
                 // ホーム > 契約 > 編集（例　ID=1）
                 Breadcrumbs::for('editContract', function ($trail, $contract) {
                     $trail->parent('contracts');
-                    $trail->push('編集（' . $contract->contract_num . '）', route('contracts.edit', $contract)); // $contractを直接渡す
+                    $trail->push('編集', route('contracts.edit', $contract)); // $contractを直接渡す
                 });
 
                 // ホーム > 契約 > 編集 > 契約詳細新規登録
@@ -517,7 +517,7 @@ Breadcrumbs::for('dashboard', function ($trail) {
 
         // ホーム > 所属別リンク
         Breadcrumbs::for('Links', function ($trail) {
-            $trail->parent('dashboard');
+            $trail->parent('masters');
             $trail->push('所属別リンク', url('link'));
         });
 

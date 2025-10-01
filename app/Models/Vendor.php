@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Observers\GlobalObserver;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -24,7 +25,7 @@ class Vendor extends Model
         'vendor_name',
         'vendor_kana_name',
         'corporation_id',
-        'affiliation2_id',
+        'department_id',
         'vendor_type_id',
         'vendor_post_code',
         'vendor_prefecture_id',
@@ -45,6 +46,57 @@ class Vendor extends Model
         'account_name',
     ];
 
+    /**
+     * 検索条件を適用するスコープ
+     */
+    public function scopeFilter(Builder $query, array $filters): Builder
+    {
+        // 業者区分（取引種別）フラグ
+        if (!empty($filters['is_dealer'])) {
+            $query->where('is_dealer', 1);
+        }
+        if (!empty($filters['is_supplier'])) {
+            $query->where('is_supplier', 1);
+        }
+        if (!empty($filters['is_lease'])) {
+            $query->where('is_lease', 1);
+        }
+        if (!empty($filters['is_other_partner'])) {
+            $query->where('is_other_partner', 1);
+        }
+
+        // 業者種別
+        if (!empty($filters['vendor_types'])) {
+            $query->whereIn('vendor_type_id', $filters['vendor_types']);
+        }
+
+        // 業者名
+        if (!empty($filters['vendor_name'])) {
+            $query->where('vendor_name', 'like', '%' . $filters['vendor_name'] . '%');
+        }
+
+        // 部署（子孫含む）
+        if (!empty($filters['selected_department']) && $filters['selected_department'] != 0) {
+            $department = Department::find($filters['selected_department']);
+            if ($department) {
+                $ids = $department->getDescendantIds();
+                $query->whereIn('department_id', $ids);
+            }
+        } elseif (!empty($filters['user_department'])) {
+            // 初期表示はログインユーザー所属部門で絞る
+            $query->where('department_id', $filters['user_department']);
+        }
+
+        return $query;
+    }
+
+
+
+
+
+
+
+
     //GlobalObserverに定義されている作成者と更新者を登録するメソッド
     //なお、値を更新せずにupdateをかけても更新者は更新されない。
     protected static function boot()
@@ -54,21 +106,21 @@ class Vendor extends Model
         self::observe(GlobalObserver::class);
     }
 
-    public static function generateVendorNumber($corporationNum, $prefix_code)
+    public static function generateVendorNumber($corporationNum)
     {
-        $suffix = strtoupper(Str::substr($prefix_code, 0, 1));
-        $lastVendor = Vendor::where('vendor_num', 'like', "$corporationNum-V-$suffix%")
+        // $suffix = strtoupper(Str::substr($prefix_code, 0, 1));
+        $lastVendor = Vendor::where('vendor_num', 'like', "$corporationNum-V-%")
             ->orderBy('vendor_num', 'desc')
             ->first();
 
         if ($lastVendor) {
-            $lastSerialNumber = (int) Str::substr($lastVendor->vendor_num, -2);
-            $newSerialNumber = str_pad($lastSerialNumber + 1, 2, '0', STR_PAD_LEFT);
+            $lastSerialNumber = (int) Str::substr($lastVendor->vendor_num, -3);
+            $newSerialNumber = str_pad($lastSerialNumber + 1, 3, '0', STR_PAD_LEFT);
         } else {
-            $newSerialNumber = '01';
+            $newSerialNumber = '001';
         }
 
-        return "$corporationNum-V-$suffix$newSerialNumber";
+        return "$corporationNum-V-$newSerialNumber";
     }
 
     //郵便番号のフォーマット変換を行うメソッド
@@ -118,6 +170,10 @@ class Vendor extends Model
     public function affiliation2()
     {
         return $this->belongsTo(Affiliation2::class);
+    }
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
     }
     
 }

@@ -1,19 +1,16 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between w-full whitespace-nowrap items-center">
-            <h2 class="font-semibold sm:text-lg text-gray-900 dark:text-white flex">
+            <h2 class="text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('projects') }}
-                <div class="ml-4 text-sm sm:text-lg">
+                {{-- <div class="ml-4 text-sm sm:text-lg">
                     {{ $count }}件
                     {{ number_format($totalAllRevenue) }}円
                     <span class="block md:inline text-sm">({{ number_format($totalRevenue) }}円)</span>
-                </div>
+                </div> --}}
             </h2>
-            <x-message :message="session('message')" />
             <div class="flex flex-col flex-shrink-0 space-y-1 w-auto md:flex-row md:space-y-0 md:space-x-3 items-center">
                 <x-buttons.add-button :route="route('projects.create')" gate="storeUpdate_projects" :text="__('Add')" />
-
-
                 
                 <div class="flex items-center w-full space-x-3 hidden md:w-auto md:inline-block">
                     <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full p-2.5 text-sm font-medium hover:bg-[#313a48] bg-[#364050] text-gray-200 rounded md:w-auto focus:z-10 dark:bg-blue-600 dark:text-gray-100 dark:border-gray-600 dark:hover:text-white dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" type="button">
@@ -49,8 +46,6 @@
             </div>
         </div>
     </x-slot>
-
-    <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
 
     <div class="relative bg-white dark:bg-gray-800 rounded-t-md md:ml-14 md:mr-2  shadow-md  dark:text-gray-900 mt-4">
         <div class="flex flex-col items-center justify-between p-4 space-y-3 md:space-y-0 md:space-x-4">
@@ -361,16 +356,22 @@
             </div> --}}
         </div>
     </div>
-    <div class="text-gray-950 md:ml-16 my-2">
-        <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center">
-            <div class="ml-4">
-                {{ $count }}件
-            </div>
-            <div class="text-gray-900 dark:text-white ml-2">
-                <div>{{ number_format($totalAllRevenue) }}円（{{ number_format($totalRevenue) }}円）</div>
-            </div>
-        </h2>
+    <div class="flex items-center">
+        <div class="text-gray-950 md:ml-9 my-2">
+            <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center">
+                <div class="ml-4">
+                    {{ $projects->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
+                </div>
+            </h2>
+        </div>
     </div>
+            <div class="text-gray-950 md:ml-16 mb-2">
+            <h2 class="md:font-semibold md:text-lg text-sm text-gray-900 dark:text-white flex items-center">
+                <div class="text-gray-900 dark:text-white ml-2">
+                    <div>{{ number_format($totalAllRevenue) }}円（{{ number_format($totalRevenue) }}円）</div>
+                </div>
+            </h2>
+        </div>
 
     <div class="md:w-auto md:ml-14 md:mr-2 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700  dark:text-gray-900 bg-gray-300">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -381,8 +382,15 @@
                             №
                         </div>
                     </th>
+                    <th scope="col" class="pl-4 py-1 w-auto">
+                        <div class="flex items-center whitespace-nowrap">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="selectAllCheckbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-500 dark:border-white rounded border  focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700">
+                            </div>
+                        </div>
+                    </th>
                     <th scope="col" class="px-1 py-3 w-auto">
-                        <span class="sr-only">編集</span>
+                        <div class="whitespace-nowrap">（選択 <span id="selectedCount">0</span> 件）</div>
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center w-auto">
@@ -428,9 +436,9 @@
                             PJ種別
                         </div>
                     </th>
-                    <th scope="col" class="px-1 py-3 w-auto">
+                    {{-- <th scope="col" class="px-1 py-3 w-auto">
                         <span class="sr-only">削除</span>
-                    </th>
+                    </th> --}}
                 </tr>
             </thead>
             <tbody>
@@ -438,6 +446,11 @@
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600 clickable-row">
                         <td class="pl-4 py-1 whitespace-nowrap">
                             {{ ($projects->currentPage() - 1) * $projects->perPage() + $loop->index + 1 }}
+                        </td>
+                        <td class="pl-4 py-1 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <input id="checkbox{{ $project->id }}" type="checkbox" name="selectedIds[]" value="{{ $project->id }}" form="bulkDeleteForm" class="checkbox-item  w-4 h-4 text-blue-600 bg-gray-100 border-gray-500 dark:border-white rounded border  focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700">
+                            </div>
                         </td>
                         <td class="pl-4 py-1 whitespace-nowrap">
                             <button type="button" onclick="location.href='{{route('projects.edit',$project)}}'"  class="button-edit-primary">
@@ -475,14 +488,14 @@
                         <td class="px-1 py-1 whitespace-nowrap">
                             {{$project->projectType->project_type_name}}
                         </td>
-                        <td class="py-1">
+                        {{-- <td class="py-1">
                             <button type="button" data-modal-target="deleteModal-{{$project->id}}" data-modal-show="deleteModal-{{$project->id}}" class="button-delete-primary">
                                 <div class="flex">
                                     <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
                                     <span class="text-ms ">削除</span>
                                 </div>
                             </button>
-                        </td>
+                        </td> --}}
                     </tr>
                     {{-- 削除確認モーダル画面 Start --}}
                     <div id="deleteModal-{{$project->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -515,10 +528,12 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="mt-1 mb-1 px-4">
-        {{ $projects->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
-        </div> 
     </div>
+    @if($projects->hasPages())
+        <div class="mb-1 px-4 md:ml-9">
+            {{ $projects->withQueryString()->links('vendor.pagination.custum-tailwind') }}
+        </div>
+    @endif
 
     <style>
         .active {
@@ -588,5 +603,30 @@
             });
             }
 
+    </script>
+
+        <script>
+        // 一覧画面のチェックボックス関連の操作　カウントしたり、一括でチェックを付けたり
+        document.addEventListener("DOMContentLoaded", function () {
+            const selectAllCheckbox = document.getElementById("selectAllCheckbox");
+            const checkboxes = document.querySelectorAll(".checkbox-item");
+            const selectedCountElement = document.getElementById("selectedCount");
+            const modalSelectedCount = document.getElementById("modalSelectedCount");
+
+            function updateSelectedCount() {
+                const selectedCount = document.querySelectorAll(".checkbox-item:checked").length;
+                selectedCountElement.textContent = selectedCount;
+                modalSelectedCount.textContent = selectedCount;  // モーダル内の選択数を更新
+            }
+
+            selectAllCheckbox.addEventListener("change", function () {
+                checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+                updateSelectedCount();
+            });
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener("change", updateSelectedCount);
+            });
+        });
     </script>
 </x-app-layout>

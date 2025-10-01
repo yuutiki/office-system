@@ -28,6 +28,6 @@ class AppServiceProvider extends ServiceProvider
 
         Blade::component('add-button', \App\View\Components\AddButton::class);
         Blade::component('icon', Icon::class);
-        // Model::shouldBeStrict(!app()->isProduction());
+        Model::shouldBeStrict(!app()->isProduction());
     }
 }

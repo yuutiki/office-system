@@ -3,11 +3,7 @@
         <div class="flex justify-between w-full whitespace-nowrap items-center">
             <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('reports') }}
-                <div class="ml-4">
-                    {{ $count }}件
-                </div>
             </h2>
-            <x-message :message="session('message')" />
             <div class="flex flex-col flex-shrink-0 space-y-1 w-auto md:flex-row md:space-y-0 md:space-x-3 items-center">
                 @can('storeUpdate_corporations')
                     <x-buttons.add-button :route="route('reports.create')" gate="storeUpdate_reports" :text="__('Add')" />
@@ -112,14 +108,14 @@
                         </div> --}}
 
 
-                        <input type="hidden" id="selected-user-id" name="selected_user_id" value="{{ $selectedUserId }}">
                         <div id="user-dropdown" class="relative w-full lg:mr-2 lg:mt-0">
+                            <input type="hidden" id="selected-user-id" name="selected_user_id" value="{{ $selectedUserId }}">
                             <button type="button" id="dropdown-toggle" class="w-full px-4 py-1.5 my-2 lg:my-0 text-left bg-gray-100  dark:bg-gray-700 border border-gray-400 dark:border-gray-600 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400">
-                                <span id="selected-user-display" class="text-gray-800 dark:text-white">
+                                <span id="selected-user-display" data-default-main="営業担当" data-default-sub="を選択" class="text-gray-800 dark:text-white whitespace-nowrap">
                                     @if($selectedUserId)
                                         {{ $user->find($selectedUserId)->user_name ?? '営業担当を選択' }}
                                     @else
-                                        営業担当を選択
+                                        <span>営業担当</span><span class="text-gray-400 ml-3">を選択</span>
                                     @endif
                                 </span>
                                 <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
@@ -132,17 +128,12 @@
                                 <div class="p-2">
                                     <input id="user-search" type="text" name="user_id" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-800 dark:text-white" placeholder="営業担当を検索...">
                                 </div>
-                                <ul id="user-list" class="max-h-60 overflow-auto">
+                                <ul id="user-list" class="max-h-60 overflow-auto dark:text-white text-gray-700 hover:dark:text-white">
                                     <!-- ユーザーリストはJavaScriptで動的に追加されます -->
                                     {{-- <script src="{{ asset('assets/js/user-dropdown.js') }}"></script> --}}
                                 </ul>
                             </div>
                         </div>
-
-
-
-
-
 
                         <div class="flex mt-2 md:mt-0">
                             <div class="flex flex-col justify-end  w-full space-y-2 lg:w-auto lg:flex-row lg:space-y-0 lg:items-center lg:space-x-3">
@@ -156,7 +147,7 @@
                                     <x-buttons.reset-button />
                                 </div>
                             </div>
-                        </div>                        
+                        </div>
                     </div>
                     <!-- 詳細検索 Modal -->
                     <div id="detailSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center overflow-y-scroll z-50 hidden animate-slide-in-top">

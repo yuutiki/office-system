@@ -10,6 +10,7 @@ use App\Mail\SendLoginInformation;
 use App\Models\Affiliation1;
 use App\Models\Affiliation2;
 use App\Models\Affiliation3;
+use App\Models\Department;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\EmployeeStatus;
@@ -110,12 +111,16 @@ class UserController extends Controller
         $affiliation1s = Affiliation1::all();
         $affiliation2s = Affiliation2::all();
         $affiliation3s = Affiliation3::all();
+        
+        // 変更：Departmentモデルのメソッドを使用
+        $departments = Department::getTreeStructure();
+
         $roles = Role::orderBy('id','desc')->get();
         $e_statuses = EmployeeStatus::orderBy('id','asc')->get();
         $maxlength = config('constants.int_phone_maxlength');
 
 
-        return view('admin.user.create',compact('roles','e_statuses','affiliation1s','affiliation2s','affiliation3s','maxlength'));
+        return view('admin.user.create',compact('roles','e_statuses','affiliation1s','affiliation2s','affiliation3s','maxlength', 'departments'));
     }
 
     public function store(UserStoreRequest $request)
@@ -185,6 +190,7 @@ class UserController extends Controller
         $user->affiliation1_id = $request->affiliation1_id;
         $user->affiliation2_id = $request->affiliation2_id;
         $user->affiliation3_id = $request->affiliation3_id;
+        $user->department_id = $request->department_id;
         $user->employee_status_id = $request->employee_status_id;
         $user->is_enabled = $request->is_enabled;
         $user->password = bcrypt($password);
@@ -226,6 +232,10 @@ class UserController extends Controller
         $affiliation1s = Affiliation1::all();
         $affiliation2s = Affiliation2::all();
         $affiliation3s = Affiliation3::all();
+        // 変更：Departmentモデルのメソッドを使用
+        $departments = Department::getTreeStructure();
+
+
         $e_statuses = EmployeeStatus::all();
         $user_e_status = $user->employee_status_id;
 
@@ -239,7 +249,7 @@ class UserController extends Controller
 
         $maxlength = config('constants.int_phone_maxlength');
 
-        return view('admin.user.edit',compact('user', 'e_statuses', 'user_e_status', 'affiliation1s', 'affiliation2s', 'affiliation3s', 'maxlength', 'roleGroups',));
+        return view('admin.user.edit',compact('user', 'e_statuses', 'user_e_status', 'affiliation1s', 'affiliation2s', 'affiliation3s', 'maxlength', 'roleGroups','departments'));
     }
 
     public function update(UserUpdateRequest $request, User $user)
@@ -301,6 +311,7 @@ class UserController extends Controller
         $user->affiliation1_id = $request->affiliation1_id;
         $user->affiliation2_id = $request->affiliation2_id;
         $user->affiliation3_id = $request->affiliation3_id;
+        $user->department_id = $request->department_id;
         $user->employee_status_id = $request->employee_status_id;
         $user->user_num = $userNum;
         $user->is_enabled = $request->is_enabled;

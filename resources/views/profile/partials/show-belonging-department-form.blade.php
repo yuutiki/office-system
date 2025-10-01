@@ -13,21 +13,21 @@
         @csrf
         @method('put')
 
-        <div>
-            <x-input-label for="affiliation1" :value="__('所属1')" />
-            <x-text-input id="affiliation1" name="affiliation1" type="text" class="mt-1 block w-full" :value="old('affiliation1', $user->affiliation1->affiliation1_name)" disabled/>
-            {{-- <x-input-error :messages="$errors->updatePassword->get('affiliation1')" class="mt-2" /> --}}
-        </div>
-        <div>
-            <x-input-label for="affiliation2" :value="__('所属2')" />
-            <x-text-input id="affiliation2" name="affiliation2" type="text" class="mt-1 block w-full" :value="old('affiliation2', $user->affiliation2->affiliation2_name)" disabled/>
-            {{-- <x-input-error :messages="$errors->updatePassword->get('affiliation2')" class="mt-2" /> --}}
-        </div>
-        <div>
-            <x-input-label for="affiliation3" :value="__('所属3')" />
-            <x-text-input id="affiliation3" name="affiliation3" type="text" class="mt-1 block w-full" :value="old('affiliation3', $user->affiliation3->affiliation3_name)" disabled/>
-            {{-- <x-input-error :messages="$errors->updatePassword->get('affiliation3')" class="mt-2" /> --}}
-        </div>
+        @foreach ($user->getDepartmentHierarchy() as $index => $dept)
+            <div>
+                <x-input-label for="department_{{ $index }}" :value="__('所属') . ($index + 1)" />
+                <x-text-input 
+                    id="department_{{ $index }}" 
+                    name="department_{{ $index }}" 
+                    type="text" 
+                    class="mt-1 block w-full" 
+                    :value="$dept->name" 
+                    disabled 
+                />
+            </div>
+        @endforeach
+
+
         {{-- <div>
             <x-input-label for="affiliation3" :value="__('所属4')" />
             <x-text-input id="affiliation3" name="affiliation3" type="text" class="mt-1 block w-full" :value="old('affiliation3', $user->affiliation3->affiliation3_name)" disabled/>

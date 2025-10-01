@@ -1,12 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex">
+        <div class="flex w-full">
+            <h2 class="text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('editContract', $contract) }}
             </h2>
-            <div class="flex justify-end items-center space-x-2">
-                <x-message :message="session('message')" />
-
+            <div class="flex ml-auto items-center space-x-2">
                 <form method="post" action="{{ route('contracts.update', $contract) }}" enctype="multipart/form-data" id="updateForm" class="flex items-center">
                     @csrf
                     @method('patch')
@@ -55,8 +53,8 @@
                         <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
                             法人名称
                         </th>
-                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
-                            <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300">{{ $client->corporation->corporation_name }}</div>
+                        <td class="md:dark:bg-gray-700 block md:table-cell bg-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
+                            <div class="text-sm text-gray-800 md:font-medium md:ml-0 ml-4 md:dark:text-gray-300">{{ $client->corporation->corporation_name }}</div>
                         </td>
                     </tr>
 
@@ -65,8 +63,8 @@
                         <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
                             顧客No.
                         </th>
-                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
-                            <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300">{{ $client->client_num }}</div>
+                        <td class="md:dark:bg-gray-700 block md:table-cell bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
+                            <div class="text-sm text-gray-800 md:font-medium md:ml-0 ml-4  md:dark:text-gray-300">{{ $client->client_num }}</div>
                         </td>
                     </tr>
                     
@@ -75,7 +73,7 @@
                         <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
                             顧客名称
                         </th>
-                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
+                        <td class="md:dark:bg-gray-700 text-gray-800 block md:table-cell bg-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
                             <div class="flex items-center">
                                 <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300">{{ $client->client_name }}</div>
                                 <span class="bg-blue-100 text-blue-800 text-xs font-medium ml-2 inline-block px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
@@ -88,10 +86,10 @@
                     <!-- 管轄所属 -->
                     <tr class="md:border-b dark:border-gray-600 block md:table-row">
                         <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
-                            管轄所属
+                            管轄部門
                         </th>
-                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
-                            <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300">{{ $client->affiliation2->affiliation2_name }}</div>
+                        <td class="md:dark:bg-gray-700 text-gray-800 block md:table-cell bg-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
+                            <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300">{{ optional($client->department)->path ?? '-' }}</div>
                         </td>
                     </tr>
                     
@@ -100,8 +98,8 @@
                         <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
                             営業担当
                         </th>
-                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
-                            <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300 whitespace-pre-wrap">{{ $client->user->user_name }}</div>
+                        <td class="md:dark:bg-gray-700 text-gray-800 block md:table-cell bg-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
+                            <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300 whitespace-pre-wrap">{{ optional($client->user)->user_name }}</div>
                         </td>
                     </tr>
 
@@ -110,7 +108,7 @@
                         <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
                             契約連番
                         </th>
-                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
+                        <td class="md:dark:bg-gray-700 text-gray-800 block md:table-cell bg-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
                             <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300">{{ $contract->contract_num }}</div>
                         </td>
                     </tr>                        
@@ -174,7 +172,7 @@
                         </div>
                     </div>
                     <div>
-                        <span class="text-white">
+                        <span class="dark:text-white text-gray-800">
                             契約期間: {{ $periodString }}
                         </span>
                     </div>
@@ -526,14 +524,121 @@
             <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="estimate" role="tabpanel" aria-labelledby="estimate-tab">
             </div>
             <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="client" role="tabpanel" aria-labelledby="client-tab">
-                <div>
-                    {{ $client->post_code }}
-                </div>
-                <div>
-                    {{ $client->prefecture_id }}
-                </div>
-                <div>
-                    {{ $client->address_1 }}
+                <div class="flex flex-col gap-6 mt-6">
+                    <!-- 法人情報 -->
+                    <div class="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">法人情報</h3>
+                        <div class="grid gap-4">
+                            <div class="flex">
+                                <span class="w-24 font-semibold text-gray-600 dark:text-gray-300">法人No.</span>
+                                <span class="corporation-num text-gray-600 dark:text-gray-200">{{ optional(optional($contract->client)->corporation)->corporation_num ?? '-' }}</span>
+                            </div>
+                            <div class="flex">
+                                <span class="w-24 font-semibold text-gray-600 dark:text-gray-300">法人名</span>
+                                <span class="corporation-name text-gray-600 dark:text-gray-200">{{ optional(optional($contract->client)->corporation)->corporation_name ?? '-' }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 顧客情報 -->
+                    <div class="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg">
+                        <h3 class="text-lg font-semibold text-gray-700 dark:text-white mb-4">顧客情報</h3>
+                        <div class="grid gap-4">
+                            <div class="flex">
+                                <span class="w-24 font-semibold text-gray-600 dark:text-gray-300">顧客No.</span>
+                                <span class="client-num text-gray-600 dark:text-gray-200">{{ optional($contract->client)->client_num ?? '-' }}</span>
+                            </div>
+                            <div class="flex">
+                                <span class="w-24 font-semibold text-gray-600 dark:text-gray-300">顧客名</span>
+                                <span class="client-name text-gray-600 dark:text-gray-200">{{ optional($contract->client)->client_name ?? '-' }}</span>
+                            </div>
+                            <div class="flex">
+                                <span class="w-24 font-semibold text-gray-600 dark:text-gray-300">設置種別</span>
+                                <span class="installation-type text-gray-600 dark:text-gray-200">{{ optional(optional($contract->client)->installationType)->type_name ?? '-' }}</span>
+                            </div>
+                            <div class="flex">
+                                <span class="w-24 font-semibold text-gray-600 dark:text-gray-300">顧客種別</span>
+                                <span class="client-type text-gray-600 dark:text-gray-200">{{ optional(optional($contract->client)->clientType)->type_name ?? '-' }}</span>
+                            </div>
+                            <div class="flex">
+                                <span class="w-24 font-semibold text-gray-600 dark:text-gray-300">管轄部門</span>
+                                <span class="affiliation text-gray-600 dark:text-gray-200">{{ optional(optional($contract->client)->department)->path ?? '-' }}</span>
+                            </div>
+                            <div class="flex">
+                                <span class="w-24 font-semibold text-gray-600 dark:text-gray-300">営業担当</span>
+                                <span class="sales-user text-gray-600 dark:text-gray-200">{{ optional(optional($contract->client)->user)->user_name ?? '-' }}</span>
+                            </div>
+                            <div class="flex">
+                                <span class="w-24 font-semibold text-gray-600 dark:text-gray-300">取引状態</span>
+                                <span class="trade-status text-gray-600 dark:text-gray-200">{{ optional(optional($contract->client)->tradeStatus)->trade_status_name ?? '-' }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 連絡先 -->
+                    <div class="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg">
+                        <h3 class="text-lg font-semibold text-gray-700 dark:text-white mb-4">代表連絡先</h3>
+                        <div class="grid gap-4">
+                            <div class="flex">
+                                <span class="w-24 font-semibold text-gray-600 dark:text-gray-300">電話番号</span>
+                                <span class="tel text-gray-600 dark:text-gray-200">{{ $contract->client->tel ?? '-' }}</span>
+                            </div>
+                            <div class="flex">
+                                <span class="w-24 font-semibold text-gray-600 dark:text-gray-300">FAX番号</span>
+                                <span class="fax text-gray-600 dark:text-gray-200">{{ $contract->client->fax ?? '-' }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 所在地情報 -->
+                    <div class="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">所在地</h3>
+                        <div class="grid gap-4">
+                            <div class="flex">
+                                <span class="w-24 font-semibold text-gray-600 dark:text-gray-300">郵便番号</span>
+                                <span class="postal-code text-gray-600 dark:text-gray-200">{{ $contract->client->post_code ?? '-' }}</span>
+                            </div>
+                            <div class="flex">
+                                <span class="w-24 font-semibold text-gray-600 dark:text-gray-300">都道府県</span>
+                                <span class="prefecture text-gray-600 dark:text-gray-200">{{ optional(optional($contract->client)->prefecture)->prefecture_name ?? '-' }}</span>
+                            </div>
+                            <div class="flex">
+                                <span class="w-24 font-semibold text-gray-600 dark:text-gray-300">住所</span>
+                                <span class="address text-gray-600 dark:text-gray-200">{{ $contract->client->address_1 ?? '-' }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 導入製品情報 -->
+                    <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">導入製品情報</h3>
+                        <div class="bg-gray-100 dark:bg-gray-700 p-0.5 rounded-lg overflow-x-auto">
+                            <table class="w-full mt-2 border-collapse border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300">
+                                <thead>
+                                    <tr class="bg-gray-200 dark:bg-gray-600">
+                                        <th class="border border-gray-300 dark:border-gray-500 px-4 py-2 whitespace-nowrap text-sm">契約区分</th>
+                                        <th class="border border-gray-300 dark:border-gray-500 px-4 py-2 whitespace-nowrap text-sm">契約金額</th>
+                                        <th class="border border-gray-300 dark:border-gray-500 px-4 py-2 whitespace-nowrap text-sm">契約開始日</th>
+                                        <th class="border border-gray-300 dark:border-gray-500 px-4 py-2 whitespace-nowrap text-sm">解約日</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="border border-gray-300 dark:border-gray-500 px-4 py-2 whitespace-nowrap text-sm">サポート契約</td>
+                                        <td class="border border-gray-300 dark:border-gray-500 px-4 py-2 whitespace-nowrap text-sm">30,000,000</td>
+                                        <td class="border border-gray-300 dark:border-gray-500 px-4 py-2 whitespace-nowrap text-sm">2025年4月1日</td>
+                                        <td class="border border-gray-300 dark:border-gray-500 px-4 py-2 whitespace-nowrap text-sm">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-gray-300 dark:border-gray-500 px-4 py-2 whitespace-nowrap text-sm">バックアップ契約</td>
+                                        <td class="border border-gray-300 dark:border-gray-500 px-4 py-2 whitespace-nowrap text-sm">200,000</td>
+                                        <td class="border border-gray-300 dark:border-gray-500 px-4 py-2 whitespace-nowrap text-sm">2025年4月1日</td>
+                                        <td class="border border-gray-300 dark:border-gray-500 px-4 py-2 whitespace-nowrap text-sm">-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="dealer" role="tabpanel" aria-labelledby="dealer-tab">

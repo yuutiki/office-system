@@ -1,22 +1,21 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="text-xl text-gray-900 dark:text-white">
+        <div class="flex w-full">
+            <h2 class="flex text-gray-900 dark:text-white">
                 {{ Breadcrumbs::render('createReport') }}
             </h2>
-            <div class="flex justify-end items-center space-x-2">
-                <x-message :message="session('message')" />
+            <div class="ml-auto">
                 <form method="post" action="{{ route('reports.store') }}" enctype="multipart/form-data" id="reoportForm" class="flex">
                     @csrf
                     @can('storeUpdate_reports')
                         <x-buttons.save-button form-id="reoportForm" id="saveButton" class="">
                             {{ __("save") }}
                         </x-buttons.save-button>
+                        <x-button-save form-id="reoportForm" id="saveButton" class="ml-2 dark:bg-orange-400" onclick="document.getElementById('isDraft').value = '1'; document.getElementById('reportForm').submit();">
+                            {{ __('下書き') }}
+                        </x-button-save>
                     @endcan
 
-                    <x-button-save form-id="reoportForm" id="saveButton" class="ml-2 dark:bg-orange-400" onclick="document.getElementById('isDraft').value = '1'; document.getElementById('reportForm').submit();">
-                        {{ __('下書き') }}
-                    </x-button-save>
                 </form>
             </div>
         </div>
@@ -74,7 +73,7 @@
                 <!-- 報告種別 -->
                 <div class="w-full flex flex-col">
                     <label for="report_type_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none">報告種別<span class="text-red-500 ml-2">*</span></label>
-                    <select id="report_type_id" form="reoportForm" name="report_type_id" class="input-primary">
+                    <select id="report_type_id" form="reoportForm" name="report_type_id" class="input-secondary">
                         <option value="">---</option>
                         @foreach ($reportTypes as $reportType)
                             <option value="{{ $reportType->id }}" @selected($reportType->id == old('report_type_id'))>{{ $reportType->report_type_name }}</option>

@@ -10,9 +10,9 @@
                     @csrf
                     @method('patch')
                     @can('storeUpdate_clients')
-                        <x-button-save form-id="clientForm" id="saveButton" onkeydown="stopTab(event)">
-                            <span class="ml-1 hidden md:inline text-sm">更新</span>
-                        </x-button-save>
+                        <x-buttons.save-button form-id="clientForm" id="saveButton" class="">
+                            {{ __("update") }}
+                        </x-buttons.save-button>
                     @endcan
                 </form>
                 <x-buttons.dropdown-edit-button />

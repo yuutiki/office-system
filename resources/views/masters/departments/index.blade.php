@@ -7,13 +7,8 @@
                     {{ Breadcrumbs::render('departments') }}
                 </h2>
                 <div class="flex space-x-2 ml-auto">
-                    <a href="{{ route('departments.create') }}" class="px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors">
-                        ＋ 部門追加
-                    </a>
-                    <button onclick="openHierarchyModal()"
-                        class="px-4 py-2 bg-indigo-600 dark:bg-indigo-500 text-white rounded hover:bg-indigo-700 dark:hover:bg-indigo-600 transition-colors">
-                        階層確認
-                    </button>
+                    <x-buttons.add-button :route="route('departments.create')" gate="storeUpdate_corporations" :text="__('Add')" />
+                    <x-buttons.hierarchy-button onclick="openHierarchyModal()" :text="__('階層確認')" />
                 </div>
             </div>
         </x-slot>
@@ -118,7 +113,7 @@
                 <!-- 本体 -->
                 <div class="flex-1 overflow-y-auto p-6">
                     <ul class="space-y-2">
-                        @foreach($departments->where('parent_id', null) as $root)
+                        @foreach($departmentTree->where('parent_id', null) as $root)
                             @include('masters.departments.partials.department-tree', ['department' => $root])
                         @endforeach
                     </ul>

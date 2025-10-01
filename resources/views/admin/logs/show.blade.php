@@ -1,13 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between">
-            <h2 class="text-lg text-gray-900 dark:text-white flex">
+            <h2 class="text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('showLog', $modelHistory) }}
             </h2>
         </div>
     </x-slot>
     
-    <div class="max-w-7xl mx-auto px-2 md:pl-14">
+    <div class="max-w-7xl mx-auto px-2 md:pl-14 mb-4">
         <div class="bg-gray-100 dark:bg-gray-700 shadow-md rounded-lg overflow-hidden p-4 md:px-8">
 
             <h2 class="text-xl font-semibold text-gray-600 dark:text-gray-200 mb-2">{{ class_basename($modelHistory->model) }} - {{ $modelHistory->operation_type }}</h2>
@@ -60,17 +60,17 @@
             </div>
 
             @if($modelHistory->changes)
-                <dt class="font-medium text-gray-600 dark:text-gray-300  mt-4">変更内容</dt>
-                <table class="min-w-full divide-y divide-gray-200 border-gray-400 border-spacing-1 rounded-md border-2">
+                <dt class="font-medium text-gray-600 dark:text-gray-300 mt-4">変更内容</dt>
+                <table class="min-w-full divide-y divide-gray-200 border-gray-500 rounded border whitespace-nowrap">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-x border-gray-300">
+                            <th class="px-6 py-2 text-left text-xs text-gray-500 border-x border-gray-500">
                                 フィールド
                             </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-x border-gray-300">
+                            <th class="px-6 py-2 text-left text-xs text-gray-500 border-x border-gray-500">
                                 変更前
                             </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-x border-gray-300">
+                            <th class="px-6 py-2 text-left text-xs text-gray-500 border-x border-gray-500">
                                 変更後
                             </th>
                         </tr>
@@ -78,17 +78,17 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         @foreach($modelHistory->changes as $field => $change)
                             <tr>
-                                <td class="px-6 py-2 whitespace-nowrap text-sm font-medium border-x border-gray-300 text-gray-900">{{ $field }}</td>
-                                <td class="px-6 py-2 text-sm text-gray-500 border-x border-gray-300 whitespace-nowrap">
-                                    <div class="mb-2">
-                                        {{-- <span class="font-semibold">変更前：</span> --}}
-                                        {{ $change['before'] ?? 'N/A' }}
+                                <td class="px-6 py-2 text-sm font-medium border-x border-gray-500 text-gray-900">
+                                    {{ $field }}
+                                </td>
+                                <td class="px-6 py-2 text-sm border-x border-gray-500">
+                                    <div>
+                                        {{ $change['before'] ?? '-' }}
                                     </div>
                                 </td>
-                                <td class="px-6 py-2 text-sm text-gray-500 border-x border-gray-300 whitespace-nowrap">
+                                <td class="px-6 py-2 text-sm border-x border-gray-500">
                                     <div>
-                                        {{-- <span class="font-semibold">変更後：</span> --}}
-                                        {{ $change['after'] ?? 'N/A' }}
+                                        {{ $change['after'] ?? '-' }}
                                     </div>
                                 </td>
                             </tr>
@@ -102,12 +102,21 @@
                     <pre class="bg-gray-100 p-4 rounded-md overflow-x-auto">{{ json_encode($modelHistory->meta, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
                 </dd>
             @endif
-            @if($modelHistory->user_agent_client_hint)
-                <dt class="font-medium text-gray-600 dark:text-gray-300 mt-6">UACH</dt>
-                <dd class="text-gray-900">
-                    <pre class="bg-gray-100 p-4 rounded-md overflow-x-auto">{{ $modelHistory->user_agent_client_hint }}</pre>
-                </dd>
-            @endif
+            <dt class="font-medium text-gray-600 dark:text-gray-300 mt-6">UACH</dt>
+            <dd class="text-gray-900 dark:text-gray-100">
+                @if($modelHistory->user_agent_client_hint)
+                    <dl class="bg-gray-100 dark:bg-gray-800 p-4 rounded-md space-y-2">
+                        @foreach($modelHistory->user_agent_client_hint as $key => $value)
+                            <div class="flex">
+                                <dt class="font-semibold text-gray-600 dark:text-gray-300 w-24">{{ $key }}:</dt>
+                                <dd class="text-gray-900 dark:text-gray-100">{{ $value ?? 'N/A' }}</dd>
+                            </div>
+                        @endforeach
+                    </dl>
+                @else
+                    <span class="text-gray-500 dark:text-gray-400 italic">取得できませんでした</span>
+                @endif
+            </dd>
         </div>
     </div>
 

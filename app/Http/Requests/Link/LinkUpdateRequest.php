@@ -22,10 +22,10 @@ class LinkUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'display_name' => 'required|max:20',
+            'display_name' => 'required|max:50',
             'affiliation2_id' => 'required|exists:affiliation2s,id',
             'display_order' => 'required|integer|min:1|max:99',
-            'url' => 'required|url|max:100',
+            'url' => 'required|url|max:500',
         ];
     }
 

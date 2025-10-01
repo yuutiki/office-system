@@ -54,9 +54,8 @@ class ReportController extends Controller
         }
 
         $reports = $reportQuery->paginate($perPage);
-        $count = $reports->total();
 
-        return view('reports.index',compact('reports', 'user', 'count', 'selectedUserId', 'keywords'));
+        return view('reports.index',compact('reports', 'user', 'selectedUserId', 'keywords'));
     }
 
     public function create(Request $request)

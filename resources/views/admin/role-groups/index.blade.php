@@ -1,13 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between w-full whitespace-nowrap items-center">
-            <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex">
+            <h2 class="text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('roleGroups') }}
                 <div class="ml-4">
                     {{-- {{ $count }}件 --}}
                 </div>
             </h2>
-            <x-message :message="session('message')" />
             <div class="flex flex-col flex-shrink-0 space-y-1 w-auto md:flex-row md:space-y-0 md:space-x-3 items-center">
                 <x-buttons.add-button :route="route('role-groups.create')" gate="storeUpdate_role_groups" :text="__('Add')" />
 
@@ -65,6 +64,10 @@
             </div>
         </div>
     </div>
+
+    <div class="mt-1 mb-1 px-4 md:ml-9">
+        {{ $roleGroups->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
+    </div> 
 
     <div class="md:w-auto md:ml-14 md:mr-2 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-300 mb-4">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -134,9 +137,11 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="mt-1 mb-1 px-4">
-        {{ $roleGroups->withQueryString()->links('vendor.pagination.custum-tailwind') }}
-        </div> 
     </div>
+    @if($roleGroups->hasPages())
+        <div class="mt-1 mb-1 px-4 md:ml-9">
+            {{ $roleGroups->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
+        </div> 
+    @endif
 
 </x-app-layout>

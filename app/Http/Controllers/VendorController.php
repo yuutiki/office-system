@@ -11,6 +11,7 @@ use App\Models\Corporation;//add
 use App\Models\User;
 use App\Models\Affiliation2;//add
 use App\Models\ClientType;//add
+use App\Models\Department;
 use App\Models\Prefecture;//add
 use App\Models\VendorType;
 use Illuminate\pagination\paginator;//add
@@ -29,115 +30,65 @@ class VendorController extends Controller
     {
         $perPage = config('constants.perPage');
 
-        // 検索条件用
+        // 検索条件用マスターデータ
         $salesUsers = User::all();
-        $affiliation2s = Affiliation2::all();
+        $departments = Department::all();
         $clientTypes = ClientType::all();
         $vendorTypes = VendorType::all();
 
         // ログインユーザーの所属を取得
-        $userAffiliation2 = auth()->user()->affiliation2_id;
-        $selectedAffiliation2 = $userAffiliation2; // ユーザーの所属を初期値に設定
+        $userDepartment = auth()->user()->department_id;
+        $selectedDepartment = $request->input('selected_department', $userDepartment);
 
-        // 検索リクエストを取得し変数に格納
-        // $request->session()->put([
-        //     'user_id' => $request->user_id,
-        // ]);
+        // フィルタ条件をまとめる
+        $filters = [
+            'vendor_types'       => $request->input('vendor_types', []),
+            'vendor_name'        => $request->input('vendor_name'),
+            'selected_department'=> $selectedDepartment,
+            'user_department'    => $userDepartment,
+            'is_dealer'          => $request->input('is_dealer'),
+            'is_supplier'        => $request->input('is_supplier'),
+            'is_lease'           => $request->input('is_lease'),
+            'is_other_partner'   => $request->input('is_other_partner'),
+        ];
 
-        $selectedVendorTypes = $request->input('vendor_types', []);
-        $vendorName = $request->input('vendor_name');
-        $affiliation2Id = $request->input('affiliation2_id');
-        $isDealer = $request->input('is_dealer');
-        $isSupplier = $request->input('is_supplier');
-        $isLease = $request->input('is_lease');
-        $isOtherPartner = $request->input('is_other_partner');
+        // 検索クエリ
+        $vendors = Vendor::with(['corporation', 'department'])
+            ->sortable()
+            ->orderBy('vendor_num', 'asc')
+            ->filter($filters)
+            ->paginate($perPage);
 
-
-
-        // 検索クエリを組み立てる
-        $vendorsQuery = Vendor::with(['corporation', 'affiliation2'])->sortable()->orderBy('vendor_num','asc');
-
-        if (!empty($isDealer)) {
-            $vendorsQuery->where('is_dealer', 1);
-        }
-        if (!empty($isSupplier)) {
-            $vendorsQuery->where('is_supplier', 1);
-        }
-        if (!empty($isLease)) {
-            $vendorsQuery->where('is_lease', 1);
-        }
-        if (!empty($isOtherPartner)) {
-            $vendorsQuery->where('is_other_partner', 1);
-        }
-
-        if (!empty($selectedVendorTypes)) {
-            $vendorsQuery->whereIn('vendor_type_id', $selectedVendorTypes);
-        }
-        if (!empty($vendorName)) {
-            // Vendorモデルからclient_nameをもとにIDを取得
-            $vendorIds = Vendor::where('vendor_name', 'like', '%' . $vendorName . '%')->pluck('id')->toArray();
-        
-            // 取得したIDを利用してサポート検索クエリに追加条件を設定
-            if (!empty($vendorIds)) {
-                $vendorsQuery->whereIn('id', $vendorIds);
-            }
-        }
-
-
-        // プルダウンが変更された場合の処理
-        if (request()->has('selected_affiliation2')) {
-            $selectedAffiliation2 = request('selected_affiliation2');
-
-            // プルダウンが「事業部全て」以外の場合、検索結果を絞る
-            if ($selectedAffiliation2 != 0) {
-                $vendorsQuery->where('affiliation2_id', $selectedAffiliation2);
-            }  // 「事業部全て」の場合は何もしない（絞り込み解除）
-
-            // 上記の条件で検索結果を取得
-            $vendors = $vendorsQuery->get();
-            
-        } else {
-            // 初期表示の場合、ユーザーの所属に基づいて検索結果を絞る
-            $vendorsQuery->where('affiliation2_id', $userAffiliation2)->get();
-        }
-
-        $vendors = $vendorsQuery->paginate($perPage);
-        $count = $vendors->total();
-
-        return view('vendors.index',compact('vendors','count','salesUsers', 'affiliation2s', 'vendorTypes','selectedVendorTypes', 'affiliation2Id', 'vendorName', 'selectedAffiliation2', 'isDealer', 'isSupplier','isLease', 'isOtherPartner',));
+        return view('vendors.index',compact('vendors', 'departments','salesUsers', 'vendorTypes','selectedDepartment', 'filters'));
     }
 
     public function create()
     {
         $users = User::all();
         $vendorTypes = VendorType::all(); //業者種別
-        $affiliation2s = Affiliation2::all(); //管轄事業部
         $prefectures = Prefecture::all(); //都道府県
+        $rawDepartments = Department::all();
+        $departments = Department::buildTree($rawDepartments);
 
-        return view('vendors.create',compact('affiliation2s','users','vendorTypes','prefectures',));
+        return view('vendors.create',compact('users', 'vendorTypes', 'prefectures', 'departments'));
     }
 
     public function store(VendorStoreRequest $request)
     {
         ////以下にFormRequestのバリデーションを通過した場合の処理を記述////
 
-        $inputPost = $request->vendor_post_code;
+        $inputPost = $request->post_code;
         $formattedPost = Vendor::formatPostCode($inputPost);
 
         // フォームからの値を変数に格納
         $corporationNum = $request->input('corporation_num');
-        $affiliation2Id = $request->input('affiliation2');
-        $getaffiliation2 = Affiliation2::where('id', $affiliation2Id)->first();
-        $prefix_code = $getaffiliation2->affiliation2_prefix;
+        $departmentId = $request->input('department_id');
 
-        $vendorNumber = Vendor::generateVendorNumber($corporationNum, $prefix_code);
+        $vendorNumber = Vendor::generateVendorNumber($corporationNum);
 
         // corporation_numからcorporation_idを取得する
         $corporation = Corporation::where('corporation_num', $corporationNum)->first();
         $corporationId = $corporation->id;
-
-        $affiliation2 = Affiliation2::where('affiliation2_prefix', $prefix_code)->first();
-        $affiliation2Id = $affiliation2->id;
 
         // 顧客データを保存
         $vendor = new Vendor();
@@ -146,12 +97,12 @@ class VendorController extends Controller
         $vendor->vendor_name = $request->vendor_name;
         $vendor->vendor_kana_name = $request->vendor_kana_name;
         $vendor->corporation_id = $corporationId;
-        $vendor->affiliation2_id = $affiliation2Id;
+        $vendor->department_id = $request->department_id;
         $vendor->vendor_type_id = $request->vendor_type_id;
 
-        $vendor->vendor_post_code = $formattedPost;//変換後の郵便番号をセット
-        $vendor->vendor_prefecture_id = $request->vendor_prefecture_id;
-        $vendor->vendor_address1 = $request->vendor_address1;
+        $vendor->post_code = $formattedPost;//変換後の郵便番号をセット
+        $vendor->prefecture_id = $request->prefecture_id;
+        $vendor->address_1 = $request->address_1;
         $vendor->vendor_tel = $request->vendor_tel;
         $vendor->vendor_fax = $request->vendor_fax;
         $vendor->number_of_employees = $request->number_of_employees;
@@ -184,11 +135,12 @@ class VendorController extends Controller
     {
         $users = User::all();
         $vendorTypes = VendorType::all();
-        $affiliation2s = Affiliation2::all();
         $vendor = Vendor::find($ulid);
         $prefectures = Prefecture::all(); //都道府県
+        $rawDepartments = Department::all();
+        $departments = Department::buildTree($rawDepartments);
 
-        return view('vendors.edit',compact('affiliation2s','users','vendorTypes','vendor','prefectures',));
+        return view('vendors.edit',compact('departments','users','vendorTypes','vendor','prefectures',));
     }
 
     public function update(Request $request, string $ulid)
@@ -206,18 +158,18 @@ class VendorController extends Controller
 
     private function updateBasicInfo(Vendor $vendor, Request $request)
     {
-        $formattedPost = Vendor::formatPostCode($request->vendor_post_code);
+        $formattedPost = Vendor::formatPostCode($request->post_code);
 
         $vendor->vendor_name = $request->vendor_name;
         $vendor->vendor_kana_name = $request->vendor_kana_name;
         $vendor->vendor_memo = $request->vendor_memo;
         $vendor->vendor_url = $request->vendor_url;
         $vendor->number_of_employees = $request->number_of_employees;
-        $vendor->affiliation2_id = $request->affiliation2;
+        $vendor->department_id = $request->department_id;
         $vendor->vendor_type_id = $request->vendor_type_id;
-        $vendor->vendor_post_code = $formattedPost;
-        $vendor->vendor_prefecture_id = $request->vendor_prefecture_id;
-        $vendor->vendor_address1 = $request->vendor_address1;
+        $vendor->post_code = $formattedPost;
+        $vendor->prefecture_id = $request->prefecture_id;
+        $vendor->address_1 = $request->address_1;
         $vendor->vendor_tel = $request->vendor_tel;
         $vendor->vendor_fax = $request->vendor_fax;
         $vendor->is_supplier = $request->has('is_supplier') ? 1 : 0;
@@ -352,7 +304,7 @@ class VendorController extends Controller
     {
         $vendorName = $request->input('vendorName');
         $vendorNumber = $request->input('vendorNumber');
-        $vendorAffiliation2 = $request->input('affiliation2Id');
+        $vendorAffiliation2 = $request->input('departmentId');
         $isDealer = $request->input('isDealer');
 
         // 検索条件に基づいて顧客データを取得
@@ -548,10 +500,10 @@ class VendorController extends Controller
 
             $affiliation2 = Affiliation2::where('affiliation2_code', $affiliation2Code)->first();
             if ($affiliation2) {
-                $affiliation2Id = $affiliation2->id;
+                $departmentId = $affiliation2->id;
             } else {
                 // affiliation2_idが見つからない場合のエラーハンドリング
-                $affiliation2Id = null;
+                $departmentId = null;
             }
 
         // $corporationNum = $Corporation->corporation_num;
@@ -561,7 +513,7 @@ class VendorController extends Controller
         $data = [
             'vendor_num' => $vendorNumber,
             'corporation_id' => $corporationId,
-            'affiliation2_id' => $affiliation2Id,
+            'affiliation2_id' => $departmentId,
             'vendor_name' => $row[2],
             'vendor_kana_name' => $row[3],
             'vendor_type_id' => $row[4],

@@ -1,16 +1,17 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
+        <div class="flex w-full">
+            <h2 class="flex text-gray-900 dark:text-white">
                 {{ Breadcrumbs::render('createRoleGroup') }}
             </h2>
-            <div class="flex justify-end">
-                <x-message :message="session('message')"/>
-            </div>
+            <form method="post" class="ml-auto" action="{{route('role-groups.store')}}" enctype="multipart/form-data" id="createForm">
+                @csrf
+                <x-buttons.save-button form-id="createForm" id="saveButton" onkeydown="stopTab(event)">
+                    {{ __("save") }}
+                </x-buttons.save-button>
+            </form>
         </div>
     </x-slot>
-
-    {{-- <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div> --}}
 
     <div class="max-w-7xl mx-auto px-2 md:pl-14">
 
@@ -27,7 +28,7 @@
             <div>
                 <div  class="w-full flex flex-col">
                     <label for="role_group_code" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">権限グループコード<span class="text-red-500"> *</span></label>
-                    <input type="text" form="roleGroupForm1" maxlength="4" name="role_group_code" class="input-primary" id="role_group_code" value="{{old('role_group_code')}}" tabindex="-1">
+                    <input type="text" form="createForm" maxlength="4" name="role_group_code" class="input-primary" id="role_group_code" value="{{old('role_group_code')}}" tabindex="-1">
                 </div>
                 @error('role_group_code')
                     <div class="text-red-500">{{$message}}</div>
@@ -35,7 +36,7 @@
             </div>
             <div class="w-full flex flex-col">
                 <label for="role_group_name" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">権限グループ名称<span class="text-red-500"> *</span></label>
-                <input type="text" form="roleGroupForm1" name="role_group_name" class="input-secondary" id="role_group_name" value="{{old('role_group_name')}}">
+                <input type="text" form="createForm" name="role_group_name" class="input-secondary" id="role_group_name" value="{{old('role_group_name')}}">
                 @error('role_group_name')
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
@@ -43,7 +44,7 @@
             <div>
                 <div  class="w-full flex flex-col">
                     <label for="role_group_eng_name" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">権限グループ英名称<span class="text-red-500"> *</span></label>
-                    <input type="text" form="roleGroupForm1" name="role_group_eng_name" class="input-secondary" id="role_group_eng_name" value="{{old('role_group_eng_name')}}">
+                    <input type="text" form="createForm" name="role_group_eng_name" class="input-secondary" id="role_group_eng_name" value="{{old('role_group_eng_name')}}">
                 </div>
                 @error('role_group_eng_name')
                     <div class="text-red-500">{{$message}}</div>
@@ -52,20 +53,12 @@
             <div>
                 <div class="w-full flex flex-col">
                     <label for="role_group_memo" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">備考</label>
-                    <input type="text" form="roleGroupForm1" name="role_group_memo" class="input-secondary" id="role_group_memo" value="{{old('role_group_memo')}}">
+                    <input type="text" form="createForm" name="role_group_memo" class="input-secondary" id="role_group_memo" value="{{old('role_group_memo')}}">
                 </div>
                 @error('role_group_memo')
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
             </div>
-
-            
-            <form method="post" action="{{route('role-groups.store')}}" enctype="multipart/form-data" id="roleGroupForm1">
-                @csrf
-                <x-primary-button class="mt-4" form-id="roleGroupForm1" id="saveButton" onkeydown="stopTab(event)">
-                    保存(S)
-                </x-primary-button>
-            </form>
         </div>
     </div>
 

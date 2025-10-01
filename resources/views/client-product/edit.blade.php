@@ -5,7 +5,6 @@
                 {{ Breadcrumbs::render('editClientProduct', $clientProduct) }}
             </h2>
             <div class="flex justify-end items-center space-x-2">
-                <x-message :message="session('message')"/>
                 <form method="post" action="{{ route('client-products.update', $clientProduct) }}" enctype="multipart/form-data" id="createForm" class="flex">
                     @csrf
                     @method('put')

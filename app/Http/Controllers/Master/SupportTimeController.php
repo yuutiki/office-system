@@ -41,10 +41,10 @@ class SupportTimeController extends Controller
         return view('masters.support-time-index',compact('supportTimes'));
     }
 
-    // public function create()
-    // {
-    //     //
-    // }
+    public function create()
+    {
+        //
+    }
 
     public function store(Request $request)
     {
@@ -67,15 +67,15 @@ class SupportTimeController extends Controller
         }
     }
 
-    // public function show(SupportTime $supportTime)
-    // {
-    //     //
-    // }
+    public function show(SupportTime $supportTime)
+    {
+        //
+    }
 
-    // public function edit(SupportTime $supportTime)
-    // {
-    //     //
-    // }
+    public function edit(SupportTime $supportTime)
+    {
+        //
+    }
 
     public function update(Request $request, SupportTime $supportTime)
     {

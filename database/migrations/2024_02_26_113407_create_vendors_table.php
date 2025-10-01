@@ -19,14 +19,14 @@ return new class extends Migration
             $table->string('vendor_name',255)->comment('業者名称');
             $table->string('vendor_kana_name',255)->comment('業者カナ名称');
             $table->foreignUlid('corporation_id')->comment('法人ID'); // Corporationsテーブル参照
-            $table->foreignId('affiliation2_id')->comment('管轄事業部ID');// Affiliation2テーブル参照
+            $table->foreignId('department_id')->comment('管轄部門ID');// Affiliation2テーブル参照
             $table->foreignId('vendor_type_id')->nullable(true)->comment('業者種別ID');// Client_typesテーブル参照
             $table->text('vendor_memo', 1000)->nullable(true)->comment('業者備考');//
 
 
-            $table->string('vendor_post_code', 80)->nullable(true)->comment('業者郵便番号');//
-            $table->string('vendor_prefecture_id', 80)->nullable(true)->comment('業者都道府県');//
-            $table->string('vendor_address1', 80)->nullable(true)->comment('業者住所1');//
+            $table->string('post_code', 80)->nullable(true)->comment('業者郵便番号');//
+            $table->string('prefecture_id', 80)->nullable(true)->comment('業者都道府県');//
+            $table->string('address_1', 80)->nullable(true)->comment('業者住所1');//
             $table->string('vendor_tel', 80)->nullable(true)->comment('業者TEL');//
             $table->string('vendor_fax', 80)->nullable(true)->comment('業者FAX');//
 

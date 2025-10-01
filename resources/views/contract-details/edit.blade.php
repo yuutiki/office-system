@@ -1,11 +1,17 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
+        <div class="flex w-full">
+            <h2 class="flex text-gray-900 dark:text-white">
                 {{ Breadcrumbs::render('CreateContractDetail', $contract) }}
             </h2>
-            <div class="flex justify-end">
-                <x-message :message="session('message')"/>
+            <div class="ml-auto flex">
+                <form id="editform" method="post" action="{{ route('contracts.details.update', ['contract' => $contract, 'contractDetail' => $contractDetail]) }}" enctype="multipart/form-data">
+                    @csrf
+                    @method('put')
+                    <x-buttons.save-button onkeydown="stopTab(event)" id="saveButton">
+                        {{ __('save') }}
+                    </x-buttons.save-button>
+                </form>
             </div>
         </div>
     </x-slot>
@@ -13,9 +19,6 @@
     <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-4">
-        <form id="form1" method="post" action="{{ route('contracts.details.update', ['contract' => $contract, 'contractDetail' => $contractDetail]) }}" enctype="multipart/form-data">
-            @csrf
-            @method('put')
             <div class="p-2 md:p-8 rounded-lg bg-gray-50 shadow-md dark:bg-gray-800" >
                 <!-- header -->
                 <div class="flex justify-between items-center md:pb-4 pb-2 rounded-t border-b dark:border-gray-600">
@@ -28,7 +31,7 @@
                 <div class="grid gap-4 my-4 md:grid-cols-4">
                     <div>
                         <label for="contract_change_type_id" class="text-gray-900 dark:text-white">更新種別</label>
-                        <select name="contract_change_type_id" id="contract_change_type_id" value="{{old('contract_change_type_id')}}" class="input-primary">
+                        <select form="editform" name="contract_change_type_id" id="contract_change_type_id" value="{{old('contract_change_type_id')}}" class="input-primary">
                             @foreach($contractChangeTypes as $contractChangeType)
                             <option value="{{ $contractChangeType->id }}"  @selected($contractChangeType->id == old('contract_change_type_id', $contractDetail->contract_change_type_id))>{{ $contractChangeType->contract_change_type_name }}</option>
                             @endforeach
@@ -39,7 +42,7 @@
                     </div>
                     <div>
                         <label for="contract_update_type_id" class="text-gray-900 dark:text-white">自動 / 都度</label>
-                        <select name="contract_update_type_id" id="contract_update_type_id" value="{{old('contract_update_type_id')}}" class="input-primary">
+                        <select form="editform" name="contract_update_type_id" id="contract_update_type_id" value="{{old('contract_update_type_id')}}" class="input-primary">
                             @foreach($contractUpdateTypes as $contractUpdateType)
                             <option value="{{ $contractUpdateType->id }}"  @selected($contractUpdateType->id == old('contract_update_type_id', $contractDetail->contract_update_type_id))>{{ $contractUpdateType->contract_update_type_name }}</option>
                             @endforeach
@@ -50,7 +53,7 @@
                     </div>
                     <div>
                         <label for="contract_sheet_status_id" class="text-gray-900 dark:text-white">契約書状態</label>
-                        <select name="contract_sheet_status_id" id="contract_sheet_status_id" value="{{old('contract_sheet_status_id')}}" class="input-primary">
+                        <select form="editform" name="contract_sheet_status_id" id="contract_sheet_status_id" value="{{old('contract_sheet_status_id')}}" class="input-primary">
                             @foreach($contractSheetStatuses as $contractSheetStatus)
                             <option value="{{ $contractSheetStatus->id }}"  @selected($contractSheetStatus->id == old('contract_sheet_status_id', $contractDetail->contract_sheet_status_id))>{{ $contractSheetStatus->contract_sheet_status_name }}</option>
                             @endforeach
@@ -61,7 +64,7 @@
                     </div>
                     <div>
                         <label for="contract_partner_type_id" class="text-gray-900 dark:text-white">契約先区分</label>
-                        <select name="contract_partner_type_id" id="contract_partner_type_id" value="{{old('contract_partner_type_id')}}" class="input-primary">
+                        <select form="editform" name="contract_partner_type_id" id="contract_partner_type_id" value="{{old('contract_partner_type_id')}}" class="input-primary">
                             @foreach($contractPartnerTypes as $contractPartnerType)
                             <option value="{{ $contractPartnerType->id }}"  @selected($contractPartnerType->id == old('contract_partner_type_id', $contractDetail->contract_partner_type_id))>{{ $contractPartnerType->contract_partner_type_name }}</option>
                             @endforeach
@@ -76,14 +79,14 @@
                 <div class="grid gap-4 md:grid-cols-2 mt-4">
                     <div>
                         <label for="contract_start_at" class="dark:text-gray-100 text-gray-900">契約開始日</label>
-                        <input type="date" min="1900-01-01" max="2200-12-31" name="contract_start_at" id="contract_start_at" value="{{ old('contract_start_at', $contractDetail->contract_start_at) }}" class="input-primary">
+                        <input form="editform" type="date" min="1900-01-01" max="2200-12-31" name="contract_start_at" id="contract_start_at" value="{{ old('contract_start_at', $contractDetail->contract_start_at) }}" class="input-primary">
                         @error('contract_start_at')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
                     <div>
                         <label for="contract_end_at" class="dark:text-gray-100 text-gray-900">契約終了日</label>
-                        <input type="date" min="1900-01-01" max="2200-12-31" name="contract_end_at" id="contract_end_at" value="{{ old('contract_end_at', $contractDetail->contract_end_at) }}" class="input-primary">
+                        <input form="editform" type="date" min="1900-01-01" max="2200-12-31" name="contract_end_at" id="contract_end_at" value="{{ old('contract_end_at', $contractDetail->contract_end_at) }}" class="input-primary">
                         @error('contract_end_at')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
@@ -92,7 +95,7 @@
 
                 <div class="mt-4">
                     <label for="contract_amount" class="dark:text-gray-100 text-gray-900">契約金額</label>
-                    <input type="text" onblur="formatNumberInput(this);" maxlength="100" name="contract_amount" id="contract_amount" value="{{old('contract_amount', number_format($contractDetail->contract_amount))}}" class="input-primary">
+                    <input form="editform" type="text" onblur="formatNumberInput(this);" maxlength="100" name="contract_amount" id="contract_amount" value="{{old('contract_amount', number_format($contractDetail->contract_amount))}}" class="input-primary">
                     @error('contract_amount')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror
@@ -101,14 +104,14 @@
     
                 <div class="w-full flex flex-col">
                     <label for="target_system" class="dark:text-gray-100 text-gray-900 leading-none mt-4 mb-1">対象システム</label>
-                    <textarea name="target_system" id="target_system" class="input-primary" data-auto-resize="true"  cols="30" rows="4" data-auto-resize="true">{{ old('target_system', $contractDetail->target_system) }}</textarea>
+                    <textarea form="editform" name="target_system" id="target_system" class="input-primary" data-auto-resize="true"  cols="30" rows="4" data-auto-resize="true">{{ old('target_system', $contractDetail->target_system) }}</textarea>
                     @error('target_system')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="w-full flex flex-col">
                     <label for="contract_detail_memo" class="dark:text-gray-100 text-gray-900 leading-none mt-4 mb-1">契約詳細備考</label>
-                    <textarea name="contract_detail_memo" id="contract_detail_memo" class="input-primary" data-auto-resize="true"  cols="30" rows="4" data-auto-resize="true">{{ old('contract_detail_memo', $contractDetail->contract_detail_memo) }}</textarea>
+                    <textarea form="editform" name="contract_detail_memo" id="contract_detail_memo" class="input-primary" data-auto-resize="true"  cols="30" rows="4" data-auto-resize="true">{{ old('contract_detail_memo', $contractDetail->contract_detail_memo) }}</textarea>
                     @error('contract_detail_memo')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror
@@ -118,7 +121,7 @@
                     <div class="">
                         <label for="project_num" class="dark:text-gray-100 text-gray-900 leading-none mt-1">プロジェクト№</label>
                         <div class="relative w-full">
-                            <input type="text" name="project_num" id="project_num" value="{{old('project_num', optional($contractDetail->project)->project_num)}}" class="dark:bg-gray-400 w-full py-1 border border-gray-700 rounded" readonly>
+                            <input form="editform" type="text" name="project_num" id="project_num" value="{{old('project_num', optional($contractDetail->project)->project_num)}}" class="dark:bg-gray-400 w-full py-1 border border-gray-700 rounded" readonly>
                             <button type="button" onclick="showProjectModal()" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-[34px] text-white bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
                                 <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
@@ -128,28 +131,28 @@
                     </div>
                     <div class="hidden">
                         <label for="project_id" class="dark:text-gray-100 text-gray-900 leading-none mt-1">プロジェクトID（非表示）</label>
-                        <input type="text" maxlength="100" name="project_id" id="project_id" value="{{old('project_id', $contractDetail->project_id)}}" class="dark:bg-gray-400 w-full py-1 border border-gray-700 rounded" tabindex="-1">
+                        <input form="editform" type="text" maxlength="100" name="project_id" id="project_id" value="{{old('project_id', $contractDetail->project_id)}}" class="dark:bg-gray-400 w-full py-1 border border-gray-700 rounded" tabindex="-1">
                         @error('project_id')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
                     <div  class="md:col-span-2">
                         <label for="project_name" class="dark:text-gray-100 text-gray-900 leading-none mt-1">プロジェクト名称</label>
-                        <input type="text" maxlength="100" name="project_name" id="project_name" value="{{old('project_name', optional($contractDetail->project)->project_name)}}" class="dark:bg-gray-400 w-full py-1 border border-gray-700 rounded" tabindex="-1" readonly>
+                        <input form="editform" type="text" maxlength="100" name="project_name" id="project_name" value="{{old('project_name', optional($contractDetail->project)->project_name)}}" class="dark:bg-gray-400 w-full py-1 border border-gray-700 rounded" tabindex="-1" readonly>
                         @error('project_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
                     <div>
                         <label for="account_user" class="dark:text-gray-100 text-gray-900 leading-none mt-1">営業担当</label>
-                        <input type="text" maxlength="100" name="account_user" id="account_user" value="{{ old('account_user', optional(optional($contractDetail->project)->accountUser)->user_name) }}" class="dark:bg-gray-400 w-full py-1 border border-gray-700 rounded" tabindex="-1" readonly>
+                        <input form="editform" type="text" maxlength="100" name="account_user" id="account_user" value="{{ old('account_user', optional(optional($contractDetail->project)->accountUser)->user_name) }}" class="dark:bg-gray-400 w-full py-1 border border-gray-700 rounded" tabindex="-1" readonly>
                         @error('account_user')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
                     <div>
                         <label for="sales_stage_name" class="dark:text-gray-100 text-gray-900 leading-none mt-1">営業段階</label>
-                        <input type="text" maxlength="100" name="sales_stage_name" id="sales_stage_name" value="{{old('sales_stage_name', optional(optional($contractDetail->project)->salesStage)->sales_stage_name)}}" class="dark:bg-gray-400 w-full py-1 border border-gray-700 rounded" tabindex="-1" readonly>
+                        <input form="editform" type="text" maxlength="100" name="sales_stage_name" id="sales_stage_name" value="{{old('sales_stage_name', optional(optional($contractDetail->project)->salesStage)->sales_stage_name)}}" class="dark:bg-gray-400 w-full py-1 border border-gray-700 rounded" tabindex="-1" readonly>
                         @error('sales_stage_name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
@@ -157,7 +160,7 @@
                     <div class="hidden">
                         <div class="w-full flex flex-col">
                             <label for="client_name" class="dark:text-white text-red-700 leading-none text-sm">顧客名称（非表示）<span class="text-red-500"> *</span></label>
-                            <input type="text" name="client_name" class="input-primary" id="client_name" value="{{old('client_name')}}" placeholder="">
+                            <input form="editform" type="text" name="client_name" class="input-primary" id="client_name" value="{{old('client_name')}}" placeholder="">
                         </div>
                         @error('client_name')
                             <div class="text-red-500">{{$message}}</div>
@@ -182,7 +185,7 @@
                     <div class="tooltip-arrow" data-popper-arrow></div>
                 </div>
                 <div class="relative flex items-center justify-center w-full">
-                    <input type="file" name="attachments" id="file" accept=".pdf" class="absolute inset-0 w-full h-full opacity-0 z-10 " onchange="displayFileInfo()" />
+                    <input form="editform" type="file" name="attachments" id="file" accept=".pdf" class="absolute inset-0 w-full h-full opacity-0 z-10 " onchange="displayFileInfo()" />
                     <label for="attachments" class="dark:bg-gray-900flex flex-col items-center justify-center w-full h-44 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-bray-800 dark:bg-gray-800 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                         <div class="flex flex-col items-center justify-center pt-5 pb-6">
                             <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
@@ -263,9 +266,6 @@
                         </tbody>
                     </table>
                 </div>
-                <x-primary-button class="mt-4" onkeydown="stopTab(event)" id="saveButton">
-                    保存(S)
-                </x-primary-button>
             </div>
         </form>
     </div>
@@ -289,11 +289,11 @@
                     <div class="grid gap-4 mb-4 sm:grid-cols-2 mt-2">
                         <div class="">
                             <label for="projectNumber" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none">プロジェクト№</label>
-                            <input type="text" name="projectNumber" id="projectNumber" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
+                            <input form="editform" type="text" name="projectNumber" id="projectNumber" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
                         </div>
                         <div class="">
                             <label for="projectName" class="block font-semibold dark:text-gray-100 text-gray-900 leading-none">プロジェクト名称</label>
-                            <input type="text" name="projectName" id="projectName" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
+                            <input form="editform" type="text" name="projectName" id="projectName" class="block w-full mt-1 mr-2 py-1 placeholder-gray-400 border border-gray-300 rounded">
                         </div>
                     </div>
                 </form>

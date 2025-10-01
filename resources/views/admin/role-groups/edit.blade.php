@@ -1,14 +1,18 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
+        <div class="flex w-full">
+            <h2 class="flex text-gray-900 dark:text-white">
                 {{ Breadcrumbs::render('editRoleGroup', $roleGroup) }}
             </h2>
-            <div class="flex justify-end">
-                <x-message :message="session('message')"/>
-            </div>
-            <div class="flex">
-                <button id="dropdownActionButton" data-dropdown-toggle="dropdownActions" class="inline-flex items-center p-2 ml-4 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
+            <div class="flex ml-auto">
+                <form method="post" action="{{route('role-groups.update',$roleGroup)}}" enctype="multipart/form-data" id="editForm">
+                    @csrf
+                    @method('patch')
+                    <x-buttons.save-button class="" form-id="editForm" id="saveButton" onkeydown="stopTab(event)">
+                        {{ __("update") }}
+                    </x-buttons.save-button>
+                </form>
+                <button id="dropdownActionButton" data-dropdown-toggle="dropdownActions" class="inline-flex items-center p-2 ml-4 text-sm font-medium text-center text-gray-900 bg-white rounded hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
                     <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
                         <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
                     </svg>
@@ -29,9 +33,6 @@
             </div>
         </div>
     </x-slot>
-
-    <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
-
 
     <div class="max-w-7xl mx-auto px-2 md:pl-14">
 
@@ -55,12 +56,12 @@
             <div>
                 <div  class="w-full flex flex-col">
                     <label for="role_group_code" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">権限グループコード</label>
-                    <input type="text" form="corporationForm" name="role_group_code" class="w-full py-1 mt-1 rounded dark:bg-gray-400 border-gray-700 border border-transparent dark:text-gray-900 tracking-widest hover:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 placeholder-gray-400 transition ease-in-out duration-150" id="role_group_code" value="{{old('role_group_code',$roleGroup->role_group_code)}}" readonly tabindex="-1">
+                    <input type="text" form="editForm" name="role_group_code" class="w-full py-1 mt-1 rounded dark:bg-gray-400 border-gray-700 border border-transparent dark:text-gray-900 tracking-widest hover:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 placeholder-gray-400 transition ease-in-out duration-150" id="role_group_code" value="{{old('role_group_code',$roleGroup->role_group_code)}}" readonly tabindex="-1">
                 </div>
             </div>
             <div class="w-full flex flex-col">
                 <label for="role_group_name" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">権限グループ名称<span class="text-red-500"> *</span></label>
-                <input type="text" form="corporationForm" name="role_group_name" class="input-secondary" id="role_group_name" value="{{old('role_group_name',$roleGroup->role_group_name)}}">
+                <input type="text" form="editForm" name="role_group_name" class="input-secondary" id="role_group_name" value="{{old('role_group_name',$roleGroup->role_group_name)}}">
                 @error('role_group_name')
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
@@ -68,7 +69,7 @@
             <div>
                 <div  class="w-full flex flex-col">
                     <label for="role_group_eng_name" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">権限グループ英名称<span class="text-red-500"> *</span></label>
-                    <input type="text" form="corporationForm" name="role_group_eng_name" class="input-secondary" id="role_group_eng_name" value="{{old('role_group_eng_name',$roleGroup->role_group_eng_name)}}">
+                    <input type="text" form="editForm" name="role_group_eng_name" class="input-secondary" id="role_group_eng_name" value="{{old('role_group_eng_name',$roleGroup->role_group_eng_name)}}">
                 </div>
                 @error('role_group_eng_name')
                     <div class="text-red-500">{{$message}}</div>
@@ -77,28 +78,13 @@
             <div>
                 <div class="w-full flex flex-col">
                     <label for="role_group_memo" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">備考</label>
-                    <input type="text" form="corporationForm" name="role_group_memo" class="input-secondary" id="role_group_memo" value="{{old('role_group_memo',$roleGroup->role_group_memo)}}">
+                    <input type="text" form="editForm" name="role_group_memo" class="input-secondary" id="role_group_memo" value="{{old('role_group_memo',$roleGroup->role_group_memo)}}">
                 </div>
                 @error('role_group_memo')
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
             </div>
 
-            {{-- <div class="w-auto flex flex-col mt-6">
-                    <button data-tooltip-target="tooltip-right" data-tooltip-placement="right" type="button" class="ms-3 mb-2 md:mb-0 text-white bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-1.5 py-[1px] text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        ?
-                    </button>
-                    <div id="tooltip-right" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-1.5 text-sm font-medium text-white bg-gray-900 rounded-xl shadow-sm opacity-0 tooltip dark:bg-gray-600">
-                        <span class="text-xs">
-                            取引停止中は検索時に
-                            <br>
-                            非表示になります。
-                        </span>
-                        <div class="tooltip-arrow" data-popper-arrow></div>
-                    </div>
-                </label>
-            </div> --}}
-            
             <div class="relative bg-white dark:bg-gray-700 rounded-t md:w-auto shadow-md dark:text-gray-900 mt-16 border border-gray-600">
                 <div class="flex justify-end p-2 space-y-1 flex-row md:space-y-0">
                     <div class="flex flex-shrink-0 w-auto md:space-y-0 items-center">
@@ -113,7 +99,8 @@
                     </div>
                 </div>
             </div>
-            <div class="relative overflow-x-auto">
+
+            <div class="relative overflow-x-scroll w-auto">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border border-gray-600">
                     <thead class="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 mt-8">
                         <tr class="">
@@ -130,7 +117,7 @@
                     </thead>
                     <tbody>
                         @foreach($functionMenus as $functionMenu)
-                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap">
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 whitespace-nowrap ">
                                 <td class="px-2 py-1 border border-gray-600 text-center">
                                     {{ $loop->iteration }}
                                 </td>
@@ -138,7 +125,7 @@
                                     {{ $functionMenu->function_menu_name }}
                                 </td>
                                 <td class="px-2 py-2 border border-gray-600">
-                                    <select name="permissions[{{ $functionMenu->id }}]" form="corporationForm" class="w-full py-1 rounded dark:bg-gray-300 border-gray-700 border border-transparent dark:text-gray-900 tracking-widest hover:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 placeholder-gray-400 transition ease-in-out duration-150">
+                                    <select name="permissions[{{ $functionMenu->id }}]" form="editForm" class="w-full min-w-max py-1 rounded dark:bg-gray-300 border-gray-700 border border-transparent dark:text-gray-900 tracking-widest hover:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 placeholder-gray-400 transition ease-in-out duration-150">
                                         @foreach($permissions as $permission)
                                             <option value="{{ $permission->id }}"  @selected($permission->id == $functionMenu->permission->id)>{{ $permission->permission_code }}:{{ $permission->permission_name }}</option>
                                         @endforeach
@@ -148,16 +135,6 @@
                         @endforeach
                     </tbody>
                 </table>
-            </div>
-
-            <div class="flex justify-end">
-                <form method="post" action="{{route('role-groups.update',$roleGroup)}}" enctype="multipart/form-data" id="corporationForm">
-                    @csrf
-                    @method('patch')
-                    <x-primary-button class="mt-4" form-id="corporationForm" id="saveButton" onkeydown="stopTab(event)">
-                        保存
-                    </x-primary-button>
-                </form>
             </div>
         </div>
 
@@ -194,14 +171,14 @@
                                 <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 text-center">
                                     在職状態
                                 </th>
-                                <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 text-center">
+                                {{-- <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 text-center">
                                     所属1
                                 </th>
                                 <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 text-center">
                                     所属2
-                                </th>
+                                </th> --}}
                                 <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 text-center">
-                                    所属3
+                                    所属部門
                                 </th>
                                 <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 text-center">
                                     操作
@@ -224,9 +201,10 @@
                                         </span>
                                     @endif
                                 </td>
-                                <td class="px-2 py-2 text-center border border-gray-600">{{ $user->affiliation1->affiliation1_name }}</td>
-                                <td class="px-2 py-2 text-center border border-gray-600">{{ $user->affiliation2->affiliation2_name }}</td>
-                                <td class="px-2 py-2 text-center border border-gray-600">{{ $user->affiliation3->affiliation3_name }}</td>
+                                {{-- <td class="px-2 py-2 text-center border border-gray-600">{{ $user->affiliation1->affiliation1_name }}</td> --}}
+                                {{-- <td class="px-2 py-2 text-center border border-gray-600">{{ $user->affiliation2->affiliation2_name }}</td> --}}
+                                {{-- <td class="px-2 py-2 text-center border border-gray-600">{{ $user->affiliation3->affiliation3_name }}</td> --}}
+                                <td class="px-2 py-2 text-center border border-gray-600">{{ $user->department->path }}</td>
                                 <td class="text-center border border-gray-600">
                                     <form method="post" action="{{ route('group.delete_user') }}">
                                         @csrf

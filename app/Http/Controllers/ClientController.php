@@ -272,20 +272,20 @@ class ClientController extends Controller
         return view('clients.edit',compact('contracts', 'affiliation2s','users','tradeStatuses','clientTypes','installationTypes','client','reports','prefectures','supports','clientProducts','distributionTypes','activeTab', 'departments'));
     }
 
-private function buildTree($departments, $parentId = null, $level = 0)
-{
-    $result = [];
-    foreach ($departments->where('parent_id', $parentId)->sortBy('id') as $department) {
-        $department->level = $level;
+    private function buildTree($departments, $parentId = null, $level = 0)
+    {
+        $result = [];
+        foreach ($departments->where('parent_id', $parentId)->sortBy('id') as $department) {
+            $department->level = $level;
 
-        // path（親からの経路文字列）を作っておくと便利
-        $department->path = str_repeat('— ', $level) . $department->name;
+            // path（親からの経路文字列）を作っておくと便利
+            $department->path = str_repeat('— ', $level) . $department->name;
 
-        $result[] = $department;
-        $result = array_merge($result, $this->buildTree($departments, $department->id, $level + 1));
+            $result[] = $department;
+            $result = array_merge($result, $this->buildTree($departments, $department->id, $level + 1));
+        }
+        return $result;
     }
-    return $result;
-}
 
     public function update(ClientStoreRequest $request, string $id)
     {
@@ -422,7 +422,7 @@ private function buildTree($departments, $parentId = null, $level = 0)
         }
 
         // Eager Loadingは維持
-        $clients = $query->with('products', 'affiliation2', 'corporation', 'user')->get();
+        $clients = $query->with('products', 'affiliation2', 'corporation', 'user', 'department')->get();
 
         // 画面IDに応じた表示項目を取得
         $displayItems = ClientSearchModalDisplayItem::where('screen_id', $request->screen_id)
@@ -539,11 +539,3 @@ private function buildTree($departments, $parentId = null, $level = 0)
         $lexer->parse($csvPath, $interpreter);
     }
 }
-
-// client_num
-// memo
-// distribution
-// distribution_id
-// head_post_code
-// head_prefecture
-// head_address1  

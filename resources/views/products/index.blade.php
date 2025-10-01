@@ -98,9 +98,9 @@
 
                         <div class="relative w-full mt-2 md:ml-2 md:mt-0">
                             <select name="product_type_id" id="product_type_id" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="">製品種別</option>
+                                <option value="">製品種別1</option>
                                 @foreach ($productTypes as $productType)
-                                <option value="{{ $productType->id }}" @if (isset($productTypeId) && $productTypeId == $productType->id) selected @endif>
+                                <option class="font-mono" value="{{ $productType->id }}" @if (isset($productTypeId) && $productTypeId == $productType->id) selected @endif>
                                     {{$productType->type_code}}：{{$productType->type_name}}
                                 </option>
                                 @endforeach
@@ -108,7 +108,7 @@
                         </div>
                         <div class="relative w-full mt-2 md:ml-2 md:mt-0">
                             <select name="product_split_type_id" id="product_split_type_id" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="">製品内訳種別</option>
+                                <option value="">製品種別2</option>
                                 @foreach ($productSplitTypes as $splitType)
                                 <option value="{{ $splitType->id }}" @if (isset($splitTypeId) && $splitTypeId == $splitType->id) selected @endif>
                                     {{ $splitType->split_type_code }}：{{ $splitType->split_type_name }}
@@ -231,7 +231,13 @@
                     </th>
                     <th scope="col" class="px-1 py-3 w-auto">
                         <div class="flex items-center whitespace-nowrap">
-                            @sortablelink('product_type_id','内訳種別')
+                            @sortablelink('product_type_id','製品種別1')
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg></a>
+                        </div>
+                    </th>
+                    <th scope="col" class="px-1 py-3 w-auto">
+                        <div class="flex items-center whitespace-nowrap">
+                            @sortablelink('product_type_id','製品種別2')
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512"><path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/></svg></a>
                         </div>
                     </th>
@@ -282,7 +288,10 @@
                             {{$product->product_code}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap w-40">
-                            {{$product->productsplittype->split_type_name}}
+                            {{$product->productType->type_name}}
+                        </td>
+                        <td class="px-1 py-1 whitespace-nowrap w-40">
+                            {{$product->productSplitType->split_type_name}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
                             {{$product->productSeries->series_name}}

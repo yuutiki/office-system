@@ -1,11 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between w-5/6">
-            <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex">
+        <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center py-1">
                 {{ Breadcrumbs::render('app-settings') }}
                 <div class="ml-4">
                     {{ $count }}件
                 </div>
+                {{-- <div class="text-gray-900 dark:text-white ml-2 text-sm hidden md:block">
+                    <div>（選択中： <span id="selectedCount">0</span> 件）</div>
+                </div> --}}
             </h2>
             <x-message :message="session('message')" />
         </div>

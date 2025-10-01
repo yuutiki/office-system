@@ -35,6 +35,7 @@ class User extends Authenticatable
         'affiliation1_id',
         'affiliation2_id',
         'affiliation3_id',
+        'department_id',
         'profile_image',
 
         'is_enabled',
@@ -122,6 +123,16 @@ class User extends Authenticatable
         $pivot = $this->receivedReports->firstWhere('id', $report->id)?->pivot;
         return $pivot?->is_read ?? false;
     }
+
+    /**
+     * ユーザーの所属階層を取得（部門パス）
+     */
+    public function getDepartmentHierarchy(): array
+    {
+        return $this->department
+            ? $this->department->getHierarchyPath()
+            : [];
+    }
     
 
     //relation
@@ -206,6 +217,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Report::class, 'report_recipients')
                     ->withPivot('is_read', 'read_at')
                     ->withTimestamps();
+    }
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
     }
 
 }

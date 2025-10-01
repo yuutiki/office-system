@@ -153,7 +153,7 @@
             </thead>
             <tbody>
                 @foreach ($supportTimes as $supportTime)
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white dark:hover:bg-gray-600">
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600">
                         <td class="pl-8 py-2 whitespace-nowrap font-mono text-lg">
                             {{ $supportTime->code }}
                         </td>

@@ -1,10 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex">
+        <div class="flex w-full">
+            <h2 class="text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('createProduct') }}
             </h2>
-            <div class="flex justify-end items-center space-x-2">
+            <div class="ml-auto flex items-center space-x-2">
                 <x-message :message="session('message')" />
                 <form method="post" action="{{ route('products.store') }}" enctype="multipart/form-data" id="productForm" class="flex items-center">
                     @csrf
@@ -66,6 +66,21 @@
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
+                <div class="w-full flex flex-col">
+                    <label for="department_id" class="text-sm text-gray-900 dark:text-white leading-none">管轄部門<span class="text-red-500"> *</span></label>
+                    <select form="productForm" id="department_id" name="department_id" class="input-secondary">
+                        <option selected value="">---</option>
+                        @foreach($departments as $department)
+                        <option value="{{ $department->id }}" @selected($department->id === (int) old('department_id'))>
+                            {{ $department->path }}
+                        </option>
+                        @endforeach
+                    </select>
+                    @error('department_id')
+                        <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+                </div>
+
             </div>
             <div class="grid gap-4 mb-4 md:grid-cols-4 grid-cols-1 mt-8">
                 <div>
@@ -81,7 +96,7 @@
                 </div>
 
                 <div>
-                    <label for="product_type_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">製品種別<span class="text-red-500"> *</span></label>
+                    <label for="product_type_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">製品種別1<span class="text-red-500"> *</span></label>
                     <select form="productForm" id="product_type_id" name="product_type_id" class="input-secondary">
                         <option selected value="">---</option>
                         @foreach($productTypes as $productType)
@@ -95,7 +110,7 @@
 
                 {{-- Ajax通信でデータ取得 --}}
                 <div class="form-group">
-                    <label for="product_split_type_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">製品内訳種別<span class="text-red-500"> *</span></label>
+                    <label for="product_split_type_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">製品種別2<span class="text-red-500"> *</span></label>
                     <select form="productForm" id="product_split_type_id" name="product_split_type_id" class="input-secondary">
                         <option value="">選択してください</option>
                     </select>

@@ -12,6 +12,9 @@ class Department extends Model
 
     // 常に親部門を取得
     protected $with = ['parent'];
+
+
+    protected $appends = ['path']; // JSONに含める
     
     /**
      * 親部門
@@ -26,7 +29,7 @@ class Department extends Model
      */
     public function children(): HasMany
     {
-        return $this->hasMany(Department::class, 'parent_id');
+        return $this->hasMany(Department::class, 'parent_id')->with('children');
     }
 
     /**
@@ -47,19 +50,38 @@ class Department extends Model
 
 
     /**
-     * 子孫部門のIDを再帰的に取得
+     * 指定部門の子孫IDをすべて取得（子孫部門のIDを再帰的に取得）
+     */
+    /**
+     * 再帰的に子孫部門IDを取得
      */
     public function getDescendantIds(): array
     {
-        $ids = [$this->id];
+        $ids = [];
 
         foreach ($this->children as $child) {
+            $ids[] = $child->id;
+            // 子の子も再帰的に取得
             $ids = array_merge($ids, $child->getDescendantIds());
         }
 
         return $ids;
     }
 
+    /**
+     * 再帰的に親（祖先）部門IDを取得
+     */
+    public function getAncestorIds(): array
+    {
+        $ids = [];
+
+        if ($this->parent) {
+            $ids[] = $this->parent->id;
+            $ids = array_merge($ids, $this->parent->getAncestorIds());
+        }
+
+        return $ids;
+    }
 
 
     public function getAncestorNames(): array
@@ -99,22 +121,55 @@ class Department extends Model
 //     return $this->children()->with('childrenRecursive');
 // }
 
-public static function getHierarchy($parentId = null)
+public static function getHierarchy($parentId = null, $level = 0)
 {
     $departments = self::where('parent_id', $parentId)
+        ->with('children')   // ← eager load
         ->orderBy('code')
         ->get();
 
     $result = collect();
 
     foreach ($departments as $dept) {
+        $dept->level = $level; // ← ここで level をセット
         $result->push($dept);
-        $children = self::getHierarchy($dept->id);
+
+        // 子供を再帰的に追加
+        $children = self::getHierarchy($dept->id, $level + 1);
         $result = $result->merge($children);
     }
 
     return $result;
 }
+
+public static function getTree($parentId = null)
+{
+    return self::where('parent_id', $parentId)
+        ->orderBy('code')
+        ->with(['children' => function ($query) {
+            $query->orderBy('code');
+        }])
+        ->get();
+}
+
+
+
+    /**
+     * 自分から親をたどってルートまで返す（ユーザー表示用）
+     * ex. [本社, 営業部, 第一営業課]
+     */
+    public function getHierarchyPath(): array
+    {
+        $hierarchy = [];
+        $current = $this;
+
+        while ($current) {
+            $hierarchy[] = $current;
+            $current = $current->parent;
+        }
+
+        return array_reverse($hierarchy);
+    }
 
     /**
      * 循環参照が発生するかチェック
@@ -172,6 +227,45 @@ public static function getHierarchy($parentId = null)
 
             $child->updateHierarchyLevels();
         }
+    }
+
+
+    /**
+     * 階層構造でソートされた部署リストを取得
+     *
+     * @param \Illuminate\Database\Eloquent\Collection|null $departments
+     * @param int|null $parentId
+     * @param int $level
+     * @return array
+     */
+    public static function buildTree($departments = null, $parentId = null, $level = 0)
+    {
+        // $departmentsが渡されなかった場合は全部署を取得
+        if ($departments === null) {
+            $departments = self::all();
+        }
+
+        $result = [];
+        foreach ($departments->where('parent_id', $parentId)->sortBy('id') as $department) {
+            $department->level = $level;
+
+            // path（親からの経路文字列）を作っておくと便利
+            $department->path = str_repeat('— ', $level) . $department->name;
+
+            $result[] = $department;
+            $result = array_merge($result, self::buildTree($departments, $department->id, $level + 1));
+        }
+        return $result;
+    }
+
+    /**
+     * 階層構造でソートされた全部署を取得（convenience method）
+     *
+     * @return array
+     */
+    public static function getTreeStructure()
+    {
+        return self::buildTree();
     }
 
     public function clients()

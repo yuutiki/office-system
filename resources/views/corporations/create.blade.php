@@ -8,7 +8,6 @@
 
             {{-- 右側：メッセージ & 保存ボタン --}}
             <div class="ml-auto flex items-center space-x-2">
-                <x-message :message="session('message')" />
 
                 <form method="post" action="{{ route('corporations.store') }}" 
                     enctype="multipart/form-data" id="corporationForm">

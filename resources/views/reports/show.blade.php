@@ -1,12 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex">
+        <div class="flex w-full">
+            <h2 class="text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('showReport', $report) }}
             </h2>
-            <x-message :message="session('message')" />
-            <div class="flex justify-end items-center space-x-2">
-                <x-message :message="session('message')" />
+            <div class="ml-auto">
                 <x-button-save  onclick="location.href='{{route('reports.edit', $report)}}'">
                     {{ __('編集') }}
                 </x-button-save>

@@ -20,11 +20,13 @@ class ModelHistory extends Model
         'ip_address',
         'user_agent',
         'meta',
+        'user_agent_client_hint',
     ];
 
     protected $casts = [
         'changes' => 'array',
         'meta' => 'array',
+        'user_agent_client_hint' => 'array',  // これを追加
     ];
 
     public function user()

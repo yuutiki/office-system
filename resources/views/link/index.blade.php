@@ -1,160 +1,125 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between w-5/6">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
+        <div class="flex w-full">
+            <h2 class="flex text-gray-900 dark:text-white">
                 {{ Breadcrumbs::render('Links') }}
-                {{-- {{ Breadcrumbs::render('keepfiles', $searchParams) }} --}}
-
             </h2>
-            <x-message :message="session('message')" />
-        </div>
-    </x-slot>
+            <div class="ml-auto flex flex-shrink-0 w-auto md:flex-row space-y-0 space-x-3 items-center">
+                <x-buttons.add-button-drawer onclick="openDrawer('create')">
+                    {{ __('create') }}
+                </x-buttons.add-button-drawer>
 
-    <div class="relative bg-white dark:bg-gray-800 rounded-t-md md:w-auto md:ml-14 md:mr-2 m-auto shadow-md  dark:text-gray-900 mt-4">
-        <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
-            <div class="w-full md:w-2/3">
-                <form method="GET" action="{{ route('link.index') }}" id="link-search-form" class="flex items-center">
-                    @csrf
-                    <label for="simple-search" class="sr-only">Search</label>
-                    <div class="relative w-full">
-                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <input type="text" id="display_name" name="display_name" value="@if (isset($displayName)){{ $displayName }}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="表示名">
-                    </div>
-
-                    {{-- <div class="ml-2">
-                        <button id="filterDropdownButton" data-dropdown-toggle="filterDropdown" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded md:w-auto focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
-                            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="w-4 h-4 mr-2 text-gray-400" viewbox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />
-                            </svg>
-                            Filter
-                            <svg class="-mr-1 ml-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                            </svg>
-                        </button>
-                        <!-- Dropdown menu -->
-                        <div id="filterDropdown" class="z-10 hidden w-56 p-3 bg-white rounded shadow dark:bg-gray-700">
-                            <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
-                                事業部
-                            </h6>
-                            <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-                                @foreach ($affiliation2s as $affiliation2)
-                                <li class="flex items-center">
-                                    <input id="{{ $affiliation2->id }}" type="checkbox" value=""class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                    <label for="{{ $affiliation2->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $affiliation2->affiliation2_name }}</label>
-                                </li>                       
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div> --}}
-                    <button type="submit" form="link-search-form" class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                <div class="flex items-center space-x-3 w-auto hidden md:inline-block">
+                    <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full p-2.5 text-sm font-medium hover:bg-[#313a48] bg-[#364050] text-gray-200 rounded md:w-auto focus:z-10 dark:bg-blue-600 dark:text-gray-100 dark:border-gray-600 dark:hover:text-white dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" type="button">
+                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                            <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
                         </svg>
                     </button>
-                </form>
-            </div>
-            <div class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
-                <button type="button" onclick="location.href='{{ route('link.create') }}'" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                    <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                    </svg>
-                        Add
-                </button>
-                <div class="flex items-center w-full space-x-3 md:w-auto">
-                    <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded md:w-auto focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
-                        <svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                        </svg>
-                            Actions
-                    </button>
-                    <div id="actionsDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
+                    <div id="actionsDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-600 dark:divide-gray-600">
+                        {{-- <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
                             <li>
-                                <button type="button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="block w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                    CSV一括登録
+                                <button type="button" onclick="location.href='{{ route('links.showUploadForm') }}'" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2M8 9l4-5 4 5m1 8h0"/>
+                                        </svg>
+                                    </div>
+                                    CSVアップロード
                                 </button>
                             </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <button id="filterDropdownButton" data-dropdown-toggle="filterDropdown" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded md:w-auto focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
-                            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="w-4 h-4 mr-2 text-gray-400" viewbox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />
-                            </svg>
-                            Filter
-                            <svg class="-mr-1 ml-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                            </svg>
-                        </button>
-                        <!-- Dropdown menu -->
-                        <div id="filterDropdown" class="z-10 hidden w-56 p-3 bg-white rounded shadow dark:bg-gray-700">
-                            <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
-                                事業部
-                            </h6>
-                            <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-                                @foreach ($affiliation2s as $affiliation2)
-                                <li class="flex items-center">
-                                    <input id="{{ $affiliation2->id }}" type="checkbox" value=""class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                    <label for="{{ $affiliation2->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $affiliation2->affiliation2_name }}</label>
-                                </li>                       
-                                @endforeach
-                            </ul>
-                        </div>
+                            <li>
+                                <button type="button" onclick="location.href='{{ route('links.downloadCsv', $filters ?? []) }}'" class="relative w-full items-center py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
+                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                        <x-icon name="actions/download" class="w-6 h-6 text-gray-800 dark:text-white"></x-icon>
+                                    </div>
+                                    <div class="">CSVダウンロード</div>
+                                </button>
+                            </li>
+                        </ul> --}}
                     </div>
                 </div>
             </div>
         </div>
+    </x-slot>
+
+    <div class="relative bg-white dark:bg-gray-800 rounded-t-md md:w-auto md:ml-14 md:mr-2 m-auto shadow-md dark:text-gray-900 mt-4">
+        <div class="relative bg-white dark:bg-gray-800">
+            <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
+                <div class="w-full">
+                    <form method="GET" action="{{ route('link.index') }}" id="search_form" class="flex items-center">
+                        @csrf
+                        <div class="flex flex-col md:flex-row w-full">
+
+                            <div class="relative w-full">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <input type="search" id="display-name-search" name="display_name" value="{{ request('display_name', '') }}" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="表示名">
+                            </div>
+
+                            <div class="relative w-full mt-2 md:ml-2 md:mt-0">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <select name="affiliation2_id" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700 rounded focus:border-blue-500 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                                    <option value="">事業部選択</option>
+                                    @foreach($affiliation2s as $affiliation2)
+                                        <option value="{{ $affiliation2->id }}" {{ request('affiliation2_id') == $affiliation2->id ? 'selected' : '' }}>
+                                            {{ $affiliation2->affiliation2_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="flex mt-2 md:mt-0">
+                                <div class="flex flex-col justify-end w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
+                                    <div class="flex mt-4 md:mt-0">
+                                        <!-- 検索ボタン -->
+                                        <x-buttons.search-button />
+                                        <!-- リセットボタン -->
+                                        <x-buttons.reset-button />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="md:w-auto md:ml-14 md:mr-2 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-300">
+
+    <div class="mt-1 mb-1 px-4 md:ml-9">
+        {{ $adminLinks->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
+    </div> 
+
+    <div class="md:w-auto md:mr-2 md:ml-14 mb-4 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-300">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-200">
+            <thead class="text-xs text-gray-700 bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
                 <tr>
-                    <th scope="col" class="pl-4 py-3 w-auto">
-                        <div class="flex items-center whitespace-nowrap">
-                            №
-                        </div>
-                    </th>
-                    <th scope="col" class="pl-4 py-3 whitespace-nowrap">
+                    <th scope="col" class="pl-8 py-3 whitespace-nowrap">
                         <div class="flex items-center">
-                            @sortablelink('display_name','表示名')
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
-                                <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
-                            </svg>
-                        </div>
-                    </th>
-                    {{-- <th scope="col" class="px-1 py-3 whitespace-nowrap">
-                        <div class="flex items-center">
-                            @sortablelink('url','URL')
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
-                                <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
-                            </svg>
-                        </div>
-                    </th> --}}
-                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
-                        <div class="flex items-center">
-                            @sortablelink('affiliation2_id','管轄事業部')
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
-                                <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
-                            </svg>
+                            表示名
                         </div>
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
-                            @sortablelink('display_order','表示順')
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 320 512">
-                                <path d="M27.66 224h264.7c24.6 0 36.89-29.78 19.54-47.12l-132.3-136.8c-5.406-5.406-12.47-8.107-19.53-8.107c-7.055 0-14.09 2.701-19.45 8.107L8.119 176.9C-9.229 194.2 3.055 224 27.66 224zM292.3 288H27.66c-24.6 0-36.89 29.77-19.54 47.12l132.5 136.8C145.9 477.3 152.1 480 160 480c7.053 0 14.12-2.703 19.53-8.109l132.3-136.8C329.2 317.8 316.9 288 292.3 288z"/>
-                            </svg>
+                            URL
                         </div>
                     </th>
-                    {{-- <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
-                            作成者
+                            管轄事業部
                         </div>
-                    </th> --}}
+                    </th>
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                        <div class="flex items-center">
+                            表示順
+                        </div>
+                    </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             更新者
@@ -170,430 +135,326 @@
                             
                         </div>
                     </th>
-                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
-                        <div class="flex items-center">
-                            
-                        </div>
-                    </th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($adminLinks as $link)
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-600 dark:text-white dark:hover:bg-gray-600">
-                        <td class="pl-4 py-1 whitespace-nowrap">
-                            {{ $loop->iteration }}
-                        </td>
-                        <td class="pl-4 py-1 whitespace-nowrap">
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-200 dark:text-white text-gray-900 dark:hover:bg-gray-600 whitespace-nowrap">
+                        <td class="pl-8 px-1 py-2">
                             {{ $link->display_name }}
                         </td>
-                        <td class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <td class="px-1 py-2">
+                            <a href="{{ $link->url }}" target="_blank" class="text-blue-600 hover:underline">{{ Str::limit($link->url, 50) }}</a>
+                        </td>
+                        <td class="px-1 py-2">
                             {{ $link->affiliation2->affiliation2_name }}
                         </td>
-                        <td class="px-1 py-1 whitespace-nowrap">
-                            {{ $link->display_order }}
+                        <td class="px-1 py-2 text-right">
+                            <div class="w-8">{{ $link->display_order }}</div>
                         </td>
-                        {{-- <td class="px-1 py-1 whitespace-nowrap">
-                            {{$link->created_at}}
-                        </td> --}}
-                        {{-- <td class="px-1 py-1 whitespace-nowrap">
-                            {{$link->created_by}}
-                        </td> --}}
-                        <td class="px-1 py-1 whitespace-nowrap">
-                            {{-- {{$link->updatedBy->name}} --}}
-                            {{ optional($link->updatedBy)->name }}
+                        <td class="px-1 py-2 text-gray-400">
+                            {{ optional($link->updatedBy)->user_name }}
                         </td>
-                        <td class="px-1 py-1 whitespace-nowrap">
-                            {{$link->updated_at}}
+                        <td class="px-1 py-2 text-gray-400">
+                            <div class="hidden md:block">{{ $link->updated_at }}</div>
+                            <div class="md:hidden">{{ $link->updated_at->format('Y-m-d') }}</div>
                         </td>
-                        <td class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <td class="px-1 py-1">
                             <div class="text-center">
-                                <button class="button-edit-primary" type="button" data-drawer-target="dupdateModal-{{$link->id}}" data-drawer-show="dupdateModal-{{$link->id}}" data-drawer-placement="right" aria-controls="dupdateModal-{{$link->id}}">
-                                編集
+                                <button type="button" class="button-edit-primary" onclick="openDrawer('{{ $link->id }}')">
+                                    <div class="flex items-center">
+                                        <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+                                        </svg>
+                                        <span class="md:block hidden font-medium">編集</span>
+                                    </div>
                                 </button>
                             </div>
-                        </td>
-                        <td class="py-1">
-                            <button data-modal-target="deleteModal-{{$link->id}}" data-modal-show="deleteModal-{{$link->id}}"  class="button-delete-primary" type="button">
-                                <div class="flex items-center">
-                                    <svg class="mr-1 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z"/>
-                                    </svg>
-                                    <span class="text-ms ">削除</span>
-                                </div>
-                            </button>
                         </td>
                     </tr>
-                    {{-- 削除確認モーダル画面 Start --}}
-                    <div id="deleteModal-{{$link->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                        <div class="relative w-full max-w-md max-h-full">
-                            <div class="relative bg-white rounded shadow dark:bg-gray-700">
-                                <button data-modal-hide="deleteModal-{{$link->id}}" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                                    </svg>
-                                </button>
-                                <div class="p-6 text-center">
-                                    <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                                    </svg>
-                                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
-                                    <form action="{{route('link.destroy',$link->id)}}" method="POST" class="text-center m-auto">
-                                        @csrf
-                                        @method('delete')
-                                        <button type="submit" data-modal-hide="deleteModal-{{$link->id}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
-                                            削除
-                                        </button>
-                                    </form>
-                                    <button data-modal-hide="deleteModal-{{$link->id}}" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                                        やっぱやめます
+                    <!-- drawer component -->
+                    <div id="drawer-{{ $link->id }}"
+                        class="drawer-component fixed top-0 right-0 z-50 h-screen overflow-y-auto bg-white dark:bg-gray-600 shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out"
+                        style="min-width: 300px; width: min(30rem, 100vw); max-width: 100vw;">
+                    
+                        <!-- リサイズハンドル -->
+                        <div class="resize-handle absolute left-0 top-0 w-2 h-full cursor-col-resize bg-gray-200 hover:bg-blue-500 opacity-0 hover:opacity-100 transition-opacity">
+                        </div>
+                
+                        <!-- フォーム部分 -->
+                        <div class="">
+                            <form method="POST" action="{{ route('link.update', $link->id) }}" id="link-form-{{ $link->id }}" data-is-changed="false">
+                                @csrf
+                                @method('PUT')
+
+                                <div class="flex justify-between items-center p-4">
+                                    <button type="button" data-drawer-id="{{ $link->id }}"
+                                        class="close-drawer-button p-0.5 rounded text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-500 dark:hover:text-white">
+                                        <svg class="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 16 4-4-4-4m6 8 4-4-4-4"/>
+                                        </svg>
                                     </button>
+                                
+                                    <div class="flex gap-4">
+                                        <button type="submit" class="button-edit-primary dark:bg-blue-500">
+                                            <div class="flex items-center px-3.5 py-1.5">
+                                                <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+                                                </svg>
+                                                <span class="md:block hidden">{{ __('update') }}</span>
+                                            </div>
+                                        </button>
+                                        <!-- 削除ボタン（モーダル表示トリガー） -->
+                                        <button type="button" data-modal-target="deleteModal-{{ $link->id }}" data-modal-toggle="deleteModal-{{ $link->id }}" class="button-delete-primary rounded">
+                                            <div class="flex items-center px-3.5 py-1.5">
+                                                <svg class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                                </svg>
+                                                <span class="md:block hidden">{{ __('delete') }}</span>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-4 p-4">
+                                    <!-- 隠しフィールドで current updated_at を送信 -->
+                                    <input type="hidden" name="updated_at" value="{{ $link->updated_at->format('Y-m-d H:i:s') }}">
+                                    
+                                    <div class="w-full">
+                                        <label for="display_name-{{ $link->id }}" class="block dark:text-gray-100 text-gray-900">
+                                            表示名
+                                        </label>
+                                        <input type="text" maxlength="20" name="display_name" id="display_name-{{ $link->id }}" 
+                                                value="{{ old('display_name', $link->display_name) }}" 
+                                                class="input-secondary" 
+                                                required>
+                                        @error('display_name')
+                                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                        
+                                    <div class="w-full">
+                                        <label for="url-{{ $link->id }}" class="block dark:text-gray-100 text-gray-900">
+                                            URL
+                                        </label>
+                                        <input type="url" maxlength="100" name="url" id="url-{{ $link->id }}" 
+                                                value="{{ old('url', $link->url) }}" 
+                                                class="input-secondary" 
+                                                required>
+                                        @error('url')
+                                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="w-full">
+                                        <label for="affiliation2_id-{{ $link->id }}" class="block dark:text-gray-100 text-gray-900">
+                                            対象事業部
+                                        </label>
+                                        <select name="affiliation2_id" id="affiliation2_id-{{ $link->id }}" class="input-secondary" required>
+                                            @foreach($affiliation2s as $affiliation2)
+                                                <option value="{{ $affiliation2->id }}" {{ $affiliation2->id == $link->affiliation2_id ? 'selected' : '' }}>
+                                                    {{ $affiliation2->affiliation2_name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('affiliation2_id')
+                                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+    <div class="mb-4">
+        <label for="department_id_{{ $link->id }}" class="block text-sm font-medium text-gray-700 dark:text-gray-200">
+            所属部門
+        </label>
+        <select id="department_id_{{ $link->id }}" name="department_id" class="input-primary w-full">
+            <option value="">未選択</option>
+            @foreach($departments as $department)
+                <option value="{{ $department->id }}" @selected(old('department_id', $link->department_id) == $department->id)>
+                    {{ $department->path }}
+                </option>
+            @endforeach
+        </select>
+        @error('department_id')
+            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+        @enderror
+    </div>
+
+
+                                    <div class="w-full">
+                                        <label for="display_order-{{ $link->id }}" class="block dark:text-gray-100 text-gray-900">
+                                            表示順
+                                        </label>
+                                        <input type="number" min="1" max="99" name="display_order" id="display_order-{{ $link->id }}" 
+                                                value="{{ old('display_order', $link->display_order) }}" 
+                                                class="input-secondary" 
+                                                required>
+                                        @error('display_order')
+                                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </form>
+
+                            <!-- 削除確認モーダル -->
+                            <div id="deleteModal-{{ $link->id }}" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                <div class="relative w-full max-w-md max-h-full">
+                                    <div class="relative bg-white rounded shadow dark:bg-gray-700">
+                                        <div class="p-6 text-center">
+                                            <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                            </svg>
+                                            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                                                本当にこのデータを削除しますか？
+                                            </h3>
+                                            <div class="flex justify-center">
+                                                <!-- 削除フォーム -->
+                                                <form id="delete-form-{{ $link->id }}" action="{{ route('link.destroy', $link->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" data-modal-hide="deleteModal-{{ $link->id }}" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none font-medium rounded text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                                                        {{ __('delete') }}
+                                                    </button>
+                                                </form>
+                                                <!-- キャンセルボタン -->
+                                                <button data-modal-hide="deleteModal-{{ $link->id }}" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:outline-none rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                                                    キャンセル
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    {{-- 削除確認モーダル画面 End --}}
-                    <!-- 更新drawer --> 
-                    <div id="dupdateModal-{{$link->id}}" class="fixed top-0 right-0 z-50 h-screen p-4 overflow-y-auto transition-transform w-[30rem] translate-x-full bg-white  dark:bg-gray-800" tabindex="-1" aria-labelledby="dupdateModal-{{$link->id}}">
-                        <div class="">
-                            <h5 id="dupdateModal-{{$link->id}}" class="inline-flex items-center mb-4 font-semibold text-xl text-gray-500 dark:text-gray-400">
-                                所属別リンク編集
-                            </h5>
-                            <button type="button" data-drawer-hide="dupdateModal-{{$link->id}}" aria-controls="dupdateModal-{{$link->id}}" class="text-gray-400 bg-transparent ml-8 hover:bg-gray-200 hover:text-gray-900 rounded-md text-sm w-8 h-8 absolute top-2.5 end-2.5 inline-flex items-center justify-center dark:hover:bg-gray-600 dark:hover:text-white" >
-                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                                </svg>
-                            </button>
-                        </div>
-                        {{-- <form method="POST" action="{{ route('link.update', $link->id) }}">
-                            @csrf
-                            @method('PUT')
-                            <div class="w-full flex flex-col col-span-2 mt-10">
-                                <label for="display_name-{{$link->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">表示名</label>
-                                <input type="text" maxlength="20" name="display_name" id="-{{$link->id}}" value="{{old('display_name',$link->display_name)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
-                            </div>
-                            @error('display_name')
-                                <div class="text-red-500">{{ $message }}</div>
-                            @enderror
-                            <div class="w-full flex flex-col">
-                                <label for="affiliation2_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">対象事業部</label>
-                                <select name="affiliation2_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" id="affiliation2_id" value="{{old('affiliation2_id')}}" required>
-                                    @foreach($affiliation2s as $affiliation2)
-                                    <option value="{{ $affiliation2->id }}"  @selected($affiliation2->id == $link->affiliation2_id)>{{ $affiliation2->affiliation2_name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            @error('affiliation2_id')
-                                <div class="text-red-500">{{$message}}</div>
-                            @enderror
-                            <div class="w-full flex flex-col col-span-2">
-                                <label for="display_order-{{$link->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">表示順</label>
-                                <input type="number" min="1" max="99" name="display_order" id="display_order-{{$link->id}}" value="{{old('display_order',$link->display_order)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
-                            </div>
-                            @error('display_order')
-                                <div class="text-red-500">{{ $message }}</div>
-                            @enderror
-                            <div class="w-full flex flex-col col-span-2">
-                                <label for="url-{{$link->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">URL</label>
-                                <input type="url" maxlength="100" name="url" id="url-{{$link->id}}" value="{{old('url',$link->url)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
-                            </div>
-                            @error('url')
-                                <div class="text-red-500">{{ $message }}</div>
-                            @enderror
-                            <div class="grid grid-cols-2 gap-4 mt-4">
-                                <button type="submit" class="w-full justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    Update
-                                </button>
-                                <button type="button" class="w-full justify-center text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
-                                    <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
-                                    Delete
-                                </button>
-                            </div>
-                        </form> --}}
-
-                        {{-- <form method="POST" action="{{ route('link.update', $link->id) }}">
-                            @csrf
-                            @method('PUT')
-                            <div class="w-full flex flex-col col-span-2 mt-10">
-                                <label for="display_name-{{$link->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">表示名</label>
-                                <input type="text" maxlength="20" name="display_name" id="-{{$link->id}}" value="{{old('display_name',$link->display_name)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
-                            </div>
-                            @error('display_name')
-                                <div class="text-red-500">{{ $message }}</div>
-                            @enderror
-                            <div class="w-full flex flex-col">
-                                <label for="affiliation2_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">対象事業部</label>
-                                <select name="affiliation2_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-s rounded-e focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" id="affiliation2_id" value="{{old('affiliation2_id')}}" required>
-                                    @foreach($affiliation2s as $affiliation2)
-                                    <option value="{{ $affiliation2->id }}"  @selected($affiliation2->id == $link->affiliation2_id)>{{ $affiliation2->affiliation2_name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            @error('affiliation2_id')
-                                <div class="text-red-500">{{$message}}</div>
-                            @enderror
-                            <div class="w-full flex flex-col col-span-2">
-                                <label for="display_order-{{$link->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">表示順</label>
-                                <input type="number" min="1" max="99" name="display_order" id="display_order-{{$link->id}}" value="{{old('display_order',$link->display_order)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
-                            </div>
-                            @error('display_order')
-                                <div class="text-red-500">{{ $message }}</div>
-                            @enderror
-                            <div class="w-full flex flex-col col-span-2">
-                                <label for="url-{{$link->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none mt-1">URL</label>
-                                <input type="url" maxlength="100" name="url" id="url-{{$link->id}}" value="{{old('url',$link->url)}}" class="dark:bg-white w-auto py-1 border border-gray-300 rounded-s rounded-e mt-1 mb-1" required>
-                            </div>
-                            @error('url')
-                                <div class="text-red-500">{{ $message }}</div>
-                            @enderror
-                            <div class="grid grid-cols-2 gap-4 mt-4">
-                                <button type="submit" class="w-full justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    Update
-                                </button>
-                                <button type="button" class="w-full justify-center text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
-                                    <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
-                                    Delete
-                                </button>
-                            </div>
-                        </form> --}}
-                        
-                        <script>
-                            // デバッグ用：コンソールでデータを確認
-                            console.log('Link Data:', @json($link));
-                        </script>
-                        
-                        <form 
-                        x-data="{ 
-                            form: $form('PUT', '{{ route('api.links.update', $link->id) }}', {
-                                display_name: '{{ addslashes($link->display_name) }}',
-                                affiliation2_id: '{{ $link->affiliation2_id }}',
-                                display_order: '{{ $link->display_order }}',
-                                url: '{{ addslashes($link->url) }}' 
-                            }),
-                        }"
-                        x-init="
-                        $watch('form.errors', value => console.log('Validation errors:', value));
-                        $watch('form.data', value => console.log('Form data:', value));
-                    "
-                        @submit.prevent="form.submit()"
-                    >
-                        @csrf
-                        @method('PUT')
-                
-                        <!-- 表示名 -->
-                        <div class="w-full flex flex-col col-span-2 mt-4">
-                            <label for="display_name-{{$link->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none">表示名</label>
-                            <input 
-                                type="text" 
-                                maxlength="20" 
-                                name="display_name" 
-                                id="display_name-{{$link->id}}"
-                                x-model="form.data.display_name"
-                                value="{{ $link->display_name }}"
-                                @blur="form.validate('display_name')"
-                                class="input-secondary" 
-                            >
-                        </div>
-
-                        <!-- 対象事業部 -->
-                        <div class="w-full flex flex-col mt-4">
-                            <label for="affiliation2_id-{{$link->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none">対象事業部</label>
-                            <select 
-                                name="affiliation2_id" 
-                                id="affiliation2_id-{{$link->id}}"
-                                x-model="form.data.affiliation2_id"
-                                @change="form.validate('affiliation2_id')"
-                                class="input-secondary"
-                            >
-                                @foreach($affiliation2s as $affiliation2)
-                                    <option 
-                                        value="{{ $affiliation2->id }}"
-                                        {{ $link->affiliation2_id == $affiliation2->id ? 'selected' : '' }}
-                                    >
-                                        {{ $affiliation2->affiliation2_name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <!-- 表示順 -->
-                        <div class="w-full flex flex-col mt-4">
-                            <label for="display_order-{{$link->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none">表示順</label>
-                            <input 
-                                type="number" 
-                                min="1" 
-                                max="99" 
-                                name="display_order" 
-                                id="display_order-{{$link->id}}"
-                                x-model="form.data.display_order"
-                                value="{{ $link->display_order }}"
-                                @blur="form.validate('display_order')"
-                                class="input-secondary"
-                            >
-                        </div>
-
-                        <!-- URL -->
-                        <div class="w-full flex flex-col mt-4">
-                            <label for="url-{{$link->id}}" class="font-semibold dark:text-gray-100 text-gray-900 leading-none">URL</label>
-                            <input 
-                                type="url" 
-                                maxlength="100" 
-                                name="url" 
-                                id="url-{{$link->id}}"
-                                x-model="form.data.url"
-                                value="{{ $link->url }}"
-                                @blur="form.validate('url')"
-                                class="input-secondary"
-                            >
-                        </div>
-                
-                        <!-- ボタン -->
-                        <div class="grid grid-cols-2 gap-4 mt-6">
-                            <button 
-                                type="submit" 
-                                class="w-full justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center"
-                                :disabled="form.processing"
-                            >
-                                <span x-show="!form.processing">更新</span>
-                                <span x-show="form.processing">更新中...</span>
-                            </button>
-                            <button 
-                                type="button"
-                                class="w-full justify-center text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded text-sm px-5 py-2.5 text-center"
-                            >
-                                削除
-                            </button>
-                        </div>
-                    </form>
                     </div>
                 @endforeach
             </tbody>
         </table>
-        <div class="mt-1 mb-1 px-4">
-        {{-- {{ $links->withQueryString()->links('vendor.pagination.custum-tailwind') }}   --}}
+    </div>
+    
+    @if($adminLinks && $adminLinks->hasPages())
+        <div class="mt-1 mb-1 px-4 md:ml-9">
+            {{ $adminLinks->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
         </div> 
+    @endif
+
+    <!-- 新規登録用ドロワー -->
+    <div id="drawer-create" class="drawer-component fixed top-0 right-0 z-50 h-screen overflow-y-auto bg-white dark:bg-gray-600 shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out"
+        style="min-width: 300px; width: 30rem; max-width: 1200px;">
+        
+        <!-- リサイズハンドル -->
+        <div class="resize-handle absolute left-0 top-0 w-2 h-full cursor-col-resize bg-gray-200 hover:bg-blue-500 opacity-0 hover:opacity-100 transition-opacity"></div>
+
+        <div class="p-4">
+            <form method="POST" 
+                action="{{ route('link.store') }}" 
+                id="link-form-create" 
+                data-is-changed="false">
+                @csrf
+
+                <div class="flex justify-between items-center">
+                    <!-- data-drawer-close属性を追加 -->
+                    <button type="button" 
+                            data-drawer-id="create"
+                            class="close-drawer-button p-0.5 rounded text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-500 dark:hover:text-white">
+                            <svg class="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 16 4-4-4-4m6 8 4-4-4-4"/>
+                            </svg>
+                    </button>
+                </div>
+
+                <div class="space-y-4 mt-4">
+                    <div class="w-full">
+                        <label for="display_name" class="block dark:text-gray-100 text-gray-900">
+                            表示名
+                        </label>
+                        <input type="text" maxlength="20" name="display_name" id="display_name"
+                            value="{{ old('display_name') }}"
+                            class="input-secondary" 
+                            required>
+                        @error('display_name')
+                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="w-full">
+                        <label for="url" class="block dark:text-gray-100 text-gray-900">
+                            URL
+                        </label>
+                        <input type="url" maxlength="100" name="url" id="url"
+                            value="{{ old('url') }}"
+                            class="input-secondary" 
+                            required>
+                        @error('url')
+                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="w-full">
+                        <label for="affiliation2_id" class="block dark:text-gray-100 text-gray-900">
+                            対象事業部
+                        </label>
+                        <select name="affiliation2_id" id="affiliation2_id" class="input-secondary" required>
+                            <option value="">選択してください</option>
+                            @foreach($affiliation2s as $affiliation2)
+                                <option value="{{ $affiliation2->id }}" {{ old('affiliation2_id') == $affiliation2->id ? 'selected' : '' }}>
+                                    {{ $affiliation2->affiliation2_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('affiliation2_id')
+                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+    <div class="mb-4">
+        <label for="department_id" class="block text-sm font-medium text-gray-700 dark:text-gray-200">
+            所属部門
+        </label>
+        <select id="department_id" name="department_id" class="input-primary w-full">
+            <option value="">未選択</option>
+            @foreach($departments as $department)
+                <option value="{{ $department->id }}" @selected(old('department_id') == $department->id)>
+                    {{ $department->path }}
+                </option>
+            @endforeach
+        </select>
+        @error('department_id')
+            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+        @enderror
     </div>
 
 
-    <!-- CSV一括登録 modal -->
-    <div id="defaultModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-        <div class="relative w-full max-w-2xl max-h-full">
-            <!-- Modal content -->
-            <div class="relative bg-white rounded shadow dark:bg-gray-700">
-                <!-- Modal header -->
-                <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                        CSV一括アップロード
-                    </h3>
-                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
-                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                        <span class="sr-only">Close modal</span>
-                    </button>
+                    <div class="w-full">
+                        <label for="display_order" class="block dark:text-gray-100 text-gray-900">
+                            表示順
+                        </label>
+                        <input type="number" min="1" max="99" name="display_order" id="display_order"
+                            value="{{ old('display_order') }}"
+                            class="input-secondary" 
+                            required>
+                        @error('display_order')
+                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- 登録ボタン -->
+                    <div class="">
+                        <button type="submit" 
+                            class="w-full justify-center text-white bg-blue-700 hover:bg-blue-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:border-blue-500  
+                                font-medium rounded mt-12 px-5 py-2.5 border border-gray-700 
+                                focus:outline-none focus:ring-2 dark:focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 placeholder-gray-400 transition ease-in-out duration-150">
+                            登録
+                        </button>
+                    </div>
                 </div>
-                <!-- Modal body -->
-                <div class="p-6 space-y-6 mr-20 mt-4">
-                    <form action="{{ route('link.store') }}" method="POST" enctype="multipart/form-data" class="flex items-center" id="csv_form1">
-                        @csrf
-                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="csv_input"></label>
-                        <input name="csv_input" class="block w-full text-sm text-gray-900 border border-gray-300 rounded cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="csv_input_help" id="csv_input_file" type="file">
-                    </form>
-                </div>
-                <!-- Modal footer -->
-                <div class="flex justify-end p-3 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                    <button type="submit" form="csv_form1" id="upload-button"  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        アップロード
-                    </button>
-                    <button disabled type="button" id="spinner" class="hidden  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 items-center">
-                        <svg aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
-                        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
-                        </svg>
-                        アップロード中...
-                    </button>
-                    <div id="overlay" style="display: none"></div>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{{-- JQUERY --}}
-<script>
-    $(function(){
-        $('#clear').click(function(){
-            $('#linkform input, #linkform select').each(function(){
-              //checkboxまたはradioボタンの時
-              if(this.type == 'checkbox' || this.type == 'radio'){
-                //一括でチェックを外す
-                  this.checked = false;
-              }
-              //checkboxまたはradioボタン以外の時
-              else{
-                // val値を空にする
-                $(this).val('');
-              }
-            });
-        });
-    });
-    </script>
-{{-- JQUERY --}}
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-        const uploadForm = document.getElementById('csv_form1');
-        const uploadButton = document.getElementById('upload-button');
-        const spinner = document.getElementById('spinner');
-        const overlay = document.getElementById('overlay');
-
-            uploadForm.addEventListener('submit', function (event) {
-                event.preventDefault();
-
-                // アップロードボタンを非表示にし、スピナーを表示
-                uploadButton.style.display = 'none';
-                spinner.style.display = 'block';
-
-                // 画面をロック
-                overlay.style.display = 'block';
-
-                // フォームをサブミット
-                uploadForm.submit();
-            });
-        });
-
-
-                // モーダルを非表示にするための関数
-                function hideModal() {
-            // モーダルの要素を取得
-            const modal = document.getElementById('corporationSearchModal');
-            //背後の操作不可を解除
-            const overlay = document.getElementById('overlay').classList.add('hidden');
-            document.body.classList.remove('overflow-hidden');
-
-            // モーダルを非表示にするためのクラスを削除
-            modal.classList.add('hidden');
-        }
-
-    </script>
-
+    @push('scripts')
+        <script>
+            window.FORM_PREFIX = 'link-form';
+        </script>
+        <script src="{{ asset('assets/js/drawer-manager.js') }}"></script>
+    @endpush
 </x-app-layout>

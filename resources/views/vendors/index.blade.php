@@ -3,9 +3,6 @@
         <div class="flex justify-between w-full whitespace-nowrap items-center">
             <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('vendors') }}
-                <div class="ml-4">
-                    {{ $count }}件
-                </div>
             </h2>
             <div class="flex flex-shrink-0 w-auto md:flex-row space-y-0 space-x-3 items-center">
 
@@ -49,14 +46,14 @@
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                 </svg>
                             </div>
-                            <input type="search" id="vendor_name" name="vendor_name" value="@if (isset($vendorName)){{$vendorName}}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="業者名称（カナ）">
+                            <input type="search" id="vendor_name" name="vendor_name" value="@if (isset($filters['vendor_name'])){{ $filters['vendor_name'] }}@endif" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="業者名称（カナ）">
                         </div>
                         <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-                            <select name="selected_affiliation2" id="selected_affiliation2" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="0"  @if($selectedAffiliation2 == 0) selected @endif>管轄事業部</option>
-                                @foreach ($affiliation2s as $affiliation2)
-                                <option value="{{ $affiliation2->id }}" @if($selectedAffiliation2 == $affiliation2->id) selected @endif>
-                                    {{ $affiliation2->affiliation2_name }}
+                            <select name="selected_department" id="selected_department" class="block w-full p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-s rounded-e bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="0"  @if($selectedDepartment == 0) selected @endif>管轄部門 すべて</option>
+                                @foreach ($departments as $department)
+                                <option value="{{ $department->id }}" @if($selectedDepartment == $department->id) selected @endif>
+                                    {{ $department->path }}
                                 </option>
                                 @endforeach
                             </select>
@@ -97,7 +94,7 @@
                                         <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
                                             @foreach ($vendorTypes as $vendorType)
                                             <li class="flex items-center">
-                                                <input id="vendor_type_{{ $vendorType->id }}" type="checkbox" name="vendor_types[]" @if(in_array($vendorType->id, $selectedVendorTypes)) checked @endif value="{{$vendorType->id}}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                                <input id="vendor_type_{{ $vendorType->id }}" type="checkbox" name="vendor_types[]" @if(in_array($vendorType->id, $selectedVendorTypes)) checked @endif value="{{ $vendorType->id}}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
                                                 <label for="vendor_type_{{ $vendorType->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $vendorType->vendor_type_name }}</label>
                                             </li>      
                                             @endforeach
@@ -187,7 +184,7 @@
                                         <ul class="mb-3 text-sm flex flex-wrap" aria-labelledby="dropdownDefault">
                                             @foreach ($tradeStatuses as $tradeStatus)
                                             <li class="flex items-center mr-4 w-24">
-                                                <input id="trade_status_{{ $tradeStatus->id }}" type="checkbox" name="trade_statuses[]" @if(in_array($tradeStatus->id, $selectedTradeStatuses)) checked @endif value="{{$tradeStatus->id}}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                                <input id="trade_status_{{ $tradeStatus->id }}" type="checkbox" name="trade_statuses[]" @if(in_array($tradeStatus->id, $selectedTradeStatuses)) checked @endif value="{{ $tradeStatus->id}}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
                                                 <label for="trade_status_{{ $tradeStatus->id }}" class="ml-2 text-sm whitespace-nowrap text-gray-900 dark:text-gray-100">{{ $tradeStatus->trade_status_name }}</label>
                                             </li>                       
                                             @endforeach
@@ -200,7 +197,7 @@
                                         <ul class="mb-3 text-sm flex flex-wrap" aria-labelledby="dropdownDefault">
                                             @foreach ($installationTypes as $installationType)
                                             <li class="flex items-center mr-4 w-24">
-                                                <input id="installation_type_{{ $installationType->id }}" type="checkbox" name="installation_types[]" @if(in_array($installationType->id, $selectedInstallationTypes)) checked @endif value="{{$installationType->id}}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                                <input id="installation_type_{{ $installationType->id }}" type="checkbox" name="installation_types[]" @if(in_array($installationType->id, $selectedInstallationTypes)) checked @endif value="{{ $installationType->id}}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
                                                 <label for="installation_type_{{ $installationType->id }}" class="ml-2 text-sm whitespace-nowrap text-gray-900 dark:text-gray-100">{{ $installationType->type_name }}</label>
                                             </li>                       
                                             @endforeach
@@ -213,7 +210,7 @@
                                         <ul class="mb-3 text-sm flex flex-wrap" aria-labelledby="dropdownDefault">
                                             @foreach ($vendorTypes as $vendorType)
                                             <li class="flex items-center mr-4 break-words whitespace-pre-wrap w-24">
-                                                <input id="vendor_type_{{ $vendorType->id }}" type="checkbox" name="client_types[]" @if(in_array($vendorType->id, $selectedVendorTypes)) checked @endif value="{{$vendorType->id}}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                                <input id="vendor_type_{{ $vendorType->id }}" type="checkbox" name="client_types[]" @if(in_array($vendorType->id, $filters['vendor_types'])) checked @endif value="{{ $vendorType->id }}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
                                                 <label for="vendor_type_{{ $vendorType->id }}" class="ml-2 text-sm whitespace-nowrap text-gray-900 dark:text-gray-100">{{ $vendorType->vendor_type_name }}</label>
                                             </li>      
                                             @endforeach
@@ -305,19 +302,19 @@
                             </button>
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$vendor->vendor_num}}
+                            {{ $vendor->vendor_num}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$vendor->corporation->corporation_name}}
+                            {{ $vendor->corporation->corporation_name}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$vendor->vendor_name}}
+                            {{ $vendor->vendor_name}}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{$vendor->affiliation2->affiliation2_name}}
+                            {{ $vendor->department->path}}
                         </td>
                         <td class="py-1">
-                            <button type="button" data-modal-target="deleteModal-{{$vendor->ulid}}" data-modal-show="deleteModal-{{$vendor->ulid}}" class="button-delete-primary">
+                            <button type="button" data-modal-target="deleteModal-{{ $vendor->ulid}}" data-modal-show="deleteModal-{{ $vendor->ulid}}" class="button-delete-primary">
                                 <div class="flex">
                                     <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
                                     <span class="text-ms ">削除</span>
@@ -327,10 +324,10 @@
                     </tr>
 
                     {{-- 削除確認モーダル画面 Start --}}
-                    <div id="deleteModal-{{$vendor->ulid}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                    <div id="deleteModal-{{ $vendor->ulid}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
                         <div class="relative w-full max-w-md max-h-full">
                             <div class="relative bg-white rounded-s rounded-e shadow dark:bg-gray-700">
-                                <button data-modal-hide="deleteModal-{{$vendor->ulid}}" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-s rounded-e text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                                <button data-modal-hide="deleteModal-{{ $vendor->ulid}}" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-s rounded-e text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
                                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                                     </svg>
@@ -345,12 +342,12 @@
                                         @csrf
                                         @method('delete')
                                         @can('delete_corporations')
-                                        <button type="submit" data-modal-hide="deleteModal-{{$vendor->ulid}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-2 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-s rounded-e text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                                        <button type="submit" data-modal-hide="deleteModal-{{ $vendor->ulid}}" class="text-white bg-red-600 hover:bg-red-800 focus:ring-2 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-s rounded-e text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
                                             削除
                                         </button>
                                         @endcan
                                     </form>
-                                    <button data-modal-hide="deleteModal-{{$vendor->ulid}}" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-2 focus:outline-none focus:ring-gray-200 rounded-s rounded-e border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                    <button data-modal-hide="deleteModal-{{ $vendor->ulid}}" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-2 focus:outline-none focus:ring-gray-200 rounded-s rounded-e border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                                         やっぱやめます
                                     </button>
                                 </div>

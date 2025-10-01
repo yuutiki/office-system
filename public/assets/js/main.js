@@ -135,14 +135,9 @@ function resetForm(formSelector) {
 
 
 
-
-
-
-
-
-function goBack() {
-    window.history.back();
-}
+// function goBack() {
+//     window.history.back();
+// }
 
 
 // 数値入力時に桁区切りをする場合、input="text"タグで onblur="formatNumberInput(this);" とすることで下記の関数を利用できる。

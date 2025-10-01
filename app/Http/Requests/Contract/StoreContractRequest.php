@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Contract;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class VendorStoreRequest extends FormRequest
+class StoreContractRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
@@ -22,14 +19,10 @@ class VendorStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'vendor_num' => 'size:12',
-            'vendor_name' => 'required|max:100',
-            'vendor_kana_name' => 'required|max:100',
-            'vendor_type_id' => 'required',
-            'department_id' => 'required',
+            'client_id' => 'required|exists:clients,id',
+            'contract_type_id' => 'required|exists:contract_types,id',
         ];
     }
-    
 
     protected function failedValidation($validator)
     {

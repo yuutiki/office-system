@@ -18,6 +18,7 @@ class Link extends Model
         'display_order',
         'url',
         'affiliation2_id',
+        'department_id',
         'created_by',
         'updated_by'
     ];
@@ -46,6 +47,7 @@ class Link extends Model
         'url',
         'display_order',
         'affiliation2_name',
+        'department_id',
     ];
 
     //relation
@@ -57,4 +59,9 @@ class Link extends Model
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');
     }
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+
 }

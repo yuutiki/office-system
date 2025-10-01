@@ -173,7 +173,7 @@ return [
         App\Providers\ViewComposerServiceProvider::class,
         // Laravel-Mpdf（帳票用）
         Mccarlosen\LaravelMpdf\LaravelMpdfServiceProvider::class,
-        
+        App\Providers\MailConfigServiceProvider::class,
 
     ])->toArray(),
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\User;//add
 use App\Models\Affiliation2;//add
+use App\Models\Department;
 use App\Models\ProductMaker;//add
 use App\Models\ProductSearchModalDisplayItem;
 use App\Models\ProductSeries;//add
@@ -41,7 +42,7 @@ class ProductController extends Controller
         $productSplitType = $request->product_split_type; 
 
         //検索Query
-        $query = Product::with(['affiliation2', 'productSplitType', 'productSeries', 'productsplittype'])->sortable()->orderBy('product_code', 'asc');
+        $query = Product::with(['affiliation2', 'productSplitType', 'productSeries', 'productType','department'])->sortable()->orderBy('product_code', 'asc');
 
         if(!empty($productCode))
         {
@@ -62,7 +63,7 @@ class ProductController extends Controller
         $products = $query->paginate($perPage);
         $count = $products->total(); // 検索結果の総数を取得
 
-        return view('product.index',compact('products', 'count', 'productCode', 'productName', 'productSeriess', 'productTypes', 'productSplitTypes', 'affiliation2s'));
+        return view('products.index',compact('products', 'count', 'productCode', 'productName', 'productSeriess', 'productTypes', 'productSplitTypes', 'affiliation2s'));
     }
 
     public function create()
@@ -74,7 +75,11 @@ class ProductController extends Controller
         $productTypes = ProductType::all(); //製品種別
         $productSplitTypes = ProductSplitType::all(); //製品内訳種別
 
-        return view('product.create',compact('users','affiliation2s','productMakers','productSeries','productTypes','productSplitTypes'));
+        $rawDepartments = Department::all();
+        // 親子順に並んだリストを取得
+        $departments = Department::buildTree($rawDepartments);
+
+        return view('products.create',compact('users','affiliation2s','productMakers','productSeries','productTypes','productSplitTypes', 'departments'));
     }
 
     public function store(Request $request)
@@ -111,6 +116,7 @@ class ProductController extends Controller
         $product = new Product();
         $product->product_maker_id = $productMakerId;
         $product->affiliation2_id = $affiliation2Id;
+        $product->department_id =  $request->department_id;
         $product->product_type_id = $productTypeId;
         $product->product_split_type_id = $productSplitTypeId;
         $product->product_series_id = $request->product_series_id;
@@ -142,7 +148,11 @@ class ProductController extends Controller
         $productTypes = ProductType::all(); //製品種別
         $productSplitTypes = ProductSplitType::all(); //製品内訳種別
 
-        return view('product.edit',compact('users','affiliation2s','productMakers','productSeries','productTypes','productSplitTypes','product'));
+        $rawDepartments = Department::all();
+        // 親子順に並んだリストを取得
+        $departments = Department::buildTree($rawDepartments);
+
+        return view('products.edit',compact('users','affiliation2s','productMakers','productSeries','productTypes','productSplitTypes','product', 'departments'));
     }
 
     public function update(Request $request, string $id)
@@ -158,6 +168,7 @@ class ProductController extends Controller
 
         $product->product_maker_id = $request->product_maker_id;
         $product->affiliation2_id = $request->affiliation2_id;
+        $product->department_id = $request->department_id;
         $product->product_type_id = $request->product_type_id;
         $product->product_split_type_id = $request->product_split_type_id;
         $product->product_series_id = $request->product_series_id;
@@ -339,7 +350,7 @@ public function getSplitTypes($productTypeId)
 
     public function showUploadForm()
     {
-        return view('product.upload-form');
+        return view('products.upload-form');
     }
 
     

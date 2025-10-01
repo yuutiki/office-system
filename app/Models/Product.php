@@ -19,6 +19,7 @@ class Product extends Model
         'product_code',
         'product_maker_id',
         'affiliation2_id',
+        'department_id',
         'product_type_id',
         'product_split_type_id',
         'product_series_id',
@@ -110,6 +111,10 @@ class Product extends Model
     {
         return $this->belongsTo(Affiliation2::class);
     }
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
     public function productType()
     {
         return $this->belongsTo(ProductType::class);
@@ -122,23 +127,14 @@ class Product extends Model
     {
         return $this->belongsTo(ProductSeries::class);
     }
-    // public function clients()
-    // {
-    //     return $this->belongsToMany(Client::class);
-    // }
-    // public function clients()
-    // {
-    //     return $this->belongsToMany(Client::class, 'client_products', 'product_id', 'client_id');
-    // }
-
-    public function clients()
-    {
-        return $this->belongsToMany(Client::class, 'client_products');
-    }
-
     public function clientProducts()
     {
         return $this->hasMany(ClientProduct::class);
     }
 
+    // これはいる？
+    public function clients()
+    {
+        return $this->belongsToMany(Client::class, 'client_products');
+    }
 }

@@ -27,18 +27,27 @@ class LinkComposer
     private function getUserLinks()
     {
         if (!Auth::check()) {
-            return collect(); // ← ここを null ではなく空のコレクションに
+            return collect();
         }
 
-        $userId = Auth::id();
-        $userAffiliation2Id = Auth::user()->affiliation2_id;
+        $user = Auth::user();
+        $userDepartment = $user->department; // User モデルに department リレーションがある前提
 
-        return Cache::remember("user_links_{$userId}", now()->addHours(1), function () use ($userAffiliation2Id) {
-            return Link::where('affiliation2_id', $userAffiliation2Id)
-                       ->orderBy('display_order')
-                       ->get();
+        if (!$userDepartment) {
+            return collect();
+        }
+
+        // ユーザー自身の所属部門 + その親（祖先）部門
+        $deptIds = [$userDepartment->id];
+        $deptIds = array_merge($deptIds, $userDepartment->getAncestorIds());
+
+        return Cache::remember("user_links_{$user->id}", now()->addHours(1), function () use ($deptIds) {
+            return Link::whereIn('department_id', $deptIds)
+                    ->orderBy('display_order')
+                    ->get();
         });
     }
+
 
     public static function clearCache($userId = null)
     {

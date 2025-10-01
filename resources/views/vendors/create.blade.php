@@ -1,14 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="text-lg text-gray-900 dark:text-white flex">
+        <div class="flex w-full">
+            <h2 class="text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('createVendor') }}
             </h2>
-            <div class="flex justify-end items-center space-x-2">
-                <x-message :message="session('message')"/>
-                <form method="post" action="{{ route('vendors.store') }}" enctype="multipart/form-data" id="vendorForm" class="flex">
+            <div class="ml-auto flex items-center space-x-2">
+                <form method="post" action="{{ route('vendors.store') }}" enctype="multipart/form-data" id="createForm" class="flex">
                     @csrf
-                    <x-button-save form-id="vendorForm" id="saveButton" onkeydown="stopTab(event)">
+                    <x-button-save form-id="createForm" id="saveButton" onkeydown="stopTab(event)">
                         {{ __('登録') }}
                     </x-button-save>
                 </form>
@@ -20,12 +19,11 @@
         <div class="grid gap-4 mb-4 sm:grid-cols-2">
             <div class="flex">
 
-                <input type="text" form="vendorForm" name="corporation_id" class="hidden" id="corporation_id" value="{{old('corporation_id')}}">
-
+                <input type="text" form="createForm" name="corporation_id" class="hidden" id="corporation_id" value="{{old('corporation_id')}}">
 
                 <div class="w-full flex flex-col">
                     <label for="corporation_num" class="block text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">法人No.<span class="text-red-500"> *</span></label>
-                    <input type="text" form="vendorForm" name="corporation_num" class="input-readonly cursor-not-allowed" id="corporation_num" value="{{old('corporation_num')}}" placeholder="法人検索してください" readonly>
+                    <input type="text" form="createForm" name="corporation_num" class="input-readonly cursor-not-allowed" id="corporation_num" value="{{old('corporation_num')}}" placeholder="法人検索してください" readonly>
                     @error('corporation_num')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror
@@ -47,14 +45,14 @@
             </div>
             <div>
                 <label for="vendor_name" class="block  text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">業者名称<span class="text-red-500"> *</span></label>
-                <input type="text"  name="vendor_name" form="vendorForm" class="input-secondary" id="vendor_name" value="{{old('vendor_name')}}" placeholder="">
+                <input type="text"  name="vendor_name" form="createForm" class="input-secondary" id="vendor_name" value="{{old('vendor_name')}}" placeholder="">
                 @error('vendor_name')
                     <div class="text-red-500">{{ $message }}</div>
                 @enderror
             </div>
             <div>
                 <label for="vendor_kana_name" class="block  text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">業者カナ名称<span class="text-red-500"> *</span></label>
-                <input type="text" form="vendorForm" name="vendor_kana_name" class="input-secondary" id="vendor_kana_name" value="{{old('vendor_kana_name')}}" placeholder="">
+                <input type="text" form="createForm" name="vendor_kana_name" class="input-secondary" id="vendor_kana_name" value="{{old('vendor_kana_name')}}" placeholder="">
                 @error('vendor_kana_name')
                     <div class="text-red-500">{{ $message }}</div>
                 @enderror
@@ -63,8 +61,8 @@
         <div class="grid gap-4 mb-4 lg:grid-cols-2 grid-cols-2">
             <div>
                 <label for="vendor_type_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">業者種別<span class="text-red-500"> *</span></label>
-                <select form="vendorForm" id="vendor_type_id" name="vendor_type_id" class="input-secondary">
-                    <option value="">未選択</option>
+                <select form="createForm" id="vendor_type_id" name="vendor_type_id" class="input-secondary">
+                    <option value="">---</option>
                     @foreach($vendorTypes as $vendorType)
                         <option value="{{ $vendorType->id }}" @selected($vendorType->id == old('vendor_type_id'))>{{ $vendorType->vendor_type_name }}</option>
                     @endforeach
@@ -86,14 +84,16 @@
                 @enderror
             </div> --}}
             <div>
-                <label for="affiliation2" class="text-sm  text-gray-900 dark:text-white leading-none mt-4">管轄事業部<span class="text-red-500"> *</span></label>
-                <select form="vendorForm" id="affiliation2" name="affiliation2" class="input-secondary">
-                    <option value="">未選択</option>
-                    @foreach($affiliation2s as $affiliation2)
-                    <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == old('affiliation2', Auth::user()->affiliation2->id))>{{ $affiliation2->affiliation2_name }}</option>
+                <label for="department_id" class="text-sm  text-gray-900 dark:text-white leading-none mt-4">管轄部門<span class="text-red-500"> *</span></label>
+                <select form="createForm" id="department_id" name="department_id" class="input-secondary">
+                    <option value="">---</option>
+                    @foreach($departments as $department)
+                    <option value="{{ $department->id }}" @selected($department->id == old('department_id', optional(Auth::user()->department)->id))>
+                        {{ $department->path }}
+                    </option>
                     @endforeach
                 </select>
-                @error('affiliation2')
+                @error('department_id')
                     <div class="text-red-500">{{ $message }}</div>
                 @enderror
             </div>
@@ -113,10 +113,10 @@
         <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
             <div class="grid gap-4 mb-4 sm:grid-cols-4 mt-2">
                 <div>
-                    <label for="head_post_code" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">郵便番号</label>
+                    <label for="post_code" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">郵便番号</label>
                     <div class="relative w-full">
-                        <input type="text" form="vendorForm" name="head_post_code" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="head_post_code" value="{{old('head_post_code')}}" placeholder="">
-                        <button type="button" id="ajaxzip3" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-[34px] text-white mt-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <input type="text" form="createForm" name="post_code" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="post_code" value="{{old('post_code')}}" placeholder="">
+                        <button type="button" id="ajaxzip" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-[34px] text-white mt-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                             </svg>
@@ -125,25 +125,25 @@
                 </div>
 
                 <div>
-                    <label for="head_prefecture" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">都道府県</label>
-                    <select form="vendorForm" id="head_prefecture" name="head_prefecture" class="w-full py-1.5  text-sm mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected value="">未選択</option>
+                    <label for="prefecture_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">都道府県</label>
+                    <select form="createForm" id="prefecture_id" name="prefecture_id" class="w-full py-1.5  text-sm mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected value="">---</option>
                         @foreach($prefectures as $prefecture)
-                            <option value="{{ $prefecture->id }}" @if( $prefecture->id == old('head_prefecture') ) selected @endif>{{ $prefecture->prefecture_code }}:{{ $prefecture->prefecture_name }}</option>
+                            <option value="{{ $prefecture->id }}" @if( $prefecture->id == old('prefecture_id') ) selected @endif>{{ $prefecture->prefecture_code }}:{{ $prefecture->prefecture_name }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="col-span-2">
-                    <label for="head_addre1" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表所在地</label>
-                    <input type="text" form="vendorForm" name="head_addre1" id="head_addre1" value="{{old('head_addre1')}}" class="input-secondary" placeholder="">
+                    <label for="address_1" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表所在地</label>
+                    <input type="text" form="createForm" name="address_1" id="address_1" value="{{old('address_1')}}" class="input-secondary" placeholder="">
                 </div>
                 <div class="col-span-2">
                     <label for="head_tel" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表TEL</label>
-                    <input type="tel" form="vendorForm" name="head_tel" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_tel" value="{{old('head_tel')}}" onchange="validateAndFormat('head_tel')" class="input-secondary" placeholder="">
+                    <input type="tel" form="createForm" name="head_tel" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_tel" value="{{old('head_tel')}}" onchange="validateAndFormat('head_tel')" class="input-secondary" placeholder="">
                 </div>
                 <div class="col-span-2">
                     <label for="head_fax" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表FAX</label>
-                    <input type="tel" form="vendorForm" name="head_fax" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_fax" value="{{old('head_fax')}}" onchange="validateAndFormat('head_fax')" class="input-secondary"  placeholder="">
+                    <input type="tel" form="createForm" name="head_fax" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_fax" value="{{old('head_fax')}}" onchange="validateAndFormat('head_fax')" class="input-secondary"  placeholder="">
                 </div>
             </div>
 
@@ -152,19 +152,19 @@
             <div class="grid gap-4 mb-1 sm:grid-cols-2 mt-1">
                 <div class="w-full flex flex-col">
                     <label for="number_of_employees" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">従業員数</label>
-                    <input type="number" form="vendorForm" min="0" name="number_of_employees" class="input-secondary" id="number_of_employees" value="{{old('number_of_employees')}}">
+                    <input type="number" form="createForm" min="0" name="number_of_employees" class="input-secondary" id="number_of_employees" value="{{old('number_of_employees')}}">
                 </div>
             </div>
 
             <div class="w-full flex flex-col">
                 <label for="memo" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">備考</label>
-                <textarea name="memo" form="vendorForm" data-auto-resize="true" class="input-secondary" value="{{old('memo')}}" cols="30" rows="5">{{old('memo')}}</textarea>
+                <textarea name="memo" form="createForm" data-auto-resize="true" class="input-secondary" value="{{old('memo')}}" cols="30" rows="5">{{old('memo')}}</textarea>
             </div>
 
             <ul class=" mt-4 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                 <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                     <div class="flex items-center pl-3">
-                        <input form="vendorForm" id="is_dealer" name="is_dealer" type="checkbox" value="1" {{ old('is_dealer') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                        <input form="createForm" id="is_dealer" name="is_dealer" type="checkbox" value="1" {{ old('is_dealer') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                         <label for="is_dealer" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">ディーラ</label>
                     </div>
                     @error('is_dealer')
@@ -173,7 +173,7 @@
                 </li>
                 <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                     <div class="flex items-center pl-3">
-                        <input form="vendorForm" id="is_supplier" name="is_supplier" type="checkbox" value="1" {{ old('is_supplier') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                        <input form="createForm" id="is_supplier" name="is_supplier" type="checkbox" value="1" {{ old('is_supplier') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                         <label for="is_supplier" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">仕入外注先</label>
                     </div>
                     @error('is_supplier')
@@ -182,7 +182,7 @@
                 </li>
                 <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                     <div class="flex items-center pl-3">
-                        <input form="vendorForm" id="is_lease" name="is_lease" type="checkbox" value="1" {{ old('is_lease') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                        <input form="createForm" id="is_lease" name="is_lease" type="checkbox" value="1" {{ old('is_lease') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                         <label for="is_lease" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">リース会社</label>
                     </div>
                     @error('is_lease')
@@ -191,7 +191,7 @@
                 </li>
                 <li class="w-full dark:border-gray-600">
                     <div class="flex items-center pl-3">
-                        <input form="vendorForm" id="is_other_partner" name="is_other_partner" type="checkbox" value="1" {{ old('is_other_partner') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                        <input form="createForm" id="is_other_partner" name="is_other_partner" type="checkbox" value="1" {{ old('is_other_partner') ? 'checked' : '' }} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                         <label for="is_other_partner" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">その他協業</label>
                     </div>
                     @error('is_other_partner')
