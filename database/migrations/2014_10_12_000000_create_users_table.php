@@ -27,9 +27,8 @@ return new class extends Migration
             $table->boolean('is_enabled')->default(1)->comment('有効フラグ'); 
             // $table->foreignId('role_id')->default(4)->comment('権限ID'); //追記 rolesテーブル参照
             $table->foreignId('employee_status_id')->default(1)->comment('雇用状態ID');//追記 employee_statusesテーブル参照
-            $table->foreignId('affiliation1_id')->comment('第一所属階層ID'); 
-            $table->foreignId('affiliation2_id')->comment('第二所属階層ID'); 
-            $table->foreignId('affiliation3_id')->comment('第三所属階層ID'); 
+            $table->foreignId('affiliation1_id')->nullable()->comment('第一所属階層ID'); 
+            $table->foreignId('affiliation2_id')->nullable()->comment('第二所属階層ID'); 
             $table->foreignId('department_id')->nullable(true)->comment('所属部門ID'); 
             $table->string('profile_image')->default('users/profile_image/default.png')->comment('プロフ画像');
             $table->string('user_stamp_image')->default('users/stamp_image/default_user_stamp.png')->comment('個人印鑑画像');

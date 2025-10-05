@@ -68,7 +68,7 @@ class T_ClientSeeder extends Seeder
                 'client_num' => $clientData['client_num'],
                 'client_name' => $clientData['client_name'],
                 'client_kana_name' => $clientData['client_kana_name'],
-                'affiliation2_id' => 1,
+                'department_id' => 5,
                 'user_id' => 2,
                 'installation_type_id' => 1,
                 'client_type_id' => 1,

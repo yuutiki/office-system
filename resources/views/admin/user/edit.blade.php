@@ -4,13 +4,13 @@
             <h2 class="text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('editUser', $user) }}
             </h2>
-            <div class="ml-auto flex justify-end items-center space-x-2">
+            <div class="ml-auto flex space-x-2">
                 <form method="post" action="{{route('users.update', $user)}}" enctype="multipart/form-data" id="updateForm">
                     @csrf
                     @method('PUT')
-                    <x-button-save form-id="updateForm" id="saveButton" onkeydown="stopTab(event)">
+                    <x-buttons.save-button form-id="updateForm" id="saveButton" onkeydown="stopTab(event)">
                         {{ __('save') }}
-                    </x-button-save>
+                    </x-buttons.save-button>
                 </form>
 
                 <button id="dropdownActionButton" data-dropdown-toggle="dropdownActions" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-600" type="button">
@@ -188,7 +188,7 @@
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
 
-                <div class="w-full flex flex-col">
+                {{-- <div class="w-full flex flex-col">
                     <label for="affiliation3_id" class="text-sm dark:text-gray-100 leading-none mt-2">所属3</label>
                     <select form="updateForm" name="affiliation3_id" class="input-secondary" id="affiliation3_id" value="{{old('affiliation3_id', $user->affiliation3_id)}}">
                         @foreach($affiliation3s as $affiliation3)
@@ -198,7 +198,7 @@
                 </div>
                 @error('affiliation3_id')
                     <div class="text-red-500">{{$message}}</div>
-                @enderror
+                @enderror --}}
             </div>
 
     <div class="mb-4">
@@ -734,4 +734,7 @@
     </script>
 
     <script src="{{ asset('assets/js/stopTab.js') }}"></script>
+@push('scripts')
+    @vite(['resources/js/pages/users/edit.js'])
+@endpush
 </x-app-layout>

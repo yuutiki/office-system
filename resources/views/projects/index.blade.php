@@ -264,40 +264,6 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="relative w-full mt-2 md:mt-0">
-                                        <select name="product_category_id" id="product_category_id" class="block w-full p-2 pl-4 rounded text-sm text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-600 focus:border-blue-500 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-400 transition ease-in-out duration-150" tabindex="1">
-                                            <option value="">所属3</option>
-                                            @foreach ($affiliation3s as $affiliation3)
-                                            <option value="{{ $affiliation3->id }}" @if (isset($affiliation3Id) && $affiliation3Id == $affiliation3->id) selected @endif>
-                                                {{ $affiliation3->affiliation3_name }}
-                                            </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="relative w-full mt-2 md:mt-0">
-                                        <select name="product_category_id" id="product_category_id" class="block w-full p-2 pl-4 rounded text-sm text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-600 focus:border-blue-500 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-400 transition ease-in-out duration-150" tabindex="1">
-                                            <option value="">所属4</option>
-                                            <option value="">マネジメント課</option>
-                                            <option value="">テクニカルソリューション課</option>
-                                            {{-- @foreach ($productCategories as $productCategory)
-                                            <option value="{{ $productCategory->id }}" @if (isset($productCategoryId) && $productCategoryId == $productCategory->id) selected @endif>
-                                                {{ $productCategory->category_name }}
-                                            </option>
-                                            @endforeach --}}
-                                        </select>
-                                    </div>
-                                    <div class="relative w-full mt-2 md:mt-0">
-                                        <select name="product_category_id" id="product_category_id" class="block w-full p-2 pl-4 rounded text-sm text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-600 focus:border-blue-500 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-400 transition ease-in-out duration-150" tabindex="1">
-                                            <option value="">所属5</option>
-                                            <option value="">◯◯係</option>
-                                            <option value="">△△係</option>
-                                            {{-- @foreach ($productCategories as $productCategory)
-                                            <option value="{{ $productCategory->id }}" @if (isset($productCategoryId) && $productCategoryId == $productCategory->id) selected @endif>
-                                                {{ $productCategory->category_name }}
-                                            </option>
-                                            @endforeach --}}
-                                        </select>
-                                    </div>
                                 </div>
                                     
                                 <!-- Modal footer -->
@@ -373,7 +339,7 @@
             </h2>
         </div>
 
-    <div class="md:w-auto md:ml-14 md:mr-2 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700  dark:text-gray-900 bg-gray-300">
+    <div class="md:w-auto md:ml-14 md:mr-2 mb-2 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700  dark:text-gray-900 bg-gray-300">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-sm text-gray-700 dark:bg-gray-700 dark:text-gray-200">
                 <tr>

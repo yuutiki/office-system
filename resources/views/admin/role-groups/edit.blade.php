@@ -171,12 +171,6 @@
                                 <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 text-center">
                                     在職状態
                                 </th>
-                                {{-- <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 text-center">
-                                    所属1
-                                </th>
-                                <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 text-center">
-                                    所属2
-                                </th> --}}
                                 <th scope="col" class="px-2 py-2 whitespace-nowrap border-x border-gray-600 text-center">
                                     所属部門
                                 </th>
@@ -201,10 +195,9 @@
                                         </span>
                                     @endif
                                 </td>
-                                {{-- <td class="px-2 py-2 text-center border border-gray-600">{{ $user->affiliation1->affiliation1_name }}</td> --}}
-                                {{-- <td class="px-2 py-2 text-center border border-gray-600">{{ $user->affiliation2->affiliation2_name }}</td> --}}
-                                {{-- <td class="px-2 py-2 text-center border border-gray-600">{{ $user->affiliation3->affiliation3_name }}</td> --}}
-                                <td class="px-2 py-2 text-center border border-gray-600">{{ $user->department->path }}</td>
+                                <td class="px-2 py-2 text-center border border-gray-600">
+                                    {{ $user->department->path }}
+                                </td>
                                 <td class="text-center border border-gray-600">
                                     <form method="post" action="{{ route('group.delete_user') }}">
                                         @csrf
@@ -300,7 +293,7 @@
                     </div>
 
                     <div>
-                        <label for="affiliation1_id" class="block font-semibold text-sm dark:text-white text-gray-900 leading-none md:mt-1">所属1</label>
+                        <label for="affiliation1_id" class="block font-semibold text-sm dark:text-white text-gray-900 leading-none md:mt-1">所属部門</label>
                         <select id="affiliation1_id" name="affiliation1_id" class="input-primary">
                             <option value="">未選択</option>
                             @foreach($affiliation1s as $affiliation1)
@@ -308,7 +301,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div>
+                    {{-- <div>
                         <label for="affiliation2_id" class="block font-semibold text-sm dark:text-white text-gray-900 leading-none md:mt-1">所属2</label>
                         <select id="affiliation2_id" name="affiliation2_id" class="input-primary">
                             <option value="">未選択</option>
@@ -316,16 +309,7 @@
                             <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == old('affiliation2_id'))>{{ $affiliation2->affiliation2_name }}</option>
                             @endforeach
                         </select>
-                    </div>
-                    <div>
-                        <label for="affiliation3_id" class="block font-semibold text-sm dark:text-white text-gray-900 leading-none md:mt-1">所属3</label>
-                        <select id="affiliation3_id" name="affiliation3_id" class="input-primary">
-                            <option value="">未選択</option>
-                            @foreach($affiliation3s as $affiliation3)
-                            <option value="{{ $affiliation3->id }}" @selected($affiliation3->id == old('affiliation3_id'))>{{ $affiliation3->affiliation3_name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    </div> --}}
 
                     <!-- 他の検索条件を追加する場合はここに追加 -->
                 </div>
@@ -340,18 +324,17 @@
                 <div class="max-h-80 overflow-x-auto mt-4 rounded border dark:border-gray-600">
                     <table class="w-full text-white text-left text-sm">
                         <thead class="sticky top-0 bg-white dark:bg-gray-600 border-l dark:border-gray-600">
-                            <tr class="whitespace-nowrap">
+                            <tr class="whitespace-nowrap text-gray-900">
                                 <th class="py-3 pl-5">
                                     <label class="flex items-center cursor-pointer text-gray-900 dark:text-white">
                                         <input type="checkbox" onclick="checkAllCheckboxes(this)" class="header-checkbox h-5 w-5 text-blue-600 mr-2 ml-3.5 rounded cursor-pointer">
                                         <span>全て選択</span>
                                     </label>
                                 </th>
-                                <th class="py-3 whitespace-nowrap">社員番号</th>
-                                <th class="py-3 whitespace-nowrap">ユーザ名</th>
-                                <th class="py-3 whitespace-nowrap">所属1</th>
-                                <th class="py-3 whitespace-nowrap">所属2</th>
-                                <th class="py-3 whitespace-nowrap">所属3</th>
+                                <th class="py-3">社員番号</th>
+                                <th class="py-3">ユーザ名</th>
+                                <th class="py-3">所属1</th>
+                                {{-- <th class="py-3">所属2</th> --}}
                             </tr>
                         </thead>
                         <tbody id="searchResultsContainer" class="overflow-y-auto whitespace-nowrap">
@@ -406,18 +389,16 @@
     // ユーザーを検索する関数
     function searchUsers() {
         var userName = document.getElementById('user_name').value; // 必要なクエリを設定する
-        var affiliation1Id = document.getElementById('affiliation1_id').value; // 必要に応じて追加
-        var affiliation2Id = document.getElementById('affiliation2_id').value; // 必要に応じて追加
-        var affiliation3Id = document.getElementById('affiliation3_id').value; // 必要に応じて追加
+        // var affiliation1Id = document.getElementById('affiliation1_id').value; // 必要に応じて追加
+        // var affiliation2Id = document.getElementById('affiliation2_id').value; // 必要に応じて追加
         
         $.ajax({
             url: '/search-users', // ユーザを検索するエンドポイント
             method: 'GET',
             data: {
                 user_name: userName,
-                affiliation1_id: affiliation1Id,
-                affiliation2_id: affiliation2Id,
-                affiliation3_id: affiliation3Id
+                // affiliation1_id: affiliation1Id,
+                // affiliation2_id: affiliation2Id,
             },
             success: function (data) {
                 var tbody = $('#userSearchModal tbody');
@@ -433,7 +414,7 @@
                 }
 
                 data.forEach(function (user) {
-                    var row = $('<tr>').addClass('dark:border-gray-600 hover:bg-gray-600 dark:text-white border');
+                    var row = $('<tr>').addClass('dark:border-gray-600 dark:hover:bg-gray-600 dark:text-white hover:bg-gray-100 text-gray-900 border');
                         row.append(
                         $('<td>').append(
                             $('<input>').attr('type', 'checkbox').attr('name', 'user_ids[]').val(user.id).addClass('form-checkbox h-5 w-5 text-blue-600 ml-8 rounded cursor-pointer')
@@ -441,9 +422,7 @@
                     );
                     row.append($('<td>').text(user.user_num).addClass('py-2 ml-2'));
                     row.append($('<td>').text(user.user_name).addClass('py-2 ml-2'));
-                    row.append($('<td>').text(user.affiliation1.affiliation1_name).addClass('py-2 ml-2'));
-                    row.append($('<td>').text(user.affiliation2.affiliation2_name).addClass('py-2 ml-2'));
-                    row.append($('<td>').text(user.affiliation3.affiliation3_name).addClass('py-2 ml-2'));
+                    row.append($('<td>').text(user.department.path).addClass('py-2 ml-2'));
                     tbody.append(row);
                 });
             },

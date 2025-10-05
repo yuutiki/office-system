@@ -7,9 +7,9 @@
             <div class="ml-auto flex items-center space-x-2">
                 <form method="post" action="{{route('users.store')}}" enctype="multipart/form-data" id="createForm">
                     @csrf
-                    <x-button-save form-id="createForm" id="saveButton" onkeydown="stopTab(event)">
+                    <x-buttons.save-button form-id="createForm" id="saveButton" onkeydown="stopTab(event)">
                             {{ __('save') }}
-                    </x-button-save>
+                    </x-buttons.save-button>
                 </form>
             </div>
         </div>
@@ -160,40 +160,6 @@
                 @error('affiliation2_id')
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
-
-                <div class="w-full flex flex-col">
-                    <label for="affiliation3_id" class="text-sm dark:text-gray-100 leading-none mt-2">所属3</label>
-                    <select form="createForm" name="affiliation3_id" class="input-secondary" id="affiliation3_id" value="{{old('affiliation3_id')}}">
-                        @foreach($affiliation3s as $affiliation3)
-                        <option value="{{ $affiliation3->id }}">{{ $affiliation3->affiliation3_name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                @error('affiliation3_id')
-                    <div class="text-red-500">{{$message}}</div>
-                @enderror
-                {{-- <div class="w-full flex flex-col">
-                    <label for="affiliation4_id" class="text-sm dark:text-gray-100 leading-none mt-2">所属4</label>
-                    <select form="createForm" name="affiliation4_id" class="input-secondary" id="affiliation4_id" value="{{old('affiliation4_id')}}">
-                        @foreach($affiliation3s as $affiliation3)
-                        <option value="{{ $affiliation3->id }}">{{ $affiliation3->affiliation3_name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                @error('affiliation4_id')
-                    <div class="text-red-500">{{$message}}</div>
-                @enderror
-                <div class="w-full flex flex-col">
-                    <label for="affiliation5_id" class="text-sm dark:text-gray-100 leading-none mt-2">所属5</label>
-                    <select form="createForm" name="affiliation5_id" class="input-secondary" id="affiliation5_id" value="{{old('affiliation5_id')}}">
-                        @foreach($affiliation3s as $affiliation3)
-                        <option value="{{ $affiliation3->id }}">{{ $affiliation3->affiliation3_name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                @error('affiliation5_id')
-                    <div class="text-red-500">{{$message}}</div>
-                @enderror --}}
             </div>
 
     <div class="mb-4">
@@ -402,5 +368,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js" integrity="sha512-6lplKUSl86rUVprDIjiW8DuOniNX8UDoRATqZSds/7t6zCQZfaCe3e5zcGaQwxa8Kpn5RTM9Fvl3X2lLV4grPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-
+@push('scripts')
+    @vite(['resources/js/pages/users/create.js'])
+@endpush
 </x-app-layout>

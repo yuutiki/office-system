@@ -77,7 +77,7 @@ class RoleGroupController extends Controller
             $query->where('role_groups.id', $roleGroup->id);
         })
         ->where('id', '!=', 1) // システム管理者を除外
-        ->with(['affiliation1', 'affiliation2', 'affiliation3'])
+        ->with(['department'])
         ->paginate(50);
     
         // $roleGroup->load(['functionMenus.permission']);
@@ -85,8 +85,6 @@ class RoleGroupController extends Controller
 
         // ユーザ検索条件を渡す
         $affiliation1s = Affiliation1::all();
-        $affiliation2s = Affiliation2::all();
-        $affiliation3s = Affiliation3::all();
 
 
         // RoleGroupに関連付けられたFunctionMenuを取得
@@ -111,7 +109,7 @@ class RoleGroupController extends Controller
         $activeTab = $request->query('tab', 'tab1'); // クエリパラメータからタブを取得
 
 
-        return view('admin.role-groups.edit', compact('roleGroup', 'users', 'affiliation1s', 'affiliation2s', 'affiliation3s','functionMenus','permissions','activeTab',));
+        return view('admin.role-groups.edit', compact('roleGroup', 'users', 'affiliation1s', 'functionMenus','permissions','activeTab',));
     }
 
     /**

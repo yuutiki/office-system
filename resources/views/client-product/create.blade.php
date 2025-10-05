@@ -1,11 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="text-xl text-gray-900 dark:text-white">
+        <div class="flex w-full">
+            <h2 class="flex text-gray-900 dark:text-white">
                 {{ Breadcrumbs::render('createClientProduct') }}
             </h2>
-            <div class="flex justify-end items-center space-x-2">
-                <x-message :message="session('message')"/>
+            <div class="ml-auto flex space-x-2">
                 <form method="post" action="{{ route('client-products.store') }}" enctype="multipart/form-data" id="createForm" class="flex">
                     @csrf
                     @can('storeUpdate_client_products')

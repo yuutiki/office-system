@@ -1873,4 +1873,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <script type="text/javascript" src="{{ asset('/assets/js/addresssearchbutton.js') }}"></script>
 <script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
 
+
+@push('scripts')
+    @vite(['resources/js/pages/clients/edit.js'])
+@endpush
+
 </x-app-layout>

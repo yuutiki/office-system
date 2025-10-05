@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('estimate_address_url')->nullable(true)->comment('見積会社URL');
             
             // 所属階層に対応するカラムを追加（選択肢絞り込み用）
+            $table->foreignId('project_department_id')->nullable(true)->comment('PJ所属階層1');
             $table->foreignId('project_affiliation1')->nullable(true)->comment('PJ所属階層1');
             $table->foreignId('project_affiliation2')->nullable(true)->comment('PJ所属階層2');
             $table->foreignId('project_affiliation3')->nullable(true)->comment('PJ所属階層3');

@@ -1,8 +1,3 @@
-// shortcut.add("a",function() {
-//     alert("「a」を検知しました！");
-// }); 
-
-
 // ショートカットの定義
 shortcut.add("Ctrl+S", function () {
     // 保存ボタンをクリック
@@ -22,17 +17,6 @@ shortcut.add("Ctrl+F", function () {
 shortcut.add("Ctrl+R", function () {
     // 検索リセットボタンをクリック
     document.getElementById('clear').click();
-});
-
-// カナ変換用の関数
-$(function() {
-    $.fn.autoKana('input[name="corporation_name"]', 'input[name="corporation_kana_name"]', {katakana: true});
-    $.fn.autoKana('input[name="client_name"]', 'input[name="client_kana_name"]', {katakana: true});
-    $.fn.autoKana('input[name="vendor_name"]', 'input[name="vendor_kana_name"]', {katakana: true});
-    $.fn.autoKana('input[name="user_name"]', 'input[name="user_kana_name"]', {katakana: true});
-    $.fn.autoKana('input[name="first_name"]', 'input[name="first_name_kana"]', {katakana: true});
-    $.fn.autoKana('input[name="last_name"]', 'input[name="last_name_kana"]', {katakana: true});
-    $.fn.autoKana('input[name^="name_"]', 'input[name^="kana_name_"]', {katakana: true});
 });
 
 
@@ -130,14 +114,6 @@ function resetForm(formSelector) {
         userDisplay.textContent = defaultText;
     }
 }
-
-
-
-
-
-// function goBack() {
-//     window.history.back();
-// }
 
 
 // 数値入力時に桁区切りをする場合、input="text"タグで onblur="formatNumberInput(this);" とすることで下記の関数を利用できる。

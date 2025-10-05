@@ -8,9 +8,9 @@
 
 <div id="{{ $modalId }}" tabindex="-1" class="fixed inset-0 flex items-center justify-center hidden animate-slide-in-top px-2 z-[99999]">
     <div class="max-h-full w-full max-w-7xl overflow-y-auto">
-        <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
+        <div class="relative p-2 bg-white rounded shadow dark:bg-gray-700">
             <!-- モーダルヘッダー -->
-            <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
+            <div class="flex items-center justify-between p-2 border-b rounded-t dark:border-gray-600">
                 <h3 class="text-xl font-medium text-gray-900 dark:text-white">
                     {{ $title }}
                 </h3>
@@ -31,20 +31,20 @@
                 <div class="grid gap-x-2 mb-4 grid-cols-1 sm:grid-cols-3">
                     <!-- 顧客名称 -->
                     <div class="w-full flex flex-col pr-2">
-                        <label for="{{ $modalId }}_client_name" class="dark:text-gray-100 text-gray-900 leading-none mt-4">顧客名称</label>
+                        <label for="{{ $modalId }}_client_name" class="dark:text-gray-100 text-gray-900 leading-none mt-4 text-sm">顧客名称</label>
                         <input type="text" id="{{ $modalId }}_client_name" class="input-secondary">
                     </div>
                     
                     <!-- 顧客No. -->
                     <div class="w-full flex flex-col pr-2">
-                        <label for="{{ $modalId }}_client_number" class="dark:text-gray-100 text-gray-900 leading-none mt-4">顧客No.</label>
+                        <label for="{{ $modalId }}_client_number" class="dark:text-gray-100 text-gray-900 leading-none mt-4 text-sm">顧客No.</label>
                         <input type="text" id="{{ $modalId }}_client_number" class="input-secondary">
                     </div>
                     
                     <!-- 営業担当（このエリアは検索結果更新の影響を受けない） -->
                     <div class="w-full flex flex-col pr-2">
                         <input type="hidden" id="{{ $modalId }}_user_id" name="selected_user_id" value="">
-                        <label for="clientNumber" class="dark:text-gray-100 text-gray-900 leading-none mt-4">営業担当</label>
+                        <label for="clientNumber" class="dark:text-gray-100 text-gray-900 leading-none mt-4 text-sm">営業担当</label>
                         <div id="{{ $modalId }}_user_dropdown" class="relative w-full mt-1">
                             <button 
                                 type="button" 

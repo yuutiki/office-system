@@ -211,7 +211,7 @@
                                             @foreach ($vendorTypes as $vendorType)
                                             <li class="flex items-center mr-4 break-words whitespace-pre-wrap w-24">
                                                 <input id="vendor_type_{{ $vendorType->id }}" type="checkbox" name="client_types[]" @if(in_array($vendorType->id, $filters['vendor_types'])) checked @endif value="{{ $vendorType->id }}" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                <label for="vendor_type_{{ $vendorType->id }}" class="ml-2 text-sm whitespace-nowrap text-gray-900 dark:text-gray-100">{{ $vendorType->vendor_type_name }}</label>
+                                                <label for="vendor_type_{{ $vendorType->id }}" class="ml-2 text-sm whitespace-nowrap text-gray-900 dark:text-gray-100">{{ $vendorType->name }}</label>
                                             </li>      
                                             @endforeach
                                         </ul>

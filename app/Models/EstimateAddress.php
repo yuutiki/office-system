@@ -24,6 +24,7 @@ class EstimateAddress extends Model
     }
 
     protected $fillable = [
+
         'estimate_address_code',
         'estimate_address_name',
         'estimate_address_1',
@@ -36,8 +37,8 @@ class EstimateAddress extends Model
         'project_affiliation1',
         'project_affiliation2',
         'project_affiliation3',
-        'project_affiliation4',
-        'project_affiliation5',
+        'project_department_id',
+        'is_active',
         'created_by',
         'updated_by',
     ];
@@ -49,5 +50,9 @@ class EstimateAddress extends Model
     public function updatedBy()
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');
+    }
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'project_department_id', 'id');
     }
 }

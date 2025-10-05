@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\KeepfileStoreRequest;
-use App\Http\Requests\KeepfileUpdateRequest;
-use App\Models\Client;
+use App\Http\Requests\Keepfile\KeepfileStoreRequest;
+use App\Http\Requests\Keepfile\KeepfileUpdateRequest;
 use App\Models\Keepfile;
 use App\Models\Project;
 use App\Models\User;
@@ -117,11 +116,13 @@ class KeepfileController extends Controller
         $keepfile->keep_at = $request->keep_at;
         $keepfile->return_at = $request->return_at;
         $keepfile->keepfile_memo = $request->keepfile_memo;
+        $keepfile->keep_method = $request->keep_method;
+        $keepfile->keep_data = $request->keep_data;
         $keepfile->is_finished = $request->is_finished;
         $keepfile->pdf_file = $pdfFilePath;
         $keepfile->user_id = $request->depositor; // 取得者
         $keepfile->save();
-        return redirect()->route('keepfiles.index')->with('success','正常に登録しました');
+        return redirect()->route('keepfiles.edit', $keepfile->id)->with('success','正常に登録しました');
     }
 
     public function show($id)
@@ -183,6 +184,8 @@ class KeepfileController extends Controller
         $keepfile->return_at = $request->return_at;
         $keepfile->keepfile_memo = $request->keepfile_memo;
         $keepfile->is_finished = $request->is_finished;
+        $keepfile->keep_method = $request->keep_method;
+        $keepfile->keep_data = $request->keep_data;
         $keepfile->user_id = $request->depositor;
         $keepfile->save();
         return redirect()->route('keepfiles.edit',$id)->with('success','正常に更新しました');

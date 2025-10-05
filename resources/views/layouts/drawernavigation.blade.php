@@ -17,7 +17,7 @@
 
         <h5 class="mr-3 text-base font-semibold text-gray-100 dark:text-gray-400 hidden md:block">
             @if(Auth::check())
-            {{ Auth::user()->affiliation1->affiliation1_name }}
+            {{ Auth::user()->department->root_name }}
             @endif
         </h5>
 

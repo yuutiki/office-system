@@ -65,7 +65,6 @@ class ReportController extends Controller
         $users = User::where('employee_status_id', 1)->get();
         $affiliation1s = Affiliation1::all();
         $affiliation2s = Affiliation2::all();
-        $affiliation3s = Affiliation3::all();
         $selectedUserId = $request->selected_user_id;
 
 
@@ -73,7 +72,7 @@ class ReportController extends Controller
         $clientName = '';
         $salesUser = '';
 
-        return view('reports.create',compact('users', 'reportTypes', 'contactTypes', 'clientNum', 'clientName', 'salesUser', 'affiliation1s', 'affiliation2s', 'affiliation3s', 'selectedUserId'));
+        return view('reports.create',compact('users', 'reportTypes', 'contactTypes', 'clientNum', 'clientName', 'salesUser', 'affiliation1s', 'affiliation2s', 'selectedUserId'));
     }
 
     public function createFromClient(Client $client)
@@ -83,13 +82,12 @@ class ReportController extends Controller
         $users = User::where('employee_status_id', 1)->get();
         $affiliation1s = Affiliation1::all();
         $affiliation2s = Affiliation2::all();
-        $affiliation3s = Affiliation3::all();
 
         $clientNum = $client->client_num;
         $clientName = $client->client_name;
         $salesUser = $client->user->user_name;
 
-        return view('reports.create',compact('users', 'reportTypes', 'contactTypes', 'clientNum', 'clientName', 'salesUser', 'affiliation1s', 'affiliation2s', 'affiliation3s'));
+        return view('reports.create',compact('users', 'reportTypes', 'contactTypes', 'clientNum', 'clientName', 'salesUser', 'affiliation1s', 'affiliation2s'));
     }
 
 
@@ -257,10 +255,9 @@ class ReportController extends Controller
         $users = User::all();
         $affiliation1s = Affiliation1::all();
         $affiliation2s = Affiliation2::all();
-        $affiliation3s = Affiliation3::all();
         $recipients = $report->recipients; // リレーションシップを使用
 
-        return view('reports.edit',compact('users', 'report', 'reportTypes', 'contactTypes', 'recipients', 'affiliation1s', 'affiliation2s', 'affiliation3s'));
+        return view('reports.edit',compact('users', 'report', 'reportTypes', 'contactTypes', 'recipients', 'affiliation1s', 'affiliation2s',));
     }
 
     public function update(Request $request, string $id)

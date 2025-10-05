@@ -118,7 +118,7 @@
                     <div style="margin-left: 20px; font-size: 12px;">{{ $estimate->estimateAddress->estimate_address_url }}</div>
                 @endif
 
-                @if ($estimate->is_department_hidden == 0)
+                @if ($estimate->is_affiliation2_hidden == 0)
                     <div style="margin-left: 30px; font-size: 12px;">担当部署 : {{ $estimate->project->accountAffiliation2->affiliation2_name }}</div>                    
                 @endif
                 <div style="margin-left: 30px; font-size: 12px;">担当氏名 : {{ $estimate->project->accountUser->user_name }}</div>

@@ -14,11 +14,16 @@ return new class extends Migration
             $table->string('purpose',50)->comment('用途');
             $table->date('keep_at')->comment('預託日');
             $table->date('return_at')->comment('消去予定日');
-            $table->text('keepfile_memo',500)->nullable()->comment('備考');
             $table->boolean('is_finished')->nullable()->default(false)->comment('完了フラグ');
             $table->foreignId('user_id')->nullable()->comment('担当者'); //本来は担当者だろうが
             $table->text('pdf_file')->nullable(true)->comment('PDFファイル');
             $table->boolean('has_personal_information')->default(1)->comment('個人情報含むフラグ');
+
+            $table->string('keep_method')->nullable(true)->comment('預託方法');
+
+            $table->text('keep_data',2000)->nullable(true)->comment('預託データ内容');
+            $table->text('keepfile_memo',2000)->nullable(true)->comment('備考');
+
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->datetimes();

@@ -12,18 +12,16 @@ class SupportType extends Model
     use HasFactory;
     use Sortable;
 
-    protected $sortable = [
-        'type_code',
-        'type_name',
-        'type_name_en',
-    ];
-
     protected $fillable = [
-        'type_code',
-        'type_name',
-        'type_name_en',
+        'code',
+        'name',
         'created_by',
         'updated_by'
+    ];
+
+    protected $sortable = [
+        'code',
+        'name',
     ];
 
     //GlobalObserverに定義されている作成者と更新者を登録するメソッド

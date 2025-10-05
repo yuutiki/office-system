@@ -17,9 +17,10 @@ class SupportTime extends Model
     protected $fillable = [
         'code',
         'name',
+        'is_active',
+        'is_searchable',
         'created_by',
         'updated_by',
-        'is_active',
     ];
 
     /**
@@ -29,6 +30,9 @@ class SupportTime extends Model
         'code',
         'name',
         'is_active', 
+        'is_searchable',
+        'created_by',
+        'updated_by',
         'updated_at'
     ];
 

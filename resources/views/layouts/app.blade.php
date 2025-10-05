@@ -266,7 +266,7 @@
         {{-- 自作JS --}}
         <script src="{{ asset('/assets/js/allinputenterdisable.js') }}"></script>
         <script src="{{ asset('/assets/js/jquery.zip2addr.js') }}"></script>
-        <script src="{{ asset('/assets/js/jquery.autoKana.js') }}"></script>
+        {{-- <script src="{{ asset('/assets/js/jquery.autoKana.js') }}"></script> --}}
         <script src="{{ asset('/assets/js/shortcut.js') }}"></script>
         <script src="{{ asset('/assets/js/main.js') }}"></script>
 

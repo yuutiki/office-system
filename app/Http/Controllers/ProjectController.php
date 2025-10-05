@@ -11,6 +11,7 @@ use App\Models\Client;
 use App\Models\Affiliation2;
 use App\Models\DistributionType;
 use App\Models\Affiliation3;
+use App\Models\Department;
 use App\Models\Estimate;
 use App\Models\Prefecture;
 use App\Models\Project;
@@ -109,16 +110,14 @@ class ProjectController extends Controller
         $accountingPeriods = AccountingPeriod::orderBy('period_start_at', 'desc')->get();
         $affiliation1s = Affiliation1::all();
         $affiliation2s = Affiliation2::all();
-        $affiliation3s = Affiliation3::all();
 
-        return view('projects.index',compact( 'projectNum', 'projectName', 'totalRevenue', 'totalAllRevenue', 'accountingPeriods', 'filters','selectedAccountingPeriod','salesStages','distributionTypes','count','projects','users','projectTypes','accountingTypes','affiliation1s', 'affiliation2s', 'affiliation3s', 'clientName'));
+        return view('projects.index',compact( 'projectNum', 'projectName', 'totalRevenue', 'totalAllRevenue', 'accountingPeriods', 'filters','selectedAccountingPeriod','salesStages','distributionTypes','count','projects','users','projectTypes','accountingTypes','affiliation1s', 'affiliation2s', 'clientName'));
     }
 
     public function create()
     {
         $affiliation1s = Affiliation1::all();
         $affiliation2s = Affiliation2::all();
-        $affiliation3s = Affiliation3::all();
         $users = User::all();
         $salesStages = SalesStage::all();
         $distributionTypes = DistributionType::all();
@@ -126,8 +125,10 @@ class ProjectController extends Controller
         $projectTypes = ProjectType::all();
         $accountingTypes = AccountingType::all();
         $prefectures = Prefecture::all(); //都道府県
+        $departments = Department::getTreeStructure();
 
-        return view('projects.create',compact('accountingPeriods','salesStages','distributionTypes','affiliation2s','affiliation1s','affiliation3s','projectTypes','accountingTypes','users','prefectures'));
+
+        return view('projects.create',compact('departments', 'accountingPeriods','salesStages','distributionTypes','affiliation2s','affiliation1s', 'projectTypes','accountingTypes','users','prefectures'));
     }
 
     public function store(ProjectStoreRequest $request)
@@ -157,9 +158,9 @@ class ProjectController extends Controller
         $project->proposed_accounting_date =  Carbon::parse($request->proposed_accounting_date . '-01');
         $project->proposed_payment_date =  Carbon::parse($request->proposed_payment_date . '-01');
         $project->project_memo = $request->project_memo;
-        $project->account_affiliation1_id = $request->account_affiliation1_id;
-        $project->account_affiliation2_id = $request->account_affiliation2_id;
-        $project->account_affiliation3_id = $request->account_affiliation3_id;
+        // $project->account_affiliation1_id = $request->account_affiliation1_id;
+        // $project->account_affiliation2_id = $request->account_affiliation2_id;
+        // $project->account_affiliation3_id = $request->account_affiliation3_id;
         $project->account_user_id = $request->account_user_id;
         $project->save();
 
@@ -178,7 +179,6 @@ class ProjectController extends Controller
 
         $companies = Affiliation1::all();
         $affiliation2s = Affiliation2::all();
-        $affiliation3s = Affiliation3::all();
         $users = User::all();
         $salesStages = SalesStage::all();
         $distributionTypes = DistributionType::all();
@@ -186,6 +186,7 @@ class ProjectController extends Controller
         $projectTypes = ProjectType::all();
         $accountingTypes = AccountingType::all();
         $prefectures = Prefecture::all(); //都道府県
+        $departments = Department::getTreeStructure();
 
         $estimates = Estimate::where('project_id', $id)->get();
 
@@ -222,7 +223,7 @@ class ProjectController extends Controller
                 'formatRevenueDate' => $targetDate->format('Y-m'),
             ];
         }
-        return view('projects.edit',compact('project','projectRevenues','accountingPeriods','salesStages','distributionTypes','affiliation2s','companies','affiliation3s','projectTypes','accountingTypes','users','revenuesWithPeriod','totalRevenue','prefectures', 'estimates'));
+        return view('projects.edit',compact('departments', 'project','projectRevenues','accountingPeriods','salesStages','distributionTypes','affiliation2s','companies', 'projectTypes','accountingTypes','users','revenuesWithPeriod','totalRevenue','prefectures', 'estimates'));
     }
 
     public function update(ProjectUpdateRequest $request, Project $project)
@@ -249,9 +250,10 @@ class ProjectController extends Controller
         $project->proposed_payment_date = Carbon::parse($request->proposed_payment_date . '-01');
         $project->project_memo = $request->project_memo;
 
-        $project->account_affiliation1_id = $request->account_affiliation1_id;
-        $project->account_affiliation2_id = $request->account_affiliation2_id;
-        $project->account_affiliation3_id = $request->account_affiliation3_id;
+        $project->account_department_id = $request->account_department_id;
+        // $project->account_affiliation1_id = $request->account_affiliation1_id;
+        // $project->account_affiliation2_id = $request->account_affiliation2_id;
+        // $project->account_affiliation3_id = $request->account_affiliation3_id;
         $project->account_user_id = $request->account_user_id;
         $project->save();
 

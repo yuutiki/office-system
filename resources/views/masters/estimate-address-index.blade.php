@@ -1,11 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="text-lg text-gray-900 dark:text-white flex">
+        <div class="flex w-full">
+            <h2 class="text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('estimateAddressMaster') }}
             </h2>
 
-            <div class="flex flex-shrink-0 w-auto md:flex-row space-y-0 space-x-3 items-center">
+            <div class="ml-auto flex space-x-2">
                 <x-buttons.add-button-drawer onclick="openDrawer('create')">
                     {{ __('create') }}
                 </x-buttons.add-button-drawer>
@@ -382,6 +382,23 @@
 
                                     <!-- 所属階層 -->
                                     <div class="w-full">
+                                        <label for="project_department-{{ $estimateAddress->ulid }}" class="block dark:text-gray-100 text-gray-900">
+                                            プロジェクト部門
+                                        </label>
+                                        <select id="project_department-{{ $estimateAddress->ulid }}" name="project_department_id" class="input-secondary">
+                                            <option value="">未選択</option>
+                                            @foreach($departments as $department)
+                                                <option value="{{ $department->id }}" @selected( $department->id == $estimateAddress->project_department_id)>
+                                                    {{ $department->path }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('project_department_id')
+                                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="w-full">
                                         <label for="project_affiliation1-{{ $estimateAddress->ulid }}" class="block dark:text-gray-100 text-gray-900">
                                             所属階層1
                                         </label>
@@ -643,6 +660,22 @@
                     </div>
 
                     <!-- 所属階層 -->
+                    <div class="w-full">
+                        <label for="project_department_id" class="block dark:text-gray-100 text-gray-900">
+                            プロジェクト部門
+                        </label>
+                        <select id="project_department_id" name="project_department_id" class="input-secondary">
+                            <option value="">未選択</option>
+                            @foreach($departments as $department)
+                                <option value="{{ $department->id }}" @selected( old('project_department_id') === (int)$department->id )>
+                                    {{ $department->path }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('project_department_id')
+                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
                     <div class="w-full">
                         <label for="project_affiliation1" class="block dark:text-gray-100 text-gray-900">
                             所属階層1

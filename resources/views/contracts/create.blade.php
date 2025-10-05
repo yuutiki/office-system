@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between w-5/6">
-            <h2 class="text-sm text-lg text-gray-900 dark:text-white flex">
+            <h2 class=" text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('createContract') }}
             </h2>
         </div>

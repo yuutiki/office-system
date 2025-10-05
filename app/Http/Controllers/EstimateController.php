@@ -28,30 +28,23 @@ class EstimateController extends Controller
     {
         $project = Project::findOrFail($projectId);
         $productSeries = ProductSeries::all();
-        $productType = ProductType::all();
+        $productTypes = ProductType::all();
         $productSplitTypes = ProductSplitType::all();
-        $estimateAddresses = EstimateAddress::where('project_affiliation1', $project->account_affiliation1_id)
-        ->where(function ($query) use ($project) {
-            $query->where('project_affiliation2', $project->account_affiliation2_id)
-                  ->orWhereNull('project_affiliation2');
-        })
-        ->where(function ($query) use ($project) {
-            $query->where('project_affiliation3', $project->account_affiliation3_id)
-                  ->orWhereNull('project_affiliation3');
-        })
+        $estimateAddresses = EstimateAddress::all();
+        // $estimateAddresses = EstimateAddress::where('project_affiliation1', $project->account_affiliation1_id)
         // ->where(function ($query) use ($project) {
-        //     $query->where('project_affiliation4', $project->account_affiliation4_id)
-        //           ->orWhereNull('project_affiliation4');
+        //     $query->where('project_affiliation2', $project->account_affiliation2_id)
+        //           ->orWhereNull('project_affiliation2');
         // })
         // ->where(function ($query) use ($project) {
-        //     $query->where('project_affiliation5', $project->account_affiliation5_id)
-        //           ->orWhereNull('project_affiliation5');
+        //     $query->where('project_affiliation3', $project->account_affiliation3_id)
+        //           ->orWhereNull('project_affiliation3');
         // })
-        ->get();
+        // ->get();
 
         $defaultEstimateMemo ="■内容等変更が生じた場合は再度御見積りが必要となります。\n■消費税率が改定される際は別途御見積り致します。";
 
-        return view('estimate.create', compact('productSeries', 'productType' ,'productSplitTypes', 'project', 'estimateAddresses', 'defaultEstimateMemo'));
+        return view('estimate.create', compact('productSeries', 'productTypes' ,'productSplitTypes', 'project', 'estimateAddresses', 'defaultEstimateMemo'));
     }
 
     public function store(Request $request, $projectId)

@@ -102,21 +102,21 @@
                             <div class="absolute inset-y-0 flex items-center pl-3">
                                 <x-icon name="ui/search" class="flex-shrink-0 w-5 h-5 text-gray-500 dark:text-gray-400 pointer-events-none" />
                             </div>
-                            <input type="search" id="corporation_num" name="corporation_num" value="@if(isset($CorporationNum)){{ $CorporationNum }}@endif" class="input-search" placeholder="法人№">
+                            <input type="search" id="corporation_num" name="corporation_num" value="@if(isset($filters['corporation_num'])){{ $filters['corporation_num'] }}@endif" class="input-search" placeholder="法人№">
                         </div>
 
                         <div class="relative w-full mt-2 md:mr-2 md:mt-0">
                             <div class="absolute inset-y-0 flex items-center pl-3">
                                 <x-icon name="ui/search" class="flex-shrink-0 w-5 h-5 text-gray-500 dark:text-gray-400 pointer-events-none" />
                             </div>
-                            <input type="search" id="corporation_name" name="corporation_name" value="@if(isset($CorporationName)){{ $CorporationName }}@endif" class="input-search" placeholder="法人名称 / カナ名称 / 法人略称">
+                            <input type="search" id="corporation_name" name="corporation_name" value="@if(isset($filters['corporation_name'])){{ $filters['corporation_name'] }}@endif" class="input-search" placeholder="法人名称 / カナ名称 / 法人略称">
                         </div>
 
                         <div class="relative w-full mt-2 md:mr-2 md:mt-0">
                             <div class="absolute inset-y-0 flex items-center pl-3">
                                 <x-icon name="ui/search" class="flex-shrink-0 w-5 h-5 text-gray-500 dark:text-gray-400 pointer-events-none" />
                             </div>
-                            <input type="search" id="invoice_num" name="invoice_num" value="@if(isset($invoiceNum)){{ $invoiceNum }}@endif" class="input-search" placeholder="インボイス番号">
+                            <input type="search" id="invoice_num" name="invoice_num" value="@if(isset($filters['invoice_num'])){{ $filters['invoice_num'] }}@endif" class="input-search" placeholder="インボイス番号">
                         </div>
 
                         <div class="flex mt-2 md:mt-0">

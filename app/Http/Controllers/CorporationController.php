@@ -20,32 +20,12 @@ use App\Models\CorporationSearchModalDisplayItem;
 use App\Models\Prefecture;
 use App\Models\UserColumnSetting;
 use App\Services\InvoiceApiService;
+use App\Services\PaginationService;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 
 class CorporationController extends Controller
 {
-    /**
-     * ページネーション設定
-     */
-    private const ALLOWED_PER_PAGE = [100, 300, 500];
-    private const DEFAULT_PER_PAGE = 100;
-
-    /**
-     * 表示件数の取得とバリデーション
-     */
-    private function getValidatedPerPage(Request $request): int
-    {
-        $perPage = (int) $request->get('per_page', self::DEFAULT_PER_PAGE);
-        
-        // バリデーション
-        if (!in_array($perPage, self::ALLOWED_PER_PAGE)) {
-            $perPage = self::DEFAULT_PER_PAGE;
-        }
-        
-        return $perPage;
-    }
-
     protected $invoiceService;
 
     public function __construct(InvoiceApiService $invoiceService)
@@ -53,28 +33,18 @@ class CorporationController extends Controller
         $this->invoiceService = $invoiceService;
     }
 
-    public function index(Request $request)//検索用にrequestを受取る
+    public function index(Request $request, PaginationService $paginationService)
     {
+        $perPage = $paginationService->getPerPage($request);
+
         $allColumns = Corporation::getAvailableColumns();
 
         // ユーザーの設定を取得
         $userSettings = UserColumnSetting::where('user_id', auth()->id())
-        ->where('page_identifier', 'corporations_index')
-        ->first();
+            ->where('page_identifier', 'corporations_index')
+            ->first();
 
         $visibleColumns = $userSettings ? $userSettings->visible_columns : array_keys($allColumns);
-
-        // $permissions = [
-        //     'can_create' => Gate::allows('storeUpdate_corporations'),
-        //     'can_edit' => Gate::allows('storeUpdate_corporations'),
-        //     'can_delete' => Gate::allows('delete_corporations'),
-        //     'can_download' => Gate::allows('download_corporations'),
-        //     'can_admin' => Gate::allows('admin_corporations'),
-        // ];
-        // １ページごとの表示件数
-        // $perPage = config('constants.perPage');
-        // 1. 表示件数の取得とバリデーション
-        $perPage = $this->getValidatedPerPage($request);
 
         // 検索条件を取得してセッションに保存
         $searchParams = $request->session()->put('search_params', $request->all());
@@ -88,14 +58,6 @@ class CorporationController extends Controller
         // 検索フォームから検索条件を取得し変数に格納
         $filters = $request->only(['corporation_num', 'corporation_name', 'invoice_num', 'trade_status_ids','tax_status_ids']);
 
-        // 同じ条件を別の変数にも格納(画面の検索条件入力欄にセットするために利用する)
-        $CorporationNum = $filters['corporation_num'] ?? null;
-        $CorporationName = $filters['corporation_name'] ?? null;
-        $invoiceNum = $filters['invoice_num'] ?? null;
-        $tradeStatusIds = $filters['trade_status_ids'] ?? [];
-        $taxStatusIds = $filters['tax_status_ids'] ?? [];
-
-
         //上記で$filters変数に格納した検索条件をModelに渡し、検索処理を行う。結果を$corporationsに詰める
         $corporations = Corporation::filter($filters)
             ->with('prefecture', 'credits')
@@ -107,6 +69,11 @@ class CorporationController extends Controller
             ])
             ->sortable()
             ->paginate($perPage);
+
+
+
+
+
 
         // 検索結果の全 corporation_id を取得しセッションに保存
         $corporationIds = $corporations->pluck('id')->toArray();
@@ -125,10 +92,8 @@ class CorporationController extends Controller
         
         session()->put('search_results', $allSearchResults);
             
-        // 検索結果の件数を取得
-        $count = $corporations->total();
 
-        return view('corporations.index', compact('searchParams', 'allColumns', 'visibleColumns', 'corporations', 'count' ,'filters', 'CorporationNum', 'CorporationName', 'invoiceNum', 'tradeStatusIds', 'taxStatusIds',));
+        return view('corporations.index', compact('searchParams', 'allColumns', 'visibleColumns', 'corporations', 'filters',));
     }
 
     public function create(Request $request)
@@ -220,45 +185,45 @@ class CorporationController extends Controller
 
     public function edit(string $id, Request $request)
     {
-    $activeTab = $request->query('tab', 'tab1'); // クエリパラメータからタブを取得
-    $prefectures = Prefecture::all();
+        $activeTab = $request->query('tab', 'tab1'); // クエリパラメータからタブを取得
+        $prefectures = Prefecture::all();
 
-    $corporation = Corporation::findOrFail($id);
-    $credits = CorporationCredit::where('corporation_id',$id)->orderBy('created_at','desc')->get();
+        $corporation = Corporation::findOrFail($id);
+        $credits = CorporationCredit::where('corporation_id',$id)->orderBy('created_at','desc')->get();
 
-    // 最新の与信情報を取得
-    $latestCredit = $corporation->credits()->orderBy('created_at', 'desc')->first();
+        // 最新の与信情報を取得
+        $latestCredit = $corporation->credits()->orderBy('created_at', 'desc')->first();
 
-    // セッションから検索結果データを取得
-    $searchResults = session('search_results', collect());
-    $searchParams = session('search_params', []);
-    $corporationIds = session('corporation_ids', []);
+        // セッションから検索結果データを取得
+        $searchResults = session('search_results', collect());
+        $searchParams = session('search_params', []);
+        $corporationIds = session('corporation_ids', []);
 
-    // 現在のIDの位置を検索
-    $currentIndex = array_search((int)$id, $corporationIds);
-    $totalCount = count($corporationIds);
+        // 現在のIDの位置を検索
+        $currentIndex = array_search((int)$id, $corporationIds);
+        $totalCount = count($corporationIds);
 
-    // 前後のIDを取得
-    $prevId = $currentIndex !== false && $currentIndex > 0 ? $corporationIds[$currentIndex - 1] : null;
-    $nextId = $currentIndex !== false && $currentIndex < count($corporationIds) - 1 ? $corporationIds[$currentIndex + 1] : null;
+        // 前後のIDを取得
+        $prevId = $currentIndex !== false && $currentIndex > 0 ? $corporationIds[$currentIndex - 1] : null;
+        $nextId = $currentIndex !== false && $currentIndex < count($corporationIds) - 1 ? $corporationIds[$currentIndex + 1] : null;
 
-    // 都道府県データを取得（検索条件表示用）
-    $prefectureNames = Prefecture::pluck('prefecture_name', 'id');
+        // 都道府県データを取得（検索条件表示用）
+        $prefectureNames = Prefecture::pluck('prefecture_name', 'id');
 
-    return view('corporations.edit', compact(
-        'corporation', 
-        'prefectures', 
-        'activeTab', 
-        'credits', 
-        'latestCredit', 
-        'prevId', 
-        'nextId',
-        'searchResults',
-        'searchParams',
-        'currentIndex',
-        'totalCount',
-        'prefectureNames'
-    ));
+        return view('corporations.edit', compact(
+            'corporation', 
+            'prefectures', 
+            'activeTab', 
+            'credits', 
+            'latestCredit', 
+            'prevId', 
+            'nextId',
+            'searchResults',
+            'searchParams',
+            'currentIndex',
+            'totalCount',
+            'prefectureNames'
+        ));
     }
 
     public function update(CorporationUpdateRequest $request, string $id)

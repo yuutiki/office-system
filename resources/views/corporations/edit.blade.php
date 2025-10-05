@@ -965,4 +965,7 @@ window.addEventListener('resize', function() {
     </div>
 </div>
 @endif
+@push('scripts')
+    @vite(['resources/js/pages/corporations/edit.js'])
+@endpush
 </x-app-layout>

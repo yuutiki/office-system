@@ -1,11 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="text-lg text-gray-900 dark:text-white flex">
+        <div class="flex w-full">
+            <h2 class=" text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('supportTimeMaster') }}
             </h2>
 
-            <div class="flex flex-shrink-0 w-auto md:flex-row space-y-0 space-x-3 items-center">
+            <div class="ml-auto flex space-x-2">
                 <x-buttons.add-button-drawer onclick="openDrawer('create')">
                     {{ __('create') }}
                 </x-buttons.add-button-drawer>
@@ -16,97 +16,67 @@
                             <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
                         </svg>
                     </button>
-                    {{-- <div id="actionsDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-600 dark:divide-gray-600">
+                    <div id="actionsDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-600 dark:divide-gray-600">
                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
                             <li>
-                                @can('admin_corporations')
-                                    <button type="button" onclick="location.href='{{ route('corporations.showUploadForm') }}'" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
-                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2M8 9l4-5 4 5m1 8h0"/>
-                                            </svg>
-                                        </div>
-                                        CSVアップロード
-                                    </button>
-                                @else
-                                    <button type="button" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
-                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                            <x-icon name="actions/lock" class="w-6 h-6 text-gray-800 dark:text-white"></x-icon>
-                                        </div>
-                                        CSVアップロード
-                                    </button>
-                                @endcan
+                                <x-buttons.csv-upload-button :route="route('support-times.showImportForm')" gate="admin_masters" />
                             </li>
                             <li>
-                                @can('download_corporations')
-                                    <button type="button" onclick="location.href='{{ route('corporations.downloadCsv', $filters ?? []) }}'" class="relative w-full items-center py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white">
-                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                            <x-icon name="actions/download" class="w-6 h-6 text-gray-800 dark:text-white"></x-icon>
-                                        </div>
-                                        <div class="">CSVダウンロード</div>
-                                    </button>
-                                @else
-                                    <button type="button" class="relative w-full py-2 hover:bg-gray-100 dark:hover:bg-gray-500 dark:hover:text-white cursor-not-allowed" disabled>
-                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                            <x-icon name="actions/lock" class="w-6 h-6 text-gray-800 dark:text-white"></x-icon>
-                                        </div>
-                                        <div>CSVダウンロード</div>
-                                    </button>
-                                @endcan
+                                <x-buttons.csv-download-button :route="route('support-times.export')" gate="download_masters" />
                             </li>
                         </ul>
-                    </div> --}}
+                    </div>
                 </div>
             </div>
         </div>
     </x-slot>
 
     <div class="relative bg-white dark:bg-gray-800 rounded-t-md md:w-auto md:ml-14 md:mr-2 m-auto shadow-md dark:text-gray-900 mt-4">
-        <div class="relative bg-white dark:bg-gray-800">
-            <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
-                <div class="w-full">
-                    <form method="GET" action="{{ route('support-time.index') }}" id="search_form" class="flex items-center">
-                        @csrf
-                        <div class="flex flex-col md:flex-row w-full">
+        <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
+            <div class="w-full">
+                <form method="GET" action="{{ route('support-time.index') }}" id="search_form">
+                    @csrf
+                    <div class="flex flex-col md:flex-row w-full">
 
-                            <div class="relative w-full">
-                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                                    </svg>
-                                </div>
-                                <input type="search" id="time-code-search" name="code" value="{{ request('code', '') }}" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="コード" >
+                        <div class="relative w-full">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <x-icon name="ui/search" class="flex-shrink-0 w-5 h-5 text-gray-500 dark:text-gray-400 pointer-events-none" />
                             </div>
+                            <input type="search" id="time-code-search" name="code" value="{{ request('code', '') }}" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="コード" >
+                        </div>
 
-                            <div class="relative w-full mt-2 md:ml-2 md:mt-0">
-                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                                    </svg>
-                                </div>
-                                <input type="search" id="time-name-search" name="name" value="{{ request('name', '') }}" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="名称" >
+                        <div class="relative w-full mt-2 md:mt-0 md:ml-2">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <x-icon name="ui/search" class="flex-shrink-0 w-5 h-5 text-gray-500 dark:text-gray-400 pointer-events-none" />
                             </div>
+                            <input type="search" id="time-name-search" name="name" value="{{ request('name', '') }}" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white rounded bg-gray-100 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 placeholder:text-gray-400" placeholder="名称" >
+                        </div>
 
-                            <li class="flex md:w-60 mt-2 md:mx-2 md:mt-0">
-                                <input type="checkbox" id="include_invail" {{ request('include_invail') ? 'checked' : '' }} value="1" name="include_invail" class="sr-only peer">
-                                <label for="include_invail" class="checkbox-label rounded">
-                                    <div class="w-full text-sm font-medium text-center pt-0.5">無効も含む</div>
-                                </label>
-                            </li>
-                            <div class="flex mt-2 md:mt-0">
-                                <div class="flex flex-col justify-end w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
-                                    
-                                    <div class="flex mt-4 md:mt-0">
-                                        <!-- 検索ボタン -->
-                                        <x-buttons.search-button />
-                                        <!-- リセットボタン -->
-                                        <x-buttons.reset-button />
-                                    </div>
+                        <li class="flex md:w-60 mt-2 md:mt-0 md:ml-2">
+                            <input type="checkbox" id="exclude_invail" {{ request('exclude_invail') ? 'checked' : '' }} value="1" name="exclude_invail" class="sr-only peer">
+                            <label for="exclude_invail" class="checkbox-label rounded">
+                                <div class="w-full text-sm font-medium text-center whitespace-nowrap my-auto">登録無効を除く</div>
+                            </label>
+                        </li>
+                        <li class="flex md:w-60 mt-2 md:mt-0 md:ml-2 mr-0">
+                            <input type="checkbox" id="exclude_invail_search" {{ request('exclude_invail_search') ? 'checked' : '' }} value="1" name="exclude_invail_search" class="sr-only peer">
+                            <label for="exclude_invail_search" class="checkbox-label rounded">
+                                <div class="w-full text-sm font-medium text-center whitespace-nowrap my-auto">検索無効を除く</div>
+                            </label>
+                        </li>
+                        <div class="flex mt-2 md:mt-0">
+                            <div class="flex flex-col justify-end w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center">
+                                
+                                <div class="flex mt-4 md:mt-0">
+                                    <!-- 検索ボタン -->
+                                    <x-buttons.search-button />
+                                    <!-- リセットボタン -->
+                                    <x-buttons.reset-button />
                                 </div>
                             </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -131,7 +101,12 @@
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
-                            有効/無効
+                            登録有効/無効
+                        </div>
+                    </th>
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                        <div class="flex items-center">
+                            検索有効/無効
                         </div>
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
@@ -162,6 +137,17 @@
                         </td>
                         <td class="px-1 py-2 whitespace-nowrap">
                             @if($supportTime->is_active)
+                                <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                    有効
+                                </span>
+                            @else
+                                <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
+                                    無効
+                                </span>
+                            @endif
+                        </td>
+                        <td class="px-1 py-2 whitespace-nowrap">
+                            @if($supportTime->is_searchable)
                                 <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
                                     有効
                                 </span>
@@ -237,17 +223,17 @@
                                 </div>
                                 <div class="space-y-4 p-4">
                                     <!-- 隠しフィールドで current updated_at を送信 -->
-                                    <input type="hidden" name="updated_at" value="{{ $supportTime->updated_at->format('Y-m-d H:i:s') }}">
+                                    <input type="hidden" name="to_updated_at" value="{{ $supportTime->updated_at->format('Y-m-d H:i:s') }}">
                                     
                                     <div class="w-full">
                                         <label for="code-{{ $supportTime->id }}" class="block dark:text-gray-100 text-gray-900">
                                             コード
                                         </label>
-                                        <input type="text" maxlength="2" name="code" id="code-{{ $supportTime->id }}" 
-                                                value="{{old('code',$supportTime->code)}}" 
+                                        <input type="text" maxlength="2" name="to_code" id="code-{{ $supportTime->id }}" 
+                                                value="{{old('to_code',$supportTime->code)}}" 
                                                 class="input-readonly" 
                                                 readonly>
-                                        @error('code')
+                                        @error('to_code')
                                             <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                                         @enderror
                                     </div>
@@ -256,27 +242,27 @@
                                         <label for="name-{{ $supportTime->id }}" class="block dark:text-gray-100 text-gray-900">
                                             名称
                                         </label>
-                                        <input type="text" maxlength="10" name="name" id="name-{{ $supportTime->id }}" 
-                                                value="{{ old('name',$supportTime->name) }}" 
+                                        <input type="text" maxlength="10" name="to_name" id="name-{{ $supportTime->id }}" 
+                                                value="{{ old('tp_name',$supportTime->name) }}" 
                                                 class="input-secondary" 
                                                 required>
-                                        @error('name')
+                                        @error('to_name')
                                             <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                                         @enderror
                                     </div>
 
-                                    <div class="w-full" x-data="{ isActive: {{ old('is_active', $supportTime->is_active) == 1 ? 'true' : 'false' }} }">
+                                    <div class="w-full" x-data="{ isActive: {{ old('to_is_active', $supportTime->is_active) == 1 ? 'true' : 'false' }} }">
                                         <label for="" class="block dark:text-gray-100 text-gray-900 mb-2">
-                                            有効/無効
+                                            登録有効/無効
                                         </label>
 
                                         <!-- 送信されないと困るので hidden で 0 を送信 -->
-                                        <input type="hidden" name="is_active" value="0">
+                                        <input type="hidden" name="to_is_active" value="0">
 
                                         <div class="flex items-center space-x-3">
                                             <!-- 四角いトグルボタン -->
                                             <label for="is_active-{{ $supportTime->id }}" class="relative cursor-pointer">
-                                                <input type="checkbox"name="is_active"id="is_active-{{ $supportTime->id }}"
+                                                <input type="checkbox"name="to_is_active"id="is_active-{{ $supportTime->id }}"
                                                     value="1"
                                                     x-model="isActive"
                                                     :checked="isActive"
@@ -289,11 +275,36 @@
                                             </label>
                                         </div>
 
-                                        {{-- <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                            無効にすると、このマスタは選択できなくなりますが、検索時には指定できます。
-                                        </p> --}}
+                                        @error('to_is_active')
+                                            <div class="text-red-500 text-sm mt-2">{{ $message }}</div>
+                                        @enderror
+                                    </div>
 
-                                        @error('is_active')
+                                    <div class="w-full" x-data="{ isActive: {{ old('to_is_searchable', $supportTime->is_searchable) == 1 ? 'true' : 'false' }} }">
+                                        <label for="" class="block dark:text-gray-100 text-gray-900 mb-2">
+                                            検索有効/無効
+                                        </label>
+
+                                        <!-- 送信されないと困るので hidden で 0 を送信 -->
+                                        <input type="hidden" name="to_is_searchable" value="0">
+
+                                        <div class="flex items-center space-x-3">
+                                            <!-- 四角いトグルボタン -->
+                                            <label for="is_searchable-{{ $supportTime->id }}" class="relative cursor-pointer">
+                                                <input type="checkbox"name="to_is_searchable"id="is_searchable-{{ $supportTime->id }}"
+                                                    value="1"
+                                                    x-model="isActive"
+                                                    :checked="isActive"
+                                                    class="sr-only peer">
+
+                                                <!-- ボタン本体 -->
+                                                <div class="button-active">
+                                                    <span x-text="isActive ? '有効' : '無効'"></span>
+                                                </div>
+                                            </label>
+                                        </div>
+
+                                        @error('to_is_searchable')
                                             <div class="text-red-500 text-sm mt-2">{{ $message }}</div>
                                         @enderror
                                     </div>
@@ -393,12 +404,12 @@
                             <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                         @enderror
                     </div>
+
                     <div class="w-full" 
                         x-data="{ isActive: {{ old('is_active', 1) == 1 ? 'true' : 'false' }} }">
                         <label class="block dark:text-gray-100 text-gray-900 mb-2">
                             有効/無効
                         </label>
-
                         <!-- 送信されないと困るので hidden で 0 を送信 -->
                         <input type="hidden" name="is_active" value="0">
 
@@ -417,11 +428,34 @@
                                 </div>
                             </label>
                         </div>
+                        @error('is_active')
+                            <div class="text-red-500 text-sm mt-2">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-                        {{-- <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                            無効にすると、このマスタは選択できなくなりますが、検索時には指定できます。
-                        </p> --}}
+                    <div class="w-full" 
+                        x-data="{ isActive: {{ old('is_searchable', 1) == 1 ? 'true' : 'false' }} }">
+                        <label class="block dark:text-gray-100 text-gray-900 mb-2">
+                            有効/無効
+                        </label>
+                        <!-- 送信されないと困るので hidden で 0 を送信 -->
+                        <input type="hidden" name="is_searchable" value="0">
 
+                        <div class="flex items-center space-x-3">
+                            <!-- 四角いトグルボタン -->
+                            <label for="is_searchable" class="relative cursor-pointer">
+                                <input type="checkbox"name="is_searchable"id="is_searchable"
+                                    value="1"
+                                    x-model="isActive"
+                                    :checked="isActive"
+                                    class="sr-only peer">
+
+                                <!-- ボタン本体 -->
+                                <div class="button-active">
+                                    <span x-text="isActive ? '有効' : '無効'"></span>
+                                </div>
+                            </label>
+                        </div>
                         @error('is_active')
                             <div class="text-red-500 text-sm mt-2">{{ $message }}</div>
                         @enderror

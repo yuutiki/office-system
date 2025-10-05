@@ -15,7 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call(EmployeeStatusSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(AppMasterSeeder::class);
-        $this->call(Affiliation2Seeder::class);
         $this->call(InstallationTypeSeeder::class);
         $this->call(TradeStatusSeeder::class);
         $this->call(ClientTypeSeeder::class);
@@ -30,7 +29,8 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductCategorySeeder::class);
         $this->call(LinkSeeder::class);
         $this->call(Affiliation1Seeder::class);
-        $this->call(Affiliation3Seeder::class);
+        $this->call(Affiliation2Seeder::class);
+        // $this->call(Affiliation3Seeder::class);
         $this->call(AccountingPeriodSeeder::class);
         $this->call(SalesStageSeeder::class);
         $this->call(DistributionTypeSeeder::class);
@@ -61,6 +61,8 @@ class DatabaseSeeder extends Seeder
         $this->call(T_KeepfileSeeder::class);
         $this->call(T_SmtpSettingSeeder::class);
         $this->call(T_DepartmentSeeder::class);
+        $this->call(T_VendorSeeder::class);
+        $this->call(T_ProductSeeder::class);
         $this->call(ClientContactCheckboxOptionsSeeder::class);
     }
 }

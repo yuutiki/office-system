@@ -364,4 +364,7 @@
             // 以降 formattedTel を使って登録処理など進める
         }
     </script>
+@push('scripts')
+    @vite(['resources/js/pages/client-contacts/edit.js'])
+@endpush
 </x-app-layout>

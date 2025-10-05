@@ -210,16 +210,6 @@
                         </select>
                     </div>
     
-                    <!-- 所属3選択フォーム -->
-                    <div class="w-full flex flex-col">
-                        <label for="user_affiliation3_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">所属3</label>
-                        <select id="user_affiliation3_id" name="user_affiliation3_id" class="input-secondary">
-                            <option value="">未選択</option>
-                            @foreach ($affiliation3s as $affiliation3)
-                                <option value="{{ $affiliation3->id }}" @selected($affiliation3->id == old('user_affiliation3_id'))>{{ $affiliation3->affiliation3_name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
     
                     {{-- <button id="searchUsersButton" type="button">検索</button> --}}
                     <div class="w-full flex justify-self-end  flex-col  mt-auto">
@@ -370,7 +360,6 @@
                 userName: document.getElementById('user_name'),
                 userAffiliation1: document.getElementById('user_affiliation1_id'),
                 userAffiliation2: document.getElementById('user_affiliation2_id'),
-                userAffiliation3: document.getElementById('user_affiliation3_id')
             };
 
             // 初期化処理
@@ -391,7 +380,6 @@
                     user_name: elements.userName.value,
                     affiliation1_id: elements.userAffiliation1.value,
                     affiliation2_id: elements.userAffiliation2.value,
-                    affiliation3_id: elements.userAffiliation3.value
                 });
 
                 fetch('/search-users?' + params)

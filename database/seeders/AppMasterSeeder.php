@@ -62,18 +62,6 @@ class AppMasterSeeder extends Seeder
         ]);
         AppMaster::create([
             'master_type' => 'ユーザマスタ',
-            'master_code' => '102',
-            'master_name' => '所属-階層3',
-            'master_name_en' => 'Affiliation-3',
-            'route' => 'affiliation3.index',
-            'digit' => 2,
-            'created_by' => 1,
-            'updated_by' => 1,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-        AppMaster::create([
-            'master_type' => 'ユーザマスタ',
             'master_code' => '104',
             'master_name' => '所属部門',
             'master_name_en' => 'department',

@@ -4,12 +4,12 @@
             <h2 class="text-gray-900 dark:text-white flex">
                 {{ Breadcrumbs::render('createSupport') }}
             </h2>
-            <div class="ml-auto flex justify-end items-center space-x-2">
+            <div class="ml-auto flex space-x-2">
                 <form method="post" action="{{ route('supports.store') }}" enctype="multipart/form-data" id="supportForm" class="flex">
                     @csrf
-                    <x-button-save form-id="supportForm" id="saveButton" onkeydown="stopTab(event)">
+                    <x-buttons.save-button form-id="supportForm" id="saveButton" onkeydown="stopTab(event)">
                         {{ __('登録') }}
-                    </x-button-save>
+                    </x-buttons.save-button>
 
                     <x-buttons.draft-button form-id="supportForm" id="saveButton" class="ml-2" onclick="document.getElementById('isDraft').value = '1'; document.getElementById('supportForm').submit();">
                         {{ __('下書き') }}
@@ -24,39 +24,77 @@
 
     <div class="max-w-7xl mx-auto px-2 md:pl-14">
         <!-- 顧客検索ボタン(画面小) -->
-        <button type="button" onclick="ClientSearchModal.show('clientSearchModal')" class="md:ml-1 md:mt-1 mt-1 mb-4 w-full md:w-auto whitespace-nowrap sm:hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        <button type="button" onclick="ClientSearchModal.show('clientSearchModal')" class="md:ml-1 md:mt-1 mt-1 mb-4 w-full md:w-auto whitespace-nowrap md:hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
             顧客検索
         </button>
 
-        <div class="grid gap-4 sm:grid-cols-3">
-            <div class="flex sm:mt-4">
-                <div class="hidden">
-                    <label for="client_id">顧客ID（非表示）</label>
-                    <input type="hidden" form="supportForm" name="client_id" id="client_id" value="{{ old('client_id', optional($client)->id) }}">
-                </div>
-                <div class="w-full flex flex-col">
-                    <label for="client_num" class="text-sm dark:text-gray-100 text-gray-900 leading-none">顧客No.<span class="text-red-500 ml-2">*</span></label>
-                    <input type="text" form="supportForm" name="client_num" id="client_num" value="{{ old('client_num', optional($client)->client_num) }}" class="input-readonly @error('client_num') input-error @enderror" placeholder="" readonly tabindex="-1">
-                    @error('client_id')
-                        <div class="validate-message">{{ $message }}</div>
-                    @enderror
-                </div>
-                <!-- 顧客検索ボタン(画面：中～) -->
-                <button type="button" onclick="ClientSearchModal.show('clientSearchModal')" data-form="supportForm" class="p-2.5 text-sm font-medium h-[35px] text-white mt-[18px] ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 zip2addr-trigger hidden sm:block">
-                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                    </svg>
-                </button>
-            </div>
-            <div class="w-full flex flex-col sm:mt-4">
-                <label for="client_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none">顧客名称</label>
-                <input type="text" form="supportForm" name="client_name" id="client_name" value="{{ old('client_name', optional($client)->client_name) }}" class="input-readonly" placeholder="" readonly tabindex="-1">
-            </div>
-            <div class="w-full flex flex-col sm:mt-4">
-                <label for="affiliation2" class="text-sm dark:text-gray-100 text-gray-900 leading-none">管轄事業部</label>
-                <input type="text" form="supportForm" name="affiliation2" id="affiliation2" value="{{ old('affiliation2', optional(optional($client)->affiliation2)->affiliation2_name) }}" class="input-readonly" placeholder="" readonly tabindex="-1">
-            </div>
+
+        <div class="mx-auto my-4 rounded shadow-md overflow-hidden border border-gray-200 dark:border-gray-600">
+            <table class="w-full text-sm text-left divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
+                <tbody>
+                    
+                    <div class="hidden">
+                        <label for="client_id">顧客ID（非表示）</label>
+                        <input type="hidden" form="supportForm" name="client_id" id="client_id" value="{{ old('client_id', optional($client)->id) }}">
+                    </div>
+                    <!-- 顧客No. -->
+                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-0.5 md:border-r dark:border-gray-600 whitespace-nowrap block bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
+                            <div class="flex items-center justify-between">
+                                <span>顧客No.</span>
+                                <button type="button" 
+                                    onclick="ClientSearchModal.show('clientSearchModal')" 
+                                    data-form="supportForm"
+                                    class="ml-2 p-1.5 text-sm font-medium h-[30px] text-white bg-blue-700 rounded border border-blue-700 
+                                        hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 
+                                        dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 
+                                        focus:ring-offset-2 dark:focus:ring-offset-gray-800 zip2addr-trigger hidden md:block">
+                                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </th>
+
+                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-1.5 md:px-2 md:py-1">
+                            {{-- <div class="text-sm font-medium md:dark:text-gray-300">{{ optional($report->reportType)->report_type_name }}</div> --}}
+                            <input type="text" form="supportForm" name="client_num" id="client_num" value="{{ old('client_num', optional($client)->client_num) }}" class="w-full py-1 rounded bg-gray-300 dark:bg-gray-400 text-sm dark:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 placeholder-gray-400 transition ease-in-out duration-150 @error('client_id') input-error @enderror" placeholder="" readonly tabindex="-1">
+                        </td>
+                    </tr>
+                    
+                    <!-- 顧客名称 -->
+                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
+                            顧客名称
+                        </th>
+                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-1 md:px-2 md:py-1">
+                            <input type="text" form="supportForm" name="client_name" id="client_name" value="{{ old('client_name', optional($client)->client_name) }}" class="w-full py-1 rounded bg-gray-300 dark:bg-gray-400 text-sm dark:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 placeholder-gray-400 transition ease-in-out duration-150 @error('client_id') input-error @enderror" placeholder="" readonly tabindex="-1">
+
+                        </td>
+                    </tr>
+                    
+                    <!-- 管轄部門 -->
+                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
+                            管轄部門
+                        </th>
+                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-1 md:px-2 md:py-1.5">
+                            <input type="text" form="supportForm" name="affiliation2" id="affiliation2" value="{{ old('affiliation2', optional(optional($client)->department)->path) }}" class="w-full py-1 rounded bg-gray-300 dark:bg-gray-400 text-sm dark:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 placeholder-gray-400 transition ease-in-out duration-150 @error('client_id') input-error @enderror" placeholder="" readonly tabindex="-1">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+        @error('client_id')
+            <div class="validate-message">{{ $message }}</div>
+        @enderror
+
+
+
+
+
+
 
         <!-- タブボタン -->
         <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
@@ -472,11 +510,11 @@
                             <label for="affiliation2Id" class=" dark:text-gray-100 text-gray-900 leading-none mt-4">管轄事業部</label>
                             <select id="affiliation2Id" name="affiliation2Id" class="w-auto mt-1 mr-3 p-1.5 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500  text-sm dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-900 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">---</option>
-                                @foreach($affiliation2s as $affiliation2)
+                                {{-- @foreach($affiliation2s as $affiliation2)
                                 <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == Auth::user()->affiliation2->id)>
                                     {{ $affiliation2->affiliation2_name }}
                                 </option>
-                                @endforeach
+                                @endforeach --}}
                             </select>
                         </div>
                     </div>
@@ -588,7 +626,7 @@
             document.getElementById('client_num').value = client.client_num;
             document.getElementById('client_name').value = client.client_name;
             // document.getElementById('sales_user').value = client.user.user_name;
-            document.getElementById('affiliation2').value = client.affiliation2.affiliation2_name;
+            document.getElementById('affiliation2').value = client.department.path;
         }
 
         // モーダルのコールバック関数を設定

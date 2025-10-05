@@ -358,4 +358,8 @@
             });
         });
     </script>
+
+@push('scripts')
+    @vite(['resources/js/pages/client-contacts/create.js'])
+@endpush
 </x-app-layout>

@@ -215,4 +215,8 @@ class Project extends Model
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');
     }
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
 }

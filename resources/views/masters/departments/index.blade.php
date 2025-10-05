@@ -90,11 +90,11 @@
             style="display: none;"
             x-data
         >
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-3/4 h-[80vh] flex flex-col"
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full sm:w-3/4 h-[80vh] flex flex-col"
                 onclick="event.stopPropagation()">
 
                 <!-- ヘッダー -->
-                <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
+                <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700 whitespace-nowrap">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">部門階層</h3>
                     <div class="flex space-x-2">
                         <button @click="$dispatch('expand-all', true)"
@@ -111,7 +111,7 @@
                 </div>
 
                 <!-- 本体 -->
-                <div class="flex-1 overflow-y-auto p-6">
+                <div class="flex-1 overflow-y-auto p-6 overflow-x-scroll whitespace-nowrap">
                     <ul class="space-y-2">
                         @foreach($departmentTree->where('parent_id', null) as $root)
                             @include('masters.departments.partials.department-tree', ['department' => $root])

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Keepfile;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -30,6 +30,8 @@ class KeepfileUpdateRequest extends FormRequest
             'keepfile_memo' => 'nullable|max:5000',
             'is_finished' => 'required',
             'depositor' => 'required',
+            'keep_method' => 'nullable',
+            'keep_data' => 'nullable',
             'pdf_file' => 'nullable|file|mimes:pdf|max:1024',
 
             'has_personal_information' => 'nullable', // 将来実装予定

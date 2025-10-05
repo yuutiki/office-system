@@ -358,7 +358,42 @@ Breadcrumbs::for('dashboard', function ($trail) {
                     $trail->push('会計期間', route('accounting-period.index'));
                 });
 
-                
+                // ホーム > マスタ >  商流種別マスタ
+                Breadcrumbs::for('distributionTypeMaster', function ($trail) {
+                    $trail->parent('masters');
+                    $trail->push('商流種別', route('distribution-type.index'));
+                });
+
+                // ホーム > マスタ >  取引状態マスタ
+                Breadcrumbs::for('tradeStatusMaster', function ($trail) {
+                    $trail->parent('masters');
+                    $trail->push('取引状態', route('trade-status.index'));
+                });
+
+                // ホーム > マスタ >  製品カテゴリマスタ
+                Breadcrumbs::for('productCategoryMaster', function ($trail) {
+                    $trail->parent('masters');
+                    $trail->push('製品カテゴリ', route('product-category.index'));
+                });
+
+                // ホーム > マスタ >  製品メーカーマスタ
+                Breadcrumbs::for('productMakerMaster', function ($trail) {
+                    $trail->parent('masters');
+                    $trail->push('製品メーカー', route('product-maker.index'));
+                });
+
+                // ホーム > マスタ >  計上種別マスタ
+                Breadcrumbs::for('accountingTypeMaster', function ($trail) {
+                    $trail->parent('masters');
+                    $trail->push('計上種別', route('accounting-type.index'));
+                });
+
+
+                // ホーム > マスタ >  設置種別マスタ
+                Breadcrumbs::for('installationTypeMaster', function ($trail) {
+                    $trail->parent('masters');
+                    $trail->push('設置種別', route('installation-type.index'));
+                });
 
                 // ホーム > マスタ >  都道府県マスタ
                 Breadcrumbs::for('prefectureMaster', function ($trail) {

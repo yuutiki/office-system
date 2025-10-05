@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('vendor_name',255)->comment('業者名称');
             $table->string('vendor_kana_name',255)->comment('業者カナ名称');
             $table->foreignUlid('corporation_id')->comment('法人ID'); // Corporationsテーブル参照
-            $table->foreignId('department_id')->comment('管轄部門ID');// Affiliation2テーブル参照
+            $table->foreignId('department_id')->comment('管轄部門ID');// departmentテーブル参照
             $table->foreignId('vendor_type_id')->nullable(true)->comment('業者種別ID');// Client_typesテーブル参照
             $table->text('vendor_memo', 1000)->nullable(true)->comment('業者備考');//
 

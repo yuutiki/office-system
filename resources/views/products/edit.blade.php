@@ -9,15 +9,16 @@
                     @csrf
                     @method('patch')
                     @can('storeUpdate_corporations')
-                        <x-button-save form-id="editForm" id="saveButton" onkeydown="stopTab(event)">
+                        <x-buttons.save-button form-id="editForm" id="saveButton" onkeydown="stopTab(event)">
                             {{ __('update') }}
-                        </x-button-save>
+                        </x-buttons.save-button>
                     @endcan
                 </form>
             </div>
         </div>
     </x-slot>
 
+    
     <div class="max-w-7xl mx-auto px-2 md:pl-14">
         <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
             <ul class="flex flex-wrap -mb-px text-sm text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">

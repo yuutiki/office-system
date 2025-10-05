@@ -1,17 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="text-lg text-gray-900 dark:text-white flex items-center">
+        <div class="flex w-full">
+            <h2 class="flex text-gray-900 dark:text-white">
                 {{ Breadcrumbs::render('reportTypeMaster') }}
-                <div class="ml-4">
-                    {{ $count }}件
-                </div>
             </h2>
-            <div class="flex justify-end">
-                <x-message :message="session('message')"/>
-                <x-buttons.save-button onclick="openDrawer('create')" class="mr-2">
+            <div class="ml-auto flex space-x-2">
+                <x-buttons.add-button-drawer onclick="openDrawer('create')" class="mr-2">
                     {{ __('create') }}
-                </x-buttons.save-button>
+                </x-buttons.add-button-drawer>
 
                 <div class="flex items-center w-full space-x-3 hidden md:w-auto md:inline-block">
                     <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full p-2.5 text-sm font-medium hover:bg-[#313a48] bg-[#364050] text-gray-200 rounded md:w-auto focus:z-10 dark:bg-blue-600 dark:text-gray-100 dark:border-gray-600 dark:hover:text-white dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" type="button">

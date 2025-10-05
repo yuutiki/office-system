@@ -1,28 +1,21 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
+        <div class="flex w-full">
+            <h2 class="flex text-gray-900 dark:text-white">
                 {{ Breadcrumbs::render('createEstimate', $project) }}
             </h2>
-            <div class="flex justify-end">
-
+            <div class="ml-auto flex">
                 <form id="estimateForm" method="post" action="{{route('estimate.store',['project' => $project])}}" enctype="multipart/form-data" autocomplete="new-password">
                     @csrf
-                    <x-primary-button class="ml-2" form="estimateForm">
-                        登録
-                    </x-primary-button>
+                    <x-buttons.save-button class="ml-2" form="estimateForm">
+                        {{ __('save') }}
+                    </x-buttons.save-button>
                 </form>
-                <x-message :message="session('message')"/>
             </div>
         </div>
     </x-slot>
 
-    <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
-
     <div class="mx-auto md:pl-16 pr-3 pl-3 pb-4">
-            {{-- <form id="estimateForm" method="post" action="{{route('estimate.store',['project' => $project])}}" enctype="multipart/form-data" autocomplete="new-password">
-                @csrf --}}
-
         <div class="grid gap-3 lg:grid-cols-3 grid-cols-1 mt-2">
             <div>
                 <label for="corporation_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none">法人名称</label>
@@ -184,7 +177,7 @@
                             <td class="px-1 border border-gray-600 align-bottom pb-1">
                                 <div class="flex w-full">
                                     <input type="text" form="estimateForm" value="{{ old('ing-cd-1') }}" class="input-estimate w-[110px] text-xs" name="ing-cd-1">
-                                    <button type="button" id="invoiceApi" onclick="showProductModal(this)" class="p-1 ml-0.5 px-1.5 text-sm h-7 mt-1 font-medium text-white bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                                    <button type="button" id="invoiceApi" onclick="ProductSearchModal.show('productSearchModal1')" class="p-1 ml-0.5 px-1.5 text-sm h-7 mt-1 font-medium text-white bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
                                         <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
                                         </svg>
@@ -318,7 +311,7 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label for="productSplitTypeId" class="block mb-2 text-sm text-gray-900 dark:text-white">内訳種別</label>
+                                    <label for="productSplitTypeId" class="block mb-2 text-sm text-gray-900 dark:text-white">製品種別2</label>
                                     <select id="productSplitTypeId" name="productSplitTypeId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                         <option selected="" value="">未選択</option>
                                         @foreach ($productSplitTypes as $productSplitType)
@@ -364,20 +357,6 @@
 
         <!-- 見積設定タブ -->
         <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="estimate-print-property" role="tabpanel" aria-labelledby="estimate-print-property-tab">
-            {{-- <div>
-                <label for="client_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-1">住所</label>
-                <input type="text" name="client_name" class="input-primary" id="client_name" value="3ヶ月" placeholder="">
-                @error('client_name')
-                    <div class="text-red-500">{{ $message }}</div>
-                @enderror
-            </div>
-            <div>
-                <label for="client_name" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-1">担当者</label>
-                <input type="text" name="client_name" class="input-primary" id="client_name" value="3ヶ月" placeholder="">
-                @error('client_name')
-                    <div class="text-red-500">{{ $message }}</div>
-                @enderror
-            </div> --}}
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label for="estimate_document_title" class="block dark:text-gray-100 text-gray-900 leading-none md:mt-4">見積書表題</label>
@@ -950,121 +929,135 @@ document.getElementById('newEntryButton').addEventListener('click', function() {
 
 </script>
 
-        <script>
-            const overlay = document.getElementById('overlay')
-            const searchProductModal = document.getElementById('searchProduct');
 
-            // 製品検索モーダルを表示するための関数
-            function showProductModal(button) {
-                currentEditingRow = button.closest('tr');
-                overlay.classList.remove('hidden');
-                document.body.classList.add('overflow-hidden');
-                searchProductModal.classList.remove('hidden');
 
-                    // モーダル内のコンテンツ要素を取得
-                    const modalContent = searchProductModal.querySelector('.bg-blue-400');
 
-                    // Tabキーによるフォーカス移動をトラップする関数
-                    function trapTabKey(e) {
-                        if (e.key === 'Tab') {
-                            const focusableElements = modalContent.querySelectorAll(
-                                'a[href], button:not([disabled]), textarea, input:not([disabled]), select:not([disabled])'
-                            );
+    <script>
+        const overlay = document.getElementById('overlay')
+        const searchProductModal = document.getElementById('searchProduct');
 
-                            const firstElement = focusableElements[0];
-                            const lastElement = focusableElements[focusableElements.length - 1];
+        // 製品検索モーダルを表示するための関数
+        function showProductModal(button) {
+            currentEditingRow = button.closest('tr');
+            overlay.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+            searchProductModal.classList.remove('hidden');
 
-                            if (e.shiftKey) {
-                                if (document.activeElement === firstElement) {
-                                    e.preventDefault();
-                                    lastElement.focus();
-                                }
-                            } else {
-                                if (document.activeElement === lastElement) {
-                                    e.preventDefault();
-                                    firstElement.focus();
-                                }
+                // モーダル内のコンテンツ要素を取得
+                const modalContent = searchProductModal.querySelector('.bg-blue-400');
+
+                // Tabキーによるフォーカス移動をトラップする関数
+                function trapTabKey(e) {
+                    if (e.key === 'Tab') {
+                        const focusableElements = modalContent.querySelectorAll(
+                            'a[href], button:not([disabled]), textarea, input:not([disabled]), select:not([disabled])'
+                        );
+
+                        const firstElement = focusableElements[0];
+                        const lastElement = focusableElements[focusableElements.length - 1];
+
+                        if (e.shiftKey) {
+                            if (document.activeElement === firstElement) {
+                                e.preventDefault();
+                                lastElement.focus();
+                            }
+                        } else {
+                            if (document.activeElement === lastElement) {
+                                e.preventDefault();
+                                firstElement.focus();
                             }
                         }
                     }
-
-                    // Tabキーイベントをモーダル内で捕捉
-                    modalContent.addEventListener('keydown', trapTabKey);
-
-                    // モーダルが開かれたときに最初のフォーカス可能な要素にフォーカスを当てる
-                    const productNameInput = document.getElementById('productName');
-                    productNameInput.focus();
                 }
 
-                // 製品検索モーダルを非表示にする
-                function hideProductModal() {
-                    overlay.classList.add('hidden');
-                    document.body.classList.remove('overflow-hidden');
+                // Tabキーイベントをモーダル内で捕捉
+                modalContent.addEventListener('keydown', trapTabKey);
 
-                    searchProductModal.classList.add('hidden');
+                // モーダルが開かれたときに最初のフォーカス可能な要素にフォーカスを当てる
+                const productNameInput = document.getElementById('productName');
+                productNameInput.focus();
+            }
 
-                    const ProductButton = document.getElementById('searchProductButton');
-                    ProductButton.focus();
+            // 製品検索モーダルを非表示にする
+            function hideProductModal() {
+                overlay.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
 
-                    // モーダル内のコンテンツ要素からTabキーイベントリスナーを削除
-                    const modalContent = searchProductModal.querySelector('.bg-blue-400');
-                    modalContent.removeEventListener('keydown', trapTabKey);
-                }
+                searchProductModal.classList.add('hidden');
+
+                const ProductButton = document.getElementById('searchProductButton');
+                ProductButton.focus();
+
+                // モーダル内のコンテンツ要素からTabキーイベントリスナーを削除
+                const modalContent = searchProductModal.querySelector('.bg-blue-400');
+                modalContent.removeEventListener('keydown', trapTabKey);
+            }
 
 
-                //製品検索ボタンを押下した際の処理
-                function searchProduct() {
-                    const productName = document.getElementById('productName').value;
-                    const productSeriesId = document.getElementById('productSeriesId').value;
-                    const productSplitTypeId = document.getElementById('productSplitTypeId').value;
+            //製品検索ボタンを押下した際の処理
+            function searchProduct() {
+                const productName = document.getElementById('productName').value;
+                const productSeriesId = document.getElementById('productSeriesId').value;
+                const productSplitTypeId = document.getElementById('productSplitTypeId').value;
 
-                    fetch('/products/search', {
-                        method: 'POST',
-                        headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                        },
-                        body: JSON.stringify({ productName, productSeriesId, productSplitTypeId })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        const searchResultsProductContainer = document.getElementById('searchResultsProductContainer');
-                        searchResultsProductContainer.innerHTML = '';
+                fetch('/products/search', {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({ productName, productSeriesId, productSplitTypeId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const searchResultsProductContainer = document.getElementById('searchResultsProductContainer');
+                    searchResultsProductContainer.innerHTML = '';
 
-                        data.forEach(result => {
-                            const resultElement = document.createElement('tr');
-                            resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
-                            resultElement.innerHTML = `
-                                <td class="py-2 pl-5 cursor-pointer" onclick="setProduct('${result.product_name}', '${result.product_series.series_name}', '${result.product_split_type_id}', '${result.product_code}', '${result.unit_price}')">${result.product_name}</td>
-                                <td class="py-2 ml-2">${result.product_series.series_name}</td>
-                                <td class="py-2 ml-2">${result.product_split_type.split_type_name}</td>
-                            `;
-                            searchResultsProductContainer.appendChild(resultElement);
-                        });
+                    data.results.forEach(result => {
+                        const resultElement = document.createElement('tr');
+                        resultElement.classList.add('dark:border-gray-700', 'hover:bg-gray-600', 'dark:text-white', 'border-b-white')
+                        resultElement.innerHTML = `
+                            <td class="py-2 pl-5 cursor-pointer" onclick="setProduct('${result.product_name}', '${result.product_series.series_name}', '${result.product_split_type_id}', '${result.product_code}', '${result.unit_price}')">${result.product_name}</td>
+                            <td class="py-2 ml-2">${result.product_series.series_name}</td>
+                            <td class="py-2 ml-2">${result.product_split_type.split_type_name}</td>
+                        `;
+                        searchResultsProductContainer.appendChild(resultElement);
                     });
+                });
+            }
+
+            function setProduct(name, series, split, code, price) {
+                if (currentEditingRow) {
+                    currentEditingRow.querySelector('input[name^="ing-cd-"]').value = code;
+                    currentEditingRow.querySelector('input[name^="ing-name-"]').value = name;
+                    currentEditingRow.querySelector('input[name^="ing-kataban-"]').value = series;
+                    
+                    // 小数点以下を取り除いて整数に変換し、カンマ区切りの文字列にフォーマット
+                    const formattedPrice = parseInt(price).toLocaleString();
+                    currentEditingRow.querySelector('input[name^="ing-tanka-"]').value = formattedPrice;
+                    
+                    currentEditingRow.querySelector('input[name^="ing-genka-"]').value = 0;
+                    currentEditingRow.querySelector('input[name^="ing-suryo-"]').value = 1;
+                    
+                    // 値を更新した後、計算を実行
+                    calculateAll(currentEditingRow.querySelector('input[name^="ing-suryo-"]'));
                 }
 
-                function setProduct(name, series, split, code, price) {
-                    if (currentEditingRow) {
-                        currentEditingRow.querySelector('input[name^="ing-cd-"]').value = code;
-                        currentEditingRow.querySelector('input[name^="ing-name-"]').value = name;
-                        currentEditingRow.querySelector('input[name^="ing-kataban-"]').value = series;
-                        
-                        // 小数点以下を取り除いて整数に変換し、カンマ区切りの文字列にフォーマット
-                        const formattedPrice = parseInt(price).toLocaleString();
-                        currentEditingRow.querySelector('input[name^="ing-tanka-"]').value = formattedPrice;
-                        
-                        currentEditingRow.querySelector('input[name^="ing-genka-"]').value = 0;
-                        currentEditingRow.querySelector('input[name^="ing-suryo-"]').value = 1;
-                        
-                        // 値を更新した後、計算を実行
-                        calculateAll(currentEditingRow.querySelector('input[name^="ing-suryo-"]'));
-                    }
+                hideProductModal();
+                currentEditingRow = null;
+            }
+    </script>
 
-                    hideProductModal();
-                    currentEditingRow = null;
-                }
-        </script>
+
+
+
+
+
+
+
+
+
+
 
     <style>
         .readonly-cell {

@@ -10,7 +10,7 @@
     <div class="max-h-full w-full max-w-7xl overflow-y-auto">
         <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
             <!-- モーダルヘッダー -->
-            <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
+            <div class="flex items-center justify-between px-2 pb-2 border-b rounded-t dark:border-gray-600">
                 <h3 class="text-xl font-medium text-gray-900 dark:text-white">
                     {{ $title }}
                 </h3>
@@ -29,13 +29,13 @@
             <div class="grid gap-x-2 mb-4 grid-cols-1 sm:grid-cols-3">
                 <!-- 法人名称 -->
                 <div class="w-full flex flex-col pr-2">
-                    <label for="{{ $modalId }}_corporation_name" class="dark:text-gray-100 text-gray-900 leading-none mt-4">法人名称</label>
+                    <label for="{{ $modalId }}_corporation_name" class="dark:text-gray-100 text-gray-900 leading-none mt-4 text-sm">法人名称</label>
                     <input type="text" id="{{ $modalId }}_corporation_name" class="input-secondary">
                 </div>
                 
                 <!-- 法人No. -->
                 <div class="w-full flex flex-col pr-2">
-                    <label for="{{ $modalId }}_corporation_number" class="dark:text-gray-100 text-gray-900 leading-none mt-4">法人No.</label>
+                    <label for="{{ $modalId }}_corporation_number" class="dark:text-gray-100 text-gray-900 leading-none mt-4 text-sm">法人No.</label>
                     <input type="text" id="{{ $modalId }}_corporation_number" class="input-secondary">
                 </div>
                 
@@ -104,7 +104,7 @@
             </div>
 
             <!-- モーダルフッターを追加 -->
-            <div class="flex justify-end items-center p-4 mt-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div class="flex justify-end items-center px-2 pt-2 mt-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
                 <button type="button" 
                         onclick="CorporationSearchModal.hide('{{ $modalId }}')"
                         class="text-gray-900 bg-gray-100 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 rounded border border-gray-400 text-sm px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">

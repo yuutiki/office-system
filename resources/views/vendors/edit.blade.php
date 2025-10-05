@@ -28,35 +28,35 @@
                 <input type="text" name="corporation_name" class="w-full py-1 mt-1 bg-gray-400 border border-gray-300 rounded" id="corporation_name" value="{{old('corporation_name',$vendor->corporation->corporation_name)}}" readonly>
                 @error('corporation_name')
                     <div class="text-red-500">{{ $message }}</div>
-                @enderror                
+                @enderror
             </div>
             <div class="hidden md:inline-block">
                 <label for="corporation_kana_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">法人カナ名称</label>
                 <input type="text" name="corporation_kana_name" class="w-full py-1 mt-1 bg-gray-400 border border-gray-300 rounded" id="corporation_kana_name" value="{{old('corporation_kana_name',$vendor->corporation->corporation_kana_name)}}" readonly>
                 @error('corporation_kana_name')
                     <div class="text-red-500">{{ $message }}</div>
-                @enderror                
+                @enderror
             </div>
             <div>
                 <label for="vendor_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2 mt-2">業者名称</label>
                 <input type="text" form="editForm" name="vendor_name" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" id="vendor_name" value="{{old('vendor_name',$vendor->vendor_name)}}" placeholder="例）烏丸大学">
                 @error('vendor_name')
                     <div class="text-red-500">{{ $message }}</div>
-                @enderror                
+                @enderror
             </div>
             <div class="hidden md:inline-block">
                 <label for="vendor_kana_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">業者カナ名称</label>
                 <input type="text" form="editForm" name="vendor_kana_name" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" id="vendor_kana_name" value="{{old('vendor_kana_name',$vendor->vendor_kana_name)}}" placeholder="例）カラスマダイガク">
                 @error('vendor_kana_name')
                     <div class="text-red-500">{{ $message }}</div>
-                @enderror                
+                @enderror
             </div>
         </div>
 
-        <div class="grid gap-4 mb-4 md:grid-cols-4 grid-cols-2">
+        <div class="grid gap-4 mb-4 grid-cols-2">
             <div>
                 <label for="vendor_type_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">業者種別</label>
-                <select form="editForm" id="vendor_type_id" name="vendor_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <select form="editForm" id="vendor_type_id" name="vendor_type_id" class="input-secondary">
                     <option selected value="">---</option>
                     @foreach($vendorTypes as $vendorType)
                     <option value="{{ $vendorType->id }}" @selected( $vendorType->id == $vendor->vendor_type_id)>{{ $vendorType->vendor_type_name }}</option>
@@ -68,7 +68,7 @@
             </div>
             <div>
                 <label for="department_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">管轄事業部</label>
-                <select form="editForm" id="department_id" name="department_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <select form="editForm" id="department_id" name="department_id" class="input-secondary">
                     <option selected value="">---</option>
                     @foreach($departments as $department)
                         <option value="{{ $department->id }}" @selected( $department->id === (int)$vendor->department_id )>
@@ -789,5 +789,7 @@
 
     <script type="text/javascript" src="{{ asset('/assets/js/addresssearchbutton.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
-
+@push('scripts')
+    @vite(['resources/js/pages/vendors/edit.js'])
+@endpush
 </x-app-layout>

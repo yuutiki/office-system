@@ -8,9 +8,9 @@
                 <form method="post" action="{{ route('supports.update', $support) }}" enctype="multipart/form-data" id="supportForm" class="flex">
                     @csrf
                     @method('patch')
-                    <x-button-save form-id="supportForm" id="saveButton" onkeydown="stopTab(event)">
+                    <x-buttons.save-button form-id="supportForm" id="saveButton" onkeydown="stopTab(event)">
                         {{ __('登録') }}
-                    </x-button-save>
+                    </x-buttons.save-button>
                     
                     <x-buttons.draft-button form-id="supportForm" id="saveButton" class="ml-2" onclick="document.getElementById('isDraft').value = '1'; document.getElementById('supportForm').submit();">
                         {{ __('下書き') }}

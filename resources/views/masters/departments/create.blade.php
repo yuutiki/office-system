@@ -8,7 +8,7 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="w-3/4 mx-auto sm:px-6 lg:px-8">
+        <div class="w-full sm:w-3/4 mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
 
                 {{-- エラーメッセージ --}}

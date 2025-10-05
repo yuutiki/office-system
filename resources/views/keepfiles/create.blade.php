@@ -7,9 +7,9 @@
             <div class="ml-auto flex justify-end">
                 <form method="post" action="{{route('keepfiles.store')}}" enctype="multipart/form-data" id="keepfileForm">
                     @csrf
-                    <x-button-save form-id="keepfileForm" id="saveButton" onkeydown="stopTab(event)">
+                    <x-buttons.save-button form-id="keepfileForm" id="saveButton" onkeydown="stopTab(event)">
                         {{ __('save') }}
-                    </x-button-save>
+                    </x-buttons.save-button>
                 </form>
             </div>
         </div>
@@ -162,9 +162,9 @@
                     @enderror
                 </div>
                 <div class="w-full flex flex-col">
-                    <label for="deposit_method" class="dark:text-white text-red-700 leading-none text-sm">預託方法（）<span class="text-red-500"> *</span></label>
-                    <input type="text" form="keepfileForm" name="deposit_method" class="input-secondary" id="deposit_method" value="{{old('deposit_method')}}" placeholder="手入力">
-                    @error('deposit_method')
+                    <label for="keep_method" class="dark:text-white text-red-700 leading-none text-sm">預託方法<span class="text-red-500"> *</span></label>
+                    <input type="text" form="keepfileForm" name="keep_method" class="input-secondary" id="keep_method" value="{{old('keep_method')}}" placeholder="">
+                    @error('keep_method')
                         <div class="text-red-500">{{$message}}</div>
                     @enderror
                 </div>
@@ -178,9 +178,9 @@
             </div>
 
             <div class="w-full flex flex-col">
-                <label for="deposit_data" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">預託データ内容（）</label>
-                <textarea name="deposit_data" form="keepfileForm" class="input-secondary" id="deposit_data" data-auto-resize="true" cols="30" rows="5" placeholder="">{{old('deposit_data')}}</textarea>
-                @error('deposit_data')
+                <label for="keep_data" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-4">預託データ内容</label>
+                <textarea name="keep_data" form="keepfileForm" class="input-secondary" id="keep_data" data-auto-resize="true" cols="30" rows="5" placeholder="">{{old('keep_data')}}</textarea>
+                @error('keep_data')
                     <div class="text-red-500">{{$message}}</div>
                 @enderror
             </div>

@@ -2,22 +2,26 @@
 
 namespace App\Http\Controllers\Master;
 
+use App\Exports\SupportTimesExport;
 use App\Http\Controllers\Controller;
+use App\Imports\SupportTimesImport;
 use App\Models\SupportTime;
+use App\Services\PaginationService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SupportTimeController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, PaginationService $paginationService)
     {
-        $perPage = config('constants.perPage');
+        $perPage = $paginationService->getPerPage($request);
 
         $searchParams = $request->validate([
-            'code' => 'nullable|string|max:5',
-            'name' => 'nullable|string|max:50',
-            'include_invail' => 'nullable|boolean',
+            'code' => 'nullable|string|max:100',
+            'name' => 'nullable|string|max:100',
+            'exclude_invail' => 'nullable|boolean',
+            'exclude_invail_search' => 'nullable|boolean',
         ]);
         
         // validate済みのパラメーターを使って検索クエリを組み立てる
@@ -31,9 +35,14 @@ class SupportTimeController extends Controller
             $supportTimeQuery->where('name', 'LIKE', '%' . $searchParams['name'] . '%');
         }
 
-        if (empty($searchParams['include_invail'])) {
-            // チェックがない場合 → 有効のみ表示
+        if (!empty($searchParams['exclude_invail'])) {
+            // チェックがある場合 → 無効を除く
             $supportTimeQuery->where('is_active', 1);
+        }
+
+        if (!empty($searchParams['exclude_invail_search'])) {
+            // チェックがある場合 → 無効を除く
+            $supportTimeQuery->where('is_searchable', 1);
         }
 
         $supportTimes = $supportTimeQuery->orderBy('code', 'asc')->paginate($perPage);
@@ -50,8 +59,9 @@ class SupportTimeController extends Controller
     {
         $data = $request->validate([
             'code' => 'required|size:2|unique:support_times,code,except,code',
-            'name' => 'required|max:20',
-            'is_active' => 'required|boolean' // 必須で、0または1のみ許可
+            'name' => 'required|max:100',
+            'is_active' => 'required|boolean',
+            'is_searchable' => 'required|boolean',
         ]);
         
         try {
@@ -61,9 +71,7 @@ class SupportTimeController extends Controller
             return redirect()->back()->with('success', '正常に登録しました');
 
         } catch (\Exception $e) {
-            return redirect()->back()
-                ->withInput()
-                ->withErrors(['error' => 'データの登録に失敗しました。']);
+            return redirect()->back()->withInput()->with('error', 'データの登録に失敗しました。');
         }
     }
 
@@ -80,29 +88,35 @@ class SupportTimeController extends Controller
     public function update(Request $request, SupportTime $supportTime)
     {
         $data = $request->validate([
-            // 'code' => 'required|size:2|unique:support_times,code,except,code',
-            'name' => 'required|max:20',
-            'is_active' => 'required|in:0,1', // 必須で、0または1のみ許可
-            'updated_at' => 'required' // 楽観ロック用
+            'to_name' => 'required|max:20',
+            'to_is_active' => 'required|boolean',
+            'to_is_searchable' => 'required|boolean',
+            'to_updated_at' => 'required' // 楽観ロック用
         ]);
-        
+
         try {
-            if ($supportTime->updated_at->format('Y-m-d H:i:s') !== $request->updated_at) {
-                    return redirect()->back()
-                        ->withInput()
-                        ->with('error', 'データが他のユーザーによって更新されています。画面を再読み込みしてください。');
-                }
+            // updated_atをチェックしてDB更新。該当しなければ他ユーザーが更新済み。
+            $updated = SupportTime::where('id', $supportTime->id)
+                ->where('updated_at', $request->to_updated_at)
+                ->update([
+                    'name' => $data['to_name'],
+                    'is_active' => $data['to_is_active'],
+                    'is_searchable' => $data['to_is_searchable'],
+                    'updated_at' => now(),
+                ]);
 
-            // updated_atはバリデーション用なので除去
-            unset($data['updated_at']);
+            if ($updated === 0) {
+                // 条件に合致しない = すでに更新されている
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'データが他のユーザーによって更新されています。画面を再読み込みしてください。');
+            }
 
-            $supportTime->fill($data)->save();
-            
             return redirect()->back()->with('success', '正常に更新しました');
 
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('error', 'データの更新に失敗しました。');
-          }
+        }
     }
 
     /**
@@ -171,6 +185,30 @@ class SupportTimeController extends Controller
                 'references' => $references,
                 'totalCount' => $totalCount
             ];
+        }
+    }
+
+    public function export()
+    {
+	    return Excel::download(new SupportTimesExport, 'support-times.csv', \Maatwebsite\Excel\Excel::CSV); 
+    }
+
+    public function showImportForm()
+    {
+        return view('masters.support-time-import');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => ['required', 'file', 'mimes:csv,txt'],
+        ]);
+
+        try {
+            Excel::import(new SupportTimesImport, $request->file('file'));
+            return redirect()->back()->with('success', 'インポートが完了しました。');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'インポート中にエラーが発生しました。');
         }
     }
 }

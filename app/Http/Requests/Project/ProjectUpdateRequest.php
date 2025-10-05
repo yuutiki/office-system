@@ -33,10 +33,10 @@ class ProjectUpdateRequest extends FormRequest
             'proposed_accounting_date' => '',
             'proposed_payment_date' => '',
             'project_memo' => 'max:500',
-            'account_affiliation1_id' => 'required',
-            'account_affiliation2_id' => 'required',
-            'account_affiliation3_id' => 'required',
-            'account_user_id' => 'required',
+            'account_affiliation1_id' => 'nullable',
+            'account_affiliation2_id' => 'nullable',
+            'account_affiliation3_id' => 'nullable',
+            'account_user_id' => 'nullable',
         ];
     }
     

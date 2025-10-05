@@ -4,14 +4,19 @@ namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
 use App\Models\Prefecture;
+use App\Services\PaginationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PrefectureController extends Controller
 {
-    public function index()
+    public function index(Request $request, PaginationService $paginationService)
     {
-        $prefectures = Prefecture::with('updatedBy')->paginate(50);
+        $perPage = $paginationService->getPerPage($request);
+
+        $prefectures = Prefecture::with('updatedBy')->paginate($perPage);
+
+
         return view('masters.prefecture-index',compact('prefectures'));
     }
 

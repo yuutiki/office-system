@@ -5,13 +5,12 @@
                 {{ Breadcrumbs::render('createProduct') }}
             </h2>
             <div class="ml-auto flex items-center space-x-2">
-                <x-message :message="session('message')" />
                 <form method="post" action="{{ route('products.store') }}" enctype="multipart/form-data" id="productForm" class="flex items-center">
                     @csrf
                     @can('storeUpdate_corporations')
-                        <x-button-save form-id="productForm" id="saveButton" onkeydown="stopTab(event)">
+                        <x-buttons.save-button form-id="productForm" id="saveButton" onkeydown="stopTab(event)">
                             {{ __('save') }}
-                        </x-button-save>
+                        </x-buttons.save-button>
                     @endcan
                 </form>
             </div>

@@ -35,10 +35,9 @@ class UserController extends Controller
     public function index(Request $request)//検索用にrequestを受取る
     {
         $per_page = config('constants.perPage');
-        $users = User::with(['affiliation1', 'affiliation2', 'affiliation3', 'employeeStatus']);
+        $users = User::with(['affiliation1', 'affiliation2', 'employeeStatus']);
         $affiliation1s = Affiliation1::all();
         $affiliation2s = Affiliation2::all();
-        $affiliation3s = Affiliation3::all();
         $employeeStatuses = EmployeeStatus::all();
 
 
@@ -56,7 +55,7 @@ class UserController extends Controller
         $query = User::query();
 
         // ここでEagerロードを設定
-        $query->with(['affiliation1', 'affiliation2', 'affiliation3', 'employeeStatus', 'updatedBy']);
+        $query->with(['affiliation1', 'affiliation2', 'employeeStatus', 'updatedBy']);
 
         // システム管理者でない場合は、id1のユーザーを非表示にする
         if (!$this->isSysAdmin()) {
@@ -96,7 +95,7 @@ class UserController extends Controller
         $users = $query->sortable()->paginate($per_page);
         $count = $users->total();
 
-        return view('admin.user.index',compact('users', 'employeeStatuses', 'userNum', 'userName', 'count', 'affiliation1s','affiliation2s','affiliation3s','employeeStatusIds','affiliation2Id', 'filters'));
+        return view('admin.user.index',compact('users', 'employeeStatuses', 'userNum', 'userName', 'count', 'affiliation1s','affiliation2s','employeeStatusIds','affiliation2Id', 'filters'));
     }
 
     private function isSysAdmin()
@@ -110,7 +109,6 @@ class UserController extends Controller
     {
         $affiliation1s = Affiliation1::all();
         $affiliation2s = Affiliation2::all();
-        $affiliation3s = Affiliation3::all();
         
         // 変更：Departmentモデルのメソッドを使用
         $departments = Department::getTreeStructure();
@@ -120,7 +118,7 @@ class UserController extends Controller
         $maxlength = config('constants.int_phone_maxlength');
 
 
-        return view('admin.user.create',compact('roles','e_statuses','affiliation1s','affiliation2s','affiliation3s','maxlength', 'departments'));
+        return view('admin.user.create',compact('roles','e_statuses','affiliation1s','affiliation2s','maxlength', 'departments'));
     }
 
     public function store(UserStoreRequest $request)
@@ -231,7 +229,6 @@ class UserController extends Controller
         $e_statuses = EmployeeStatus::with('users')->get();
         $affiliation1s = Affiliation1::all();
         $affiliation2s = Affiliation2::all();
-        $affiliation3s = Affiliation3::all();
         // 変更：Departmentモデルのメソッドを使用
         $departments = Department::getTreeStructure();
 
@@ -249,7 +246,7 @@ class UserController extends Controller
 
         $maxlength = config('constants.int_phone_maxlength');
 
-        return view('admin.user.edit',compact('user', 'e_statuses', 'user_e_status', 'affiliation1s', 'affiliation2s', 'affiliation3s', 'maxlength', 'roleGroups','departments'));
+        return view('admin.user.edit',compact('user', 'e_statuses', 'user_e_status', 'affiliation1s', 'affiliation2s', 'maxlength', 'roleGroups','departments'));
     }
 
     public function update(UserUpdateRequest $request, User $user)
@@ -480,10 +477,10 @@ class UserController extends Controller
         $userName = $request->user_name;
         $affiliation1Id = $request->affiliation1_id;
         $affiliation2Id = $request->affiliation2_id;
-        $affiliation3Id = $request->affiliation3_id;
+        // $affiliation3Id = $request->affiliation3_id;
 
         // クエリ作成
-        $query = User::with('affiliation1', 'affiliation2', 'affiliation3')
+        $query = User::with('affiliation1', 'affiliation2', 'department')
             ->where('employee_status_id', 1) // 退職者を除外
             ->where('role', '!=', 'system_admin'); // システム管理者を除外
 
@@ -496,9 +493,9 @@ class UserController extends Controller
         if (!empty($affiliation2Id)){
             $query->where('affiliation2_id', $affiliation2Id);
         }
-        if (!empty($affiliation3Id)){
-            $query->where('affiliation3_id', $affiliation3Id);
-        }
+        // if (!empty($affiliation3Id)){
+        //     $query->where('affiliation3_id', $affiliation3Id);
+        // }
 
         // クエリ実行
         $users = $query->get();

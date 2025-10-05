@@ -258,6 +258,28 @@ public static function getTree($parentId = null)
         return $result;
     }
 
+
+    /**
+     * 一番上の階層（ルート部門）を取得
+     */
+    public function getRootDepartment(): self
+    {
+        $department = $this;
+        while ($department->parent) {
+            $department = $department->parent;
+        }
+        return $department;
+    }
+
+    /**
+     * 一番上の階層の名称を直接取得するアクセサ
+     */
+    public function getRootNameAttribute(): string
+    {
+        return $this->getRootDepartment()->name;
+    }
+
+
     /**
      * 階層構造でソートされた全部署を取得（convenience method）
      *

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Master;
 use App\Exports\SupportTypesExport;
 use App\Http\Controllers\Controller;
 use App\Models\SupportType;
+use App\Services\PaginationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -12,26 +13,26 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class SupportTypeController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, PaginationService $paginationService)
     {
-        $perPage = config('constants.perPage');
+        $perPage = $paginationService->getPerPage($request);
+
         $typeCode = $request->input('code');
         $typeName = $request->input('name');
         
         $supportTypeQuery = SupportType::sortable()->with('updatedBy');
 
         if(!empty($typeCode)) {
-            $supportTypeQuery->where('type_code', $typeCode);
+            $supportTypeQuery->where('code', $typeCode);
         }
 
         if(!empty($typeName)) {
-            $supportTypeQuery->where('type_name', $typeName);
+            $supportTypeQuery->where('name', $typeName);
         }
 
-        $supportTypes = $supportTypeQuery->orderBy('type_code', 'asc')->paginate($perPage);
-        $count = $supportTypes->total();
+        $supportTypes = $supportTypeQuery->orderBy('code', 'asc')->paginate($perPage);
 
-        return view('masters.support-type-index',compact('supportTypes', 'count', 'request', 'typeCode'));
+        return view('masters.support-type-index',compact('supportTypes', 'request', 'typeCode'));
     }
 
     public function create()
@@ -42,9 +43,8 @@ class SupportTypeController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'type_code' => 'required|string|max:2|unique:support_types',
-            'type_name' => 'required|string|max:10',
-            'type_name_en' => 'nullable|string|max:10',
+            'code' => 'required|string|max:2|unique:support_types',
+            'name' => 'required|string|max:10',
         ]);
     
         try {
@@ -81,19 +81,16 @@ class SupportTypeController extends Controller
 
         $data = $request->validate([
             // 'type_code' => 'required|size:2',
-            'type_name' => 'required|max:20',
-            'type_name_en' => 'nullable|max:20',
+            'name' => 'required|max:20',
         ]);
         
         $data['updated_by'] = $user->id; // 更新者のIDを更新データに追加
     
         $supportType->fill($data)->save();
     
-        // return redirect()->back()->with('success', '正常に更新しました');
         return redirect()->route('support-type.index')->with('success', '正常に更新しました');
     }
 
-    // public function destroy(SupportType $supportType)
     public function destroy(string $id)
     {
         $client = SupportType::find($id);
@@ -102,9 +99,8 @@ class SupportTypeController extends Controller
         return redirect()->route('support-type.index')->with('success', '正常に削除しました');
     }
 
-    public function export(){
-
+    public function export()
+    {
 	    return Excel::download(new SupportTypesExport, 'support-types.csv', \Maatwebsite\Excel\Excel::CSV); 
-
     }
 }

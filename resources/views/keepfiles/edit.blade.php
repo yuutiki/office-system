@@ -8,9 +8,9 @@
                 <form method="post" action="{{route('keepfiles.update',$keepfile)}}" enctype="multipart/form-data" id="keepfileForm">
                     @csrf
                     @method('patch')
-                    <x-button-save form-id="keepfileForm" id="saveButton" onkeydown="stopTab(event)">
+                    <x-buttons.save-button form-id="keepfileForm" id="saveButton" onkeydown="stopTab(event)">
                         {{ __("update") }}
-                    </x-button-save>
+                    </x-buttons.save-button>
                 </form>
                 <button id="dropdownActionButton" data-dropdown-toggle="dropdownActions" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-600" type="button">
                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">

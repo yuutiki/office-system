@@ -1,11 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="text-lg text-gray-900 dark:text-white flex">
+        <div class="flex w-full">
+            <h2 class="flex text-gray-900 dark:text-white">
                 {{ Breadcrumbs::render('contactTypeMaster') }}
             </h2>
 
-            <div class="flex flex-shrink-0 w-auto md:flex-row space-y-0 space-x-3 items-center">
+            <div class="ml-auto flex space-x-2">
                 <x-buttons.add-button-drawer onclick="openDrawer('create')">
                     {{ __('create') }}
                 </x-buttons.add-button-drawer>

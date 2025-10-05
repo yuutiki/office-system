@@ -13,32 +13,32 @@ class VendorTypeSeeder extends Seeder
     public function run(): void
     {
         VendorType::create([
-            'vendor_type_code' => '10',
-            'vendor_type_name' => '株式会社',
+            'code' => '10',
+            'name' => '株式会社',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);
         VendorType::create([
-            'vendor_type_code' => '11',
-            'vendor_type_name' => '合同会社',
+            'code' => '11',
+            'name' => '合同会社',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);
         VendorType::create([
-            'vendor_type_code' => '12',
-            'vendor_type_name' => '合名会社',
+            'code' => '12',
+            'name' => '合名会社',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),
             'updated_at' => now()
         ]);
         VendorType::create([
-            'vendor_type_code' => '13',
-            'vendor_type_name' => '合資会社',
+            'code' => '13',
+            'name' => '合資会社',
             'created_by' => '1',
             'updated_by' => '1',
             'created_at' => now(),

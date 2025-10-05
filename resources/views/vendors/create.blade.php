@@ -7,9 +7,9 @@
             <div class="ml-auto flex items-center space-x-2">
                 <form method="post" action="{{ route('vendors.store') }}" enctype="multipart/form-data" id="createForm" class="flex">
                     @csrf
-                    <x-button-save form-id="createForm" id="saveButton" onkeydown="stopTab(event)">
+                    <x-buttons.save-button form-id="createForm" id="saveButton" onkeydown="stopTab(event)">
                         {{ __('登録') }}
-                    </x-button-save>
+                    </x-buttons.save-button>
                 </form>
             </div>
         </div>
@@ -231,4 +231,7 @@
 
 <script type="text/javascript" src="{{ asset('/assets/js/addresssearchbutton.js') }}"></script>
 <script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
+@push('scripts')
+    @vite(['resources/js/pages/vendors/create.js'])
+@endpush
 </x-app-layout>

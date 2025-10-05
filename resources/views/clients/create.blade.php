@@ -8,9 +8,9 @@
                 <form method="post" action="{{ route('clients.store') }}" enctype="multipart/form-data" id="clientForm" class="flex items-center">
                     @csrf
                     @can('storeUpdate_clients')
-                        <x-button-save form-id="clientForm" id="saveButton" onkeydown="stopTab(event)">
+                        <x-buttons.save-button form-id="clientForm" id="saveButton" onkeydown="stopTab(event)">
                             {{ __('save') }}
-                        </x-button-save>
+                        </x-buttons.save-button>
                     @endcan
                 </form>
             </div>
@@ -42,7 +42,7 @@
             <input type="text" form="clientForm" name="corporation_id" class="hidden" id="corporation_id" value="{{ old('corporation_id') }}" >
 
             <div class="">
-                <label for="client_name" class="block  text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客名称</label>
+                <label for="client_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">顧客名称</label>
                 <input type="text" form="clientForm" name="client_name" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="client_name" value="{{ old('client_name') }}" placeholder="例）烏丸大学">
                 @error('client_name')
                     <div class="text-red-500">{{ $message }}</div>
@@ -97,9 +97,9 @@
                 <label for="affiliation2" class="text-sm  text-gray-900 dark:text-white leading-none mt-4">管轄事業部<span class="text-red-500"> *</span></label>
                 <select form="clientForm" id="affiliation2" name="affiliation2" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     <option value="">未選択</option>
-                    @foreach($affiliation2s as $affiliation2)
+                    {{-- @foreach($affiliation2s as $affiliation2)
                     <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == old('affiliation2', Auth::user()->affiliation2->id))>{{ $affiliation2->affiliation2_name }}</option>
-                    @endforeach
+                    @endforeach --}}
                 </select>
                 @error('affiliation2')
                     <div class="text-red-500">{{ $message }}</div>
@@ -524,4 +524,8 @@
 
 <script type="text/javascript" src="{{ asset('/assets/js/addresssearchbutton.js') }}"></script>
 <script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
+
+@push('scripts')
+    @vite(['resources/js/pages/clients/create.js'])
+@endpush
 </x-app-layout>

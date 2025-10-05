@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AppMasterController;
 use App\Http\Controllers\AppSettingController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -102,47 +103,6 @@ Route::middleware(['auth'])->group(function () {
     // Route::post('/project-expense/upload', [ProjectExpenseController::class, 'upload'])->name('project-expense.upload');
     Route::resource('/project-expense', ProjectExpenseController::class);
 
-    // // corporations関連
-    // // 1. 特別な権限が必要なルート
-    // Route::middleware(['can:admin_corporations'])->group(function () {
-    //     Route::get('/corporations/show-upload', [CorporationController::class, 'showUploadForm'])->name('corporations.showUploadForm');
-    //     Route::post('/corporations/upload', [CorporationController::class, 'upload'])->name('corporations.upload');
-    // });
-
-
-    // Route::middleware(['can:download_corporations'])->group(function () {
-    //     Route::get('/corporations/download-csv', [CorporationController::class, 'downloadCsv'])->name('corporations.downloadCsv');
-    // });
-
-
-    // Route::post('/corporations/search', [CorporationController::class, 'search'])->name('corporations.search');
-
-    // // 3. 基本CRUDルート（個別に権限設定）
-    // Route::get('/corporations', [CorporationController::class, 'index'])
-    //     ->middleware('can:view_corporations')
-    //     ->name('corporations.index');
-
-    // Route::get('/corporations/create', [CorporationController::class, 'create'])
-    //     ->middleware('can:storeUpdate_corporations')
-    //     ->name('corporations.create');
-
-    // Route::post('/corporations', [CorporationController::class, 'store'])
-    //     ->middleware('can:storeUpdate_corporations')
-    //     ->name('corporations.store');
-
-    // Route::get('/corporations/{corporation}/edit', [CorporationController::class, 'edit'])
-    //     ->middleware('can:view_corporations')
-    //     ->name('corporations.edit');
-
-    // Route::put('/corporations/{corporation}', [CorporationController::class, 'update'])
-    //     ->middleware('can:storeUpdate_corporations')
-    //     ->name('corporations.update');
-
-    // Route::delete('/corporations/{corporation}', [CorporationController::class, 'destroy'])
-    //     ->middleware('can:delete_corporations')
-    //     ->name('corporations.destroy');
-
-    // Route::resource('/corporations', CorporationController::class);
 
     // corporationCredits関連
     Route::resource('/corporation-credits', CorporationCreditController::class);
@@ -195,7 +155,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/supports', '\App\Http\Controllers\SupportController');
 
     // repport関連
-    
     Route::get('/report/{report_id}/comment', [CommentController::class, 'show'])->name('comment.show');
     Route::post('/report/{report_id}/comment', [CommentController::class, 'store'])->name('comment.store');
     Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
@@ -279,54 +238,47 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/link', '\App\Http\Controllers\LinkController');
     Route::resource('/projectrevenue' , '\App\Http\Controllers\ProjectRevenueController');
 
-
-    // Route::post('/api/client-search', [ClientSearchModalDisplayItemController::class, 'search'])->name('api.client.search');
-
-
-
     // サポート履歴入力画面にて非同期で顧客情報を取得するエンドポイント
     Route::get('/api/client/{clientId}', [ClientController::class, 'getClientInfo'])->name('api.client.info');
 
 
 
-
-
-
     //マスタ系
-    Route::resource('/masters', '\App\Http\Controllers\AppMasterController');
-    Route::resource('/accounting-period', AccountingPeriodController::class);
-    Route::resource('/accounting-type', AccountingTypeController::class);
-    Route::resource('/affiliation3', Affiliation3Controller::class);
-    Route::resource('/affiliation2', Affiliation2Controller::class);
-    Route::resource('/affiliation1', Affiliation1Controller::class);
-    Route::resource('/contact-type', ContactTypeController::class);
-    Route::resource('/client-type', ClientTypeController::class);
-    Route::resource('/distribution-type', DistributionTypeController::class);
-    Route::resource('/installation-type', InstallationTypeController::class);
-    Route::resource('/prefecture', PrefectureController::class);
-    Route::resource('/product-maker', ProductMakerController::class);
-    Route::resource('/product-category', ProductCategoryController::class);
-    Route::resource('/product-type', ProductTypeController::class);
-    Route::resource('/product-split-type', ProductSplitTypeController::class);
-    Route::resource('/product-series', ProductSeriesController::class);
-    Route::resource('/product-version', ProductVersionController::class);
-    Route::resource('/project-type', ProjectTypeController::class);
-    Route::resource('/report-type', ReportTypeController::class);
-    Route::resource('/sales-stage', SalesStageController::class);
-    Route::resource('/support-time', SupportTimeController::class);
-    Route::resource('/departments', DepartmentController::class);
+    Route::resource('masters', AppMasterController::class)->only(['index']);
+    Route::resource('accounting-period', AccountingPeriodController::class);
+    Route::resource('accounting-type', AccountingTypeController::class);
+    Route::resource('affiliation2', Affiliation2Controller::class);
+    Route::resource('affiliation1', Affiliation1Controller::class);
+    Route::resource('contact-type', ContactTypeController::class);
+    Route::resource('client-type', ClientTypeController::class);
+    Route::resource('distribution-type', DistributionTypeController::class);
+    Route::resource('installation-type', InstallationTypeController::class);
+    Route::resource('prefecture', PrefectureController::class);
+    Route::resource('product-maker', ProductMakerController::class);
+    Route::resource('product-category', ProductCategoryController::class);
+    Route::resource('product-type', ProductTypeController::class);
+    Route::resource('product-split-type', ProductSplitTypeController::class);
+    Route::resource('product-series', ProductSeriesController::class);
+    Route::resource('product-version', ProductVersionController::class);
+    Route::resource('project-type', ProjectTypeController::class);
+    Route::resource('report-type', ReportTypeController::class);
+    Route::resource('sales-stage', SalesStageController::class);
+    Route::get('support-times/import-form', [SupportTimeController::class, 'showImportForm'])->name('support-times.showImportForm');
+    Route::post('support-times/import', [SupportTimeController::class, 'import'])->name('support-times.import');
+    Route::get('support-time/export',[SupportTimeController::class,'export'])->name('support-times.export');
+    Route::resource('support-time', SupportTimeController::class)->only('index', 'store', 'update', 'destroy');
+    Route::resource('departments', DepartmentController::class);
+    Route::resource('trade-status', TradeStatusController::class);
 
 
     Route::get('/support-type/export',[SupportTypeController::class,'export'])->name('support-types.export');
     Route::resource('/support-type', SupportTypeController::class);
-    Route::resource('/trade-status', TradeStatusController::class);
     Route::resource('/estimate-address', EstimateAddressController::class);
 
     
     Route::get('/model-logs', [ModelHistoryController::class, 'index'])->name('logs.index');
     Route::get('/model-logs/{modelHistory}', [ModelHistoryController::class, 'show'])->name('logs.show');
 
-    // Route::resource('/comment', '\App\Http\Controllers\CommentController');
 
     Route::post('/bulk-insert-revenues', [ProjectRevenueController::class, 'bulkInsert'])->name('projectrevenue.bulkInsert');
     Route::delete('/bulk-delete-revenues', [ProjectRevenueController::class, 'bulkDelete'])->name('projectrevenue.bulkDelete');
@@ -343,8 +295,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('department-settings/edit', [DepartmentSettingController::class, 'edit'])->name('department-settings.edit');
     Route::put('department-settings', [DepartmentSettingController::class, 'update'])->name('department-settings.update');
 
-
-    // routes/web.php
 
     Route::resource('/app-settings', AppSettingController::class);
     // Route::resource('/affiliation-level-settings', AppSettingController::class);

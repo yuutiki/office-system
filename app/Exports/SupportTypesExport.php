@@ -4,11 +4,12 @@ namespace App\Exports;
 
 use App\Models\SupportType;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithTitle;
 
-class SupportTypesExport implements FromCollection, WithHeadings, WithTitle, WithCustomCsvSettings
+class SupportTypesExport implements FromCollection, WithHeadings, WithTitle, WithCustomCsvSettings, ShouldAutoSize 
 {
     /**
     * @return \Illuminate\Support\Collection

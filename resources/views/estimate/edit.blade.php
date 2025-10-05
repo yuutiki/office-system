@@ -1,15 +1,15 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="font-semibold text-xl text-gray-900 dark:text-white">
+        <div class="flex w-full">
+            <h2 class="flex text-gray-900 dark:text-white">
                 {{ Breadcrumbs::render('editEstimate', $project, $estimate) }}
             </h2>
-            <div class="flex justify-end">
+            <div class="ml-auto flex">
                 <form id="estimateForm" method="POST" action="{{ route('estimates.update', ['projectId' => $project, 'estimateId' => $estimate]) }}" enctype="multipart/form-data" autocomplete="new-password">
                     @csrf
                     @method('patch')
                     <x-buttons.save-button form-id="estimateForm" id="saveButton" onkeydown="stopTab(event)">
-                        {{ __("Update") }}
+                        {{ __("update") }}
                     </x-buttons.save-button>
                 </form>
                 {{-- <button onclick="estimatePreview()" class="text-white ml-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-sm text-xs px-3.5 py-1.5  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
@@ -48,20 +48,12 @@
                         </li>
                     </ul>
                 </div>
-                <x-message :message="session('message')"/>
             </div>
         </div>
     </x-slot>
 
-    <div id="overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden"></div>
 
     <div class="mx-auto md:pl-16 pr-3 pl-3 pb-4 xl:w-5/6">
-        {{-- <form id="form1" method="POST" action="{{ route('estimate.update', ['project' => $project, 'estimate' => $estimate]) }}" enctype="multipart/form-data" autocomplete="new-password">
-            @csrf
-            @method('PUT')
-            <x-primary-button class="ml-2" form="form1">
-                更新する
-            </x-primary-button> --}}
             <div class="rounded border-gray-500 border mb-4 overflow-x-auto">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <tbody class="">
@@ -522,7 +514,6 @@
                         </div>
                     </div>
 
-
                     
                     <div class="text-white border rounded p-2 mt-6">
                         <div>{{ $estimate->project->accountAffiliation1->affiliation1_name }}</div>
@@ -597,7 +588,6 @@
                     <p>決裁情報の内容がここに表示されます。</p>
                 </div>
                 
-                {{-- </form> --}}
 
                 <div id="estimatePreview" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden animate-slide-in-top">
                     <div class="relative p-2 w-full max-w-7xl h-full md:h-auto">
@@ -630,6 +620,21 @@
                     </div>
                 </div>
             </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <script>
         let currentEditingRow = null;
