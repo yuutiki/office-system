@@ -64,7 +64,7 @@
                 <select form="createForm" id="vendor_type_id" name="vendor_type_id" class="input-secondary">
                     <option value="">---</option>
                     @foreach($vendorTypes as $vendorType)
-                        <option value="{{ $vendorType->id }}" @selected($vendorType->id == old('vendor_type_id'))>{{ $vendorType->vendor_type_name }}</option>
+                        <option value="{{ $vendorType->id }}" @selected($vendorType->id == old('vendor_type_id'))>{{ $vendorType->name }}</option>
                     @endforeach
                 </select>
                 @error('vendor_type_id')
@@ -111,39 +111,67 @@
             </ul>
         </div>
         <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-            <div class="grid gap-4 mb-4 sm:grid-cols-4 mt-2">
-                <div>
-                    <label for="post_code" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4" autocomplete="new-password">郵便番号</label>
-                    <div class="relative w-full">
-                        <input type="text" form="createForm" name="post_code" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="post_code" value="{{old('post_code')}}" placeholder="">
-                        <button type="button" id="ajaxzip" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-[34px] text-white mt-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                            </svg>
-                        </button>
+
+            <div class="grid gap-4 mb-4 md:grid-cols-5 mt-4">
+                <div class="flex">
+                    <div class="w-full flex flex-col">
+                        <label for="post_code" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-1" autocomplete="new-password">郵便番号</label>
+                        <input type="text" form="createForm" name="post_code" class="input-primary" id="post_code" value="{{ old('post_code') }}" placeholder="">
                     </div>
+                    <button type="button" id="ajaxzip3" data-form="createForm" class="p-2.5 text-sm font-medium h-[35px] text-white mt-[21px] ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 js-zip-search"
+                            data-zip="post_code"
+                            data-pref="prefecture_id"
+                            data-address="address_1">
+                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
+                    </button>
                 </div>
 
-                <div>
-                    <label for="prefecture_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4 ">都道府県</label>
-                    <select form="createForm" id="prefecture_id" name="prefecture_id" class="w-full py-1.5  text-sm mt-1 bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected value="">---</option>
+                <div class="w-full flex flex-col">
+                    <label for="prefecture_id" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-1">都道府県</label>
+                    <select id="prefecture_id" form="createForm" name="prefecture_id" class="input-primary">
+                        <option selected value="">未選択</option>
                         @foreach($prefectures as $prefecture)
                             <option value="{{ $prefecture->id }}" @if( $prefecture->id == old('prefecture_id') ) selected @endif>{{ $prefecture->prefecture_code }}:{{ $prefecture->prefecture_name }}</option>
                         @endforeach
                     </select>
                 </div>
+                <div class="w-full flex flex-col md:col-span-3">
+                    <label for="address_1" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-1">所在地</label>
+                    <input type="text" form="createForm" name="address_1" id="address_1" value="{{ old('address_1') }}" class="input-primary" placeholder="">
+                </div>
+            </div>
+
+
+            {{-- <div class="grid gap-4 mb-4 sm:grid-cols-4 mt-2">
                 <div class="col-span-2">
-                    <label for="address_1" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表所在地</label>
-                    <input type="text" form="createForm" name="address_1" id="address_1" value="{{old('address_1')}}" class="input-secondary" placeholder="">
+                    <label for="vendor_tel" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表TEL</label>
+                    <input type="tel" form="createForm" name="vendor_tel" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="vendor_tel" value="{{old('vendor_tel')}}" onchange="validateAndFormat('vendor_tel')" class="input-secondary" placeholder="">
                 </div>
                 <div class="col-span-2">
-                    <label for="head_tel" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表TEL</label>
-                    <input type="tel" form="createForm" name="head_tel" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_tel" value="{{old('head_tel')}}" onchange="validateAndFormat('head_tel')" class="input-secondary" placeholder="">
+                    <label for="vendor_fax" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表FAX</label>
+                    <input type="tel" form="createForm" name="vendor_fax" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="vendor_fax" value="{{old('vendor_fax')}}" onchange="validateAndFormat('vendor_fax')" class="input-secondary"  placeholder="">
                 </div>
-                <div class="col-span-2">
-                    <label for="head_fax" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表FAX</label>
-                    <input type="tel" form="createForm" name="head_fax" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="head_fax" value="{{old('head_fax')}}" onchange="validateAndFormat('head_fax')" class="input-secondary"  placeholder="">
+            </div> --}}
+            <div class="grid gap-4 sm:grid-cols-2 mb-6">
+                <div>
+                    <div class="w-full flex flex-col">
+                        <label for="vendor_tel" class="font-normal text-sm dark:text-white text-gray-900 leading-none">電話番号</label>
+                        <input type="text" form="createForm" name="vendor_tel" id="vendor_tel" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" onchange="validateAndFormat('vendor_tel')" value="{{ old('vendor_tel') }}" class="input-secondary" placeholder="090-1234-5678">
+                    </div>
+                    @error('vendor_tel')
+                        <div class="text-red-500">{{$message}}</div>
+                    @enderror
+                </div>
+                <div>
+                    <div class="w-full flex flex-col">
+                        <label for="vendor_fax" class="font-normal text-sm dark:text-white text-gray-900 leading-none">FAX番号</label>
+                        <input type="text" form="createForm" name="vendor_fax" id="vendor_fax" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" onchange="validateAndFormat('vendor_fax')" value="{{ old('vendor_fax') }}" class="input-secondary" placeholder="090-1234-5678">
+                    </div>
+                    @error('vendor_fax')
+                        <div class="text-red-500">{{$message}}</div>
+                    @enderror
                 </div>
             </div>
 
@@ -229,8 +257,6 @@
     </script>
     <script src="{{ asset('/assets/js/modal/corporation-search-modal.js') }}"></script>
 
-<script type="text/javascript" src="{{ asset('/assets/js/addresssearchbutton.js') }}"></script>
-<script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
 @push('scripts')
     @vite(['resources/js/pages/vendors/create.js'])
 @endpush

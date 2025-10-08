@@ -6,15 +6,12 @@ use App\Http\Requests\Support\SupportUpdateRequest;
 use App\Models\Affiliation2;
 use App\Models\Client;
 use App\Models\ClientProduct;
-use App\Models\ClientType;
-use App\Models\InstallationType;
 use App\Models\ProductCategory;
 use App\Models\ProductSeries;
 use App\Models\ProductVersion;
 use App\Models\Support;
 use App\Models\SupportTime;
 use App\Models\SupportType;
-use App\Models\TradeStatus;
 use App\Models\User;
 use App\Notifications\AppNotification;
 use App\Services\NotificationService;
@@ -26,6 +23,7 @@ use Goodby\CSV\Import\Standard\Lexer;
 use Goodby\CSV\Import\Standard\Interpreter;
 use Goodby\CSV\Import\Standard\LexerConfig;
 use App\Imports\SupportsImport;
+use App\Services\PaginationService;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
@@ -44,15 +42,15 @@ class SupportController extends Controller
         $this->notificationService = $notificationService;
     }
 
-    public function index(Request $request)
+    public function index(Request $request, PaginationService $paginationService)
     {
         // 検索条件用
         $productSeriess = ProductSeries::select('id', 'series_name')->get();  //製品シリーズ
         $productVersions = ProductVersion::select('id', 'version_name')->get();  //製品バージョン
         $productCategories = ProductCategory::select('id', 'category_name')->get();  // 製品系統
-        $users = User::select('id', 'user_name')->get();  //受付対応者用
         $supportTimes = SupportTime::select('id', 'name')->get(); //サポート時間
-        $supportTypes = SupportType::select('id', 'type_name')->get();// サポート種別
+        $supportTypes = SupportType::select('id', 'name')->get();// サポート種別
+        $users = User::select('id', 'user_name')->get();  //受付対応者用
 
 
         // 検索リクエストを取得し変数に格納
@@ -134,11 +132,10 @@ class SupportController extends Controller
         }
 
         // ページネーション設定
-        $perPage = config('constants.perPage');
+        $perPage = $paginationService->getPerPage($request);
         $supports = $supportsQuery->paginate($perPage);
-        $count = $supports->total(); // ページネーション後の総数を取得
 
-        return view('supports.index', compact('supports', 'count', 'supportTypes', 'selectedSupportTypes', 'keywords', 'users', 'supportTimes', 'productCategories', 'selectedProductCategories', 'selectedProductSeriess', 'clientName', 'productVersions', 'productSeriess', 'selectedUserId' ,'selectedUser', 'receivedAtFrom', 'receivedAtTo', 'statusIds'));
+        return view('supports.index', compact('supports', 'supportTypes', 'selectedSupportTypes', 'keywords', 'users', 'supportTimes', 'productCategories', 'selectedProductCategories', 'selectedProductSeriess', 'clientName', 'productVersions', 'productSeriess', 'selectedUserId' ,'selectedUser', 'receivedAtFrom', 'receivedAtTo', 'statusIds'));
     }
 
     public function create()

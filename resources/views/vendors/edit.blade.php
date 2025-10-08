@@ -59,7 +59,7 @@
                 <select form="editForm" id="vendor_type_id" name="vendor_type_id" class="input-secondary">
                     <option selected value="">---</option>
                     @foreach($vendorTypes as $vendorType)
-                    <option value="{{ $vendorType->id }}" @selected( $vendorType->id == $vendor->vendor_type_id)>{{ $vendorType->vendor_type_name }}</option>
+                    <option value="{{ $vendorType->id }}" @selected( $vendorType->id == $vendor->vendor_type_id)>{{ $vendorType->name }}</option>
                     @endforeach
                 </select>
                 @error('vendor_type_id')
@@ -145,17 +145,39 @@
                         <label for="address_1" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-1">所在地</label>
                         <input type="text" form="editForm"  name="address_1" id="address_1" value="{{old('address_1', $vendor->address_1)}}" class="input-primary" placeholder="">
                     </div>
-
-                    <div>
-                        <label for="vendor_tel" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表TEL（-）</label>
-                        <input type="text" form="editForm" name="vendor_tel" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="vendor_tel" value="{{old('vendor_tel',$vendor->vendor_tel)}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" placeholder="">
-                    </div>
-
-                    <div>
-                        <label for="vendor_fax" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表FAX（-）</label>
-                        <input type="tel" form="editForm" name="vendor_fax" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="vendor_fax" value="{{old('vendor_fax',$vendor->vendor_fax)}}" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded"  placeholder="">
-                    </div>
                 </div>
+
+                {{-- <div class="grid gap-4 sm:grid-cols-2 mb-6">
+                    <div class="col-span-2">
+                        <label for="vendor_tel" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表TEL</label>
+                        <input type="tel" form="editForm" name="vendor_tel" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="vendor_tel" value="{{old('vendor_tel', $vendor->vendor_tel)}}" onchange="validateAndFormat('vendor_tel')" class="input-secondary" placeholder="">
+                    </div>
+                    <div class="col-span-2">
+                        <label for="vendor_fax" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表FAX</label>
+                        <input type="tel" form="editForm" name="vendor_fax" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="vendor_fax" value="{{old('vendor_fax', $vendor->vendor_fax)}}" onchange="validateAndFormat('vendor_fax')" class="input-secondary"  placeholder="">
+                    </div>
+                </div> --}}
+
+            <div class="grid gap-4 sm:grid-cols-2 mb-6">
+                <div>
+                    <div class="w-full flex flex-col">
+                        <label for="vendor_tel" class="font-normal text-sm dark:text-white text-gray-900 leading-none">電話番号</label>
+                        <input type="text" form="editForm" name="vendor_tel" id="vendor_tel" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" onchange="validateAndFormat('vendor_tel')" value="{{ old('vendor_tel', $vendor->vendor_tel) }}" class="input-secondary" placeholder="090-1234-5678">
+                    </div>
+                    @error('vendor_tel')
+                        <div class="text-red-500">{{$message}}</div>
+                    @enderror
+                </div>
+                <div>
+                    <div class="w-full flex flex-col">
+                        <label for="vendor_fax" class="font-normal text-sm dark:text-white text-gray-900 leading-none">FAX番号</label>
+                        <input type="text" form="editForm" name="vendor_fax" id="vendor_fax" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" onchange="validateAndFormat('vendor_fax')" value="{{ old('vendor_fax', $vendor->vendor_fax) }}" class="input-secondary" placeholder="090-1234-5678">
+                    </div>
+                    @error('vendor_fax')
+                        <div class="text-red-500">{{$message}}</div>
+                    @enderror
+                </div>
+            </div>
 
                 <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
 

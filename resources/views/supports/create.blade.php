@@ -8,7 +8,7 @@
                 <form method="post" action="{{ route('supports.store') }}" enctype="multipart/form-data" id="supportForm" class="flex">
                     @csrf
                     <x-buttons.save-button form-id="supportForm" id="saveButton" onkeydown="stopTab(event)">
-                        {{ __('登録') }}
+                        {{ __('save') }}
                     </x-buttons.save-button>
 
                     <x-buttons.draft-button form-id="supportForm" id="saveButton" class="ml-2" onclick="document.getElementById('isDraft').value = '1'; document.getElementById('supportForm').submit();">
@@ -39,48 +39,42 @@
                     </div>
                     <!-- 顧客No. -->
                     <tr class="md:border-b dark:border-gray-600 block md:table-row">
-                        <th class="pl-4 pr-2 py-0.5 md:border-r dark:border-gray-600 whitespace-nowrap block bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
+                        <th class="pl-4 pr-2 py-2 md:py-0.5  md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800">
                             <div class="flex items-center justify-between">
                                 <span>顧客No.</span>
-                                <button type="button" 
-                                    onclick="ClientSearchModal.show('clientSearchModal')" 
-                                    data-form="supportForm"
+                                <button type="button" onclick="ClientSearchModal.show('clientSearchModal')"  data-form="supportForm"
                                     class="ml-2 p-1.5 text-sm font-medium h-[30px] text-white bg-blue-700 rounded border border-blue-700 
-                                        hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 
+                                        hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700
                                         dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 
-                                        focus:ring-offset-2 dark:focus:ring-offset-gray-800 zip2addr-trigger hidden md:block">
+                                        focus:ring-offset-2 dark:focus:ring-offset-gray-800 hidden md:block">
                                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                     </svg>
                                 </button>
                             </div>
                         </th>
-
-                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-1.5 md:px-2 md:py-1">
-                            {{-- <div class="text-sm font-medium md:dark:text-gray-300">{{ optional($report->reportType)->report_type_name }}</div> --}}
-                            <input type="text" form="supportForm" name="client_num" id="client_num" value="{{ old('client_num', optional($client)->client_num) }}" class="w-full py-1 rounded bg-gray-300 dark:bg-gray-400 text-sm dark:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 placeholder-gray-400 transition ease-in-out duration-150 @error('client_id') input-error @enderror" placeholder="" readonly tabindex="-1">
+                        <td class="dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-1.5 md:px-2 md:py-1">
+                            <input type="text" form="supportForm" name="client_num" id="client_num" value="{{ old('client_num', optional($client)->client_num) }}" class="w-full py-1 rounded bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 @error('client_id') input-error @enderror" placeholder="" readonly tabindex="-1">
                         </td>
                     </tr>
                     
                     <!-- 顧客名称 -->
                     <tr class="md:border-b dark:border-gray-600 block md:table-row">
-                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-48">
                             顧客名称
                         </th>
-                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-1 md:px-2 md:py-1">
-                            <input type="text" form="supportForm" name="client_name" id="client_name" value="{{ old('client_name', optional($client)->client_name) }}" class="w-full py-1 rounded bg-gray-300 dark:bg-gray-400 text-sm dark:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 placeholder-gray-400 transition ease-in-out duration-150 @error('client_id') input-error @enderror" placeholder="" readonly tabindex="-1">
-
+                        <td class="dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-1 md:px-2 md:py-1">
+                            <input type="text" form="supportForm" name="client_name" id="client_name" value="{{ old('client_name', optional($client)->client_name) }}" class="w-full py-1 rounded bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 @error('client_id') input-error @enderror" placeholder="" readonly tabindex="-1">
                         </td>
                     </tr>
                     
                     <!-- 管轄部門 -->
-                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
-                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
+                    <tr class="dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800">
                             管轄部門
                         </th>
-                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-1 md:px-2 md:py-1.5">
-                            <input type="text" form="supportForm" name="affiliation2" id="affiliation2" value="{{ old('affiliation2', optional(optional($client)->department)->path) }}" class="w-full py-1 rounded bg-gray-300 dark:bg-gray-400 text-sm dark:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 placeholder-gray-400 transition ease-in-out duration-150 @error('client_id') input-error @enderror" placeholder="" readonly tabindex="-1">
+                        <td class="dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-1 md:px-2 md:py-1">
+                            <input type="text" form="supportForm" name="affiliation2" id="affiliation2" value="{{ old('affiliation2', optional(optional($client)->department)->path) }}" class="w-full py-1 rounded bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 @error('client_id') input-error @enderror" placeholder="" readonly tabindex="-1">
                         </td>
                     </tr>
                 </tbody>
@@ -135,7 +129,7 @@
                 </div>
                 <div class="flex">
                     <div class="relative w-full">
-                        <label for="client_user_kana_name" class="label-primary" autocomplete="new-password">顧客 氏名</label>
+                        <label for="client_user_kana_name" class="label-primary" autocomplete="new-password">顧客担当者</label>
                         <input type="text" form="supportForm" name="client_user_kana_name" class="input-secondary" id="client_user_kana_name" value="{{old('client_user_kana_name')}}" placeholder="">
                         @error('client_user_kana_name')
                             <div class="validate-message">{{ $message }}</div>
@@ -148,7 +142,7 @@
                     </button>
                 </div>
                 <div class="">
-                    <label for="client_user_department" class="label-primary">顧客 部署</label>
+                    <label for="client_user_department" class="label-primary">顧客部署</label>
                     <input type="text" form="supportForm" name="client_user_department" class="input-secondary" id="client_user_department" value="{{old('client_user_department')}}" placeholder="">
                     @error('client_user_department')
                         <div class="validate-message">{{ $message }}</div>
@@ -184,7 +178,7 @@
                     <select form="supportForm" id="support_type_id" name="support_type_id" class="input-secondary">
                         <option selected value="">---</option>
                         @foreach($supportTypes as $supportType)
-                            <option value="{{ $supportType->id }}" @selected($supportType->id == old('support_type_id'))>{{ $supportType->type_name }}</option>
+                            <option value="{{ $supportType->id }}" @selected($supportType->id == old('support_type_id'))>{{ $supportType->name }}</option>
                         @endforeach
                     </select>
                     @error('support_type_id')
@@ -640,6 +634,7 @@
             console.warn('clientInfoManager not initialized'); // 追加
         }
     </script>
+    
     <script src="{{ asset('/assets/js/modal/client-search-modal.js') }}"></script>
     <script src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
     <script src="{{ asset('/assets/js/client-info-manager.js') }}"></script>

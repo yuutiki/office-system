@@ -184,7 +184,7 @@
                                                         name="support_types[]" 
                                                         class="hidden peer touch-none">
                                                     <label for="supportType-{{ $supportType->id }}" class="checkbox-label">
-                                                        <div class="w-full text-sm font-medium text-center">{{ $supportType->type_name }}</div>
+                                                        <div class="w-full text-sm font-medium text-center">{{ $supportType->name }}</div>
                                                     </label>
                                                 </li>
                                             @endforeach
@@ -397,7 +397,7 @@
                             {{ $support->received_at }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap font-medium">
-                            {{ optional($support->supportType)->type_name }}
+                            {{ optional($support->supportType)->name }}
                         </td>
                         <td class="px-1 py-1 whitespace-nowrap font-semibold">
                             {{ Str::limit($support->title, 80, '...') }}
