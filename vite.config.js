@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import { glob } from 'glob';
+import { globSync } from 'fast-glob';  // ← 変更
 
 export default defineConfig({
     plugins: [
@@ -8,7 +8,7 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
-                ...glob.sync('resources/js/pages/**/*.js'),  // ← 全ページJS自動読み込み
+                ...globSync('resources/js/pages/**/*.js'),  // ← 変更
             ],
             refresh: true,
         }),
