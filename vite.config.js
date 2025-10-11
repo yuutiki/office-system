@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import { globSync } from 'fast-glob';  // ← 変更
+import fg from 'fast-glob';
 
 export default defineConfig({
     plugins: [
@@ -8,7 +8,7 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
-                ...globSync('resources/js/pages/**/*.js'),  // ← 変更
+                ...fg.sync('resources/js/pages/**/*.js'),
             ],
             refresh: true,
         }),
