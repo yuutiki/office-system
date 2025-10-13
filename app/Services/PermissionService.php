@@ -8,12 +8,19 @@ use App\Models\FunctionMenu;
 class PermissionService
 {
     protected array $cache = [];
-    protected array $functionMenusCache = [];
+    protected ?array $functionMenusCache = null;
 
     public function __construct()
     {
-        // アプリ起動時に全 function_menus をキャッシュ
-        $this->functionMenusCache = FunctionMenu::all()->keyBy('function_menu_code')->toArray();
+        // コンストラクタでは DB クエリを行わない
+    }
+
+    protected function loadFunctionMenus(): array
+    {
+        if ($this->functionMenusCache === null) {
+            $this->functionMenusCache = FunctionMenu::all()->keyBy('function_menu_code')->toArray();
+        }
+        return $this->functionMenusCache;
     }
 
     public function checkPermission(User $user, string $functionMenuCode, int $requiredPermissionId): bool
@@ -24,12 +31,13 @@ class PermissionService
             return $this->cache[$cacheKey];
         }
 
-        // eagerロードされていなければロード
         if (!$user->relationLoaded('roleGroups') || $user->roleGroups->isEmpty() || $user->roleGroups->first()->relationLoaded('functionMenus') === false) {
             $user->load('roleGroups.functionMenus');
         }
 
-        $functionMenu = $this->functionMenusCache[$functionMenuCode] ?? null;
+        $functionMenus = $this->loadFunctionMenus();
+        $functionMenu = $functionMenus[$functionMenuCode] ?? null;
+
         if (!$functionMenu) {
             return $this->cache[$cacheKey] = false;
         }
@@ -43,3 +51,4 @@ class PermissionService
         return $this->cache[$cacheKey] = $result;
     }
 }
+
