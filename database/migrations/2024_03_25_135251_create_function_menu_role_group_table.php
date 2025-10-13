@@ -19,6 +19,10 @@ return new class extends Migration
             $table->foreignId('created_by')->nullable(true)->comment('作成者');
             $table->foreignId('updated_by')->nullable(true)->comment('更新者');
             $table->datetimes();
+
+            // 複合インデックスを追加
+            $table->index(['role_group_id', 'function_menu_id']);
+            $table->index(['function_menu_id', 'permission_id']);
         });
     }
 

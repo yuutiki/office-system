@@ -17,7 +17,7 @@
 <!-- lodash CDN（debounce用） -->
 <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 
-    {{-- @include('dashboard.components.my-calendar') --}}
+    @include('dashboard.components.my-calendar')
 
 
         <main class="p-2 md:ml-12 h-full">
@@ -487,6 +487,18 @@
             chart.render();
         }
     </script>
+
+
+
+
+
+
+
+
+
+
+
+
 
     <script src="{{ asset('assets/js/chart/barSupport.js') }}"></script>
     <script src="{{ asset('assets/js/chart/pieUsage.js') }}"></script>

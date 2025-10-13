@@ -5,7 +5,7 @@
                 {{ Breadcrumbs::render('createProject') }}
             </h2>
             <div class="ml-auto flex">
-                <form method="post" id="createForm" action="{{route('projects.store')}}" enctype="multipart/form-data" autocomplete="new-password">
+                <form method="post" id="createForm" action="{{route('projects.store') }}" enctype="multipart/form-data" autocomplete="new-password">
                     @csrf
                     <x-buttons.save-button id="saveButton">
                         {{ __('save') }}
@@ -15,56 +15,85 @@
         </div>
     </x-slot>
 
-    <div class="max-w-7xl mx-auto px-2 md:pl-14">
-
-
-        <!-- 顧客検索ボタン -->
-        <button type="button" onclick="ClientSearchModal.show('clientSearchModal1')" class="md:ml-1 md:mt-1 mt-1 mb-4 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+    <div class="max-w-7xl mx-auto px-2 md:pl-14 mb-4">
+        <!-- 顧客検索ボタン(画面小) -->
+        <button type="button" onclick="ClientSearchModal.show('clientSearchModal')" class="md:ml-1 md:mt-1 mt-1 mb-4 w-full md:w-auto whitespace-nowrap md:hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
             顧客検索
         </button>
 
+        <div class="mx-auto my-4 rounded shadow-md overflow-hidden border border-gray-200 dark:border-gray-600">
+            <table class="w-full text-sm text-left divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
+                <tbody>
+                    
+                    <div class="hidden">
+                        <label for="client_id">顧客ID（非表示）</label>
+                        <input type="hidden" form="createForm" name="client_id" id="client_id" value="{{ old('client_id') }}">
+                    </div>
+                    <!-- 顧客No. -->
+                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:py-0.5  md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800">
+                            <div class="flex items-center justify-between">
+                                <span>顧客No.</span>
+                                <button type="button" onclick="ClientSearchModal.show('clientSearchModal')"  data-form="supportForm"
+                                    class="ml-2 p-1.5 text-sm font-medium h-[30px] text-white bg-blue-700 rounded border border-blue-700 
+                                        hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700
+                                        dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 
+                                        focus:ring-offset-2 dark:focus:ring-offset-gray-800 hidden md:block">
+                                    {{-- <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                    </svg> --}}
+                                    <x-icon name="ui/search" class="w-4 h-4"></x-icon>
+                                </button>
+                            </div>
+                        </th>
+                        <td class="dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-1.5 md:px-2 md:py-1">
+                            <input type="text" form="createForm" name="client_num" id="client_num" value="{{ old('client_num') }}" class="w-full py-1 rounded bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-700 text-sm pointer-events-none @error('client_id') input-error @enderror" placeholder="" tabindex="-1">
+                        </td>
+                    </tr>
 
-
-        <div class="grid gap-4 mb-4 sm:grid-cols-3">
-            <div class="">
-                <label for="corporation_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-4">法人名称</label>
-                <input form="createForm" type="text" name="corporation_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" id="corporation_name" value="{{old('corporation_name')}}" placeholder="顧客検索してください" readonly>
-                @error('corporation_name')
-                    <div class="text-red-500">{{ $message }}</div>
-                @enderror
-            </div>
-            <div class="hidden">
-                <label for="client_num" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-4">顧客番号</label>
-                <input form="createForm" type="text" name="client_num" id="client_num" value="{{old('client_num')}}" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed">
-            </div>
-            <div class="">
-                <label for="client_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-4">顧客名称</label>
-                <input form="createForm" type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 cursor-not-allowed" id="client_name" value="{{old('client_name')}}" placeholder="顧客検索してください" readonly>
-                @error('client_name')
-                    <div class="text-red-500">{{ $message }}</div>
-                @enderror
-            </div>
-            <div>
-                <label for="affiliation2_id" class="block text-sm  text-gray-900 dark:text-white leading-none md:mt-4">管轄事業部</label>
-                <select form="createForm" id="affiliation2_id" name="affiliation2_id" class="dark:bg-gray-400 mt-1 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 pointer-events-none" readonly>
-                    <option value="">未選択</option>
-                    @foreach($affiliation2s as $affiliation2)
-                    <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == old('affiliation2_id'))>{{ $affiliation2->affiliation2_name }}</option>
-                    @endforeach
-                </select>
-                @error('affiliation2_id')
-                    <div class="text-red-500">{{ $message }}</div>
-                @enderror
-            </div>
+                    <!-- 法人名称 -->
+                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-48">
+                            法人名称
+                        </th>
+                        <td class="dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-1 md:px-2 md:py-1">
+                            <input type="text" form="createForm" name="corporation_name" id="corporation_name" value="{{ old('corporation_name') }}" class="w-full py-1 rounded bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-700 text-sm pointer-events-none @error('client_id') input-error @enderror" placeholder="" tabindex="-1">
+                        </td>
+                    </tr>
+                    
+                    <!-- 顧客名称 -->
+                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-48">
+                            顧客名称
+                        </th>
+                        <td class="dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-1 md:px-2 md:py-1">
+                            <input type="text" form="createForm" name="client_name" id="client_name" value="{{ old('client_name') }}" class="w-full py-1 rounded bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-700 text-sm pointer-events-none @error('client_id') input-error @enderror" placeholder="" tabindex="-1">
+                        </td>
+                    </tr>
+                    
+                    <!-- 管轄部門 -->
+                    <tr class="dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800">
+                            管轄部門
+                        </th>
+                        <td class="dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-1 md:px-2 md:py-1">
+                            <input type="text" form="createForm" name="department_path" id="department_path" value="{{ old('department_path') }}" class="w-full py-1 rounded bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-700 text-sm pointer-events-none @error('client_id') input-error @enderror" placeholder="" tabindex="-1">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+        @error('client_id')
+            <div class="validate-message">{{ $message }}</div>
+        @enderror
 
-            <div class="col-span-3">
-                <label for="project_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-4">プロジェクト名称<span class="text-red-500"> *</span></label>
-                <input form="createForm" type="text" name="project_name" class="input-secondary" id="project_name" value="{{old('project_name')}}" placeholder="">
-                @error('project_name')
-                    <div class="text-red-500">{{ $message }}</div>
-                @enderror
-            </div>
+        <div class="col-span-3">
+            <label for="project_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-4">プロジェクト名称<span class="text-red-500"> *</span></label>
+            <input form="createForm" type="text" name="project_name" class="input-secondary" id="project_name" value="{{ old('project_name') }}" placeholder="">
+            @error('project_name')
+                <div class="text-red-500">{{ $message }}</div>
+            @enderror
+        </div>
 
         <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
             <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
@@ -76,7 +105,7 @@
 
         <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="base" role="tabpanel" aria-labelledby="base-tab">
 
-            <div class="grid gap-4 mb-4 md:grid-cols-4 grid-cols-2">
+            <div class="grid gap-2 mb-4 md:grid-cols-4 grid-cols-2">
                 <div class="w-full flex flex-col">
                     <label for="sales_stage_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">営業段階<span class="text-red-500"> *</span></label>
                     <select form="createForm" id="sales_stage_id" name="sales_stage_id" class="input-primary">
@@ -158,89 +187,66 @@
                 @enderror
             </div>
 
-        <button type="button" onclick="CorporationSearchModal.show('corporationSearchModal1')" class="md:ml-1 mt-8 mb-2 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-            請求先検索
-        </button>
+            <button type="button" onclick="CorporationSearchModal.show('corporationSearchModal')" class="sm:hidden md:ml-1 mt-8 mb-2 w-full md:w-auto whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                請求先検索
+            </button>
 
             <div class="grid gap-2 mb-4 sm:grid-cols-4">
                 <div class="w-full flex flex-col hidden">
-                    <label for="billing_corporation_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">請求先法人ID（非表示）</label>
-                    <input form="createForm" type="text" name="billing_corporation_id" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 mb-2" id="billing_corporation_id" value="{{old('billing_corporation_id')}}" placeholder="">
+                    <label for="billing_corporation_id" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">請求先法人ID（非表示）</label>
+                    <input form="createForm" type="text" name="billing_corporation_id" class="w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 mb-2" id="billing_corporation_id" value="{{ old('billing_corporation_id') }}" placeholder="">
                 </div>
-                <div class="w-full flex flex-col">
-                    <label for="billing_corporation_num" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">請求先法人№</label>
-                    <input form="createForm" type="text" name="billing_corporation_num" class="input-secondary" id="billing_corporation_num" value="{{old('billing_corporation_num')}}" placeholder="">
-                    @error('billing_corporation_id')
-                        <div class="text-red-500">{{ $message }}</div>
-                    @enderror
+
+                <div>
+                    <div class="flex">
+                        <div class="w-full flex flex-col">
+                            <label for="billing_corporation_num" class="dark:text-gray-100 text-gray-900 leading-none text-sm mt-1" autocomplete="new-password">請求先法人№</label>
+                            <input type="text" form="createForm" name="billing_corporation_num" class="input-primary" id="billing_corporation_num" value="{{ old('billing_corporation_num') }}" placeholder="">
+                        </div>
+                        <button type="button" onclick="CorporationSearchModal.show('corporationSearchModal')" data-form="createForm" class="p-2.5 text-sm font-medium h-[35px] text-white mt-[21px] ml-1 bg-blue-700 rounded border border-blue-700 hover:bg-blue-800 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div>
+                        @error('billing_corporation_id')
+                            <div class="text-red-500">{{ $message }}</div>
+                        @enderror
+                    </div>
                 </div>
-                <div class="w-full flex flex-col">
-                    <label for="billing_corporation_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">請求先法人名称</label>
-                    <input form="createForm" type="text" name="billing_corporation_name" class="dark:bg-gray-400 w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 mb-2" id="billing_corporation_name" value="{{old('billing_corporation_name')}}" readonly>
+
+                <div class="w-full flex flex-col col-span-3">
+                    <label for="billing_corporation_name" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-1">請求先法人名称</label>
+                    <input form="createForm" type="text" name="billing_corporation_name" class="dark:bg-gray-400 w-auto py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 mb-2" id="billing_corporation_name" value="{{ old('billing_corporation_name') }}" readonly>
                 </div>
             </div>
 
             <div class="w-full flex flex-col">
                 <label for="project_memo" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">プロジェクト備考</label>
-                <textarea form="createForm" name="project_memo" class="w-auto py-1 border border-gray-300 rounded mt-1 placeholder-gray-400"data-auto-resize="true" data-auto-resize="true" id="project_memo" cols="30" rows="5">{{old('project_memo')}}</textarea>
+                <textarea form="createForm" name="project_memo" class="input-secondary" data-auto-resize="true" id="project_memo" cols="30" rows="5">{{ old('project_memo') }}</textarea>
                 @error('project_memo')
                     <div class="text-red-500">{{ $message }}</div>
                 @enderror
             </div>
 
-
-    <div class="mb-4 mt-4">
-        <label for="department_id" class="text-sm text-gray-900 dark:text-white leading-none">
-            計上部門
-        </label>
-        <select id="department_id" form="createForm" name="department_id" class="input-secondary w-full">
-            <option value="">未選択</option>
-            @foreach($departments as $department)
-                <option value="{{ $department->id }}" @selected(old('department_id', Auth::user()->department_id) == $department->id)>
-                    {{ $department->path }}
-                </option>
-            @endforeach
-        </select>
-        @error('department_id')
-            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-        @enderror
-    </div>
-
-
+            <div class="mb-4 mt-4">
+                <label for="department_id" class="text-sm text-gray-900 dark:text-white leading-none">
+                    計上部門
+                </label>
+                <select id="department_id" form="createForm" name="department_id" class="input-secondary w-full">
+                    <option value="">未選択</option>
+                    @foreach($departments as $department)
+                        <option value="{{ $department->id }}" @selected(old('department_id') == $department->id)>
+                            {{ $department->path }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('department_id')
+                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                @enderror
+            </div>
             <div class="grid gap-4 my-4 sm:grid-cols-4">
-                {{-- <div>
-                    <label for="account_affiliation1_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">計上所属1</label>
-                    <select form="createForm" id="account_affiliation1_id" name="account_affiliation1_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        @foreach($affiliation1s as $affiliation1)
-                        <option value="{{ $affiliation1->id }}" @selected($affiliation1->id == old('account_affiliation1_id', Auth::user()->affiliation1->id))>{{ $affiliation1->affiliation1_name }}</option>
-                        @endforeach
-                    </select>
-                    @error('account_affiliation1_id')
-                        <div class="text-red-500">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div>
-                    <label for="account_affiliation2_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">計上所属2</label>
-                    <select form="createForm" id="account_affiliation2_id" name="account_affiliation2_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        @foreach($affiliation2s as $affiliation2)
-                        <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == old('affiliation2', Auth::user()->affiliation2->id))>{{ $affiliation2->affiliation2_name }}</option>
-                        @endforeach
-                    </select>
-                    @error('affiliation2')
-                        <div class="text-red-500">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div>
-                    <label for="account_affiliation3_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">計上所属3</label>
-                    <select form="createForm" id="account_affiliation3_id" name="account_affiliation3_id" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        @foreach($affiliation3s as $affiliation3)
-                        <option value="{{ $affiliation3->id }}" @selected($affiliation3->id == old('account_affiliation3_id', Auth::user()->affiliation3->id))>{{ $affiliation3->affiliation3_name }}</option>
-                        @endforeach
-                    </select>
-                    @error('account_affiliation3_id')
-                        <div class="text-red-500">{{ $message }}</div>
-                    @enderror
-                </div> --}}
                 <div>
                     <label for="account_user_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">計上担当者</label>
                     <select form="createForm" id="account_user_id" name="account_user_id" class="input-secondary">
@@ -257,8 +263,9 @@
     </div>
 
 
+    {{-- 顧客検索モーダル --}}
     <x-modals.client-search-modal
-        modalId="clientSearchModal1"
+        modalId="clientSearchModal"
         screenId="order_entry"
         :users="$users"
         onSelectCallback="handleClientSelect"
@@ -267,24 +274,30 @@
     <script>
         // コールバック関数の定義
         function handleClientSelect(client) {
-            document.getElementById('client_num').value = client.client_num;
+            document.getElementById('client_id').value = client.id;
             document.getElementById('corporation_name').value = client.corporation.corporation_name;
+            document.getElementById('client_num').value = client.client_num;
             document.getElementById('client_name').value = client.client_name;
-            document.getElementById('affiliation2_id').value = client.affiliation2.id;
+            document.getElementById('department_path').value = client.department.path;
             // document.getElementById('sales_user').value = client.user.user_name;
+
+            // 計上部門も先に埋める
+            document.getElementById('department_id').value = client.department.id;
+
+            // 請求先法人も先に埋める
+            document.getElementById('billing_corporation_num').value = client.corporation.corporation_num;
+            document.getElementById('billing_corporation_id').value = client.corporation.id;
+            document.getElementById('billing_corporation_name').value = client.corporation.corporation_name;
         }
         // モーダルのコールバック関数を設定
-        window.clientSearchModal1_onSelect = handleClientSelect;
+        window.clientSearchModal_onSelect = handleClientSelect;
     </script>
     <script src="{{ asset('/assets/js/modal/client-search-modal.js') }}"></script>
 
 
-
-
-
-    {{-- 各画面のBladeテンプレート --}}
+    {{-- 請求先検索モーダル --}}
     <x-modals.corporation-search-modal
-        modalId="corporationSearchModal1"
+        modalId="corporationSearchModal"
         screenId="order_entry"
         :users="$users"
         onSelectCallback="handleClientSelect"
@@ -298,49 +311,13 @@
             document.getElementById('billing_corporation_name').value = corporation.corporation_name;
         }
         // モーダルのコールバック関数を設定
-        window.corporationSearchModal1_onSelect = handleClientSelect;
+        window.corporationSearchModal_onSelect = handleClientSelect;
     </script>
     <script src="{{ asset('/assets/js/modal/corporation-search-modal.js') }}"></script>
 
 
 
-
-
-
-
-{{-- 4つの日付入力欄で入力が完了しフォーカスが外れたら次の入力欄に値をコピーする --}}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const dateFields = [
-            'proposed_order_date',
-            'proposed_delivery_date',
-            'proposed_accounting_date',
-            'proposed_payment_date'
-        ];
-    
-        dateFields.forEach((fieldId, index) => {
-            if (index === 0) return; // 最初のフィールドはスキップ
-    
-            const currentField = document.getElementById(fieldId);
-            const previousField = document.getElementById(dateFields[index - 1]);
-    
-            // 前のフィールドの値が変更されたときに、次のフィールドに値をセット
-            previousField.addEventListener('blur', function() {
-                // 入力値が不完全な場合は処理しない
-                if (!this.value.match(/^\d{4}-\d{2}$/)) return;
-                if (!currentField.value) { // 現在のフィールドが空の場合のみ
-                    currentField.value = this.value;
-                }
-            });
-    
-            // ページ読み込み時に、前のフィールドに値があり現在のフィールドが空の場合、値をコピー
-            if (previousField.value && !currentField.value) {
-                currentField.value = previousField.value;
-            }
-        });
-    });
-    </script>
-
-<script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
-
+    @push('scripts')
+        @vite('resources/js/pages/projects/create.js')
+    @endpush
 </x-app-layout>

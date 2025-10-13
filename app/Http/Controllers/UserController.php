@@ -16,6 +16,7 @@ use App\Models\Role;
 use App\Models\EmployeeStatus;
 use App\Models\RoleGroup;
 use App\Models\UserRolegroup;
+use App\Services\PaginationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
@@ -32,78 +33,24 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    public function index(Request $request)//検索用にrequestを受取る
+    public function index(Request $request, PaginationService $paginationService)//検索用にrequestを受取る
     {
-        $per_page = config('constants.perPage');
-        $users = User::with(['affiliation1', 'affiliation2', 'employeeStatus']);
-        $affiliation1s = Affiliation1::all();
-        $affiliation2s = Affiliation2::all();
-        $employeeStatuses = EmployeeStatus::all();
+        $perPage = $paginationService->getPerPage($request);
 
+        $employeeStatuses = EmployeeStatus::all();
+        $rawdepartments = Department::all();
+        $departments = Department::buildTree($rawdepartments); // 親子順に並んだリストを取得
 
         //検索フォームに入力された値を取得
-        $filters = $request->only(['user_num', 'user_name', 'affiliation2_id','employee_status_ids']);
-
-        // 同じ条件を別の変数にも格納(画面の検索条件入力欄にセットするために利用する)
-        $userNum = $filters['user_num'] ?? null;
-        $userName = $filters['user_name'] ?? null;
-        $affiliation2Id = $filters['affiliation2_id'] ?? null;
-        $employeeStatusIds = $filters['employee_status_ids'] ?? [];
-
-
-        //検索Query
-        $query = User::query();
+        $filters = $request->only(['user_num', 'user_name', 'department_id','employee_status_ids']);
 
         // ここでEagerロードを設定
-        $query->with(['affiliation1', 'affiliation2', 'employeeStatus', 'updatedBy']);
+        $users = User::filter($filters)
+            ->with(['affiliation1','department', 'employeeStatus', 'updatedBy'])
+            ->sortable()->paginate($perPage);
 
-        // システム管理者でない場合は、id1のユーザーを非表示にする
-        if (!$this->isSysAdmin()) {
-            $query->where('id', '!=', 1);
-        }
-
-        //もし社員番号があれば
-        if(!empty($userNum))
-        {
-            // $query->where('user_num','like',"%{$userNum}%");
-            $query->where('user_num','LIKE', '%' . $userNum . '%');
-        }
-
-        if(!empty($affiliation2Id))
-        {
-            $query->where('affiliation2_id','=',$affiliation2Id);
-        }
-
-        //もしユーザ名があれば
-        if($userName)
-        {
-            $spaceConversion = mb_convert_kana($userName, 's'); //全角スペース⇒半角スペースへ変換
-            $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
-
-            foreach($wordArraySearched as $value) 
-            {
-                $query->where('user_name', 'like', "%{$value}%");
-            }
-        }
-        
-        //もし在職状態があれば
-        if(!empty($employeeStatusIds))
-        {
-            $query->whereIn('employee_status_id', $employeeStatusIds);
-        }
-
-        $users = $query->sortable()->paginate($per_page);
-        $count = $users->total();
-
-        return view('admin.user.index',compact('users', 'employeeStatuses', 'userNum', 'userName', 'count', 'affiliation1s','affiliation2s','employeeStatusIds','affiliation2Id', 'filters'));
+        return view('admin.user.index',compact('users', 'employeeStatuses', 'departments', 'filters'));
     }
-
-    private function isSysAdmin()
-    {
-        return Auth::check() && Auth::user()->id === 1;
-    }
-    
-
 
     public function create()
     {
@@ -187,7 +134,7 @@ class UserController extends Controller
         $user->birth = $request->birth;
         $user->affiliation1_id = $request->affiliation1_id;
         $user->affiliation2_id = $request->affiliation2_id;
-        $user->affiliation3_id = $request->affiliation3_id;
+        // $user->affiliation3_id = $request->affiliation3_id;
         $user->department_id = $request->department_id;
         $user->employee_status_id = $request->employee_status_id;
         $user->is_enabled = $request->is_enabled;
@@ -307,7 +254,7 @@ class UserController extends Controller
         $user->ext_phone = $request->ext_phone;
         $user->affiliation1_id = $request->affiliation1_id;
         $user->affiliation2_id = $request->affiliation2_id;
-        $user->affiliation3_id = $request->affiliation3_id;
+        // $user->affiliation3_id = $request->affiliation3_id;
         $user->department_id = $request->department_id;
         $user->employee_status_id = $request->employee_status_id;
         $user->user_num = $userNum;

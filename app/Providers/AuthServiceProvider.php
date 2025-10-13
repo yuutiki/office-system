@@ -2,31 +2,17 @@
 
 namespace App\Providers;
 
-use App\Models\RoleGroup;
-use App\Models\User;
 use App\Services\PermissionService;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
-    /**
-     * The model to policy mappings for the application.
-     *
-     * @var array<class-string, class-string>
-     */
-    protected $policies = [
-        //
-    ];
-
-    /**
-     * Register any authentication / authorization services.
-     */
     public function boot(): void
     {
         $this->registerPolicies();
 
-        // システム管理者であればすべてのGateを通過
+        // システム管理者は全権限通過
         Gate::before(function ($user) {
             if ($user->isSystemAdmin()) {
                 return true;
@@ -35,7 +21,6 @@ class AuthServiceProvider extends ServiceProvider
 
         $permissionService = app(PermissionService::class);
         $permissions = config('permissions');
-
 
         foreach ($permissions as $resource => $config) {
             foreach ($config['permissions'] as $action => $requiredPermissionId) {

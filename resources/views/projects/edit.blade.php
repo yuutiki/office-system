@@ -51,38 +51,76 @@
 
     <div class="max-w-7xl mx-auto px-2 md:pl-14">
         <div class="">
-            <div class="grid gap-3 mt-2 mb-4 sm:grid-cols-3 grid-cols-1">
-                <div class="">
-                    <label for="project_num" class="block dark:text-white text-sm text-gray-900 leading-none md:mt-4">プロジェクト№</label>
-                    <input type="text" form="editForm" name="project_num" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="project_num" value="{{old('project_num',$project->project_num)}}" placeholder="登録時に自動採番されます" readonly>
-                </div>
-                <div class="sm:col-span-2">
-                    <label for="project_name" class="block dark:text-white text-sm text-gray-900 leading-none md:mt-4">プロジェクト名称<span class="text-red-500"> *</span></label>
-                    <input type="text" name="project_name" form="editForm" class="input-secondary" id="project_name" value="{{old('project_name',$project->project_name)}}" placeholder=""  form="updateForm">
-                    @error('project_name')
-                        <div class="text-red-500">{{ $message }}</div>
-                    @enderror
-                </div>
-                {{-- スマホ画面非表示 --}}
-                <div class="hidden md:inline-block">
-                    <label for="corporation_name" class="block dark:text-white text-sm text-gray-900 leading-none md:mt-1">法人名称</label>
-                    <input type="text" name="corporation_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="corporation_name" value="{{old('corporation_name',$project->client->corporation->corporation_name)}}" readonly>
-                </div>
-                <div class="">
-                    <label for="client_name" class="block dark:text-white text-sm text-gray-900 leading-none md:mt-1">顧客名称</label>
-                    <input type="text" name="client_name" class="dark:bg-gray-400 w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1 " id="client_name" value="{{old('client_name',$project->client->client_name)}}" readonly>
-                </div>
-                {{-- スマホ画面非表示 --}}
-                <div class="hidden md:inline-block">
-                    <label for="affiliation2_id" class="block text-sm dark:text-white text-gray-900 leading-none md:mt-1">顧客管轄</label>
-                    <select id="affiliation2_id" name="affiliation2_id" class="dark:bg-gray-400 mt-1 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 text-sm dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 pointer-events-none" readonly>
-                        <option value="">未選択</option>
-                        @foreach($affiliation2s as $affiliation2)
-                        <option value="{{ $affiliation2->id }}" @selected($affiliation2->id == old('affiliation2_id',$project->client->affiliation2_id))>{{ $affiliation2->affiliation2_name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
+
+
+        <div class="mx-auto my-4 rounded shadow-md overflow-hidden border border-gray-200 dark:border-gray-600">
+            <table class="w-full text-sm text-left divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
+                <tbody>
+                    <!-- 案件No. -->
+                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-48">
+                            案件No.
+                        </th>
+                        <td class="dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-1 md:px-2 md:py-1">
+                            <input type="text" name="project_num" id="project_num" value="{{ $project->project_num }}" class="w-full py-1 rounded bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-700 text-sm pointer-events-none @error('client_id') input-error @enderror" placeholder="" tabindex="-1">
+                        </td>
+                    </tr>
+                    <!-- 顧客No. -->
+                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:py-0.5  md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800">
+                            <div class="flex items-center justify-between">
+                                <span>顧客No.</span>
+                            </div>
+                        </th>
+                        <td class="dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-1.5 md:px-2 md:py-1">
+                            <input type="text" name="client_num" id="client_num" value="{{ $project->client->client_num }}" class="w-full py-1 rounded bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-700 text-sm pointer-events-none @error('client_id') input-error @enderror" placeholder="" tabindex="-1">
+                        </td>
+                    </tr>
+
+                    <!-- 法人名称 -->
+                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-48">
+                            法人名称
+                        </th>
+                        <td class="dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-1 md:px-2 md:py-1">
+                            <input type="text" name="corporation_name" id="corporation_name" value="{{ $project->client->corporation->corporation_name }}" class="w-full py-1 rounded bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-700 text-sm pointer-events-none @error('client_id') input-error @enderror" placeholder="" tabindex="-1">
+                        </td>
+                    </tr>
+                    
+                    <!-- 顧客名称 -->
+                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-48">
+                            顧客名称
+                        </th>
+                        <td class="dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-1 md:px-2 md:py-1">
+                            <input type="text" name="client_name" id="client_name" value="{{ $project->client->client_name }}" class="w-full py-1 rounded bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-700 text-sm pointer-events-none @error('client_id') input-error @enderror" placeholder="" tabindex="-1">
+                        </td>
+                    </tr>
+                    
+                    <!-- 管轄部門 -->
+                    <tr class="dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800">
+                            顧客管轄部門
+                        </th>
+                        <td class="dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-1 md:px-2 md:py-1">
+                            <input type="text" name="department_path" id="department_path" value="{{ $project->client->department->path }}" class="w-full py-1 rounded bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-700 text-sm pointer-events-none @error('client_id') input-error @enderror" placeholder="" tabindex="-1">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="sm:col-span-2">
+            <label for="project_name" class="block dark:text-white text-sm text-gray-900 leading-none md:mt-4">プロジェクト名称<span class="text-red-500"> *</span></label>
+            <input type="text" name="project_name" form="editForm" class="input-secondary" id="project_name" value="{{old('project_name',$project->project_name)}}" placeholder=""  form="updateForm">
+            @error('project_name')
+                <div class="text-red-500">{{ $message }}</div>
+            @enderror
+        </div>
+
+
+
+
             <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
                 <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
                     <li class="mr-2" role="presentation">

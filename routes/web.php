@@ -220,13 +220,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/notifications/{notification}/read', [NotificationController::class, 'read'])->name('notifications.read');
     Route::post('/notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.read-all');
 
-    // Route::post('api/links/update', [LinkController::class, 'update'])
-    // ->middleware(HandlePrecognitiveRequests::class)
-    // ->name('api.links.update');
-
-    Route::put('/api/links/{link}/update', [LinkController::class, 'update'])
-    ->middleware(HandlePrecognitiveRequests::class)
-    ->name('api.links.update');
 
 
 
@@ -235,7 +228,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/client-products' , '\App\Http\Controllers\ClientProductController');
 
 
-    Route::resource('/link', '\App\Http\Controllers\LinkController');
     Route::resource('/projectrevenue' , '\App\Http\Controllers\ProjectRevenueController');
 
     // サポート履歴入力画面にて非同期で顧客情報を取得するエンドポイント
@@ -267,6 +259,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('support-times/import', [SupportTimeController::class, 'import'])->name('support-times.import');
     Route::get('support-time/export',[SupportTimeController::class,'export'])->name('support-times.export');
     Route::resource('support-time', SupportTimeController::class)->only('index', 'store', 'update', 'destroy');
+    Route::resource('link', LinkController::class)->only('index', 'store', 'update', 'destroy');
     Route::resource('departments', DepartmentController::class);
     Route::resource('trade-status', TradeStatusController::class);
 

@@ -127,7 +127,7 @@
 
         @layer components {
             .checkbox-label {
-                @apply inline-flex justify-between w-full p-1.5 rounded-lg cursor-pointer
+                @apply inline-flex justify-between w-full p-1.5 rounded cursor-pointer
                        text-blue-600 dark:text-blue-500
                        border-2 border-gray-200 dark:border-blue-500
                        bg-white dark:bg-gray-800
@@ -177,7 +177,39 @@
 
 
 
-  @layer utilities {
+    /* spinner用のCSS */
+    @layer utilities {
+        @keyframes spinner {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spinner-text {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.2;
+            }
+        }
+
+        .animate-spinner {
+            animation: spinner 1.5s linear infinite;
+        }
+
+        .animate-spinner-text {
+            animation: spinner-text 1.5s ease-in-out infinite;
+        }
+    }
+
+
+
+
+  /* @layer utilities {
     .no-spinners {
       -webkit-appearance: none;
       -moz-appearance: textfield;
@@ -188,7 +220,7 @@
       -webkit-appearance: none;
       margin: 0;
     }
-  }
+  } */
 
 
 

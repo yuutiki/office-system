@@ -136,6 +136,120 @@
                 </div>
             </div>
             
+
+    <div id="accordion" class="w-full mx-auto">
+            {{-- アコーディオン項目 --}}
+            <div class="border-b last:border-b-0">
+                <button type="button" class="accordion-btn w-full text-left py-2 px-3 md:px-6 flex items-center justify-between dark:bg-gray-100 rounded dark:text-gray-800" aria-expanded="false" aria-controls="panel-2">
+                    <span class="flex items-center text-gray-800 font-medium text-sm md:text-base">
+                        顧客担当者
+                    </span>
+                    <svg class="chev w-5 h-5 transform" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                        <path d="M6 8l4 4 4-4" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+                <div id="panel-2" class="accordion-panel px-4 md:px-6 p-4 dark:bg-white rounded-b text-gray-600 dark:text-gray-300 text-sm md:text-base hidden border border-gray-600">
+
+
+                                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg mb-4">
+                                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                                <tr>
+                                                    <th scope="col" class="px-6 py-3">
+                                                        担当者名
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3">
+                                                        部署
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3">
+                                                        役職
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3">
+                                                        顧客名
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3">
+                                                        在職状態
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3">
+                                                        ACTION
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
+                                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                        Apple MacBook Pro 17"
+                                                    </th>
+                                                    <td class="px-6 py-4">
+                                                        Silver
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        Laptop
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        $2999
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        $799
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                                    </td>
+                                                </tr>
+                                                <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
+                                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                        Microsoft Surface Pro
+                                                    </th>
+                                                    <td class="px-6 py-4">
+                                                        White
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        Laptop PC
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        $1999
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        $799
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+  <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttons = document.querySelectorAll('.accordion-btn');
+
+            buttons.forEach((button) => {
+                const panel = document.getElementById(button.getAttribute('aria-controls'));
+                const icon = button.querySelector('.chev');
+
+                button.addEventListener('click', () => {
+                    const isOpen = button.getAttribute('aria-expanded') === 'true';
+
+                    // 開閉状態をトグル
+                    button.setAttribute('aria-expanded', !isOpen);
+                    icon.classList.toggle('rotate-180', !isOpen);
+                    panel.classList.toggle('hidden', isOpen);
+
+                });
+            });
+        });
+  </script>
+
+
+
+
+
             <div>
                 <div class="w-full flex flex-col">
                     <label for="report_title" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">報告タイトル<span class="text-red-500 ml-2">*</span></label>

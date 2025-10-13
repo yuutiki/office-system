@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Department extends Model
 {
+    use HasFactory;
+
     protected $fillable = ['code', 'name', 'parent_id', 'level', 'is_active'];
 
     // 常に親部門を取得

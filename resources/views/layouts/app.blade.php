@@ -88,76 +88,22 @@
             </main>
 
 
-            <script>
+            {{-- <script>
                 function showLoader() {
-                  document.getElementById('loading-wrapper').classList.remove('hidden');
+                  document.getElementById('lmy-spinner').classList.remove('hidden');
                 }
               
                 function hideLoader() {
-                  document.getElementById('loading-wrapper').classList.add('hidden');
+                  document.getElementById('lmy-spinner').classList.add('hidden');
                 }
               
                 // ページ読み込み完了時に非表示にする例
                 window.addEventListener('load', hideLoader);
-              </script>
+              </script> --}}
 
-              <div id="loading-wrapper" class="fixed inset-0 flex items-center justify-center z-50">
-                <div id="loading-content" class="relative w-[170px] h-[170px]">
-                  <div class="loading-spinner"></div>
-                  <div class="loading-spinner-before"></div>
-                  <div class="loading-spinner-after"></div>
-                </div>
-                <div id="loading-text" class="absolute text-gray-400 text-xl font-semibold">
-                  LOADING
-                </div>
-              </div>
-              
-              <style>
-                .loading-spinner,
-                .loading-spinner-before,
-                .loading-spinner-after {
-                  position: absolute;
-                  border: 3px solid transparent;
-                  border-radius: 50%;
-                }
-              
-                .loading-spinner {
-                  width: 170px;
-                  height: 170px;
-                  border-top-color: #4D658D;
-                  border-bottom-color: #4D658D;
-                  animation: spin 2s linear infinite;
-                }
-              
-                .loading-spinner-before {
-                  top: 5px;
-                  left: 5px;
-                  right: 5px;
-                  bottom: 5px;
-                  border-top-color: #D4CC6A;
-                  border-bottom-color: #D4CC6A;
-                  animation: spin 3s linear infinite;
-                }
-              
-                .loading-spinner-after {
-                  top: 15px;
-                  left: 15px;
-                  right: 15px;
-                  bottom: 15px;
-                  border-top-color: #84417C;
-                  border-bottom-color: #84417C;
-                  animation: spin 1.5s linear infinite;
-                }
-              
-                @keyframes spin {
-                  0% {
-                    transform: rotate(0deg);
-                  }
-                  100% {
-                    transform: rotate(360deg);
-                  }
-                }
-              </style>
+
+        <!-- ✅ ローディングスピナー -->
+        <x-loading-spinner />
 
 
             <div id="rap" class="fixed bottom-11 right-6 z-50 ">

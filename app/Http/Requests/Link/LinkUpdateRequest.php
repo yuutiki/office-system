@@ -23,7 +23,7 @@ class LinkUpdateRequest extends FormRequest
     {
         return [
             'display_name' => 'required|max:50',
-            'affiliation2_id' => 'required|exists:affiliation2s,id',
+            'department_id' => 'required|exists:departments,id',
             'display_order' => 'required|integer|min:1|max:99',
             'url' => 'required|url|max:500',
         ];
@@ -33,7 +33,7 @@ class LinkUpdateRequest extends FormRequest
     {
         return [
             'display_name.required' => '表示名は必須です。',
-            'affiliation2_id.required' => '所属の選択は必須です。',
+            'department_id.required' => '所属の選択は必須です。',
             'display_order.required' => '表示順は必須です。',
             'url.required' => 'URLは必須です。',
         ];

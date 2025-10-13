@@ -21,6 +21,7 @@ return new class extends Migration
 
             // role_group_id カラムにインデックスを追加
             $table->index('role_group_id');
+            $table->index('user_id');
         });
     }
 

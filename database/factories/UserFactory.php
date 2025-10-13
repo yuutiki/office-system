@@ -3,61 +3,45 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use App\Models\Department; // ← 追加
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 
 class UserFactory extends Factory
 {
-    // public function definition(): array
-    // {
-    //     return [
-    //         'name' => fake()->name(),
-    //         'email' => fake()->unique()->safeEmail(),
-    //         'email_verified_at' => now(),
-    //         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-    //         'remember_token' => Str::random(10),
-    //     ];
-    // }
-
-    // public function unverified(): static
-    // {
-    //     return $this->state(fn (array $attributes) => [
-    //         'email_verified_at' => null,
-    //     ]);
-    // }
-
-
-
     protected $model = User::class;
 
     public function definition()
     {
         return [
             'user_num' => $this->generateUniqueUserNum(),
-            'user_name' => $this->faker->name,
-            'user_kana_name' => $this->faker->kanaName,
+            'user_name' => $this->faker->name(),
+            'user_kana_name' => $this->faker->kanaName(),
             'birth' => $this->faker->date('Y-m-d', '-20 years'),
-            // 'email' => $this->faker->unique()->safeEmail,
-            'email' => fake()->unique()->safeEmail(),
+            'email' => $this->faker->unique()->safeEmail(),
             'password' => Hash::make('password'),
             'int_phone' => $this->faker->numberBetween(100, 999),
-            'ext_phone' => $this->faker->phoneNumber,
+            'ext_phone' => $this->faker->phoneNumber(),
             'is_enabled' => $this->faker->boolean(90),
             'employee_status_id' => $this->faker->numberBetween(1, 2),
             'affiliation1_id' => $this->faker->numberBetween(1, 1),
             'affiliation2_id' => $this->faker->numberBetween(1, 6),
-            'affiliation3_id' => $this->faker->numberBetween(1, 3),
+
+            // ✅ 部門はDepartmentFactoryを使って関連付ける
+            'department_id' => Department::factory(),
+
             'created_by' => 1,
             'updated_by' => 1,
             'created_at' => now(),
             'updated_at' => now(),
-            // 'role' => 'system_admin',
-            'profile_image' => 'default',
-            'password_change_required' => false, // ← 追加！
+
+            'profile_image' => 'users/profile_image/default.png',
+            'password_change_required' => false,
+
             'role' => $this->faker->randomElement([
-                config('sytemadmin.system_admin'),
-                'user'
+                config('sytemadmin.system_admin') ?? 'system_admin', // ← config呼び出しに保険
+                'user',
             ]),
         ];
     }

@@ -135,12 +135,12 @@
                     </div>
                     <!-- 詳細検索 Modal -->
                     <div id="detailSearchModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center overflow-y-scroll z-50 hidden animate-slide-in-top">
-                        <div class="max-h-full w-full max-w-3xl">
+                        <div class="max-h-full w-full max-w-7xl">
                             <div class="relative p-4 bg-white rounded shadow dark:bg-gray-700">
                                 <!-- Modal header -->
                                 <div class="flex items-center justify-between p-1 border-b rounded-t dark:border-gray-600">
                                     <h3 class="text-xl font-medium text-gray-900 dark:text-white">
-                                        詳細検索画面
+                                        詳細検索
                                     </h3>
                                     <button type="button" onclick="hideModal()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
                                         <svg class="w-3 h-3"xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -151,7 +151,7 @@
                                 <!-- Modal body -->
                                 <div class="mt-4">
                                     <label for="clientNumber" class="dark:text-white text-sm text-gray-900 leading-none mx-2">課税/免税</label>
-                                    <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
+                                    <ul class="grid w-full gap-3 md:grid-cols-6 sm:grid-cols-2 md:ml-2 mb-4">
                                         <li class="flex justify-center items-center">
                                             <input type="checkbox" id="tax_status-1" @checked(in_array(0, $filters['tax_status_ids'] ?? [])) value="0" name="tax_status_ids[]" class="hidden peer touch-none">
                                             <label for="tax_status-1" class="checkbox-label">
@@ -174,7 +174,7 @@
                                 </div>
 
                                 <label for="clientNumber" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">取引状況</label>
-                                <ul class="grid w-full gap-3 md:grid-cols-3 sm:grid-cols-2 md:ml-2 mb-4">
+                                <ul class="grid w-full gap-3 md:grid-cols-6 sm:grid-cols-2 md:ml-2 mb-4">
                                     <li class="flex justify-center items-center">
                                         <input type="checkbox" id="trade_status-1" @checked(in_array(0, $filters['trade_status_ids'] ?? [])) value="0" name="trade_status_ids[]" class="hidden peer">
                                         <label for="trade_status-1" class="checkbox-label">

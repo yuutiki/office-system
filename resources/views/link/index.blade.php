@@ -9,7 +9,7 @@
                     {{ __('create') }}
                 </x-buttons.add-button-drawer>
 
-                <div class="flex items-center space-x-3 w-auto hidden md:inline-block">
+                <div class="flex items-center space-x-3 w-auto md:inline-block">
                     <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="flex items-center justify-center w-full p-2.5 text-sm font-medium hover:bg-[#313a48] bg-[#364050] text-gray-200 rounded md:w-auto focus:z-10 dark:bg-blue-600 dark:text-gray-100 dark:border-gray-600 dark:hover:text-white dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" type="button">
                         <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
                             <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
@@ -65,11 +65,11 @@
                                         <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                     </svg>
                                 </div>
-                                <select name="affiliation2_id" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700 rounded focus:border-blue-500 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
-                                    <option value="">事業部選択</option>
-                                    @foreach($affiliation2s as $affiliation2)
-                                        <option value="{{ $affiliation2->id }}" {{ request('affiliation2_id') == $affiliation2->id ? 'selected' : '' }}>
-                                            {{ $affiliation2->affiliation2_name }}
+                                <select name="department_id" class="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700 rounded focus:border-blue-500 dark:border-gray-600 border-gray-400 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                                    <option value="">部門 未選択</option>
+                                    @foreach($departments as $department)
+                                        <option value="{{ $department->id }}" {{ request('department_id') == $department->id ? 'selected' : '' }}>
+                                            {{ $department->path }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -102,6 +102,11 @@
                 <tr>
                     <th scope="col" class="pl-8 py-3 whitespace-nowrap">
                         <div class="flex items-center">
+                            表示順
+                        </div>
+                    </th>
+                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
+                        <div class="flex items-center">
                             表示名
                         </div>
                     </th>
@@ -113,11 +118,6 @@
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
                         <div class="flex items-center">
                             管轄事業部
-                        </div>
-                    </th>
-                    <th scope="col" class="px-1 py-3 whitespace-nowrap">
-                        <div class="flex items-center">
-                            表示順
                         </div>
                     </th>
                     <th scope="col" class="px-1 py-3 whitespace-nowrap">
@@ -140,17 +140,17 @@
             <tbody>
                 @foreach ($adminLinks as $link)
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-200 dark:text-white text-gray-900 dark:hover:bg-gray-600 whitespace-nowrap">
-                        <td class="pl-8 px-1 py-2">
+                        <td class="pl-8 py-2 text-right">
+                            <div class="w-8">{{ $link->display_order }}</div>
+                        </td>
+                        <td class="px-1 py-2">
                             {{ $link->display_name }}
                         </td>
                         <td class="px-1 py-2">
                             <a href="{{ $link->url }}" target="_blank" class="text-blue-600 hover:underline">{{ Str::limit($link->url, 50) }}</a>
                         </td>
                         <td class="px-1 py-2">
-                            {{ $link->affiliation2->affiliation2_name }}
-                        </td>
-                        <td class="px-1 py-2 text-right">
-                            <div class="w-8">{{ $link->display_order }}</div>
+                            {{ $link->department?->getLevelName(2) ?? '-' }}
                         </td>
                         <td class="px-1 py-2 text-gray-400">
                             {{ optional($link->updatedBy)->user_name }}
@@ -246,39 +246,22 @@
                                         @enderror
                                     </div>
 
-                                    <div class="w-full">
-                                        <label for="affiliation2_id-{{ $link->id }}" class="block dark:text-gray-100 text-gray-900">
-                                            対象事業部
+                                    <div class="mb-4">
+                                        <label for="department_id_{{ $link->id }}" class="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                                            所属部門
                                         </label>
-                                        <select name="affiliation2_id" id="affiliation2_id-{{ $link->id }}" class="input-secondary" required>
-                                            @foreach($affiliation2s as $affiliation2)
-                                                <option value="{{ $affiliation2->id }}" {{ $affiliation2->id == $link->affiliation2_id ? 'selected' : '' }}>
-                                                    {{ $affiliation2->affiliation2_name }}
+                                        <select id="department_id_{{ $link->id }}" name="department_id" class="input-primary w-full">
+                                            <option value="">未選択</option>
+                                            @foreach($departments as $department)
+                                                <option value="{{ $department->id }}" @selected(old('department_id', $link->department_id) == $department->id)>
+                                                    {{ $department->path }}
                                                 </option>
                                             @endforeach
                                         </select>
-                                        @error('affiliation2_id')
+                                        @error('department_id')
                                             <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                                         @enderror
                                     </div>
-
-    <div class="mb-4">
-        <label for="department_id_{{ $link->id }}" class="block text-sm font-medium text-gray-700 dark:text-gray-200">
-            所属部門
-        </label>
-        <select id="department_id_{{ $link->id }}" name="department_id" class="input-primary w-full">
-            <option value="">未選択</option>
-            @foreach($departments as $department)
-                <option value="{{ $department->id }}" @selected(old('department_id', $link->department_id) == $department->id)>
-                    {{ $department->path }}
-                </option>
-            @endforeach
-        </select>
-        @error('department_id')
-            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-        @enderror
-    </div>
-
 
                                     <div class="w-full">
                                         <label for="display_order-{{ $link->id }}" class="block dark:text-gray-100 text-gray-900">
@@ -389,40 +372,22 @@
                         @enderror
                     </div>
 
-                    <div class="w-full">
-                        <label for="affiliation2_id" class="block dark:text-gray-100 text-gray-900">
-                            対象事業部
+                    <div class="mb-4">
+                        <label for="department_id" class="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                            所属部門
                         </label>
-                        <select name="affiliation2_id" id="affiliation2_id" class="input-secondary" required>
-                            <option value="">選択してください</option>
-                            @foreach($affiliation2s as $affiliation2)
-                                <option value="{{ $affiliation2->id }}" {{ old('affiliation2_id') == $affiliation2->id ? 'selected' : '' }}>
-                                    {{ $affiliation2->affiliation2_name }}
+                        <select id="department_id" name="department_id" class="input-primary w-full">
+                            <option value="">未選択</option>
+                            @foreach($departments as $department)
+                                <option value="{{ $department->id }}" @selected(old('department_id') == $department->id)>
+                                    {{ $department->path }}
                                 </option>
                             @endforeach
                         </select>
-                        @error('affiliation2_id')
+                        @error('department_id')
                             <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                         @enderror
                     </div>
-
-    <div class="mb-4">
-        <label for="department_id" class="block text-sm font-medium text-gray-700 dark:text-gray-200">
-            所属部門
-        </label>
-        <select id="department_id" name="department_id" class="input-primary w-full">
-            <option value="">未選択</option>
-            @foreach($departments as $department)
-                <option value="{{ $department->id }}" @selected(old('department_id') == $department->id)>
-                    {{ $department->path }}
-                </option>
-            @endforeach
-        </select>
-        @error('department_id')
-            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-        @enderror
-    </div>
-
 
                     <div class="w-full">
                         <label for="display_order" class="block dark:text-gray-100 text-gray-900">

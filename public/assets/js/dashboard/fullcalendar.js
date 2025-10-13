@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function applyCustomStyles() {
     // 曜日ヘッダーの背景色を変更
     document.querySelectorAll('.fc-col-header-cell').forEach(el => {
-      el.classList.add('bg-[#3e4858]', 'text-white');
+      el.classList.add('bg-[#3e4858]', 'text-gray-900');
     });
     
     // ボーダーカラーを調整

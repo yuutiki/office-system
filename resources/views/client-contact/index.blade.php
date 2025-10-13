@@ -260,7 +260,7 @@
                         </td>
                     @endif
                         <td class="px-1 py-1 whitespace-nowrap">
-                            {{ optional($clientContact->client)->affiliation2->affiliation2_name}}
+                            {{ optional($clientContact->client)->department->path}}
                         </td>
                         {{-- <td class="py-1">
                             <button type="button" data-modal-target="deleteModal-{{$clientContact->id}}" data-modal-show="deleteModal-{{$clientContact->id}}" class="button-delete-primary">

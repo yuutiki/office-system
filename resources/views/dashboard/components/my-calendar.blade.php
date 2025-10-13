@@ -1,6 +1,17 @@
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet">
 
+<style>
+    .fc-col-header-cell {
+    color: #ffffff !important;
+    background-color: #3e4858 !important;
+    }
+
+    .fc-col-header-cell a {
+    color: #ffffff !important;
+    }
+</style>
+
 
 <div class="max-w-full md:ml-14 mx-auto p-4 dark:bg-gray-800 bg-white rounded-lg shadow-xl mb-4">
     <div id="calendar" class="text-sm dark:text-white text-gray-600"></div>

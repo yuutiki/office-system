@@ -3,7 +3,7 @@ import Alpine from 'alpinejs';
 import Precognition from 'laravel-precognition-alpine';
 import 'flowbite';
 import './lib/phone-formatter.js';
-
+import './common/loading-spinner';
 import { disableEnterOnInputs } from './common/disable-enter';
 
 window.Alpine = Alpine;

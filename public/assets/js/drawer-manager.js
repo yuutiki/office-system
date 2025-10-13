@@ -240,10 +240,10 @@ function initializeDrawerManager(formPrefix) {
             this.setupCloseButton(form);
             this.setupSubmitHandler(form);
 
-            console.log('Form initialized:', {
-                formId: form.id,
-                initialValues: Object.fromEntries(initialValues)
-            });
+            // console.log('Form initialized:', {
+            //     formId: form.id,
+            //     initialValues: Object.fromEntries(initialValues)
+            // });
         },
 
         // 初期値を取得（ラジオボタン対応）
@@ -311,12 +311,12 @@ function initializeDrawerManager(formPrefix) {
                 formState.isChanged = hasChanges;
                 form.dataset.isChanged = hasChanges.toString();
 
-                console.log('Change detected:', {
-                    formId: form.id,
-                    currentValues: Object.fromEntries(currentValues),
-                    initialValues: Object.fromEntries(formState.initialValues),
-                    hasChanges: hasChanges
-                });
+                // console.log('Change detected:', {
+                //     formId: form.id,
+                //     currentValues: Object.fromEntries(currentValues),
+                //     initialValues: Object.fromEntries(formState.initialValues),
+                //     hasChanges: hasChanges
+                // });
             };
 
             inputs.forEach(input => {
@@ -331,7 +331,7 @@ function initializeDrawerManager(formPrefix) {
         },
 
         resetForm(form) {
-            console.log('Starting form reset for:', form.id);
+            // console.log('Starting form reset for:', form.id);
             
             form.reset();
             
@@ -342,11 +342,11 @@ function initializeDrawerManager(formPrefix) {
                 form.dataset.isChanged = 'false';
             }
 
-            console.log('Form reset completed:', {
-                formId: form.id,
-                initialValues: formState ? Object.fromEntries(formState.initialValues) : 'not found',
-                isChanged: false
-            });
+            // console.log('Form reset completed:', {
+            //     formId: form.id,
+            //     initialValues: formState ? Object.fromEntries(formState.initialValues) : 'not found',
+            //     isChanged: false
+            // });
         },
 
         getFormInputs(form) {

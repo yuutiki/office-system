@@ -144,16 +144,6 @@
             </div>
 
 
-            {{-- <div class="grid gap-4 mb-4 sm:grid-cols-4 mt-2">
-                <div class="col-span-2">
-                    <label for="vendor_tel" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表TEL</label>
-                    <input type="tel" form="createForm" name="vendor_tel" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="vendor_tel" value="{{old('vendor_tel')}}" onchange="validateAndFormat('vendor_tel')" class="input-secondary" placeholder="">
-                </div>
-                <div class="col-span-2">
-                    <label for="vendor_fax" class="text-sm dark:text-gray-100 text-gray-900 leading-none mt-4">代表FAX</label>
-                    <input type="tel" form="createForm" name="vendor_fax" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" maxlength="13" id="vendor_fax" value="{{old('vendor_fax')}}" onchange="validateAndFormat('vendor_fax')" class="input-secondary"  placeholder="">
-                </div>
-            </div> --}}
             <div class="grid gap-4 sm:grid-cols-2 mb-6">
                 <div>
                     <div class="w-full flex flex-col">

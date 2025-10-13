@@ -10,53 +10,53 @@ use Illuminate\Support\Facades\Auth;
 
 class Affiliation3Controller extends Controller
 {
-    public function index()
-    {
-        $affiliation3s = Affiliation3::with('updatedBy', 'affiliation2')->orderBy('affiliation3_code','asc')->paginate(50);
-        $affiliation2s = Affiliation2::all();
-        return view('masters.affiliation3-index',compact('affiliation2s', 'affiliation3s'));
-    }
+    // public function index()
+    // {
+    //     $affiliation3s = Affiliation3::with('updatedBy', 'affiliation2')->orderBy('affiliation3_code','asc')->paginate(50);
+    //     $affiliation2s = Affiliation2::all();
+    //     return view('masters.affiliation3-index',compact('affiliation2s', 'affiliation3s'));
+    // }
 
-    public function create()
-    {
-        //
-    }
+    // public function create()
+    // {
+    //     //
+    // }
 
-    public function store(Request $request)
-    {
-        //
-    }
+    // public function store(Request $request)
+    // {
+    //     //
+    // }
 
-    public function show(Affiliation3 $affiliation3)
-    {
-        //
-    }
+    // public function show(Affiliation3 $affiliation3)
+    // {
+    //     //
+    // }
 
-    public function edit(Affiliation3 $affiliation3)
-    {
-        //
-    }
+    // public function edit(Affiliation3 $affiliation3)
+    // {
+    //     //
+    // }
 
-    public function update(Request $request, Affiliation3 $affiliation3)
-    {
-        $user = Auth::user(); // ログインしているユーザーの情報を取得
+    // public function update(Request $request, Affiliation3 $affiliation3)
+    // {
+    //     $user = Auth::user(); // ログインしているユーザーの情報を取得
 
-        $data = $request->validate([
-            'affiliation3_code' => 'required|size:2',
-            'affiliation3_name' => 'required|max:100',
-            'affiliation3_name_kana' => 'required|max:100',
-            'affiliation3_name_en' => 'required|max:100',
-        ]);
+    //     $data = $request->validate([
+    //         'affiliation3_code' => 'required|size:2',
+    //         'affiliation3_name' => 'required|max:100',
+    //         'affiliation3_name_kana' => 'required|max:100',
+    //         'affiliation3_name_en' => 'required|max:100',
+    //     ]);
         
-        $data['updated_by'] = $user->id; // 更新者のIDを更新データに追加
+    //     $data['updated_by'] = $user->id; // 更新者のIDを更新データに追加
     
-        $affiliation3->fill($data)->save();
+    //     $affiliation3->fill($data)->save();
     
-        return redirect()->back()->with('success', '正常に更新しました');
-    }
+    //     return redirect()->back()->with('success', '正常に更新しました');
+    // }
 
-    public function destroy(Affiliation3 $affiliation3)
-    {
-        //
-    }
+    // public function destroy(Affiliation3 $affiliation3)
+    // {
+    //     //
+    // }
 }

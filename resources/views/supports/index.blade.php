@@ -137,7 +137,7 @@
                                     <!-- Modal header -->
                                     <div class="flex items-center justify-between p-1 border-b rounded-t dark:border-gray-600">
                                         <h3 class="text-xl font-medium text-gray-900 dark:text-gray-400">
-                                            詳細検索画面
+                                            詳細検索
                                         </h3>
                                         <button type="button" onclick="hideModal()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
                                             <svg class="w-3 h-3"xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -158,7 +158,7 @@
                                     </div>
                                     <div>
                                         <label for="status_id" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">ステータス</label>
-                                        <ul class="grid w-full gap-3 lg:grid-cols-4 grid-cols-2 md:ml-2 mb-4">
+                                        <ul class="grid w-full gap-3 lg:grid-cols-5 grid-cols-2 md:ml-2 mb-4">
                                             <li class="flex justify-center items-center">
                                                 <input type="checkbox" id="status_id-1"  @checked(in_array(1, $statusIds ?? []))  value="1" name="status_ids[]" class="hidden peer touch-none">
                                                 <label for="status_id-1" class="checkbox-label">
@@ -175,7 +175,7 @@
                                     </div>
                                     <div class="mt-4">
                                         <label for="supportType" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">サポート種別</label>
-                                        <ul class="grid w-full gap-3 lg:grid-cols-4 grid-cols-2 md:ml-2 mb-4">
+                                        <ul class="grid w-full gap-3 lg:grid-cols-5 grid-cols-2 md:ml-2 mb-4">
                                             @foreach ($supportTypes as $supportType)
                                                 <li class="flex justify-center items-center">
                                                     <input type="checkbox" id="supportType-{{ $supportType->id }}" 
@@ -192,7 +192,7 @@
                                     </div>
                                     <div>
                                         <label for="productCategory" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">製品系統</label>
-                                        <ul class="grid w-full gap-3 lg:grid-cols-4 grid-cols-2 md:ml-2 mb-4">
+                                        <ul class="grid w-full gap-3 lg:grid-cols-5 grid-cols-2 md:ml-2 mb-4">
                                             @foreach ($productCategories as $productCategory)
                                                 <li class="flex justify-center items-center">
                                                     <input type="checkbox" id="category-{{ $productCategory->id }}" 
@@ -207,7 +207,7 @@
                                     </div>
                                     <div>
                                         <label for="productSeries" class="dark:text-white text-sm text-gray-900 leading-none mt-1 mx-2">製品シリーズ</label>
-                                        <ul class="grid w-full gap-3 lg:grid-cols-4 grid-cols-2 md:ml-2 mb-4">
+                                        <ul class="grid w-full gap-3 lg:grid-cols-5 grid-cols-2 md:ml-2 mb-4">
                                             @foreach ($productSeriess as $productSeries)
                                                 <li class="flex justify-center items-center">
                                                     <input type="checkbox" id="series-{{ $productSeries->id }}" 

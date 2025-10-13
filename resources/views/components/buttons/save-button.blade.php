@@ -1,6 +1,6 @@
 <button {{ $attributes->merge([
   'type' => 'submit',
-  'class' => 'flex items-center pl-2 sm:px-2.5  py-1.5 text-sm text-white rounded hover:bg-[#313a48] bg-[#364050] focus:ring-2 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800',
+  'class' => 'flex items-center pl-2 sm:px-2  py-1.5 text-sm text-white rounded hover:bg-[#313a48] bg-[#364050] focus:ring-2 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800',
   'data-tooltip-target' => 'tooltip-save-button',
   ' data-tooltip-placement' => 'bottom',
 

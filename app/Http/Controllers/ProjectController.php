@@ -10,7 +10,6 @@ use App\Models\Affiliation1;
 use App\Models\Client;
 use App\Models\Affiliation2;
 use App\Models\DistributionType;
-use App\Models\Affiliation3;
 use App\Models\Department;
 use App\Models\Estimate;
 use App\Models\Prefecture;

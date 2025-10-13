@@ -17,69 +17,71 @@
     </x-slot>
 
     <div class="max-w-7xl mx-auto px-2 md:pl-14">
-        <div class="relative z-0">
-            <input type="text" form="editForm" id="vendor_num" name="vendor_num" value="{{old('vendor_num',$vendor->vendor_num)}}" class="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
-            <label for="vendor_num" class="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">業者番号</label>
-        </div>
+        <div class="mx-auto md:w-full my-4 rounded shadow-md overflow-hidden border border-gray-200 dark:border-gray-600">
+            <table class="w-full text-sm text-left divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
+                <tbody>
+                    
+                    <!-- 業者No. -->
+                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
+                            業者No.
+                        </th>
+                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
+                            <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300">{{ $vendor->vendor_num }}</div>
+                        </td>
+                    </tr>
 
-        <div class="grid gap-3 mb-2 sm:grid-cols-2">
-            <div>
-                <label for="corporation_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2 mt-2">法人名称</label>
-                <input type="text" name="corporation_name" class="w-full py-1 mt-1 bg-gray-400 border border-gray-300 rounded" id="corporation_name" value="{{old('corporation_name',$vendor->corporation->corporation_name)}}" readonly>
-                @error('corporation_name')
-                    <div class="text-red-500">{{ $message }}</div>
-                @enderror
-            </div>
-            <div class="hidden md:inline-block">
-                <label for="corporation_kana_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">法人カナ名称</label>
-                <input type="text" name="corporation_kana_name" class="w-full py-1 mt-1 bg-gray-400 border border-gray-300 rounded" id="corporation_kana_name" value="{{old('corporation_kana_name',$vendor->corporation->corporation_kana_name)}}" readonly>
-                @error('corporation_kana_name')
-                    <div class="text-red-500">{{ $message }}</div>
-                @enderror
-            </div>
-            <div>
-                <label for="vendor_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2 mt-2">業者名称</label>
-                <input type="text" form="editForm" name="vendor_name" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" id="vendor_name" value="{{old('vendor_name',$vendor->vendor_name)}}" placeholder="例）烏丸大学">
-                @error('vendor_name')
-                    <div class="text-red-500">{{ $message }}</div>
-                @enderror
-            </div>
-            <div class="hidden md:inline-block">
-                <label for="vendor_kana_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">業者カナ名称</label>
-                <input type="text" form="editForm" name="vendor_kana_name" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" id="vendor_kana_name" value="{{old('vendor_kana_name',$vendor->vendor_kana_name)}}" placeholder="例）カラスマダイガク">
-                @error('vendor_kana_name')
-                    <div class="text-red-500">{{ $message }}</div>
-                @enderror
-            </div>
-        </div>
-
-        <div class="grid gap-4 mb-4 grid-cols-2">
-            <div>
-                <label for="vendor_type_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">業者種別</label>
-                <select form="editForm" id="vendor_type_id" name="vendor_type_id" class="input-secondary">
-                    <option selected value="">---</option>
-                    @foreach($vendorTypes as $vendorType)
-                    <option value="{{ $vendorType->id }}" @selected( $vendorType->id == $vendor->vendor_type_id)>{{ $vendorType->name }}</option>
-                    @endforeach
-                </select>
-                @error('vendor_type_id')
-                <div class="text-red-500">{{ $message }}</div>
-                @enderror
-            </div>
-            <div>
-                <label for="department_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">管轄事業部</label>
-                <select form="editForm" id="department_id" name="department_id" class="input-secondary">
-                    <option selected value="">---</option>
-                    @foreach($departments as $department)
-                        <option value="{{ $department->id }}" @selected( $department->id === (int)$vendor->department_id )>
-                            {{ $department->path }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('department_id')
-                    <div class="text-red-500">{{ $message }}</div>
-                @enderror
-            </div>
+                    <!-- 法人名称 -->
+                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
+                            法人名称
+                        </th>
+                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
+                            <div class="flex items-center">
+                                <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300 whitespace-nowrap">{{ $vendor->corporation->corporation_name }}</div>
+                                {{-- <span class="bg-blue-100 text-blue-800 text-xs font-medium ml-2 inline-block px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400 whitespace-nowrap">
+                                    {{ $support->client->tradeStatus->trade_status_name }}
+                                </span> --}}
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- 業者名称 -->
+                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
+                            業者名称
+                        </th>
+                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
+                            <div class="flex items-center">
+                                <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300 whitespace-nowrap">{{ $vendor->vendor_name }}</div>
+                                {{-- <span class="bg-blue-100 text-blue-800 text-xs font-medium ml-2 inline-block px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400 whitespace-nowrap">
+                                    {{ $support->client->tradeStatus->trade_status_name }}
+                                </span> --}}
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- 管轄所属 -->
+                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
+                            管轄部門
+                        </th>
+                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
+                            <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300">{{ $vendor->department->path }}</div>
+                        </td>
+                    </tr>
+                    
+                    <!-- 業者種別 -->
+                    <tr class="dark:border-gray-600 block md:table-row">
+                        <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
+                            法人種別
+                        </th>
+                        <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
+                            <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300 whitespace-pre-wrap">{{ $vendor->vendorType->name }}</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
         {{-- タブヘッダStart --}}
@@ -117,6 +119,57 @@
         <div id="myTabContent">
             {{-- 1つ目のタブコンテンツStart --}}
             <div class="hidden p-4 rounded bg-gray-50 mb-4 dark:bg-gray-800" id="basic" role="tabpanel" aria-labelledby="basic-tab">
+
+
+            <div class="grid gap-3 mb-2 sm:grid-cols-2">
+                <div>
+                    <label for="vendor_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2 mt-2">業者名称</label>
+                    <input type="text" form="editForm" name="vendor_name" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" id="vendor_name" value="{{old('vendor_name', $vendor->vendor_name)}}" placeholder="例）烏丸大学">
+                    @error('vendor_name')
+                        <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="hidden md:inline-block">
+                    <label for="vendor_kana_name" class="block text-sm dark:text-gray-100 text-gray-900 leading-none md:mt-2">業者カナ名称</label>
+                    <input type="text" form="editForm" name="vendor_kana_name" class="w-full py-1 mt-1 placeholder-gray-400 border border-gray-300 rounded" id="vendor_kana_name" value="{{old('vendor_kana_name', $vendor->vendor_kana_name)}}" placeholder="例）カラスマダイガク">
+                    @error('vendor_kana_name')
+                        <div class="text-red-500">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
+
+
+        <div class="grid gap-4 mb-4 grid-cols-2">
+            <div>
+                <label for="vendor_type_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">業者種別</label>
+                <select form="editForm" id="vendor_type_id" name="vendor_type_id" class="input-secondary">
+                    <option selected value="">---</option>
+                    @foreach($vendorTypes as $vendorType)
+                    <option value="{{ $vendorType->id }}" @selected( $vendorType->id == $vendor->vendor_type_id)>{{ $vendorType->name }}</option>
+                    @endforeach
+                </select>
+                @error('vendor_type_id')
+                <div class="text-red-500">{{ $message }}</div>
+                @enderror
+            </div>
+            <div>
+                <label for="department_id" class="text-sm text-gray-900 dark:text-white leading-none mt-4">管轄部門</label>
+                <select form="editForm" id="department_id" name="department_id" class="input-secondary">
+                    <option selected value="">---</option>
+                    @foreach($departments as $department)
+                        <option value="{{ $department->id }}" @selected( $department->id === (int)$vendor->department_id )>
+                            {{ $department->path }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('department_id')
+                    <div class="text-red-500">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+
+
 
                 <div class="grid gap-4 mb-4 lg:grid-cols-5 mt-2">
 

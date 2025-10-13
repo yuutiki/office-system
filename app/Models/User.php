@@ -12,6 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Kyslik\ColumnSortable\Sortable;//add
 use App\Observers\GlobalObserver;
 use App\Traits\ModelHistoryTrait;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -32,12 +33,8 @@ class User extends Authenticatable
         'email',
         'int_phone',
         'ext_phone',
-        'affiliation1_id',
-        'affiliation2_id',
-        'affiliation3_id',
         'department_id',
         'profile_image',
-
         'is_enabled',
         'password',
         'password_change_required',
@@ -72,6 +69,50 @@ class User extends Authenticatable
         'email',
         'last_login_at'
     ];
+
+
+
+    // index画面の検索ロジック
+    public function scopeFilter($query, $filters)
+    {
+        // システム管理者でない場合は、id1のユーザーを非表示
+        if (!$this->isSysAdmin()) {
+            $query->where('id', '!=', 1);
+        }
+
+        // 社員番号
+        if (!empty($filters['user_num'])) {
+            $query->where('user_num', 'LIKE', '%' . $filters['user_num'] . '%');
+        }
+
+        // 氏名・カナ検索（スペース区切り対応）
+        if (!empty($filters['user_name'])) {
+            $spaceConversion = mb_convert_kana($filters['user_name'], 's'); // 全角スペース⇒半角スペース
+            $keywords = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+
+            $query->where(function ($q) use ($keywords) {
+                foreach ($keywords as $word) {
+                    $q->where(function ($sub) use ($word) {
+                        $sub->where('user_name', 'LIKE', "%{$word}%")
+                            ->orWhere('user_kana_name', 'LIKE', "%{$word}%");
+                    });
+                }
+            });
+        }
+
+        // 雇用ステータス
+        if (!empty($filters['employee_status_ids'])) {
+            $query->whereIn('employee_status_id', $filters['employee_status_ids']);
+        }
+
+        return $query;
+    }
+
+
+    private function isSysAdmin()
+    {
+        return Auth::check() && Auth::user()->id === 1;
+    }
 
 
     /**

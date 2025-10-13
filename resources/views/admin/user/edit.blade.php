@@ -8,34 +8,27 @@
                 <form method="post" action="{{route('users.update', $user)}}" enctype="multipart/form-data" id="updateForm">
                     @csrf
                     @method('PUT')
-                    <x-buttons.save-button form-id="updateForm" id="saveButton" onkeydown="stopTab(event)">
+                    <x-buttons.save-button form-id="updateForm" id="saveButton">
                         {{ __('save') }}
                     </x-buttons.save-button>
                 </form>
 
-                <button id="dropdownActionButton" data-dropdown-toggle="dropdownActions" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-600" type="button">
-                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
-                        <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
-                    </svg>
-                </button>
-
-                <!-- Dropdown menu -->
-                <div id="dropdownActions" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-60 dark:bg-gray-700 dark:divide-gray-600">
-                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownActionButton">
+                <x-buttons.dropdown-edit-button />
+                <div id="dropdownActions" class="absolute right-0 top-full mt-1 z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-60 dark:bg-gray-700 dark:divide-gray-600">
+                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
                         <li>
-                            <button type="button" data-modal-target="deleteModal-{{$user->id}}" data-modal-show="deleteModal-{{$user->id}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full dark:text-red-500">
+                            <button type="button" data-modal-target="deleteModal-{{$user->id}}" data-modal-show="deleteModal-{{$user->id}}" 
+                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-red-500 text-left">
                                 <div class="flex">
-                                    <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                                    <svg class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                    </svg>
                                     <span class="font-semibold">削除</span>
                                 </div>
                             </button>
                         </li>
-                        <li>
-                            <span class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full">更新日：{{ $user->updated_at }}</span>
-                        </li>
-                        <li>
-                            <span class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full">更新者：{{ optional($user->updatedBy)->user_name }}</span>
-                        </li>
+                        <li><span class="block px-4 py-2">更新日：{{ $user->updated_at }}</span></li>
+                        <li><span class="block px-4 py-2">更新者：{{ optional($user->updatedBy)->user_name }}</span></li>
                     </ul>
                 </div>
             </div>
@@ -205,7 +198,7 @@
         <label for="department_id" class="block text-sm font-medium text-gray-700 dark:text-gray-200">
             所属部門
         </label>
-        <select id="department_id" form="updateForm" name="department_id" class="input-primary w-full">
+        <select id="department_id" form="updateForm" name="department_id" class="input-primary w-full" onkeydown="stopTab(event)">
             <option value="">未選択</option>
             @foreach($departments as $department)
                 <option value="{{ $department->id }}" @selected(old('department_id', $user->department_id) == $department->id)>
@@ -270,6 +263,21 @@
             </label>
         </div>
         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <div class="hidden md:p-4 p-2 mb-4 rounded bg-gray-50 dark:bg-gray-800" id="group" role="tabpanel" aria-labelledby="group-tab">
             <div>
                 <div class="relative bg-white dark:bg-gray-700 rounded-t md:w-auto shadow-md  dark:text-gray-900 mt-4 border border-gray-600">
@@ -335,8 +343,17 @@
                 </div>
             </div>
         </div>
-
     </div>
+
+
+
+
+
+
+
+
+
+
 
     <!-- プロフ画像トリミング Modal -->
     <div id="imageModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden animate-slide-in-top">
@@ -370,6 +387,9 @@
         </div>
     </div>
 
+
+
+
     <!-- 印鑑画像トリミング Modal -->
     <div id="stampModal" tabindex="-1" class="fixed inset-0 flex items-center justify-center z-50 hidden animate-slide-in-top">
         <div class="max-h-full w-full max-w-2xl">
@@ -377,7 +397,7 @@
                 <!-- Modal header -->
                 <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
                     <h3 class="text-xl font-medium text-gray-900 dark:text-white">
-                        アイコン編集
+                        印鑑編集
                     </h3>
                     <button type="button" onclick="hideStampImageModal()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
                         <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -486,6 +506,58 @@
         </div>
     </div>
 
+
+
+    <!-- 削除モーダル -->
+    <div id="deleteModal-{{ $user->id }}" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative w-full max-w-md max-h-full">
+            <div class="relative bg-white rounded shadow dark:bg-gray-700">
+                <div class="p-6 text-center">
+                    <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                    </svg>
+                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">本当に削除しますか？</h3>
+                    <div class="flex justify-center">
+                        <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" data-modal-hide="deleteModal-{{ $user->id }}" class="text-white  bg-red-600 hover:bg-red-800 focus:outline-none font-medium rounded text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 dark:focus:ring-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                                {{ __('delete') }} <!--削除-->
+                            </button>
+                        </form>
+                        <button id="cancelButton-{{ $user->id }}" data-modal-hide="deleteModal-{{ $user->id }}" type="button" data-modal-cancel class="text-gray-500 bg-white hover:bg-gray-100 focus:outline-none rounded border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                            やっぱやめます
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <script>
         // 共通変数・定数
         const overlay = document.getElementById('overlay');
@@ -556,7 +628,7 @@
         });
     
         // トリミング後の画像をフォームにセットする処理（Modal上の完了ボタン押下時に発火）
-        function setStampImage() {
+        function setProfileImage() {
             // トリミング対象の画像要素が存在するか確認
             if (document.getElementById('cropper_target')) {
                 var canvas = document.getElementById('cropper_target').cropper.getCroppedCanvas();
@@ -733,7 +805,19 @@
         }
     </script>
 
+
+<!-- 削除モーダルの設定 -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        setupModal('deleteModal-{{ $user->id }}', '{{ $user->id }}');
+    });
+</script>
+
+    <script src="{{ asset('assets/js/modal/delete-modal.js') }}"></script>
     <script src="{{ asset('assets/js/stopTab.js') }}"></script>
+
+
+
 @push('scripts')
     @vite(['resources/js/pages/users/edit.js'])
 @endpush

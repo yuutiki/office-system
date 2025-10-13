@@ -18,6 +18,7 @@ use App\Models\TradeStatus;//add
 use App\Models\Prefecture;//add
 use App\Models\Report;//add
 use App\Models\Support;
+use App\Services\PaginationService;
 use App\Utils\PostCodeUtils;
 use Illuminate\Http\Request;
 use Illuminate\pagination\paginator;//add
@@ -34,9 +35,9 @@ use Illuminate\Validation\ValidationException;
 
 class ClientController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, PaginationService $paginationService)
     {
-        $perPage = config('constants.perPage');
+        $perPage = $paginationService->getPerPage($request);
 
         $departments = Department::all();
         // 親子順に並んだリストを取得
@@ -104,10 +105,9 @@ class ClientController extends Controller
         }
 
         $clients = $clientsQuery->paginate($perPage);
-        $count = $clients->total();
 
         return view('clients.index',compact(
-            'clients','count',
+            'clients',
             'departments','installationTypes','tradeStatuses','clientTypes',
             'selectedTradeStatuses','selectedClientTypes','selectedInstallationTypes',
             'salesUserId','clientName','selectedDepartmentId','selectedUserId','salesUsers', 'selectedDepartmentPath'

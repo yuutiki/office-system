@@ -55,8 +55,8 @@
                     <input type="text" name="client_name" id="client_name" value="{{ old('client_name', $clientContact->client->client_name) }}" class="input-readonly pointer-events-none" placeholder="" readonly>
                 </div>
             <div class="w-full flex flex-col md:mt-4">
-                    <label for="affiliation2_id" class="font-normal text-sm dark:text-red-500 text-red-700 leading-none">管轄事業部<span class="text-red-500"> *</span></label>
-                    <input type="text" name="affiliation2_id" id="affiliation2_id" value="{{ old('affiliation2_id', $clientContact->client->affiliation2->affiliation2_name) }}" class="input-readonly pointer-events-none" placeholder="" readonly>
+                    <label for="department_id" class="font-normal text-sm dark:text-red-500 text-red-700 leading-none">管轄事業部<span class="text-red-500"> *</span></label>
+                    <input type="text" name="department_id" id="department_id" value="{{ old('department_id', $clientContact->client->department->path) }}" class="input-readonly pointer-events-none" placeholder="" readonly>
                 </div>
                 @error('client_num')
                     <div class="text-red-500">{{$message}}</div>
@@ -314,7 +314,7 @@
             document.getElementById('client_num').value = client.client_num;
             document.getElementById('client_name').value = client.client_name;
             // document.getElementById('sales_user').value = client.user.user_name;
-            document.getElementById('affiliation2_id').value = client.affiliation2.affiliation2_name;
+            document.getElementById('department_id').value = client.department.path;
         }
         // モーダルのコールバック関数を設定
         window.clientSearchModal1_onSelect = handleClientSelect;

@@ -85,7 +85,7 @@
                             管轄所属
                         </th>
                         <td class="md:dark:bg-gray-700 block md:table-cell bg-gray-600 md:bg-white text-white md:text-gray-900 px-4 py-3 md:px-2 md:py-1.5">
-                            <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300">{{ $support->client->affiliation2->affiliation2_name }}</div>
+                            <div class="text-sm md:font-medium md:ml-0 ml-4 md:dark:text-gray-300">{{ $support->client->department->path }}</div>
                         </td>
                     </tr>
                     
@@ -100,7 +100,7 @@
                     </tr>
 
                     <!-- 契約連番 -->
-                    <tr class="md:border-b dark:border-gray-600 block md:table-row">
+                    <tr class="dark:border-gray-600 block md:table-row">
                         <th class="pl-4 pr-2 py-2 md:border-r dark:border-gray-600 whitespace-nowrap block md:table-cell bg-gray-100 dark:bg-gray-800 md:w-36 lg:w-48">
                             ステータス
                         </th>
@@ -238,7 +238,7 @@
                         <option selected value="">---</option>
                         @foreach($supportTypes as $supportType)
                             <option value="{{ $supportType->id }}" @selected(old('support_type_id', $support->support_type_id) == $supportType->id)>
-                                {{ $supportType->type_name }}
+                                {{ $supportType->name }}
                             </option>
                         @endforeach
                     </select>

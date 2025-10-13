@@ -17,7 +17,6 @@ class Link extends Model
         'display_name',
         'display_order',
         'url',
-        'affiliation2_id',
         'department_id',
         'created_by',
         'updated_by'
@@ -46,7 +45,6 @@ class Link extends Model
         'display_name',
         'url',
         'display_order',
-        'affiliation2_name',
         'department_id',
     ];
 
