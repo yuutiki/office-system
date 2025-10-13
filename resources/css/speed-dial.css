@@ -1,0 +1,41 @@
+/* resources/css/speed-dial.css */
+
+/* 基本レイアウトは Tailwind のユーティリティが担当する想定 */
+/* --- 初期（閉じ）状態 --- */
+.speed-dial-button {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* 各アイテム（閉じている時） */
+.speed-dial-item {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.35s cubic-bezier(.2,.9,.2,1), transform 0.35s cubic-bezier(.2,.9,.2,1);
+    pointer-events: none;
+}
+
+/* show クラスで表示（順次フェードイン） */
+.speed-dial-button.show .speed-dial-item {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* 遅延（下→上に見せたいなら index 小さいものを遅めに） */
+.speed-dial-button.show .speed-dial-item:nth-child(1) { transition-delay: 0.26s; }
+.speed-dial-button.show .speed-dial-item:nth-child(2) { transition-delay: 0.22s; }
+.speed-dial-button.show .speed-dial-item:nth-child(3) { transition-delay: 0.18s; }
+.speed-dial-button.show .speed-dial-item:nth-child(4) { transition-delay: 0.14s; }
+.speed-dial-button.show .speed-dial-item:nth-child(5) { transition-delay: 0.10s; }
+.speed-dial-button.show .speed-dial-item:nth-child(6) { transition-delay: 0.06s; }
+.speed-dial-button.show .speed-dial-item:nth-child(7) { transition-delay: 0.02s; }
+
+/* クリックできるようになるまでのフォーカス対応 */
+.speed-dial-item:focus {
+    outline: 2px solid rgba(59,130,246,0.6);
+    outline-offset: 2px;
+}
+
+/* ハンバーガーのラインは Tailwind クラスで既に transition を持つので追加は不要だが、必要ならここに書ける */

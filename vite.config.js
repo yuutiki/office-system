@@ -9,6 +9,7 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/js/app.js',
                 ...fg.sync('resources/js/pages/**/*.js'),
+                ...fg.sync('resources/js/components/modals/*.js'),
             ],
             refresh: true,
         }),

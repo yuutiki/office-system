@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\PostCode;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ClientStoreRequest extends FormRequest
@@ -30,9 +31,19 @@ class ClientStoreRequest extends FormRequest
             'trade_status_id' => 'required',
             'installation_type_id' => 'required',
             'affiliation2' => 'required',
+            'post_code' => ['nullable', new PostCode()],
         ];
     }
-    
+
+    /**
+     * バリデーション後に自動でフォーマット
+     */
+    protected function passedValidation(): void
+    {
+        $this->merge([
+            'post_code' => format_post_code($this->post_code),
+        ]);
+    }
 
     protected function failedValidation($validator)
     {

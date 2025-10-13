@@ -77,12 +77,20 @@ use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 |
 */
 
+// routes/web.php
+if (app()->environment('local')) {
+    Route::get('/{code}', function ($code) {
+        abort($code);
+    })->where('code', '[0-9]+');
+}
 
+Route::get('/coffee', function () {
+    abort(418); // ティーポットなのでコーヒーは淹れられません
+});
 
 Route::get('/', function () {
     return view('auth.login');
 });
-
 
 Route::middleware(['auth'])->group(function () {
 

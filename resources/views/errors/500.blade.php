@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="ja">
     <head>
         <meta charset="UTF-8">
@@ -34,4 +34,165 @@
             </div>
         </div>
     </body>
+</html> --}}
+
+
+
+
+{{-- <!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 - サーバーエラー</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        .delay-1 { animation-delay: 0.1s; opacity: 0; }
+        .delay-2 { animation-delay: 0.2s; opacity: 0; }
+        .delay-3 { animation-delay: 0.3s; opacity: 0; }
+    </style>
+</head>
+<body class="bg-neutral-50 min-h-screen flex items-center justify-center p-6 font-sans antialiased">
+    
+    <div class="max-w-lg w-full">
+        
+        <!-- Error Code - Large and Minimal -->
+        <div class="text-center mb-8 fade-in">
+            <h1 class="text-9xl md:text-[12rem] font-light text-neutral-900 tracking-tight leading-none">
+                500
+            </h1>
+        </div>
+
+        <!-- Divider Line -->
+        <div class="w-16 h-px bg-neutral-300 mx-auto mb-8 fade-in delay-1"></div>
+
+        <!-- Error Message -->
+        <div class="text-center mb-12 fade-in delay-2">
+            <h2 class="text-2xl font-light text-neutral-800 mb-3 tracking-wide">
+                サーバーエラー
+            </h2>
+            <p class="text-neutral-600 leading-relaxed">
+                申し訳ございません。<br>
+                現在、技術的な問題が発生しています。
+            </p>
+        </div>
+
+        <!-- Action Button -->
+        <div class="text-center mb-16 fade-in delay-3">
+            <a href="{{ route('dashboard') }}" 
+               class="inline-block px-10 py-3.5 bg-neutral-900 text-white text-sm tracking-wider uppercase font-medium transition-all duration-300 hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2">
+                ホームへ戻る
+            </a>
+        </div>
+
+        <!-- Footer Info -->
+        <div class="text-center space-y-4 fade-in delay-3">
+            <p class="text-neutral-500 text-sm">
+                問題が解決しない場合は
+                <a href="mailto:support@example.com" class="text-neutral-700 underline hover:text-neutral-900 transition-colors">
+                    サポート
+                </a>
+                までご連絡ください
+            </p>
+            <p class="text-neutral-400 text-xs font-mono">
+                {{ date('Y.m.d H:i:s') }}
+            </p>
+        </div>
+
+    </div>
+
+</body>
+</html> --}}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 - サーバーエラー</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        .delay-1 { animation-delay: 0.15s; opacity: 0; }
+        .delay-2 { animation-delay: 0.3s; opacity: 0; }
+        .delay-3 { animation-delay: 0.45s; opacity: 0; }
+        
+        /* Subtle grid pattern */
+        .grid-pattern {
+            background-image: 
+                linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 grid-pattern min-h-screen flex items-center justify-center p-6 font-sans antialiased">
+    
+    <div class="max-w-3xl w-full">
+        
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            
+            <!-- Left: Error Code -->
+            <div class="text-center md:text-right fade-in-up">
+                <div class="inline-block">
+                    <h1 class="text-[10rem] md:text-[14rem] font-thin text-slate-100 leading-none tracking-tighter">
+                        500
+                    </h1>
+                    <div class="h-0.5 bg-slate-100 w-full"></div>
+                </div>
+            </div>
+
+            <!-- Right: Message -->
+            <div class="space-y-8 fade-in-up delay-1">
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-light text-slate-100 mb-4 tracking-wide">
+                        サーバーエラー
+                    </h2>
+                    <p class="text-slate-400 leading-relaxed">
+                        申し訳ございません。サーバーで問題が発生しました。技術チームが対応中です。
+                    </p>
+                </div>
+
+                <div class="space-y-4">
+                    <a href="{{ route('dashboard') }}" 
+                       class="block w-full md:w-auto text-center px-8 py-3 bg-slate-100 text-slate-900 text-sm font-medium tracking-wide transition-all duration-300 hover:bg-slate-300">
+                        ホームへ戻る
+                    </a>
+                    <button onclick="location.reload()" 
+                            class="block w-full md:w-auto text-center px-8 py-3 border border-slate-600 text-slate-300 text-sm font-medium tracking-wide transition-all duration-300 hover:border-slate-400 hover:text-slate-100">
+                        ページを再読み込み
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bottom Info -->
+        <div class="mt-16 text-center fade-in-up delay-2">
+            <p class="text-slate-500 text-sm mb-2">
+                サポートが必要な場合: 
+                <a href="mailto:support@example.com" class="text-slate-300 hover:text-slate-100 underline transition-colors">
+                    support@example.com
+                </a>
+            </p>
+            <p class="text-slate-600 text-xs font-mono">
+                {{ date('Y-m-d H:i:s') }}
+            </p>
+        </div>
+
+    </div>
+
+</body>
 </html>

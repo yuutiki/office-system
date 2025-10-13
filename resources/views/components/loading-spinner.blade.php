@@ -1,4 +1,4 @@
-<div id="my-spinner" class="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-800 text-white transition-opacity duration-700 opacity-100">
+<div id="my-spinner" class="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-800 text-white opacity-100 transition-opacity duration-700">
     <!-- スピナー全体 -->
     <div class="relative w-[120px] h-[120px]">
 

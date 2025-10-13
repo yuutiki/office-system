@@ -7,6 +7,7 @@ use App\Http\Requests\Keepfile\KeepfileUpdateRequest;
 use App\Models\Keepfile;
 use App\Models\Project;
 use App\Models\User;
+use App\Services\PaginationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -16,9 +17,9 @@ use PDF;
 
 class KeepfileController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, PaginationService $paginationService)
     {
-        $perPage = config('constants.perPage');
+        $perPage = $paginationService->getPerPage($request);
 
         // 検索条件を取得してセッションに保存
         Session::put('search_params', $request->all());

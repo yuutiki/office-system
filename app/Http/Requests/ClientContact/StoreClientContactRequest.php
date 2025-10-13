@@ -46,6 +46,17 @@ class StoreClientContactRequest extends FormRequest
         ];
     }
 
+    /**
+     * バリデーション後に自動でフォーマット
+     */
+
+    protected function passedValidation(): void
+    {
+        $this->merge([
+            'post_code' => format_post_code($this->post_code),
+        ]);
+    }
+
     protected function failedValidation($validator)
     {
         session()->flash('error', '入力内容にエラーがあります。');

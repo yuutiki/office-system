@@ -136,47 +136,12 @@ class ClientController extends Controller
 
         return view('clients.create',compact('affiliation2s','users','tradeStatuses','clientTypes','installationTypes','prefectures','distributionTypes', 'departments'));
     }
-    
-    // // ClientController内のbuildTreeメソッド
-    // private function buildTree($departments, $parentId = null)
-    // {
-    //     $tree = [];
-        
-    //     foreach ($departments as $department) {
-    //         // parent_idがnullまたは0の場合の処理
-    //         $deptParentId = $department->parent_id;
-    //         if ($deptParentId === 0) {
-    //             $deptParentId = null;
-    //         }
-            
-    //         if ($deptParentId == $parentId) {
-    //             $children = $this->buildTree($departments, $department->id);
-                
-    //             $departmentArray = [
-    //                 'id' => $department->id,
-    //                 'code' => $department->code,
-    //                 'name' => $department->name,
-    //                 'parent_id' => $department->parent_id,
-    //                 'level' => $department->level,
-    //                 'is_active' => $department->is_active
-    //             ];
-                
-    //             if (!empty($children)) {
-    //                 $departmentArray['children'] = $children;
-    //             }
-                
-    //             $tree[] = $departmentArray;
-    //         }
-    //     }
-        
-    //     return $tree;
-    // }
 
     public function store(ClientStoreRequest $request)
     {
         $inputPost = $request->head_post_code;
         // $formattedPost = Client::formatPostCode($inputPost);
-        $formattedPost = PostCodeUtils::formatPostCode($inputPost);
+        // $formattedPost = PostCodeUtils::formatPostCode($inputPost);
 
 
         // フォームからの値を変数に格納
@@ -204,7 +169,7 @@ class ClientController extends Controller
         $client->affiliation2_id = $affiliation2Id;
         $client->client_name = $request->client_name;
         $client->client_kana_name = $request->client_kana_name;
-        $client->post_code = $formattedPost; // 変換後の郵便番号をセット
+        $client->post_code = $request->post_code;
         $client->prefecture_id = $request->prefecture_id;
         $client->address_1 = $request->address_1;
         $client->tel = $request->tel;
@@ -304,7 +269,7 @@ class ClientController extends Controller
 
         $client->client_name = $request->client_name;
         $client->client_kana_name = $request->client_kana_name;
-        $client->post_code = $request->head_post_code; //
+        $client->post_code = $request->post_code; //
         $client->prefecture_id = $request->head_prefecture_id; //
         $client->address_1 = $request->head_addre1; //
         $client->tel = $request->head_tel;

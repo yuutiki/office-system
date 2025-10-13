@@ -10,7 +10,7 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-        {{-- favicon --}}
+        <!-- favicon -->
         <link rel="shortcut icon" href="{{ asset('/favicon.ico') }}">
 
         {{-- Windows/Android用マニフェスト --}}
@@ -18,7 +18,7 @@
         {{-- IOS用マニフェスト --}}
         <link rel="manifest" href="manifest.webmanifest" />
         <script async src="https://cdn.jsdelivr.net/npm/pwacompat" crossorigin="anonymous"></script>
-        {{-- serviceworkerの読み込み --}}
+        {{-- service-workerの読み込み --}}
         <script>
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function() {
@@ -40,7 +40,6 @@
         <script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
         <!-- Darkモード用 -->
         <script>
-            // On page load or when changing themes, best to add inline in `head` to avoid FOUC
             if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.documentElement.classList.add('dark');
             } else {
@@ -53,13 +52,14 @@
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
         <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+
         <!-- Select2のスタイルを読み込む（CDNを使用する場合） -->
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+        {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" /> --}}
 
         {{-- 横スクロールヒント1/2 --}}
         <link rel="stylesheet" href="https://unpkg.com/scroll-hint@latest/css/scroll-hint.css">
-        {{-- 横スクロールヒント2/2 --}}
 
+        {{-- 画像切り取り用 --}}
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" integrity="sha512-cyzxRvewl+FOKTtpBzYjW6x6IAYUCZy3sGP40hn+DQkqeluGRCax7qztK2ImL64SA+C7kVWdLI6wvdlStawhyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
         <!-- PDFのプレビュー表示用 -->
@@ -87,52 +87,72 @@
                 {{ $slot }}
             </main>
 
-
-            {{-- <script>
-                function showLoader() {
-                  document.getElementById('lmy-spinner').classList.remove('hidden');
-                }
-              
-                function hideLoader() {
-                  document.getElementById('lmy-spinner').classList.add('hidden');
-                }
-              
-                // ページ読み込み完了時に非表示にする例
-                window.addEventListener('load', hideLoader);
-              </script> --}}
+            {{-- <x-loading-spinner /> --}}
 
 
-        <!-- ✅ ローディングスピナー -->
-        <x-loading-spinner />
+            <div id="my-spinner" class="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-800 text-white transition-all duration-[800ms]">
+                <!-- スピナー全体 -->
+                <div class="relative w-[120px] h-[120px]">
+                    <!-- 回転する円 -->
+                    <div class="absolute inset-0 border-[8px] border-solid border-white border-t-white/10 border-b-white/10 rounded-full animate-spinner">
+                    </div>
 
-
-            <div id="rap" class="fixed bottom-11 right-6 z-50 ">
-                <div id="speed-dial-button" class="flex-col items-center hidden mb-4 space-y-2">
-                    <button type="button" onclick="location.href='{{route('supports.create')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 dark:hover:text-white dark:text-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400 shadow-xl">
-                        <span class="block mb-px text-xs font-medium">サポート</span>
-                    </button>
-                    <button type="button" onclick="location.href='{{route('reports.create')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 dark:hover:text-white dark:text-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400 shadow-xl">
-                        <span class="block mb-px text-xs font-medium">営業報告</span>
-                    </button>
-                    <button type="button" onclick="location.href='{{route('projects.create')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 dark:hover:text-white dark:text-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400 shadow-xl">
-                        <span class="block mb-px text-xs font-medium">プロジェクト</span>
-                    </button>
-                    <button type="button" onclick="location.href='{{route('keepfiles.create')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 dark:hover:text-white dark:text-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400 shadow-xl">
-                        <span class="block mb-px text-xs font-medium">預託情報</span>
-                    </button>
-                    <button type="button" onclick="location.href='{{route('client-contacts.create')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 dark:hover:text-white dark:text-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400 shadow-xl">
-                        <span class="block mb-px text-xs font-medium">顧客<br>担当者</span>
-                    </button>
-                    <button type="button" onclick="location.href='{{route('dashboard')}}'" class="w-[56px] h-[56px] text-gray-500 bg-white rounded-full border border-gray-200 dark:border-gray-600 hover:text-gray-900 dark:hover:text-white dark:text-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400 shadow-xl">
-                        <span class="block mb-px text-xs font-medium">Home</span>
-                    </button>
+                    <!-- 円の中央のテキスト -->
+                    <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs animate-spinner-text">
+                        Loading...
+                    </span>
                 </div>
-                <button type="button" id="dial" onclick="toggleDialVisibility()" class="relative w-14 h-14 bg-blue-600 rounded-full focus:outline-none">
-                    <span class="block absolute left-4 top-[19px] w-6 h-0.5 bg-white transition-all duration-300 ease-in-out" id="line1"></span>
-                    <span class="block absolute left-4 top-[27px] w-4 h-0.5 bg-white transition-all duration-300 ease-in-out" id="line2"></span>
-                    <span class="block absolute left-4 top-[35px] w-2 h-0.5 bg-white transition-all duration-300 ease-in-out" id="line3"></span>
-                </button>
             </div>
+
+            <script>
+                // ページの読み込み完了後にローダーをフェードアウト
+                window.addEventListener('load', () => {
+                    const spinner = document.getElementById('my-spinner');
+
+                    // フェードアウトアニメーション
+                    spinner.classList.add('opacity-0', 'pointer-events-none');
+
+                    // 完全に透明になった後に非表示化（約0.8秒後）
+                    setTimeout(() => {
+                    spinner.classList.add('hidden');
+                    }, 800);
+                });
+            </script>
+
+            <style>
+                @keyframes spinner {
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(360deg);
+                }
+                }
+
+                @keyframes spinner-text {
+                0%, 100% {
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 0.2;
+                }
+                }
+
+                /* Tailwind で使えるように */
+                @layer utilities {
+                .animate-spinner {
+                    animation: spinner 1.5s linear infinite;
+                }
+
+                .animate-spinner-text {
+                    animation: spinner-text 1.5s ease-in-out infinite;
+                }
+                }
+            </style>
+
+
+            <!-- スピードダイアル -->
+            <x-speed-dials.speed-dial />
 
 
             <footer class="bg-white dark:bg-gray-800 sticky top-[100vh]">
@@ -140,79 +160,31 @@
                     <div class="text-sm text-right text-gray-500  dark:text-gray-400 px-2" tabindex="-1">
                         © 2023 <a href="#" class="hover:underline" tabindex="-1">Yuu™</a>. All Rights Reserved.
                     </div>
-                    <div class="text-sm text-right text-gray-500 dark:text-gray-400 px-2">
-                        Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
-                    </div>
+                    @production
+                        {{--  --}}
+                    @else
+                        <div class="text-sm text-right text-gray-500 dark:text-gray-400 px-2">
+                            Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
+                        </div>
+                    @endproduction
                 </div>
             </footer>
         </div>
-
-
-    <script>
-        function toggleDialVisibility() {
-            const speedDialButton = document.getElementById('speed-dial-button');
-            const dial = document.getElementById('dial');
-            const line1 = document.getElementById('line1');
-            const line2 = document.getElementById('line2');
-            const line3 = document.getElementById('line3');
-        
-            speedDialButton.classList.toggle('hidden');
-            speedDialButton.classList.toggle('flex');
-            dial.classList.toggle('active');
-        
-            if (dial.classList.contains('active')) {
-                line1.classList.remove('top-[19px]','left-3');
-                line1.classList.add('top-[50%]', 'translate-y-[0px]', 'rotate-[-45deg]', 'w-[50%]', 'left-[13.7px]');
-                
-                line2.classList.add('opacity-0');
-
-                line3.classList.remove('top-[35px]','left-3');
-                line3.classList.add('top-[50%]', '-translate-y-[0px]', 'rotate-[45deg]', 'w-[50%]', 'left-[13.7px]');
-            } else {
-                line1.classList.remove('top-[50%]', 'translate-y-[0px]', 'rotate-[-45deg]', 'w-[50%]', 'left-[13.7px]');
-                line1.classList.add('top-[19px]','left-3');
-
-                line2.classList.remove('opacity-0');
-                
-                line3.classList.remove('top-[50%]', '-translate-y-[0px]', 'rotate-[45deg]', 'w-[50%]', 'left-[13.7px]');
-                line3.classList.add('top-[35px]','left-3');
-            }
-        }
-        
-        // スクロール時の動作
-        function hideElementOnScroll() {
-            const rap = document.getElementById('rap');
-            const scrollThreshold = 1;
-        
-            window.addEventListener('scroll', function() {
-                const isBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - scrollThreshold;
-                rap.style.display = isBottom ? 'none' : '';
-            });
-        }
-        
-        window.onload = hideElementOnScroll;
-    </script>
-
-    
-
-
 
 
         {{-- JQUERY --}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
         <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
         <script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
 
         <!-- Select2を読み込む（CDNを使用する場合） -->
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+        {{-- <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/i18n/ja.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js" integrity="sha512-6lplKUSl86rUVprDIjiW8DuOniNX8UDoRATqZSds/7t6zCQZfaCe3e5zcGaQwxa8Kpn5RTM9Fvl3X2lLV4grPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js" integrity="sha512-6lplKUSl86rUVprDIjiW8DuOniNX8UDoRATqZSds/7t6zCQZfaCe3e5zcGaQwxa8Kpn5RTM9Fvl3X2lLV4grPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
 
         {{-- 自作JS --}}
-        <script src="{{ asset('/assets/js/allinputenterdisable.js') }}"></script>
-        <script src="{{ asset('/assets/js/jquery.zip2addr.js') }}"></script>
-        {{-- <script src="{{ asset('/assets/js/jquery.autoKana.js') }}"></script> --}}
         <script src="{{ asset('/assets/js/shortcut.js') }}"></script>
         <script src="{{ asset('/assets/js/main.js') }}"></script>
 

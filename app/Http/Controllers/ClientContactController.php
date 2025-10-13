@@ -99,7 +99,6 @@ class ClientContactController extends Controller
 
     public function store(StoreClientContactRequest $request)
     {
-        $formattedPost = formatPostalCode($request->post_code);
 
         if ($request->client_id === null) {
             // クライアントが見つからない場合の処理
@@ -122,7 +121,7 @@ class ClientContactController extends Controller
             'int_tel' => $request->int_tel,
             'phone' => $request->phone,
             'mail' => $request->mail,
-            'post_code' => $formattedPost, //変換後の郵便番号をセット
+            'post_code' => $request->post_code, //変換後の郵便番号をセット
             'prefecture_id' => $request->prefecture_id,
             'address_1' => $request->address_1,
             'client_contact_memo' => $request->client_contact_memo,
@@ -154,8 +153,6 @@ class ClientContactController extends Controller
 
     public function update(UpdateClientContactRequest $request, ClientContact $clientContact)
     {
-        $formattedPost = formatPostalCode($request->post_code);
-
         // フォームからの値を変数に格納
         $clientNum = $request->input('client_num');
 
@@ -181,7 +178,7 @@ class ClientContactController extends Controller
         $clientContact->phone = $request->phone;
         $clientContact->mail = $request->mail;
 
-        $clientContact->post_code = $formattedPost; // 変換後の郵便番号をセット
+        $clientContact->post_code = $request->post_code; // 変換後の郵便番号をセット
         $clientContact->prefecture_id = $request->prefecture_id;
         $clientContact->address_1 = $request->address_1;
         $clientContact->client_contact_memo = $request->client_contact_memo;

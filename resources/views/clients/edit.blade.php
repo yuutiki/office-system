@@ -216,10 +216,10 @@
 
             <div class="grid gap-4 mb-4 md:grid-cols-4 mt-2">
                 <div class="w-full flex flex-col">
-                    <label for="head_post_code" class="text-sm dark:text-gray-100 text-gray-900 leading-none" autocomplete="new-password">郵便番号</label>
-                    {{-- <input type="text" name="head_post_code" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="head_post_code" value="{{ old('head_post_code') }}" placeholder="" onKeyUp="AjaxZip3.zip2addr(this,'','head_prefecture','head_addre1','','',false);"> --}}
+                    <label for="post_code" class="text-sm dark:text-gray-100 text-gray-900 leading-none" autocomplete="new-password">郵便番号</label>
+                    {{-- <input type="text" name="post_code" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="post_code" value="{{ old('post_code') }}" placeholder="" onKeyUp="AjaxZip3.zip2addr(this,'','head_prefecture','head_addre1','','',false);"> --}}
                     <div class="relative w-full">
-                        <input type="text" name="head_post_code" form="clientForm" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="head_post_code" value="{{ old('head_post_code', $client->post_code) }}" placeholder="">
+                        <input type="text" name="post_code" form="clientForm" class="w-full py-1 placeholder-gray-400 border border-gray-300 rounded mt-1" id="post_code" value="{{ old('post_code', $client->post_code) }}" placeholder="">
                         <button type="button" id="client_ajaxzip3" class="absolute top-0 end-0 p-2.5 text-sm h-[34px] text-white mt-1 bg-blue-700 rounded-e border border-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>

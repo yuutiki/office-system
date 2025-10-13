@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>503 - メンテナンス中</title>
+    <title>405 - メソッド不許可</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @keyframes fadeInUp {
@@ -36,7 +36,7 @@
             <div class="text-center md:text-right fade-in-up">
                 <div class="inline-block">
                     <h1 class="text-[10rem] md:text-[14rem] font-thin text-slate-100 leading-none tracking-tighter">
-                        503
+                        405
                     </h1>
                     <div class="h-0.5 bg-slate-100 w-full"></div>
                 </div>
@@ -46,22 +46,33 @@
             <div class="space-y-8 fade-in-up delay-1">
                 <div>
                     <h2 class="text-2xl md:text-3xl font-light text-slate-100 mb-4 tracking-wide">
-                        メンテナンス中
+                        メソッド不許可
                     </h2>
                     <p class="text-slate-400 leading-relaxed">
-                        現在、システムのメンテナンス作業を行っています。しばらくお待ちください。
+                        このページへのアクセス方法が許可されていません。正しい手順でアクセスしてください。
                     </p>
                 </div>
 
+                <div class="bg-slate-800/50 border border-slate-700 rounded-lg p-4 fade-in-up delay-2">
+                    <p class="text-slate-300 text-sm mb-2">
+                        <span class="font-medium">よくある原因:</span>
+                    </p>
+                    <ul class="text-slate-400 text-sm space-y-1 list-disc list-inside">
+                        <li>ブラウザの戻るボタンから再送信した</li>
+                        <li>URLを直接編集してアクセスした</li>
+                        <li>ブックマークが古い形式である</li>
+                    </ul>
+                </div>
+
                 <div class="space-y-4">
-                    <button onclick="location.reload()" 
-                            class="block w-full md:w-auto text-center px-8 py-3 bg-slate-100 text-slate-900 text-sm font-medium tracking-wide transition-all duration-300 hover:bg-slate-300">
-                        ページを再読み込み
-                    </button>
                     <a href="{{ route('dashboard') }}" 
-                       class="block w-full md:w-auto text-center px-8 py-3 border border-slate-600 text-slate-300 text-sm font-medium tracking-wide transition-all duration-300 hover:border-slate-400 hover:text-slate-100">
+                       class="block w-full md:w-auto text-center px-8 py-3 bg-slate-100 text-slate-900 text-sm font-medium tracking-wide transition-all duration-300 hover:bg-slate-300">
                         ホームへ戻る
                     </a>
+                    <button onclick="history.back()" 
+                            class="block w-full md:w-auto text-center px-8 py-3 border border-slate-600 text-slate-300 text-sm font-medium tracking-wide transition-all duration-300 hover:border-slate-400 hover:text-slate-100">
+                        前のページへ戻る
+                    </button>
                 </div>
             </div>
 
