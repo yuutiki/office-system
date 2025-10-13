@@ -16,6 +16,7 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
+        "league/oauth2-google": "^4.0",
         "livewire/livewire": "^2.12",
         "maatwebsite/excel": "^3.1.50",
         "maximebf/debugbar": "^1.19",
@@ -38,7 +39,7 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-            "app/Common/functions.php"
+
         ]
     },
     "autoload-dev": {
