@@ -112,7 +112,7 @@
     </div>
 
     <div class="mt-1 mb-1 px-4 md:ml-9">
-        {{ $affiliation2s->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
+        {{ $affiliation2s->withQueryString()->links('vendor.pagination.custom-tailwind') }}  
     </div> 
 
     <div class="md:w-auto md:mr-2 md:ml-14 mb-4 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-300">
@@ -410,7 +410,7 @@
     </div>
     @if($affiliation2s && $affiliation2s->hasPages())
         <div class="mt-1 mb-1 px-4 md:ml-9">
-            {{ $affiliation2s->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
+            {{ $affiliation2s->withQueryString()->links('vendor.pagination.custom-tailwind') }}  
         </div> 
     @endif
 

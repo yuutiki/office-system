@@ -147,7 +147,6 @@
     </div>
 
 
-    {{-- コメント参照 --}}
 {{-- コメント参照 --}}
 <div class="md:w-5/6 flex justify-center md:mx-auto mt-8">
     <div class="w-full mx-auto">
@@ -165,7 +164,7 @@
                 <div class="bg-white shadow-md rounded-md overflow-hidden w-auto">
                     <!-- インライン編集用のセクション -->
                     <div id="comment-view-{{ $comment->id }}" class="px-2 py-1">
-                        <p class="text-gray-800 whitespace-pre-wrap text-sm">{{ optional($comment)->content }}</p>
+                        <p class="text-gray-800 whitespace-pre-wrap break-all overflow-hidden text-sm">{!! convertUrlsToLinks(($comment->content)) !!}</p>
                     </div>
                     
                     @if ($comment->user_id === Auth::id())
@@ -286,7 +285,7 @@
         });
     </script>
 
-
+{{-- 
 <script>
 // ページが読み込まれた後に一度だけ画面をリロードする関数
 function reloadPage() {
@@ -300,6 +299,6 @@ window.onload = function() {
     // ページが読み込まれた後にリロードを実行するために、setTimeoutを使用する
     setTimeout(reloadPage, 0);
 };
-</script>
+</script> --}}
     
 </x-app-layout>

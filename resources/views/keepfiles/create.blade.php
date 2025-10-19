@@ -218,31 +218,13 @@
         </div>
     </div>
 
+    <!-- 案件検索モーダルのBladeテンプレート -->
     <x-modals.project-search-modal 
         modalId="projectSearchModal1" 
         screenId="keepfile_create" 
         :users="$users" 
         onSelectCallback="handleProjectSelect" 
     />
-
-
-    <script>
-        // プロジェクト選択時の処理を定義
-        function handleProjectSelect(project) {
-            // 選択されたプロジェクトの情報を各フィールドに設定
-            document.getElementById('project_id').value = project.id;
-            document.getElementById('project_num').value = project.project_num;
-            document.getElementById('project_name').value = project.project_name;
-            document.getElementById('client_name').value = project.client.client_name;
-            // document.getElementById('project_manager').value = project.user.user_name;
-        }
-        
-        // モーダルのコールバック関数を設定
-        window.projectSearchModal1_onSelect = handleProjectSelect;
-    </script>
-
-    {{-- プロジェクト検索モーダルのJavaScript --}}
-    <script src="{{ asset('/assets/js/modal/project-search-modal.js') }}"></script>
 
 
     <script>
@@ -305,11 +287,8 @@
 
 
 
+    @push('scripts')
+        @vite('resources/js/pages/keepfiles/create.js')
+    @endpush
 
-
-
-
-    <script src="{{ asset('assets/js/stopTab.js') }}"></script>
-    <script src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
-    {{-- <script src="{{ asset('/assets/js/searchProject.js') }}"></script> --}}
 </x-app-layout>

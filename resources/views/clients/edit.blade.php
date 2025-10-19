@@ -609,7 +609,7 @@ document.addEventListener("DOMContentLoaded", function () {
         {{-- 2つ目のタブコンテンツ(契約情報)Start --}}
         <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="contracts" role="tabpanel" aria-labelledby="contracts-tab">
             <p class="text-sm text-gray-500 dark:text-gray-400">請求区分、解約日、契約書添付</p>
-            <div class="w-full relative overflow-x-auto shadow-md rounded-sm mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
+            <div class="w-full relative overflow-x-auto shadow-md rounded-sm mx-auto mt-1 bg-gray-300 dark:bg-gray-700">
                 <table class="w-full text-sm text-left text-gray-800 dark:text-gray-400">
         
                     {{-- テーブルヘッダ start --}}
@@ -713,7 +713,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </tbody>
                 </table>
                 <div class="mt-2 mb-2 px-4">
-                    {{-- {{ $contracts->withQueryString()->links('vendor.pagination.custum-tailwind') }}   --}}
+                    {{-- {{ $contracts->withQueryString()->links('vendor.pagination.custom-tailwind') }}   --}}
                 </div> 
             </div> 
             
@@ -969,7 +969,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div>
                     <label for="test4" class="text-sm text-gray-900 dark:text-white leading-none mt-4">セキュリティソフト</label>
                     <select id="test4" name="test4" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected value="">WindowsDifenser</option>
+                        <option selected value="">WindowsDefender</option>
                         <option selected value="">Norton</option>
                         <option selected value="">ウィルスバスター</option>
                         <option selected value="">カスペルスキー</option>
@@ -1079,7 +1079,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <label for="test11" class="text-sm text-gray-900 dark:text-white leading-none mt-4">VPN方法</label>
                     <select id="test11" name="test11" class="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 text-sm  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected value="">なし</option>
-                        <option selected value="">FortiClient</option>
+                        <option selected value="">Forti-Client</option>
                         <option selected value="">GlobalProtect</option>
                         <option selected value="">F5VPN</option>
                         <option selected value="">OpenVPN</option>
@@ -1113,7 +1113,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         {{-- 4つ目のタブコンテンツ(導入システム)Start --}}
         <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="systems" role="tabpanel" aria-labelledby="systems-tab">
-            <div class="w-full relative overflow-x-auto shadow-md rounded-sm mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
+            <div class="w-full relative overflow-x-auto shadow-md rounded-sm mx-auto mt-1 bg-gray-300 dark:bg-gray-700">
                 <table class="w-full text-sm text-left text-gray-800 dark:text-gray-400">
         
                     {{-- テーブルヘッダ start --}}
@@ -1219,7 +1219,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </tbody>
                 </table>
                 <div class="mt-2 mb-2 px-4">
-                    {{-- {{ $clientProducts->withQueryString()->links('vendor.pagination.custum-tailwind') }}   --}}
+                    {{-- {{ $clientProducts->withQueryString()->links('vendor.pagination.custom-tailwind') }}   --}}
                 </div> 
             </div> 
             <!-- Dropdown menu -->
@@ -1260,7 +1260,7 @@ document.addEventListener("DOMContentLoaded", function () {
         {{-- 5つ目のタブコンテンツ(営業報告)Start --}}
         <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="reports" role="tabpanel" aria-labelledby="reports-tab">
             {{-- テーブル表示 --}}
-            <div class="w-full relative overflow-x-auto shadow-md rounded-sm mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
+            <div class="w-full relative overflow-x-auto shadow-md rounded-sm mx-auto mt-1 bg-gray-300 dark:bg-gray-700">
                 <table class="w-full text-sm text-left text-gray-800 dark:text-gray-400">
 
                     {{-- テーブルヘッダ start --}}
@@ -1376,7 +1376,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         {{-- 6つ目のタブコンテンツStart --}}
         <div class="hidden p-4 rounded bg-gray-50 dark:bg-gray-800" id="supports" role="tabpanel" aria-labelledby="supports-tab">
-            <div class="w-full relative overflow-x-auto shadow-md rounded-sm mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
+            <div class="w-full relative overflow-x-auto shadow-md rounded-sm mx-auto mt-1 bg-gray-300 dark:bg-gray-700">
                 <table class="w-full text-sm text-left text-gray-800 dark:text-gray-400">
         
                     {{-- テーブルヘッダ start --}}
@@ -1511,7 +1511,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     @endforeach
                 </table>
                 <div class="mt-1 mb-1 px-4">
-                    {{ $supports->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
+                    {{ $supports->withQueryString()->links('vendor.pagination.custom-tailwind') }}  
                 </div> 
             </div>
         </div>

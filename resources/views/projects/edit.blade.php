@@ -239,7 +239,7 @@
 
                     {{-- テーブル表示 --}}
                     <div class="">
-                        <div class="overflow-x-auto shadow-md rounded mx-auto mt-1 boeder-2 bg-gray-300 dark:bg-gray-700">
+                        <div class="overflow-x-auto shadow-md rounded mx-auto mt-1 bg-gray-300 dark:bg-gray-700">
                             <table class="w-full text-sm text-left text-gray-800 dark:text-gray-400">
                                 {{-- テーブルヘッダ start --}}
                                 <thead class="text-gray-700 bg-gray-300 dark:bg-gray-700 dark:text-white border-b">
@@ -796,7 +796,7 @@
                         </tbody>
                     </table>
                     <div class="mt-1 mb-1 px-4">
-                    {{-- {{ $estimates->withQueryString()->links('vendor.pagination.custum-tailwind') }}   --}}
+                    {{-- {{ $estimates->withQueryString()->links('vendor.pagination.custom-tailwind') }}   --}}
                     </div> 
                 </div>
             </div>

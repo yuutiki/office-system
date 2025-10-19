@@ -3,9 +3,6 @@
         <div class="flex justify-between w-full whitespace-nowrap items-center">
             <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center">
                 {{ Breadcrumbs::render('clientContacts') }}
-                <div class="ml-4">
-                    {{ $count }}件
-                </div>
                 <div class="text-gray-900 dark:text-white ml-4 text-base hidden md:block">
                     - 選択中: <span id="selectedCount">0</span> 件
                 </div>
@@ -106,7 +103,7 @@
     <div class="text-gray-950 md:ml-9 my-2">
         <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center">
             <div class="ml-4">
-                {{ $clientContacts->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
+                {{ $clientContacts->withQueryString()->links('vendor.pagination.custom-tailwind') }}  
             </div>
         </h2>
     </div>
@@ -305,7 +302,7 @@
     </div>
     @if($clientContacts->hasPages())
         <div class="mb-1 px-4 md:ml-9">
-            {{ $clientContacts->withQueryString()->links('vendor.pagination.custum-tailwind') }}
+            {{ $clientContacts->withQueryString()->links('vendor.pagination.custom-tailwind') }}
         </div>
     @endif
 

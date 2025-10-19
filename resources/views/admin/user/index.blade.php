@@ -209,7 +209,7 @@
 
 
     <div class="text-gray-950 md:ml-9 my-2 pl-4">
-        {{ $users->withQueryString()->links('vendor.pagination.custum-tailwind') }} 
+        {{ $users->withQueryString()->links('vendor.pagination.custom-tailwind') }} 
     </div>
 
     <div class="md:w-auto md:ml-14 md:mr-2 relative overflow-x-auto rounded-b shadow-md dark:bg-gray-700 dark:text-gray-900 bg-gray-300">
@@ -331,10 +331,9 @@
 
     @if ($users->hasPages())
         <div class="mb-1 px-4 md:ml-9">
-            {{ $users->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
+            {{ $users->withQueryString()->links('vendor.pagination.custom-tailwind') }}  
         </div>
     @endif
-
 
     <!-- モーダル本体 -->
     <x-modals.delete-index-modal

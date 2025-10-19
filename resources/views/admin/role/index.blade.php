@@ -174,7 +174,7 @@
 
         <div class="mt-8 mb-8">
             {{-- {{ $keepdatas->appends(request()->query())->links() }}  //デフォルトページネーション --}} 
-            {{ $keepdatas->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
+            {{ $keepdatas->withQueryString()->links('vendor.pagination.custom-tailwind') }}  
         </div> 
 
     </div>

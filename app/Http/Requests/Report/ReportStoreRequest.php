@@ -27,7 +27,7 @@ class ReportStoreRequest extends FormRequest
 
         // 基本のバリデーション
         $rules = [
-            'client_num' => ['required'],
+            'client_id' => ['required', 'integer', 'exists:clients,id'],
             'is_draft' => ['required', 'boolean'],
         ];
 
@@ -39,7 +39,10 @@ class ReportStoreRequest extends FormRequest
                 'contact_at' => ['required', 'date'],
                 'report_title' => ['required', 'string', 'max:500'],
                 'report_content' => ['required', 'string', 'max:5000'],
-                'project_id' => ['nullable', ],
+                'report_notice' => ['nullable', 'string'],
+                // 'client_representative' => ['nullable', 'string', 'max:255'],
+                'project_id' => ['nullable', 'integer', 'exists:projects,id'],
+                'selectedRecipientsId' => ['nullable', 'array'],
                 // 'selectedRecipientsId' => ['required', 'array'],
                 // 'selectedRecipientsId.*' => ['exists:users,id'],
             ]);

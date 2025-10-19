@@ -165,7 +165,7 @@
     <div class="text-gray-950 md:ml-9 my-2">
         <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center">
             <div class="ml-4">
-                {{ $histories->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
+                {{ $histories->withQueryString()->links('vendor.pagination.custom-tailwind') }}  
             </div>
         </h2>
     </div>
@@ -310,7 +310,7 @@
     </div>
     @if($histories->hasPages())
         <div class="mb-1 px-4 md:ml-9">
-            {{ $histories->withQueryString()->links('vendor.pagination.custum-tailwind') }}
+            {{ $histories->withQueryString()->links('vendor.pagination.custom-tailwind') }}
         </div>
     @endif
 

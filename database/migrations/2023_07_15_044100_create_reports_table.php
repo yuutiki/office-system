@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
             $table->foreignId('client_id')->comment('顧客ID');//clientテーブル参照
-            $table->string('client_representative')->nullable(true)->comment('顧客担当者');
+            // $table->string('client_representative')->nullable(true)->comment('顧客担当者');
             $table->string('report_title')->nullable(true)->comment('報告タイトル');
             $table->date('contact_at')->nullable(true)->comment('対応日付');
             $table->foreignId('contact_type_id')->nullable(true)->comment('対応種別ID');//contact_typeテーブル参照

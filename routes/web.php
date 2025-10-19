@@ -124,6 +124,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/updateActiveTab',  [ClientController::class, 'updateActiveTab']); //顧客編集画面のアクティブタブを取得
 
     // clientContacts関連
+    Route::get('/client-contacts/ajax/{client}', [ClientContactController::class, 'ajaxIndex'])->name('client-contacts.ajaxIndex');
     Route::get('/client-contacts/show-upload', [ClientContactController::class, 'showUploadForm'])->name('client-contacts.showUploadForm');
     Route::post('/client-contacts/upload', [ClientContactController::class, 'upload'])->name('client-contacts.upload');
     Route::resource('/client-contacts', ClientContactController::class);

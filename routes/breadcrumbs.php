@@ -256,7 +256,7 @@ Breadcrumbs::for('dashboard', function ($trail) {
                 });
 
                 // ホーム > 営業報告 > 営業報告編集
-                Breadcrumbs::for('editreport', function ($trail) {
+                Breadcrumbs::for('editReport', function ($trail) {
                     $trail->parent('reports');
                     $trail->push('編集', url('reports/edit'));
                 });

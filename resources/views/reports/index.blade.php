@@ -241,7 +241,7 @@
     <div class="text-gray-950 md:ml-9 my-2">
         <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center">
             <div class="ml-4">
-                {{ $reports->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
+                {{ $reports->withQueryString()->links('vendor.pagination.custom-tailwind') }}  
             </div>
         </h2>
     </div>
@@ -275,8 +275,15 @@
                                 №
                             </div>
                         </th>
-                        <th scope="col" class="px-1 py-3 whitespace-nowrap">
-                            <span class="sr-only">確認</span>
+                        <th scope="col" class="pl-4 py-1 w-auto">
+                            <div class="flex items-center whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="selectAllCheckbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-500 dark:border-white rounded border  focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700">
+                                </div>
+                            </div>
+                        </th>
+                        <th scope="col" class="px-1 py-3 w-auto">
+                            <div class="whitespace-nowrap">（選択 <span id="selectedCount">0</span> 件）</div>
                         </th>
                         <th scope="col" class="px-1 py-3 whitespace-nowrap">
                             <div class="flex items-center">
@@ -323,11 +330,11 @@
                         <th scope="col" class="px-1 py-3 whitespace-nowrap">
                             <span class="sr-only">編集</span>
                         </th>
-                        @can('managerOrAbobe')
+                        {{-- @can('managerOrAbobe')
                         <th scope="col" class="px-1 py-3 whitespace-nowrap">
                             <span class="sr-only">削除</span>
                         </th>
-                        @endcan
+                        @endcan --}}
                     </tr>
                 </thead>
                 <tbody>
@@ -335,6 +342,11 @@
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-900 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600 clickable-row">
                             <td class="pl-4 py-1 whitespace-nowrap">
                                 {{ $loop->iteration }}
+                            </td>
+                            <td class="pl-4 py-1 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <input id="checkbox{{ $report->id }}" type="checkbox" name="selectedIds[]" value="{{ $report->id }}" form="bulkDeleteForm" class="checkbox-item  w-4 h-4 text-blue-600 bg-gray-100 border-gray-500 dark:border-white rounded border  focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700">
+                                </div>
                             </td>
                             <td class="px-1 py-1 whitespace-nowrap">
                                 <button onclick="location.href='{{route('reports.show',$report)}}'"  class="block whitespace-nowrap text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 rounded-sm text-sm px-2 py-1 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
@@ -388,17 +400,17 @@
                                     </div>
                                 </button>
                             </td>
-                            <td class="py-1">
+                            {{-- <td class="py-1">
                                 <button type="button" data-modal-target="deleteModal-{{$report->id}}" data-modal-show="deleteModal-{{$report->id}}" class="button-delete-primary">
                                     <div class="flex">
                                         <svg aria-hidden="true" class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
                                         <span class="text-ms ">削除</span>
                                     </div>
                                 </button>
-                            </td>
+                            </td> --}}
                         </tr>
                         {{-- 削除確認モーダル画面 Start --}}
-                        <div id="deleteModal-{{$report->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                        {{-- <div id="deleteModal-{{$report->id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
                             <div class="relative w-full max-w-md max-h-full">
                                 <div class="relative bg-white rounded shadow dark:bg-gray-700">
                                     <button data-modal-hide="deleteModal-{{$report->id}}" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
@@ -425,7 +437,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         {{-- 削除確認モーダル画面 End --}}
                     @endforeach
                 </tbody>
@@ -434,11 +446,19 @@
     </div>
     @if($reports->hasPages())
         <div class="mb-1 px-4 md:ml-9">
-            {{ $reports->withQueryString()->links('vendor.pagination.custum-tailwind') }}
+            {{ $reports->withQueryString()->links('vendor.pagination.custom-tailwind') }}
         </div>
     @endif
 
 <script src="{{ asset('assets/js/user-dropdown.js') }}"></script>
+
+
+
+
+
+
+
+
 
 <script>
     // モーダル管理クラス
@@ -629,4 +649,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
+    @push('scripts')
+        @vite('resources/js/pages/reports/index.js')
+    @endpush
 </x-app-layout>

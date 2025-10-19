@@ -220,7 +220,7 @@
             </tbody>
         </table>
         <div class="mt-1 mb-1 px-4">
-        {{-- {{ $productTypes->withQueryString()->links('vendor.pagination.custum-tailwind') }}   --}}
+        {{-- {{ $productTypes->withQueryString()->links('vendor.pagination.custom-tailwind') }}   --}}
         </div> 
     </div>
 </x-app-layout>

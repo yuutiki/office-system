@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Report\ReportStoreRequest;
-use App\Models\Affiliation3;
 use App\Models\Report;
 use App\Models\User;//add
 use App\Models\Client;//add
@@ -18,8 +17,11 @@ use Illuminate\Pagination\Paginator;//add
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\NotificationController;
+use App\Http\Requests\Report\ReportUpdateRequest;
 use App\Models\Notification;
+use App\Services\PaginationService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -33,9 +35,9 @@ class ReportController extends Controller
         $this->notificationService = $notificationService;
     }
 
-    public function index(Request $request)
+    public function index(Request $request, PaginationService $paginationService)
     {
-        $perPage = config('constants.perPage');
+        $perPage = $paginationService->getPerPage($request);
         $user = User::all();
         $selectedUserId = $request->selected_user_id;
 
@@ -94,56 +96,54 @@ class ReportController extends Controller
 
     public function store(ReportStoreRequest $request)
     {
-        // フォームからの値を変数に格納
-        $clientNum = $request->input('client_num');
+        // バリデーション済データを取得
+        $validated = $request->validated();
 
-        // client_numからclient_idを取得する
-        $client = Client::where('client_num', $clientNum)->first();
-        $clientId = $client->id;
+        // selectedRecipientsId はDB保存対象外のため除外
+        $recipients = $validated['selectedRecipientsId'] ?? [];
+        unset($validated['selectedRecipientsId']);
 
+        // 顧客担当者IDを取り出して別処理へ
+        $clientContactIds = $request->input('client_contact_ids', []);
+
+        // fillで一括代入（fillableに登録済み項目のみ）
         $report = new Report();
-        $report->client_id = $clientId;
-        $report->contact_at = $request->input('contact_at');
-        $report->contact_type_id = $request->input('contact_type_id');
-        $report->report_type_id = $request->input('report_type_id');
-        $report->report_title = $request->input('report_title');
-        $report->report_content = $request->input('report_content');
-        $report->report_notice = $request->input('report_notice');
-        $report->client_representative = $request->input('client_representative');
-        $report->is_draft = $request->input('is_draft');
-        $report->project_id = $request->input('project_id');
-        $report->user_id = auth()->id();//ログインユーザのIDを取得
-
+        $report->fill($validated);
+        $report->user_id = Auth::id();
         $report->save();
 
-        // 報告先ユーザーの設定
-        $userIds = $request->input('selectedRecipientsId', []);
-        if (is_array($userIds) && count($userIds) === 1) {
-            // 配列の最初の要素がカンマ区切りの文字列の場合
-            $userIds = explode(',', $userIds[0]);
+        // ===============================
+        // ✅ 顧客担当者との紐づけ（多対多）
+        // ===============================
+        if (is_array($clientContactIds) && count($clientContactIds) === 1) {
+            // JS側からカンマ区切りで来る場合に対応
+            $clientContactIds = explode(',', $clientContactIds[0]);
+        }
+        $report->clientContacts()->sync($clientContactIds);
+
+        // ===============================
+        // ✅ 報告先ユーザー設定（既存ロジック）
+        // ===============================
+        if (is_array($recipients) && count($recipients) === 1) {
+            $recipients = explode(',', $recipients[0]);
         }
 
-        // ユーザーIDの配列をキーとして、値にすべてfalseのis_readを持つ連想配列を作成
         $recipientData = [];
-        foreach ($userIds as $userId) {
-            $recipientData[$userId] = ['is_read' => false];
+        foreach ($recipients as $recipient) {
+            $recipientData[$recipient] = ['is_read' => false];
         }
-        
-        // 中間テーブルに報告先ユーザー情報を保存
         $report->recipients()->sync($recipientData);
 
-
-        // 通知の内容を設定
+        // 通知処理（既存ロジックそのまま）
         $notificationData = [
             'notification_title' => '新しい営業報告が登録されました。',
             'notification_body' => $report->report_title,
-            'notification_type' => '0', // システム通知
+            'notification_type' => '0',
             'notification_category'=> '',
-            'importance'=> 0, // 通常
-            'action_url' => route('reports.show', ['report' => $report->id]), // 例: 日報を表示するURL
+            'importance'=> 0,
+            'action_url' => route('reports.show', ['report' => $report->id]),
             'source_id' => $report->id,
             'source_type' => 'report'
-            // 他の通知に関する情報をここで設定
         ];
 
         $notificationFrom = [
@@ -152,20 +152,15 @@ class ReportController extends Controller
             'affiliation1' => $report->reporter->affiliation1_id,
             'email' => $report->reporter->email,
             'image' =>$report->reporter->profile_image,
-            // 必要に応じて他のユーザー情報を追加
         ];
 
-        // 3. ユーザー取得結果の確認
-        $users = User::whereIn('id', $userIds)->get();
-
-        // 4. 通知データの確認
+        $users = User::whereIn('id', $recipients)->get();
         $notification = new AppNotification($notificationData, $notificationFrom);
-
-        // 通知の送信
         $this->notificationService->sendNotification($users, $notification);
 
         return redirect()->route('reports.index')->with('success','正常に登録しました');
     }
+
 
     public function show(string $id)
     {
@@ -239,108 +234,124 @@ class ReportController extends Controller
     }
 
     // 顧客情報から飛ぶ画面
-    public function showFromClient($id)
-    {
-        $report = Report::find($id);
-        $comments = $report->comments;
+    // public function showFromClient($id)
+    // {
+    //     $report = Report::find($id);
+    //     $comments = $report->comments;
 
-        return view('reports.show-from-client',compact('report'));
-    }
+    //     return view('reports.show-from-client',compact('report'));
+    // }
 
     public function edit(string $id)
     {
-        $report = Report::find($id);
+        // Eager Loadingを追加して、関連データを効率的に取得
+        $report = Report::with(['client', 'project', 'clientContacts', 'reporter', 'recipients'])->find($id);
         $reportTypes = ReportType::all();
         $contactTypes = ContactType::all();
         $users = User::all();
         $affiliation1s = Affiliation1::all();
         $affiliation2s = Affiliation2::all();
-        $recipients = $report->recipients; // リレーションシップを使用
+        $recipients = $report->recipients;
 
-        return view('reports.edit',compact('users', 'report', 'reportTypes', 'contactTypes', 'recipients', 'affiliation1s', 'affiliation2s',));
+        return view('reports.edit', compact('users', 'report', 'reportTypes', 'contactTypes', 'recipients', 'affiliation1s', 'affiliation2s'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(ReportUpdateRequest $request, Report $report)
     {
-        $validator = Validator::make($request->all(),Report::$rulesEdit);
-        if ($validator->fails()) {
-            session()->flash('error', '入力内容にエラーがあります。');
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+        DB::transaction(function () use ($request, $report) {
+            // ✅ バリデーション済みデータを取得
+            $validated = $request->validated();
 
-        $report = Report::find($id);
-        $report->contact_at = $request->input('contact_at');
-        $report->contact_type_id = $request->input('contact_type_id');
-        $report->report_type_id = $request->input('report_type_id');
-        $report->report_title = $request->input('report_title');
-        $report->report_content = $request->input('report_content');
-        $report->report_notice = $request->input('report_notice');
-        $report->client_representative = $request->input('client_representative');
-        $report->project_id = $request->input('project_id');
-        $report->user_id = auth()->id();//ログインユーザのIDを取得
-        $report->save();
+            // 保存対象外データを分離
+            $recipients = $validated['selectedRecipientsId'] ?? [];
+            unset($validated['selectedRecipientsId']);
+
+            // 顧客担当者IDの取得
+            $clientContactIds = $request->input('client_contact_ids', []);
+            if (is_array($clientContactIds) && count($clientContactIds) === 1) {
+                $clientContactIds = explode(',', $clientContactIds[0]);
+            }
+
+            // 空の値を除外(文字列として保持)
+            $clientContactIds = array_filter(
+                array_map('trim', (array)$clientContactIds),
+                fn($id) => !empty($id)
+            );
+
+            // ✅ 基本情報更新
+            $report->fill($validated);
+            $report->save();
+
+            // ✅ 顧客担当者リレーション更新
+            $report->clientContacts()->sync($clientContactIds);
 
 
-        // 報告先ユーザーの更新（既存の関連を保持しつつ更新）
-        $userIds = $request->input('selectedRecipientsId', []);
-        if (is_array($userIds) && count($userIds) === 1) {
-            $userIds = explode(',', $userIds[0]);
-        }
-        
-        $recipientData = [];
-        foreach ($userIds as $userId) {
-            // 既存のレコードのis_read状態を保持するために、まず取得
-            $existingRecord = $report->recipients()->where('user_id', $userId)->first();
-            $isRead = $existingRecord ? $existingRecord->pivot->is_read : false;
-            $readAt = $existingRecord ? $existingRecord->pivot->read_at : null;
-            
-            $recipientData[$userId] = [
-                'is_read' => $isRead,
-                'read_at' => $readAt
+            // ✅ 報告先ユーザー更新
+            if (is_array($recipients) && count($recipients) === 1) {
+                $recipients = explode(',', $recipients[0]);
+            }
+
+            // 空の値を除外して整数化
+            $recipients = array_filter(array_map('intval', (array)$recipients));
+
+            $recipientData = [];
+            foreach ($recipients as $recipient) {
+                $recipientData[$recipient] = ['is_read' => false];
+            }
+            $report->recipients()->sync($recipientData);
+
+            // ✅ 通知処理（更新通知）
+            $notificationData = [
+                'notification_title' => '営業報告が更新されました。',
+                'notification_body'  => $report->report_title,
+                'notification_type'  => '0',
+                'notification_category'=> '',
+                'importance'         => 0,
+                'action_url'         => route('reports.show', ['report' => $report->id]),
+                'source_id'          => $report->id,
+                'source_type'        => 'report'
             ];
-        }
-        
-        // syncメソッドで関連を更新（既存の関連を維持しつつ更新）
-        $report->recipients()->sync($recipientData);
 
+            $notificationFrom = [
+                'id'          => $report->reporter->id,
+                'name'        => $report->reporter->user_name,
+                'affiliation1'=> $report->reporter->affiliation1_id,
+                'email'       => $report->reporter->email,
+                'image'       => $report->reporter->profile_image,
+            ];
 
-        // 選択された報告先ユーザを中間テーブルに登録
-        // $selectedRecipientsId = $request->input('selectedRecipientsId');
-        // $report->recipients()->attach($selectedRecipientsId);
+            $users = User::whereIn('id', $recipients)->get();
+            $notification = new AppNotification($notificationData, $notificationFrom);
+            $this->notificationService->sendNotification($users, $notification);
+        });
 
-        // 通知の内容を設定
-        $notificationData = [
-            'notification_title' => '営業報告が更新されました。',
-            'notification_body' => $report->report_title,
-            'notification_type' => '0', // システム通知
-            'notification_category'=> '',
-            'importance'=> 0, // 通常
-            'action_url' => route('reports.show', ['report' => $report->id]), // 例: 日報を表示するURL
-            'source_id' => $report->id,
-            'source_type' => 'report'
-            // 他の通知に関する情報をここで設定
-        ];
-
-        $notificationFrom = [
-            'id' => $report->reporter->id,
-            'name' => $report->reporter->user_name,
-            'affiliation1' => $report->reporter->affiliation1_id,
-            'email' => $report->reporter->email,
-            'image' =>$report->reporter->profile_image,
-            // 必要に応じて他のユーザー情報を追加
-        ];
-
-        // 3. ユーザー取得結果の確認
-        $users = User::whereIn('id', $userIds)->get();
-
-        // 4. 通知データの確認
-        $notification = new AppNotification($notificationData, $notificationFrom);
-
-        // 通知の送信
-        $this->notificationService->sendNotification($users, $notification);
-
-        return redirect()->route('reports.edit', $id)->with('success','正常に更新しました');
+        return redirect()->route('reports.edit', $report->id)->with('success', '正常に更新しました');
     }
+
+    public function destroy(string $id)
+    {
+        $report = Report::find($id);
+        $report->delete();
+        return redirect()->back()->with('success', '正常に削除しました');
+    }
+
+    //ユーザが報告先を選択した際に実行されるメソッド
+    public function addReportToRecipient(Request $request,$userId)
+    {
+        $selectedRecipientsId = $request->input('selected_reports');
+
+        if(!empty($selectedRecipientsId)){
+            $user = User::find($userId);
+
+            $user->reports()->attach($selectedRecipientsId);
+        }
+
+                // 登録後に適切なリダイレクト先にリダイレクトするなど、処理の終了を行う
+        // 例えば、報告先が登録された後にユーザー詳細ページにリダイレクトする
+        return redirect()->route('user.show', ['user' => $userId]);
+    }
+
+
 
     // 確認ボタンが押されたときのアクション
     public function markAsRead(Report $report)
@@ -370,46 +381,6 @@ class ReportController extends Controller
         return redirect()->back()->with('error', 'この報告の閲覧権限がありません');
     }
 
-    public function destroy(string $id)
-    {
-        $report = Report::find($id);
-        $report->delete();
-        return redirect()->back()->with('success', '正常に削除しました');
-    }
-
-    //ユーザが報告先を選択した際に実行されるメソッド
-    public function addReportToRecipient(Request $request,$userId)
-    {
-        $selectedRecipientsId = $request->input('selected_reports');
-
-        if(!empty($selectedRecipientsId)){
-            $user = User::find($userId);
-
-            $user->reports()->attach($selectedRecipientsId);
-        }
-
-                // 登録後に適切なリダイレクト先にリダイレクトするなど、処理の終了を行う
-        // 例えば、報告先が登録された後にユーザー詳細ページにリダイレクトする
-        return redirect()->route('user.show', ['user' => $userId]);
-    }
-
-
-    // ユーザを検索して検索結果を返す
-    public function searchUsers(Request $request)
-    {
-        $query = $request->input('query');
-        $users = User::where('name', 'like', '%' . $query . '%')->get();
-        // 検索結果をJSON形式で返す
-        return response()->json($users);
-    }
-
-    // // 選択されたユーザを受け取り、ビューに返す（Ajaxで呼ばれる）
-    // public function selectedRecipients(Request $request)
-    // {
-    //     $selectedUsers = $request->input('selectedUsers', []);
-    //     // 必要に応じて選択されたユーザを処理する（例：データベースに保存）
-    //     return response()->json(['message' => 'Success']);
-    // }
 
     public function read(DatabaseNotification $notification)
     {
@@ -417,5 +388,4 @@ class ReportController extends Controller
 
         return redirect($notification->data['url']);
     }
-    
 }

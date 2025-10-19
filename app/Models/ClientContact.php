@@ -83,15 +83,26 @@ class ClientContact extends Model
     }
 
 
-    public function client()
-    {
-        return $this->belongsTo(Client::class);
-    }
-
     public function checkboxOptions()
     {
         return $this->belongsToMany(ClientContactCheckboxOption::class, 'client_contact_checkbox_values', 'client_contact_id', 'checkbox_option_id')
             ->withPivot('value')
             ->withTimestamps();
     }
+
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
+
+    // public function department()
+    // {
+    //     return $this->belongsTo(Department::class);
+    // }
+
+    public function reports()
+    {
+        return $this->belongsToMany(Report::class, 'client_contact_report');
+    }
+    
 }

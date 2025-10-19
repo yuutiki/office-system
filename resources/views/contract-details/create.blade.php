@@ -4,7 +4,7 @@
             <h2 class="flex text-gray-900 dark:text-white">
                 {{ Breadcrumbs::render('CreateContractDetail', $contract) }}
             </h2>
-            <div class="ml-auto flex ">
+            <div class="ml-auto flex">
                 <form id="createForm" method="post" action="{{ route('contracts.details.store', ['contract' => $contract]) }}" enctype="multipart/form-data">
                     @csrf
                     <x-buttons.save-button form-id="createForm" onkeydown="stopTab(event)" id="saveButton">
@@ -70,7 +70,6 @@
                         <div class="text-red-500">{{$message}}</div>
                     @enderror
                 </div>
-
             </div>
 
             <div class="grid gap-4 md:grid-cols-2 mt-4">
@@ -103,7 +102,6 @@
                     <div class="text-red-500">{{ $message }}</div>
                 @enderror
             </div>
-
 
             <div class="w-full flex flex-col">
                 <label for="target_system" class="dark:text-gray-100 text-gray-900 leading-none mt-4 mb-1">対象システム</label>
@@ -165,7 +163,7 @@
     </div>
 
 
-
+    <!-- 案件検索モーダルのBladeテンプレート -->
     <x-modals.project-search-modal 
     modalId="projectSearchModal1" 
     screenId="keepfile_create" 
@@ -173,57 +171,30 @@
     onSelectCallback="handleProjectSelect" 
     />
 
-    <script>
-        // プロジェクト選択時の処理を定義
-        function handleProjectSelect(project) {
-            // 選択されたプロジェクトの情報を各フィールドに設定
-            document.getElementById('project_id').value = project.id;
-            document.getElementById('project_num').value = project.project_num;
-            document.getElementById('project_name').value = project.project_name;
-            // document.getElementById('project_client_name').value = project.client.client_name;
-            document.getElementById('account_user').value = project.account_user.user_name;
-            document.getElementById('sales_stage_name').value = project.sales_stage.sales_stage_name;
-        }
-        // モーダルのコールバック関数を設定
-        window.projectSearchModal1_onSelect = handleProjectSelect;
-    </script>
-    <script src="{{ asset('/assets/js/modal/project-search-modal.js') }}"></script>
-
-
-
-    <script type="text/javascript" src="{{ asset('/assets/js/autoresizetextarea.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/assets/js/searchProject.js') }}"></script>
-
 
     <script>
-        // 新規登録ボタンにフォーカスが当たった時に呼び出される関数
-        function stopTab(event) {
-            if (event.keyCode === 9 && !event.shiftKey) { // タブキーが押された場合かつShiftキーが押されていない場合
-                event.preventDefault(); // イベントをキャンセルする
-            }
-        }
+        document.getElementById('contract_start_at').addEventListener('change', function () {
+            const startDate = this.value;
+            if (!startDate) return;
+
+            let start = new Date(startDate);
+            // 1年後に設定
+            let end = new Date(start);
+            end.setFullYear(end.getFullYear() + 1);
+            // 1日引く
+            end.setDate(end.getDate() - 1);
+
+            // 日付をYYYY-MM-DD形式に整形
+            const yyyy = end.getFullYear();
+            const mm = String(end.getMonth() + 1).padStart(2, '0');
+            const dd = String(end.getDate()).padStart(2, '0');
+            document.getElementById('contract_end_at').value = `${yyyy}-${mm}-${dd}`;
+        });
     </script>
 
 
-
-<script>
-    document.getElementById('contract_start_at').addEventListener('change', function () {
-        const startDate = this.value;
-        if (!startDate) return;
-
-        let start = new Date(startDate);
-        // 1年後に設定
-        let end = new Date(start);
-        end.setFullYear(end.getFullYear() + 1);
-        // 1日引く
-        end.setDate(end.getDate() - 1);
-
-        // 日付をYYYY-MM-DD形式に整形
-        const yyyy = end.getFullYear();
-        const mm = String(end.getMonth() + 1).padStart(2, '0');
-        const dd = String(end.getDate()).padStart(2, '0');
-        document.getElementById('contract_end_at').value = `${yyyy}-${mm}-${dd}`;
-    });
-</script>
+    @push('scripts')
+        @vite('resources/js/pages/contract-details/create.js')
+    @endpush
 
 </x-app-layout>

@@ -321,7 +321,7 @@
             </tbody>
         </table>
         <div class="mt-1 mb-1 px-4">
-        {{-- {{ $projectExpenses->withQueryString()->links('vendor.pagination.custum-tailwind') }}   --}}
+        {{-- {{ $projectExpenses->withQueryString()->links('vendor.pagination.custom-tailwind') }}   --}}
         </div> 
     </div>
 

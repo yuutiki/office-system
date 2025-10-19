@@ -227,7 +227,7 @@
            </tbody>
        </table>
        <div class="mt-1 mb-1 px-4">
-           {{ $affiliation1s->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
+           {{ $affiliation1s->withQueryString()->links('vendor.pagination.custom-tailwind') }}  
        </div> 
    </div> 
 </x-app-layout>

@@ -14,12 +14,13 @@ class Report extends Model
 
     protected $fillable = [
         'client_id',
-        'report_type_id',
         'contact_at',
         'contact_type_id',
+        'report_type_id',
         'report_title',
         'report_content',
         'report_notice',
+        // 'client_representative',
         'is_draft',
         'project_id',
     ];
@@ -143,5 +144,16 @@ class Report extends Model
         return $this->belongsToMany(User::class, 'report_recipients')
                     ->withPivot('is_read', 'read_at')
                     ->withTimestamps();
+    }
+
+    // 顧客担当者との多対多
+    public function clientContacts()
+    {
+        return $this->belongsToMany(ClientContact::class, 'client_contact_report');
+    }
+
+    public function attachContacts(array $contactIds)
+    {
+        $this->clientContacts()->sync($contactIds);
     }
 }

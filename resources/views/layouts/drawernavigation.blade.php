@@ -184,6 +184,35 @@
                     <span class="flex-1 ml-3 whitespace-nowrap" tabindex="-1">{{ __('ホーム') }}</span>
                 </x-nav-link>
             </li>
+            <li>
+                <x-nav-link :href="route('dashboard')" :tabindex="-1" :active="request()->routeIs('dashboard')" class="flex w-full items-center p-2 text-white rounded-sm dark:text-white hover:bg-gray-500 dark:hover:bg-gray-700" tabindex="-1">
+                    {{-- <x-icon name="icons/nav-dashboard" class="flex-shrink-0 w-6 h-6 text-gray-100 dark:text-gray-400" /> --}}
+                    <svg xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 w-6 h-6 text-gray-100 dark:text-gray-400" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M232-132q-26 0-43-17t-17-43v-496q0-26 17-43t43-17h80v-92h32v92h276v-92h28v92h80q26 0 43 17t17 43v496q0 26-17 43t-43 17H232Zm0-28h496q12 0 22-10t10-22v-336H200v336q0 12 10 22t22 10Zm-32-396h560v-132q0-12-10-22t-22-10H232q-12 0-22 10t-10 22v132Zm0 0v-164 164Zm280 164q-11 0-19.5-8.5T452-420q0-11 8.5-19.5T480-448q11 0 19.5 8.5T508-420q0 11-8.5 19.5T480-392Zm-160 0q-11 0-19.5-8.5T292-420q0-11 8.5-19.5T320-448q11 0 19.5 8.5T348-420q0 11-8.5 19.5T320-392Zm320 0q-11 0-19.5-8.5T612-420q0-11 8.5-19.5T640-448q11 0 19.5 8.5T668-420q0 11-8.5 19.5T640-392ZM480-240q-11 0-19.5-8.5T452-268q0-11 8.5-19.5T480-296q11 0 19.5 8.5T508-268q0 11-8.5 19.5T480-240Zm-160 0q-11 0-19.5-8.5T292-268q0-11 8.5-19.5T320-296q11 0 19.5 8.5T348-268q0 11-8.5 19.5T320-240Zm320 0q-11 0-19.5-8.5T612-268q0-11 8.5-19.5T640-296q11 0 19.5 8.5T668-268q0 11-8.5 19.5T640-240Z"/></svg>
+                    <span class="flex-1 ml-3 whitespace-nowrap" tabindex="-1">{{ __('スケジュール') }}</span>
+                </x-nav-link>
+            </li>
+
+            {{-- @canany(['view_reports',]) --}}
+                <li>
+                    <button type="button" class="flex items-center w-full py-1.5 pr-1 pl-1 text-sm  text-white transition duration-75 rounded-sm group hover:bg-gray-500 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#task-body" aria-expanded="false" aria-controls="task-body">
+                        {{-- <x-icon name="icons/nav-task" class="flex-shrink-0 w-6 h-6 text-gray-100 dark:text-gray-400" /> --}}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 w-6 h-6 text-gray-100 dark:text-gray-400" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m381-268.46 394.77-394.77-28.54-28.31-366.46 366.23-169-169.23L183.23-466 381-268.46Zm0 56.85L126.61-466l85.16-85.39L381-382.15l366.77-367 85.85 84.92L381-211.61Z"/></svg>
+                        <span class="flex-1 ml-3 text-left whitespace-nowrap">{{ __('タスク管理') }}</span>
+                        <x-icon name="ui/accordion-arrow" class="w-3 h-3 mr-1 shrink-0 transition-transform" />
+                    </button>
+                    <ul  class="hidden py-1 space-y-1" id="task-body" aria-labelledby="task-heading">
+                        {{-- @can('view_reports') --}}
+                        <li>
+                            <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.index')" class="flex w-full items-center px-2 pb-1 text-white rounded-sm dark:text-white hover:bg-gray-500 dark:hover:bg-gray-700" tabindex="-1">
+                                <span class="flex-1 ml-10 whitespace-nowrap">{{ __('タスク一覧') }}</span>
+                            </x-nav-link>
+                        </li>
+                        {{-- @endcan --}}
+                    </ul>
+                </li>
+            {{-- @endcanany --}}
+
+
             @canany(['view_corporations', 'view_clients', 'view_vendors', 'view_client_contacts', 'view_vendor_persons', ])
                 <li>
                     <button type="button" class="flex items-center w-full py-1.5 pr-1 pl-1 text-sm text-white transition duration-75 rounded-sm group  hover:bg-gray-500 dark:text-white dark:hover:bg-gray-700" tabindex="-1" data-accordion-target="#accordion-body-1" aria-expanded="false" aria-controls="accordion-body-1">

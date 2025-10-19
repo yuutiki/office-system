@@ -22,7 +22,7 @@
                     </span>
                 </a>
             @endif
-            
+
             <!-- ページ番号入力フィールド -->
             <div class="flex items-center bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded h-[34px] px-2 shadow-sm">
                 <input type="number" 
@@ -172,7 +172,7 @@
                 const pageInput = component.querySelector('.pagination-page-input');
                 if (pageInput) {
                     // 入力イベント
-                    pageInput.addEventListener('keypress', function(event) {
+                    pageInput.addEventListener('keydown', function(event) {
                         if (event.key === 'Enter') {
                             event.preventDefault();
                             handlePageChange(this);

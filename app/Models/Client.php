@@ -236,5 +236,10 @@ class Client extends Model
     {
         return $this->belongsTo(Department::class);
     }
+    public function clientContacts()
+    {
+        return $this->hasMany(ClientContact::class);
+    }
+
 
 }

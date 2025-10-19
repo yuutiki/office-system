@@ -208,7 +208,7 @@
     <div class="text-gray-950 md:ml-9 my-2">
         <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center">
             <div class="ml-4">
-                {{ $corporations->withQueryString()->links('vendor.pagination.custum-tailwind') }}  
+                {{ $corporations->withQueryString()->links('vendor.pagination.custom-tailwind') }}  
             </div>
         </h2>
     </div>
@@ -393,7 +393,7 @@
     </div>
     @if($corporations && $corporations->hasPages())
         <div class="mb-1 px-4 md:ml-9">
-            {{ $corporations->withQueryString()->links('vendor.pagination.custum-tailwind') }}
+            {{ $corporations->withQueryString()->links('vendor.pagination.custom-tailwind') }}
         </div>
     @endif
 

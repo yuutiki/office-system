@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ClientContact\StoreClientContactRequest;
 use App\Http\Requests\ClientContact\UpdateClientContactRequest;
 use App\Http\Requests\CsvUploadRequest;
+use App\Http\Resources\ClientContactResource;
 use App\Models\Affiliation2;
 use App\Models\Client;
 use App\Models\ClientContact;
 use App\Models\ClientContactCheckboxOption;
 use App\Models\Prefecture;
 use App\Models\User;
+use App\Services\PaginationService;
 use Illuminate\Http\Request;
 use Goodby\CSV\Import\Standard\Lexer;
 use Goodby\CSV\Import\Standard\Interpreter;
@@ -69,23 +71,23 @@ class ClientContactController extends Controller
         return redirect()->back()->with('success', 'チェックボックスが追加されました');
     }
 
-    public function index(Request $request)
+    public function index(Request $request, PaginationService $paginationService)
     {
-        $perPage = config('constants.perPage');   
+        $perPage = $paginationService->getPerPage($request);
 
         $filters = $request->only(['client_info', ]);
 
         //上記で$filters変数に格納した検索条件をModelに渡し、検索処理を行う。結果を$corporationsに詰める
         $clientContacts = ClientContact::filter($filters)
-            ->with('client',)
+            ->with('client', 'client.department')
             ->sortable()
             ->paginate($perPage);
 
         // $clientContacts = ClientContact::with(['client'])->orderBy('client_id','asc')->paginate($perPage);
 
-        $count = $clientContacts->total();
+        // $count = $clientContacts->total();
 
-        return view('client-contact.index', compact('clientContacts', 'count', 'filters'));
+        return view('client-contact.index', compact('clientContacts', 'filters'));
     }
 
     public function create()
@@ -232,8 +234,6 @@ class ClientContactController extends Controller
             'displayItems' => $displayItems
         ]);
     }
-
-
 
     public function showUploadForm()
     {
@@ -450,5 +450,18 @@ class ClientContactController extends Controller
             // 既存レコードが存在する場合は更新
             $existingRecord->update($clientContactData);
         }
+    }
+
+
+
+    /**
+     * Ajaxで顧客担当者一覧を取得
+     */
+    public function ajaxIndex(Client $client)
+    {
+        // is_activeカラムが存在しないので削除
+        $contacts = $client->clientContacts()->get();
+
+        return ClientContactResource::collection($contacts);
     }
 }
